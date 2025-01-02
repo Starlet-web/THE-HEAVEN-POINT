@@ -158,10 +158,15 @@
     <a href="#contact" class="btn" <!-- Enroll Now Section -->
   <section id="enroll" class="enroll">
     <div class="container">
-      
-      
+    <button class="btn" id="openModal">Enroll Now</button>
+  </section>
+
+  <!-- Modal Form -->
+  <div id="enrollModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
       <h2>Enroll Now</h2>
-        <form action="mailto:your-email@example.com" method="post" enctype="text/plain">
+      <form action="mailto:your-email@example.com" method="post" enctype="text/plain">
         <label for="name">Full Name:</label>
         <input type="text" id="name" name="name" placeholder="Enter your full name" required>
 
@@ -186,31 +191,40 @@
           <option value="12th">12th</option>
         </select>
 
-        <label for="course">Course Interested In:</label>
-        <select id="course" name="course" required>
-          <option value="">Select Course</option>
-          <option value="NEET">NEET</option>
-          <option value="IIT-JEE">IIT-JEE</option>
-          <option value="Board Exams">Board Exams</option>
-          <option value="Foundation Course">Foundation Course</option>
-        </select>
-
-        <label for="message">Additional Message:</label>
-        <textarea id="message" name="message" rows="5" placeholder="Write your query or message here..."></textarea>
-
         <button type="submit">Submit</button>
       </form>
     </div>
-  </section>
+  </div>
 
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 The Heaven Point Coaching Classes. All rights reserved.</p>
   </footer>
+
+  <script>
+    const modal = document.getElementById("enrollModal");
+    const btn = document.getElementById("openModal");
+    const span = document.getElementById("closeModal");
+
+    btn.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
 </body>
 </html>
+   
+    
 
-  </section>
 
   <!-- Features Section -->
   <section id="features" class="features">
