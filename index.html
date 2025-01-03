@@ -235,16 +235,12 @@
         <label for="course" class="form-label">Select Course</label>
         <select class="form-select" id="course" required>
           <option value="">Choose...</option>
-          <option value="java">Java Programming</option>
-          <option value="dsa">Data Structures</option>
-          <option value="python">Python Programming</option>
+          <option value="3rd_to_12th">3rd to 12th</option>
+          <option value="neet">NEET</option>
+          <option value="cuet">CUET</option>
+          <option value="iit">IIT</option>
+          <option value="jee">JEE</option>
         </select>
-      </div>
-
-      <!-- File Upload -->
-      <div class="mb-3">
-        <label for="resume" class="form-label">Upload Resume (optional)</label>
-        <input type="file" class="form-control" id="resume">
       </div>
 
       <!-- Submit Button -->
@@ -265,10 +261,6 @@
       formData.append('email', document.getElementById('email').value);
       formData.append('phone', document.getElementById('phone').value);
       formData.append('course', document.getElementById('course').value);
-      const resumeFile = document.getElementById('resume').files[0];
-      if (resumeFile) {
-        formData.append('resume', resumeFile);
-      }
 
       try {
         const response = await fetch('http://localhost:5000/submit-form', {
@@ -290,6 +282,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+</html>
+
 </html>
 
   <!-- Footer -->
