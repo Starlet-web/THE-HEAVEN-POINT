@@ -148,26 +148,66 @@
     </div>
   </section>
 
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Embedded YouTube Video</title>
+  <title>Responsive YouTube Video</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      background: #000;
+      border-radius: 10px; /* Rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+      margin: 10px;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 10px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>Watch This Video</h1>
-  <iframe 
-    width="560" 
-    height="315" 
-    src="https://www.youtube.com/embed/xfrjct-afu8?start=65" 
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    allowfullscreen>
-  </iframe>
+  <div class="video-container">
+    <iframe 
+      src="https://www.youtube.com/embed/xfrjct-afu8?start=65" 
+      title="YouTube video player" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      allowfullscreen>
+    </iframe>
+  </div>
 </body>
 </html>
+
 
         <!-- Syllabus Breakdown -->
         <div class="w-1/3 pl-6">
