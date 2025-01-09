@@ -496,9 +496,26 @@
         <label class="block mb-2">Message</label>
         <textarea placeholder="Your message" class="form-input w-full"></textarea>
       </div>
-      <button type="submit" class="download-btn w-full">Send Message</button>
-    </form>
-  </section>
+    <title>Send WhatsApp Message</title>
+</head>
+<body>
+    <h1>Send a WhatsApp Message</h1>
+    <button id="sendMessage">Send Message</button>
+
+    <script>
+        // Function to send a message via WhatsApp
+        document.getElementById('sendMessage').addEventListener('click', function () {
+            const phoneNumber = '1234567890'; // Replace with recipient's WhatsApp number (with country code, no '+' or spaces)
+            const message = encodeURIComponent('Hello! This is a test message.'); // Your custom message
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+            
+            // Redirect to WhatsApp
+            window.open(whatsappURL, '_blank');
+        });
+    </script>
+</body>
+</html>
+
 
 </body>
 </html>
