@@ -122,39 +122,218 @@
       </div>
     </div>
   </div>
-</section>
->
 
-  <!-- Course Catalog Section -->
-  <section id="courses" class="my-8 px-6">
-    <div class="max-w-7xl mx-auto">
-      <h2 class="text-2xl font-semibold text-center">Course Catalog</h2>
-      <div class="mt-4 flex justify-between">
-        <div class="space-x-4">
-          <label for="level" class="text-lg">Level:</label>
-          <select id="level" class="px-4 py-2 border rounded-lg">
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Notes</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Main Button Style */
+        .notes-button {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .notes-button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Dropdown Menu Style */
+        .dropdown {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .class {
+            margin-bottom: 20px;
+        }
+
+        .class h3 {
+            font-size: 1rem;
+            color: #444;
+            cursor: pointer;
+            background: #f9f9f9;
+            padding: 10px 15px;
+            margin: 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .class h3:hover {
+            background: #f1f1f1;
+        }
+
+        .subject-list {
+            display: none;
+            margin-top: 10px;
+            padding-left: 15px;
+        }
+
+        .subject {
+            margin-bottom: 10px;
+        }
+
+        .subject button {
+            background: none;
+            border: none;
+            color: #444;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+            padding: 5px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .subject button:hover {
+            color: #2575fc;
+        }
+
+        .chapter-list {
+            display: none;
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+
+        .chapter-list a {
+            display: block;
+            color: #444;
+            text-decoration: none;
+            margin: 3px 0;
+            font-size: 0.9rem;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .chapter-list a:hover {
+            color: #6a11cb;
+        }
+    </style>
+</head>
+<body>
+
+  <button class="notes-button" onclick="toggleDropdown()">Class Notes</button>
+
+    <div class="dropdown" id="dropdown">
+        <!-- Template for all Classes -->
+        <!-- Example for Class 9 -->
+        <div class="class">
+            <h3 onclick="toggleSubjects('class9')">Class 9</h3>
+            <div class="subject-list" id="class9">
+                <div class="subject">
+                    <button onclick="toggleChapters('class9-math')">Mathematics</button>
+                    <div class="chapter-list" id="class9-math">
+                        <a href="class9_math_ch1.pdf" target="_blank">Chapter 1: Number Systems</a>
+                        <a href="class9_math_ch2.pdf" target="_blank">Chapter 2: Polynomials</a>
+                        <a href="class9_math_ch3.pdf" target="_blank">Chapter 3: Coordinate Geometry</a>
+                        <!-- Add more chapters -->
+                    </div>
+                </div>
+                <div class="subject">
+                    <button onclick="toggleChapters('class9-science')">Science</button>
+                    <div class="chapter-list" id="class9-science">
+                        <a href="class9_science_ch1.pdf" target="_blank">Chapter 1: Matter</a>
+                        <a href="class9_science_ch2.pdf" target="_blank">Chapter 2: Motion</a>
+                        <a href="class9_science_ch3.pdf" target="_blank">Chapter 3: Gravitation</a>
+                        <!-- Add more chapters -->
+                    </div>
+                </div>
+                <!-- Add more subjects -->
+            </div>
         </div>
-        <div class="space-x-4">
-          <label for="duration" class="text-lg">Duration:</label>
-          <select id="duration" class="px-4 py-2 border rounded-lg">
-            <option value="short">Short</option>
-            <option value="medium">Medium</option>
-            <option value="long">Long</option>
-          </select>
+
+        <!-- Class 10 -->
+        <div class="class">
+            <h3 onclick="toggleSubjects('class10')">Class 10</h3>
+            <div class="subject-list" id="class10">
+                <div class="subject">
+                    <button onclick="toggleChapters('class10-math')">Mathematics</button>
+                    <div class="chapter-list" id="class10-math">
+                        <a href="class10_math_ch1.pdf" target="_blank">Chapter 1: Real Numbers</a>
+                        <a href="class10_math_ch2.pdf" target="_blank">Chapter 2: Polynomials</a>
+                        <!-- Add more chapters -->
+                    </div>
+                </div>
+                <div class="subject">
+                    <button onclick="toggleChapters('class10-science')">Science</button>
+                    <div class="chapter-list" id="class10-science">
+                        <a href="class10_science_ch1.pdf" target="_blank">Chapter 1: Chemical Reactions</a>
+                        <a href="class10_science_ch2.pdf" target="_blank">Chapter 2: Electricity</a>
+                        <!-- Add more chapters -->
+                    </div>
+                </div>
+                <!-- Add more subjects -->
+            </div>
         </div>
-        <div class="space-x-4">
-          <label for="rating" class="text-lg">Rating:</label>
-          <select id="rating" class="px-4 py-2 border rounded-lg">
-            <option value="5">5 Stars</option>
-            <option value="4">4 Stars</option>
-            <option value="3">3 Stars</option>
-          </select>
+
+        <!-- Repeat for Class 11 and Class 12 -->
+        <div class="class">
+            <h3 onclick="toggleSubjects('class11')">Class 11</h3>
+            <div class="subject-list" id="class11">
+                <!-- Add subjects and chapters -->
+            </div>
         </div>
-      </div>
+
+        <div class="class">
+            <h3 onclick="toggleSubjects('class12')">Class 12</h3>
+            <div class="subject-list" id="class12">
+                <!-- Add subjects and chapters -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleSubjects(classId) {
+            const subjectList = document.getElementById(classId);
+            subjectList.style.display = subjectList.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleChapters(subjectId) {
+            const chapterList = document.getElementById(subjectId);
+            chapterList.style.display = chapterList.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
+
 
       <!-- Course Grid -->
       <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
