@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Online Lectures</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #f0f0f0, #f8f8f8);
+            color: #333;
+            text-align: center;
+            padding: 50px 20px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            color: #7f8c8d;
+        }
+
+        /* Box Container */
+        .box-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        /* Box Styling */
+        .box {
+            background: linear-gradient(45deg, #4CAF50, #388E3C);
+            color: white;
+            padding: 30px;
+            font-size: 22px;
+            width: 220px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+            position: relative;
+        }
+        .box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+        .box:active {
+            transform: translateY(2px);
+        }
+
+        /* Special Box (Seminar) */
+        .special-box {
+            background: linear-gradient(45deg, #FF6347, #FF4500);
+            font-weight: bold;
+        }
+
+        /* Notice Section */
+        .notice {
+            margin-top: 70px;
+            font-size: 1.1em;
+            color: #333;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+            font-family: 'Arial', sans-serif;
+        }
+        .notice h3 {
+            font-size: 1.8em;
+            color: #16a085;
+            margin-bottom: 15px;
+        }
+        .notice p {
+            color: #7f8c8d;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .box-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .box {
+                width: 250px;
+                height: 180px;
+                font-size: 18px;
+            }
+            .notice {
+                width: 90%;
+            }
+        }
+
+        /* Custom Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to THP Online Lectures</h1>
+    <p>Click the respective box to join the Google Meet classes for NEET, IIT JEE, SSC/BANK/RAILWAY, CUET, or Classes 9th to 12th.</p>
+
+    <!-- Box Container -->
+    <div class="box-container">
+        <div class="box" onclick="openLink('https://meet.google.com/neet-link')">
+            NEET Classes
+        </div>
+        <div class="box" onclick="openLink('https://meet.google.com/iit-jee-link')">
+            IIT JEE Classes
+        </div>
+        <div class="box" onclick="openLink('https://meet.google.com/ssc-bank-railway-link')">
+            SSC/BANK/RAILWAY
+        </div>
+        <div class="box" onclick="openLink('https://meet.google.com/cuet-link')">
+            CUET Classes
+        </div>
+        <div class="box" onclick="openLink('https://meet.google.com/class-9th-12th-link')">
+            Class 9th to 12th
+        </div>
+
+        <!-- Special Seminar Box -->
+        <div class="box special-box" onclick="openLink('https://meet.google.com/seminar-link')">
+            Seminar Class
+        </div>
+    </div>
+
+    <!-- Class Timing Notice -->
+    <div class="notice">
+        <h3>Notice: Class Timings</h3>
+        <p>
+            - NEET: Monday to Friday, 5:00 PM - 7:00 PM <br>
+            - IIT JEE: Monday to Friday, 7:00 PM - 9:00 PM <br>
+            - SSC/BANK/RAILWAY: Saturday, 10:00 AM - 12:00 PM <br>
+            - CUET: Sunday, 2:00 PM - 4:00 PM <br>
+            - Class 9th to 12th: Daily, 3:00 PM - 4:30 PM <br>
+            - Seminar: Special sessions on Saturdays, 11:00 AM - 1:00 PM
+        </p>
+    </div>
+
+    <script>
+        function openLink(url) {
+            window.open(url, '_blank');
+        }
+    </script>
+
+</body>
+</html>
