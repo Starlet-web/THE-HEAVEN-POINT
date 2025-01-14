@@ -135,29 +135,44 @@ www de be<!DOCTYPE html>
     </div>
   </div>
 </section>
+<!-- Sidebar Navigation -->
+<div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-blue-600 text-white transform -translate-x-full transition-transform duration-300 z-20">
+  <div class="p-4 flex justify-between items-center">
+    <h2 class="text-xl font-bold">Menu</h2>
+    <button id="closeSidebar" class="text-2xl">&times;</button>
+  </div>
+  <nav class="flex flex-col space-y-4 px-4">
+    <a href="#" class="hover:text-gray-200">Home</a>
+    <a href="#courses" class="hover:text-gray-200">Courses</a>
+    <a href="#about-us" class="hover:text-gray-200">About Us</a>
+    <a href="mailto:theheavenpoint@gmail.com" class="hover:text-gray-200">Contact</a>
+  </nav>
+</div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scrollable Sidebar with Toggle</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
+<!-- Hamburger Menu Button -->
+<button id="openSidebar" class="fixed top-4 left-4 bg-blue-600 text-white p-2 rounded z-30">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+  </svg>
+</button>
 
-  <!-- Sidebar -->
-  <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-blue-600 text-white shadow-lg z-20 transform -translate-x-full transition-transform duration-300 overflow-y-auto">
-    <div class="py-6 px-4">
-      <h2 class="text-2xl font-semibold mb-8">Navigation</h2>
-      <nav class="flex flex-col space-y-4">
-        <a href="#home" class="hover:bg-blue-700 py-2 px-4 rounded">Home</a>
-        <a href="#courses" class="hover:bg-blue-700 py-2 px-4 rounded">Courses</a>
-        <a href="#about-us" class="hover:bg-blue-700 py-2 px-4 rounded">About Us</a>
-        <a href="mailto:theheavenpoint@gmail.com" class="hover:bg-blue-700 py-2 px-4 rounded">Contact</a>
-      </nav>
-    </div>
-  </aside>
+<!-- JavaScript to Toggle Sidebar -->
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const openSidebar = document.getElementById('openSidebar');
+  const closeSidebar = document.getElementById('closeSidebar');
+
+  openSidebar.addEventListener('click', () => {
+    sidebar.classList.remove('-translate-x-full');
+  });
+
+  closeSidebar.addEventListener('click', () => {
+    sidebar.classList.add('-translate-x-full');
+  });
+</script>
+
+<!-- TailwindCSS styles assumed -->
+
 
   
 
