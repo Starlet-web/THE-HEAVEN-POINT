@@ -136,7 +136,7 @@ www de be<!DOCTYPE html>
   </div>
 </section>
 <!-- Sidebar Navigation -->
-<div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-blue-600 text-white transform -translate-x-full transition-transform duration-300 z-20">
+<div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-blue-600 text-white transform translate-x-full transition-transform duration-300 z-20">
   <div class="p-4 flex justify-between items-center">
     <h2 class="text-xl font-bold">Menu</h2>
     <button id="closeSidebar" class="text-2xl">&times;</button>
@@ -150,31 +150,37 @@ www de be<!DOCTYPE html>
 </div>
 
 <!-- Hamburger Menu Button -->
-<button id="openSidebar" class="fixed top-4 left-4 bg-blue-600 text-white p-2 rounded z-30">
+<button id="openSidebar" class="fixed top-4 right-4 bg-blue-600 text-white p-2 rounded z-30 hidden">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
   </svg>
 </button>
 
-<!-- JavaScript to Toggle Sidebar -->
+<!-- JavaScript to Automatically Open and Close Sidebar -->
 <script>
   const sidebar = document.getElementById('sidebar');
   const openSidebar = document.getElementById('openSidebar');
   const closeSidebar = document.getElementById('closeSidebar');
 
+  // Automatically open the sidebar on page load
+  window.addEventListener('load', () => {
+    sidebar.classList.remove('translate-x-full');
+    setTimeout(() => {
+      sidebar.classList.add('translate-x-full');
+    }, 3000); // Close sidebar after 3 seconds
+  });
+
   openSidebar.addEventListener('click', () => {
-    sidebar.classList.remove('-translate-x-full');
+    sidebar.classList.remove('translate-x-full');
   });
 
   closeSidebar.addEventListener('click', () => {
-    sidebar.classList.add('-translate-x-full');
+    sidebar.classList.add('translate-x-full');
   });
 </script>
 
 <!-- TailwindCSS styles assumed -->
 
-
-  
 
   <!-- About Us Section -->
   <section id="about-us" class="my-8 px-6">
