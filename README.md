@@ -1,3 +1,3 @@
 # THE-HEAVEN-POINT
 
-![THP Logo](https://drive.google.com/file/d/1hIVZb47HdLvDz5caY6KOBivcNhhxLSWr/view?usp=drivesdk)
+![THP Logo](https://images.app.goo.gl/TBKFwCMxyJ5b1Nti8)
