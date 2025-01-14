@@ -1,20 +1,13 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta name="google-site-verification" content="mA9aIn22KO_fawtHBnRUcy2Xj29t8lT1LdbtQx34-P4" />
-  <link rel="icon" href="channels4_profile.jpg" type="image/png">
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Running Notice Bar</title>
+  <title>Advanced Running Notice Bar</title>
   <style>
     /* Style for the notice bar */
     .notice-bar {
-      background-color: #ff6f61; /* Bright color to grab attention */
+      background: linear-gradient(90deg, #ff6f61, #ff9052); /* Attractive gradient */
       color: #fff;
       font-size: 16px;
       padding: 10px 0;
@@ -23,37 +16,52 @@
       left: 0;
       width: 100%;
       z-index: 1000;
-      overflow: hidden; /* Hide the content outside the box */
+      overflow: hidden;
       display: flex;
       align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* The text container for scrolling */
+    /* Text container with hidden overflow */
     .notice-text-container {
       white-space: nowrap;
       overflow: hidden;
-      position: relative;
       flex: 1;
+      position: relative;
     }
 
-    /* The text itself with the animation */
+    /* Scrolling text with animation */
     .notice-text {
       display: inline-block;
       white-space: nowrap;
-      animation: scroll 10s linear infinite; /* 10s for a complete scroll */
+      animation: scroll 12s linear infinite;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
-    /* Close button */
+    /* Hover effect to pause the scrolling */
+    .notice-text:hover {
+      animation-play-state: paused;
+    }
+
+    /* Close button styles */
     .close-btn {
-      background: none;
+      background: rgba(0, 0, 0, 0.2);
       border: none;
       color: #fff;
       font-size: 20px;
+      font-weight: bold;
       cursor: pointer;
-      padding: 0 10px;
+      padding: 0 15px;
+      transition: background 0.3s ease;
     }
 
-    /* Keyframes for scrolling effect */
+    /* Hover effect for the close button */
+    .close-btn:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Keyframes for smooth scrolling */
     @keyframes scroll {
       0% {
         transform: translateX(100%);
@@ -67,17 +75,29 @@
     .content {
       margin-top: 50px; /* Adjust according to the notice bar height */
     }
+
+    /* Responsive font size for notice text */
+    @media (max-width: 768px) {
+      .notice-text {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
   <!-- Notice bar -->
   <div class="notice-bar" id="noticeBar">
     <div class="notice-text-container">
-      <span class="notice-text">Enroll Now for the New Batch Starting Soon! Limited Seats Available!</span>
+      <span class="notice-text">🚀 Enroll Now for the New Batch Starting Soon! Limited Seats Available. Act Fast! 🚀</span>
     </div>
     <button class="close-btn" onclick="closeNotice()">×</button>
   </div>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="google-site-verification" content="mA9aIn22KO_fawtHBnRUcy2Xj29t8lT1LdbtQx34-P4" />
+  <link rel="icon" href="channels4_profile.jpg" type="image/png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Heaven Point Coaching Classes</title>
@@ -707,7 +727,17 @@
 
     <p class="mt-4">&copy; 2024 The Heaven Point Coaching Classes. All Rights Reserved.</p>
   </div>
+ <script>
+    // Function to close the notice bar
+    function closeNotice() {
+      const noticeBar = document.getElementById('noticeBar');
+      noticeBar.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
 </footer>
 
 </body>
 </html>
+
