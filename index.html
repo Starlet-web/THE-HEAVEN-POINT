@@ -5,6 +5,78 @@
 <meta name="google-site-verification" content="mA9aIn22KO_fawtHBnRUcy2Xj29t8lT1LdbtQx34-P4" />
   <link rel="icon" href="channels4_profile.jpg" type="image/png">
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Running Notice Bar</title>
+  <style>
+    /* Style for the notice bar */
+    .notice-bar {
+      background-color: #ff6f61; /* Bright color to grab attention */
+      color: #fff;
+      font-size: 16px;
+      padding: 10px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      overflow: hidden; /* Hide the content outside the box */
+      display: flex;
+      align-items: center;
+    }
+
+    /* The text container for scrolling */
+    .notice-text-container {
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+      flex: 1;
+    }
+
+    /* The text itself with the animation */
+    .notice-text {
+      display: inline-block;
+      white-space: nowrap;
+      animation: scroll 10s linear infinite; /* 10s for a complete scroll */
+    }
+
+    /* Close button */
+    .close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0 10px;
+    }
+
+    /* Keyframes for scrolling effect */
+    @keyframes scroll {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* Space adjustment for content */
+    .content {
+      margin-top: 50px; /* Adjust according to the notice bar height */
+    }
+  </style>
+</head>
+<body>
+  <!-- Notice bar -->
+  <div class="notice-bar" id="noticeBar">
+    <div class="notice-text-container">
+      <span class="notice-text">Enroll Now for the New Batch Starting Soon! Limited Seats Available!</span>
+    </div>
+    <button class="close-btn" onclick="closeNotice()">×</button>
+  </div>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
