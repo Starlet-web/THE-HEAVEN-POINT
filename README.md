@@ -1,3 +1,2 @@
 # THE-HEAVEN-POINT
-
-![THP Logo](https://images.app.goo.gl/TBKFwCMxyJ5b1Nti8)
+<img src="channels4_profile.jpg" alt="THP Logo" width="200">
