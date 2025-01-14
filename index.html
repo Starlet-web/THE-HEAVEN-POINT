@@ -136,16 +136,16 @@
   </div>
 </section>
 <!-- Sidebar Navigation -->
-<div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-blue-600 text-white transform translate-x-full transition-transform duration-300 z-20">
+<div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-blue-600 text-white transform translate-x-full transition-transform duration-500 ease-in-out z-20">
   <div class="p-4 flex justify-between items-center">
     <h2 class="text-xl font-bold">Menu</h2>
     <button id="closeSidebar" class="text-2xl">&times;</button>
   </div>
   <nav class="flex flex-col space-y-4 px-4">
-    <a href="#" class="hover:text-gray-200">Home</a>
-    <a href="#courses" class="hover:text-gray-200">Courses</a>
-    <a href="#about-us" class="hover:text-gray-200">About Us</a>
-    <a href="mailto:theheavenpoint@gmail.com" class="hover:text-gray-200">Contact</a>
+    <a href="#" class="hover:text-gray-200" onclick="closeSidebarManually()">Home</a>
+    <a href="#courses" class="hover:text-gray-200" onclick="closeSidebarManually()">Courses</a>
+    <a href="#about-us" class="hover:text-gray-200" onclick="closeSidebarManually()">About Us</a>
+    <a href="mailto:theheavenpoint@gmail.com" class="hover:text-gray-200" onclick="closeSidebarManually()">Contact</a>
   </nav>
 </div>
 
@@ -156,19 +156,11 @@
   </svg>
 </button>
 
-<!-- JavaScript to Automatically Open and Close Sidebar -->
+<!-- JavaScript to Open and Close Sidebar -->
 <script>
   const sidebar = document.getElementById('sidebar');
   const openSidebar = document.getElementById('openSidebar');
   const closeSidebar = document.getElementById('closeSidebar');
-
-  // Automatically open the sidebar on page load
-  window.addEventListener('load', () => {
-    sidebar.classList.remove('translate-x-full');
-    setTimeout(() => {
-      sidebar.classList.add('translate-x-full');
-    }, 3000); // Close sidebar after 3 seconds
-  });
 
   openSidebar.addEventListener('click', () => {
     sidebar.classList.remove('translate-x-full');
@@ -177,6 +169,11 @@
   closeSidebar.addEventListener('click', () => {
     sidebar.classList.add('translate-x-full');
   });
+
+  // Close the sidebar when any navigation link is clicked
+  function closeSidebarManually() {
+    sidebar.classList.add('translate-x-full');
+  }
 </script>
 
 <!-- TailwindCSS styles assumed -->
