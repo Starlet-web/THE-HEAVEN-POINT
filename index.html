@@ -520,7 +520,6 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -528,7 +527,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stylish Discussion Board</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #6dd5fa, #ffffff);
+    }
     .fade-in {
       animation: fadeIn 0.5s ease-in-out;
     }
@@ -537,22 +541,26 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    .glow-button {
+      box-shadow: 0 0 10px #4f46e5, 0 0 20px #4f46e5, 0 0 30px #4f46e5;
+    }
   </style>
 </head>
-<body class="bg-gray-100">
+<body>
   <!-- Discussion Board Section -->
   <section id="discussion-board" class="my-10 px-6">
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg">
-      <h2 class="text-3xl font-bold text-center text-blue-600">📚 Discussion Board</h2>
+    <div class="max-w-4xl mx-auto bg-white p-10 rounded-3xl shadow-2xl border-t-8 border-blue-600">
+      <h2 class="text-4xl font-extrabold text-center text-blue-700 mb-6">📚 Discussion Board</h2>
       <div class="mt-6">
-        <textarea id="question-input" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" rows="4" placeholder="Ask your questions here..."></textarea>
-        <button id="post-button" class="mt-4 w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105">➕ Post Question</button>
+        <input id="user-id-input" type="text" placeholder="👤 Enter your User ID" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-400 mb-4">
+        <textarea id="question-input" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-400" rows="4" placeholder="✍️ Ask your questions here..."></textarea>
+        <button id="post-button" class="mt-4 w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg font-bold hover:from-indigo-600 hover:to-blue-500 transform hover:scale-105 transition-all glow-button">➕ Post Question</button>
       </div>
-      <div id="discussion-posts" class="mt-6 space-y-4">
+      <div id="discussion-posts" class="mt-8 space-y-6">
         <!-- Example Discussion Post -->
-        <div class="bg-gray-50 p-4 rounded-lg shadow-md fade-in">
-          <p class="font-semibold">Deepak Kumar</p>
-          <p class="text-gray-600 mt-2">How do I solve this equation? Can someone explain the steps?</p>
+        <div class="bg-gradient-to-r from-gray-100 to-gray-200 p-5 rounded-xl shadow-lg fade-in">
+          <p class="font-semibold text-indigo-700">Deepak Kumar (ID: 12345)</p>
+          <p class="text-gray-700 mt-2">How do I solve this equation? Can someone explain the steps?</p>
         </div>
       </div>
     </div>
@@ -560,27 +568,37 @@
 
   <script>
     const postButton = document.getElementById('post-button');
+    const userIdInput = document.getElementById('user-id-input');
     const questionInput = document.getElementById('question-input');
     const discussionPosts = document.getElementById('discussion-posts');
 
     postButton.addEventListener('click', () => {
+      const userId = userIdInput.value.trim();
       const questionText = questionInput.value.trim();
+      
+      if (!userId) {
+        alert('🚨 Please enter your User ID.');
+        return;
+      }
+      
       if (questionText) {
         const newPost = document.createElement('div');
-        newPost.className = 'bg-gray-50 p-4 rounded-lg shadow-md fade-in';
+        newPost.className = 'bg-gradient-to-r from-gray-100 to-gray-200 p-5 rounded-xl shadow-lg fade-in';
         newPost.innerHTML = `
-          <p class="font-semibold">Anonymous User</p>
-          <p class="text-gray-600 mt-2">${questionText}</p>
+          <p class="font-semibold text-indigo-700">User ID: ${userId}</p>
+          <p class="text-gray-700 mt-2">${questionText}</p>
         `;
         discussionPosts.prepend(newPost);
         questionInput.value = '';
+        userIdInput.value = '';
       } else {
-        alert('Please enter a question before posting.');
+        alert('🚨 Please enter a question before posting.');
       }
     });
   </script>
 </body>
 </html>
+
 
 
 
