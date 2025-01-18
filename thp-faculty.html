@@ -1,89 +1,211 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Faculty Showcase</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Slim Notice Bar</title>
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #0f172a;
-    }
-    .card-hover:hover {
-      transform: scale(1.1) rotate(2deg);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-    }
-    .gradient-bg {
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
-    }
-    .fullscreen-modal {
+    /* Style for the notice bar */
+    .notice-bar {
+      background: linear-gradient(90deg, #ff6f61, #ff9052); /* Attractive gradient */
+      color: #fff;
+      font-size: 14px; /* Reduced font size */
+      padding: 5px 0; /* Slimmer padding */
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      overflow: hidden;
       display: flex;
       align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .fullscreen-modal img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+    /* Text container with hidden overflow */
+    .notice-text-container {
+      white-space: nowrap;
+      overflow: hidden;
+      flex: 1;
+      position: relative;
     }
-    .fullscreen-modal.active {
-      opacity: 1;
-      visibility: visible;
+
+    /* Scrolling text with animation */
+    .notice-text {
+      display: inline-block;
+      white-space: nowrap;
+      animation: scroll 12s linear infinite;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    /* Hover effect to pause the scrolling */
+    .notice-text:hover {
+      animation-play-state: paused;
+    }
+
+    /* Close button styles */
+    .close-btn {
+      background: rgba(0, 0, 0, 0.2);
+      border: none;
+      color: #fff;
+      font-size: 16px; /* Adjusted font size */
+      font-weight: bold;
+      cursor: pointer;
+      padding: 0 10px; /* Reduced padding */
+      transition: background 0.3s ease;
+    }
+
+    /* Hover effect for the close button */
+    .close-btn:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Keyframes for smooth scrolling */
+    @keyframes scroll {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* Space adjustment for content */
+    .content {
+      margin-top: 40px; /* Adjust according to the notice bar height */
+    }
+
+    /* Responsive font size for notice text */
+    @media (max-width: 768px) {
+      .notice-text {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
-<body class="gradient-bg text-gray-100">
-
+<body>
 <!-- Faculty Section -->
-<section class="my-20 px-8">
+<section class="my-16 px-8">
   <div class="max-w-7xl mx-auto text-center">
-    <h2 class="text-4xl font-extrabold text-white tracking-wide uppercase">Meet Our Faculty</h2>
-    <p class="text-lg text-gray-300 mt-3">A team of dedicated experts guiding your success</p>
-    <div class="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-
-      <!-- Faculty Card with Fullscreen Modal Trigger -->
-      <div class="relative group p-8 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-xl card-hover transition-transform duration-300">
-        <img src="path-to-shivam-sir-photo.jpg" alt="Shivam Sir" class="mx-auto w-28 h-28 rounded-full border-4 border-white shadow-md cursor-pointer" onclick="openFullscreen('shivamModal')">
-        <h3 class="mt-5 text-xl font-bold text-white group-hover:text-yellow-300 transition-colors">Shivam Sir</h3>
-        <p class="text-gray-200 mt-2 text-sm italic">Maths Expert</p>
+    <h2 class="text-3xl font-bold text-gray-800 tracking-wide uppercase">Meet Our Faculty</h2>
+    <p class="text-sm text-gray-500 mt-2">A team of dedicated experts guiding your success</p>
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Shivam Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-shivam-sir-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Shivam Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Maths Expert</p>
       </div>
 
-      <!-- Fullscreen Modal for Shivam Sir -->
-      <div id="shivamModal" class="fullscreen-modal" onclick="closeFullscreen('shivamModal')">
-        <img src="path-to-shivam-sir-photo.jpg" alt="Shivam Sir">
+      <!-- Kajal Ma'am -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="5.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Kajal Ma'am</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Maths Expert</p>
       </div>
 
-      <!-- Add similar blocks for other faculty members -->
+      <!-- Satyam Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="1.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Satyam Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Hindi & English Expert</p>
+      </div>
 
+      <!-- Sundaram Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="4.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Sundaram Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Science Expert</p>
+      </div>
+
+      <!-- Priyanka Ma'am -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-priyanka-maam-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Priyanka Ma'am</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Biology Expert</p>
+      </div>
+
+      <!-- Gautam Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-gautam-sir-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Gautam Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Maths & Physics Expert</p>
+      </div>
+
+      <!-- Saurabh Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-saurabh-sir-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Saurabh Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">G.S. Expert</p>
+      </div>
+
+      <!-- Shashi Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-shashi-sir-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Shashi Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">G.S. & Current Affairs Expert</p>
+      </div>
+
+      <!-- Amit Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-amit-sir-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Amit Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Exam Strategy Expert</p>
+      </div>
+
+            <!-- Sachin Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-sachin-sir-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Sachin Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">English Expert</p>
+      </div>
+
+      <!-- Gaurav Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-gaurav-sir-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Gaurav Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Maths Expert</p>
+      </div>
+
+      <!-- Rohit Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="2.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Rohit Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">SST Expert</p>
+      </div>
+
+      <!-- Mohit Sir -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="3.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Mohit Sir</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Science Expert</p>
+      </div>
+
+      <!-- Ayushi Ma'am -->
+      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+        <a href="path-to-ayushi-maam-photo.jpg" target="_blank" class="block text-center">
+          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Ayushi Ma'am</h3>
+        </a>
+        <p class="text-gray-600 mt-1 text-sm">Science Expert</p>
+      </div>
+
+      
     </div>
   </div>
 </section>
-
-<!-- Footer -->
-<footer class="py-8 text-center bg-gray-900 shadow-lg">
-  <p class="text-sm text-gray-400">&copy; 2025 Faculty Team. All Rights Reserved.</p>
-</footer>
-
-<script>
-  // Fullscreen Modal Functions
-  function openFullscreen(id) {
-    document.getElementById(id).classList.add('active');
-  }
-
-  function closeFullscreen(id) {
-    document.getElementById(id).classList.remove('active');
-  }
-</script>
-</body>
-</html>
