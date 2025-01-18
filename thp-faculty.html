@@ -11,39 +11,35 @@
       background-color: #0f172a;
     }
     .card-hover:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transform: scale(1.1) rotate(2deg);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
     }
     .gradient-bg {
       background: linear-gradient(135deg, #1e3a8a, #2563eb);
     }
-    .modal {
-      display: none;
+    .fullscreen-modal {
       position: fixed;
-      z-index: 1000;
-      left: 0;
       top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
     }
-    .modal-content {
-      margin: 5% auto;
-      display: block;
-      width: 60%;
-      max-width: 700px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    .fullscreen-modal img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
-    .close {
-      position: absolute;
-      top: 20px;
-      right: 35px;
-      color: #fff;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
+    .fullscreen-modal.active {
+      opacity: 1;
+      visibility: visible;
     }
   </style>
 </head>
@@ -56,20 +52,19 @@
     <p class="text-lg text-gray-300 mt-3">A team of dedicated experts guiding your success</p>
     <div class="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
-      <!-- Faculty Card Template with Modal Trigger -->
+      <!-- Faculty Card with Fullscreen Modal Trigger -->
       <div class="relative group p-8 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-xl card-hover transition-transform duration-300">
-        <img src="path-to-shivam-sir-photo.jpg" alt="Shivam Sir" class="mx-auto w-28 h-28 rounded-full border-4 border-white shadow-md cursor-pointer" onclick="openModal('modal1')">
+        <img src="path-to-shivam-sir-photo.jpg" alt="Shivam Sir" class="mx-auto w-28 h-28 rounded-full border-4 border-white shadow-md cursor-pointer" onclick="openFullscreen('shivamModal')">
         <h3 class="mt-5 text-xl font-bold text-white group-hover:text-yellow-300 transition-colors">Shivam Sir</h3>
         <p class="text-gray-200 mt-2 text-sm italic">Maths Expert</p>
       </div>
 
-      <!-- Modal for Shivam Sir -->
-      <div id="modal1" class="modal">
-        <span class="close" onclick="closeModal('modal1')">&times;</span>
-        <img class="modal-content" src="path-to-shivam-sir-photo.jpg" alt="Shivam Sir">
+      <!-- Fullscreen Modal for Shivam Sir -->
+      <div id="shivamModal" class="fullscreen-modal" onclick="closeFullscreen('shivamModal')">
+        <img src="path-to-shivam-sir-photo.jpg" alt="Shivam Sir">
       </div>
 
-      <!-- Repeat similar blocks for other faculty members -->
+      <!-- Add similar blocks for other faculty members -->
 
     </div>
   </div>
@@ -81,23 +76,13 @@
 </footer>
 
 <script>
-  // Modal Functions
-  function openModal(id) {
-    document.getElementById(id).style.display = "block";
+  // Fullscreen Modal Functions
+  function openFullscreen(id) {
+    document.getElementById(id).classList.add('active');
   }
 
-  function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-  }
-
-  // Close modal when clicking outside the image
-  window.onclick = function(event) {
-    const modals = document.getElementsByClassName('modal');
-    for (let i = 0; i < modals.length; i++) {
-      if (event.target === modals[i]) {
-        modals[i].style.display = "none";
-      }
-    }
+  function closeFullscreen(id) {
+    document.getElementById(id).classList.remove('active');
   }
 </script>
 </body>
