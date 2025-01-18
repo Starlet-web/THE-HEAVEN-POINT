@@ -149,31 +149,44 @@
     </div>
   </div>
 </section>
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Sidebar Navigation -->
-<div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-blue-600 text-white transform translate-x-full transition-transform duration-500 ease-in-out z-20">
-  <div class="p-4 flex justify-between items-center">
-    <h2 class="text-xl font-bold">Menu</h2>
-    <button id="closeSidebar" class="text-2xl">&times;</button>
+<div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-gradient-to-b from-blue-700 to-blue-500 text-white transform translate-x-full transition-transform duration-500 ease-in-out z-20 shadow-lg">
+  <div class="p-4 flex justify-between items-center border-b border-blue-400">
+    <h2 class="text-2xl font-bold">Menu</h2>
+    <button id="closeSidebar" class="text-3xl font-bold hover:text-gray-300">&times;</button>
   </div>
-  <nav class="flex flex-col space-y-4 px-4">
-    <a href="#" class="hover:text-gray-200" onclick="closeSidebarManually()">Home</a>
-    <a href="#batches" class="hover:text-gray-200" onclick="closeSidebarManually()">Courses</a>
-    <a href="#about-us" class="hover:text-gray-200" onclick="closeSidebarManually()">About Us</a>
-    <a href="mailto:theheavenpoint@gmail.com" class="hover:text-gray-200" onclick="closeSidebarManually()">Contact</a>
-    <a href="#" class="hover:text-gray-200" onclick="openNotes(); closeSidebarManually()">THP Special Notes</a>
-    <a href="#" class="hover:text-gray-200" onclick="openLecture(); closeSidebarManually()">THP Online Lecture</a>
-    <div class="hover:text-gray-200">
-      <button class="hover:text-gray-200" onclick="toggleFormMenu()">Forms</button>
-      <div id="formSubMenu" class="hidden pl-4 space-y-2">
-        <a href="https://forms.gle/rdBveuhGRiaiPCm28" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" target="_blank" class="hover:text-gray-200" onclick="closeSidebarManually()">📲Online</a>
-        <a href="THP offline.pdf" target="_blank" class="hover:text-gray-200" onclick="closeSidebarManually()">📄Offline </a>
+  <nav class="flex flex-col space-y-4 px-6 py-4">
+    <a href="#" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">Home</a>
+    <a href="#batches" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">Courses</a>
+    <a href="#about-us" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">About Us</a>
+    <a href="mailto:theheavenpoint@gmail.com" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">Contact</a>
+    <a href="#" class="hover:text-gray-200 font-medium" onclick="openNotes(); closeSidebarManually()">THP Special Notes</a>
+    <a href="#" class="hover:text-gray-200 font-medium" onclick="openLecture(); closeSidebarManually()">THP Online Lecture</a>
+    <a href="thp-faculty.html" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">THP Faculty</a>
+    <div>
+      <button class="hover:text-gray-200 font-medium" onclick="toggleFormMenu()">Forms</button>
+      <div id="formSubMenu" class="hidden pl-4 space-y-2 mt-2">
+        <a href="https://forms.gle/rdBveuhGRiaiPCm28" target="_blank" class="block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">📲 Online</a>
+        <a href="THP offline.pdf" target="_blank" class="block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">📄 Offline</a>
       </div>
     </div>
   </nav>
 </div>
 
 <!-- Hamburger Menu Button -->
-<button id="openSidebar" class="fixed top-4 right-4 bg-blue-600 text-white p-2 rounded z-30">
+<button id="openSidebar" class="fixed top-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg z-30">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
   </svg>
@@ -217,11 +230,7 @@
 
   // Toggle the Forms submenu
   function toggleFormMenu() {
-    if (formSubMenu.classList.contains('hidden')) {
-      formSubMenu.classList.remove('hidden');
-    } else {
-      formSubMenu.classList.add('hidden');
-    }
+    formSubMenu.classList.toggle('hidden');
   }
 </script>
 
