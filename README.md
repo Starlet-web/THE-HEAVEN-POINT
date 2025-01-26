@@ -3,7 +3,7 @@
 
 ![Website Logo](channels4_profile.jpg)  
 
-![Website Banner](banner  thp.jpg)  
+![Website Banner](https://github.com/Starlet-web/THE-HEAVEN-POINT/blob/main/banner%20%20thp.jpg)  
 
 Welcome to the official repository of my coaching website. Explore personalized learning, quizzes, and progress tracking designed to help students achieve their goals.
 
