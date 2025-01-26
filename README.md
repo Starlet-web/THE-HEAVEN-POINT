@@ -1,15 +1,15 @@
 # THE-HEAVEN-POINT
-<img src="channels4_profile.jpg" alt="THP Logo" width="200">
+
 
 ![Website Logo](channels4_profile.jpg)  
 
-![Website Banner](https://yourwebsite.com/path-to-banner.png)  
+![Website Banner](banner thp.jpg)  
 
 Welcome to the official repository of my coaching website. Explore personalized learning, quizzes, and progress tracking designed to help students achieve their goals.
 
 ---
 
-Visit the website here: [Your Coaching Website](https://yourwebsite.com)
+Visit the website here: [The heaven point](https://starlet-web.github.io/THE-HEAVEN-POINT/)
 
 ---
 
