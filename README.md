@@ -13,4 +13,3 @@ Visit the website here: [The heaven point](https://starlet-web.github.io/THE-HEA
 
 ---
 
-For contributions or inquiries, check out the [Issues](https://github.com/yourusername/coaching-website/issues) section.
