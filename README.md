@@ -3,7 +3,7 @@
 
 ![Website Logo](channels4_profile.jpg)  
 
-![Website Banner](banner thp.jpg)  
+![Website Banner](banner  thp.jpg)  
 
 Welcome to the official repository of my coaching website. Explore personalized learning, quizzes, and progress tracking designed to help students achieve their goals.
 
