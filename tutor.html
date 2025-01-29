@@ -1,0 +1,38 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor</title>
+</head>
+<body>
+    <h1>Ask Your AI Tutor</h1>
+    <input type="text" id="question" placeholder="Ask a question...">
+    <button onclick="askAI()">Ask AI</button>
+    <p id="response"></p>
+
+    <script>
+        async function askAI() {
+            const question = document.getElementById("question").value;
+            const responseElement = document.getElementById("response");
+            const apiKey = "YOUR_OPENAI_API_KEY";
+
+            const res = await fetch("https://api.openai.com/v1/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "text-davinci-003",
+                    prompt: question,
+                    max_tokens: 100
+                })
+            });
+
+            const data = await res.json();
+            responseElement.innerText = data.choices[0].text.trim();
+        }
+    </script>
+</body>
+</html>
