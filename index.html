@@ -218,62 +218,7 @@
     </form>
   </div>
 </div>
-<script>
-  const signupModal = document.getElementById('signupModal');
-  const openSignup = document.getElementById('switchToSignup');
-  const closeSignup = document.getElementById('closeSignup');
-  const signupForm = document.getElementById('signupForm');
-  const toggleSignupPassword = document.getElementById('toggleSignupPassword');
 
-  const loginModal = document.getElementById('loginModal');
-  const switchToLogin = document.getElementById('switchToLogin');
-
-  // Open signup modal
-  openSignup.addEventListener('click', () => {
-    signupModal.classList.remove('hidden');
-    loginModal.classList.add('hidden');
-  });
-
-  // Close signup modal
-  closeSignup.addEventListener('click', () => {
-    signupModal.classList.add('hidden');
-  });
-
-  // Toggle password visibility
-  toggleSignupPassword.addEventListener('click', () => {
-    const passwordInput = document.getElementById('signupPassword');
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      toggleSignupPassword.textContent = '🙈';
-    } else {
-      passwordInput.type = 'password';
-      toggleSignupPassword.textContent = '👁';
-    }
-  });
-
-  // Handle signup form submission
-  signupForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const name = document.getElementById('signupName').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-
-    if (localStorage.getItem(email)) {
-      alert('This email is already registered. Please log in.');
-    } else {
-      localStorage.setItem(email, JSON.stringify({ name, password }));
-      alert('Signup successful! You can now log in.');
-      signupModal.classList.add('hidden');
-      loginModal.classList.remove('hidden');
-    }
-  });
-
-  // Switch back to login modal
-  switchToLogin.addEventListener('click', () => {
-    signupModal.classList.add('hidden');
-    loginModal.classList.remove('hidden');
-  });
-</script>
 
 
 <!-- Floating Login Button -->
