@@ -1053,17 +1053,85 @@
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="p-6 bg-gray-50">
-  <h2 class="text-3xl font-bold text-center mb-6">📞 Contact Us</h2>
-  <form class="space-y-4 max-w-lg mx-auto">
-    <input type="text" placeholder="Your Name" class="form-input w-full">
-    <input type="email" placeholder="Your Email" class="form-input w-full">
-    <textarea placeholder="Your Message" class="form-input w-full"></textarea>
-    <button class="bg-blue-600 text-white py-3 px-6 rounded-lg w-full text-lg font-semibold hover:bg-blue-700 transition">
-      Send Message
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Redirect</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .whatsapp-btn:hover {
+            background: #128c7e;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .whatsapp-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .whatsapp-btn {
+            animation: float 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="whatsapp-btn" id="whatsappRedirect">
+        <img class="whatsapp-icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        Chat on WhatsApp
     </button>
-  </form>
-</section>
+
+    <script>
+        document.getElementById("whatsappRedirect").addEventListener("click", function () {
+            let phoneNumber = "1234567890"; // Replace with the actual WhatsApp number
+            let message = encodeURIComponent("Hello! I would like to chat.");
+            let whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+
+            // Redirect to WhatsApp
+            window.open(whatsappURL, '_blank');
+        });
+    </script>
+
+</body>
+</html>
+
 
 <!-- Footer Section -->
 <footer class="bg-blue-600 text-white p-6 text-center mt-8">
