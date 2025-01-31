@@ -495,7 +495,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Responsive YouTube Video Preview</title>
+  <title>Responsive Advanced YouTube Video Preview</title>
   <style>
     body {
       margin: 0;
@@ -504,39 +504,53 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f9f9f9;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
     }
 
     .video-wrapper {
       position: relative;
       width: 90%;
-      max-width: 600px;
+      max-width: 720px;
+      margin: 0 auto;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
     }
 
+    /* Thumbnail styling */
     .thumbnail {
       width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
 
-    /* Responsive Small Play Button */
+    .thumbnail:hover {
+      transform: scale(1.03); /* Thumbnail zoom effect on hover */
+    }
+
+    /* Play Button Styling */
     .preview-btn {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 40px;
-      height: 40px;
+      bottom: 15px;
+      right: 15px;
+      width: 45px;
+      height: 45px;
       background: rgba(0, 0, 0, 0.7);
       border-radius: 50%;
-      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: 0.3s;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     .preview-btn:hover {
       background: rgba(0, 0, 0, 0.9);
+      transform: scale(1.1); /* Slight button zoom on hover */
     }
 
     /* Play Icon (Triangle) */
@@ -544,32 +558,42 @@
       content: "";
       width: 0;
       height: 0;
-      border-left: 14px solid white;
+      border-left: 12px solid white;
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
     }
 
+    /* Video container hidden initially */
     .video-container {
       display: none;
+      width: 100%;
+      position: relative;
     }
 
+    /* Responsive Video */
     .video-container iframe {
       width: 100%;
       height: auto;
       aspect-ratio: 16 / 9;
-      border-radius: 10px;
+      border-radius: 15px;
     }
 
     /* Mobile Adjustments */
     @media (max-width: 600px) {
       .preview-btn {
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
+        bottom: 10px;
+        right: 10px;
       }
       .preview-btn::before {
         border-left: 10px solid white;
         border-top: 6px solid transparent;
         border-bottom: 6px solid transparent;
+      }
+
+      .thumbnail:hover {
+        transform: scale(1.05); /* Slight zoom effect on mobile */
       }
     }
   </style>
@@ -577,8 +601,8 @@
 <body>
 
   <div class="video-wrapper">
-    <!-- Single Thumbnail with Small Corner Play Button -->
-    <img src="https://img.youtube.com/vi/kD2CA6rAaKA/maxresdefault.jpg" class="thumbnail" id="thumbnail">
+    <!-- Thumbnail with Play Button -->
+    <img src="https://img.youtube.com/vi/kD2CA6rAaKA/maxresdefault.jpg" class="thumbnail" id="thumbnail" alt="Video Thumbnail">
     <button class="preview-btn" onclick="showVideo()"></button>
   </div>
   
@@ -594,15 +618,15 @@
 
   <script>
     function showVideo() {
-      document.getElementById('thumbnail').style.display = 'none';
-      document.querySelector('.preview-btn').style.display = 'none';
-      document.getElementById('videoContainer').style.display = 'block';
-      document.getElementById('youtubeVideo').src = "https://www.youtube.com/embed/kD2CA6rAaKA?autoplay=1";
+      document.getElementById('thumbnail').style.display = 'none'; // Hide thumbnail
+      document.querySelector('.preview-btn').style.display = 'none'; // Hide play button
+      document.getElementById('videoContainer').style.display = 'block'; // Show video
+      document.getElementById('youtubeVideo').src = "https://www.youtube.com/embed/kD2CA6rAaKA?autoplay=1"; // Start playing video
     }
   </script>
 
 </body>
-</html>>
+</html>
 
 <!DOCTYPE html>
 <html lang="en">
