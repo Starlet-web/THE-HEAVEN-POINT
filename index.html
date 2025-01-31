@@ -9,7 +9,63 @@
 <meta name="twitter:card" content="summary_large_image" />
 
 
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDRwEETC30j0P76tS7UfyDJC9VXGqmiye4",
+    authDomain: "heaven-eeb4e.firebaseapp.com",
+    projectId: "heaven-eeb4e",
+    storageBucket: "heaven-eeb4e.firebasestorage.app",
+    messagingSenderId: "2714316156",
+    appId: "1:2714316156:web:b6c584d50f53576a9708f9"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const db = getFirestore();
+
+  // 🚀 SIGNUP FUNCTION
+  document.getElementById("signupForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("signupName").value;
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await sendEmailVerification(userCredential.user);
+      await setDoc(doc(db, "users", email), { name, email, verified: false });
+      alert("Signup successful! Check your email for verification.");
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+
+  // 🚀 LOGIN FUNCTION
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (!userCredential.user.emailVerified) {
+        alert("Please verify your email before logging in.");
+        return;
+      }
+      alert(`Welcome back!`);
+      window.location.href = "dashboard.html"; // Redirect to dashboard
+    } catch (error) {
+      alert("Login failed: " + error.message);
+    }
+  });
+</script>
 
 
 
