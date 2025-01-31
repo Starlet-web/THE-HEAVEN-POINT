@@ -156,6 +156,163 @@
   <script src="script.js"></script>
 </body>
 </html>
+/* 🌟 General Modal Styles */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: none;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+h2 {
+  color: #333;
+}
+
+p {
+  font-size: 14px;
+  color: #666;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.password-field {
+  position: relative;
+  width: 90%;
+  margin: 10px auto;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.switch-text {
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+  // 🌟 Open & Close Modal Functions
+function openModal(id) {
+  document.getElementById(id).style.display = "block";
+}
+
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+// 🌟 Switch Between Login & Signup
+function switchModal(id) {
+  closeModal('loginModal');
+  closeModal('signupModal');
+  openModal(id);
+}
+
+// 🌟 Toggle Password Visibility
+function togglePassword(inputId) {
+  let input = document.getElementById(inputId);
+  input.type = input.type === "password" ? "text" : "password";
+}
+
+// 🌟 Handle Signup Form Submission
+document.getElementById("signupForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  let name = document.getElementById("signupName").value;
+  let email = document.getElementById("signupEmail").value;
+  let password = document.getElementById("signupPassword").value;
+
+  if (localStorage.getItem(email)) {
+    alert("This email is already registered. Please log in.");
+  } else {
+    localStorage.setItem(email, JSON.stringify({ name, password }));
+    alert("Signup successful! You can now log in.");
+    switchModal('loginModal');
+  }
+});
+
+// 🌟 Handle Login Form Submission
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  let email = document.getElementById("loginEmail").value;
+  let password = document.getElementById("loginPassword").value;
+  let storedUser = localStorage.getItem(email);
+
+  if (storedUser) {
+    let userData = JSON.parse(storedUser);
+    if (userData.password === password) {
+      alert(`Welcome, ${userData.name}!`);
+      window.location.href = "dashboard.html"; // Redirect to dashboard
+    } else {
+      alert("Incorrect password. Try again.");
+    }
+  } else {
+    alert("User not found. Please sign up.");
+  }
+});
 
 
 
