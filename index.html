@@ -103,6 +103,105 @@
     <button class="close-btn" onclick="document.querySelector('.notice-bar').style.display='none';">&times;</button>
   </div>
 
+
+
+<!-- Advanced Stylish Login Section for Coaching Classes -->
+<div id="loginModal" class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 hidden">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 relative animate-fade-in">
+    <button id="closeLogin" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-2xl">&times;</button>
+    <h2 class="text-3xl font-bold text-center text-blue-700">THP Coaching Login</h2>
+    <p class="text-sm text-gray-500 text-center mt-1">Unlock your learning potential.</p>
+    
+    <form id="loginForm" class="mt-5 space-y-4">
+      <div class="mb-3">
+        <label class="block text-gray-700 text-sm font-medium">Email</label>
+        <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 shadow-sm" placeholder="Enter your email" required>
+      </div>
+      
+      <div class="mb-3 relative">
+        <label class="block text-gray-700 text-sm font-medium">Password</label>
+        <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 shadow-sm" placeholder="Enter your password" required>
+        <button type="button" id="togglePassword" class="absolute right-4 top-9 text-gray-500 hover:text-gray-700">👁</button>
+      </div>
+      
+      <div class="flex justify-between items-center mb-3">
+        <label class="text-sm text-gray-600">
+          <input type="checkbox" id="rememberMe" class="mr-1"> Remember me
+        </label>
+        <a href="#" class="text-blue-600 hover:underline text-sm">Forgot password?</a>
+      </div>
+      
+      <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-400 text-white py-3 rounded-lg hover:shadow-lg transition font-semibold">Login</button>
+      <p class="text-sm text-center mt-3">New to THP? <a href="#" class="text-blue-600 hover:underline font-semibold">Sign up</a></p>
+    </form>
+  </div>
+</div>
+
+<!-- Floating Login Button -->
+<button id="openLogin" class="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-blue-400 text-white p-4 rounded-full shadow-lg z-30 hover:scale-110 transition">🔑</button>
+
+<!-- JavaScript for Advanced Login Modal -->
+<script>
+  const loginModal = document.getElementById('loginModal');
+  const openLogin = document.getElementById('openLogin');
+  const closeLogin = document.getElementById('closeLogin');
+  const loginForm = document.getElementById('loginForm');
+  const passwordInput = document.getElementById('password');
+  const togglePassword = document.getElementById('togglePassword');
+  const rememberMe = document.getElementById('rememberMe');
+
+  openLogin.addEventListener('click', () => {
+    loginModal.classList.remove('hidden');
+  });
+
+  closeLogin.addEventListener('click', () => {
+    loginModal.classList.add('hidden');
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target === loginModal) {
+      loginModal.classList.add('hidden');
+    }
+  });
+
+  togglePassword.addEventListener('click', () => {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      togglePassword.textContent = '🙈';
+    } else {
+      passwordInput.type = 'password';
+      togglePassword.textContent = '👁';
+    }
+  });
+
+  loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = passwordInput.value;
+    
+    if (email === "student@thp.com" && password === "secure123") {
+      alert('Login successful! Welcome to THP Coaching.');
+      if (rememberMe.checked) {
+        localStorage.setItem('userEmail', email);
+      }
+      loginModal.classList.add('hidden');
+    } else {
+      alert('Invalid email or password. Please try again.');
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedEmail = localStorage.getItem('userEmail');
+    if (savedEmail) {
+      document.getElementById('email').value = savedEmail;
+      rememberMe.checked = true;
+    }
+  });
+</script>
+
+
+
+
   
 
 
