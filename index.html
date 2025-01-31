@@ -495,7 +495,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Responsive YouTube Video (No Preview)</title>
+  <title>Video Preview Button</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -508,59 +508,59 @@
       position: relative;
       max-width: 560px;
       margin: 20px auto;
+      display: none; /* Initially hidden */
     }
 
-    .thumbnail {
+    .video-container iframe {
       width: 100%;
-      cursor: pointer;
+      height: 315px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .video-container iframe {
-      display: none;
-      width: 100%;
-      height: 315px;
-      border-radius: 10px;
+    .preview-btn {
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #ff5733;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .preview-btn:hover {
+      background-color: #e04d2a;
     }
   </style>
 </head>
 <body>
 
   <h1>Watch This Video</h1>
-  <div class="video-container">
-    <img 
-      src="https://img.youtube.com/vi/kD2CA6rAaKA/maxresdefault.jpg" 
-      class="thumbnail" 
-      alt="Click to play video" 
-      onclick="playVideo()"
-    >
+  
+  <!-- Preview Button -->
+  <button class="preview-btn" onclick="showVideo()">Click to Preview</button>
+  
+  <!-- Hidden Video -->
+  <div class="video-container" id="videoContainer">
     <iframe 
-      id="youtube-video"
-      src="https://www.youtube.com/embed/kD2CA6rAaKA?autoplay=1" 
+      id="youtubeVideo"
+      src="" 
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
       allowfullscreen>
     </iframe>
   </div>
 
   <script>
-    function playVideo() {
-      document.querySelector('.thumbnail').style.display = 'none';
-      document.getElementById('youtube-video').style.display = 'block';
+    function showVideo() {
+      document.getElementById('videoContainer').style.display = 'block';
+      document.getElementById('youtubeVideo').src = "https://www.youtube.com/embed/kD2CA6rAaKA?autoplay=1";
     }
   </script>
 
 </body>
 </html>
-
-       <h3 class="mt-6 text-xl font-semibold">Instructor</h3>
-          <p class="mt-4">Instructor: Shivam Sir, Math Expert with 10+ years of experience.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
 
 
 
