@@ -495,15 +495,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Video Preview with Small Inside-Corner Button</title>
+  <title>YouTube Style Video Preview</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       text-align: center;
-      background-color: #121212;
-      color: white;
     }
 
     .video-wrapper {
@@ -515,32 +513,45 @@
     .thumbnail {
       width: 100%;
       border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
+    /* YouTube-Style Play Button */
     .preview-btn {
       position: absolute;
-      bottom: 15px;
-      right: 15px;
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px;
+      height: 50px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: 0.3s;
-      backdrop-filter: blur(5px);
     }
 
     .preview-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    /* Triangle Play Icon */
+    .preview-btn::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 20px solid white;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
     }
 
     .video-container {
       display: none;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .video-container iframe {
@@ -551,6 +562,36 @@
   </style>
 </head>
 <body>
+
+  <h1>Watch This Video</h1>
+  
+  <div class="video-wrapper">
+    <!-- Thumbnail with YouTube-Style Play Button -->
+    <img src="https://img.youtube.com/vi/kD2CA6rAaKA/maxresdefault.jpg" class="thumbnail" id="thumbnail">
+    <button class="preview-btn" onclick="showVideo()"></button>
+  </div>
+  
+  <!-- Hidden Video -->
+  <div class="video-container" id="videoContainer">
+    <iframe 
+      id="youtubeVideo"
+      src="" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <script>
+    function showVideo() {
+      document.getElementById('thumbnail').style.display = 'none';
+      document.querySelector('.preview-btn').style.display = 'none';
+      document.getElementById('videoContainer').style.display = 'block';
+      document.getElementById('youtubeVideo').src = "https://www.youtube.com/embed/kD2CA6rAaKA?autoplay=1";
+    }
+  </script>
+
+</body>
+</html>
 
   <h1>Watch This Video</h1>
   
