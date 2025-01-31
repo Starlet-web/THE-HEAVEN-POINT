@@ -1,5 +1,4 @@
 
-
 <meta property="og:title" content="The Heaven Point" />
 <meta property="og:description" content="Here, you can study a variety of subjects like Commerce , Maths, Physics, Chemistry, Biology, S. St., English Language, English Literature, Computer, Hindi, and more, for all boards. We also offer specialized courses for CUET, NEET, IIT, JEE, and classes from 3rd to 12th." />
 <meta property="og:image" content="channels4_profile.jpg" />
@@ -490,110 +489,113 @@
     </div>
   </section>
 
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Responsive Advanced YouTube Video Preview</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced YouTube Preview</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
+      background: transparent;
+      overflow: hidden;
     }
 
     .video-wrapper {
       position: relative;
-      width: 90%;
-      max-width: 720px;
-      margin: 0 auto;
+      width: 80vw;
+      max-width: 900px;
       border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-      background-color: #fff;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease-in-out;
     }
 
-    /* Thumbnail styling */
+    .video-wrapper:hover {
+      transform: scale(1.03);
+    }
+
     .thumbnail {
       width: 100%;
+      display: block;
       border-radius: 15px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: opacity 0.3s ease-in-out;
     }
 
-    .thumbnail:hover {
-      transform: scale(1.03); /* Thumbnail zoom effect on hover */
-    }
-
-    /* Play Button Styling */
+    /* Small Play Button Inside Bottom-Right */
     .preview-btn {
       position: absolute;
       bottom: 15px;
       right: 15px;
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
       background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
       border-radius: 50%;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
     .preview-btn:hover {
-      background: rgba(0, 0, 0, 0.9);
-      transform: scale(1.1); /* Slight button zoom on hover */
+      background: rgba(255, 0, 0, 0.9);
+      transform: scale(1.1);
     }
 
-    /* Play Icon (Triangle) */
     .preview-btn::before {
       content: "";
       width: 0;
       height: 0;
-      border-left: 12px solid white;
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
+      border-left: 10px solid white;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
     }
 
-    /* Video container hidden initially */
     .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
       display: none;
-      width: 100%;
-      position: relative;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.5s ease-in-out;
     }
 
-    /* Responsive Video */
     .video-container iframe {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      border-radius: 15px;
+      width: 90vw;
+      max-width: 1000px;
+      height: 55vh;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
     }
 
-    /* Mobile Adjustments */
-    @media (max-width: 600px) {
-      .preview-btn {
-        width: 40px;
-        height: 40px;
-        bottom: 10px;
-        right: 10px;
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
       }
-      .preview-btn::before {
-        border-left: 10px solid white;
-        border-top: 6px solid transparent;
-        border-bottom: 6px solid transparent;
-      }
-
-      .thumbnail:hover {
-        transform: scale(1.05); /* Slight zoom effect on mobile */
+      to {
+        opacity: 1;
       }
     }
   </style>
@@ -601,12 +603,10 @@
 <body>
 
   <div class="video-wrapper">
-    <!-- Thumbnail with Play Button -->
-    <img src="https://img.youtube.com/vi/kD2CA6rAaKA/maxresdefault.jpg" class="thumbnail" id="thumbnail" alt="Video Thumbnail">
+    <img src="https://img.youtube.com/vi/kD2CA6rAaKA/maxresdefault.jpg" class="thumbnail" id="thumbnail">
     <button class="preview-btn" onclick="showVideo()"></button>
   </div>
-  
-  <!-- Hidden Video -->
+
   <div class="video-container" id="videoContainer">
     <iframe 
       id="youtubeVideo"
@@ -618,15 +618,19 @@
 
   <script>
     function showVideo() {
-      document.getElementById('thumbnail').style.display = 'none'; // Hide thumbnail
-      document.querySelector('.preview-btn').style.display = 'none'; // Hide play button
-      document.getElementById('videoContainer').style.display = 'block'; // Show video
-      document.getElementById('youtubeVideo').src = "https://www.youtube.com/embed/kD2CA6rAaKA?autoplay=1"; // Start playing video
+      document.getElementById('thumbnail').style.opacity = '0';
+      document.querySelector('.preview-btn').style.display = 'none';
+      setTimeout(() => {
+        document.querySelector('.video-wrapper').style.display = 'none';
+        document.getElementById('videoContainer').style.display = 'flex';
+        document.getElementById('youtubeVideo').src = "https://www.youtube.com/embed/kD2CA6rAaKA?autoplay=1";
+      }, 300);
     }
   </script>
 
 </body>
 </html>
+
 
 <!DOCTYPE html>
 <html lang="en">
