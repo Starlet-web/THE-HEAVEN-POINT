@@ -610,57 +610,6 @@
 </head>
 <body>
 
-  <!-- Discussion Board Section -->
-  <section id="discussion-board" class="my-6 px-4">
-    <div class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-lg border-t-4 border-blue-600">
-      <h2 class="text-2xl font-bold text-center text-blue-700 mb-4">📚 Discussion Board</h2>
-      <div>
-        <input id="user-id-input" type="text" placeholder="👤 Enter your User ID" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3">
-        <textarea id="question-input" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" rows="3" placeholder="✍️ Ask your questions here..."></textarea>
-        <button id="post-button" class="mt-3 w-full bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105">➕ Post Question</button>
-      </div>
-      <div id="discussion-posts" class="mt-5 space-y-4">
-        <!-- Example Discussion Post -->
-        <div class="bg-gray-100 p-3 rounded-md shadow-sm fade-in">
-          <p class="font-semibold text-blue-700">Deepak Kumar (ID: 12345)</p>
-          <p class="text-gray-700 mt-1">How do I solve this equation? Can someone explain the steps?</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    const postButton = document.getElementById('post-button');
-    const userIdInput = document.getElementById('user-id-input');
-    const questionInput = document.getElementById('question-input');
-    const discussionPosts = document.getElementById('discussion-posts');
-
-    postButton.addEventListener('click', () => {
-      const userId = userIdInput.value.trim();
-      const questionText = questionInput.value.trim();
-      
-      if (!userId) {
-        alert('🚨 Please enter your User ID.');
-        return;
-      }
-      
-      if (questionText) {
-        const newPost = document.createElement('div');
-        newPost.className = 'bg-gray-100 p-3 rounded-md shadow-sm fade-in';
-        newPost.innerHTML = `
-          <p class="font-semibold text-blue-700">User ID: ${userId}</p>
-          <p class="text-gray-700 mt-1">${questionText}</p>
-        `;
-        discussionPosts.prepend(newPost);
-        questionInput.value = '';
-        userIdInput.value = '';
-      } else {
-        alert('🚨 Please enter a question before posting.');
-      }
-    });
-  </script>
-</body>
-</html>
 
 
 
@@ -987,43 +936,53 @@
 </body>
 </html>
 
-
 <!-- Footer Section -->
-<footer class="bg-gradient-to-r from-blue-700 to-blue-500 text-white py-10 px-4 text-center mt-12">
+<footer class="bg-gradient-to-r from-blue-700 to-blue-500 text-white py-12 px-4 text-center mt-12">
   <div class="max-w-4xl mx-auto">
-    <h2 class="text-2xl sm:text-3xl font-extrabold mb-4">📩 Contact Us</h2>
-    <div class="space-y-2 text-lg">
-      <p>Email: 
+    <h2 class="text-3xl font-extrabold mb-4">📩 Contact Us</h2>
+    <div class="space-y-3 text-lg">
+      <p>
+        Email:
         <a href="mailto:theheavenpoint@gmail.com" class="underline hover:text-gray-200 transition-colors duration-300">
           theheavenpoint@gmail.com
         </a>
       </p>
-      <p>Phone: 
+      <p>
+        Phone:
         <a href="tel:8005759143" class="underline hover:text-gray-200 transition-colors duration-300">
           8005759143
         </a>
       </p>
     </div>
 
-    <div class="flex justify-center space-x-6 mt-6">
-      <a href="https://t.me/heavenpoint" target="_blank" class="transform hover:scale-110 transition-transform duration-300">
-        <img src="telegram.png" alt="Telegram" class="w-8 h-8">
+    <div class="flex justify-center space-x-6 mt-8">
+      <!-- Telegram Icon -->
+      <a href="https://t.me/heavenpoint" target="_blank"
+         class="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110 shadow-lg">
+        <img src="telegram.png" alt="Telegram" class="w-6 h-6">
       </a>
-      <a href="https://www.instagram.com/theheavenpoint/" target="_blank" class="transform hover:scale-110 transition-transform duration-300">
-        <img src="instagram.png" alt="Instagram" class="w-8 h-8">
+      <!-- Instagram Icon -->
+      <a href="https://www.instagram.com/theheavenpoint/" target="_blank"
+         class="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110 shadow-lg">
+        <img src="instagram.png" alt="Instagram" class="w-6 h-6">
       </a>
-      <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" target="_blank" class="transform hover:scale-110 transition-transform duration-300">
-        <img src="facebook.png" alt="Facebook" class="w-8 h-8">
+      <!-- Facebook Icon -->
+      <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" target="_blank"
+         class="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110 shadow-lg">
+        <img src="facebook.png" alt="Facebook" class="w-6 h-6">
       </a>
-      <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" class="transform hover:scale-110 transition-transform duration-300">
-        <img src="youtube.png" alt="YouTube" class="w-8 h-8">
+      <!-- YouTube Icon -->
+      <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank"
+         class="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110 shadow-lg">
+        <img src="youtube.png" alt="YouTube" class="w-6 h-6">
       </a>
     </div>
 
-    <p class="mt-8 text-sm text-gray-200">
+    <p class="mt-10 text-sm text-gray-200">
       &copy; 2024 The Heaven Point Coaching Classes. All Rights Reserved.
     </p>
   </div>
 </footer>
 </body>
 </html>
+
