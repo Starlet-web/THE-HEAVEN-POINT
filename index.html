@@ -166,7 +166,6 @@
 
 
   
-
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
@@ -231,12 +230,12 @@
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        // ✅ Redirect on success
+        alert("Login successful!");
+        // ✅ Redirect to another HTML page (change to your desired file)
         window.location.href = "dashboard.html";
       })
       .catch((error) => {
-        // ❌ No alert shown, error is silent
-        console.log("Login failed:", error.message); // Optional for debugging
+        alert("Login failed: " + error.message);
       });
   });
 
@@ -245,6 +244,11 @@
     document.getElementById("loginModal").classList.add("hidden");
   });
 </script>
+
+
+
+
+  
 
 
 
