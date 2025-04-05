@@ -159,37 +159,84 @@
   </div>
 
 
-  <!-- Advanced Stylish Login Section for Coaching Classes -->
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+<!-- Login Modal -->
 <div id="loginModal" class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 hidden">
   <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 relative animate-fade-in">
     <button id="closeLogin" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-2xl">&times;</button>
     <h2 class="text-3xl font-bold text-center text-blue-700">THP Coaching Login</h2>
     <p class="text-sm text-gray-500 text-center mt-1">Unlock your learning potential.</p>
-    
+
     <form id="loginForm" class="mt-5 space-y-4">
       <div class="mb-3">
         <label class="block text-gray-700 text-sm font-medium">Email</label>
         <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 shadow-sm" placeholder="Enter your email" required>
       </div>
-      
+
       <div class="mb-3 relative">
         <label class="block text-gray-700 text-sm font-medium">Password</label>
         <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 shadow-sm" placeholder="Enter your password" required>
         <button type="button" id="togglePassword" class="absolute right-4 top-9 text-gray-500 hover:text-gray-700">👁</button>
       </div>
-      
+
       <div class="flex justify-between items-center mb-3">
         <label class="text-sm text-gray-600">
           <input type="checkbox" id="rememberMe" class="mr-1"> Remember me
         </label>
         <a href="#" class="text-blue-600 hover:underline text-sm">Forgot password?</a>
       </div>
-      
+
       <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-400 text-white py-3 rounded-lg hover:shadow-lg transition font-semibold">Login</button>
       <p class="text-sm text-center mt-3">New to THP? <a href="#" id="switchToSignup" class="text-blue-600 hover:underline font-semibold">Sign up</a></p>
-      </form>
+    </form>
   </div>
 </div>
+
+<!-- Firebase Config and Login Logic -->
+<script>
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
+    authDomain: "login-form-eee86.firebaseapp.com",
+    projectId: "login-form-eee86",
+    storageBucket: "login-form-eee86.appspot.com",
+    messagingSenderId: "717475952542",
+    appId: "1:717475952542:web:f79db77ed1f60d117b488f",
+    measurementId: "G-VV0D9TNK0Y"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  // Toggle Password Visibility
+  document.getElementById("togglePassword").addEventListener("click", () => {
+    const passwordInput = document.getElementById("password");
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+  });
+
+  // Handle Login
+  document.getElementById("loginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        alert("Login successful!");
+        // Optional: Redirect user to dashboard or home
+        // window.location.href = "/dashboard.html";
+      })
+      .catch((error) => {
+        alert("Login failed: " + error.message);
+      });
+  });
+
+  // Close login modal
+  document.getElementById("closeLogin").addEventListener("click", () => {
+    document.getElementById("loginModal").classList.add("hidden");
+  });
+</script>
 
 
 <!-- Floating Login Button -->
