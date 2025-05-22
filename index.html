@@ -1,151 +1,91 @@
+
+<meta property="og:title" content="The Heaven Point" />
+<meta property="og:description" content="Here, you can study a variety of subjects like Commerce , Maths, Physics, Chemistry, Biology, S. St., English Language, English Literature, Computer, Hindi, and more, for all boards. We also offer specialized courses for CUET, NEET, IIT, JEE, and classes from 3rd to 12th." />
+<meta property="og:image" content="channels4_profile.jpg" />
+<meta property="og:image:alt" content="The Heaven Point " />
+<meta property="og:url" content="https://starlet-web.github.io/THE-HEAVEN-POINT/" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDRwEETC30j0P76tS7UfyDJC9VXGqmiye4",
+    authDomain: "heaven-eeb4e.firebaseapp.com",
+    projectId: "heaven-eeb4e",
+    storageBucket: "heaven-eeb4e.firebasestorage.app",
+    messagingSenderId: "2714316156",
+    appId: "1:2714316156:web:b6c584d50f53576a9708f9"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const db = getFirestore();
+
+  // 🚀 SIGNUP FUNCTION
+  document.getElementById("signupForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("signupName").value;
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await sendEmailVerification(userCredential.user);
+      await setDoc(doc(db, "users", email), { name, email, verified: false });
+      alert("Signup successful! Check your email for verification.");
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+
+  // 🚀 LOGIN FUNCTION
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (!userCredential.user.emailVerified) {
+        alert("Please verify your email before logging in.");
+        return;
+      }
+      alert(`Welcome back!`);
+      window.location.href = "dashboard.html"; // Redirect to dashboard
+    } catch (error) {
+      alert("Login failed: " + error.message);
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Heaven Point - Premier Coaching Institute</title>
-  <meta name="description" content="Top-rated coaching for CUET, NEET, IIT-JEE, and classes 3-12 with expert faculty and proven results.">
-  
-  <!-- Open Graph / Social Media Meta Tags -->
-  <meta property="og:title" content="The Heaven Point" />
-  <meta property="og:description" content="Here, you can study a variety of subjects like Commerce, Maths, Physics, Chemistry, Biology, S. St., English Language, English Literature, Computer, Hindi, and more, for all boards. We also offer specialized courses for CUET, NEET, IIT, JEE, and classes from 3rd to 12th." />
-  <meta property="og:image" content="channels4_profile.jpg" />
-  <meta property="og:image:alt" content="The Heaven Point Coaching Institute" />
-  <meta property="og:url" content="https://starlet-web.github.io/THE-HEAVEN-POINT/" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  
-  <!-- Favicon -->
-  <link rel="icon" href="channels4_profile.jpg" type="image/png">
-  
-  <!-- Google Site Verification -->
-  <meta name="google-site-verification" content="mA9aIn22KO_fawtHBnRUcy2Xj29t8lT1LdbtQx34-P4" />
-  
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
-            heading: ['Montserrat', 'sans-serif'],
-          },
-          colors: {
-            primary: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              200: '#bae6fd',
-              300: '#7dd3fc',
-              400: '#38bdf8',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              800: '#075985',
-              900: '#0c4a6e',
-            },
-            secondary: {
-              50: '#f5f3ff',
-              100: '#ede9fe',
-              200: '#ddd6fe',
-              300: '#c4b5fd',
-              400: '#a78bfa',
-              500: '#8b5cf6',
-              600: '#7c3aed',
-              700: '#6d28d9',
-              800: '#5b21b6',
-              900: '#4c1d95',
-            },
-            accent: {
-              50: '#fef2f2',
-              100: '#fee2e2',
-              200: '#fecaca',
-              300: '#fca5a5',
-              400: '#f87171',
-              500: '#ef4444',
-              600: '#dc2626',
-              700: '#b91c1c',
-              800: '#991b1b',
-              900: '#7f1d1d',
-            }
-          },
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-slow': 'pulse 6s infinite',
-            'wave': 'wave 2s linear infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-20px)' },
-            },
-            wave: {
-              '0%': { transform: 'rotate(0deg)' },
-              '10%': { transform: 'rotate(14deg)' },
-              '20%': { transform: 'rotate(-8deg)' },
-              '30%': { transform: 'rotate(14deg)' },
-              '40%': { transform: 'rotate(-4deg)' },
-              '50%': { transform: 'rotate(10deg)' },
-              '60%': { transform: 'rotate(0deg)' },
-              '100%': { transform: 'rotate(0deg)' },
-            }
-          }
-        }
-      }
-    }
-  </script>
-  
+  <title>The Heaven Point</title>
   <style>
-    /* Custom Styles */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-    }
-    
-    .gradient-text {
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    
-    .parallax {
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-    
-    .hover-scale {
-      transition: transform 0.3s ease;
-    }
-    
-    .hover-scale:hover {
-      transform: scale(1.03);
-    }
-    
-    .scroll-snap {
-      scroll-snap-type: y mandatory;
-    }
-    
-    .scroll-snap > section {
-      scroll-snap-align: start;
-    }
-    
     /* Slimmer notice bar styling */
     .notice-bar {
       background: linear-gradient(90deg, #ff6f61, #ff9052);
       color: #fff;
-      font-size: 12px;
-      padding: 3px 0;
+      font-size: 12px; /* Smaller font size */
+      padding: 3px 0; /* Slimmer padding */
       position: fixed;
       top: 0;
       left: 0;
@@ -179,7 +119,7 @@
       background: transparent;
       border: none;
       color: #fff;
-      font-size: 14px;
+      font-size: 14px; /* Smaller button size */
       cursor: pointer;
       padding: 0 8px;
       transition: background 0.3s ease;
@@ -197,16 +137,408 @@
         transform: translateX(-100%);
       }
     }
+
+    .content {
+      margin-top: 30px; /* Adjusted for slimmer bar */
+    }
+
+    @media (max-width: 768px) {
+      .notice-text {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Slimmer Notice Bar -->
+  <div class="notice-bar">
+    <div class="notice-text-container">
+      <div class="notice-text">🚀 Enroll Now for the New Batch Starting Soon! Limited Seats Available. Act Fast! 🔴 Join the Live Transformative Seminar Hosted by Shivam Sir! 🎤✨</div>
+    </div>
+    <button class="close-btn" onclick="document.querySelector('.notice-bar').style.display='none';">&times;</button>
+  </div>
+
+
+
+
+
+
+
+
+  
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+<!-- Login Modal -->
+<div id="loginModal" class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 hidden">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 relative animate-fade-in">
+    <button id="closeLogin" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-2xl">&times;</button>
+    <h2 class="text-3xl font-bold text-center text-blue-700">THP Coaching Login</h2>
+    <p class="text-sm text-gray-500 text-center mt-1">Unlock your learning potential.</p>
+
+    <form id="loginForm" class="mt-5 space-y-4">
+      <div class="mb-3">
+        <label class="block text-gray-700 text-sm font-medium">Email</label>
+        <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 shadow-sm" placeholder="Enter your email" required>
+      </div>
+
+      <div class="mb-3 relative">
+        <label class="block text-gray-700 text-sm font-medium">Password</label>
+        <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-600 shadow-sm" placeholder="Enter your password" required>
+        <button type="button" id="togglePassword" class="absolute right-4 top-9 text-gray-500 hover:text-gray-700">👁</button>
+      </div>
+
+      <div class="flex justify-between items-center mb-3">
+        <label class="text-sm text-gray-600">
+          <input type="checkbox" id="rememberMe" class="mr-1"> Remember me
+        </label>
+        <a href="#" class="text-blue-600 hover:underline text-sm">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-400 text-white py-3 rounded-lg hover:shadow-lg transition font-semibold">Login</button>
+      <p class="text-sm text-center mt-3">New to THP? <a href="#" id="switchToSignup" class="text-blue-600 hover:underline font-semibold">Sign up</a></p>
+    </form>
+  </div>
+</div>
+
+<!-- Firebase Config and Login Logic -->
+<script>
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
+    authDomain: "login-form-eee86.firebaseapp.com",
+    projectId: "login-form-eee86",
+    storageBucket: "login-form-eee86.appspot.com",
+    messagingSenderId: "717475952542",
+    appId: "1:717475952542:web:f79db77ed1f60d117b488f",
+    measurementId: "G-VV0D9TNK0Y"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  // Toggle Password Visibility
+  document.getElementById("togglePassword").addEventListener("click", () => {
+    const passwordInput = document.getElementById("password");
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+  });
+
+  // Handle Login
+  document.getElementById("loginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        alert("Login successful!");
+        // ✅ Redirect to another HTML page (change to your desired file)
+        window.location.href = "dashboard.html";
+      })
+      .catch((error) => {
+        alert("Login failed: " + error.message);
+      });
+  });
+
+  // Close login modal
+  document.getElementById("closeLogin").addEventListener("click", () => {
+    document.getElementById("loginModal").classList.add("hidden");
+  });
+</script>
+
+
+
+
+  
+
+
+
+<!-- Floating Login Button -->
+<button id="openLogin" class="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-blue-400 text-white p-4 rounded-full shadow-lg z-30 hover:scale-110 transition">🔑</button>
+
+<!-- JavaScript for Advanced Login Modal -->
+<script>
+  const loginModal = document.getElementById('loginModal');
+  const openLogin = document.getElementById('openLogin');
+  const closeLogin = document.getElementById('closeLogin');
+  const loginForm = document.getElementById('loginForm');
+  const passwordInput = document.getElementById('password');
+  const togglePassword = document.getElementById('togglePassword');
+  const rememberMe = document.getElementById('rememberMe');
+
+  openLogin.addEventListener('click', () => {
+    loginModal.classList.remove('hidden');
+  });
+
+  closeLogin.addEventListener('click', () => {
+    loginModal.classList.add('hidden');
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target === loginModal) {
+      loginModal.classList.add('hidden');
+    }
+  });
+
+  togglePassword.addEventListener('click', () => {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      togglePassword.textContent = '🙈';
+    } else {
+      passwordInput.type = 'password';
+      togglePassword.textContent = '👁';
+    }
+  });
+
+  loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = passwordInput.value;
     
+    if (email === "student@thp.com" && password === "secure123") {
+      alert('Login successful! Welcome to THP Coaching.');
+      if (rememberMe.checked) {
+        localStorage.setItem('userEmail', email);
+      }
+      loginModal.classList.add('hidden');
+    } else {
+     
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedEmail = localStorage.getItem('userEmail');
+    if (savedEmail) {
+      document.getElementById('email').value = savedEmail;
+      rememberMe.checked = true;
+    }
+  });
+</script>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="google-site-verification" content="mA9aIn22KO_fawtHBnRUcy2Xj29t8lT1LdbtQx34-P4" />
+  <link rel="icon" href="channels4_profile.jpg" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Heaven Point Coaching Classes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- Ultra-Compact Banner Section -->
+<section 
+  class="relative h-[200px] flex items-center bg-cover bg-center px-4" 
+  style="background-image: url('chatgptbanner2.jpg');"
+>
+  <!-- Gradient Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30"></div>
+  
+  <!-- Content -->
+  <div class="relative flex items-center w-full z-10 text-white">
+    <!-- Logo -->
+    <div class="flex-shrink-0 mr-3">
+      <img 
+        src="channels4_profile.jpg" 
+        alt="Logo" 
+        class="w-12 h-12 rounded-full shadow-md ring-2 ring-white"
+      />
+    </div>
+
+    <!-- Text Content -->
+    <div>
+      <h1 class="text-2xl font-extrabold">
+        The Heaven Point
+      </h1>
+      <p class="text-xs font-light italic mt-1">
+        Choose to<span class="font-semibold text-blue-300"> shine</span>.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Sidebar Navigation -->
+<div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-gradient-to-b from-blue-700 to-blue-500 text-white transform translate-x-full transition-transform duration-500 ease-in-out z-20 shadow-lg">
+  <div class="p-4 flex justify-between items-center border-b border-blue-400">
+    <h2 class="text-2xl font-bold">Menu</h2>
+    <button id="closeSidebar" class="text-3xl font-bold hover:text-gray-300">&times;</button>
+  </div>
+  <nav class="flex flex-col space-y-4 px-6 py-4">
+    <a href="#" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">Home</a>
+    <a href="#batches" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">Courses</a>
+    <a href="#about-us" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">About Us</a>
+    <a href="mailto:theheavenpoint@gmail.com" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">Contact</a>
+    <a href="#" class="hover:text-gray-200 font-medium" onclick="openNotes(); closeSidebarManually()">THP Special Notes</a>
+    <a href="#" class="hover:text-gray-200 font-medium" onclick="openLecture(); closeSidebarManually()">THP Online Lecture</a>
+    <a href="thp-faculty.html" class="hover:text-gray-200 font-medium" onclick="closeSidebarManually()">THP Faculty</a>
+    <div>
+      <button class="hover:text-gray-200 font-medium" onclick="toggleFormMenu()">Forms</button>
+      <div id="formSubMenu" class="hidden pl-4 space-y-2 mt-2">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" class="block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">📲 Online</a>
+        <a href="THP offline.pdf" target="_blank" class="block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">📄 Offline</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!-- Hamburger Menu Button -->
+<button id="openSidebar" class="fixed top-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg z-30">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+  </svg>
+</button>
+
+<!-- JavaScript to Open and Close Sidebar -->
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const openSidebar = document.getElementById('openSidebar');
+  const closeSidebar = document.getElementById('closeSidebar');
+  const formSubMenu = document.getElementById('formSubMenu');
+
+  openSidebar.addEventListener('click', () => {
+    sidebar.classList.remove('translate-x-full');
+  });
+
+  closeSidebar.addEventListener('click', () => {
+    sidebar.classList.add('translate-x-full');
+  });
+
+  // Close the sidebar when any navigation link is clicked
+  function closeSidebarManually() {
+    sidebar.classList.add('translate-x-full');
+  }
+
+  // Close the sidebar when clicking anywhere outside of it
+  window.addEventListener('click', (event) => {
+    if (!sidebar.contains(event.target) && !openSidebar.contains(event.target)) {
+      sidebar.classList.add('translate-x-full');
+    }
+  });
+
+  // JavaScript functions to open new pages
+  function openNotes() {
+    window.open('thp-special-notes.html', '_blank');
+  }
+
+  function openLecture() {
+    window.open('thp-online-lecture.html', '_blank');
+  }
+
+  // Toggle the Forms submenu
+  function toggleFormMenu() {
+    formSubMenu.classList.toggle('hidden');
+  }
+</script>
+
+<!-- TailwindCSS styles assumed -->
+
+  <!-- About Us Section -->
+  <section id="about-us" class="my-8 px-6">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="text-2xl font-semibold">About Us</h2>
+      <p class="mt-4 text-lg">Hello My Dear Students! Welcome to Heaven Point Coaching Classes (THP Classes). Here, you can study a variety of subjects like Commerce, Maths, Physics, Chemistry, Biology, S. St., English Language, English Literature, Computer, Hindi, and more, for all boards. We also offer specialized courses for CUET, NEET, IIT, JEE, and classes from 3rd to 12th.</p>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+ <!-- Responsive Stylish Course Card -->
+<div class="flex flex-col lg:flex-row items-center bg-white shadow-xl rounded-xl overflow-hidden border border-gray-300 hover:shadow-lg transform transition duration-500 hover:scale-105 w-full max-w-4xl mx-auto">
+  <img src="banner  thp.jpg" alt="Course Banner" class="w-full lg:w-1/3 h-48 lg:h-64 object-cover">
+  <div class="p-6 lg:p-8 w-full lg:w-2/3 text-center lg:text-left">
+    <h3 class="text-2xl lg:text-4xl font-bold text-gray-900">SSC, Bank, and Railway</h3>
+    <p class="mt-3 text-gray-700 leading-relaxed">
+      SSC, बैंक, और रेलवे परीक्षा तैयारी बैच - CGL, CHSL, MTS, GD, CPO, JE, Stenographer, IBPS PO, IBPS Clerk, RRB NTPC, Group D, और अन्य प्रतियोगी परीक्षाओं के लिए संपूर्ण मार्गदर्शन। <br>
+      <span class="font-semibold text-blue-600">Duration: 6 Months</span>
+    </p>
+    <div class="mt-5 flex flex-col lg:flex-row lg:justify-between items-center">
+      <div class="text-center lg:text-left">
+        <span class="text-lg font-bold text-green-600">₹1000/Month</span>
+      </div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" 
+        class="mt-4 lg:mt-0 bg-indigo-600 text-white px-5 py-2 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-lg">
+        Enroll Now
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+
+          </div>
+        </div>
+        <!-- Add more course cards here -->
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive YouTube Video</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     .video-container {
       position: relative;
-      padding-bottom: 56.25%;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
       height: 0;
       overflow: hidden;
       max-width: 100%;
       background: #000;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin: 10px;
     }
 
     .video-container iframe {
@@ -217,980 +549,418 @@
       height: 100%;
       border: none;
     }
-    
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
+
+    h1 {
+      text-align: center;
+      padding: 10px;
     }
-    
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
+
+    .instructor {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
     }
-    
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(#3b82f6, #8b5cf6);
-      border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(#2563eb, #7c3aed);
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
-<body class="font-sans bg-gray-50 text-gray-800 scroll-smooth scroll-snap">
-  <!-- Slimmer Notice Bar -->
-  <div class="notice-bar">
-    <div class="notice-text-container">
-      <div class="notice-text">🚀 Enroll Now for the New Batch Starting Soon! Limited Seats Available. Act Fast! 🔴 Join the Live Transformative Seminar Hosted by Shivam Sir! 🎤✨</div>
-    </div>
-    <button class="close-btn" onclick="document.querySelector('.notice-bar').style.display='none';">&times;</button>
+<body>
+
+  <h1>Watch This Video</h1>
+  <div class="video-container">
+    <iframe 
+      src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&controls=0&showinfo=0&rel=0&autoplay=1&mute=1" 
+      title="YouTube video player" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      allowfullscreen>
+    </iframe>
   </div>
 
-  <!-- Floating Action Buttons -->
-  <div class="fixed right-6 bottom-24 z-50 flex flex-col space-y-3">
-    <a href="https://wa.me/919506105974?text=Hello%20Sir,%20I'm%20interested%20in%20The%20Heaven%20Point%20courses" 
-       target="_blank"
-       class="w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 animate-bounce">
-      <i class="fab fa-whatsapp text-2xl"></i>
-    </a>
-    <button id="openLogin" 
-            class="w-14 h-14 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300">
-      <i class="fas fa-user text-xl"></i>
+  <!-- Instructor Section -->
+  <section class="instructor">
+    <h3>Instructor</h3>
+    <p>Instructor: Shivam Sir, Math Expert with 10+ years of experience.</p>
+  </section>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimal Discussion Board</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #ffffff;
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Heaven Point Coaching Classes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom Styles for Advanced Design */
+    .batch-card {
+      position: relative;
+      background: linear-gradient(145deg, #ffffff, #f0f8ff);
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .batch-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.25);
+    }
+    .batch-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 2px solid #4A90E2;
+    }
+    .batch-info {
+      padding: 16px;
+      text-align: center;
+    }
+    .batch-title {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: #333333;
+    }
+    .batch-price,
+    .batch-duration {
+      font-size: 1rem;
+      color: #555555;
+      margin-top: 8px;
+    }
+    .enroll-btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #4A90E2, #357ABD);
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .enroll-btn:hover {
+      background: linear-gradient(90deg, #357ABD, #1F4E8F);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+
+
+<!-- Batches Section -->
+<section id="batches" class="p-6 md:p-16">
+  <div class="text-center mb-10 md:mb-16">
+    <h2 class="text-4xl md:text-6xl font-extrabold text-gray-900 drop-shadow-2xl animate-pulse">Our Premium Batches</h2>
+    <p class="text-lg md:text-xl text-gray-800 mt-4 font-light tracking-wide">Unlock your potential with our expertly designed courses.</p>
+  </div>
+  <div class="space-y-6 md:space-y-10">
+    <!-- Batch A -->
+    <div class="flex flex-col md:flex-row items-center bg-white shadow-xl rounded-xl overflow-hidden border border-gray-300 hover:shadow-lg transform transition duration-500 hover:scale-105">
+      <img src="cuet.jpg" alt="CUET Batch" class="w-full md:w-1/3 h-40 md:h-52 object-cover">
+      <div class="p-6 md:p-8 w-full md:w-2/3 text-center md:text-left">
+        <h3 class="text-2xl md:text-4xl font-bold text-gray-900">CUET</h3>
+        <p class="text-md md:text-lg text-gray-700 mt-2">Price: <span class="text-green-600 font-bold">₹1000/Month</span></p>
+        <p class="text-sm md:text-md text-gray-600">Duration: 3 Months</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="mt-4 inline-block bg-indigo-600 text-white py-2 px-4 md:py-3 md:px-6 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-lg">Enroll Now</a>
+      </div>
+    </div>
+    <!-- Batch B -->
+    <div class="flex flex-col md:flex-row items-center bg-white shadow-xl rounded-xl overflow-hidden border border-gray-300 hover:shadow-lg transform transition duration-500 hover:scale-105">
+      <img src="neet batch1.jpg" alt="NEET Batch" class="w-full md:w-1/3 h-40 md:h-52 object-cover">
+      <div class="p-6 md:p-8 w-full md:w-2/3 text-center md:text-left">
+        <h3 class="text-2xl md:text-4xl font-bold text-gray-900">NEET</h3>
+        <p class="text-md md:text-lg text-gray-700 mt-2">Price: <span class="text-green-600 font-bold">₹1500/Month</span></p>
+        <p class="text-sm md:text-md text-gray-600">Duration: 1 Year</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="mt-4 inline-block bg-indigo-600 text-white py-2 px-4 md:py-3 md:px-6 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-lg">Enroll Now</a>
+      </div>
+    </div>
+    <!-- Batch C -->
+    <div class="flex flex-col md:flex-row items-center bg-white shadow-xl rounded-xl overflow-hidden border border-gray-300 hover:shadow-lg transform transition duration-500 hover:scale-105">
+      <img src="WhatsApp Image 2025-01-08 at 22.09.41.jpeg" alt="IIT-JEE Batch" class="w-full md:w-1/3 h-40 md:h-52 object-cover">
+      <div class="p-6 md:p-8 w-full md:w-2/3 text-center md:text-left">
+        <h3 class="text-2xl md:text-4xl font-bold text-gray-900">IIT-JEE</h3>
+        <p class="text-md md:text-lg text-gray-700 mt-2">Price: <span class="text-green-600 font-bold">₹1500/Month</span></p>
+        <p class="text-sm md:text-md text-gray-600">Duration: 1 Year</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="mt-4 inline-block bg-indigo-600 text-white py-2 px-4 md:py-3 md:px-6 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-lg">Enroll Now</a>
+      </div>
+    </div>
+    <!-- Batch D -->
+    <div class="flex flex-col md:flex-row items-center bg-white shadow-xl rounded-xl overflow-hidden border border-gray-300 hover:shadow-lg transform transition duration-500 hover:scale-105">
+      <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="Class 3-12 Batch" class="w-full md:w-1/3 h-40 md:h-52 object-cover">
+      <div class="p-6 md:p-8 w-full md:w-2/3 text-center md:text-left">
+        <h3 class="text-2xl md:text-4xl font-bold text-gray-900">Class 3-12</h3>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="mt-4 inline-block bg-indigo-600 text-white py-2 px-4 md:py-3 md:px-6 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-lg">Enroll Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Gallery Section -->
+  <section id="gallery" class="p-6 bg-white">
+    <h2 class="text-3xl font-bold mb-4">Gallery</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <img src="gallarymini1.jpg" alt="gallarymini1.jpg" class="rounded shadow">
+      <img src="gallarymini2.jpg" alt="gallarymini2.jpg" class="rounded shadow">
+    </div>
+  </section>
+
+
+
+
+  <!-- Blog Section -->
+  <section id="blog" class="p-6 bg-gray-50">
+    <div class="glass-card flex items-center space-x-4">
+      <div class="icon-circle">📝</div>
+      <div>
+        <h2 class="text-3xl font-bold mb-2">Blog</h2>
+        <p>Stay updated with the latest news and articles related to exams, tips, and tricks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admission Section -->
+  <section id="admission" class="p-6 bg-white">
+    <div class="glass-card flex items-center space-x-4">
+      <div class="icon-circle">🎓</div>
+      <div>
+        <h2 class="text-3xl font-bold mb-2">Admission Process</h2>
+        <p>Find out how to enroll in our courses with step-by-step guidelines.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Contact Section -->
+  <section id="contact" class="p-6 bg-white">
+    <div class="glass-card flex items-center space-x-4">
+      <div class="icon-circle">📞</div>
+      <div>
+        <h2 class="text-3xl font-bold mb-2">Contact Us</h2>
+        <p>Email: <a href="mailto:theheavenpoint@gmail.com" class="text-blue-600 underline">theheavenpoint@gmail.com</a></p>
+        <p>Phone: <a href="tel:8005759143" class="text-blue-600 underline">8005759143</a></p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
+
+
+<!-- Gallery Section -->
+  <section id="gallery" class="p-6 bg-gray-50">
+    <div class="glass-card">
+      <div class="flex items-center space-x-4 mb-4">
+        <div class="icon-circle">🖼️</div>
+        <h2 class="text-3xl font-bold">Gallery</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <img src="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" alt="Gallery Image" class="w-full rounded-lg hover-zoom">
+        <img src="WhatsApp Image 2025-01-08 at 22.36.38 (1).jpeg" alt="Gallery Image" class="w-full rounded-lg hover-zoom">
+        <img src="https://via.placeholder.com/300" alt="Gallery Image" class="w-full rounded-lg hover-zoom">
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
+
+
+
+  
+
+<!-- Blog Section -->
+<section id="blog" class="p-6">
+  <h2 class="text-3xl font-bold text-center mb-6">📚 Latest Updates</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <article class="glass-card">
+      <div class="flex items-center space-x-3">
+        <div class="icon-circle"><span>📖</span></div>
+        <h3 class="text-xl font-semibold">Exam Tips & Tricks</h3>
+      </div>
+      <p class="text-gray-700 mt-2">Master time management and study strategies for acing your exams.</p>
+    </article>
+    <article class="glass-card">
+      <div class="flex items-center space-x-3">
+        <div class="icon-circle"><span>📝</span></div>
+        <h3 class="text-xl font-semibold">Competitive Exam Insights</h3>
+      </div>
+      <p class="text-gray-700 mt-2">Stay ahead with key updates on NEET & JEE syllabus changes.</p>
+    </article>
+  </div>
+</section>
+
+<!-- Admission Process -->
+<section id="admission" class="p-6 bg-gray-50">
+  <h2 class="text-3xl font-bold text-center mb-6">📝 Admission Process</h2>
+  <ol class="list-decimal ml-6 space-y-3 text-lg">
+    <li>Complete the online application form.</li>
+    <li>Upload required documents.</li>
+    <li>Take the entrance test (if applicable).</li>
+    <li>Submit admission fees.</li>
+    <li>Secure your seat.</li>
+  </ol>
+</section>
+
+<!-- Careers Section -->
+<section id="careers" class="p-6">
+  <h2 class="text-3xl font-bold text-center mb-6">🚀 Join Our Team</h2>
+  <p class="text-lg text-center mb-4">We're hiring passionate educators!</p>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="glass-card flex items-center space-x-3">
+      <div class="icon-circle">📘</div>
+      <p>Math Teacher – <a href="https://forms.gle/MGAzTAcPqQVV2W1R8" class="text-blue-600 font-bold">Apply Now</a></p>
+    </div>
+    <div class="glass-card flex items-center space-x-3">
+      <div class="icon-circle">🔬</div>
+      <p>Science Teacher – <a href="https://forms.gle/MGAzTAcPqQVV2W1R8" class="text-blue-600 font-bold">Apply Now</a></p>
+    </div>
+    <div class="glass-card flex items-center space-x-3">
+      <div class="icon-circle">📖</div>
+      <p>English Teacher – <a href="https://forms.gle/MGAzTAcPqQVV2W1R8" class="text-blue-600 font-bold">Apply Now</a></p>
+    </div>
+    <div class="glass-card flex items-center space-x-3">
+      <div class="icon-circle">🖥</div>
+      <p>Admin Assistant – <a href="https://forms.gle/MGAzTAcPqQVV2W1R8" class="text-blue-600 font-bold">Apply Now</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+
+
+    <button class="whatsapp-btn" id="whatsappRedirect">
+        <img class="whatsapp-icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        Chat Now
     </button>
-    <button id="openSidebar" 
-            class="w-14 h-14 bg-gradient-to-r from-accent-600 to-secondary-600 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300">
-      <i class="fas fa-bars text-xl"></i>
-    </button>
-  </div>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 hidden transition-opacity duration-300">
-    <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 relative animate-fade-in glass-card">
-      <button id="closeLogin" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-2xl transition-colors">&times;</button>
-      <h2 class="text-3xl font-bold text-center text-primary-600">THP Coaching Login</h2>
-      <p class="text-sm text-gray-500 text-center mt-1">Unlock your learning potential.</p>
+    <script>
+        document.getElementById("whatsappRedirect").addEventListener("click", function () {
+            let phoneNumber = "919506105974"; // Replace with the actual WhatsApp number
+            let message = encodeURIComponent("Hello ,Sir");
+            let whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
 
-      <form id="loginForm" class="mt-5 space-y-4">
-        <div class="mb-3">
-          <label class="block text-gray-700 text-sm font-medium">Email</label>
-          <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-600 shadow-sm transition-all" placeholder="Enter your email" required>
-        </div>
+            // Redirect to WhatsApp
+            window.open(whatsappURL, '_blank');
+        });
+    </script>
 
-        <div class="mb-3 relative">
-          <label class="block text-gray-700 text-sm font-medium">Password</label>
-          <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-600 shadow-sm transition-all" placeholder="Enter your password" required>
-          <button type="button" id="togglePassword" class="absolute right-4 top-9 text-gray-500 hover:text-gray-700 transition-colors">
-            <i class="far fa-eye"></i>
-          </button>
-        </div>
+</body>
+</html>
 
-        <div class="flex justify-between items-center mb-3">
-          <label class="text-sm text-gray-600 flex items-center">
-            <input type="checkbox" id="rememberMe" class="mr-2 rounded text-primary-600 focus:ring-primary-500"> Remember me
-          </label>
-          <a href="#" class="text-primary-600 hover:underline text-sm transition-colors">Forgot password?</a>
-        </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-400 text-white py-3 rounded-lg hover:shadow-lg transition-all font-semibold">
-          Login
-        </button>
-        <p class="text-sm text-center mt-3">New to THP? 
-          <a href="#" id="switchToSignup" class="text-primary-600 hover:underline font-semibold transition-colors">Sign up</a>
-        </p>
-      </form>
+<!-- Footer Section -->
+<footer class="bg-gradient-to-r from-blue-700 to-blue-500 text-white py-12 px-4 text-center mt-12">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl font-extrabold mb-4">📩 Contact Us</h2>
+    <div class="space-y-3 text-lg">
+      <p>
+        Email:
+        <a href="mailto:theheavenpoint@gmail.com" class="underline hover:text-gray-200 transition-colors duration-300">
+          theheavenpoint@gmail.com
+        </a>
+      </p>
+      <p>
+        Phone:
+        <a href="tel:8005759143" class="underline hover:text-gray-200 transition-colors duration-300">
+          8005759143
+        </a>
+      </p>
     </div>
-  </div>
 
-  <!-- Sidebar Navigation -->
-  <div id="sidebar" class="fixed top-0 right-0 w-64 h-full bg-gradient-to-b from-primary-800 to-primary-600 text-white transform translate-x-full transition-transform duration-500 ease-in-out z-40 shadow-2xl">
-    <div class="p-4 flex justify-between items-center border-b border-primary-400">
-      <div class="flex items-center space-x-2">
-        <img src="channels4_profile.jpg" alt="Logo" class="w-10 h-10 rounded-full shadow-md ring-2 ring-white">
-        <h2 class="text-2xl font-bold">THP Menu</h2>
-      </div>
-      <button id="closeSidebar" class="text-3xl font-bold hover:text-gray-300 transition-colors">&times;</button>
-    </div>
-    <nav class="flex flex-col space-y-2 px-4 py-4">
-      <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" onclick="closeSidebarManually()">
-        <i class="fas fa-home mr-3 text-lg"></i> Home
+    <div class="flex justify-center space-x-6 mt-8">
+      <!-- Telegram Icon from Wikimedia -->
+      <a href="https://t.me/heavenpoint" target="_blank"
+         class="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110 shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Telegram_2019_Logo.svg" alt="Telegram" class="w-6 h-6">
       </a>
-      <a href="#batches" class="flex items-center px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" onclick="closeSidebarManually()">
-        <i class="fas fa-book-open mr-3 text-lg"></i> Courses
+      <!-- Instagram Icon from Wikimedia -->
+      <a href="https://www.instagram.com/theheavenpoint/" target="_blank"
+         class="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110 shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1024px-Instagram_logo_2016.svg.png" alt="Instagram" class="w-6 h-6">
       </a>
-      <a href="#about-us" class="flex items-center px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" onclick="closeSidebarManually()">
-        <i class="fas fa-info-circle mr-3 text-lg"></i> About Us
+      <!-- Facebook Icon from Wikimedia (URL-encoded parentheses) -->
+      <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" target="_blank"
+         class="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110 shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" alt="Facebook" class="w-6 h-6">
       </a>
-      <a href="mailto:theheavenpoint@gmail.com" class="flex items-center px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" onclick="closeSidebarManually()">
-        <i class="fas fa-envelope mr-3 text-lg"></i> Contact
+      <!-- YouTube Icon from Wikimedia (URL-encoded parentheses) -->
+      <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank"
+         class="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110 shadow-lg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png" alt="YouTube" class="w-6 h-6">
       </a>
-      <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" onclick="openNotes(); closeSidebarManually()">
-        <i class="fas fa-file-alt mr-3 text-lg"></i> THP Special Notes
-      </a>
-      <a href="#" class="flex items-center px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" onclick="openLecture(); closeSidebarManually()">
-        <i class="fas fa-video mr-3 text-lg"></i> THP Online Lecture
-      </a>
-      <a href="thp-faculty.html" class="flex items-center px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" onclick="closeSidebarManually()">
-        <i class="fas fa-chalkboard-teacher mr-3 text-lg"></i> THP Faculty
-      </a>
-      <div class="group">
-        <button class="flex items-center justify-between w-full px-4 py-3 rounded-lg hover:bg-white/10 transition-colors" onclick="toggleFormMenu()">
-          <div class="flex items-center">
-            <i class="fas fa-file-signature mr-3 text-lg"></i> Forms
-          </div>
-          <i class="fas fa-chevron-down text-xs transition-transform duration-300" id="formMenuIcon"></i>
-        </button>
-        <div id="formSubMenu" class="hidden pl-8 space-y-2 mt-1">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" 
-             class="flex items-center px-3 py-2 rounded-lg hover:bg-white/10 transition-colors">
-            <i class="fas fa-mobile-alt mr-2"></i> Online Form
-          </a>
-          <a href="THP offline.pdf" target="_blank" 
-             class="flex items-center px-3 py-2 rounded-lg hover:bg-white/10 transition-colors">
-            <i class="fas fa-file-pdf mr-2"></i> Offline Form
-          </a>
-        </div>
-      </div>
-    </nav>
-    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-primary-400">
-      <div class="flex justify-center space-x-4">
-        <a href="https://t.me/heavenpoint" target="_blank" class="text-white hover:text-primary-200 transition-colors">
-          <i class="fab fa-telegram text-xl"></i>
-        </a>
-        <a href="https://www.instagram.com/theheavenpoint/" target="_blank" class="text-white hover:text-primary-200 transition-colors">
-          <i class="fab fa-instagram text-xl"></i>
-        </a>
-        <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" target="_blank" class="text-white hover:text-primary-200 transition-colors">
-          <i class="fab fa-facebook text-xl"></i>
-        </a>
-        <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" class="text-white hover:text-primary-200 transition-colors">
-          <i class="fab fa-youtube text-xl"></i>
-        </a>
-      </div>
     </div>
-  </div>
 
-  <!-- Hero Section -->
-  <section class="relative h-screen flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 bg-black/50 z-10"></div>
-    <div class="parallax absolute inset-0" style="background-image: url('chatgptbanner2.jpg');"></div>
-    
-    <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
-      <div class="flex flex-col items-center">
-        <img src="channels4_profile.jpg" alt="Logo" class="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-xl ring-4 ring-white/50 mb-6 hover:rotate-12 transition-transform duration-500">
-        <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 font-heading">
-          The <span class="gradient-text">Heaven</span> Point
-        </h1>
-        <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl">
-          Where academic excellence meets personalized mentorship for your success
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="#batches" class="bg-white text-primary-600 hover:bg-gray-100 px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            Explore Courses
-          </a>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" 
-             target="_blank"
-             class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            Enroll Now
-          </a>
-        </div>
-      </div>
-      
-      <div class="absolute bottom-10 left-0 right-0 flex justify-center">
-        <a href="#about-us" class="text-white animate-bounce">
-          <i class="fas fa-chevron-down text-2xl"></i>
-        </a>
-      </div>
-    </div>
-  </section>
+    <p class="mt-10 text-sm text-gray-200">
+      &copy; 2025 The Heaven Point Coaching Classes. All Rights Reserved.
+    </p>
+  </div>
+</footer>
+</body>
+</html>
 
-  <!-- About Us Section -->
-  <section id="about-us" class="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading">
-          About <span class="gradient-text">The Heaven Point</span>
-        </h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div>
-        <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-          Your premier destination for academic excellence and competitive exam preparation
-        </p>
-      </div>
-      
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="relative">
-          <div class="absolute -top-6 -left-6 w-full h-full bg-primary-100 rounded-xl -z-10"></div>
-          <div class="relative rounded-xl overflow-hidden shadow-2xl hover-scale">
-            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
-                 alt="THP Classroom" 
-                 class="w-full h-auto object-cover">
-          </div>
-        </div>
-        
-        <div>
-          <h3 class="text-2xl font-bold mb-4">Transforming Education Since 2020</h3>
-          <p class="text-gray-600 mb-6 leading-relaxed">
-            At The Heaven Point, we believe in nurturing potential and shaping futures. Our institute offers comprehensive 
-            coaching for a variety of subjects including Commerce, Mathematics, Physics, Chemistry, Biology, Social Studies, 
-            English Language, English Literature, Computer Science, Hindi, and more, catering to all educational boards.
-          </p>
-          <p class="text-gray-600 mb-6 leading-relaxed">
-            We specialize in preparing students for competitive examinations like CUET, NEET, IIT-JEE, along with providing 
-            exceptional academic support for students from classes 3 through 12. Our holistic approach combines rigorous 
-            academic training with personality development to create well-rounded individuals.
-          </p>
-          
-          <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="flex items-center">
-              <div class="bg-primary-100 p-3 rounded-full mr-3">
-                <i class="fas fa-chalkboard-teacher text-primary-600"></i>
-              </div>
-              <span class="font-medium">Expert Faculty</span>
-            </div>
-            <div class="flex items-center">
-              <div class="bg-primary-100 p-3 rounded-full mr-3">
-                <i class="fas fa-book text-primary-600"></i>
-              </div>
-              <span class="font-medium">Comprehensive Study Material</span>
-            </div>
-            <div class="flex items-center">
-              <div class="bg-primary-100 p-3 rounded-full mr-3">
-                <i class="fas fa-users text-primary-600"></i>
-              </div>
-              <span class="font-medium">Small Batch Sizes</span>
-            </div>
-            <div class="flex items-center">
-              <div class="bg-primary-100 p-3 rounded-full mr-3">
-                <i class="fas fa-chart-line text-primary-600"></i>
-              </div>
-              <span class="font-medium">Regular Performance Analysis</span>
-            </div>
-          </div>
-          
-          <a href="#batches" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all">
-            Explore Our Courses <i class="fas fa-arrow-right ml-2"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Video Section -->
-  <section class="py-16 bg-gray-900 text-white">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading">
-          Experience <span class="gradient-text">THP</span> Learning
-        </h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div>
-        <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-          Get a glimpse of our teaching methodology and classroom environment
-        </p>
-      </div>
-      
-      <div class="max-w-4xl mx-auto">
-        <div class="video-container shadow-2xl hover:shadow-primary-500/20 transition-shadow duration-300">
-          <iframe 
-            src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&controls=0&showinfo=0&rel=0&autoplay=1&mute=1" 
-            title="YouTube video player" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen>
-          </iframe>
-        </div>
-        
-        <div class="mt-8 text-center">
-          <h3 class="text-xl font-bold mb-2">Featured Instructor</h3>
-          <p class="text-gray-300">
-            <span class="text-primary-300 font-medium">Shivam Sir</span>, Mathematics Expert with 10+ years of teaching experience
-          </p>
-          <div class="flex justify-center mt-4 space-x-4">
-            <a href="thp-faculty.html" class="text-primary-300 hover:text-primary-200 transition-colors">
-              <i class="fas fa-user-tie mr-1"></i> Meet Our Faculty
-            </a>
-            <a href="#" class="text-primary-300 hover:text-primary-200 transition-colors">
-              <i class="fas fa-video mr-1"></i> More Videos
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Batches Section -->
-  <section id="batches" class="py-20 px-4 bg-white">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading">
-          Our <span class="gradient-text">Premium</span> Batches
-        </h2>
-        <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div>
-        <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-          Tailored programs designed to maximize your learning potential
-        </p>
-      </div>
-      
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- SSC, Bank, Railway Batch -->
-        <div class="batch-card hover-scale overflow-hidden">
-          <div class="relative">
-            <img src="banner thp.jpg" alt="SSC, Bank, Railway Batch" class="batch-image w-full h-48 object-cover">
-            <div class="absolute top-4 left-4 bg-accent-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-              NEW
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-bold mb-2">SSC, Bank & Railway</h3>
-            <p class="text-gray-600 mb-4">
-              Comprehensive preparation for CGL, CHSL, MTS, GD, CPO, JE, Stenographer, IBPS PO, IBPS Clerk, RRB NTPC, Group D, and other competitive exams.
-            </p>
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="text-lg font-bold text-primary-600">₹1000/Month</span>
-                <span class="text-sm text-gray-500 ml-2">Duration: 6 Months</span>
-              </div>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" 
-                 target="_blank"
-                 class="enroll-btn">
-                Enroll Now
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- CUET Batch -->
-        <div class="batch-card hover-scale overflow-hidden">
-          <div class="relative">
-            <img src="cuet.jpg" alt="CUET Batch" class="batch-image w-full h-48 object-cover">
-            <div class="absolute top-4 left-4 bg-primary-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-              POPULAR
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-bold mb-2">CUET Preparation</h3>
-            <p class="text-gray-600 mb-4">
-              Complete guidance for Common University Entrance Test covering all domains with specialized test series and doubt-solving sessions.
-            </p>
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="text-lg font-bold text-primary-600">₹1000/Month</span>
-                <span class="text-sm text-gray-500 ml-2">Duration: 3 Months</span>
-              </div>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" 
-                 target="_blank"
-                 class="enroll-btn">
-                Enroll Now
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- NEET Batch -->
-        <div class="batch-card hover-scale overflow-hidden">
-          <div class="relative">
-            <img src="neet batch1.jpg" alt="NEET Batch" class="batch-image w-full h-48 object-cover">
-            <div class="absolute top-4 left-4 bg-secondary-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-              INTENSIVE
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-bold mb-2">NEET Preparation</h3>
-            <p class="text-gray-600 mb-4">
-              Rigorous training for National Eligibility cum Entrance Test with comprehensive coverage of Physics, Chemistry, and Biology.
-            </p>
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="text-lg font-bold text-primary-600">₹1500/Month</span>
-                <span class="text-sm text-gray-500 ml-2">Duration: 1 Year</span>
-              </div>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" 
-                 target="_blank"
-                 class="enroll-btn">
-                Enroll Now
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- IIT-JEE Batch -->
-        <div class="batch-card hover-scale overflow-hidden">
-          <div class="relative">
-            <img src="WhatsApp Image 2025-01-08 at 22.09.41.jpeg" alt="IIT-JEE Batch" class="batch-image w-full h-48 object-cover">
-            <div class="absolute top-4 left-4 bg-accent-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-              ELITE
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-bold mb-2">IIT-JEE Preparation</h3>
-            <p class="text-gray-600 mb-4">
-              Advanced coaching for Joint Entrance Examination with focus on problem-solving skills and conceptual clarity.
-            </p>
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="text-lg font-bold text-primary-600">₹1500/Month</span>
-                <span class="text-sm text-gray-500 ml-2">Duration: 1 Year</span>
-              </div>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" 
-                 target="_blank"
-                 class="enroll-btn">
-                Enroll Now
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Class 3-12 Batch -->
-        <div class="batch-card hover-scale overflow-hidden md:col-span-2">
-          <div class="relative">
-            <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="Class 3-12 Batch" class="batch-image w-full h-48 object-cover">
-            <div class="absolute top-4 left-4 bg-primary-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-              FOUNDATION
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-bold mb-2">School Curriculum (Class 3-12)</h3>
-            <p class="text-gray-600 mb-4">
-              Comprehensive academic support for all subjects following CBSE, ICSE, and State Board syllabi with regular tests and progress tracking.
-            </p>
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="text-lg font-bold text-primary-600">Starting from ₹800/Month</span>
-                <span class="text-sm text-gray-500 ml-2">Customized Duration</span>
-              </div>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" 
-                 target="_blank"
-                 class="enroll-btn">
-                Enroll Now
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="text-center mt-12">
-        <p class="text-gray-600 mb-6">Not sure which batch is rightfor you?</p>
-<a href="mailto:theheavenpoint@gmail.com" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all hover:bg-gray-900">
-<i class="fas fa-envelope mr-2"></i> Get Personalized Guidance
-
-</a>
-</div>
-</div></section> <!-- Features Section --> <section class="py-20 bg-gradient-to-b from-gray-50 to-white"> <div class="max-w-6xl mx-auto px-4"> <div class="text-center mb-16"> <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading"> Why Choose <span class="gradient-text">The Heaven Point</span> </h2> <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div> <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"> Our unique approach to education sets us apart </p> </div>  <div class="grid md:grid-cols-3 gap-8">
-    <!-- Feature 1 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <div class="bg-primary-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-        <i class="fas fa-chalkboard-teacher text-primary-600 text-xl"></i>
-      </div>
-      <h3 class="text-xl font-bold mb-3">Expert Faculty</h3>
-      <p class="text-gray-600">
-        Learn from highly qualified teachers with years of experience in competitive exam preparation and subject matter expertise.
-      </p>
-    </div>
-    
-    <!-- Feature 2 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <div class="bg-primary-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-        <i class="fas fa-book-open text-primary-600 text-xl"></i>
-      </div>
-      <h3 class="text-xl font-bold mb-3">Comprehensive Study Material</h3>
-      <p class="text-gray-600">
-        Get access to meticulously prepared study notes, practice papers, and reference materials curated by our experts.
-      </p>
-    </div>
-    
-    <!-- Feature 3 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <div class="bg-primary-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-        <i class="fas fa-users text-primary-600 text-xl"></i>
-      </div>
-      <h3 class="text-xl font-bold mb-3">Small Batch Sizes</h3>
-      <p class="text-gray-600">
-        Experience personalized attention with limited students per batch ensuring individual focus and better learning outcomes.
-      </p>
-    </div>
-    
-    <!-- Feature 4 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <div class="bg-primary-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-        <i class="fas fa-chart-line text-primary-600 text-xl"></i>
-      </div>
-      <h3 class="text-xl font-bold mb-3">Regular Assessments</h3>
-      <p class="text-gray-600">
-        Continuous evaluation through tests and quizzes to track progress and identify areas for improvement.
-      </p>
-    </div>
-    
-    <!-- Feature 5 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <div class="bg-primary-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-        <i class="fas fa-question-circle text-primary-600 text-xl"></i>
-      </div>
-      <h3 class="text-xl font-bold mb-3">Doubt Clearing Sessions</h3>
-      <p class="text-gray-600">
-        Dedicated time for resolving queries and reinforcing concepts to ensure complete understanding.
-      </p>
-    </div>
-    
-    <!-- Feature 6 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <div class="bg-primary-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-        <i class="fas fa-medal text-primary-600 text-xl"></i>
-      </div>
-      <h3 class="text-xl font-bold mb-3">Proven Results</h3>
-      <p class="text-gray-600">
-        Our students consistently achieve top ranks in competitive exams and excellent academic performance.
-      </p>
-    </div>
-  </div>
-</div>
-</section> <!-- Testimonials Section --> <section class="py-20 bg-gray-900 text-white"> <div class="max-w-6xl mx-auto px-4"> <div class="text-center mb-16"> <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading"> Success <span class="gradient-text">Stories</span> </h2> <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div> <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto"> Hear from our students and parents about their THP experience </p> </div>
-  <div class="grid md:grid-cols-2 gap-8">
-    <!-- Testimonial 1 -->
-    <div class="glass-card p-6 rounded-xl bg-gray-800 hover-scale transition-transform">
-      <div class="flex items-center mb-4">
-        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
-        <div>
-          <h4 class="font-bold">Priya Sharma</h4>
-          <p class="text-sm text-gray-400">NEET Student, 2023</p>
-        </div>
-      </div>
-      <p class="text-gray-300">
-        "THP's NEET coaching helped me secure AIR 1245. The faculty's teaching methodology and regular tests were instrumental in my success."
-      </p>
-      <div class="flex mt-4">
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-      </div>
-    </div>
-    
-    <!-- Testimonial 2 -->
-    <div class="glass-card p-6 rounded-xl bg-gray-800 hover-scale transition-transform">
-      <div class="flex items-center mb-4">
-        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
-        <div>
-          <h4 class="font-bold">Rahul Verma</h4>
-          <p class="text-sm text-gray-400">IIT-JEE Student, 2022</p>
-        </div>
-      </div>
-      <p class="text-gray-300">
-        "The problem-solving techniques taught at THP gave me the edge I needed to crack JEE Advanced. The faculty goes above and beyond."
-      </p>
-      <div class="flex mt-4">
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-      </div>
-    </div>
-    
-    <!-- Testimonial 3 -->
-    <div class="glass-card p-6 rounded-xl bg-gray-800 hover-scale transition-transform">
-      <div class="flex items-center mb-4">
-        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Parent" class="w-12 h-12 rounded-full mr-4">
-        <div>
-          <h4 class="font-bold">Mrs. Gupta</h4>
-          <p class="text-sm text-gray-400">Parent of Class 10 Student</p>
-        </div>
-      </div>
-      <p class="text-gray-300">
-        "My daughter's performance improved dramatically after joining THP. The personalized attention and regular feedback are exceptional."
-      </p>
-      <div class="flex mt-4">
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star-half-alt text-yellow-400"></i>
-      </div>
-    </div>
-    
-    <!-- Testimonial 4 -->
-    <div class="glass-card p-6 rounded-xl bg-gray-800 hover-scale transition-transform">
-      <div class="flex items-center mb-4">
-        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Student" class="w-12 h-12 rounded-full mr-4">
-        <div>
-          <h4 class="font-bold">Amit Patel</h4>
-          <p class="text-sm text-gray-400">SSC CGL Student, 2023</p>
-        </div>
-      </div>
-      <p class="text-gray-300">
-        "The SSC batch at THP provided excellent study material and mock tests that mirrored the actual exam pattern. Highly recommended!"
-      </p>
-      <div class="flex mt-4">
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="fas fa-star text-yellow-400"></i>
-        <i class="far fa-star text-yellow-400"></i>
-      </div>
-    </div>
-  </div>
-  
-  <div class="text-center mt-12">
-    <a href="#" 
-       class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all">
-      <i class="fas fa-comments mr-2"></i> Share Your Experience
-    </a>
-  </div>
-</div>
-</section> <!-- Gallery Section --> <section id="gallery" class="py-20 bg-white"> <div class="max-w-6xl mx-auto px-4"> <div class="text-center mb-16"> <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading"> THP <span class="gradient-text">Gallery</span> </h2> <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div> <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"> Glimpses of our classroom, events, and student activities </p> </div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <a href="gallarymini1.jpg" class="gallery-item" data-lightbox="gallery">
-      <img src="gallarymini1.jpg" alt="Gallery Image 1" class="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-    </a>
-    <a href="gallarymini2.jpg" class="gallery-item" data-lightbox="gallery">
-      <img src="gallarymini2.jpg" alt="Gallery Image 2" class="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-    </a>
-    <a href="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" class="gallery-item" data-lightbox="gallery">
-      <img src="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" alt="Gallery Image 3" class="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-    </a>
-    <a href="WhatsApp Image 2025-01-08 at 22.36.38 (1).jpeg" class="gallery-item" data-lightbox="gallery">
-      <img src="WhatsApp Image 2025-01-08 at 22.36.38 (1).jpeg" alt="Gallery Image 4" class="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-    </a>
-  </div>
-  
-  <div class="text-center mt-12">
-    <a href="#" 
-       class="inline-flex items-center px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all">
-      <i class="fas fa-images mr-2"></i> View More Photos
-    </a>
-  </div>
-</div>
-</section> <!-- Blog/Updates Section --> <section id="blog" class="py-20 bg-gray-50"> <div class="max-w-6xl mx-auto px-4"> <div class="text-center mb-16"> <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading"> Latest <span class="gradient-text">Updates</span> </h2> <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div> <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"> News, tips, and resources for academic success </p> </div>
-  <div class="grid md:grid-cols-3 gap-8">
-    <!-- Blog Post 1 -->
-    <div class="glass-card rounded-xl overflow-hidden hover-scale transition-transform">
-      <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
-           alt="Exam Tips" 
-           class="w-full h-48 object-cover">
-      <div class="p-6">
-        <div class="flex items-center text-sm text-gray-500 mb-2">
-          <span>June 15, 2023</span>
-          <span class="mx-2">•</span>
-          <span>5 min read</span>
-        </div>
-        <h3 class="text-xl font-bold mb-3">10 Time Management Tips for Competitive Exams</h3>
-        <p class="text-gray-600 mb-4">
-          Learn how to effectively manage your study time and maximize productivity during exam preparation.
-        </p>
-        <a href="#" class="text-primary-600 font-medium hover:underline transition-colors">
-          Read More <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-    </div>
-    
-    <!-- Blog Post 2 -->
-    <div class="glass-card rounded-xl overflow-hidden hover-scale transition-transform">
-      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
-           alt="NEET Updates" 
-           class="w-full h-48 object-cover">
-      <div class="p-6">
-        <div class="flex items-center text-sm text-gray-500 mb-2">
-          <span>June 10, 2023</span>
-          <span class="mx-2">•</span>
-          <span>4 min read</span>
-        </div>
-        <h3 class="text-xl font-bold mb-3">NEET 2024 Syllabus Changes Explained</h3>
-        <p class="text-gray-600 mb-4">
-          Stay updated with the latest changes in NEET syllabus and how to adapt your preparation strategy.
-        </p>
-        <a href="#" class="text-primary-600 font-medium hover:underline transition-colors">
-          Read More <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-    </div>
-    
-    <!-- Blog Post 3 -->
-    <div class="glass-card rounded-xl overflow-hidden hover-scale transition-transform">
-      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1422&q=80" 
-           alt="Study Techniques" 
-           class="w-full h-48 object-cover">
-      <div class="p-6">
-        <div class="flex items-center text-sm text-gray-500 mb-2">
-          <span>June 5, 2023</span>
-          <span class="mx-2">•</span>
-          <span>6 min read</span>
-        </div>
-        <h3 class="text-xl font-bold mb-3">Effective Study Techniques That Actually Work</h3>
-        <p class="text-gray-600 mb-4">
-          Discover scientifically proven study methods to enhance your learning and retention.
-        </p>
-        <a href="#" class="text-primary-600 font-medium hover:underline transition-colors">
-          Read More <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-  
-  <div class="text-center mt-12">
-    <a href="#" 
-       class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all">
-      <i class="fas fa-newspaper mr-2"></i> View All Updates
-    </a>
-  </div>
-</div>
-</section> <!-- Admissions Section --> <section id="admission" class="py-20 bg-gradient-to-r from-primary-600 to-secondary-600 text-white"> <div class="max-w-6xl mx-auto px-4"> <div class="text-center mb-16"> <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading"> Admission <span class="text-accent-300">Process</span> </h2> <div class="w-24 h-1 bg-white mx-auto mb-6"></div> <p class="text-lg md:text-xl text-white/90 max-w-3xl mx-auto"> Join The Heaven Point in just a few simple steps </p> </div>
-  <div class="grid md:grid-cols-4 gap-6 mb-12">
-    <!-- Step 1 -->
-    <div class="text-center">
-      <div class="bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold border-2 border-white">
-        1
-      </div>
-      <h3 class="text-xl font-bold mb-2">Fill the Form</h3>
-      <p class="text-white/80">
-        Complete our online or offline admission form with basic details
-      </p>
-    </div>
-    
-    <!-- Step 2 -->
-    <div class="text-center">
-      <div class="bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold border-2 border-white">
-        2
-      </div>
-      <h3 class="text-xl font-bold mb-2">Diagnostic Test</h3>
-      <p class="text-white/80">
-        Take a short assessment to evaluate your current level
-      </p>
-    </div>
-    
-    <!-- Step 3 -->
-    <div class="text-center">
-      <div class="bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold border-2 border-white">
-        3
-      </div>
-      <h3 class="text-xl font-bold mb-2">Counseling Session</h3>
-      <p class="text-white/80">
-        Discuss your goals and get a personalized study plan
-      </p>
-    </div>
-    
-    <!-- Step 4 -->
-    <div class="text-center">
-      <div class="bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold border-2 border-white">
-        4
-      </div>
-      <h3 class="text-xl font-bold mb-2">Fee Payment</h3>
-      <p class="text-white/80">
-        Complete the admission by paying the course fees
-      </p>
-    </div>
-  </div>
-  
-  <div class="text-center">
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" 
-       target="_blank"
-       class="inline-flex items-center px-8 py-4 bg-white text-primary-600 hover:bg-gray-100 rounded-full font-bold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
-      <i class="fas fa-file-signature mr-3 text-xl"></i> Start Your Admission Process Now
-    </a>
-  </div>
-</div>
--> <section id="careers" class="py-20 bg-white"> <div class="max-w-6xl mx-auto px-4"> <div class="text-center mb-16"> <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading"> Join Our <span class="gradient-text">Team</span> </h2> <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div> <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"> We're always looking for passionate educators to join our growing team </p> </div>
-  <div class="grid md:grid-cols-2 gap-6 mb-12">
-    <!-- Job 1 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <h3 class="text-xl font-bold mb-2 flex items-center">
-        <i class="fas fa-square-root-alt text-primary-600 mr-3"></i> Mathematics Faculty
-      </h3>
-      <p class="text-gray-600 mb-4">
-        We're seeking an experienced Mathematics teacher for our IIT-JEE and school batches. Minimum 3 years teaching experience required.
-      </p>
-      <div class="flex justify-between items-center">
-        <span class="text-sm text-gray-500">Full-time • Lucknow</span>
-        <a href="https://forms.gle/MGAzTAcPqQVV2W1R8" 
-           target="_blank"
-           class="text-primary-600 font-medium hover:underline transition-colors">
-          Apply Now <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-    </div>
-    
-    <!-- Job 2 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <h3 class="text-xl font-bold mb-2 flex items-center">
-        <i class="fas fa-atom text-primary-600 mr-3"></i> Physics Faculty
-      </h3>
-      <p class="text-gray-600 mb-4">
-        Looking for a Physics expert to teach NEET and JEE aspirants. Strong conceptual knowledge and teaching skills required.
-      </p>
-      <div class="flex justify-between items-center">
-        <span class="text-sm text-gray-500">Full-time • Lucknow</span>
-        <a href="https://forms.gle/MGAzTAcPqQVV2W1R8" 
-           target="_blank"
-           class="text-primary-600 font-medium hover:underline transition-colors">
-          Apply Now <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-    </div>
-    
-    <!-- Job 3 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <h3 class="text-xl font-bold mb-2 flex items-center">
-        <i class="fas fa-dna text-primary-600 mr-3"></i> Biology Faculty
-      </h3>
-      <p class="text-gray-600 mb-4">
-        Join our NEET Biology team. Candidates should have thorough knowledge of NCERT and experience in competitive exam coaching.
-      </p>
-      <div class="flex justify-between items-center">
-        <span class="text-sm text-gray-500">Part-time/Full-time • Lucknow</span>
-        <a href="https://forms.gle/MGAzTAcPqQVV2W1R8" 
-           target="_blank"
-           class="text-primary-600 font-medium hover:underline transition-colors">
-          Apply Now <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-    </div>
-    
-    <!-- Job 4 -->
-    <div class="glass-card p-6 rounded-xl hover-scale transition-transform">
-      <h3 class="text-xl font-bold mb-2 flex items-center">
-        <i class="fas fa-laptop-code text-primary-600 mr-3"></i> Computer Faculty
-      </h3>
-      <p class="text-gray-600 mb-4">
-        Required Computer Science teacher for school batches (9-12) with knowledge of Python, SQL, and Computer Fundamentals.
-      </p>
-      <div class="flex justify-between items-center">
-        <span class="text-sm text-gray-500">Part-time • Lucknow</span>
-        <a href="https://forms.gle/MGAzTAcPqQVV2W1R8" 
-           target="_blank"
-           class="text-primary-600 font-medium hover:underline transition-colors">
-          Apply Now <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-  
-  <div class="text-center">
-    <p class="text-gray-600 mb-6">Don't see your preferred position listed?</p>
-    <a href="mailto:theheavenpoint@gmail.com?subject=Job%20Application%20for%20[Your%20Desired%20Position]" 
-       class="inline-flex items-center px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all">
-      <i class="fas fa-paper-plane mr-2"></i> Send Us Your Resume
-    </a>
-  </div>
-</div>
-</section> <!-- Contact Section --> <section id="contact" class="py-20 bg-gray-50"> <div class="max-w-6xl mx-auto px-4"> <div class="text-center mb-16"> <h2 class="text-3xl md:text-4xl font-bold mb-4 font-heading"> Get In <span class="gradient-text">Touch</span> </h2> <div class="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6"></div> <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"> We'd love to hear from you. Reach out for inquiries or visit us. </p> </div>
-  <div class="grid md:grid-cols-2 gap-12">
-    <!-- Contact Info -->
-    <div>
-      <div class="glass-card p-8 rounded-xl">
-        <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
-        
-        <div class="space-y-6">
-          <div class="flex items-start">
-            <div class="bg-primary-100 p-3 rounded-full mr-4">
-              <i class="fas fa-map-marker-alt text-primary-600"></i>
-            </div>
-            <div>
-              <h4 class="font-bold mb-1">Address</h4>
-              <p class="text-gray-600">123 Education Street, Knowledge City, Lucknow, Uttar Pradesh 226001</p>
-            </div>
-          </div>
-          
-          <div class="flex items-start">
-            <div class="bg-primary-100 p-3 rounded-full mr-4">
-              <i class="fas fa-envelope text-primary-600"></i>
-            </div>
-            <div>
-              <h4 class="font-bold mb-1">Email</h4>
-              <a href="mailto:theheavenpoint@gmail.com" class="text-primary-600 hover:underline transition-colors">
-                theheavenpoint@gmail.com
-              </a>
-            </div>
-          </div>
-          
-          <div class="flex items-start">
-            <div class="bg-primary-100 p-3 rounded-full mr-4">
-              <i class="fas fa-phone-alt text-primary-600"></i>
-            </div>
-            <div>
-              <h4 class="font-bold mb-1">Phone</h4>
-              <a href="tel:8005759143" class="text-primary-600 hover:underline transition-colors">
-                +91 8005759143
-              </a>
-            </div>
-          </div>
-          
-          <div class="flex items-start">
-            <div class="bg-primary-100 p-3 rounded-full mr-4">
-              <i class="fas fa-clock text-primary-600"></i>
-            </div>
-            <div>
-              <h4 class="font-bold mb-1">Working Hours</h4>
-              <p class="text-gray-600">Monday-Saturday: 8:00 AM - 8:00 PM<br>Sunday: 10:00 AM - 4:00 PM</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="mt-8">
-          <h4 class="font-bold mb-3">Follow Us</h4>
-          <div class="flex space-x-4">
-            <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" 
-               target="_blank"
-               class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700 transition-colors">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://www.instagram.com/theheavenpoint/" 
-               target="_blank"
-               class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700 transition-colors">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" 
-               target="_blank"
-               class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700 transition-colors">
-              <i class="fab fa-youtube"></i>
-            </a>
-            <a href="https://t.me/heavenpoint" 
-               target="_blank"
-               class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700 transition-colors">
-              <i class="fab fa-telegram-plane"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Contact Form -->
-    <div>
-      <div class="glass-card p-8 rounded-xl">
-        <h3 class="text-2xl font-bold mb-6">Send Us a Message</h3>
-        <form id="contactForm" class="space-y-4">
-          <div>
-            <label for="name" class="block text-gray-700 font-medium mb-1">Your Name</label>
-            <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent" required>
-          </div>
-          
-          <div>
-            <label for="email" class="block text-gray-700 font-medium mb-1">Email Address</label>
-            <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent" required>
-          </div>
-          
-          <div>
-            <label for="phone" class="block text-gray-700 font-medium mb-1">Phone Number</label>
-            <input type="tel" id="phone" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent">
-          </div>
-          
-          <div>
-            <label for="subject" class="block text-gray-700 font-medium mb-1">Subject</label>
-            <select id="subject" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent">
-              <option value="">Select a subject</option>
-              <option value="admission">Admission Inquiry</option>
-              <option value="course">Course Information</option>
-              <option value="feedback">Feedback/Suggestion</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          
-          <div>
-            <label for="message" class="block text-gray-700 font-medium mb-1">Message</label>
-            <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"></textarea>
-          </div>
-          
-          <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white py-3 rounded-lg hover:shadow-lg transition-all font-semibold">
-            Send Message
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-</section> <!-- Map Section --> <div class="h-96 w-full"> <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3557.367235085728!2d80.9464153150447!3d26.92311808312393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399957e8a4e2f3a5%3A0x7b8f6a9b3b0b3b3b!2sThe%20Heaven%20Point!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" class="filter grayscale-20 hover
