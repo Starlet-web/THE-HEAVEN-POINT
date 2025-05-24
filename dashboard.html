@@ -5,10 +5,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>THP Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #f72585;
+      --light: #f8f9fa;
+      --dark: #212529;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 28px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+    }
+    
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent), #b5179e);
+      color: white;
+    }
+    
+    .btn-accent:hover {
+      background: linear-gradient(135deg, #b5179e, var(--accent));
+      box-shadow: 0 8px 25px rgba(247, 37, 133, 0.4);
+    }
+    
+    .header-gradient {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+  </style>
 
   <script>
     // Firebase config
@@ -29,6 +107,7 @@
         window.location.href = "index.html"; // Redirect to login page
       } else {
         document.getElementById("userEmail").textContent = user.email;
+        document.getElementById("userInitial").textContent = user.email.charAt(0).toUpperCase();
       }
     });
 
@@ -38,114 +117,98 @@
         window.location.href = "index.html"; // Redirect after logout
       });
     }
+    
+    // Open lecture function
+    function openLecture() {
+      window.open('online-lecture.html', '_blank');
+    }
+    
+    // Open notes function
+    function openNotes() {
+      window.open('thp-special-notes.html', '_blank');
+    }
   </script>
 </head>
 
-<body class="bg-gray-100 min-h-screen font-sans">
-  <header class="bg-blue-700 text-white p-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold">THP Coaching Dashboard</h1>
+<body>
+  <header class="header-gradient text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold font-montserrat flex items-center">
+      <i class="fas fa-graduation-cap mr-3"></i>
+      THP Coaching Dashboard
+    </h1>
     <div class="flex items-center gap-4">
-      <span class="text-sm hidden sm:inline">Welcome, <span id="userEmail" class="font-semibold"></span></span>
-      <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-sm">Logout</button>
+      <div class="hidden sm:flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-white text-blue-700 flex items-center justify-center font-bold">
+          <span id="userInitial"></span>
+        </div>
+        <span class="text-sm">Welcome, <span id="userEmail" class="font-semibold"></span></span>
+      </div>
+      <button onclick="logout()" class="bg-white text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
     </div>
   </header>
 
-  <main class="p-6">
-    <div class="bg-white p-6 rounded shadow-md">
-      <h2 class="text-xl font-semibold text-gray-800 mb-2">Dashboard Content</h2>
-      <p class="text-gray-600">This is your secured student dashboard. Add your course cards, links, and resources here.</p>
+  <main class="container mx-auto p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Lecture Card -->
+      <div class="glass-card p-8 text-center animate-fade-in delay-1">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-white text-3xl">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 font-montserrat">Online Lectures</h2>
+        <p class="text-gray-600 mb-6">Access live and recorded lectures from our expert faculty members.</p>
+        <button onclick="openLecture()" class="btn-primary w-full max-w-xs mx-auto flex items-center justify-center gap-2">
+          <i class="fas fa-play"></i>
+          Join Lecture
+        </button>
+      </div>
+      
+      <!-- Notes Card -->
+      <div class="glass-card p-8 text-center animate-fade-in delay-2">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center text-white text-3xl">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 font-montserrat">Special Notes</h2>
+        <p class="text-gray-600 mb-6">Download comprehensive study materials and reference notes.</p>
+        <button onclick="openNotes()" class="btn-primary w-full max-w-xs mx-auto flex items-center justify-center gap-2">
+          <i class="fas fa-download"></i>
+          View Notes
+        </button>
+      </div>
+      
+      <!-- Quick Links Card -->
+      <div class="glass-card p-6 animate-fade-in delay-3 md:col-span-2">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 font-montserrat flex items-center gap-2">
+          <i class="fas fa-link text-blue-500"></i>
+          Quick Links
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <a href="#" class="p-4 rounded-lg bg-blue-50 hover:bg-blue-100 text-center transition-colors">
+            <i class="fas fa-calendar-alt text-blue-500 text-2xl mb-2"></i>
+            <p class="font-medium">Schedule</p>
+          </a>
+          <a href="#" class="p-4 rounded-lg bg-green-50 hover:bg-green-100 text-center transition-colors">
+            <i class="fas fa-tasks text-green-500 text-2xl mb-2"></i>
+            <p class="font-medium">Assignments</p>
+          </a>
+          <a href="#" class="p-4 rounded-lg bg-purple-50 hover:bg-purple-100 text-center transition-colors">
+            <i class="fas fa-chart-line text-purple-500 text-2xl mb-2"></i>
+            <p class="font-medium">Performance</p>
+          </a>
+          <a href="#" class="p-4 rounded-lg bg-orange-50 hover:bg-orange-100 text-center transition-colors">
+            <i class="fas fa-question-circle text-orange-500 text-2xl mb-2"></i>
+            <p class="font-medium">Support</p>
+          </a>
+        </div>
+      </div>
     </div>
   </main>
+
+  <footer class="text-center py-6 text-gray-500 text-sm">
+    <p>© 2023 THP Coaching Center. All rights reserved.</p>
+    <p class="mt-1">Empowering students to achieve their academic dreams</p>
+  </footer>
 </body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THP Online Lecture</title>
-    <style>
-        /* Stylish Button with New Colors */
-        .lecture-button {
-            padding: 15px 40px;
-            font-size: 20px;
-            color: white;
-            background: linear-gradient(135deg, #e91e63, #ff5722); /* Pink to orange gradient */
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease-in-out;
-            text-transform: uppercase;
-        }
-
-        .lecture-button:hover {
-            background: linear-gradient(135deg, #ff5722, #e91e63); /* Reverse gradient */
-            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body>
-    <!-- Main Button -->
-    <div style="text-align: center; margin-top: 100px;">
-        <button class="lecture-button" onclick="openLecture()">THP Online Lecture</button>
-    </div>
-
-    <script>
-        // JavaScript function to open a new page
-        function openLecture() {
-            window.open('!DOCTYPE .html', '_blank');
-        }
-    </script>
-</body>
-
-
-
-
-
-  <head>
-   <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THP Special Notes</title>
-    <style>
-        /* Stylish Button */
-        .notes-button {
-            padding: 15px 40px;
-            font-size: 20px;
-            color: white;
-            background: linear-gradient(135deg, #1e88e5, #4caf50);
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease-in-out;
-            text-transform: uppercase;
-        }
-
-        .notes-button:hover {
-            background: linear-gradient(135deg, #4caf50, #1e88e5);
-            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body>
-    <!-- Main Button -->
-    <div style="text-align: center; margin-top: 100px;">
-        <button class="notes-button" onclick="openNotes()">THP Special Notes</button>
-    </div>
-
-    <script>
-        // JavaScript function to open a new page
-        function openNotes() {
-            window.open('thp-special-notes.html', '_blank');
-        }
-    </script>
-</body>
-</html>
 </html>
