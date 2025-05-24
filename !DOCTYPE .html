@@ -7,124 +7,420 @@
     <title>THP Online Lectures</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --accent: #ffe66d;
+            --dark: #1a1a2e;
+            --darker: #16213e;
+            --light: #f8f9fa;
+            --success: #06d6a0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle, #1e1e2f, #141418);
-            color: #f0f0f0;
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+            color: var(--light);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        header {
             text-align: center;
-            padding: 30px 15px;
-            margin: 0;
+            margin-bottom: 3rem;
+            position: relative;
+            animation: fadeIn 1s ease-out;
         }
-
+        
         h1 {
-            font-size: 2.5em;
-            color: #ff6b6b;
-            margin-bottom: 15px;
-            text-shadow: 3px 3px 8px rgba(255, 0, 0, 0.5);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
         }
-
-        p {
-            font-size: 1.2em;
-            margin-bottom: 25px;
-            color: #bdc3c7;
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
         }
-
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
         .box-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
         }
-
+        
         .box {
-            background: linear-gradient(135deg, #2c5364, #0f2027);
-            color: #e0e0e0;
-            padding: 20px;
-            font-size: 18px;
-            height: 110px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            padding: 2rem 1rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-            transition: transform 0.4s, box-shadow 0.4s, background 0.4s;
-            text-transform: uppercase;
-            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            min-height: 180px;
         }
-
+        
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(78, 205, 196, 0.2));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .box:hover::before {
+            opacity: 1;
+        }
+        
         .box:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
-            background: linear-gradient(135deg, #ff6b6b, #ff4e50);
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
         }
-
+        
+        .box i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .box .box-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .box .box-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
         .special-box {
-            background: linear-gradient(135deg, #ff4e50, #f9d423);
-            font-weight: bolder;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
         }
-
+        
+        .special-box i {
+            color: var(--darker);
+        }
+        
+        .special-box .box-title {
+            color: var(--darker);
+            font-weight: 700;
+        }
+        
+        .special-box .box-subtitle {
+            color: rgba(0, 0, 0, 0.8);
+        }
+        
         .notice {
-            margin-top: 40px;
-            background: linear-gradient(135deg, #232526, #414345);
-            color: #ecf0f1;
-            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.8;
+            padding: 2rem;
+            margin: 3rem auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
         }
-
+        
+        .notice::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+        }
+        
         .notice h3 {
-            font-size: 1.6em;
-            color: #e74c3c;
-            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-
-        @media (max-width: 600px) {
-            .box {
-                height: 130px;
+        
+        .notice h3 i {
+            color: var(--primary);
+        }
+        
+        .notice p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .notice .schedule-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        .notice .schedule-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .notice .schedule-item i {
+            color: var(--secondary);
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
             }
-
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .box-container {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .box {
+                min-height: 150px;
+                padding: 1.5rem 1rem;
+            }
+            
+            .box i {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .box-container {
+                grid-template-columns: 1fr;
+            }
+            
             .notice {
-                width: 95%;
+                padding: 1.5rem;
             }
         }
     </style>
-
 </head>
 
 <body>
+    <div class="container">
+        <header class="floating">
+            <h1>THP Online Lectures</h1>
+            <p class="subtitle">Select your course and join instantly with world-class educators</p>
+        </header>
 
-    <h1>THP Online Lectures</h1>
-    <p>Select your class and join instantly!</p>
+        <div class="box-container">
+            <div class="box" onclick="window.open('neetclassroom.html', '_blank')">
+                <i class="fas fa-heartbeat"></i>
+                <div class="box-title">NEET</div>
+                <div class="box-subtitle">Medical Entrance</div>
+            </div>
+            
+            <div class="box" onclick="window.open('https://meet.google.com/iit-jee-link', '_blank')">
+                <i class="fas fa-atom"></i>
+                <div class="box-title">IIT JEE</div>
+                <div class="box-subtitle">Engineering Prep</div>
+            </div>
+            
+            <div class="box" onclick="window.open('https://meet.google.com/ssc-bank-railway-link', '_blank')">
+                <i class="fas fa-landmark"></i>
+                <div class="box-title">SSC/BANK</div>
+                <div class="box-subtitle">Government Jobs</div>
+            </div>
+            
+            <div class="box" onclick="window.open('https://meet.google.com/cuet-link', '_blank')">
+                <i class="fas fa-university"></i>
+                <div class="box-title">CUET</div>
+                <div class="box-subtitle">Central University</div>
+            </div>
+            
+            <div class="box" onclick="window.open('3rd to 12 th.html', '_blank')">
+                <i class="fas fa-graduation-cap"></i>
+                <div class="box-title">Class 9-12</div>
+                <div class="box-subtitle">School Education</div>
+            </div>
+            
+            <div class="box special-box" onclick="window.open('https://meet.google.com/gjy-fzmk-uyi?authuser=0', '_blank')">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <div class="box-title">Seminar</div>
+                <div class="box-subtitle">Special Session</div>
+            </div>
+        </div>
 
-    <div class="box-container">
-        <div class="box" onclick="window.open('neetclassroom.html', '_blank')">NEET</div>
-        <div class="box" onclick="window.open('https://meet.google.com/iit-jee-link', '_blank')">IIT JEE</div>
-        <div class="box" onclick="window.open('https://meet.google.com/ssc-bank-railway-link', '_blank')">SSC/BANK</div>
-        <div class="box" onclick="window.open('https://meet.google.com/cuet-link', '_blank')">CUET</div>
-        <div class="box" onclick="window.open('3rd to 12 th.html', '_blank')">Class 9-12</div>
-        <div class="box special-box" onclick="window.open('https://meet.google.com/gjy-fzmk-uyi?authuser=0', '_blank')">Seminar</div>
+        <div class="notice">
+            <h3><i class="fas fa-bell"></i> Lecture Schedule</h3>
+            <div class="schedule-item">
+                <i class="fas fa-heartbeat"></i>
+                <p><strong>NEET:</strong> Monday to Friday, 5:00 PM - 7:00 PM</p>
+            </div>
+            <div class="schedule-item">
+                <i class="fas fa-atom"></i>
+                <p><strong>IIT JEE:</strong> Monday to Friday, 7:00 PM - 9:00 PM</p>
+            </div>
+            <div class="schedule-item">
+                <i class="fas fa-landmark"></i>
+                <p><strong>SSC/BANK:</strong> Saturday, 10:00 AM - 12:00 PM</p>
+            </div>
+            <div class="schedule-item">
+                <i class="fas fa-university"></i>
+                <p><strong>CUET:</strong> Sunday, 2:00 PM - 4:00 PM</p>
+            </div>
+            <div class="schedule-item">
+                <i class="fas fa-graduation-cap"></i>
+                <p><strong>9th-12th:</strong> Daily, 3:00 PM - 4:30 PM</p>
+            </div>
+            <div class="schedule-item">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <p><strong>Seminar:</strong> Saturday, 11:00 AM - 1:00 PM</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 THP Online Lectures | Empowering Students Nationwide</p>
+        </footer>
     </div>
 
-    <div class="notice">
-        <h3>🔥🎓 Notice 🎓🔥</h3>
-        <p>
-            - NEET: Mon-Fri, 5-7 PM <br>
-            - IIT JEE: Mon-Fri, 7-9 PM <br>
-            - SSC/BANK: Sat, 10 AM-12 PM <br>
-            - CUET: Sun, 2-4 PM <br>
-            - 9th-12th: Daily, 3-4:30 PM <br>
-            - Seminar: Sat, 11 AM-1 PM
-        </p>
-    </div>
-
+    <script>
+        // Add ripple effect to boxes
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                this.appendChild(ripple);
+                
+                let x = e.clientX - e.target.getBoundingClientRect().left;
+                let y = e.clientY - e.target.getBoundingClientRect().top;
+                
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 1000);
+            });
+        });
+        
+        // Add animation to boxes on load
+        document.querySelectorAll('.box').forEach((box, index) => {
+            box.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s forwards`;
+            box.style.opacity = 0;
+        });
+    </script>
 </body>
 
 </html>
