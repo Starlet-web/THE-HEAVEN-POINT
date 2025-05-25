@@ -2,314 +2,213 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Starlet B.Sc. 1st Year Biology Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THP Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
-  <!-- AOS CSS -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    :root {
+      --primary: #4361ee;
+      --secondary: #3a0ca3;
+      --accent: #f72585;
+      --light: #f8f9fa;
+      --dark: #212529;
+    }
     
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       min-height: 100vh;
     }
     
     .glass-card {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
       border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
       transition: all 0.3s ease;
     }
     
     .glass-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-    }
-    
-    .section-title {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #0f766e;
-      position: relative;
-      padding-bottom: 8px;
-      margin-bottom: 16px;
-    }
-    
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 40px;
-      height: 3px;
-      background: linear-gradient(to right, #0d9488, #14b8a6);
-      border-radius: 3px;
-    }
-    
-    .poster-img {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-    }
-    
-    .poster-img:hover {
-      transform: scale(1.01);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    }
-    
-    .stylish-logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
     }
     
     .btn-primary {
-      background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
       border: none;
+      border-radius: 50px;
+      padding: 12px 28px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
     }
     
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
-      background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
     }
     
-    .notice-item {
-      position: relative;
-      padding-left: 24px;
-      margin-bottom: 12px;
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent), #b5179e);
+      color: white;
     }
     
-    .notice-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 8px;
-      width: 10px;
-      height: 10px;
-      background: #14b8a6;
-      border-radius: 50%;
+    .btn-accent:hover {
+      background: linear-gradient(135deg, #b5179e, var(--accent));
+      box-shadow: 0 8px 25px rgba(247, 37, 133, 0.4);
     }
     
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid #14b8a6;
-      transition: all 0.3s ease;
+    .header-gradient {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
     }
     
-    .user-avatar:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
-    .tag {
-      display: inline-block;
-      padding: 4px 10px;
-      background-color: #ccfbf1;
-      color: #0d9488;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 500;
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
     }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
   </style>
-</head>
-<body>
 
-  <div class="max-w-4xl mx-auto px-4 py-8 space-y-6">
-
-    <!-- Header -->
-    <header class="flex justify-between items-center" data-aos="fade-down">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-600 to-emerald-500 flex items-center justify-center text-white">
-          <i class="fas fa-leaf text-xl"></i>
-        </div>
-        <h1 class="stylish-logo">Starlet</h1>
-      </div>
-      <div class="flex items-center gap-3">
-        <span class="text-sm">Welcome, <span id="userEmail" class="font-semibold"></span></span>
-        <button onclick="logout()" class="px-4 py-2 rounded-lg btn-primary font-medium flex items-center gap-2 text-sm">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-        <img src="https://i.pravatar.cc/150?img=32" alt="User" class="user-avatar" />
-      </div>
-    </header>
-
-    <!-- Poster -->
-    <div class="glass-card overflow-hidden" data-aos="zoom-in">
-      <img src="IMG_20250417_015130.png" alt="Dashboard Poster" class="poster-img">
-    </div>
-
-    <!-- Welcome -->
-    <div class="glass-card p-5" data-aos="fade-up">
-      <h2 class="section-title">Welcome, Budding Biologists! <i class="fas fa-dna text-emerald-500"></i></h2>
-      <p class="text-gray-600 leading-relaxed text-sm">
-        Embark on your exciting journey through the world of biology. Access all your course materials, live lectures, and seminars in one place. 
-        Let's explore the wonders of life sciences together!
-      </p>
-    </div>
-
-    <!-- Live Lecture -->
-    <div class="glass-card p-5" data-aos="fade-right">
-      <h2 class="section-title">Live Lecture <i class="fas fa-video text-emerald-500"></i></h2>
-      <div class="mt-4">
-        <a href="zoomus://zoom.us/join?confno=4527503240&pwd=QDw5xc"
-           class="inline-flex items-center px-5 py-2.5 btn-primary rounded-lg font-medium text-sm">
-          <i class="fas fa-play-circle mr-2"></i> Join Biology Lecture
-        </a>
-        <div class="mt-3 text-xs text-gray-500 flex items-center">
-          <i class="fas fa-clock mr-2 text-emerald-500"></i> Next lecture: Today at 10:30 AM
-        </div>
-      </div>
-    </div>
-
-    <!-- Notes -->
-    <div class="glass-card p-5" data-aos="fade-left">
-      <h2 class="section-title">Download Notes <i class="fas fa-book-open text-emerald-500"></i></h2>
-      <div class="mt-4">
-        <a href="1notes.html"
-           class="inline-flex items-center px-5 py-2.5 btn-primary rounded-lg font-medium text-sm">
-          <i class="fas fa-download mr-2"></i> Get 1st Year Bio Notes
-        </a>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <span class="tag">PDF Format</span>
-          <span class="tag">Updated Weekly</span>
-          <span class="tag">Color Diagrams</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Seminar -->
-    <div class="glass-card p-5" data-aos="flip-left">
-      <h2 class="section-title">Seminar <i class="fas fa-microscope text-emerald-500"></i></h2>
-      <div class="mt-4">
-        <a href="zoomus://zoom.us/join?confno=9876543210&pwd=xyz123" target="_blank"
-           class="inline-flex items-center px-5 py-2.5 btn-primary rounded-lg font-medium text-sm">
-          <i class="fas fa-chalkboard-teacher mr-2"></i> Join Seminar
-        </a>
-        <div class="mt-3">
-          <h3 class="font-medium text-gray-700 text-sm flex items-center">
-            <i class="fas fa-calendar-day text-emerald-500 mr-2"></i> Upcoming Seminar:
-          </h3>
-          <p class="text-xs text-gray-600 mt-1">"Recent Advances in Molecular Biology" - Prof. Smith (June 15, 2025)</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Notice Board -->
-    <div class="glass-card p-5" data-aos="fade-up">
-      <h2 class="section-title">Notice Board <i class="fas fa-thumbtack text-emerald-500"></i></h2>
-      <ul class="mt-4 space-y-3">
-        <li class="notice-item">
-          <div class="flex items-start">
-            <i class="fas fa-bullhorn text-emerald-500 mr-2 mt-0.5 text-sm"></i>
-            <span class="text-sm">Classes start from <strong class="text-teal-600">1st June 2025</strong>.</span>
-          </div>
-        </li>
-        <li class="notice-item">
-          <div class="flex items-start">
-            <i class="fas fa-clipboard-check text-emerald-500 mr-2 mt-0.5 text-sm"></i>
-            <span class="text-sm">Attendance is mandatory from Day 1. Minimum 75% required for exams.</span>
-          </div>
-        </li>
-        <li class="notice-item">
-          <div class="flex items-start">
-            <i class="fas fa-phone-alt text-emerald-500 mr-2 mt-0.5 text-sm"></i>
-            <div>
-              <span class="text-sm">Contact Faculty:</span>
-              <div class="mt-1 ml-2 space-y-1">
-                <div class="flex items-center">
-                  <i class="fas fa-user-tie text-xs text-emerald-400 mr-2"></i>
-                  <span class="text-xs">Mohit Sir: <a href="tel:+919648837922" class="text-teal-600 hover:underline">+91 9648837922</a></span>
-                </div>
-                <div class="flex items-center">
-                  <i class="fas fa-user-tie text-xs text-emerald-400 mr-2"></i>
-                  <span class="text-xs">Himanshu Sir: <a href="tel:+917007925727" class="text-teal-600 hover:underline">+91 70079 25727</a></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Footer -->
-    <footer class="text-center pt-6 pb-4 text-gray-500 text-xs" data-aos="fade-up">
-      <div class="flex justify-center gap-4 mb-3">
-        <a href="#" class="text-teal-600 hover:text-teal-800"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="text-teal-600 hover:text-teal-800"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="text-teal-600 hover:text-teal-800"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="text-teal-600 hover:text-teal-800"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-      <p>© 2025 Starlet Biology Dashboard. All rights reserved.</p>
-    </footer>
-  </div>
-
-  <!-- Firebase Config & Auth -->
   <script>
+    // Firebase config
     const firebaseConfig = {
-      apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
-      authDomain: "starlet-registor.firebaseapp.com",
-      projectId: "starlet-registor",
-      storageBucket: "starlet-registor.appspot.com",
-      messagingSenderId: "904193225045",
-      appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+      apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
+      authDomain: "login-form-eee86.firebaseapp.com",
+      projectId: "login-form-eee86",
+      storageBucket: "login-form-eee86.appspot.com",
+      messagingSenderId: "717475952542",
+      appId: "1:717475952542:web:f79db77ed1f60d117b488f",
+      measurementId: "G-VV0D9TNK0Y"
     };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
 
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      }).catch((error) => {
-        console.error("Logout Error:", error);
-        alert("Logout failed. Please try again.");
-      });
-    }
-
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        // User is signed in
-        document.getElementById('userEmail').textContent = user.email;
+    // Protect page: redirect if not logged in
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = "index.html"; // Redirect to login page
       } else {
-        // No user is signed in
-        window.location.href = "login.html";
+        document.getElementById("userEmail").textContent = user.email;
+        document.getElementById("userInitial").textContent = user.email.charAt(0).toUpperCase();
       }
     });
-  </script>
 
-  <!-- AOS JS -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
-    AOS.init({
-      duration: 700,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 50
-    });
+    // Logout function
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "index.html"; // Redirect after logout
+      });
+    }
+    
+    // Open lecture function
+    function openLecture() {
+      window.open('online-lecture.html', '_blank');
+    }
+    
+    // Open notes function
+    function openNotes() {
+      window.open('thp-special-notes.html', '_blank');
+    }
   </script>
+</head>
+
+<body>
+  <header class="header-gradient text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold font-montserrat flex items-center">
+      <i class="fas fa-graduation-cap mr-3"></i>
+      THP Coaching Dashboard
+    </h1>
+    <div class="flex items-center gap-4">
+      <div class="hidden sm:flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-white text-blue-700 flex items-center justify-center font-bold">
+          <span id="userInitial"></span>
+        </div>
+        <span class="text-sm">Welcome, <span id="userEmail" class="font-semibold"></span></span>
+      </div>
+      <button onclick="logout()" class="bg-white text-blue-700 hover:bg-blue-50 px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container mx-auto p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Lecture Card -->
+      <div class="glass-card p-8 text-center animate-fade-in delay-1">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center text-white text-3xl">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 font-montserrat">Online Lectures</h2>
+        <p class="text-gray-600 mb-6">Access live and recorded lectures from our expert faculty members.</p>
+        <button onclick="openLecture()" class="btn-primary w-full max-w-xs mx-auto flex items-center justify-center gap-2">
+          <i class="fas fa-play"></i>
+          Join Lecture
+        </button>
+      </div>
+      
+      <!-- Notes Card -->
+      <div class="glass-card p-8 text-center animate-fade-in delay-2">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center text-white text-3xl">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 font-montserrat">Special Notes</h2>
+        <p class="text-gray-600 mb-6">Download comprehensive study materials and reference notes.</p>
+        <button onclick="openNotes()" class="btn-primary w-full max-w-xs mx-auto flex items-center justify-center gap-2">
+          <i class="fas fa-download"></i>
+          View Notes
+        </button>
+      </div>
+      
+      <!-- Quick Links Card -->
+      <div class="glass-card p-6 animate-fade-in delay-3 md:col-span-2">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 font-montserrat flex items-center gap-2">
+          <i class="fas fa-link text-blue-500"></i>
+          Quick Links
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <a href="#" class="p-4 rounded-lg bg-blue-50 hover:bg-blue-100 text-center transition-colors">
+            <i class="fas fa-calendar-alt text-blue-500 text-2xl mb-2"></i>
+            <p class="font-medium">Schedule</p>
+          </a>
+          <a href="#" class="p-4 rounded-lg bg-green-50 hover:bg-green-100 text-center transition-colors">
+            <i class="fas fa-tasks text-green-500 text-2xl mb-2"></i>
+            <p class="font-medium">Assignments</p>
+          </a>
+          <a href="#" class="p-4 rounded-lg bg-purple-50 hover:bg-purple-100 text-center transition-colors">
+            <i class="fas fa-chart-line text-purple-500 text-2xl mb-2"></i>
+            <p class="font-medium">Performance</p>
+          </a>
+          <a href="#" class="p-4 rounded-lg bg-orange-50 hover:bg-orange-100 text-center transition-colors">
+            <i class="fas fa-question-circle text-orange-500 text-2xl mb-2"></i>
+            <p class="font-medium">Support</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-6 text-gray-500 text-sm">
+    <p>© 2023 THP Coaching Center. All rights reserved.</p>
+    <p class="mt-1">Empowering students to achieve their academic dreams</p>
+  </footer>
 </body>
 </html>
