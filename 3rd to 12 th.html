@@ -3,19 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coaching Institute - Online Learning</title>
+    <title>THP Classes - Online Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Google Font */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
         /* General Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #ffffff;
-            text-align: center;
-            color: #333;
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header */
@@ -23,107 +41,316 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            background: #f4f4f4;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .logo {
-            width: 70px;
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
             margin-right: 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: rotate(10deg) scale(1.05);
+        }
+
+        .header-content {
+            text-align: center;
         }
 
         h1 {
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: #0056b3;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #4361ee, #3f37c9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        p {
+        .tagline {
+            font-size: 1rem;
+            color: #6c757d;
+            font-weight: 400;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .intro-text {
             font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #555;
+            margin-bottom: 2.5rem;
+            color: #495057;
+            position: relative;
+            display: inline-block;
+        }
+
+        .intro-text::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 3px;
         }
 
         /* Container */
         .container {
-            display: flex;
-            flex-wrap: wrap;  /* Allow wrapping on smaller screens */
-            justify-content: center;  /* Center buttons horizontally */
-            gap: 20px;  /* Space between buttons */
-            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         /* Class Button */
         .class-button {
-            background: #007bff;
-            color: white;
-            padding: 15px 30px;
-            font-size: 18px;
+            background: white;
+            color: var(--dark);
+            padding: 1.5rem 1rem;
+            font-size: 1.1rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             text-decoration: none;
-            transition: 0.3s;
-            display: inline-block;
-            width: 220px;  /* Set the button width */
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            font-weight: 500;
-            box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+            font-weight: 600;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
+            z-index: 1;
+            height: 120px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .class-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .class-button:hover {
-            background: #0056b3;
-            box-shadow: 0 6px 12px rgba(0, 86, 179, 0.4);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(67, 97, 238, 0.2);
+            color: white;
         }
+
+        .class-button:hover::before {
+            opacity: 1;
+        }
+
+        .class-button i {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .class-button:hover i {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Different colors for each button */
+        .class-button:nth-child(1) { --primary: #4361ee; --secondary: #3a56d4; }
+        .class-button:nth-child(2) { --primary: #4895ef; --secondary: #3f7bc9; }
+        .class-button:nth-child(3) { --primary: #4cc9f0; --secondary: #3fb0d4; }
+        .class-button:nth-child(4) { --primary: #7209b7; --secondary: #5e08a0; }
+        .class-button:nth-child(5) { --primary: #f72585; --secondary: #d41a6f; }
+        .class-button:nth-child(6) { --primary: #3a0ca3; --secondary: #2e0a8a; }
 
         /* Footer */
         .footer {
-            margin-top: 40px;
-            padding: 15px;
-            background: #f4f4f4;
-            font-size: 14px;
-            color: #333;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: white;
+            font-size: 0.9rem;
+            color: #6c757d;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #6c757d;
+            font-size: 1.2rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .class-button {
-                width: 90%;  /* Adjust width for smaller screens */
+            h1 {
+                font-size: 2rem;
             }
+            
             .logo {
                 width: 50px;
+                height: 50px;
             }
-            h1 {
-                font-size: 1.8rem;
+            
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
             }
+            
+            .class-button {
+                height: 100px;
+                padding: 1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* Wave decoration */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
+
+        .wave svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 100px;
+        }
+
+        .wave .shape-fill {
+            fill: #FFFFFF;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Section with Saraswati Maa Logo -->
+    <!-- Header Section -->
     <div class="header">
-        <img src="Screenshot_2025-02-11-12-47-19-19_6012fa4d4ddec268fc5c7112cbb265e7.jpg" alt="Saraswati Maa Logo" class="logo">
-        <h1>📚THP Classess</h1>
+        <div class="logo-container">
+            <img src="Screenshot_2025-02-11-12-47-19-19_6012fa4d4ddec268fc5c7112cbb265e7.jpg" alt="Saraswati Maa Logo" class="logo">
+            <div class="header-content">
+                <h1>THP Classes</h1>
+                <p class="tagline">Empowering students through quality education</p>
+            </div>
+        </div>
     </div>
 
-    <p>Select your class to join live class</p>
+    <!-- Main Content -->
+    <main class="main">
+        <p class="intro-text">Select your class to join live session</p>
 
-    <div class="container">
-        <a href="https://meet.google.com/your-link-3-5" target="_blank" class="class-button">Class 3rd - 5th</a>
-        <a href="https://meet.google.com/your-link-6-8" target="_blank" class="class-button">Class 6th - 8th</a>
-        <a href="https://meet.google.com/your-link-9" target="_blank" class="class-button">Class 9th</a>
-        <a href="https://meet.google.com/your-link-10" target="_blank" class="class-button">Class 10th</a>
-        <a href="https://meet.google.com/your-link-11" target="_blank" class="class-button">Class 11th</a>
-        <a href="https://meet.google.com/your-link-12" target="_blank" class="class-button">Class 12th</a>
-    </div>
+        <div class="container">
+            <a href="https://meet.google.com/your-link-3-5" target="_blank" class="class-button">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Class 3rd - 5th
+            </a>
+            <a href="https://meet.google.com/your-link-6-8" target="_blank" class="class-button">
+                <i class="fas fa-book-open"></i>
+                Class 6th - 8th
+            </a>
+            <a href="https://meet.google.com/your-link-9" target="_blank" class="class-button">
+                <i class="fas fa-graduation-cap"></i>
+                Class 9th
+            </a>
+            <a href="https://meet.google.com/your-link-10" target="_blank" class="class-button">
+                <i class="fas fa-user-graduate"></i>
+                Class 10th
+            </a>
+            <a href="https://meet.google.com/your-link-11" target="_blank" class="class-button">
+                <i class="fas fa-atom"></i>
+                Class 11th
+            </a>
+            <a href="https://meet.google.com/your-link-12" target="_blank" class="class-button">
+                <i class="fas fa-rocket"></i>
+                Class 12th
+            </a>
+        </div>
+    </main>
 
+    <!-- Footer -->
     <div class="footer">
-        &copy; 2025 THP Classes. All rights reserved.
+        <p>&copy; 2025 THP Classes. All rights reserved.</p>
+        <p>Contact us: <a href="mailto:info@thpclasses.com">info@thpclasses.com</a> | <a href="tel:+919876543210">+91 98765 43210</a></p>
+        <div class="social-links">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </div>
+
+    <!-- Wave Decoration -->
+    <div class="wave">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
     </div>
 
 </body>
