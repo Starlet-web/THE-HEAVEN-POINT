@@ -87,10 +87,11 @@
     body {
       -webkit-tap-highlight-color: transparent;
       overscroll-behavior-y: none;
+      background-color: #f8fafc;
     }
     
     .app-container {
-      max-width: 480px;
+      max-width: 100%;
       margin: 0 auto;
       box-shadow: 0 0 30px rgba(0,0,0,0.1);
       position: relative;
@@ -99,12 +100,24 @@
       background: #f8fafc;
     }
     
+    @media (min-width: 768px) {
+      .app-container {
+        max-width: 1200px;
+      }
+    }
+    
     .app-header {
-      height: 60px;
+      height: 70px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       background: rgba(255,255,255,0.9);
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    @media (min-width: 768px) {
+      .app-header {
+        height: 80px;
+      }
     }
     
     .nav-tab {
@@ -225,8 +238,8 @@
     
     /* Custom scrollbar */
     ::-webkit-scrollbar {
-      width: 4px;
-      height: 4px;
+      width: 6px;
+      height: 6px;
     }
     
     ::-webkit-scrollbar-track {
@@ -235,11 +248,122 @@
     
     ::-webkit-scrollbar-thumb {
       background: #cbd5e1;
-      border-radius: 2px;
+      border-radius: 4px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
       background: #94a3b8;
+    }
+    
+    /* Responsive adjustments */
+    .main-content {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    
+    @media (min-width: 768px) {
+      .main-content {
+        padding-top: 100px;
+        padding-bottom: 40px;
+      }
+    }
+    
+    /* Hero section adjustments */
+    .hero-section {
+      height: 300px;
+    }
+    
+    @media (min-width: 768px) {
+      .hero-section {
+        height: 400px;
+      }
+    }
+    
+    /* Grid adjustments */
+    .quick-actions-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    
+    @media (min-width: 768px) {
+      .quick-actions-grid {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+    }
+    
+    .courses-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    @media (min-width: 768px) {
+      .courses-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+    
+    .gallery-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    @media (min-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+    
+    /* Desktop navigation */
+    .desktop-nav {
+      display: none;
+    }
+    
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: flex;
+      }
+      .mobile-nav {
+        display: none;
+      }
+    }
+    
+    /* Container padding */
+    .section-container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    @media (min-width: 768px) {
+      .section-container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+    }
+    
+    /* Featured course card */
+    .featured-course {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    @media (min-width: 768px) {
+      .featured-course {
+        flex-direction: row;
+        align-items: center;
+      }
+      .featured-course img {
+        width: 120px;
+        height: 120px;
+      }
+    }
+    
+    /* Contact section layout */
+    .contact-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+    
+    @media (min-width: 768px) {
+      .contact-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
   </style>
 </head>
@@ -249,32 +373,61 @@
 <div class="app-container bg-white relative overflow-hidden">
   
   <!-- App Header -->
-  <header class="app-header fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4">
+  <header class="app-header fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-8">
     <div class="flex items-center">
-      <img src="channels4_profile.jpg" alt="Logo" class="w-10 h-10 rounded-full mr-3 border-2 border-white shadow-sm">
-      <h1 class="text-lg font-bold text-gray-800">The Heaven Point</h1>
+      <img src="channels4_profile.jpg" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-full mr-3 border-2 border-white shadow-sm">
+      <h1 class="text-lg md:text-xl font-bold text-gray-800">The Heaven Point</h1>
     </div>
-    <div class="flex items-center space-x-3">
+    
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav items-center space-x-6 hidden md:flex">
+      <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+      <a href="#batches" class="text-gray-700 hover:text-indigo-600 font-medium">Courses</a>
+      <a href="#" onclick="openNotes()" class="text-gray-700 hover:text-indigo-600 font-medium">Notes</a>
+      <a href="#" onclick="openLecture()" class="text-gray-700 hover:text-indigo-600 font-medium">Lectures</a>
+      <a href="thp-faculty.html" class="text-gray-700 hover:text-indigo-600 font-medium">Faculty</a>
+      <a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium">Contact</a>
+    </nav>
+    
+    <div class="flex items-center space-x-3 md:space-x-4">
       <button id="searchBtn" class="text-gray-500 hover:text-indigo-600">
-        <i class="fas fa-search text-lg"></i>
+        <i class="fas fa-search text-lg md:text-xl"></i>
       </button>
       <button id="notifBtn" class="text-gray-500 hover:text-indigo-600 relative">
-        <i class="fas fa-bell text-lg"></i>
+        <i class="fas fa-bell text-lg md:text-xl"></i>
         <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+      </button>
+      <button class="md:hidden text-gray-500 hover:text-indigo-600" id="mobileMenuBtn">
+        <i class="fas fa-bars text-lg md:text-xl"></i>
       </button>
     </div>
   </header>
   
+  <!-- Mobile Menu (hidden by default) -->
+  <div id="mobileMenu" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center hidden">
+    <button id="closeMobileMenu" class="absolute top-4 right-4 text-gray-500 hover:text-indigo-600">
+      <i class="fas fa-times text-2xl"></i>
+    </button>
+    <nav class="flex flex-col items-center space-y-6">
+      <a href="#" class="text-2xl text-gray-700 hover:text-indigo-600 font-medium">Home</a>
+      <a href="#batches" class="text-2xl text-gray-700 hover:text-indigo-600 font-medium">Courses</a>
+      <a href="#" onclick="openNotes()" class="text-2xl text-gray-700 hover:text-indigo-600 font-medium">Notes</a>
+      <a href="#" onclick="openLecture()" class="text-2xl text-gray-700 hover:text-indigo-600 font-medium">Lectures</a>
+      <a href="thp-faculty.html" class="text-2xl text-gray-700 hover:text-indigo-600 font-medium">Faculty</a>
+      <a href="#contact" class="text-2xl text-gray-700 hover:text-indigo-600 font-medium">Contact</a>
+    </nav>
+  </div>
+  
   <!-- Main Content -->
-  <main class="pt-16 pb-24 px-4 overflow-y-auto" style="height: calc(var(--app-height) - 120px);">
+  <main class="main-content px-4 md:px-8 overflow-y-auto">
     
     <!-- Hero Banner -->
-    <section class="relative rounded-2xl overflow-hidden mb-6 h-48 flex items-center" style="background-image: url('chatgptbanner2.jpg'); background-size: cover; background-position: center;">
+    <section class="relative rounded-2xl overflow-hidden mb-8 hero-section flex items-center" style="background-image: url('chatgptbanner2.jpg'); background-size: cover; background-position: center;">
       <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30"></div>
-      <div class="relative z-10 p-6 text-white">
-        <h2 class="text-2xl font-bold mb-1">Choose to <span class="gradient-text">shine</span></h2>
-        <p class="text-sm opacity-90">Premium coaching for competitive exams</p>
-        <button class="mt-4 bg-white text-indigo-600 px-4 py-2 rounded-full text-sm font-semibold shadow-md">
+      <div class="relative z-10 p-6 md:p-10 text-white max-w-2xl">
+        <h2 class="text-2xl md:text-4xl font-bold mb-2 md:mb-3">Choose to <span class="gradient-text">shine</span></h2>
+        <p class="text-sm md:text-base opacity-90 mb-4 md:mb-6">Premium coaching for competitive exams</p>
+        <button class="bg-white text-indigo-600 px-6 py-2 md:px-8 md:py-3 rounded-full text-sm md:text-base font-semibold shadow-md hover:bg-gray-100 transition">
           Explore Courses
         </button>
       </div>
@@ -286,49 +439,77 @@
     </section>
     
     <!-- Quick Actions -->
-    <div class="grid grid-cols-4 gap-3 mb-6">
-      <a href="#batches" class="card p-3 text-center">
-        <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-2 text-indigo-600">
-          <i class="fas fa-book-open"></i>
+    <div class="grid quick-actions-grid gap-4 mb-8">
+      <a href="#batches" class="card p-3 md:p-4 text-center hover:bg-indigo-50 transition">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-2 text-indigo-600">
+          <i class="fas fa-book-open text-lg md:text-xl"></i>
         </div>
-        <span class="text-xs font-medium">Courses</span>
+        <span class="text-xs md:text-sm font-medium">Courses</span>
       </a>
-      <a href="#" onclick="openNotes()" class="card p-3 text-center">
-        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 text-blue-600">
-          <i class="fas fa-file-alt"></i>
+      <a href="#" onclick="openNotes()" class="card p-3 md:p-4 text-center hover:bg-blue-50 transition">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 text-blue-600">
+          <i class="fas fa-file-alt text-lg md:text-xl"></i>
         </div>
-        <span class="text-xs font-medium">Notes</span>
+        <span class="text-xs md:text-sm font-medium">Notes</span>
       </a>
-      <a href="#" onclick="openLecture()" class="card p-3 text-center">
-        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2 text-purple-600">
-          <i class="fas fa-video"></i>
+      <a href="#" onclick="openLecture()" class="card p-3 md:p-4 text-center hover:bg-purple-50 transition">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2 text-purple-600">
+          <i class="fas fa-video text-lg md:text-xl"></i>
         </div>
-        <span class="text-xs font-medium">Lectures</span>
+        <span class="text-xs md:text-sm font-medium">Lectures</span>
       </a>
-      <a href="thp-faculty.html" class="card p-3 text-center">
-        <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-2 text-teal-600">
-          <i class="fas fa-chalkboard-teacher"></i>
+      <a href="thp-faculty.html" class="card p-3 md:p-4 text-center hover:bg-teal-50 transition">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-2 text-teal-600">
+          <i class="fas fa-chalkboard-teacher text-lg md:text-xl"></i>
         </div>
-        <span class="text-xs font-medium">Faculty</span>
+        <span class="text-xs md:text-sm font-medium">Faculty</span>
+      </a>
+      <a href="#admission" class="card p-3 md:p-4 text-center hover:bg-green-50 transition hidden md:block">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2 text-green-600">
+          <i class="fas fa-user-graduate text-lg md:text-xl"></i>
+        </div>
+        <span class="text-xs md:text-sm font-medium">Admission</span>
+      </a>
+      <a href="#gallery" class="card p-3 md:p-4 text-center hover:bg-yellow-50 transition hidden md:block">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2 text-yellow-600">
+          <i class="fas fa-images text-lg md:text-xl"></i>
+        </div>
+        <span class="text-xs md:text-sm font-medium">Gallery</span>
+      </a>
+      <a href="#about-us" class="card p-3 md:p-4 text-center hover:bg-red-50 transition hidden md:block">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2 text-red-600">
+          <i class="fas fa-info-circle text-lg md:text-xl"></i>
+        </div>
+        <span class="text-xs md:text-sm font-medium">About Us</span>
+      </a>
+      <a href="#contact" class="card p-3 md:p-4 text-center hover:bg-pink-50 transition hidden md:block">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-2 text-pink-600">
+          <i class="fas fa-envelope text-lg md:text-xl"></i>
+        </div>
+        <span class="text-xs md:text-sm font-medium">Contact</span>
       </a>
     </div>
     
     <!-- Featured Course -->
-    <section class="mb-8">
+    <section class="mb-10">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-bold text-gray-800">Featured Course</h3>
-        <a href="#batches" class="text-xs text-indigo-600 font-medium">View All</a>
+        <h3 class="text-lg md:text-xl font-bold text-gray-800">Featured Course</h3>
+        <a href="#batches" class="text-xs md:text-sm text-indigo-600 font-medium hover:text-indigo-700">View All</a>
       </div>
       
-      <div class="course-card rounded-2xl p-4 animate-slide-in">
-        <div class="flex items-start">
-          <img src="banner thp.jpg" alt="Course" class="w-16 h-16 rounded-lg object-cover mr-4">
+      <div class="course-card rounded-2xl p-4 md:p-6 animate-slide-in">
+        <div class="flex flex-col md:flex-row items-start">
+          <img src="banner thp.jpg" alt="Course" class="w-full md:w-32 h-32 rounded-lg object-cover mb-4 md:mb-0 md:mr-6">
           <div class="flex-1">
-            <h4 class="font-bold text-gray-800 mb-1">SSC, Bank, Railway</h4>
-            <p class="text-xs text-gray-600 mb-2">Complete preparation for competitive exams</p>
+            <h4 class="font-bold text-gray-800 mb-1 text-lg md:text-xl">SSC, Bank, Railway</h4>
+            <p class="text-xs md:text-sm text-gray-600 mb-3">Complete preparation for competitive exams with expert guidance and comprehensive study materials.</p>
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-indigo-600">₹1000/month</span>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-xs bg-indigo-600 text-white px-3 py-1 rounded-full">Enroll</a>
+              <div>
+                <span class="text-sm md:text-base font-bold text-indigo-600">₹1000/month</span>
+                <span class="text-xs text-gray-500 ml-2 line-through">₹1500</span>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full ml-2">33% off</span>
+              </div>
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full transition">Enroll Now</a>
             </div>
           </div>
         </div>
@@ -336,8 +517,8 @@
     </section>
     
     <!-- Video Section -->
-    <section class="mb-8">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Introducing THP</h3>
+    <section class="mb-10">
+      <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Demo Lecture</h3>
       <div class="relative rounded-2xl overflow-hidden" style="padding-bottom: 56.25%;">
         <iframe 
           src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&controls=0&showinfo=0&rel=0&autoplay=1&mute=1" 
@@ -346,170 +527,259 @@
           allowfullscreen>
         </iframe>
       </div>
-      <div class="mt-3 text-center text-sm text-gray-600">
-        <p>Shivam Sir, Math Expert with 10+ years experience</p>
+      <div class="mt-4 text-center">
+        <p class="text-sm md:text-base text-gray-600 mb-2">Shivam Sir, Math Expert with 10+ years experience</p>
+        <a href="#" onclick="openLecture()" class="inline-block text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full transition">
+          Watch More Lectures
+        </a>
       </div>
     </section>
     
     <!-- Courses Section -->
-    <section id="batches" class="mb-8">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Our Premium Batches</h3>
+    <section id="batches" class="mb-10">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg md:text-xl font-bold text-gray-800">Our Premium Batches</h3>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-xs md:text-sm text-indigo-600 font-medium hover:text-indigo-700">Enroll Now</a>
+      </div>
       
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid courses-grid gap-4">
         <!-- CUET Batch -->
-        <div class="card p-3 animate-slide-in delay-100">
-          <img src="cuet.jpg" alt="CUET" class="w-full h-24 object-cover rounded-lg mb-2">
-          <h4 class="font-bold text-sm text-gray-800 mb-1">CUET</h4>
-          <p class="text-xs text-gray-600 mb-2">₹1000/month</p>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="block text-center text-xs bg-indigo-600 text-white px-2 py-1 rounded-full">Enroll Now</a>
+        <div class="card p-4 animate-slide-in delay-100 hover:border-indigo-200 transition">
+          <img src="cuet.jpg" alt="CUET" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+          <h4 class="font-bold text-gray-800 mb-1 text-sm md:text-base">CUET</h4>
+          <p class="text-xs md:text-sm text-gray-600 mb-3">Complete preparation for CUET exams with expert guidance</p>
+          <div class="flex items-center justify-between">
+            <span class="text-sm md:text-base font-bold text-indigo-600">₹1000/month</span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-xs md:text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-full transition">Enroll</a>
+          </div>
         </div>
         
         <!-- NEET Batch -->
-        <div class="card p-3 animate-slide-in delay-200">
-          <img src="neet batch1.jpg" alt="NEET" class="w-full h-24 object-cover rounded-lg mb-2">
-          <h4 class="font-bold text-sm text-gray-800 mb-1">NEET</h4>
-          <p class="text-xs text-gray-600 mb-2">₹1500/month</p>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="block text-center text-xs bg-indigo-600 text-white px-2 py-1 rounded-full">Enroll Now</a>
+        <div class="card p-4 animate-slide-in delay-200 hover:border-indigo-200 transition">
+          <img src="neet batch1.jpg" alt="NEET" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+          <h4 class="font-bold text-gray-800 mb-1 text-sm md:text-base">NEET</h4>
+          <p class="text-xs md:text-sm text-gray-600 mb-3">Comprehensive NEET preparation with top faculty</p>
+          <div class="flex items-center justify-between">
+            <span class="text-sm md:text-base font-bold text-indigo-600">₹1500/month</span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-xs md:text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-full transition">Enroll</a>
+          </div>
         </div>
         
         <!-- IIT-JEE Batch -->
-        <div class="card p-3 animate-slide-in delay-300">
-          <img src="WhatsApp Image 2025-01-08 at 22.09.41.jpeg" alt="IIT-JEE" class="w-full h-24 object-cover rounded-lg mb-2">
-          <h4 class="font-bold text-sm text-gray-800 mb-1">IIT-JEE</h4>
-          <p class="text-xs text-gray-600 mb-2">₹1500/month</p>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="block text-center text-xs bg-indigo-600 text-white px-2 py-1 rounded-full">Enroll Now</a>
+        <div class="card p-4 animate-slide-in delay-300 hover:border-indigo-200 transition">
+          <img src="WhatsApp Image 2025-01-08 at 22.09.41.jpeg" alt="IIT-JEE" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+          <h4 class="font-bold text-gray-800 mb-1 text-sm md:text-base">IIT-JEE</h4>
+          <p class="text-xs md:text-sm text-gray-600 mb-3">Engineering entrance exam preparation</p>
+          <div class="flex items-center justify-between">
+            <span class="text-sm md:text-base font-bold text-indigo-600">₹1500/month</span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-xs md:text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-full transition">Enroll</a>
+          </div>
         </div>
         
         <!-- Class 3-12 Batch -->
-        <div class="card p-3 animate-slide-in delay-400">
-          <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="Class 3-12" class="w-full h-24 object-cover rounded-lg mb-2">
-          <h4 class="font-bold text-sm text-gray-800 mb-1">Class 3-12</h4>
-          <p class="text-xs text-gray-600 mb-2">All Subjects</p>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="block text-center text-xs bg-indigo-600 text-white px-2 py-1 rounded-full">Enroll Now</a>
+        <div class="card p-4 animate-slide-in delay-400 hover:border-indigo-200 transition">
+          <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="Class 3-12" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+          <h4 class="font-bold text-gray-800 mb-1 text-sm md:text-base">Class 3-12</h4>
+          <p class="text-xs md:text-sm text-gray-600 mb-3">All subjects for CBSE, ICSE and State Boards</p>
+          <div class="flex items-center justify-between">
+            <span class="text-sm md:text-base font-bold text-indigo-600">₹800-1200/month</span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-xs md:text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-full transition">Enroll</a>
+          </div>
         </div>
       </div>
     </section>
     
     <!-- About Us Section -->
-    <section id="about-us" class="mb-8">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">About Us</h3>
-      <div class="card p-4">
-        <p class="text-sm text-gray-700 leading-relaxed">
-          Hello My Dear Students! Welcome to Heaven Point Coaching Classes (THP Classes). Here, you can study a variety of subjects like Commerce, Maths, Physics, Chemistry, Biology, S. St., English Language, English Literature, Computer, Hindi, and more, for all boards. We also offer specialized courses for CUET, NEET, IIT, JEE, and classes from 3rd to 12th.
-        </p>
+    <section id="about-us" class="mb-10">
+      <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">About Us</h3>
+      <div class="card p-6">
+        <div class="flex flex-col md:flex-row items-center">
+          <img src="channels4_profile.jpg" alt="The Heaven Point" class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-indigo-100 mb-4 md:mb-0 md:mr-6">
+          <div>
+            <p class="text-sm md:text-base text-gray-700 leading-relaxed mb-4">
+              Hello My Dear Students! Welcome to Heaven Point Coaching Classes (THP Classes). Here, you can study a variety of subjects like Commerce, Maths, Physics, Chemistry, Biology, S. St., English Language, English Literature, Computer, Hindi, and more, for all boards. We also offer specialized courses for CUET, NEET, IIT, JEE, and classes from 3rd to 12th.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">Experienced Faculty</span>
+              <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Personalized Attention</span>
+              <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Regular Tests</span>
+              <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Study Materials</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     
     <!-- Gallery Section -->
-    <section id="gallery" class="mb-8">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Our Gallery</h3>
-      <div class="grid grid-cols-2 gap-3">
-        <img src="gallarymini1.jpg" alt="Gallery 1" class="rounded-xl h-32 object-cover">
-        <img src="gallarymini2.jpg" alt="Gallery 2" class="rounded-xl h-32 object-cover">
-        <img src="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" alt="Gallery 3" class="rounded-xl h-32 object-cover">
-        <img src="WhatsApp Image 2025-01-08 at 22.36.38 (1).jpeg" alt="Gallery 4" class="rounded-xl h-32 object-cover">
+    <section id="gallery" class="mb-10">
+      <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Our Gallery</h3>
+      <div class="grid gallery-grid gap-4">
+        <img src="gallarymini1.jpg" alt="Gallery 1" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer">
+        <img src="gallarymini2.jpg" alt="Gallery 2" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer">
+        <img src="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" alt="Gallery 3" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer">
+        <img src="WhatsApp Image 2025-01-08 at 22.36.38 (1).jpeg" alt="Gallery 4" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer">
+        <img src="cuet.jpg" alt="Gallery 5" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer hidden md:block">
+        <img src="neet batch1.jpg" alt="Gallery 6" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer hidden md:block">
+        <img src="banner thp.jpg" alt="Gallery 7" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer hidden md:block">
+        <img src="chatgptbanner2.jpg" alt="Gallery 8" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer hidden md:block">
       </div>
     </section>
     
     <!-- Admission Process -->
-    <section id="admission" class="mb-8">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Admission Process</h3>
-      <div class="card p-4">
-        <ol class="space-y-3">
-          <li class="flex items-start">
-            <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">1</span>
-            <span class="text-sm">Complete the online application form</span>
-          </li>
-          <li class="flex items-start">
-            <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">2</span>
-            <span class="text-sm">Upload required documents</span>
-          </li>
-          <li class="flex items-start">
-            <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">3</span>
-            <span class="text-sm">Take the entrance test (if applicable)</span>
-          </li>
-          <li class="flex items-start">
-            <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">4</span>
-            <span class="text-sm">Submit admission fees</span>
-          </li>
-          <li class="flex items-start">
-            <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">5</span>
-            <span class="text-sm">Secure your seat</span>
-          </li>
-        </ol>
+    <section id="admission" class="mb-10">
+      <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Admission Process</h3>
+      <div class="card p-6">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-bold text-gray-800 mb-3 text-lg">How to Join</h4>
+            <ol class="space-y-4">
+              <li class="flex items-start">
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">1</span>
+                <span class="text-sm md:text-base">Complete the online application form</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">2</span>
+                <span class="text-sm md:text-base">Upload required documents</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">3</span>
+                <span class="text-sm md:text-base">Take the entrance test (if applicable)</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">4</span>
+                <span class="text-sm md:text-base">Submit admission fees</span>
+              </li>
+              <li class="flex items-start">
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">5</span>
+                <span class="text-sm md:text-base">Secure your seat</span>
+              </li>
+            </ol>
+          </div>
+          
+          <div>
+            <h4 class="font-bold text-gray-800 mb-3 text-lg">Why Choose Us?</h4>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span class="text-sm md:text-base">Experienced and qualified faculty</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span class="text-sm md:text-base">Small batch sizes for personalized attention</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span class="text-sm md:text-base">Comprehensive study materials</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span class="text-sm md:text-base">Regular tests and performance analysis</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span class="text-sm md:text-base">Affordable fees with flexible payment options</span>
+              </li>
+            </ul>
+          </div>
+        </div>
         
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="mt-4 block text-center bg-gradient-to-r from-indigo-600 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">
-          Start Application
-        </a>
+        <div class="mt-6 flex flex-col md:flex-row items-center justify-center gap-4">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="w-full md:w-auto text-center bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white px-6 py-3 rounded-full text-sm md:text-base font-semibold shadow-md transition">
+            Start Application
+          </a>
+          <a href="tel:8005759143" class="w-full md:w-auto text-center border border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-full text-sm md:text-base font-semibold transition">
+            Call for Inquiry
+          </a>
+        </div>
       </div>
     </section>
     
     <!-- Contact Section -->
-    <section id="contact" class="mb-8">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Contact Us</h3>
-      <div class="card p-4">
-        <div class="space-y-4">
-          <div class="flex items-start">
-            <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3 flex-shrink-0">
-              <i class="fas fa-envelope text-sm"></i>
-            </div>
-            <div>
-              <h4 class="text-xs font-semibold text-gray-500">Email</h4>
-              <a href="mailto:theheavenpoint@gmail.com" class="text-sm text-indigo-600">theheavenpoint@gmail.com</a>
+    <section id="contact" class="mb-10">
+      <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Contact Us</h3>
+      <div class="card p-6">
+        <div class="grid contact-grid gap-6">
+          <div>
+            <h4 class="font-bold text-gray-800 mb-4 text-lg">Get in Touch</h4>
+            
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3 flex-shrink-0">
+                  <i class="fas fa-envelope text-lg"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Email</h4>
+                  <a href="mailto:theheavenpoint@gmail.com" class="text-sm md:text-base text-indigo-600 hover:text-indigo-700">theheavenpoint@gmail.com</a>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3 flex-shrink-0">
+                  <i class="fas fa-phone-alt text-lg"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Phone</h4>
+                  <a href="tel:8005759143" class="text-sm md:text-base text-blue-600 hover:text-blue-700">8005759143</a>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3 flex-shrink-0">
+                  <i class="fas fa-map-marker-alt text-lg"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Location</h4>
+                  <p class="text-sm md:text-base text-gray-700">The Heaven Point Coaching Classes</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 mr-3 flex-shrink-0">
+                  <i class="fas fa-clock text-lg"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Hours</h4>
+                  <p class="text-sm md:text-base text-gray-700">Mon-Sat: 8AM - 8PM</p>
+                </div>
+              </div>
             </div>
           </div>
           
-          <div class="flex items-start">
-            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3 flex-shrink-0">
-              <i class="fas fa-phone-alt text-sm"></i>
+          <div>
+            <h4 class="font-bold text-gray-800 mb-4 text-lg">Follow Us</h4>
+            <div class="flex flex-wrap gap-3 mb-6">
+              <a href="https://t.me/heavenpoint" target="_blank" class="w-12 h-12 rounded-full bg-indigo-100 hover:bg-indigo-200 flex items-center justify-center text-indigo-600 transition">
+                <i class="fab fa-telegram text-xl"></i>
+              </a>
+              <a href="https://www.instagram.com/theheavenpoint/" target="_blank" class="w-12 h-12 rounded-full bg-pink-100 hover:bg-pink-200 flex items-center justify-center text-pink-600 transition">
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+              <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" target="_blank" class="w-12 h-12 rounded-full bg-blue-100 hover:bg-blue-200 flex items-center justify-center text-blue-600 transition">
+                <i class="fab fa-facebook-f text-xl"></i>
+              </a>
+              <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" class="w-12 h-12 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center text-red-600 transition">
+                <i class="fab fa-youtube text-xl"></i>
+              </a>
+              <a href="#" id="whatsappBtn2" class="w-12 h-12 rounded-full bg-green-100 hover:bg-green-200 flex items-center justify-center text-green-600 transition">
+                <i class="fab fa-whatsapp text-xl"></i>
+              </a>
             </div>
-            <div>
-              <h4 class="text-xs font-semibold text-gray-500">Phone</h4>
-              <a href="tel:8005759143" class="text-sm text-blue-600">8005759143</a>
+            
+            <h4 class="font-bold text-gray-800 mb-3 text-lg">Quick Links</h4>
+            <div class="grid grid-cols-2 gap-3">
+              <a href="#batches" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center">Courses</a>
+              <a href="#admission" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center">Admission</a>
+              <a href="#" onclick="openNotes()" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center">Study Notes</a>
+              <a href="thp-faculty.html" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center">Our Faculty</a>
             </div>
           </div>
-          
-          <div class="flex items-start">
-            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3 flex-shrink-0">
-              <i class="fas fa-map-marker-alt text-sm"></i>
-            </div>
-            <div>
-              <h4 class="text-xs font-semibold text-gray-500">Location</h4>
-              <p class="text-sm text-gray-700">The Heaven Point Coaching Classes</p>
-            </div>
-          </div>
-          
-          <div class="flex items-start">
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 mr-3 flex-shrink-0">
-              <i class="fas fa-clock text-sm"></i>
-            </div>
-            <div>
-              <h4 class="text-xs font-semibold text-gray-500">Hours</h4>
-              <p class="text-sm text-gray-700">Mon-Sat: 8AM - 8PM</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="mt-6 flex justify-center space-x-4">
-          <a href="https://t.me/heavenpoint" target="_blank" class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
-            <i class="fab fa-telegram"></i>
-          </a>
-          <a href="https://www.instagram.com/theheavenpoint/" target="_blank" class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" target="_blank" class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600">
-            <i class="fab fa-youtube"></i>
-          </a>
         </div>
       </div>
     </section>
   </main>
   
-  <!-- Bottom Navigation -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-40">
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="mobile-nav fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-40 md:hidden">
     <a href="#" class="nav-tab flex flex-col items-center justify-center text-indigo-600 active">
       <i class="fas fa-home text-lg"></i>
       <span class="text-xs mt-1">Home</span>
@@ -529,12 +799,12 @@
   </nav>
   
   <!-- Floating Action Buttons -->
-  <button id="whatsappBtn" class="floating-btn fixed bottom-20 right-4 w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 text-white flex items-center justify-center z-30">
-    <i class="fab fa-whatsapp text-xl"></i>
+  <button id="whatsappBtn" class="floating-btn fixed bottom-20 right-4 w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 text-white flex items-center justify-center z-30">
+    <i class="fab fa-whatsapp text-2xl"></i>
   </button>
   
-  <button onclick="window.location.href='resistor.html'" class="floating-btn fixed bottom-32 right-4 w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 text-white flex items-center justify-center z-30">
-    <i class="fas fa-key text-xl"></i>
+  <button onclick="window.location.href='resistor.html'" class="floating-btn fixed bottom-32 right-4 w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 text-white flex items-center justify-center z-30">
+    <i class="fas fa-key text-2xl"></i>
   </button>
 </div>
 
@@ -552,9 +822,25 @@
   // WhatsApp redirect
   document.getElementById("whatsappBtn").addEventListener("click", function() {
     let phoneNumber = "919506105974";
-    let message = encodeURIComponent("Hello, Sir");
+    let message = encodeURIComponent("Hello, I'm interested in joining The Heaven Point Coaching Classes. Can you provide more information?");
     let whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappURL, '_blank');
+  });
+  
+  document.getElementById("whatsappBtn2").addEventListener("click", function() {
+    let phoneNumber = "919506105974";
+    let message = encodeURIComponent("Hello, I'm interested in joining The Heaven Point Coaching Classes. Can you provide more information?");
+    let whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(whatsappURL, '_blank');
+  });
+
+  // Mobile menu toggle
+  document.getElementById("mobileMenuBtn").addEventListener("click", function() {
+    document.getElementById("mobileMenu").classList.remove("hidden");
+  });
+  
+  document.getElementById("closeMobileMenu").addEventListener("click", function() {
+    document.getElementById("mobileMenu").classList.add("hidden");
   });
 
   // Set app height variable for mobile
@@ -580,6 +866,9 @@
           behavior: 'smooth',
           block: 'start'
         });
+        
+        // Close mobile menu if open
+        document.getElementById("mobileMenu").classList.add("hidden");
       }
     });
   });
@@ -614,6 +903,23 @@
   
   window.addEventListener('scroll', updateActiveNav);
   window.addEventListener('load', updateActiveNav);
+  
+  // Intersection Observer for animations
+  const observerOptions = {
+    threshold: 0.1
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-slide-in');
+      }
+    });
+  }, observerOptions);
+  
+  document.querySelectorAll('.animate-slide-in').forEach(el => {
+    observer.observe(el);
+  });
 </script>
 </body>
 </html>
