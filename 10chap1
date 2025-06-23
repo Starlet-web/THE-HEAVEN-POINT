@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemical Reactions and Equations | THP Coaching Classes</title>
+    <style>
+        :root {
+            --primary-color: #8e44ad;
+            --secondary-color: #9b59b6;
+            --reaction-color: #3498db;
+            --oxidation-color: #e74c3c;
+            --reduction-color: #2ecc71;
+            --dark-bg: #2f3640;
+            --light-text: #f5f6fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f1f2f6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::after {
+            content: "THP";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 30vw;
+            font-weight: bold;
+            color: rgba(142, 68, 173, 0.08);
+            z-index: -1;
+            pointer-events: none;
+            font-family: 'Arial Black', sans-serif;
+        }
+        
+        .thp-banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
+        }
+        
+        .thp-banner h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        
+        .thp-banner p {
+            margin: 5px 0 0;
+            font-size: 1.1rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .header h2 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .header .credit {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .header::after {
+            content: "";
+            display: block;
+            height: 4px;
+            background: linear-gradient(90deg, var(--reaction-color), var(--oxidation-color), var(--reduction-color));
+            width: 60%;
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: "THP";
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 5rem;
+            font-weight: bold;
+            color: rgba(142, 68, 173, 0.05);
+            z-index: 0;
+            font-family: 'Arial Black', sans-serif;
+            line-height: 1;
+        }
+        
+        .section > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        h3 {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-top: 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        h4 {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            margin-top: 25px;
+        }
+        
+        ul.properties {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        ul.properties li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        ul.properties li::before {
+            content: "•";
+            position: absolute;
+            left: 15px;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        .reaction {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 15px 0;
+            border-left: 4px solid var(--reaction-color);
+            overflow-x: auto;
+        }
+        
+        .reaction.equation {
+            font-size: 1.15rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .oxidation {
+            background: rgba(231, 76, 60, 0.1);
+            border-left-color: var(--oxidation-color);
+        }
+        
+        .reduction {
+            background: rgba(46, 204, 113, 0.1);
+            border-left-color: var(--reduction-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 10px 12px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .note {
+            background: rgba(142, 68, 173, 0.1);
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .note h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .mnemonic-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid var(--secondary-color);
+        }
+        
+        .mnemonic-box h4 {
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h2 {
+                font-size: 1.8rem;
+            }
+            
+            body::after {
+                font-size: 25vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="thp-banner">
+        <h1>THP Coaching Classes</h1>
+        <p>Chemistry Notes | Mohit Sir | Academic Session 2023-24</p>
+    </div>
+    
+    <div class="header">
+        <h2>CHAPTER 1: CHEMICAL REACTIONS AND EQUATIONS</h2>
+        <div class="credit">Conceptual Notes by Mohit Sir</div>
+    </div>
+    
+    <div class="section">
+        <h3>CHEMICAL REACTION</h3>
+        <p>A <strong>chemical reaction</strong> is a process in which <strong>one or more substances (reactants)</strong> are converted into <strong>new substances (products)</strong> with new chemical and physical properties. This involves <strong>breaking of old bonds</strong> and <strong>formation of new bonds.</strong></p>
+        
+        <h4>CHARACTERISTICS OF CHEMICAL REACTIONS</h4>
+        <p>You can recognize a chemical reaction has taken place if you observe:</p>
+        <ul class="properties">
+            <li><strong>Change in state</strong> (solid → liquid, liquid → gas, etc.)</li>
+            <li><strong>Change in color</strong></li>
+            <li><strong>Evolution of a gas</strong></li>
+            <li><strong>Change in temperature</strong> (heat evolved or absorbed)</li>
+            <li><strong>Formation of a precipitate</strong> (solid formed in solution)</li>
+        </ul>
+        
+        <h4>CHEMICAL EQUATIONS</h4>
+        <p>A <strong>chemical equation</strong> is the symbolic representation of a chemical reaction where <strong>reactants are written on the left</strong>, and <strong>products on the right</strong>, separated by an arrow (→).</p>
+        
+        <div class="reaction">
+            <strong>Example (Unbalanced):</strong><br>
+            Mg (s) + O₂ (g) → MgO (s)
+        </div>
+        
+        <div class="reaction equation">
+            <strong>Balanced Equation:</strong><br>
+            2Mg (s) + O₂ (g) → 2MgO (s)
+        </div>
+        
+        <h4>TYPES OF REPRESENTATION</h4>
+        <ul class="properties">
+            <li><strong>Word Equation:</strong> Magnesium + Oxygen → Magnesium oxide</li>
+            <li><strong>Skeletal Equation:</strong> Mg + O₂ → MgO (unbalanced)</li>
+            <li><strong>Balanced Chemical Equation:</strong> 2Mg + O₂ → 2MgO</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h3>SMART TRICK TO BALANCE CHEMICAL EQUATIONS EASILY</h3>
+        
+        <h4>USE THE RULE: MEC-H-O</h4>
+        <p><strong>Balance elements in this specific order:</strong></p>
+        <ul class="properties">
+            <li><strong>M → Metals</strong></li>
+            <li><strong>E → Non-metals</strong> (like Cl, S, P)</li>
+            <li><strong>C → Carbon</strong></li>
+            <li><strong>H → Hydrogen</strong></li>
+            <li><strong>O → Oxygen (Always Last)</strong></li>
+        </ul>
+        
+        <h4>STEPS TO BALANCE AN EQUATION:</h4>
+        <ol class="properties">
+            <li>Write the unbalanced equation.</li>
+            <li>List elements on both sides (LHS & RHS).</li>
+            <li>Apply the MEC-H-O order to balance atoms one by one.</li>
+            <li>Use fractional coefficients temporarily if needed.</li>
+            <li>Multiply all terms to eliminate fractions (if any).</li>
+            <li>Check total atoms of each element on both sides.</li>
+        </ol>
+        
+        <div class="note">
+            <h4>EXAMPLE 1: Balancing C₃H₈ + O₂ → CO₂ + H₂O</h4>
+            <div class="reaction">
+                <strong>Step 1: Balance Carbon (C)</strong><br>
+                3 C → Put 3CO₂ on RHS
+            </div>
+            <div class="reaction">
+                <strong>Step 2: Balance Hydrogen (H)</strong><br>
+                8 H → Put 4H₂O on RHS
+            </div>
+            <div class="reaction equation">
+                <strong>Step 3: Balance Oxygen (O)</strong><br>
+                RHS: 3CO₂ = 6 O, 4H₂O = 4 O → Total = 10 O → Put 5O₂<br>
+                Final Balanced Equation: C₃H₈ + 5O₂ → 3CO₂ + 4H₂O
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h3>TYPES OF CHEMICAL REACTIONS</h3>
+        
+        <h4>1. COMBINATION REACTION</h4>
+        <p>A reaction in which <strong>two or more reactants combine</strong> to form a <strong>single product</strong>.</p>
+        <div class="reaction equation">
+            A + B → AB
+        </div>
+        
+        <p><strong>Features:</strong></p>
+        <ul class="properties">
+            <li>Only <strong>one product</strong> is formed.</li>
+            <li>Often <strong>exothermic</strong> (releases heat).</li>
+            <li>May involve <strong>elements or compounds</strong>.</li>
+        </ul>
+        
+        <h4>EXAMPLES:</h4>
+        <div class="reaction">
+            <strong>Magnesium + Oxygen → Magnesium Oxide</strong><br>
+            2Mg(s) + O₂(g) → 2MgO(s)
+        </div>
+        <ul class="properties">
+            <li>Magnesium ribbon burns with a dazzling flame.</li>
+            <li>White ash (MgO) is formed.</li>
+        </ul>
+        
+        <div class="reaction">
+            <strong>Calcium Oxide + Water → Slaked Lime</strong><br>
+            CaO(s) + H₂O(l) → Ca(OH)₂(aq)
+        </div>
+        <ul class="properties">
+            <li>Vigorous reaction.</li>
+            <li>Heat is released (exothermic).</li>
+            <li>Used in whitewashing walls.</li>
+        </ul>
+        
+        <h4>2. DECOMPOSITION REACTION</h4>
+        <p>A reaction in which a <strong>single compound breaks down</strong> into <strong>two or more simpler substances</strong> (elements or compounds).</p>
+        <div class="reaction equation">
+            AB → A + B
+        </div>
+        
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>Energy Used</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td>Thermal</td>
+                <td>Heat</td>
+                <td>Decomposition of CaCO₃</td>
+            </tr>
+            <tr>
+                <td>Electrolytic</td>
+                <td>Electricity</td>
+                <td>Electrolysis of water</td>
+            </tr>
+            <tr>
+                <td>Photolytic</td>
+                <td>Sunlight (UV rays)</td>
+                <td>Decomposition of AgCl</td>
+            </tr>
+        </table>
+        
+        <h4>EXAMPLES:</h4>
+        <div class="reaction">
+            <strong>Thermal Decomposition:</strong><br>
+            CaCO₃(s) → CaO(s) + CO₂(g)
+        </div>
+        <ul class="properties">
+            <li>Lime stone decomposes into quicklime and carbon dioxide.</li>
+        </ul>
+        
+        <div class="reaction">
+            <strong>Electrolytic Decomposition (Electrolysis):</strong><br>
+            2H₂O(l) → 2H₂(g) + O₂(g)
+        </div>
+        <ul class="properties">
+            <li>Water is broken into hydrogen and oxygen.</li>
+            <li>H₂ and O₂ are collected in 2:1 ratio.</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h4>3. DISPLACEMENT REACTION</h4>
+        <p>A reaction in which a more reactive element displaces a less reactive element from its compound.</p>
+        <div class="reaction equation">
+            A + BC → AC + B
+        </div>
+        
+        <h4>Examples:</h4>
+        <div class="reaction">
+            Fe(s) + CuSO₄(aq) → FeSO₄(aq) + Cu(s)
+        </div>
+        <ul class="properties">
+            <li>Iron is more reactive than copper.</li>
+            <li>Solution turns green, copper metal deposits.</li>
+        </ul>
+        
+        <div class="mnemonic-box">
+            <h4>REACTIVITY SERIES – MOST TO LEAST REACTIVE</h4>
+            <p><strong>MNEMONIC:</strong> "Please Stop Calling Me A Careless Zebra Instead Try Learning How Copper Saves Gold"</p>
+            <p><em>(From wild to chill — reactivity goes downhill!)</em></p>
+            
+            <table>
+                <tr>
+                    <th>Mnemonic Word</th>
+                    <th>Element</th>
+                    <th>Reactivity</th>
+                </tr>
+                <tr>
+                    <td>P</td>
+                    <td>Potassium</td>
+                    <td>Most Reactive</td>
+                </tr>
+                <tr>
+                    <td>S</td>
+                    <td>Sodium</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>Calcium</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>M</td>
+                    <td>Magnesium</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td>Aluminium</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>G</td>
+                    <td>Carbon</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Z</td>
+                    <td>Zinc</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>I</td>
+                    <td>Iron</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>T</td>
+                    <td>Tin</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>L</td>
+                    <td>Lead</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>H</td>
+                    <td>Hydrogen</td>
+                    <td>Reference Point</td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>Copper</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>S</td>
+                    <td>Silver</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>G</td>
+                    <td>Gold</td>
+                    <td>Least Reactive</td>
+                </tr>
+            </table>
+            
+            <div class="note">
+                <h4>QUICK TIP:</h4>
+                <ul class="properties">
+                    <li>Elements above Hydrogen in the series can <strong>displace H₂ gas</strong> from acids.</li>
+                    <li>Higher in the list = More Reactive</li>
+                    <li>Lower in the list = Less Reactive</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h4>4. DOUBLE DISPLACEMENT REACTION</h4>
+        <p>A reaction in which ions are exchanged between two compounds to form new compounds.</p>
+        <div class="reaction equation">
+            AB + CD → AD + CB
+        </div>
+        <ul class="properties">
+            <li>Often results in a precipitate (insoluble solid).</li>
+            <li>Also called precipitation reactions.</li>
+        </ul>
+        
+        <h4>EXAMPLES:</h4>
+        <div class="reaction">
+            Na₂SO₄(aq) + BaCl₂(aq) → BaSO₄(s)↓ + 2NaCl(aq)
+        </div>
+        <ul class="properties">
+            <li>White precipitate of BaSO₄ is formed.</li>
+        </ul>
+        
+        <h4>5. REDOX REACTIONS (REDUCTION + OXIDATION)</h4>
+        <p>A redox reaction is a type of chemical reaction in which oxidation and reduction occur simultaneously.</p>
+        
+        <table>
+            <tr>
+                <th>Process</th>
+                <th>In Terms of Electrons</th>
+                <th>In Terms of Oxygen</th>
+                <th>In Terms of Hydrogen</th>
+            </tr>
+            <tr>
+                <td>Oxidation</td>
+                <td>Loss of electrons</td>
+                <td>Gain of oxygen</td>
+                <td>Loss of hydrogen</td>
+            </tr>
+            <tr>
+                <td>Reduction</td>
+                <td>Gain of electrons</td>
+                <td>Loss of oxygen</td>
+                <td>Gain of hydrogen</td>
+            </tr>
+        </table>
+        
+        <div class="reaction equation">
+            ZnO + C → Zn + CO
+        </div>
+        <ul class="properties">
+            <li><strong>ZnO is reduced to Zn</strong> → (it loses oxygen).</li>
+            <li><strong>C is oxidized to CO</strong> → (it gains oxygen).</li>
+        </ul>
+        <p>This is a Redox Reaction because both oxidation and reduction are happening together.</p>
+    </div>
+    
+    <div class="section">
+        <h4>EFFECTS OF OXIDATION IN EVERYDAY LIFE</h4>
+        
+        <h4>1. CORROSION:</h4>
+        <p><strong>What is Corrosion?</strong><br>
+        Corrosion is a slow destruction of metals due to reaction with oxygen, moisture, acids, or other substances in the environment.</p>
+        
+        <div class="reaction">
+            <strong>Rusting of Iron:</strong><br>
+            4Fe + 3O₂ + xH₂O → 2Fe₂O₃·xH₂O (Hydrated iron oxide)
+        </div>
+        <ul class="properties">
+            <li>Forms reddish-brown rust on iron.</li>
+            <li>Rust is porous and does not protect the metal underneath.</li>
+        </ul>
+        
+        <table>
+            <tr>
+                <th>Prevention Method</th>
+                <th>How it works</th>
+            </tr>
+            <tr>
+                <td>Painting</td>
+                <td>Prevents contact with air/water</td>
+            </tr>
+            <tr>
+                <td>Greasing/Oiling</td>
+                <td>Protective layer for metals</td>
+            </tr>
+            <tr>
+                <td>Galvanization</td>
+                <td>Coating with zinc to prevent rust</td>
+            </tr>
+            <tr>
+                <td>Alloying</td>
+                <td>Improves resistance (e.g., stainless steel)</td>
+            </tr>
+        </table>
+        
+        <h4>2. RANCIDITY:</h4>
+        <p><strong>What is Rancidity?</strong><br>
+        Rancidity is the spoiling of food, especially oily or fatty food, due to oxidation.</p>
+        <ul class="properties">
+            <li>Oxygen reacts with oils/fats, producing unpleasant smell and taste.</li>
+            <li>It is a kind of slow oxidation reaction.</li>
+            <li><strong>Example:</strong> Chips or fried food smell bad when kept open for long.</li>
+        </ul>
+    </div>
+    
+    <div class="thp-banner" style="margin-top: 40px;">
+        <h1>THP Coaching Classes</h1>
+        <p>Chemistry Notes | Mohit Sir </p>
+    </div>
+</body>
+</html>
