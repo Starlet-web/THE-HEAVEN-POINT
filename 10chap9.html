@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Human Eye and the Colourful World | Class 10 Science | THP Coaching Classes</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #8e44ad;
+            --secondary-color: #9b59b6;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --border-color: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+            position: relative;
+        }
+        
+        body::before {
+            content: "THP";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30vw;
+            font-weight: bold;
+            color: rgba(142, 68, 173, 0.05);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Main Content Styles */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        h2 {
+            font-size: 1.6rem;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 0.8rem;
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        /* Section Styles */
+        .section {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* List Styles */
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Image Styles */
+        .image-container {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        
+        figcaption {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        
+        /* Special Content Styles */
+        .definition {
+            background-color: #f9f9f9;
+            border-left: 4px solid #f1c40f;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .definition strong {
+            color: var(--primary-color);
+        }
+        
+        .note {
+            background-color: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .ncert-highlight {
+            background-color: #fffde7;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .attribution {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .copyright {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .section {
+                padding: 1rem;
+            }
+        }
+        
+        @media print {
+            header, footer, .back-to-top {
+                display: none;
+            }
+            
+            body::before {
+                display: none;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">THP Coaching Classes</div>
+        <div class="tagline">Conceptual Notes by Mohit Sir | Class 10 Science</div>
+    </header>
+    
+    <div class="container">
+        <h1>HUMAN EYE AND THE COLOURFUL WORLD</h1>
+        
+        <div class="section">
+            <h2>The Human Eye</h2>
+            <p>The human eye is one of the most valuable and sensitive sense organs. It enables us to see the wonderful world and the colors around us.</p>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG1.jpg" alt="Structure of Human Eye (NCERT Fig 11.1)">
+                <figcaption>Figure 1: Structure of Human Eye (NCERT Fig 11.1)</figcaption>
+            </div>
+            
+            <h3>Parts of Human Eye (NCERT)</h3>
+            <ol>
+                <li>
+                    <strong>Cornea:</strong> The transparent spherical membrane covering the front of the eye.
+                </li>
+                <li>
+                    <strong>Iris:</strong> The coloured diaphragm between the cornea and lens that controls the size of pupil.
+                </li>
+                <li>
+                    <strong>Pupil:</strong> The small opening in the iris through which light enters the eye.
+                </li>
+                <li>
+                    <strong>Eye lens:</strong> A transparent crystalline lens which provides the finer adjustment of focal length.
+                </li>
+                <li>
+                    <strong>Ciliary muscles:</strong> Holds the lens in position and helps in modifying the curvature of lens.
+                </li>
+                <li>
+                    <strong>Retina:</strong> The light-sensitive surface of eye on which the image is formed.
+                </li>
+                <li>
+                    <strong>Optic nerve:</strong> Transmits visual information from retina to brain.
+                </li>
+            </ol>
+            
+            <div class="definition">
+                <strong>Power of Accommodation (NCERT Definition):</strong>
+                <p>The ability of the eye lens to adjust its focal length is called accommodation. The ciliary muscles help in changing the curvature of the eye lens and thus its focal length.</p>
+            </div>
+            
+            <div class="note">
+                <p><span class="ncert-highlight">NCERT Note:</span> The minimum distance at which objects can be seen most distinctly without strain is called the <strong>least distance of distinct vision</strong>. For a normal eye, it is about 25 cm.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Defects of Vision and Their Correction (NCERT)</h2>
+            
+            <h3>1. Myopia (Near-sightedness)</h3>
+            <p>A person with myopia can see nearby objects clearly but cannot see distant objects distinctly.</p>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG3.jpg" alt="Myopic eye and correction (NCERT Fig 11.3)">
+                <figcaption>Figure 2: (a) Myopic eye (b) Correction with concave lens (NCERT Fig 11.3)</figcaption>
+            </div>
+            
+            <p><strong>Causes (NCERT):</strong></p>
+            <ul>
+                <li>Excessive curvature of the eye lens</li>
+                <li>Elongation of the eyeball</li>
+            </ul>
+            
+            <p><strong>Correction:</strong> Using concave lens of appropriate power.</p>
+            
+            <h3>2. Hypermetropia (Far-sightedness)</h3>
+            <p>A person with hypermetropia can see distant objects clearly but cannot see nearby objects distinctly.</p>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG4.jpg" alt="Hypermetropic eye and correction (NCERT Fig 11.4)">
+                <figcaption>Figure 3: (a) Hypermetropic eye (b) Correction with convex lens (NCERT Fig 11.4)</figcaption>
+            </div>
+            
+            <p><strong>Causes (NCERT):</strong></p>
+            <ul>
+                <li>Focal length of the eye lens is too long</li>
+                <li>Eyeball has become too small</li>
+            </ul>
+            
+            <p><strong>Correction:</strong> Using convex lens of appropriate power.</p>
+            
+            <h3>3. Presbyopia</h3>
+            <p>As we grow older, the ciliary muscles weaken and the eye lens becomes inflexible. This reduces the power of accommodation.</p>
+            
+            <p><strong>Correction (NCERT):</strong> Bi-focal lenses with both concave and convex lenses.</p>
+        </div>
+        
+        <div class="section">
+            <h2>Refraction of Light Through a Prism (NCERT)</h2>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG5.jpg" alt="Refraction through prism (NCERT Fig 11.5)">
+                <figcaption>Figure 4: Refraction of light through a triangular glass prism (NCERT Fig 11.5)</figcaption>
+            </div>
+            
+            <p>The angle between the incident ray and emergent ray is called the <strong>angle of deviation</strong>.</p>
+            
+            <h3>Dispersion of White Light by a Glass Prism (NCERT)</h3>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG6.jpg" alt="Dispersion of light (NCERT Fig 11.6)">
+                <figcaption>Figure 5: Dispersion of white light by a glass prism (NCERT Fig 11.6)</figcaption>
+            </div>
+            
+            <p>The splitting of white light into its component colors is called <strong>dispersion</strong>.</p>
+            <p>The sequence of colors in the spectrum is <strong>VIBGYOR</strong> (Violet, Indigo, Blue, Green, Yellow, Orange, Red).</p>
+            
+            <div class="note">
+                <p><span class="ncert-highlight">NCERT Explanation:</span> Different colors of light bend through different angles with respect to the incident ray as they pass through a prism. Red light bends the least while violet light bends the most.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Atmospheric Refraction (NCERT)</h2>
+            
+            <p>The refraction of light by the earth's atmosphere is called atmospheric refraction.</p>
+            
+            <h3>1. Twinkling of Stars (NCERT)</h3>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG10.jpg" alt="Twinkling of stars (NCERT Fig 11.10)">
+                <figcaption>Figure 6: Apparent position of star and twinkling (NCERT Fig 11.10)</figcaption>
+            </div>
+            
+            <p>The starlight undergoes continuous refraction as it moves through layers of air with different densities. This causes the apparent position of the star to fluctuate slightly, making it appear to twinkle.</p>
+            
+            <div class="note">
+                <p><span class="ncert-highlight">NCERT Explanation:</span> Planets don't twinkle because they are closer and appear as extended sources of light - the variations average out.</p>
+            </div>
+            
+            <h3>2. Advance Sunrise and Delayed Sunset (NCERT)</h3>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG9.jpg" alt="Advance sunrise (NCERT Fig 11.9)">
+                <figcaption>Figure 7: Atmospheric refraction causing advance sunrise (NCERT Fig 11.9)</figcaption>
+            </div>
+            
+            <p>The sun appears about 2 minutes before actual sunrise and remains visible for about 2 minutes after actual sunset due to atmospheric refraction.</p>
+        </div>
+        
+        <div class="section">
+            <h2>Scattering of Light (NCERT)</h2>
+            
+            <p>Scattering is the phenomenon by which light is redirected in many directions by small particles.</p>
+            
+            <h3>Tyndall Effect (NCERT)</h3>
+            <p>The scattering of light by colloidal particles is called Tyndall effect.</p>
+            
+            <h3>Why is the Sky Blue? (NCERT)</h3>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG11.jpg" alt="Blue sky explanation (NCERT Fig 11.11)">
+                <figcaption>Figure 8: Scattering of sunlight making the sky appear blue (NCERT Fig 11.11)</figcaption>
+            </div>
+            
+            <p>The molecules of air and other fine particles in the atmosphere scatter blue light (shorter wavelength) more strongly than red light. This scattered blue light enters our eyes.</p>
+            
+            <h3>Color of the Sun at Sunrise and Sunset (NCERT)</h3>
+            
+            <div class="image-container">
+                <img src="https://ncert.nic.in/textbook/pdf/jesc1dd.zip/Ch-11_FIG12.jpg" alt="Red sun at sunrise/sunset (NCERT Fig 11.12)">
+                <figcaption>Figure 9: Sun appears reddish at sunrise and sunset (NCERT Fig 11.12)</figcaption>
+            </div>
+            
+            <p>At sunrise and sunset, sunlight travels longer distance through atmosphere. Most of the blue light gets scattered away, leaving the red light to reach our eyes.</p>
+            
+            <div class="note">
+                <p><span class="ncert-highlight">NCERT Activity:</span> Danger signals are red because red light is scattered the least and can travel longer distances through fog and mist.</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="attribution">Conceptual Notes by Mohit Sir | Based on NCERT Class 10 Science</div>
+        <div class="copyright">THP Coaching Classes © 2023 | All Rights Reserved</div>
+    </footer>
+    
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+    
+    <script>
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
