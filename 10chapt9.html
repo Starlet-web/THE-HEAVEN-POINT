@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light: Reflection & Refraction | Class 10 NCERT Science</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ncert-blue: #3f51b5;
+            --ncert-light-blue: #5c6bc0;
+            --ncert-dark-blue: #303f9f;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.7;
+            background-color: #f8f9fa;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: "NCERT";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30vw;
+            font-weight: bold;
+            color: rgba(63, 81, 181, 0.03);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--ncert-blue), var(--ncert-light-blue));
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--ncert-dark-blue);
+            margin: 2rem 0 1.5rem;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+            text-align: center;
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--ncert-blue), var(--ncert-light-blue));
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            padding-left: 1rem;
+            border-left: 5px solid var(--ncert-blue);
+            background: linear-gradient(90deg, rgba(63,81,181,0.1), rgba(63,81,181,0));
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 2.5rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        h3::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 60%;
+            background: var(--ncert-blue);
+            border-radius: 3px;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: #444;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--ncert-blue), var(--ncert-light-blue));
+        }
+
+        ul, ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+
+        li::before {
+            content: "•";
+            color: var(--ncert-blue);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--ncert-blue);
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f5f7ff;
+        }
+
+        tr:hover {
+            background-color: #ebedf7;
+        }
+
+        .formula {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f0f3ff;
+            padding: 1.2rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--ncert-blue);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-size: 1.1rem;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .image-container {
+            margin: 2.5rem 0;
+            text-align: center;
+        }
+
+        .diagram {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #d0d9ff;
+        }
+
+        .diagram:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        figcaption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.8rem;
+            font-style: italic;
+        }
+
+        .activity {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-left: 4px solid var(--ncert-blue);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .activity::before {
+            content: "🔍";
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        .activity-content {
+            margin-left: 2.5rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--ncert-blue), var(--ncert-light-blue));
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(63, 81, 181, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 100;
+            font-size: 1.5rem;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(63, 81, 181, 0.4);
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--ncert-dark-blue), var(--ncert-blue));
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #7986cb, #3f51b5);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            transition: background 0.3s;
+        }
+
+        .footer-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+            }
+
+            .section {
+                padding: 1.8rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.8rem;
+            }
+
+            .back-to-top {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1.2rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media print {
+            header, footer, .back-to-top {
+                display: none;
+            }
+
+            body::after {
+                display: none;
+            }
+
+            .section {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                margin-bottom: 1.5rem;
+                page-break-inside: avoid;
+            }
+
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+
+            .diagram {
+                max-width: 80% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Class 10 Science</div>
+        <div class="subtitle">Chapter 10: Light - Reflection and Refraction</div>
+    </header>
+
+    <div class="container">
+        <h1>Light: Reflection and Refraction</h1>
+
+        <div class="section">
+            <h2>Introduction to Light</h2>
+            <p>Light is a form of energy that enables us to see objects. It is an electromagnetic radiation that can be detected by the human eye.</p>
+            <ul>
+                <li>Light travels in straight lines (rectilinear propagation of light).</li>
+                <li>The speed of light in vacuum is 3 × 10<sup>8</sup> m/s.</li>
+                <li>Light exhibits both wave-like and particle-like properties (wave-particle duality).</li>
+            </ul>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/rectilinear-propagation.jpg" alt="Rectilinear propagation of light" class="diagram">
+                <figcaption>Fig 1. Light travels in straight lines (rectilinear propagation)</figcaption>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Reflection of Light</h2>
+            <p>When light falls on a surface, the direction of the ray is changed. This change in direction is called reflection.</p>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/laws-of-reflection.jpg" alt="Laws of reflection" class="diagram">
+                <figcaption>Fig 2. Laws of reflection showing incident, reflected rays and normal</figcaption>
+            </div>
+            
+            <h3>Laws of Reflection:</h3>
+            <ol>
+                <li>The angle of incidence (i) is equal to the angle of reflection (r).</li>
+                <li>The incident ray, the reflected ray and the normal to the reflecting surface at the point of incidence all lie in the same plane.</li>
+            </ol>
+            
+            <div class="activity">
+                <div class="activity-content">
+                    <strong>Activity:</strong> Take a comb and close all its openings except one. Hold it perpendicular to a sheet of paper. Direct a beam of light from a torch through the opening of the comb. Observe the path of light. Now place a plane mirror in the path of this light. Observe the change in direction of light after reflection.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Types of Images</h2>
+            <p>An image is formed when light rays coming from an object meet or appear to meet after reflection or refraction.</p>
+            
+            <table>
+                <tr>
+                    <th>Real Image</th>
+                    <th>Virtual Image</th>
+                </tr>
+                <tr>
+                    <td>Formed when light rays actually meet</td>
+                    <td>Formed when light rays appear to meet (but don't actually meet)</td>
+                </tr>
+                <tr>
+                    <td>Can be obtained on a screen</td>
+                    <td>Cannot be obtained on a screen</td>
+                </tr>
+                <tr>
+                    <td>Always inverted</td>
+                    <td>Always erect</td>
+                </tr>
+                <tr>
+                    <td>Formed by concave mirrors and convex lenses</td>
+                    <td>Formed by plane mirrors, convex mirrors and concave lenses</td>
+                </tr>
+            </table>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/real-virtual-image.jpg" alt="Real vs Virtual images" class="diagram">
+                <figcaption>Fig 3. Comparison of real and virtual images</figcaption>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Spherical Mirrors</h2>
+            <p>A spherical mirror is a mirror whose reflecting surface is part of a hollow sphere. There are two types:</p>
+            <ul>
+                <li><strong>Concave Mirror:</strong> Reflecting surface is the inner curved surface (converging mirror)</li>
+                <li><strong>Convex Mirror:</strong> Reflecting surface is the outer bulged surface (diverging mirror)</li>
+            </ul>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/spherical-mirrors.jpg" alt="Spherical mirrors" class="diagram">
+                <figcaption>Fig 4. Concave and convex mirrors</figcaption>
+            </div>
+            
+            <h3>Important Terms:</h3>
+            <ul>
+                <li><strong>Pole (P):</strong> The center point of the mirror's reflecting surface.</li>
+                <li><strong>Center of Curvature (C):</strong> The center of the sphere of which the mirror is a part.</li>
+                <li><strong>Radius of Curvature (R):</strong> The distance between the pole and center of curvature.</li>
+                <li><strong>Principal Axis:</strong> The straight line joining the pole and center of curvature.</li>
+                <li><strong>Focus (F):</strong> The point where parallel rays of light meet or appear to meet after reflection.</li>
+                <li><strong>Focal Length (f):</strong> The distance between the pole and focus.</li>
+            </ul>
+            
+            <div class="formula">Focal length (f) = R/2</div>
+        </div>
+
+        <div class="section">
+            <h2>Image Formation by Concave Mirrors</h2>
+            <p>The nature of image formed by a concave mirror depends on the position of the object.</p>
+            
+            <table>
+                <tr>
+                    <th>Position of Object</th>
+                    <th>Position of Image</th>
+                    <th>Size of Image</th>
+                    <th>Nature of Image</th>
+                </tr>
+                <tr>
+                    <td>At infinity</td>
+                    <td>At the focus F</td>
+                    <td>Highly diminished</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>Beyond C</td>
+                    <td>Between F and C</td>
+                    <td>Diminished</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>At C</td>
+                    <td>At C</td>
+                    <td>Same size</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>Between C and F</td>
+                    <td>Beyond C</td>
+                    <td>Enlarged</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>At F</td>
+                    <td>At infinity</td>
+                    <td>Highly enlarged</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>Between P and F</td>
+                    <td>Behind the mirror</td>
+                    <td>Enlarged</td>
+                    <td>Virtual and erect</td>
+                </tr>
+            </table>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/concave-mirror-ray-diagrams.jpg" alt="Concave mirror ray diagrams" class="diagram">
+                <figcaption>Fig 5. Ray diagrams for concave mirror showing image formation at different positions</figcaption>
+            </div>
+            
+            <h3>Uses of Concave Mirrors:</h3>
+            <ul>
+                <li>Shaving mirrors to get enlarged image</li>
+                <li>As reflectors in torches, headlights of vehicles</li>
+                <li>By dentists to examine teeth</li>
+                <li>In solar furnaces to concentrate sunlight</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Image Formation by Convex Mirrors</h2>
+            <p>Convex mirrors always form virtual, erect and diminished images regardless of the object's position.</p>
+            
+            <table>
+                <tr>
+                    <th>Position of Object</th>
+                    <th>Position of Image</th>
+                    <th>Size of Image</th>
+                    <th>Nature of Image</th>
+                </tr>
+                <tr>
+                    <td>At infinity</td>
+                    <td>At the focus F, behind the mirror</td>
+                    <td>Highly diminished</td>
+                    <td>Virtual and erect</td>
+                </tr>
+                <tr>
+                    <td>Between infinity and pole</td>
+                    <td>Between P and F, behind the mirror</td>
+                    <td>Diminished</td>
+                    <td>Virtual and erect</td>
+                </tr>
+            </table>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/convex-mirror-ray-diagrams.jpg" alt="Convex mirror ray diagrams" class="diagram">
+                <figcaption>Fig 6. Ray diagrams for convex mirror showing image formation</figcaption>
+            </div>
+            
+            <h3>Uses of Convex Mirrors:</h3>
+            <ul>
+                <li>As rear-view mirrors in vehicles because they give a wider field of view</li>
+                <li>At blind turns and dangerous road bends</li>
+                <li>In shops and supermarkets for security purposes</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Mirror Formula and Magnification</h2>
+            <p>The relationship between object distance (u), image distance (v) and focal length (f) is given by the mirror formula:</p>
+            
+            <div class="formula">1/f = 1/v + 1/u</div>
+            
+            <p>Where:
+                <br>f = focal length of the mirror
+                <br>v = distance of image from the mirror
+                <br>u = distance of object from the mirror
+            </p>
+            
+            <h3>Magnification</h3>
+            <p>Magnification (m) is the ratio of the height of the image to the height of the object.</p>
+            
+            <div class="formula">m = h<sub>i</sub>/h<sub>o</sub> = -v/u</div>
+            
+            <p>Where:
+                <br>h<sub>i</sub> = height of image
+                <br>h<sub>o</sub> = height of object
+            </p>
+            
+            <ul>
+                <li>If m is negative → Image is real and inverted</li>
+                <li>If m is positive → Image is virtual and erect</li>
+                <li>If |m| > 1 → Image is enlarged</li>
+                <li>If |m| < 1 → Image is diminished</li>
+                <li>If |m| = 1 → Image is of same size</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Refraction of Light</h2>
+            <p>Refraction is the bending of light when it passes from one medium to another with different optical densities.</p>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/refraction-of-light.jpg" alt="Refraction of light" class="diagram">
+                <figcaption>Fig 7. Refraction of light at air-water interface</figcaption>
+            </div>
+            
+            <h3>Laws of Refraction:</h3>
+            <ol>
+                <li>The incident ray, the refracted ray and the normal to the interface at the point of incidence all lie in the same plane.</li>
+                <li>The ratio of sine of angle of incidence to the sine of angle of refraction is constant for a given pair of media (Snell's Law).</li>
+            </ol>
+            
+            <div class="formula">sin i / sin r = constant (μ)</div>
+            
+            <p>This constant is called the refractive index of the second medium with respect to the first medium.</p>
+            
+            <div class="activity">
+                <div class="activity-content">
+                    <strong>Activity:</strong> Place a coin at the bottom of a bucket filled with water. With your eye at a position above the water, try to pick up the coin. You'll find that the coin appears to be at a higher position than it actually is. This is due to refraction of light.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Refractive Index</h2>
+            <p>The refractive index of a medium is a measure of how much it can bend light.</p>
+            
+            <div class="formula">μ = speed of light in vacuum / speed of light in medium = c/v</div>
+            
+            <h3>Relative Refractive Index:</h3>
+            <p>The refractive index of medium 2 with respect to medium 1 is given by:</p>
+            
+            <div class="formula"><sup>1</sup>μ<sub>2</sub> = μ<sub>2</sub>/μ<sub>1</sub> = v<sub>1</sub>/v<sub>2</sub></div>
+            
+            <p>Where:
+                <br>μ<sub>1</sub> = absolute refractive index of medium 1
+                <br>μ<sub>2</sub> = absolute refractive index of medium 2
+                <br>v<sub>1</sub> = speed of light in medium 1
+                <br>v<sub>2</sub> = speed of light in medium 2
+            </p>
+            
+            <h3>Refraction through a Rectangular Glass Slab:</h3>
+            <ul>
+                <li>When light passes through a rectangular glass slab, it undergoes refraction twice.</li>
+                <li>The emergent ray is parallel to the incident ray but laterally displaced.</li>
+                <li>The angle of incidence equals the angle of emergence (i = e).</li>
+            </ul>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/glass-slab-refraction.jpg" alt="Refraction through glass slab" class="diagram">
+                <figcaption>Fig 8. Path of light through a rectangular glass slab</figcaption>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Spherical Lenses</h2>
+            <p>A lens is a transparent material (usually glass) bounded by two surfaces, at least one of which is spherical. There are two types:</p>
+            <ul>
+                <li><strong>Convex Lens:</strong> Thicker at the center than at the edges (converging lens)</li>
+                <li><strong>Concave Lens:</strong> Thinner at the center than at the edges (diverging lens)</li>
+            </ul>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/spherical-lenses.jpg" alt="Spherical lenses" class="diagram">
+                <figcaption>Fig 9. Convex and concave lenses</figcaption>
+            </div>
+            
+            <h3>Important Terms:</h3>
+            <ul>
+                <li><strong>Optical Center (O):</strong> The central point of the lens.</li>
+                <li><strong>Principal Axis:</strong> The line joining the centers of curvature of the two surfaces.</li>
+                <li><strong>Focus (F):</strong> The point where parallel rays of light meet or appear to meet after refraction.</li>
+                <li><strong>Focal Length (f):</strong> The distance between the optical center and focus.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Image Formation by Convex Lenses</h2>
+            <p>The nature of image formed by a convex lens depends on the position of the object.</p>
+            
+            <table>
+                <tr>
+                    <th>Position of Object</th>
+                    <th>Position of Image</th>
+                    <th>Size of Image</th>
+                    <th>Nature of Image</th>
+                </tr>
+                <tr>
+                    <td>At infinity</td>
+                    <td>At focus F<sub>2</sub></td>
+                    <td>Highly diminished</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>Beyond 2F<sub>1</sub></td>
+                    <td>Between F<sub>2</sub> and 2F<sub>2</sub></td>
+                    <td>Diminished</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>At 2F<sub>1</sub></td>
+                    <td>At 2F<sub>2</sub></td>
+                    <td>Same size</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>Between F<sub>1</sub> and 2F<sub>1</sub></td>
+                    <td>Beyond 2F<sub>2</sub></td>
+                    <td>Enlarged</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>At F<sub>1</sub></td>
+                    <td>At infinity</td>
+                    <td>Highly enlarged</td>
+                    <td>Real and inverted</td>
+                </tr>
+                <tr>
+                    <td>Between F<sub>1</sub> and O</td>
+                    <td>On same side as object</td>
+                    <td>Enlarged</td>
+                    <td>Virtual and erect</td>
+                </tr>
+            </table>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/convex-lens-ray-diagrams.jpg" alt="Convex lens ray diagrams" class="diagram">
+                <figcaption>Fig 10. Ray diagrams for convex lens showing image formation</figcaption>
+            </div>
+            
+            <h3>Uses of Convex Lenses:</h3>
+            <ul>
+                <li>In cameras to focus light and form images</li>
+                <li>In microscopes and telescopes to magnify objects</li>
+                <li>As magnifying glasses</li>
+                <li>To correct hypermetropia (long-sightedness)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Image Formation by Concave Lenses</h2>
+            <p>A concave lens always forms virtual, erect and diminished images regardless of the object's position.</p>
+            
+            <table>
+                <tr>
+                    <th>Position of Object</th>
+                    <th>Position of Image</th>
+                    <th>Size of Image</th>
+                    <th>Nature of Image</th>
+                </tr>
+                <tr>
+                    <td>At infinity</td>
+                    <td>At focus F<sub>1</sub></td>
+                    <td>Highly diminished</td>
+                    <td>Virtual and erect</td>
+                </tr>
+                <tr>
+                    <td>Between infinity and O</td>
+                    <td>Between F<sub>1</sub> and O</td>
+                    <td>Diminished</td>
+                    <td>Virtual and erect</td>
+                </tr>
+            </table>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/concave-lens-ray-diagrams.jpg" alt="Concave lens ray diagrams" class="diagram">
+                <figcaption>Fig 11. Ray diagrams for concave lens showing image formation</figcaption>
+            </div>
+            
+            <h3>Uses of Concave Lenses:</h3>
+            <ul>
+                <li>In spectacles to correct myopia (short-sightedness)</li>
+                <li>In peepholes of doors</li>
+                <li>In some types of telescopes</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Lens Formula and Magnification</h2>
+            <p>The relationship between object distance (u), image distance (v) and focal length (f) is given by the lens formula:</p>
+            
+            <div class="formula">1/f = 1/v - 1/u</div>
+            
+            <p>Where:
+                <br>f = focal length of the lens
+                <br>v = distance of image from the lens
+                <br>u = distance of object from the lens
+            </p>
+            
+            <h3>Magnification</h3>
+            <p>Magnification (m) is the ratio of the height of the image to the height of the object.</p>
+            
+            <div class="formula">m = h<sub>i</sub>/h<sub>o</sub> = v/u</div>
+            
+            <p>Where:
+                <br>h<sub>i</sub> = height of image
+                <br>h<sub>o</sub> = height of object
+            </p>
+            
+            <ul>
+                <li>If m is negative → Image is real and inverted</li>
+                <li>If m is positive → Image is virtual and erect</li>
+                <li>If |m| > 1 → Image is enlarged</li>
+                <li>If |m| < 1 → Image is diminished</li>
+                <li>If |m| = 1 → Image is of same size</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Power of a Lens</h2>
+            <p>The power of a lens is a measure of its ability to converge or diverge light rays.</p>
+            
+            <div class="formula">P = 1/f</div>
+            
+            <p>Where:
+                <br>P = power of lens (in dioptre, D)
+                <br>f = focal length (in meters)
+            </p>
+            
+            <ul>
+                <li>The SI unit of power is dioptre (D).</li>
+                <li>Convex lens has positive power (+P).</li>
+                <li>Concave lens has negative power (-P).</li>
+                <li>For combination of lenses, the net power is the algebraic sum of individual powers.</li>
+            </ul>
+            
+            <div class="formula">P<sub>net</sub> = P<sub>1</sub> + P<sub>2</sub> + P<sub>3</sub> + ...</div>
+            
+            <div class="image-container">
+                <img src="https://www.examfear.com/notes/Class-10/Physics/Light-Reflection-and-Refraction/images/power-of-lens.jpg" alt="Power of lens" class="diagram">
+                <figcaption>Fig 12. Understanding power of lenses</figcaption>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Class 10 Science</div>
+            <div class="footer-subtitle">Chapter 10: Light - Reflection and Refraction</div>
+            <div class="footer-links">
+                <a href="#">NCERT Solutions</a>
+                <a href="#">Important Questions</a>
+                <a href="#">Previous Year Papers</a>
+                <a href="#">Revision Notes</a>
+            </div>
+            <div class="copyright">© NCERT - National Council of Educational Research and Training</div>
+        </div>
+    </footer>
+
+    <script>
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add animation to sections when they come into view
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
