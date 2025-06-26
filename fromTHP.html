@@ -1,216 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>THP Coaching - Admission Form</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THP Coaching - Premium Admission</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <style>
     :root {
-      --primary: #4a6bff;
-      --secondary: #ff6b6b;
-      --dark: #2c3e50;
-      --light: #f5f7fa;
-      --success: #2ecc71;
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #f72585;
+      --dark: #2b2d42;
+      --light: #f8f9fa;
+      --success: #4cc9f0;
+      --warning: #f8961e;
+      --card-bg: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
     }
+    
     body {
-      background-color: #f0f2f5;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       color: var(--dark);
+      min-height: 100vh;
       line-height: 1.6;
     }
+    
     .container {
       max-width: 900px;
-      margin: 30px auto;
-      padding: 20px;
+      margin: 0 auto;
+      padding: 2rem;
     }
+    
     .admission-card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
       overflow: hidden;
-      transition: transform 0.3s ease;
+      transition: var(--transition);
+      transform: translateY(0);
     }
+    
     .admission-card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
     }
+    
     .card-header {
-      background: linear-gradient(135deg, var(--primary), #6a5acd);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      padding: 25px;
+      padding: 2rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .card-header::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+      transform: rotate(30deg);
+    }
+    
     .card-header h1 {
-      font-size: 28px;
-      font-weight: 600;
-      margin-bottom: 5px;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
     }
+    
     .card-header p {
       opacity: 0.9;
-      font-size: 16px;
+      font-weight: 300;
+      position: relative;
     }
+    
     .card-body {
-      padding: 30px;
+      padding: 2.5rem;
     }
+    
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 1.5rem;
+      position: relative;
     }
+    
     .form-group label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 0.5rem;
       font-weight: 500;
       color: var(--dark);
+      font-size: 0.95rem;
     }
+    
     .form-control {
       width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: all 0.3s;
+      padding: 1rem 1.25rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: var(--transition);
+      background-color: #f9f9f9;
     }
+    
     .form-control:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
       outline: none;
+      background-color: white;
     }
+    
     .select-wrapper {
       position: relative;
     }
-    .select-wrapper:after {
-      content: "▼";
-      font-size: 12px;
+    
+    .select-wrapper::after {
+      content: "⌄";
+      font-size: 1.25rem;
       color: var(--dark);
       position: absolute;
-      right: 15px;
+      right: 1.25rem;
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
+      z-index: 2;
     }
+    
     select.form-control {
       appearance: none;
-      padding-right: 30px;
+      padding-right: 3rem;
+      background-image: none;
     }
+    
     .btn {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--primary), #6a5acd);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       border: none;
-      padding: 14px 28px;
-      border-radius: 8px;
+      padding: 1.1rem 2rem;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 16px;
-      font-weight: 500;
-      transition: all 0.3s;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: var(--transition);
       width: 100%;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
+    
     .btn:hover {
-      background: linear-gradient(135deg, #3a5bef, #5a4acd);
+      background: linear-gradient(135deg, var(--primary-dark), #2f3bb7);
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(74, 107, 255, 0.3);
+      box-shadow: 0 7px 20px rgba(67, 97, 238, 0.3);
     }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn i {
+      margin-right: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
     .payment-section {
       display: none;
-      margin-top: 30px;
-      padding: 25px;
-      background: #f9f9f9;
-      border-radius: 10px;
+      margin-top: 2rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 15px;
       border-left: 4px solid var(--primary);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
+    
     .payment-section.active {
       display: block;
-      animation: fadeIn 0.5s ease;
+      animation: fadeInUp 0.5s ease both;
     }
+    
     .price-display {
-      font-size: 24px;
-      font-weight: 600;
+      font-size: 1.75rem;
+      font-weight: 700;
       color: var(--primary);
-      margin: 15px 0;
+      margin: 1.5rem 0;
+      display: flex;
+      align-items: center;
     }
+    
     .discount-badge {
       background: var(--secondary);
       color: white;
-      padding: 5px 10px;
+      padding: 0.3rem 0.8rem;
       border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 0.85rem;
+      font-weight: 600;
       display: inline-block;
-      margin-left: 10px;
+      margin-left: 1rem;
+      animation: pulse 2s infinite;
     }
-    .payment-options {
+    
+    .final-amount {
+      font-size: 1.25rem;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 10px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 20px;
+      justify-content: space-between;
+      align-items: center;
     }
+    
+    .final-amount strong {
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+    
+    .payment-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
     .payment-option {
-      flex: 1;
-      min-width: 200px;
       background: white;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
       cursor: pointer;
-      transition: all 0.3s;
-      border: 1px solid #ddd;
+      transition: var(--transition);
+      border: 1px solid #e0e0e0;
+      text-align: center;
     }
+    
     .payment-option:hover {
       border-color: var(--primary);
-      transform: translateY(-3px);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(67, 97, 238, 0.15);
     }
+    
+    .payment-option.gpay {
+      background: linear-gradient(135deg, #4285f4, #34a853);
+      border-color: transparent;
+      color: white;
+    }
+    
+    .payment-option.gpay:hover {
+      background: linear-gradient(135deg, #3a7ae8, #2d9747);
+    }
+    
     .payment-option img {
-      max-width: 100%;
+      max-width: 120px;
       height: auto;
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
     }
+    
+    .payment-option h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .payment-option p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
     .qr-code {
       text-align: center;
-      margin: 20px 0;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
+    
     .qr-code img {
-      max-width: 200px;
+      max-width: 180px;
       border: 1px solid #eee;
-      padding: 10px;
+      padding: 0.5rem;
       background: white;
     }
+    
+    .upi-details {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    
+    .upi-details p {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    
+    .upi-details strong {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
     .success-message {
       display: none;
       text-align: center;
-      padding: 30px;
+      padding: 3rem 2rem;
+      background: white;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
     }
-    .success-message i {
-      font-size: 60px;
+    
+    .success-icon {
+      font-size: 5rem;
       color: var(--success);
-      margin-bottom: 20px;
+      margin-bottom: 1.5rem;
+      animation: bounceIn 0.75s ease both;
     }
+    
     .success-message h2 {
       color: var(--success);
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
+      font-size: 1.75rem;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+    
+    .success-message p {
+      margin-bottom: 1rem;
+      font-size: 1.05rem;
+    }
+    
+    .success-message .btn {
+      max-width: 250px;
+      margin: 1.5rem auto 0;
+      background: var(--success);
+    }
+    
+    .success-message .btn:hover {
+      background: #3ab5d9;
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    
+    @keyframes bounceIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
     @media (max-width: 768px) {
       .container {
-        padding: 10px;
+        padding: 1rem;
       }
-      .card-header h1 {
-        font-size: 24px;
+      
+      .card-header {
+        padding: 1.5rem;
       }
+      
       .card-body {
-        padding: 20px;
+        padding: 1.5rem;
       }
+      
       .payment-options {
-        flex-direction: column;
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -219,15 +392,17 @@
   <div class="container">
     <div class="admission-card">
       <div class="card-header">
-        <h1>THP Coaching Admission Form</h1>
-        <p>Fill out the form to enroll in our courses</p>
+        <h1>THP Coaching Admission</h1>
+        <p>Begin your journey to academic excellence</p>
       </div>
+      
       <div class="card-body">
         <form id="admissionForm">
           <div class="form-group">
             <label for="name">Full Name</label>
             <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
           </div>
+          
           <div class="form-group">
             <label for="class">Class/Grade</label>
             <div class="select-wrapper">
@@ -241,14 +416,17 @@
               </select>
             </div>
           </div>
+          
           <div class="form-group">
             <label for="email">Email Address</label>
             <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
           </div>
+          
           <div class="form-group">
             <label for="phone">Phone Number</label>
             <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number" required>
           </div>
+          
           <div class="form-group">
             <label for="course">Select Course</label>
             <div class="select-wrapper">
@@ -266,46 +444,65 @@
               </select>
             </div>
           </div>
-          <button type="button" id="proceedBtn" class="btn">Proceed to Payment</button>
+          
+          <button type="button" id="proceedBtn" class="btn">
+            <i class="fas fa-arrow-right"></i> Proceed to Payment
+          </button>
         </form>
         
         <div id="paymentSection" class="payment-section">
-          <h2>Payment Details</h2>
-          <p>Please complete your admission by making the payment</p>
+          <h2><i class="fas fa-lock"></i> Secure Payment</h2>
+          <p>Complete your admission with our 100% secure payment process</p>
           
           <div class="price-display">
-            Course Fee: <span id="courseFee">₹0</span>
-            <span class="discount-badge">10% Discount Applied</span>
+            <span>Course Fee: ₹<span id="courseFee">0</span></span>
+            <span class="discount-badge">10% OFF</span>
           </div>
-          <p id="finalAmount">Final Amount to Pay: <strong>₹0</strong></p>
+          
+          <div class="final-amount">
+            <span>Final Amount:</span>
+            <strong>₹<span id="finalAmount">0</span></strong>
+          </div>
           
           <div class="payment-options">
-            <div class="payment-option" onclick="initiateGPay()">
+            <div class="payment-option gpay" onclick="initiateGPay()">
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg/1200px-Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg.png" alt="Google Pay">
-              <p>Pay directly via Google Pay</p>
+              <h3>Pay with Google Pay</h3>
+              <p>Instant & secure payment</p>
             </div>
             
             <div class="payment-option">
+              <i class="fas fa-qrcode" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+              <h3>UPI QR Code</h3>
+              <p>Scan with any UPI app</p>
+              
               <div class="qr-code">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=1000&cu=INR" alt="UPI QR Code" id="qrCode">
-                <p>Scan this QR code with any UPI app</p>
+              </div>
+              
+              <div class="upi-details">
+                <p><strong>UPI ID:</strong> mgbhaukali@oksbi</p>
+                <p><strong>Name:</strong> THP Coaching</p>
               </div>
             </div>
           </div>
           
-          <p style="margin-top: 20px; text-align: center;">
-            <strong>UPI ID:</strong> mgbhaukali@oksbi<br>
-            <strong>Name:</strong> THP Coaching
-          </p>
-          
-          <button type="button" id="completeBtn" class="btn" style="margin-top: 20px;">I've Completed the Payment</button>
+          <button type="button" id="completeBtn" class="btn" style="margin-top: 1.5rem;">
+            <i class="fas fa-check-circle"></i> I've Completed the Payment
+          </button>
         </div>
         
         <div id="successMessage" class="success-message">
-          <i>✓</i>
+          <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
           <h2>Admission Successful!</h2>
-          <p>Thank you for enrolling with THP Coaching. We've sent the confirmation to your email.</p>
-          <p>Our team will contact you shortly with course details.</p>
+          <p>Thank you for enrolling with THP Coaching.</p>
+          <p>We've sent the confirmation details to your email address.</p>
+          <p>Our academic counselor will contact you within 24 hours.</p>
+          <button class="btn" onclick="window.location.reload()">
+            <i class="fas fa-home"></i> Back to Home
+          </button>
         </div>
       </div>
     </div>
@@ -323,21 +520,20 @@
       appId: "1:717475952542:web:f79db77ed1f60d117b488f",
       measurementId: "G-VV0D9TNK0Y"
     };
-
+    
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
-
+    
     // Course pricing
     const coursePrices = {
       'CUET': 2000, 'IIT': 2000, 'NEET': 2000, 'JEE': 2000,
       'SSC': 1500, 'BANK': 1500, 'RAILWAY': 1500,
       '9-10': 2000, '11-12': 2500
     };
-
-    // Global variable to store the Firebase push key
-    let admissionKey = null;
-
+    
+    let tempUserKey = null;
+    
     // Proceed to payment button click handler
     document.getElementById('proceedBtn').addEventListener('click', function() {
       const name = document.getElementById('name').value;
@@ -348,7 +544,7 @@
       
       // Validate form
       if (!name || !studentClass || !email || !phone || !course) {
-        alert('Please fill all the fields');
+        showErrorToast('Please fill all the fields');
         return;
       }
       
@@ -357,13 +553,23 @@
       const discountedFee = baseFee * 0.9;
       
       // Update payment section
-      document.getElementById('courseFee').textContent = `₹${baseFee}`;
-      document.getElementById('finalAmount').innerHTML = `Final Amount to Pay: <strong>₹${discountedFee.toFixed(2)}</strong>`;
+      document.getElementById('courseFee').textContent = baseFee;
+      document.getElementById('finalAmount').textContent = discountedFee.toFixed(2);
       
       // Update QR code with amount
-      document.getElementById('qrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
+      document.getElementById('qrCode').src = qrCodeUrl;
       
-      // Create admission data object
+      // Show payment section
+      document.getElementById('paymentSection').classList.add('active');
+      
+      // Scroll to payment section smoothly
+      document.getElementById('paymentSection').scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'center'
+      });
+      
+      // Create temporary admission record
       const admissionData = {
         name: name,
         class: studentClass,
@@ -371,97 +577,139 @@
         phone: phone,
         course: course,
         baseFee: baseFee,
-        discountedFee: discountedFee,
+        paidAmount: discountedFee,
         paymentDate: new Date().toISOString(),
-        status: 'pending_payment'
+        status: 'pending payment'
       };
-
-      // Save to Firebase under 'users' node and store the key
-      const newAdmissionRef = database.ref('users').push();
-      admissionKey = newAdmissionRef.key;
       
-      newAdmissionRef.set(admissionData)
+      const newUserRef = database.ref('pendingAdmissions').push();
+      newUserRef.set(admissionData)
         .then(() => {
-          // Show payment section
-          document.getElementById('paymentSection').classList.add('active');
-          document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
+          tempUserKey = newUserRef.key;
         })
         .catch((error) => {
-          console.error('Error saving admission data:', error);
-          alert('There was an error processing your admission. Please try again.');
+          console.error('Error saving temporary data:', error);
+          showErrorToast('Error processing your request. Please try again.');
         });
     });
-
+    
     // Complete payment button click handler
     document.getElementById('completeBtn').addEventListener('click', function() {
-      if (!admissionKey) {
-        alert('Please proceed to payment first');
-        return;
-      }
-
-      // Get the user data from 'users' node
-      database.ref('users/' + admissionKey).once('value')
-        .then((snapshot) => {
-          const userData = snapshot.val();
-          if (!userData) {
-            throw new Error('User data not found');
-          }
-
-          // Update the user record with payment completion status
-          const updates = {
-            status: 'completed',
-            paymentCompleted: true,
-            completionDate: new Date().toISOString()
-          };
-
-          // Update the user record
-          return database.ref('users/' + admissionKey).update(updates)
-            .then(() => {
-              // Also save to admissions node
-              return database.ref('admissions').push(userData);
-            });
-        })
+      const name = document.getElementById('name').value;
+      const studentClass = document.getElementById('class').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const course = document.getElementById('course').value;
+      const baseFee = coursePrices[course];
+      const discountedFee = baseFee * 0.9;
+      
+      // Create final admission data object
+      const finalData = {
+        name: name,
+        class: studentClass,
+        email: email,
+        phone: phone,
+        course: course,
+        baseFee: baseFee,
+        paidAmount: discountedFee,
+        paymentDate: new Date().toISOString(),
+        status: 'pending verification',
+        paymentMethod: 'UPI',
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      };
+      
+      // Save to final admissions collection
+      database.ref('admissions').push(finalData)
         .then(() => {
+          // Remove temporary record if exists
+          if (tempUserKey) {
+            database.ref('pendingAdmissions/' + tempUserKey).remove();
+          }
+          
           // Show success message
           document.getElementById('admissionForm').style.display = 'none';
           document.getElementById('paymentSection').style.display = 'none';
           document.getElementById('successMessage').style.display = 'block';
+          
+          // Scroll to success message
+          document.getElementById('successMessage').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'center'
+          });
+          
+          // Here you would typically send a confirmation email
+          // sendConfirmationEmail(email, name, course, discountedFee);
         })
         .catch((error) => {
-          console.error('Error completing payment:', error);
-          alert('There was an error completing your payment. Please try again.');
+          console.error('Error saving final data:', error);
+          showErrorToast('There was an error completing your admission. Please contact support.');
         });
     });
-
+    
     // Google Pay payment initiation
     function initiateGPay() {
       const course = document.getElementById('course').value;
       if (!course || !coursePrices[course]) {
-        alert('Please select a course first');
+        showErrorToast('Please select a valid course first');
         return;
       }
       
       const discountedFee = coursePrices[course] * 0.9;
-      const upiLink = `upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
+      const upiLink = `upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR&tn=THP%20Coaching%20Fee%20Payment`;
       
-      // Redirect to Google Pay/UPI app
+      // Try to open Google Pay directly
       window.location.href = upiLink;
+      
+      // Fallback for desktop or if UPI app not installed
+      setTimeout(() => {
+        if (!document.hidden) {
+          window.open(`https://tez.google.com/pay?upiLink=${encodeURIComponent(upiLink)}`, '_blank');
+        }
+      }, 500);
     }
-
+    
     // Update payment details when course changes
     document.getElementById('course').addEventListener('change', function() {
       if (document.getElementById('paymentSection').classList.contains('active')) {
         const course = this.value;
-        if (course) {
+        if (course && coursePrices[course]) {
           const baseFee = coursePrices[course];
           const discountedFee = baseFee * 0.9;
           
-          document.getElementById('courseFee').textContent = `₹${baseFee}`;
-          document.getElementById('finalAmount').innerHTML = `Final Amount to Pay: <strong>₹${discountedFee.toFixed(2)}</strong>`;
-          document.getElementById('qrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
+          document.getElementById('courseFee').textContent = baseFee;
+          document.getElementById('finalAmount').textContent = discountedFee.toFixed(2);
+          
+          const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
+          document.getElementById('qrCode').src = qrCodeUrl;
         }
       }
     });
+    
+    // Helper function to show error messages
+    function showErrorToast(message) {
+      const toast = document.createElement('div');
+      toast.style.position = 'fixed';
+      toast.style.bottom = '20px';
+      toast.style.left = '50%';
+      toast.style.transform = 'translateX(-50%)';
+      toast.style.backgroundColor = '#ff6b6b';
+      toast.style.color = 'white';
+      toast.style.padding = '12px 24px';
+      toast.style.borderRadius = '8px';
+      toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      toast.style.zIndex = '1000';
+      toast.style.animation = 'fadeInUp 0.3s ease-out';
+      toast.textContent = message;
+      
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
+    }
   </script>
 </body>
 </html>
