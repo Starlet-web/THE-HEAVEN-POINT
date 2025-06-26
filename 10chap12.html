@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electricity - Complete Class 10 Notes | THP Coaching Classes</title>
+    <title>Electricity - Class 10 Science Notes | THP Coaching</title>
     <style>
         :root {
             --primary-color: #8e44ad;
@@ -25,6 +25,7 @@
             line-height: 1.6;
             background-color: white;
             position: relative;
+            overflow-x: hidden;
         }
         
         body::after {
@@ -40,21 +41,20 @@
             transform: translate(-50%, -50%);
         }
         
-        header {
+        .header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        .logo {
+        .header h1 {
             font-size: 2rem;
-            font-weight: bold;
             margin-bottom: 0.5rem;
         }
         
-        .subtitle {
+        .header p {
             font-size: 1rem;
             opacity: 0.9;
         }
@@ -65,43 +65,43 @@
             padding: 0 1.5rem;
         }
         
+        .footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
         .section {
             background-color: white;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             padding: 1.5rem;
             margin-bottom: 2rem;
-            border-left: 4px solid var(--primary-color);
         }
         
-        h1, h2, h3 {
+        .section h2 {
             color: var(--primary-color);
             margin-bottom: 1rem;
-        }
-        
-        h1 {
-            font-size: 2rem;
-            border-bottom: 2px solid var(--border-color);
             padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
         }
         
-        h2 {
-            font-size: 1.5rem;
+        .section h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
         }
         
-        h3 {
-            font-size: 1.2rem;
-        }
-        
-        p, ul, ol {
+        .section p, .section ul, .section ol {
             margin-bottom: 1rem;
         }
         
-        ul, ol {
+        .section ul, .section ol {
             padding-left: 2rem;
         }
         
-        li {
+        .section li {
             margin-bottom: 0.5rem;
         }
         
@@ -110,11 +110,15 @@
             background-color: var(--light-bg);
             border: 1px solid var(--border-color);
             padding: 1rem;
-            border-radius: 4px;
             margin: 1rem 0;
+            border-radius: 4px;
             text-align: center;
-            font-size: 1.1rem;
             overflow-x: auto;
+        }
+        
+        .formula {
+            font-weight: bold;
+            color: var(--primary-color);
         }
         
         .image-placeholder {
@@ -127,55 +131,47 @@
             color: #666;
         }
         
-        .highlight {
-            background-color: #f0e6ff;
+        .note-box {
+            background-color: #f0e6f5;
+            border-left: 4px solid var(--primary-color);
             padding: 1rem;
-            border-radius: 4px;
             margin: 1rem 0;
-            border-left: 3px solid var(--primary-color);
+            border-radius: 0 4px 4px 0;
         }
         
-        .definition {
-            font-style: italic;
-            background-color: var(--light-bg);
-            padding: 1rem;
-            border-radius: 4px;
-            margin: 1rem 0;
-        }
-        
-        table {
+        .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
         
-        th, td {
+        .comparison-table th, .comparison-table td {
             border: 1px solid var(--border-color);
             padding: 0.75rem;
             text-align: left;
         }
         
-        th {
+        .comparison-table th {
             background-color: var(--primary-color);
             color: white;
         }
         
-        tr:nth-child(even) {
+        .comparison-table tr:nth-child(even) {
             background-color: var(--light-bg);
         }
         
         .back-to-top {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 2rem;
+            right: 2rem;
             background-color: var(--primary-color);
             color: white;
             width: 50px;
             height: 50px;
             border-radius: 50%;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             text-decoration: none;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             opacity: 0;
@@ -186,39 +182,8 @@
             opacity: 1;
         }
         
-        footer {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .author {
-            font-weight: bold;
-            margin-top: 0.5rem;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-            
-            .section {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            h2 {
-                font-size: 1.3rem;
-            }
-        }
-        
         @media print {
-            header, footer, .back-to-top {
+            .header, .footer, .back-to-top {
                 display: none;
             }
             
@@ -227,548 +192,540 @@
             }
             
             .section {
-                page-break-inside: avoid;
-                border-left: none;
                 box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .section {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">THP Coaching Classes</div>
-        <div class="subtitle">Conceptual Notes by Mohit Sir | Complete Electricity Chapter</div>
-    </header>
+    <div class="header">
+        <h1>THP Coaching Classes</h1>
+        <p>NCERT Class 10 Science - Electricity (Chapter 12)</p>
+    </div>
     
     <div class="container">
-        <h1>Electricity - Complete Class 10 Science Notes</h1>
-        
+        <!-- Introduction -->
         <div class="section">
-            <h2>1. Electric Charge</h2>
-            <p>There are two types of electric charges:</p>
-            <ol>
-                <li><strong>Positive Charge</strong> (protons)</li>
-                <li><strong>Negative Charge</strong> (electrons)</li>
-            </ol>
-            
-            <div class="highlight">
-                <p><strong>Fundamental Law of Charges</strong>: Like charges repel each other and unlike charges attract each other.</p>
-            </div>
-            
+            <h2>Introduction to Electricity</h2>
+            <p>Electricity is a fundamental form of energy that powers our modern world. In this chapter, we'll explore:</p>
             <ul>
-                <li>SI unit of charge is <strong>Coulomb (C)</strong></li>
-                <li>1 Coulomb = charge of approximately 6.24 × 10<sup>18</sup> electrons</li>
-                <li>Charge on one electron = -1.6 × 10<sup>-19</sup> C (negative charge)</li>
-                <li>Charge on one proton = +1.6 × 10<sup>-19</sup> C (positive charge)</li>
+                <li>Basic concepts of electric charge and current</li>
+                <li>Circuit components and Ohm's Law</li>
+                <li>Resistance and its factors</li>
+                <li>Practical applications of heating effect</li>
+                <li>Electrical power and energy calculations</li>
+            </ul>
+        </div>
+
+        <!-- Electric Charge -->
+        <div class="section">
+            <h2>Electric Charge</h2>
+            <p>Charge is the fundamental property of matter that causes it to experience a force in an electric field.</p>
+            
+            <h3>Key Concepts:</h3>
+            <ul>
+                <li><strong>Two types of charges:</strong> 
+                    <ul>
+                        <li>Positive (carried by protons)</li>
+                        <li>Negative (carried by electrons)</li>
+                    </ul>
+                </li>
+                <li><strong>Law of charges:</strong> Like charges repel, unlike charges attract</li>
+                <li><strong>SI unit:</strong> Coulomb (C)</li>
+                <li><strong>Elementary charge:</strong> 
+                    <div class="reaction">
+                        Charge of 1 electron (e) = -1.6 × 10<sup>-19</sup> C
+                    </div>
+                </li>
+                <li><strong>Quantization:</strong> All charges are integral multiples of elementary charge
+                    <div class="reaction">
+                        Q = ±ne (where n is integer)
+                    </div>
+                </li>
             </ul>
             
-            <div class="image-placeholder">
-                [Diagram: Interaction between positive and negative charges]
+            <div class="note-box">
+                <strong>NCERT Example:</strong> How many electrons make 1 Coulomb?
+                <div class="reaction">
+                    n = Q/e = 1C/(1.6×10<sup>-19</sup>C) ≈ 6.25 × 10<sup>18</sup> electrons
+                </div>
             </div>
         </div>
-        
+
+        <!-- Electric Current -->
         <div class="section">
-            <h2>2. Electric Current</h2>
-            <div class="definition">
-                <p><strong>Electric Current (I)</strong>: The rate of flow of electric charge through a conductor.</p>
-            </div>
+            <h2>Electric Current</h2>
+            <p>The flow of electric charge constitutes electric current.</p>
             
             <div class="reaction">
                 I = Q/t
             </div>
             <p>Where:<br>
-            I = Current (Amperes)<br>
-            Q = Charge (Coulombs)<br>
-            t = Time (seconds)</p>
+            I = Current (Ampere, A)<br>
+            Q = Charge (Coulomb, C)<br>
+            t = Time (seconds, s)</p>
             
+            <h3>Key Points:</h3>
             <ul>
-                <li>SI unit of current is <strong>Ampere (A)</strong></li>
-                <li>1 Ampere = 1 Coulomb per second</li>
-                <li>Current is measured using an <strong>ammeter</strong> (always connected in series)</li>
-            </ul>
-            
-            <h3>Direction of Electric Current</h3>
-            <ul>
-                <li>Electrons flow from negative to positive terminal</li>
-                <li>Conventional current direction is opposite to electron flow (positive to negative)</li>
-            </ul>
-            
-            <div class="image-placeholder">
-                [Diagram: Conventional current vs electron flow]
-            </div>
-            
-            <div class="highlight">
-                <p><strong>Example Calculation</strong>: If 2 × 10<sup>19</sup> electrons pass through a conductor in 5 seconds, calculate the current.</p>
-                <div class="reaction">
-                    Solution:<br>
-                    Q = ne = (2 × 10<sup>19</sup>) × (1.6 × 10<sup>-19</sup>) = 3.2 C<br>
-                    I = Q/t = 3.2/5 = 0.64 A
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>3. Electric Circuit</h2>
-            <div class="definition">
-                <p><strong>Electric Circuit</strong>: A closed path through which electric current can flow, consisting of a source of electrical energy (cell/battery), conductors (wires), and electrical components (resistors, bulbs, etc.).</p>
-            </div>
-            
-            <ul>
-                <li>For current to flow, the circuit must be <strong>closed</strong> (complete path)</li>
-                <li>If any part of the circuit is broken (open circuit), current stops flowing</li>
-                <li>Conventional current flows from positive terminal to negative terminal of the cell</li>
+                <li><strong>Direction:</strong> Conventional current flows from positive to negative terminal (opposite to electron flow)</li>
+                <li><strong>Ammeter:</strong> Always connected in series to measure current</li>
+                <li><strong>1 Ampere:</strong> Flow of 1 Coulomb charge per second</li>
+                <li><strong>Types:</strong>
+                    <ul>
+                        <li>Direct Current (DC): Flows in one direction (cells, batteries)</li>
+                        <li>Alternating Current (AC): Changes direction periodically (household supply)</li>
+                    </ul>
+                </li>
             </ul>
             
             <div class="image-placeholder">
-                [Diagram: Complete electric circuit with cell, switch, and bulb]
+                [NCERT Diagram: Fig 12.1 - Conventional current vs electron flow]
             </div>
             
-            <h3>Circuit Components</h3>
-            <table>
-                <tr>
-                    <th>Component</th>
-                    <th>Symbol</th>
-                    <th>Function</th>
-                </tr>
-                <tr>
-                    <td>Cell/Battery</td>
-                    <td>[Symbol]</td>
-                    <td>Provides potential difference</td>
-                </tr>
-                <tr>
-                    <td>Switch</td>
-                    <td>[Symbol]</td>
-                    <td>Controls circuit (ON/OFF)</td>
-                </tr>
-                <tr>
-                    <td>Resistor</td>
-                    <td>[Symbol]</td>
-                    <td>Limits current flow</td>
-                </tr>
-                <tr>
-                    <td>Ammeter</td>
-                    <td>A</td>
-                    <td>Measures current (series)</td>
-                </tr>
-                <tr>
-                    <td>Voltmeter</td>
-                    <td>V</td>
-                    <td>Measures voltage (parallel)</td>
-                </tr>
-                <tr>
-                    <td>Bulb</td>
-                    <td>[Symbol]</td>
-                    <td>Converts electrical to light energy</td>
-                </tr>
-            </table>
+            <div class="note-box">
+                <strong>NCERT Definition:</strong> The amount of charge flowing through a cross-section of a conductor in unit time is called current.
+            </div>
         </div>
-        
+
+        <!-- Electric Potential and Potential Difference -->
         <div class="section">
-            <h2>4. Electric Potential and Potential Difference</h2>
+            <h2>Electric Potential and Potential Difference</h2>
             
-            <h3>Electric Potential</h3>
-            <div class="definition">
-                <p><strong>Electric Potential at a point</strong>: The amount of work done in bringing a unit positive charge from infinity to that point.</p>
-            </div>
+            <h3>Electric Potential:</h3>
             <ul>
-                <li>SI unit: <strong>Volt (V)</strong></li>
-                <li>Positive charge moves from higher to lower potential</li>
-                <li>Electrons move from lower to higher potential</li>
+                <li>Work done to bring unit positive charge from infinity to a point</li>
+                <li>Unit: Volt (V)</li>
             </ul>
             
-            <h3>Potential Difference</h3>
-            <div class="definition">
-                <p><strong>Potential Difference (Voltage)</strong>: The amount of work done to move a unit positive charge from one point to another in an electric field.</p>
-            </div>
-            
+            <h3>Potential Difference:</h3>
+            <p>The difference in electric potential between two points in a circuit.</p>
             <div class="reaction">
                 V = W/Q
             </div>
             <p>Where:<br>
-            V = Potential difference (Volts)<br>
-            W = Work done (Joules)<br>
-            Q = Charge (Coulombs)</p>
+            V = Potential difference (Volts, V)<br>
+            W = Work done (Joules, J)<br>
+            Q = Charge (Coulomb, C)</p>
             
+            <div class="note-box">
+                <strong>NCERT Activity 12.1:</strong> The potential difference between two points is 1V if 1J of work is done to move 1C of charge between them.
+            </div>
+            
+            <h3>Key Points:</h3>
             <ul>
-                <li>Potential difference is created by cells or batteries</li>
-                <li>Measured using a <strong>voltmeter</strong> (always connected in parallel)</li>
-                <li>1 Volt = 1 Joule per Coulomb</li>
+                <li>Voltmeter measures potential difference (connected in parallel)</li>
+                <li>Battery maintains potential difference in a circuit</li>
+                <li>Positive terminal is at higher potential than negative terminal</li>
             </ul>
             
             <div class="image-placeholder">
-                [Diagram: Measuring potential difference with voltmeter]
-            </div>
-            
-            <div class="highlight">
-                <p><strong>Example Calculation</strong>: Calculate the work done to move a charge of 5 C between two points having potential difference of 10 V.</p>
-                <div class="reaction">
-                    Solution:<br>
-                    W = V × Q = 10 × 5 = 50 J
-                </div>
+                [NCERT Diagram: Fig 12.2 - Measuring potential difference]
             </div>
         </div>
-        
+
+        <!-- Circuit Diagram -->
         <div class="section">
-            <h2>5. Ohm's Law</h2>
-            <div class="definition">
-                <p><strong>Ohm's Law</strong>: At constant temperature, the current (I) flowing through a conductor is directly proportional to the potential difference (V) across its ends.</p>
-            </div>
+            <h2>Electric Circuit Components</h2>
+            <p>An electric circuit consists of various components connected with conducting wires:</p>
             
-            <div class="reaction">
-                V ∝ I<br>
-                V = IR
-            </div>
-            <p>Where R is the constant of proportionality called <strong>resistance</strong></p>
-            
-            <div class="image-placeholder">
-                [Graph: V-I characteristics showing Ohm's law]
-            </div>
-            
-            <h3>Conditions for Ohm's Law</h3>
-            <ul>
-                <li>Temperature must remain constant</li>
-                <li>Physical conditions (length, area, material) of conductor shouldn't change</li>
-                <li>Valid only for metallic conductors (not for semiconductors, electrolytes, etc.)</li>
-            </ul>
-            
-            <div class="highlight">
-                <p><strong>Example Calculation</strong>: A potential difference of 20 V is applied across a resistor of 5 Ω. Calculate the current flowing through it.</p>
-                <div class="reaction">
-                    Solution:<br>
-                    I = V/R = 20/5 = 4 A
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>6. Resistance and Resistivity</h2>
-            
-            <div class="definition">
-                <p><strong>Resistance (R)</strong>: The property of a conductor to oppose the flow of electric current through it.</p>
-            </div>
-            
-            <ul>
-                <li>SI unit: <strong>Ohm (Ω)</strong></li>
-                <li>Components designed to provide resistance are called <strong>resistors</strong></li>
-                <li><strong>Rheostat</strong>: Variable resistor used to change current without changing voltage</li>
-            </ul>
-            
-            <h3>Factors Affecting Resistance</h3>
-            <ol>
-                <li>
-                    <strong>Length of conductor (l)</strong><br>
-                    Resistance is directly proportional to length<br>
-                    <div class="reaction">R ∝ l</div>
-                    <ul>
-                        <li>Longer wire → Higher resistance</li>
-                        <li>Shorter wire → Lower resistance</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Area of cross-section (A)</strong><br>
-                    Resistance is inversely proportional to cross-sectional area<br>
-                    <div class="reaction">R ∝ 1/A</div>
-                    <ul>
-                        <li>Thicker wire → Lower resistance</li>
-                        <li>Thinner wire → Higher resistance</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Nature of material</strong><br>
-                    Different materials have different resistivities<br>
-                    <div class="reaction">R ∝ ρ (resistivity)</div>
-                </li>
-                <li>
-                    <strong>Temperature</strong><br>
-                    For most conductors, resistance increases with temperature
-                </li>
-            </ol>
-            
-            <h3>Resistivity (ρ)</h3>
-            <div class="definition">
-                <p><strong>Resistivity</strong>: The resistance offered by a conductor of unit length and unit cross-sectional area.</p>
-            </div>
-            
-            <div class="reaction">
-                R = ρ × l/A
-            </div>
-            <p>Where:<br>
-            ρ = Resistivity (Ωm)<br>
-            l = Length (m)<br>
-            A = Cross-sectional area (m²)</p>
-            
-            <table>
+            <table class="comparison-table">
                 <tr>
-                    <th>Material</th>
-                    <th>Resistivity (Ωm)</th>
-                    <th>Nature</th>
+                    <th>Component</th>
+                    <th>Symbol</th>
+                    <th>Function</th>
+                    <th>Connection</th>
                 </tr>
                 <tr>
-                    <td>Silver</td>
-                    <td>1.60 × 10<sup>-8</sup></td>
-                    <td>Best conductor</td>
+                    <td>Cell</td>
+                    <td>| | (long line is +ve)</td>
+                    <td>Provides potential difference (1.5V)</td>
+                    <td>-</td>
                 </tr>
                 <tr>
-                    <td>Copper</td>
-                    <td>1.62 × 10<sup>-8</sup></td>
-                    <td>Good conductor</td>
+                    <td>Battery</td>
+                    <td>| | | (multiple cells)</td>
+                    <td>Higher voltage source</td>
+                    <td>-</td>
                 </tr>
                 <tr>
-                    <td>Tungsten</td>
-                    <td>5.20 × 10<sup>-8</sup></td>
-                    <td>Filament material</td>
+                    <td>Switch</td>
+                    <td>⎔— (open/closed)</td>
+                    <td>Controls current flow</td>
+                    <td>Series</td>
                 </tr>
                 <tr>
-                    <td>Nichrome</td>
-                    <td>100 × 10<sup>-8</sup></td>
-                    <td>Heating element</td>
+                    <td>Resistor</td>
+                    <td>⎺⎺⎺⎺⎺ or ⏢⏢⏢</td>
+                    <td>Limits current</td>
+                    <td>Series/Parallel</td>
                 </tr>
                 <tr>
-                    <td>Rubber</td>
-                    <td>10<sup>13</sup>-10<sup>16</sup></td>
-                    <td>Insulator</td>
+                    <td>Ammeter</td>
+                    <td>A in circle</td>
+                    <td>Measures current</td>
+                    <td>Series</td>
+                </tr>
+                <tr>
+                    <td>Voltmeter</td>
+                    <td>V in circle</td>
+                    <td>Measures voltage</td>
+                    <td>Parallel</td>
+                </tr>
+                <tr>
+                    <td>Bulb</td>
+                    <td>⨀ with × inside</td>
+                    <td>Converts electrical energy to light</td>
+                    <td>Series/Parallel</td>
                 </tr>
             </table>
             
-            <div class="highlight">
-                <p><strong>Example Calculation</strong>: A copper wire of length 2 m and diameter 1 mm has resistivity of 1.62 × 10<sup>-8</sup> Ωm. Calculate its resistance.</p>
+            <div class="image-placeholder">
+                [NCERT Diagram: Fig 12.3 - Simple circuit diagram]
+            </div>
+            
+            <h3>Circuit Conditions:</h3>
+            <ul>
+                <li><strong>Open circuit:</strong> No current flows (switch open)</li>
+                <li><strong>Closed circuit:</strong> Current flows (switch closed)</li>
+                <li><strong>Short circuit:</strong> Very high current flows (dangerous)</li>
+            </ul>
+        </div>
+
+        <!-- Ohm's Law -->
+        <div class="section">
+            <h2>Ohm's Law</h2>
+            <p>At constant temperature, the current (I) through a conductor is directly proportional to the potential difference (V) across its ends.</p>
+            
+            <div class="reaction">
+                V ∝ I ⇒ V = IR
+            </div>
+            <p>Where R is the constant of proportionality called resistance.</p>
+            
+            <h3>NCERT Verification Activity (12.2):</h3>
+            <ol>
+                <li>Set up circuit with resistor, ammeter, voltmeter, battery and rheostat</li>
+                <li>Record current (I) for different voltages (V) by adjusting rheostat</li>
+                <li>Plot V-I graph → Straight line verifies Ohm's law</li>
+                <li>Slope gives resistance (R)</li>
+            </ol>
+            
+            <div class="image-placeholder">
+                [NCERT Diagram: Fig 12.6 - Ohm's law verification setup]
+            </div>
+            
+            <div class="note-box">
+                <strong>Resistance (R):</strong> 
+                <ul>
+                    <li>Opposition to flow of current</li>
+                    <li>SI unit: ohm (Ω)</li>
+                    <li>Slope of V-I graph gives resistance</li>
+                    <div class="reaction">
+                        R = V/I
+                    </div>
+                </ul>
+            </div>
+            
+            <h3>Limitations:</h3>
+            <ul>
+                <li>Valid only when physical conditions (especially temperature) remain constant</li>
+                <li>Doesn't apply to semiconductors, electrolytes, gases</li>
+            </ul>
+        </div>
+
+        <!-- Factors Affecting Resistance -->
+        <div class="section">
+            <h2>Factors Affecting Resistance</h2>
+            <p>As per NCERT experiments, resistance depends on:</p>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>Factor</th>
+                    <th>Relation</th>
+                    <th>Explanation</th>
+                    <th>Formula</th>
+                </tr>
+                <tr>
+                    <td>Length (L)</td>
+                    <td>R ∝ L</td>
+                    <td>Longer wire → more collisions → higher resistance</td>
+                    <td rowspan="2">R = ρ(L/A)<br>ρ = resistivity</td>
+                </tr>
+                <tr>
+                    <td>Area (A)</td>
+                    <td>R ∝ 1/A</td>
+                    <td>Thicker wire → more space for electrons → lower resistance</td>
+                </tr>
+                <tr>
+                    <td>Material (ρ)</td>
+                    <td>Depends on ρ</td>
+                    <td>Silver (best conductor) → Copper → Tungsten (high ρ)</td>
+                    <td>ρ = RA/L</td>
+                </tr>
+                <tr>
+                    <td>Temperature</td>
+                    <td>Metals: R increases<br>Semiconductors: R decreases</td>
+                    <td>Metals: Increased vibrations obstruct flow<br>Semiconductors: More charge carriers</td>
+                    <td>-</td>
+                </tr>
+            </table>
+            
+            <div class="note-box">
+                <strong>Resistivity (ρ):</strong> 
+                <ul>
+                    <li>Characteristic property of material</li>
+                    <li>Independent of dimensions</li>
+                    <li>Unit: Ωm (ohm-meter)</li>
+                    <li>Increases with temperature for metals</li>
+                </ul>
+            </div>
+            
+            <div class="image-placeholder">
+                [NCERT Diagram: Fig 12.5 - Resistance depends on length and area]
+            </div>
+        </div>
+
+        <!-- Resistor Combinations -->
+        <div class="section">
+            <h2>Resistor Combinations</h2>
+            
+            <h3>Series Combination (NCERT Fig 12.7):</h3>
+            <ul>
+                <li>Same current flows through all resistors</li>
+                <li>Total voltage gets divided (V = V₁ + V₂ + V₃)</li>
+                <li>Equivalent resistance is sum of all resistances:</li>
                 <div class="reaction">
-                    Solution:<br>
-                    A = πr² = π(0.5 × 10<sup>-3</sup>)² = 7.85 × 10<sup>-7</sup> m²<br>
-                    R = ρl/A = (1.62 × 10<sup>-8</sup> × 2)/(7.85 × 10<sup>-7</sup>) ≈ 0.041 Ω
+                    R<sub>eq</sub> = R₁ + R₂ + R₃ + ...
+                </div>
+                <li>Used when higher resistance needed</li>
+            </ul>
+            
+            <h3>Parallel Combination (NCERT Fig 12.8):</h3>
+            <ul>
+                <li>Same voltage across all resistors</li>
+                <li>Current gets divided (I = I₁ + I₂ + I₃)</li>
+                <li>Equivalent resistance is less than smallest resistance:</li>
+                <div class="reaction">
+                    1/R<sub>eq</sub> = 1/R₁ + 1/R₂ + 1/R₃ + ...
+                </div>
+                <li>Used when lower resistance needed</li>
+            </ul>
+            
+            <div class="note-box">
+                <strong>Practical Applications:</strong>
+                <ul>
+                    <li><strong>Household wiring:</strong> All appliances connected in parallel (each gets full voltage)</li>
+                    <li><strong>Decorative lights:</strong> Sometimes in series (but if one fails, all stop working)</li>
+                    <li><strong>Resistance boxes:</strong> Use combination to get desired resistance</li>
+                </ul>
+            </div>
+            
+            <div class="image-placeholder">
+                [NCERT Diagram: Fig 12.7 & 12.8 - Series and parallel combinations]
+            </div>
+        </div>
+
+        <!-- Heating Effect -->
+        <div class="section">
+            <h2>Heating Effect of Electric Current (Joule's Law)</h2>
+            <p>When current flows through a conductor, heat is produced due to resistance.</p>
+            
+            <div class="reaction">
+                H = I<sup>2</sup>Rt
+            </div>
+            <p>Where:<br>
+            H = Heat energy (Joules, J)<br>
+            I = Current (Amperes, A)<br>
+            R = Resistance (Ohms, Ω)<br>
+            t = Time (seconds, s)</p>
+            
+            <h3>Derivation:</h3>
+            <ol>
+                <li>Work done to move charge Q: W = VQ</li>
+                <li>Since I = Q/t ⇒ Q = It</li>
+                <li>From Ohm's law: V = IR</li>
+                <li>Therefore: W = VIt = I<sup>2</sup>Rt</li>
+                <li>This work appears as heat: H = I<sup>2</sup>Rt</li>
+            </ol>
+            
+            <h3>Practical Applications (NCERT Examples):</h3>
+            <ul>
+                <li><strong>Electric heater:</strong> Nichrome wire (high ρ) gets red hot</li>
+                <li><strong>Fuse:</strong> Thin wire melts when excess current flows (safety device)</li>
+                <li><strong>Light bulb:</strong> Tungsten filament heats up to glow (melting point 3380°C)</li>
+                <li><strong>Electric iron:</strong> Heating element converts electrical energy to heat</li>
+                <li><strong>Electric kettle:</strong> Heats water quickly</li>
+            </ul>
+            
+            <div class="note-box">
+                <strong>Why Tungsten in Bulbs?</strong>
+                <ul>
+                    <li>High melting point (3380°C)</li>
+                    <li>High resistivity</li>
+                    <li>Doesn't oxidize easily in vacuum/argon</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Electric Power -->
+        <div class="section">
+            <h2>Electric Power</h2>
+            <p>Rate at which electric energy is consumed or dissipated.</p>
+            
+            <div class="reaction">
+                P = W/t = VI = I<sup>2</sup>R = V<sup>2</sup>/R
+            </div>
+            <p>Unit: Watt (W) = Joule/second</p>
+            
+            <h3>Commercial Unit of Energy:</h3>
+            <p>Electricity bills use kilowatt-hour (kWh) instead of joule:</p>
+            <div class="reaction">
+                1 kWh = 1000 W × 1 hour = 1000 W × 3600 s = 3.6 × 10<sup>6</sup> J
+            </div>
+            <p>1 kWh = 1 "unit" of electricity</p>
+            
+            <h3>Power Rating Examples:</h3>
+            <ul>
+                <li>LED bulb: 5-15 W</li>
+                <li>Fan: 50-80 W</li>
+                <li>Geyser: 2000-3000 W</li>
+                <li>AC: 1500-2500 W</li>
+            </ul>
+            
+            <div class="note-box">
+                <strong>NCERT Example 12.8:</strong><br>
+                An electric bulb is connected to a 220V generator. The current is 0.50A. What is the power of the bulb?
+                <div class="reaction">
+                    P = VI = 220 × 0.50 = 110 W
+                </div>
+            </div>
+            
+            <div class="note-box">
+                <strong>Energy Conservation Tip:</strong><br>
+                Using a 15W LED bulb (equivalent to 100W incandescent) for 5 hours daily:<br>
+                <div class="reaction">
+                    Daily consumption = 15W × 5h = 75 Wh = 0.075 kWh<br>
+                    Monthly savings = (100W-15W) × 5h × 30 = 12.75 kWh
+                </div>
+            </div>
+        </div>
+
+        <!-- NCERT Questions Focus -->
+        <div class="section">
+            <h2>Important NCERT Questions</h2>
+            <ol>
+                <li>Define 1 ampere current. (Q12.1)</li>
+                <li>Why are coils of electric toasters made of alloy rather than pure metal? (Q12.4)</li>
+                <li>Compute heat generated while transferring 96000C through 1Ω in 1 hour. (Q12.7)</li>
+                <li>Compare power used in 2Ω resistor in both circuits (series vs parallel). (Q12.8)</li>
+                <li>What determines the rate at which energy is delivered by a current? (Q12.5)</li>
+                <li>An electric motor takes 5A from 220V line. Determine power and energy consumed in 2h. (Q12.11)</li>
+            </ol>
+            
+            <h3>Numerical Problem Solving Approach:</h3>
+            <ol>
+                <li>Identify given quantities and what to find</li>
+                <li>Choose appropriate formula</li>
+                <li>Convert units if necessary</li>
+                <li>Substitute values and calculate</li>
+                <li>Include proper units in final answer</li>
+            </ol>
+            
+            <div class="note-box">
+                <strong>Example Solution (Q12.7):</strong><br>
+                Calculate heat produced when 96000C charge is transferred in 1 hour through a potential difference of 50V.
+                <div class="reaction">
+                    Given: Q = 96000C, t = 1h = 3600s, V = 50V<br>
+                    I = Q/t = 96000/3600 = 26.67A<br>
+                    H = VIt = 50 × 26.67 × 3600 = 4.8 × 10<sup>6</sup> J<br>
+                    Alternative: H = VQ = 50 × 96000 = 4.8 × 10<sup>6</sup> J
                 </div>
             </div>
         </div>
         
+        <!-- Summary -->
         <div class="section">
-            <h2>7. Combination of Resistors</h2>
-            
-            <h3>Series Combination</h3>
-            <ul>
-                <li>Resistors connected end-to-end</li>
-                <li>Same current flows through all resistors</li>
-                <li>Total voltage = Sum of individual voltages</li>
-                <li>Total resistance increases</li>
-            </ul>
-            
-            <div class="reaction">
-                R<sub>total</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub> + ...
-            </div>
-            
-            <div class="image-placeholder">
-                [Diagram: Resistors in series]
-            </div>
-            
-            <h3>Parallel Combination</h3>
-            <ul>
-                <li>Resistors connected between same two points</li>
-                <li>Same voltage across all resistors</li>
-                <li>Total current = Sum of individual currents</li>
-                <li>Total resistance decreases</li>
-            </ul>
-            
-            <div class="reaction">
-                1/R<sub>total</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub> + ...
-            </div>
-            
-            <div class="image-placeholder">
-                [Diagram: Resistors in parallel]
-            </div>
-            
-            <table>
+            <h2>Chapter Summary</h2>
+            <table class="comparison-table">
                 <tr>
-                    <th>Property</th>
-                    <th>Series</th>
-                    <th>Parallel</th>
+                    <th>Concept</th>
+                    <th>Formula</th>
+                    <th>Unit</th>
                 </tr>
                 <tr>
                     <td>Current</td>
-                    <td>Same through all</td>
-                    <td>Divides among branches</td>
+                    <td>I = Q/t</td>
+                    <td>Ampere (A)</td>
                 </tr>
                 <tr>
-                    <td>Voltage</td>
-                    <td>Divides among resistors</td>
-                    <td>Same across all</td>
+                    <td>Potential Difference</td>
+                    <td>V = W/Q</td>
+                    <td>Volt (V)</td>
                 </tr>
                 <tr>
-                    <td>Total Resistance</td>
-                    <td>Increases (R<sub>S</sub> > R<sub>1</sub>, R<sub>2</sub>, ...)</td>
-                    <td>Decreases (R<sub>P</sub> < R<sub>1</sub>, R<sub>2</sub>, ...)</td>
+                    <td>Ohm's Law</td>
+                    <td>V = IR</td>
+                    <td>-</td>
                 </tr>
                 <tr>
-                    <td>Applications</td>
-                    <td>Decorative lights, fuses</td>
-                    <td>Household circuits</td>
+                    <td>Resistance</td>
+                    <td>R = ρL/A</td>
+                    <td>Ohm (Ω)</td>
+                </tr>
+                <tr>
+                    <td>Resistivity</td>
+                    <td>ρ = RA/L</td>
+                    <td>Ωm</td>
+                </tr>
+                <tr>
+                    <td>Series Combination</td>
+                    <td>R<sub>eq</sub> = R₁ + R₂ + ...</td>
+                    <td>Ω</td>
+                </tr>
+                <tr>
+                    <td>Parallel Combination</td>
+                    <td>1/R<sub>eq</sub> = 1/R₁ + 1/R₂ + ...</td>
+                    <td>Ω</td>
+                </tr>
+                <tr>
+                    <td>Heating Effect</td>
+                    <td>H = I<sup>2</sup>Rt</td>
+                    <td>Joule (J)</td>
+                </tr>
+                <tr>
+                    <td>Electric Power</td>
+                    <td>P = VI = I<sup>2</sup>R = V<sup>2</sup>/R</td>
+                    <td>Watt (W)</td>
+                </tr>
+                <tr>
+                    <td>Electrical Energy</td>
+                    <td>E = Pt = VIt</td>
+                    <td>kWh</td>
                 </tr>
             </table>
-            
-            <div class="highlight">
-                <p><strong>Example Calculation</strong>: Three resistors of 2 Ω, 3 Ω and 5 Ω are connected (a) in series (b) in parallel. Calculate equivalent resistance in each case.</p>
-                <div class="reaction">
-                    (a) Series: R<sub>eq</sub> = 2 + 3 + 5 = 10 Ω<br>
-                    (b) Parallel: 1/R<sub>eq</sub> = 1/2 + 1/3 + 1/5 = 15/30 + 10/30 + 6/30 = 31/30<br>
-                    R<sub>eq</sub> = 30/31 ≈ 0.97 Ω
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>8. Heating Effect of Electric Current (Joule's Law)</h2>
-            
-            <div class="definition">
-                <p><strong>Joule's Law</strong>: When current flows through a conductor, heat is produced due to the resistance of the conductor.</p>
-            </div>
-            
-            <div class="reaction">
-                H = I²Rt
-            </div>
-            <p>Where:<br>
-            H = Heat energy (Joules)<br>
-            I = Current (Amperes)<br>
-            R = Resistance (Ohms)<br>
-            t = Time (seconds)</p>
-            
-            <h3>Factors Affecting Heat Produced</h3>
-            <ol>
-                <li><strong>Current (I)</strong>: H ∝ I² (Heat increases with square of current)</li>
-                <li><strong>Resistance (R)</strong>: H ∝ R (Directly proportional)</li>
-                <li><strong>Time (t)</strong>: H ∝ t (Directly proportional)</li>
-            </ol>
-            
-            <div class="image-placeholder">
-                [Diagram: Heating effect demonstration]
-            </div>
-            
-            <h3>Practical Applications</h3>
-            <ul>
-                <li><strong>Electric heating appliances</strong>: Iron, toaster, heater, oven</li>
-                <li><strong>Electric bulb</strong>: Tungsten filament heats up to produce light</li>
-                <li><strong>Fuse</strong>: Safety device that melts when excess current flows</li>
-                <li><strong>Electric kettle</strong>: Heating water</li>
-            </ul>
-            
-            <div class="highlight">
-                <p><strong>Example Calculation</strong>: Calculate the heat produced when 2 A current flows through a 10 Ω resistor for 5 minutes.</p>
-                <div class="reaction">
-                    Solution:<br>
-                    t = 5 × 60 = 300 s<br>
-                    H = I²Rt = (2)² × 10 × 300 = 4 × 10 × 300 = 12000 J
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>9. Electric Power</h2>
-            
-            <div class="definition">
-                <p><strong>Electric Power</strong>: The rate at which electrical energy is consumed or the rate at which work is done by electricity.</p>
-            </div>
-            
-            <div class="reaction">
-                P = VI = I²R = V²/R
-            </div>
-            <p>Where:<br>
-            P = Power (Watts)<br>
-            V = Voltage (Volts)<br>
-            I = Current (Amperes)<br>
-            R = Resistance (Ohms)</p>
-            
-            <ul>
-                <li>SI unit: <strong>Watt (W)</strong></li>
-                <li>1 Watt = 1 Joule per second</li>
-                <li>Commercial unit: <strong>kilowatt-hour (kWh)</strong>
-                    <div class="reaction">
-                        1 kWh = 1000 W × 3600 s = 3.6 × 10<sup>6</sup> J
-                    </div>
-                </li>
-                <li>Electricity bills are calculated based on kWh (units) consumed</li>
-            </ul>
-            
-            <h3>Electric Energy</h3>
-            <div class="reaction">
-                Energy = Power × Time<br>
-                E = P × t
-            </div>
-            
-            <div class="image-placeholder">
-                [Diagram: Electric meter showing kWh consumption]
-            </div>
-            
-            <div class="highlight">
-                <p><strong>Example Calculation</strong>: An electric bulb rated 100 W, 220 V is used for 5 hours daily. Calculate (a) its resistance (b) energy consumed in 30 days.</p>
-                <div class="reaction">
-                    (a) R = V²/P = (220)²/100 = 48400/100 = 484 Ω<br>
-                    (b) Energy per day = P × t = 100 W × 5 h = 500 Wh = 0.5 kWh<br>
-                    Energy in 30 days = 0.5 × 30 = 15 kWh (units)
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>10. Practical Applications and Safety</h2>
-            
-            <h3>Electric Bulb</h3>
-            <ul>
-                <li>Filament made of tungsten (high melting point: 3380°C)</li>
-                <li>Filament heats up to about 2500°C to produce light</li>
-                <li>Bulb filled with inert gas (nitrogen/argon) to prevent oxidation</li>
-                <li>Most of the energy is converted to heat (only 5-10% to light)</li>
-            </ul>
-            
-            <div class="image-placeholder">
-                [Diagram: Incandescent bulb structure]
-            </div>
-            
-            <h3>Fuse</h3>
-            <ul>
-                <li>Safety device to protect circuits from overloading</li>
-                <li>Contains a wire that melts when current exceeds rated value</li>
-                <li>Connected in series with the live wire</li>
-                <li>Rating examples: 5A, 15A, etc.</li>
-            </ul>
-            
-            <h3>Household Wiring</h3>
-            <ul>
-                <li>Parallel connection used in homes</li>
-                <li>Advantages:
-                    <ul>
-                        <li>Each appliance gets full voltage</li>
-                        <li>If one appliance fails, others keep working</li>
-                        <li>Can control appliances independently</li>
-                    </ul>
-                </li>
-                <li>Three wires:
-                    <ul>
-                        <li>Live wire (red/brown) - carries current to appliance</li>
-                        <li>Neutral wire (black/blue) - completes circuit</li>
-                        <li>Earth wire (green) - safety wire to prevent shocks</li>
-                    </ul>
-                </li>
-            </ul>
-            
-            <div class="image-placeholder">
-                [Diagram: 3-pin plug and household wiring]
-            </div>
-            
-            <h3>Safety Measures</h3>
-            <ul>
-                <li>Use proper insulation on wires</li>
-                <li>Never touch electrical appliances with wet hands</li>
-                <li>Use proper rated fuses</li>
-                <li>Ensure proper earthing</li>
-                <li>Turn off power before electrical repairs</li>
-            </ul>
         </div>
     </div>
     
-    <a href="#" class="back-to-top" id="backToTop">↑</a>
+    <div class="footer">
+        <p>THP Coaching Classes - NCERT Aligned Notes</p>
+        <p>Science Chapter 12 - Electricity | Conceptual Notes by Mohit Sir</p>
+    </div>
     
-    <footer>
-        <div>THP Coaching Classes</div>
-        <div class="author">Conceptual Notes by Mohit Sir | Complete Class 10 Electricity Chapter</div>
-        <div>Based on NCERT Science Textbook</div>
-    </footer>
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
     
     <script>
         // Back to top button functionality
