@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THP Coaching - Admission Form</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
         :root {
-            --primary: #4a148c;
-            --secondary: #7b1fa2;
-            --accent: #e91e63;
-            --light: #f5f5f5;
-            --dark: #212121;
+            --primary: #4a6bff;
+            --secondary: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #f5f7fa;
+            --success: #2ecc71;
         }
         
         * {
@@ -22,146 +24,207 @@
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            background-color: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
         }
         
         .container {
             max-width: 900px;
-            width: 100%;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        
+        .admission-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            position: relative;
+            transition: transform 0.3s ease;
         }
         
-        .header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+        .admission-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), #6a5acd);
             color: white;
-            padding: 25px 30px;
+            padding: 25px;
             text-align: center;
-            position: relative;
         }
         
-        .header h1 {
+        .card-header h1 {
             font-size: 28px;
             font-weight: 600;
             margin-bottom: 5px;
         }
         
-        .header p {
-            font-size: 14px;
+        .card-header p {
             opacity: 0.9;
+            font-size: 16px;
         }
         
-        .logo {
-            position: absolute;
-            top: 20px;
-            left: 30px;
-            font-weight: 700;
-            font-size: 24px;
-            color: white;
-        }
-        
-        .form-container {
+        .card-body {
             padding: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
         }
         
         .form-group {
-            flex: 1 1 calc(50% - 20px);
-            min-width: 250px;
+            margin-bottom: 20px;
         }
         
-        .form-group.full-width {
-            flex: 1 1 100%;
-        }
-        
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
             color: var(--dark);
-            font-size: 14px;
         }
         
-        input, select {
+        .form-control {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 16px;
             transition: all 0.3s;
         }
         
-        input:focus, select:focus {
-            border-color: var(--secondary);
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.2);
         }
         
-        .course-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .course-card {
-            border: 2px solid #eee;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .select-wrapper {
             position: relative;
         }
         
-        .course-card:hover {
-            border-color: var(--secondary);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .course-card.selected {
-            border-color: var(--accent);
-            background-color: rgba(233, 30, 99, 0.05);
-        }
-        
-        .course-card h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
+        .select-wrapper:after {
+            content: "▼";
+            font-size: 12px;
             color: var(--dark);
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
         }
         
-        .course-card p {
-            font-size: 14px;
-            color: #666;
+        select.form-control {
+            appearance: none;
+            padding-right: 30px;
         }
         
-        .price {
-            font-weight: 600;
-            color: var(--accent);
-            margin-top: 5px;
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), #6a5acd);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #3a5bef, #5a4acd);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.3);
         }
         
         .payment-section {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 10px;
-            margin-top: 20px;
             display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
         }
         
         .payment-section.active {
             display: block;
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .price-display {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+        
+        .discount-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .payment-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .payment-option {
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #ddd;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .payment-option img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .qr-code img {
+            max-width: 200px;
+            border: 1px solid #eee;
+            padding: 10px;
+            background: white;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .success-message i {
+            font-size: 60px;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        
+        .success-message h2 {
+            color: var(--success);
+            margin-bottom: 10px;
         }
         
         @keyframes fadeIn {
@@ -169,338 +232,266 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .payment-details {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 15px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
-        
-        .payment-icon {
-            width: 50px;
-            height: 50px;
-            background: #4285f4;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-        }
-        
-        .payment-info h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
-        .payment-info p {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .btn {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s;
-            margin-top: 20px;
-            display: inline-block;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(123, 31, 162, 0.4);
-        }
-        
-        .btn-pay {
-            background: linear-gradient(to right, #0d9d58, #5bb974);
-        }
-        
-        .btn-pay:hover {
-            box-shadow: 0 5px 15px rgba(13, 157, 88, 0.4);
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .thank-you {
-            text-align: center;
-            padding: 50px 30px;
-            display: none;
-        }
-        
-        .thank-you.active {
-            display: block;
-        }
-        
-        .thank-you h2 {
-            font-size: 28px;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .thank-you p {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 25px;
-        }
-        
-        .checkmark {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #4caf50;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px;
-        }
-        
-        .checkmark i {
-            color: white;
-            font-size: 40px;
-        }
-        
         @media (max-width: 768px) {
-            .form-group {
-                flex: 1 1 100%;
+            .container {
+                padding: 10px;
             }
             
-            .header h1 {
+            .card-header h1 {
                 font-size: 24px;
             }
             
-            .logo {
-                position: static;
-                margin-bottom: 10px;
+            .card-body {
+                padding: 20px;
+            }
+            
+            .payment-options {
+                flex-direction: column;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="logo">THP</div>
-            <h1>Admission Form</h1>
-            <p>Join India's premier coaching institute for competitive and school education</p>
-        </div>
-        
-        <div class="form-container" id="admissionForm">
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" placeholder="Enter your full name" required>
+        <div class="admission-card">
+            <div class="card-header">
+                <h1>THP Coaching Admission Form</h1>
+                <p>Fill out the form to enroll in our courses</p>
             </div>
             
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" placeholder="Enter your email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" placeholder="Enter your phone number" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="parentPhone">Parent's Phone Number</label>
-                <input type="tel" id="parentPhone" placeholder="Enter parent's phone number" required>
-            </div>
-            
-            <div class="form-group full-width">
-                <label>Select Your Course</label>
-                <div class="course-options">
-                    <div class="course-card" data-course="cuet" data-price="2000">
-                        <h3>CUET Coaching</h3>
-                        <p>Comprehensive preparation for CUET</p>
-                        <div class="price">₹2000/month</div>
+            <div class="card-body">
+                <form id="admissionForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
                     </div>
                     
-                    <div class="course-card" data-course="iit" data-price="2000">
-                        <h3>IIT/JEE Coaching</h3>
-                        <p>Engineering entrance preparation</p>
-                        <div class="price">₹2000/month</div>
-                    </div>
-                    
-                    <div class="course-card" data-course="neet" data-price="2000">
-                        <h3>NEET Coaching</h3>
-                        <p>Medical entrance preparation</p>
-                        <div class="price">₹2000/month</div>
-                    </div>
-                    
-                    <div class="course-card" data-course="bank" data-price="1500">
-                        <h3>Bank Exams</h3>
-                        <p>Banking sector preparation</p>
-                        <div class="price">₹1500/month</div>
-                    </div>
-                    
-                    <div class="course-card" data-course="railway" data-price="1500">
-                        <h3>Railway Exams</h3>
-                        <p>Railway sector preparation</p>
-                        <div class="price">₹1500/month</div>
-                    </div>
-                    
-                    <div class="course-card" data-course="ssc" data-price="1500">
-                        <h3>SSC Exams</h3>
-                        <p>Government job preparation</p>
-                        <div class="price">₹1500/month</div>
-                    </div>
-                    
-                    <div class="course-card" data-course="9-11" data-price="2000">
-                        <h3>Class 9 & 11</h3>
-                        <p>School curriculum + foundation</p>
-                        <div class="price">₹2000/month</div>
-                    </div>
-                    
-                    <div class="course-card" data-course="10-12" data-price="2500">
-                        <h3>Class 10 & 12</h3>
-                        <p>Board exam preparation</p>
-                        <div class="price">₹2500/month</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-group full-width">
-                <div class="payment-section" id="paymentSection">
-                    <h3>Payment Information</h3>
-                    <p>Please complete your admission by making the payment through Google Pay</p>
-                    
-                    <div class="payment-details">
-                        <div class="payment-icon">
-                            <i class="fab fa-google-pay"></i>
-                        </div>
-                        <div class="payment-info">
-                            <h4>Google Pay</h4>
-                            <p>Send ₹<span id="displayAmount">0</span> to 9648837922</p>
-                            <p id="selectedCourseText">Selected Course: None</p>
+                    <div class="form-group">
+                        <label for="class">Class/Grade</label>
+                        <div class="select-wrapper">
+                            <select id="class" class="form-control" required>
+                                <option value="">Select your class</option>
+                                <option value="9">Class 9</option>
+                                <option value="10">Class 10</option>
+                                <option value="11">Class 11</option>
+                                <option value="12">Class 12</option>
+                                <option value="college">College/Other</option>
+                            </select>
                         </div>
                     </div>
                     
-                    <button class="btn btn-pay" id="payNowBtn">
-                        <i class="fas fa-rupee-sign"></i> Pay Now via Google Pay
-                    </button>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course">Select Course</label>
+                        <div class="select-wrapper">
+                            <select id="course" class="form-control" required>
+                                <option value="">Choose your course</option>
+                                <option value="CUET">CUET Preparation</option>
+                                <option value="IIT">IIT Preparation</option>
+                                <option value="NEET">NEET Preparation</option>
+                                <option value="JEE">JEE Preparation</option>
+                                <option value="SSC">SSC Preparation</option>
+                                <option value="BANK">Bank Exam Preparation</option>
+                                <option value="RAILWAY">Railway Exam Preparation</option>
+                                <option value="9-10">Class 9-10 Foundation</option>
+                                <option value="11-12">Class 11-12 Foundation</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="proceedBtn" class="btn">Proceed to Payment</button>
+                </form>
+                
+                <div id="paymentSection" class="payment-section">
+                    <h2>Payment Details</h2>
+                    <p>Please complete your admission by making the payment</p>
+                    
+                    <div class="price-display">
+                        Course Fee: <span id="courseFee">₹0</span>
+                        <span class="discount-badge">10% Discount Applied</span>
+                    </div>
+                    <p id="finalAmount">Final Amount to Pay: <strong>₹0</strong></p>
+                    
+                    <div class="payment-options">
+                        <div class="payment-option" onclick="initiateGPay()">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg/1200px-Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg.png" alt="Google Pay">
+                            <p>Pay directly via Google Pay</p>
+                        </div>
+                        
+                        <div class="payment-option">
+                            <div class="qr-code">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=1000&cu=INR" alt="UPI QR Code" id="qrCode">
+                                <p>Scan this QR code with any UPI app</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top: 20px; text-align: center;">
+                        <strong>UPI ID:</strong> mgbhaukali@oksbi<br>
+                        <strong>Name:</strong> THP Coaching
+                    </p>
+                    
+                    <button type="button" id="completeBtn" class="btn" style="margin-top: 20px;">I've Completed the Payment</button>
+                </div>
+                
+                <div id="successMessage" class="success-message">
+                    <i>✓</i>
+                    <h2>Admission Successful!</h2>
+                    <p>Thank you for enrolling with THP Coaching. We've sent the confirmation to your email.</p>
+                    <p>Our team will contact you shortly with course details.</p>
                 </div>
             </div>
-            
-            <div class="form-group full-width">
-                <button class="btn" id="submitBtn">Submit Admission Form</button>
-            </div>
-        </div>
-        
-        <div class="thank-you" id="thankYou">
-            <div class="checkmark">
-                <i class="fas fa-check"></i>
-            </div>
-            <h2>Admission Successful!</h2>
-            <p>Thank you for choosing THP Coaching. We've sent the payment details to your email and phone number.</p>
-            <p>Our counselor will contact you shortly to complete the admission process.</p>
-            <button class="btn" id="newAdmissionBtn">Start New Admission</button>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const courseCards = document.querySelectorAll('.course-card');
-            const paymentSection = document.getElementById('paymentSection');
-            const displayAmount = document.getElementById('displayAmount');
-            const selectedCourseText = document.getElementById('selectedCourseText');
-            const payNowBtn = document.getElementById('payNowBtn');
-            const submitBtn = document.getElementById('submitBtn');
-            const admissionForm = document.getElementById('admissionForm');
-            const thankYou = document.getElementById('thankYou');
-            const newAdmissionBtn = document.getElementById('newAdmissionBtn');
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
+            authDomain: "login-form-eee86.firebaseapp.com",
+            databaseURL: "https://login-form-eee86-default-rtdb.firebaseio.com",
+            projectId: "login-form-eee86",
+            storageBucket: "login-form-eee86.appspot.com",
+            messagingSenderId: "717475952542",
+            appId: "1:717475952542:web:f79db77ed1f60d117b488f",
+            measurementId: "G-VV0D9TNK0Y"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // Course pricing
+        const coursePrices = {
+            'CUET': 2000,
+            'IIT': 2000,
+            'NEET': 2000,
+            'JEE': 2000,
+            'SSC': 1500,
+            'BANK': 1500,
+            'RAILWAY': 1500,
+            '9-10': 2000,
+            '11-12': 2500
+        };
+        
+        // DOM elements
+        const proceedBtn = document.getElementById('proceedBtn');
+        const paymentSection = document.getElementById('paymentSection');
+        const courseFeeElement = document.getElementById('courseFee');
+        const finalAmountElement = document.getElementById('finalAmount');
+        const qrCodeElement = document.getElementById('qrCode');
+        const completeBtn = document.getElementById('completeBtn');
+        const successMessage = document.getElementById('successMessage');
+        const admissionForm = document.getElementById('admissionForm');
+        
+        // Proceed to payment button click handler
+        proceedBtn.addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const studentClass = document.getElementById('class').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const course = document.getElementById('course').value;
             
-            let selectedCourse = null;
-            let selectedPrice = 0;
+            // Validate form
+            if (!name || !studentClass || !email || !phone || !course) {
+                alert('Please fill all the fields');
+                return;
+            }
             
-            // Course selection
-            courseCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    courseCards.forEach(c => c.classList.remove('selected'));
-                    this.classList.add('selected');
+            // Calculate fees with 10% discount
+            const baseFee = coursePrices[course];
+            const discountedFee = baseFee * 0.9;
+            
+            // Update payment section
+            courseFeeElement.textContent = `₹${baseFee}`;
+            finalAmountElement.innerHTML = `Final Amount to Pay: <strong>₹${discountedFee.toFixed(2)}</strong>`;
+            
+            // Update QR code with amount
+            qrCodeElement.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
+            
+            // Show payment section
+            paymentSection.classList.add('active');
+            
+            // Scroll to payment section
+            paymentSection.scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Complete payment button click handler
+        completeBtn.addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const studentClass = document.getElementById('class').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const course = document.getElementById('course').value;
+            const baseFee = coursePrices[course];
+            const discountedFee = baseFee * 0.9;
+            
+            // Create admission data object
+            const admissionData = {
+                name: name,
+                class: studentClass,
+                email: email,
+                phone: phone,
+                course: course,
+                baseFee: baseFee,
+                paidAmount: discountedFee,
+                paymentDate: new Date().toISOString(),
+                status: 'pending verification'
+            };
+            
+            // Save to Firebase
+            database.ref('admissions').push(admissionData)
+                .then(() => {
+                    // Hide form and payment section
+                    admissionForm.style.display = 'none';
+                    paymentSection.style.display = 'none';
                     
-                    selectedCourse = this.getAttribute('data-course');
-                    selectedPrice = this.getAttribute('data-price');
+                    // Show success message
+                    successMessage.style.display = 'block';
                     
-                    // Update payment section
-                    displayAmount.textContent = selectedPrice;
-                    selectedCourseText.textContent = `Selected Course: ${this.querySelector('h3').textContent}`;
-                    
-                    // Show payment section
-                    paymentSection.classList.add('active');
+                    // You could also send an email confirmation here
+                })
+                .catch((error) => {
+                    console.error('Error saving data:', error);
+                    alert('There was an error processing your admission. Please try again.');
                 });
-            });
+        });
+        
+        // Google Pay payment initiation
+        function initiateGPay() {
+            const course = document.getElementById('course').value;
+            const discountedFee = coursePrices[course] * 0.9;
             
-            // Submit form
-            submitBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const fullName = document.getElementById('fullName').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const parentPhone = document.getElementById('parentPhone').value;
-                
-                if (!fullName || !email || !phone || !parentPhone) {
-                    alert('Please fill all the required fields');
-                    return;
+            // This would normally open the Google Pay app with the payment details
+            // For demo purposes, we'll just show an alert
+            alert(`Redirecting to Google Pay to pay ₹${discountedFee.toFixed(2)} to THP Coaching (mgbhaukali@oksbi)`);
+            
+            // In a real implementation, you would use the Google Pay API
+            // window.location.href = `https://pay.google.com/payments?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
+        }
+        
+        // Update payment details when course changes
+        document.getElementById('course').addEventListener('change', function() {
+            if (paymentSection.classList.contains('active')) {
+                const course = this.value;
+                if (course) {
+                    const baseFee = coursePrices[course];
+                    const discountedFee = baseFee * 0.9;
+                    
+                    courseFeeElement.textContent = `₹${baseFee}`;
+                    finalAmountElement.innerHTML = `Final Amount to Pay: <strong>₹${discountedFee.toFixed(2)}</strong>`;
+                    qrCodeElement.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
                 }
-                
-                if (!selectedCourse) {
-                    alert('Please select a course');
-                    return;
-                }
-                
-                // Here you would typically send this data to your server
-                console.log('Admission Data:', {
-                    fullName,
-                    email,
-                    phone,
-                    parentPhone,
-                    course: selectedCourse,
-                    price: selectedPrice
-                });
-                
-                // Show thank you message
-                admissionForm.style.display = 'none';
-                thankYou.classList.add('active');
-            });
-            
-            // Pay Now button
-            payNowBtn.addEventListener('click', function() {
-                // This would open Google Pay with the payment details
-                const upiId = '9648837922@okbizaxis';
-                const amount = selectedPrice;
-                const name = document.getElementById('fullName').value || 'THP Student';
-                const note = `THP Coaching - ${selectedCourseText.textContent.split(': ')[1]}`;
-                
-                // Create Google Pay URL
-                const gpayUrl = `https://upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&tn=${encodeURIComponent(note)}`;
-                
-                // Open in new tab
-                window.open(gpayUrl, '_blank');
-            });
-            
-            // New admission button
-            newAdmissionBtn.addEventListener('click', function() {
-                // Reset form
-                document.getElementById('admissionForm').reset();
-                courseCards.forEach(c => c.classList.remove('selected'));
-                paymentSection.classList.remove('active');
-                
-                // Show form again
-                admissionForm.style.display = 'flex';
-                thankYou.classList.remove('active');
-            });
+            }
         });
     </script>
 </body>
