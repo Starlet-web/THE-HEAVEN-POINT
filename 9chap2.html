@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Chapter 2: Matter and Mixtures</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+   
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f8f1ff;
+            --dark: #2d0a4a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f1ff, #e8d6ff);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="20" cy="20" r="3" fill="%23a044ff22"/><circle cx="80" cy="30" r="4" fill="%23ff7e5f22"/><circle cx="40" cy="70" r="2" fill="%236a309322"/><circle cx="70" cy="80" r="3" fill="%23a044ff22"/><circle cx="10" cy="50" r="3" fill="%23ff7e5f22"/></svg>');
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(10px) translateX(-15px); }
+            75% { transform: translateY(-10px) translateX(15px); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(106, 48, 147, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="white" stroke-width="2" stroke-dasharray="10,5" opacity="0.1"/></svg>');
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+        
+        h2, h3, h4 {
+            color: var(--primary);
+            margin: 25px 0 15px;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        h2::before, h3::before, h4::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 70%;
+            background: linear-gradient(to bottom, var(--secondary), var(--accent));
+            border-radius: 5px;
+        }
+        
+        section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid var(--secondary);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 10px rgba(106, 48, 147, 0.3);
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f5ff;
+        }
+        
+        tr:hover {
+            background-color: #f0e5ff;
+            transition: background-color 0.2s ease;
+        }
+        
+        .mnemonic {
+            background: #fff9e6;
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .mnemonic::before {
+            content: "\f0eb";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 15px;
+            top: -15px;
+            background: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .mnemonic h4 {
+            margin-top: 5px;
+            color: var(--accent);
+        }
+        
+        .visual-placeholder {
+            background: linear-gradient(135deg, #f5f5f5, #eaeaea);
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            color: #777;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .visual-placeholder::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><rect x="20" y="20" width="60" height="60" fill="none" stroke="%23a044ff22" stroke-width="2"/></svg>');
+        }
+        
+        .visual-placeholder i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(106, 48, 147, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(106, 48, 147, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            section {
+                padding: 20px;
+            }
+            
+            .section-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        /* Animation delays for sections */
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
+        section:nth-child(6) { animation-delay: 0.6s; }
+        section:nth-child(7) { animation-delay: 0.7s; }
+        section:nth-child(8) { animation-delay: 0.8s; }
+        </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Matter and Mixtures</h1>
+            <p>Mohit Sir(Msc)</p>
+        </header>
+        
+        <section id="pure-matter">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h2>Pure Matter</h2>
+            </div>
+            <p><strong>Pure matter:</strong> It is the substance which has uniform chemical composition throughout the compound and it can't be separated or broken into simpler form by physical forces.</p>
+            <p><strong>Examples:</strong> Elements like calcium, potassium, oxygen; compounds like water, salt.</p>
+        </section>
+        
+        <section id="elements">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-elementor"></i>
+                </div>
+                <h2>Elements</h2>
+            </div>
+            <p>Elements are made up of single type of atoms and can't be broken down into simpler substances.</p>
+            
+            <h3>Classification of Elements</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Characteristics</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Metals</td>
+                        <td>Shiny, conductive, malleable</td>
+                        <td>Iron, cobalt, zinc, sodium</td>
+                    </tr>
+                    <tr>
+                        <td>Non-metals</td>
+                        <td>Dull, poor conductors, brittle</td>
+                        <td>Chlorine (Cl), iodine (I), fluorine (F), sulfur (S)</td>
+                    </tr>
+                    <tr>
+                        <td>Metalloids</td>
+                        <td>Properties between metals and non-metals</td>
+                        <td>Boron, silicon, germanium</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="compounds">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h2>Compounds</h2>
+            </div>
+            <p>Compounds are made up of a group of atoms that are tightly bound together by chemical bonds and can't be broken down into simpler substances by physical means.</p>
+            <p><strong>Example:</strong> Water (H₂O), sodium chloride (NaCl)</p>
+        </section>
+        
+        <section id="impure-matter">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-filter"></i>
+                </div>
+                <h2>Impure Matter</h2>
+            </div>
+            <p>Impure matter can be broken down into simpler substances by physical processes.</p>
+            <p><strong>Example:</strong> Mixtures like air, sea water</p>
+        </section>
+        
+        <section id="mixtures">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-random"></i>
+                </div>
+                <h2>Mixtures</h2>
+            </div>
+            <p>When two or more substances mix with each other without participating in a chemical change, the resulting substance is called a mixture.</p>
+            
+            <h3>Properties of Mixtures</h3>
+            <ul>
+                <li>The components of the mixture keep their original properties</li>
+                <li>The separation of components can be easily done</li>
+                <li>The proportion of the components is variable</li>
+            </ul>
+            
+            <h3>Examples of Mixtures</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mixture</th>
+                        <th>Components</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Crude oil</td>
+                        <td>Mixture of organic compounds (mainly hydrocarbons)</td>
+                    </tr>
+                    <tr>
+                        <td>Sea water</td>
+                        <td>Mixture of various salts and water</td>
+                    </tr>
+                    <tr>
+                        <td>Air</td>
+                        <td>Mixture of gases like oxygen, carbon dioxide, nitrogen</td>
+                    </tr>
+                    <tr>
+                        <td>Ink</td>
+                        <td>Mixture of colored dyes</td>
+                    </tr>
+                    <tr>
+                        <td>Gunpowder</td>
+                        <td>Mixture of sulfur, potassium nitrate and carbon</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="types-of-mixtures">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-vial"></i>
+                </div>
+                <h2>Types of Mixtures</h2>
+            </div>
+            
+            <h3>Based on Physical State</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type of Solution</th>
+                        <th>Solute</th>
+                        <th>Solvent</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Gaseous solution</td>
+                        <td>Gas</td>
+                        <td>Gas</td>
+                        <td>Mixture of He and O₂</td>
+                    </tr>
+                    <tr>
+                        <td>Liquid solution</td>
+                        <td>Gas</td>
+                        <td>Liquid</td>
+                        <td>CO₂ gas in soda</td>
+                    </tr>
+                    <tr>
+                        <td>Solid solution</td>
+                        <td>Gas</td>
+                        <td>Solid</td>
+                        <td>Absorption of H₂ gas in palladium (Pd)</td>
+                    </tr>
+                    <tr>
+                        <td>Solid solution</td>
+                        <td>Liquid</td>
+                        <td>Solid</td>
+                        <td>Zinc amalgam (Zn dissolved in Hg)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Based on Miscibility</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Characteristics</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Homogeneous</td>
+                        <td>
+                            <ul>
+                                <li>Composition is uniform throughout</li>
+                                <li>Transparent mixture</li>
+                                <li>Has only one phase</li>
+                                <li>Components cannot be separated easily</li>
+                            </ul>
+                        </td>
+                        <td>Mixture of sugar and water</td>
+                    </tr>
+                    <tr>
+                        <td>Heterogeneous</td>
+                        <td>
+                            <ul>
+                                <li>Composition is non-uniform</li>
+                                <li>Components can be seen</li>
+                                <li>Has two or more phases</li>
+                                <li>Components can be separated easily</li>
+                            </ul>
+                        </td>
+                        <td>Mixture of sand and salt</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="solutions">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h2>Types of Solutions</h2>
+            </div>
+            
+            <h3>Based on Amount of Solute</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Definition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Saturated solution</td>
+                        <td>A solution containing the maximum amount of solute dissolved in a solvent at a given temperature</td>
+                    </tr>
+                    <tr>
+                        <td>Unsaturated solution</td>
+                        <td>A solution containing less than the maximum amount of solute that can be dissolved</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><strong>Note:</strong> The solubility of a solution is affected by:</p>
+            <ul>
+                <li>The nature of the solute and solvent</li>
+                <li>Temperature</li>
+                <li>Pressure</li>
+                <li>Presence of other chemicals in solution</li>
+            </ul>
+            
+            <h3>Based on Solvent</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Definition</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Aqueous solution</td>
+                        <td>The solution in which water is used as the solvent</td>
+                        <td>Salt solution (salt + water)</td>
+                    </tr>
+                    <tr>
+                        <td>Non-aqueous solution</td>
+                        <td>The solution in which solvent is not water (may be polar or non-polar)</td>
+                        <td>Iodine in alcohol</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="colloids">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h2>Colloidal Solutions</h2>
+            </div>
+            
+            <p>Colloidal solution is a heterogeneous mixture consisting of two phases:</p>
+            <ul>
+                <li><strong>Dispersed phase:</strong> Component present in small proportion</li>
+                <li><strong>Dispersion medium:</strong> Component present in large proportion</li>
+            </ul>
+            
+            <h3>Brownian Motion</h3>
+            <p>The random zig-zag motion displayed by small particles suspended in fluids, especially in colloidal solutions. It is due to the collision of particles with molecules of the dispersion medium.</p>
+            
+            <h3>Tyndall Effect</h3>
+            <p>When a beam of light passes through a colloidal solution, the path of the beam is illuminated in all directions. This illuminated path is called the "Tyndall cone".</p>
+            <p>The phenomenon of scattering of light by colloidal particles is called the "Tyndall effect".</p>
+        </section>
+        
+        <section id="separation">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-filter"></i>
+                </div>
+                <h2>Separation Techniques</h2>
+            </div>
+            
+            <h3>Simple Techniques</h3>
+            <ul>
+                <li>Hand picking</li>
+                <li>Sieving</li>
+                <li>Winnowing</li>
+            </ul>
+            
+            <h3>Special Techniques</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Technique</th>
+                        <th>Process</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Evaporation</td>
+                        <td>Liquid turns to vapor, leaving solids behind</td>
+                        <td>Separation of salt from saltwater</td>
+                    </tr>
+                    <tr>
+                        <td>Centrifugation</td>
+                        <td>Spinning to separate by density</td>
+                        <td>Separation of butter from milk</td>
+                    </tr>
+                    <tr>
+                        <td>Decantation</td>
+                        <td>Pouring off liquid from solids</td>
+                        <td>Separation of oil from water</td>
+                    </tr>
+                    <tr>
+                        <td>Sublimation</td>
+                        <td>Solid turns directly to gas</td>
+                        <td>Separation of camphor from salt</td>
+                    </tr>
+                    <tr>
+                        <td>Chromatography</td>
+                        <td>Separating different pigments</td>
+                        <td>Separation of pigments from flower extract</td>
+                    </tr>
+                    <tr>
+                        <td>Distillation</td>
+                        <td>Separating based on boiling points</td>
+                        <td>Separation of components of petroleum</td>
+                    </tr>
+                    <tr>
+                        <td>Magnetic separation</td>
+                        <td>Using magnets to separate magnetic materials</td>
+                        <td>Separation of iron pins from sand</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="concentration">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <h2>Concentration of Solutions</h2>
+            </div>
+            
+            <p>Concentration is the amount of solute dissolved in a certain amount of solvent or solution.</p>
+            <p>Concentration of solution = amount of solute / amount of solvent</p>
+            
+            <h3>Mass Percentage (w/w)</h3>
+            <p>Mass of solute in grams present in 100 grams of solution.</p>
+            <p>Formula:</p>
+            <p>Mass % = (Mass of solute / Mass of solution) × 100</p>
+            <p>where Mass of solution = Mass of solute + Mass of solvent</p>
+            
+            <h4>Example Calculation 1</h4>
+            <p>A solution contains 40g of common salt in 320g of water. Calculate the mass percentage.</p>
+            <p>Mass of solute (salt) = 40g</p>
+            <p>Mass of solvent (water) = 320g</p>
+            <p>Mass of solution = 40g + 320g = 360g</p>
+            <p>Mass % = (40/360) × 100 = 11.11%</p>
+            
+            <h4>Example Calculation 2</h4>
+            <p>3.5g of sugar is dissolved in 46.5g of water. Calculate the mass percentage.</p>
+            <p>Mass of solute (sugar) = 3.5g</p>
+            <p>Mass of solvent (water) = 46.5g</p>
+            <p>Mass of solution = 3.5g + 46.5g = 50g</p>
+            <p>Mass % = (3.5/50) × 100 = 7%</p>
+            
+            <h3>Volume Percentage (v/v)</h3>
+            <p>Volume of solute in mL present in 100mL of solution.</p>
+            <p>Formula:</p>
+            <p>Volume % = (Volume of solute / Volume of solution) × 100</p>
+        </section>
+        
+        <section id="changes">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h2>Chemical vs Physical Changes</h2>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Change Type</th>
+                        <th>Characteristics</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Chemical Change</td>
+                        <td>
+                            <ul>
+                                <li>Permanent change</li>
+                                <li>New substances are formed</li>
+                                <li>Difficult to reverse</li>
+                                <li>Chemical composition changes</li>
+                            </ul>
+                        </td>
+                        <td>Burning, rusting, digestion</td>
+                    </tr>
+                    <tr>
+                        <td>Physical Change</td>
+                        <td>
+                            <ul>
+                                <li>Temporary change</li>
+                                <li>No new substances are formed</li>
+                                <li>Easy to reverse</li>
+                                <li>Chemical composition remains same</li>
+                                <li>Physical properties might change (color, state, shape, size, melting point, etc.)</li>
+                            </ul>
+                        </td>
+                        <td>Melting, freezing, dissolving</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <script>
+        // [Previous JavaScript remains exactly the same]
+    </script>
+</body>
+</html>
