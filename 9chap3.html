@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Chapter 3: Atoms and Molecules</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f8f1ff;
+            --dark: #2d0a4a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f8f1ff 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Floating background elements */
+        .bg-element {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(106, 48, 147, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        /* Section styling */
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .section h2 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        /* Content styling */
+        .content-block {
+            margin-bottom: 20px;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-block h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .styled-list {
+            list-style-type: none;
+            margin-left: 20px;
+        }
+        
+        .styled-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .styled-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 15px;
+            height: 15px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+        
+        /* Table styling */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .styled-table thead tr {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            text-align: left;
+        }
+        
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
+        
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+        
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f8f1ff;
+        }
+        
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .styled-table tbody tr:hover {
+            background-color: rgba(160, 68, 255, 0.1);
+        }
+        
+        /* Mnemonic boxes */
+        .mnemonic {
+            background: linear-gradient(to right, rgba(255, 126, 95, 0.1), rgba(160, 68, 255, 0.1));
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .mnemonic::before {
+            content: "\f0eb";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 15px;
+            top: -12px;
+            background: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .mnemonic h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            padding-left: 25px;
+        }
+        
+        /* Chemical formula styling */
+        .chemical-formula {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+            background: rgba(106, 48, 147, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        
+        /* Visual placeholders */
+        .visual-placeholder {
+            background: linear-gradient(135deg, rgba(106, 48, 147, 0.1), rgba(160, 68, 255, 0.1));
+            border: 2px dashed rgba(106, 48, 147, 0.3);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+        
+        .visual-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            opacity: 0.7;
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(106, 48, 147, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(106, 48, 147, 0.6);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .styled-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        /* Print styling */
+        @media print {
+            .back-to-top, .bg-element {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .section {
+                box-shadow: none;
+                border-left: 2px solid black;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="bg-element" style="width: 300px; height: 300px; background: var(--primary); top: -100px; right: -100px; animation-delay: 0s;"></div>
+    <div class="bg-element" style="width: 200px; height: 200px; background: var(--accent); bottom: -50px; left: -50px; animation-delay: 2s;"></div>
+    <div class="bg-element" style="width: 150px; height: 150px; background: var(--secondary); top: 30%; left: 10%; animation-delay: 4s;"></div>
+    
+    <div class="container">
+        <header>
+            <h1>3-Atoms and Molecules</h1>
+            <p>Mohit Sir(Msc)</p>
+        </header>
+        
+        <!-- Laws of Chemical Combination -->
+        <section id="laws" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h2>Laws of Chemical Combination</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>Law of Conservation of Mass</h3>
+                <p>This law states that in a physical or chemical reaction, the total mass of the products is equal to the total mass of the reactants. Matter can neither be created nor destroyed.</p>
+                
+                <div class="chemical-formula">
+                    Total mass of reactants = Total mass of products
+                </div>
+                
+                <div class="visual-placeholder">
+                    <i class="fas fa-flask"></i>
+                    <p>[Diagram showing balanced chemical equation with mass conservation]</p>
+                </div>
+                
+                <p><strong>Example:</strong> Decomposition of Calcium Carbonate</p>
+                <div class="chemical-formula">
+                    CaCO<sub>3</sub> &xrarr; CaO + CO<sub>2</sub>
+                </div>
+                <div class="chemical-formula">
+                    100g &xrarr; 56g + 44g
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>Law of Definite Proportions</h3>
+                <p>A chemical compound always contains the same elements combined together in the same proportion by mass.</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Compound</th>
+                                <th>Elements</th>
+                                <th>Ratio by Mass</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Water (H<sub>2</sub>O)</td>
+                                <td>Hydrogen and Oxygen</td>
+                                <td>1:8</td>
+                            </tr>
+                            <tr>
+                                <td>Ammonia (NH<sub>3</sub>)</td>
+                                <td>Nitrogen and Hydrogen</td>
+                                <td>14:3</td>
+                            </tr>
+                            <tr>
+                                <td>Carbon dioxide (CO<sub>2</sub>)</td>
+                                <td>Carbon and Oxygen</td>
+                                <td>3:8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Dalton's Atomic Theory -->
+        <section id="dalton" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h2>Dalton's Atomic Theory</h2>
+            </div>
+            
+            <p>The theoretical proof for the validity of different laws of chemical combination was given by John Dalton.</p>
+            
+            <h3>Important Postulates:</h3>
+            <ul class="styled-list">
+                <li>All matter is made up of very tiny particles called atoms.</li>
+                <li>Atoms cannot be divided (atoms are indivisible).</li>
+                <li>Atoms can combine to form compounds in fixed ratios.</li>
+                <li>Atoms of a given element are identical in mass and chemical properties.</li>
+                <li>Atoms of different elements have different masses and chemical properties.</li>
+                <li>Atoms combine in the ratio of small whole numbers to form compounds.</li>
+                <li>The relative number and kinds of atoms are constant in a given compound.</li>
+            </ul>
+            
+            <div class="mnemonic">
+                <h4>Memory Tip:</h4>
+                <p>"All Atoms Are Identical, Different Elements Differ" - helps remember key postulates of Dalton's theory.</p>
+            </div>
+        </section>
+        
+        <!-- Atoms and Molecules -->
+        <section id="atoms-molecules" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <h2>Atoms and Molecules</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>Atom</h3>
+                <p>An atom is the smallest unit of any substance that cannot be divided and is made up of electrons, protons, and neutrons. Atoms are extremely small, with atomic radius measured in nanometers (1 nm = 10<sup>-9</sup> m).</p>
+                
+                <div class="visual-placeholder">
+                    <i class="fas fa-atom"></i>
+                    <p>[Diagram of atomic structure showing nucleus and electron shells]</p>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>Molecule</h3>
+                <p>A molecule is a group of two or more atoms that are chemically bonded together. It is the smallest particle of an element or compound that is capable of independent existence and retains all the properties of the substance.</p>
+                
+                <div class="mnemonic">
+                    <h4>Quick Fact:</h4>
+                    <p>Molecules can be made of same type of atoms (elements) or different types (compounds).</p>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>Atomicity</h3>
+                <p>Atomicity is defined as the number of atoms present in one molecule of an element.</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Examples</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Monoatomic</td>
+                                <td>Single atom molecules</td>
+                                <td>Noble gases (He, Ne, Ar)</td>
+                            </tr>
+                            <tr>
+                                <td>Diatomic</td>
+                                <td>Two atom molecules</td>
+                                <td>O<sub>2</sub>, N<sub>2</sub>, Cl<sub>2</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Triatomic</td>
+                                <td>Three atom molecules</td>
+                                <td>O<sub>3</sub>, CO<sub>2</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Polyatomic</td>
+                                <td>Many atom molecules</td>
+                                <td>S<sub>8</sub>, P<sub>4</sub>, SO<sub>4</sub><sup>2-</sup></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Ions and Valency -->
+        <section id="ions-valency" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h2>Ions and Valency</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>Ions</h3>
+                <p>An ion is a charged particle formed by loss or gain of electrons.</p>
+                
+                <ul class="styled-list">
+                    <li><strong>Cation:</strong> Positively charged particle formed by loss of electron(s). Example: Na<sup>+</sup>, Mg<sup>2+</sup></li>
+                    <li><strong>Anion:</strong> Negatively charged particle formed by gain of electron(s). Example: Cl<sup>-</sup>, O<sup>2-</sup></li>
+                </ul>
+                
+                <div class="visual-placeholder">
+                    <i class="fas fa-exchange-alt"></i>
+                    <p>[Diagram showing formation of cations and anions]</p>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>Polyatomic Ions</h3>
+                <p>A group of atoms carrying a charge is called a polyatomic ion.</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ion</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>NH<sub>4</sub><sup>+</sup></td>
+                                <td>Ammonium ion</td>
+                            </tr>
+                            <tr>
+                                <td>SO<sub>4</sub><sup>2-</sup></td>
+                                <td>Sulfate ion</td>
+                            </tr>
+                            <tr>
+                                <td>NO<sub>3</sub><sup>-</sup></td>
+                                <td>Nitrate ion</td>
+                            </tr>
+                            <tr>
+                                <td>CO<sub>3</sub><sup>2-</sup></td>
+                                <td>Carbonate ion</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>Valency</h3>
+                <p>Valency is defined as the combining power of an element with another atom to form chemical bonds. It is equal to the number of electrons an atom can gain, lose, or share to achieve the nearest noble gas configuration.</p>
+                
+                <div class="mnemonic">
+                    <h4>Valency Memory Tip:</h4>
+                    <p>"Happy Henry Likes Beer But Can't Obtain Food" - helps remember common elements with valency 1 (H, He, Li, Be, B, C, O, F).</p>
+                </div>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Element</th>
+                                <th>Valency</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sodium (Na)</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Magnesium (Mg)</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Aluminum (Al)</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Oxygen (O)</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Writing Chemical Formulas -->
+        <section id="formulas" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-pen-fancy"></i>
+                </div>
+                <h2>Writing Chemical Formulas</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>Rules for Writing Formulas</h3>
+                
+                <div class="styled-list">
+                    <li><strong>Rule 1:</strong> Write the symbols of elements with their valencies and cross them to get the formula.
+                        <div class="chemical-formula">
+                            Al<sup>3+</sup> O<sup>2-</sup> → Al<sub>2</sub>O<sub>3</sub>
+                        </div>
+                    </li>
+                    <li><strong>Rule 2:</strong> When the valency is 1, it is not written.
+                        <div class="chemical-formula">
+                            Na<sup>+</sup> OH<sup>-</sup> → NaOH
+                        </div>
+                    </li>
+                    <li><strong>Rule 3:</strong> When valencies are numerically equal, they are not written.
+                        <div class="chemical-formula">
+                            Ca<sup>2+</sup> O<sup>2-</sup> → CaO
+                        </div>
+                    </li>
+                    <li><strong>Rule 4:</strong> For multiple polyatomic ions, use parentheses.
+                        <div class="chemical-formula">
+                            Al<sup>3+</sup> SO<sub>4</sub><sup>2-</sup> → Al<sub>2</sub>(SO<sub>4</sub>)<sub>3</sub>
+                        </div>
+                    </li>
+                    <li><strong>Rule 5:</strong> Always simplify the formula to lowest terms (except for covalent compounds).
+                        <div class="chemical-formula">
+                            Sn<sup>4+</sup> O<sup>2-</sup> → SnO<sub>2</sub> (not Sn<sub>2</sub>O<sub>4</sub>)
+                        </div>
+                    </li>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>Examples</h3>
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Compound</th>
+                                <th>Formula</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Calcium Sulphate</td>
+                                <td>CaSO<sub>4</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Iron Sulphate</td>
+                                <td>FeSO<sub>4</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Ammonium Nitrate</td>
+                                <td>NH<sub>4</sub>NO<sub>3</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Silver Iodide</td>
+                                <td>AgI</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Mole Concept -->
+        <section id="mole-concept" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h2>Mole Concept</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>Definition</h3>
+                <p>The mole is the amount of substance that contains as many elementary entities as there are atoms in exactly 12 grams of carbon-12 (C<sup>12</sup>).</p>
+                
+                <div class="mnemonic">
+                    <h4>Avogadro's Number:</h4>
+                    <p>N<sub>A</sub> = 6.022 × 10<sup>23</sup> particles/mol (Remember as "6.022 part of Avogadro's party!")</p>
+                </div>
+                
+                <ul class="styled-list">
+                    <li>1 mole = 6.022 × 10<sup>23</sup> particles (atoms, molecules, ions)</li>
+                    <li>At STP (Standard Temperature and Pressure):
+                        <ul>
+                            <li>1 mole of gas = 22.4 liters</li>
+                            <li>1 mole of gas = 22400 mL</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="content-block">
+                <h3>Molar Mass</h3>
+                <p>The mass of 1 mole of any substance is known as its molar mass (in g/mol).</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Substance</th>
+                                <th>Molar Mass (g/mol)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nitrogen (N<sub>2</sub>)</td>
+                                <td>28</td>
+                            </tr>
+                            <tr>
+                                <td>Water (H<sub>2</sub>O)</td>
+                                <td>18</td>
+                            </tr>
+                            <tr>
+                                <td>Carbon dioxide (CO<sub>2</sub>)</td>
+                                <td>44</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>Conversions</h3>
+                <p>Number of moles (n) = Mass (W) / Molar mass (M)</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Problem</th>
+                                <th>Solution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Convert 35g of aluminum to moles</td>
+                                <td>n = 35g / 27g/mol = 1.3 moles</td>
+                            </tr>
+                            <tr>
+                                <td>Convert 56g of calcium to moles</td>
+                                <td>n = 56g / 40g/mol = 1.4 moles</td>
+                            </tr>
+                            <tr>
+                                <td>Find mass of 0.8 moles of SiO<sub>2</sub></td>
+                                <td>W = n × M = 0.8 × 60 = 48g</td>
+                            </tr>
+                            <tr>
+                                <td>Find moles in 55.5L of CO<sub>2</sub> at STP</td>
+                                <td>n = Volume / 22.4 = 55.5 / 22.4 ≈ 2.48 moles</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Back to top button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <script>
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Animate sections on scroll
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.5s ease-out forwards';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
