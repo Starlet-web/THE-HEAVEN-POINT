@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force and Laws of Motion | Notes by Mohit Sir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --text: #333;
+            --light: #f9f9f9;
+            --gray: #e0e0e0;
+            --dark-gray: #777;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary: #8a4dbf;
+            --secondary: #b56cff;
+            --accent: #ff9e7f;
+            --text: #f0f0f0;
+            --light: #222;
+            --gray: #444;
+            --dark-gray: #aaa;
+            --white: #333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--transition);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: 'THP';
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 72px;
+            font-weight: 700;
+            color: rgba(106, 48, 147, 0.05);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tag {
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .section {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin: 20px 0 10px;
+            font-size: 1.4rem;
+        }
+
+        p, li {
+            margin-bottom: 10px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+        }
+
+        ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+        }
+
+        ol {
+            counter-reset: item;
+        }
+
+        ol li {
+            counter-increment: item;
+        }
+
+        ol li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .formula-box {
+            background-color: rgba(106, 48, 147, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+            overflow-x: auto;
+        }
+
+        .formula-box p {
+            margin: 0;
+            font-family: monospace;
+            color: var(--text);
+        }
+
+        .example {
+            background-color: rgba(160, 68, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .example h4 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .example h4::before {
+            content: '📌';
+            margin-right: 10px;
+        }
+
+        .key-point {
+            background-color: rgba(255, 126, 95, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent);
+            position: relative;
+        }
+
+        .key-point h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .key-point h4::before {
+            content: '💡';
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(106, 48, 147, 0.05);
+        }
+
+        tr:hover {
+            background-color: rgba(160, 68, 255, 0.1);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+    
+    <header>
+        <div class="container">
+            <h1>Force and Laws of Motion</h1>
+            <div class="tag">Notes by Mohit Sir</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="section fade-in slide-up">
+            <h2>Force</h2>
+            <p>It is defined as push or pull which tries to change or changes its state.</p>
+            
+            <h3>Effects of Force</h3>
+            <ul>
+                <li>The force acting on a body can change the speed of the body.</li>
+                <li>It can change the direction of motion.</li>
+                <li>It can change the shape of the body.</li>
+            </ul>
+            
+            <h3>Balanced Forces</h3>
+            <p>Balanced forces are two or more forces acting on an object where the magnitudes are equal, but the directions are opposite, resulting in a net force of zero.</p>
+            <div class="formula-box">
+                <p>\[ \text{50N} \leftarrow \text{Rope} \rightarrow \text{50N} \]</p>
+                <p>Rope does not move</p>
+            </div>
+            
+            <h3>Unbalanced Forces</h3>
+            <p>When forces are not equal. It always causes motion.</p>
+            <div class="formula-box">
+             <p>\[ \text{70 N} \rightarrow 🚗 \leftarrow \text{60 N} \]</p>
+
+                <p>Car moves in direction of greater force</p>
+            </div>
+        </section>
+          <section id="newtons-laws" class="section animate-section">
+            <div class="section-header">
+    
+                <h2 class="section-title">Newton's Laws of Motion</h2>
+            </div>
+            
+            <div class="content-card">
+                <h3>Galileo Galilei's Contribution</h3>
+                <p>Galileo first of all said that objects move with a constant speed when no forces act on them. This means if an object is moving on a frictionless path and no other force is acting upon it, the object would be moving forever. That is, there is no unbalanced force working on the object.</p>
+                <p>But practically it is not possible for any object. Because to attain the condition of zero, unbalanced force is impossible. Force of friction, force of air and many other forces are always acting upon an object.</p>
+                          </section>
+    
+        
+        <section class="section fade-in slide-up">
+            <h2>Newton's Laws of Motion</h2>
+            
+            <h3>First Law (Law of Inertia)</h3>
+
+                <p>Any object remains in the state of rest or in uniform motion along a straight line, until it is compelled to change the state by applying external force.</p>
+                
+                <div class="formula-box">
+                    <p>If F<sub>net</sub> = 0, then v = constant</p>
+                </div>
+            <div class="key-point">
+                <h4>Inertia</h4>
+                <p>Each and every body has a tendency to resist its change in state of motion. This property of body is called "Inertia".</p>
+                <ul>
+                    <li>Inertia of a body is directly proportional to its mass.</li>
+                </ul>
+            </div>
+            
+            <h4>Types of Inertia</h4>
+            <ol>
+                <li><strong>Inertia of Rest:</strong> Tendency of a body to remain in its state of rest (e.g., when a bus suddenly starts, passengers fall backward).</li>
+                <li><strong>Inertia of Motion:</strong> Tendency of a body to remain in its state of uniform motion (e.g., when a bus suddenly stops, passengers fall forward).</li>
+                <li><strong>Inertia of Direction:</strong> Tendency of a body to maintain its direction of motion (e.g., mud flying off a rotating tire).</li>
+            </ol>
+        </section>
+        
+        <section class="section fade-in slide-up">
+            <h2>Linear Momentum</h2>
+             <li>Momentum is the power of motion of an object.</li>
+                    <li>The product of velocity and mass is called the momentum. Momentum is denoted by 'p'.</li>
+                </ul>
+                
+                <div class="formula-box">
+                    <p>Momentum of the object = Mass × Velocity</p>
+                    <p>Or, \( p = m \times v \)</p>
+                    <p>Where, \( p \) = momentum, \( m \) = mass of the object and \( v \) = velocity of the object.</p>
+                </div>
+            <div class="example">
+                <h4>Example</h4>
+                <p>If we drop two bodies, one lighter and one heavy, from the top of a tower simultaneously, both will have same velocity at bottom, but the heavier one will have greater momentum.</p>
+            </div>
+
+        </section>
+        
+        <section class="section fade-in slide-up">
+            <h2>Newton's Second Law of Motion</h2>
+            <p>The rate of change of momentum of a body is directly proportional to the applied unbalanced force.</p>
+            
+            <div class="formula-box">
+                <p>\[ F \propto \frac{\Delta p}{\Delta t} \]</p>
+                <p>\[ F = k \times \frac{m(v - u)}{t} \] (where k = 1)</p>
+                <p>\[ F = m \times a \]</p>
+                 </div>
+                <div class="key-point">
+                    <div class="key-point-content">
+                        
+                        <strong>Definition of 1 Newton:</strong> When an acceleration of 1 m/s² is seen in a body of mass 1 kg, then the force applied on the body is said to be 1 Newton.
+                   
+                </div>
+            </div>
+            
+                </section>
+          
+        <section class="section fade-in slide-up">
+                      <h3>Newton's Third Law of Motion</h3>
+                <p>To every action there is an equal and opposite reaction.</p>
+                
+                <div class="formula-box">
+                    <p>\[ F_{AB} = -F_{BA} \]</p>
+                </div>
+                
+                <h4>Applications:</h4>
+                <ol>
+                    <li>Walking is enabled by IIIrd law.</li>
+                    <li>A boat moves back when we deboard it.</li>
+                    <li>A gun recoils.</li>
+                    <li>Rowing of a boat.</li>
+                </ol>
+                
+                <h3>Law of Conservation of Momentum</h3>
+                <p>When two (or more) bodies act upon one another, their total momentum remains constant (or conserved) provided no external forces are acting.</p>
+                
+                <div class="formula-box">
+                    <p>Initial momentum = Final momentum</p>
+                    <p>\[ m_1u_1 + m_2u_2 = m_1v_1 + m_2v_2 \]</p>
+                </div>
+                
+                <p>Suppose, two objects A and B each of mass m₁ and mass m₂ are moving initially with velocities u₁ and u₂, strike each other after time t and start moving with velocities v₁ and v₂ respectively.</p>
+                
+                <p>Now,<br>
+                Initial momentum of object A = m₁u₁<br>
+                Initial momentum of object B = m₂u₂<br>
+                Final momentum of object A = m₁v₁<br>
+                Final momentum of object B = m₂v₂</p>
+                
+                <p>So,<br>
+                Rate of change of momentum in A, \( F_1 = \frac{m_1 v_1 - m_1 u_1}{t} \)<br>
+                \[ = \frac{m_1 (v_1 - u_1)}{t} \quad \text{(i)} \]</p>
+                
+                <p>And<br>
+                Rate of change of momentum in B, \( F_2 = \frac{m_2 v_2 - m_2 u_2}{t} \)<br>
+                \[ = \frac{m_2 (v_2 - u_2)}{t} \quad \text{(ii)} \]</p>
+                
+                <p>We know from IIIrd law of motion,<br>
+                F₁ = -F₂</p>
+                
+                <p>So,<br>
+                \[ \frac{m_1 (v_1 - u_1)}{t} = \frac{m_2 (v_2 - u_2)}{t} \quad \text{[From equations (i) & (ii)]} \]</p>
+                
+                <p>Or<br>
+                \[ m_1 v_1 - m_1 u_1 = -m_2 v_2 + m_2 u_2 \]</p>
+                
+                <p>So<br>
+                \[ m_1 u_1 + m_2 u_2 = m_1 v_1 + m_2 v_2 \]</p>
+                
+                <p>Thus,<br>
+                Initial momentum = Final momentum</p>
+            </div>
+        </section>
+            
+            <div class="example">
+                <h4>Example 1: Recoil Velocity of Pistol</h4>
+                <p>A bullet of mass 20 g is fired horizontally with a velocity of 150 m/s from a pistol of mass 2 kg. Find the recoil velocity of the pistol.</p>
+                <p><strong>Solution:</strong></p>
+                <p>Given:</p>
+                <ul>
+                    <li>Mass of bullet (m₁) = 20 g = 0.02 kg</li>
+                    <li>Mass of pistol (m₂) = 2 kg</li>
+                    <li>Initial velocity of system = 0 (since bullet is inside stationary gun)</li>
+                    <li>Final velocity of bullet (v₁) = 150 m/s</li>
+                </ul>
+                <p>Using conservation of momentum:</p>
+                <div class="formula-box">
+                    <p>Initial momentum = Final momentum</p>
+                    <p>\[ 0 = m_1v_1 + m_2v_2 \]</p>
+                    <p>\[ 0 = 0.02 \times 150 + 2 \times v_2 \]</p>
+                    <p>\[ 3 + 2v_2 = 0 \]</p>
+                    <p>\[ v_2 = -1.5 \, \text{m/s} \]</p>
+                </div>
+                <p>The negative sign indicates the gun recoils in the opposite direction to the bullet.</p>
+            </div>
+            
+            <div class="example">
+                <h4>Example 2: Collision of Hockey Players</h4>
+                <p>Two hockey players (A: 50 kg moving at 4 m/s and B: 60 kg moving at 3 m/s) get entangled while chasing and fall down. Find their common velocity after collision.</p>
+                <p><strong>Solution:</strong></p>
+                <p>Given:</p>
+                <ul>
+                    <li>m_A = 50 kg, u_A = 4 m/s</li>
+                    <li>m_B = 60 kg, u_B = 3 m/s</li>
+                </ul>
+                <p>Total initial momentum:</p>
+                <div class="formula-box">
+                    <p>\[ p_{\text{initial}} = m_Au_A + m_Bu_B \]</p>
+                    <p>\[ = 50 \times 4 + 60 \times 3 = 200 + 180 = 380 \, \text{kg m/s} \]</p>
+                </div>
+                <p>After collision, combined mass moves with velocity v:</p>
+                <div class="formula-box">
+                    <p>\[ p_{\text{final}} = (m_A + m_B)v = 110v \]</p>
+                    <p>\[ 380 = 110v \]</p>
+                    <p>\[ v = \frac{380}{110} = 3.454 \, \text{m/s} \]</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section fade-in slide-up">
+            <h2>Questions</h2>
+            
+            <h3>Very Short Answer Type Questions</h3>
+            <ol>
+                <li>Can force be negative? When?</li>
+                <li>What is the tendency of a body to resist its change of state called?</li>
+                <li>Inertia is also measured by ______ of an object.</li>
+                <li>Higher the mass of an object, higher is its ______.</li>
+                <li>Acceleration is determined by ______ which is also mass of the object.</li>
+                <li>Why does the load from the cage above the seats in a bus fall down when suddenly brakes are applied?</li>
+                <li>When a tree is shaken, its fruits and leaves fall down. Why?</li>
+                <li>Define Momentum of a body.</li>
+                <li>On what factors does the momentum of a body depend?</li>
+                <li>Why it is difficult to walk on a slippery road?</li>
+            </ol>
+            
+            <h3>Short Answer Type Questions</h3>
+            <ol>
+                <li>Quantity of motion contained in a body is ______.</li>
+                <li>Unit of momentum is ______.</li>
+                <li>Define 1 Newton.</li>
+                <li>Although we know that a moving body keeps moving indefinitely until an external force is applied on it, then why does a ball stop when we slide it on ground?</li>
+                <li>Why is it difficult to stop a truck suddenly than a motorbike?</li>
+                <li>When a metro suddenly stops all the passengers fell forward on its floor. Why does this happen?</li>
+                <li>We have a huge atmosphere above us that exerts a huge pressure on our shoulders, head and whole body. Why don't we get crushed under it?</li>
+                <li>A coin of mass 1 kg and a stone of mass 5 kg are thrown down the Eiffel Tower with an acceleration of 10 m/s². Which one would reach the ground early and why?</li>
+                <li>Give applications of 1st law of motion (inertia).</li>
+                <li>(a) Friction is measured in ______. (b) Distinguish between balanced and unbalance forces.</li>
+            </ol>
+            
+            <h3>Long Answer Type Questions</h3>
+            <ol>
+                <li>(a) Derive first law of Newton from second law. (b) Find the force required to stop a car of mass 100 kg with two passengers each of 50 kg sitting inside, if it is moving at 60 km/hr speed and takes 5 s to stop.</li>
+                <li>Two balls A and B of masses 40 g and 50 g are moving at speeds of 40 m/s and 30 m/s respectively. If after colliding, B starts moving with a velocity of 25 m/s, what is the velocity of A?</li>
+                <li>A girl of mass 30 kg jumps on a cart of mass 5 kg with a velocity of 10 m/s. Find the velocity with which she and cart start moving after she jumps on it.</li>
+                <li>(a) Why does a gunman get a jerk on firing a bullet? (b) Calculate the momentum of a toy car of mass 200 gm moving with a speed of 5 m/s. (c) State the law of conservation of momentum.</li>
+                <li>For how long should a force of 100 N act on a body of 20 kg so that it acquires a velocity of 100 m/s?</li>
+                <li>(a) Find the acceleration produced by a force of 5 N acting on a mass of 10 kg. (b) Which would require a greater force: (a) accelerating a 10 gm mass at 5 m/s² or (b) a 20 gm mass at 2 m/s²?</li>
+                <li>The velocity of a body of mass 10 kg increases from 4 m/s to 8 m/s when a force acts on it for 2s. (a) What is the momentum before the force acts? (b) What is the momentum after the force acts? (c) What is the gain in momentum per second? (d) What is the value of force?</li>
+            </ol>
+        </section>
+        
+        <section class="section fade-in slide-up">
+            <h2>Objective Type Questions</h2>
+            
+            <h3>Multiple Choice Questions</h3>
+            <table>
+                <tr>
+                    <th>Question</th>
+                    <th>Options</th>
+                </tr>
+                <tr>
+                    <td>1. A truck and a car are moving with equal velocity, on applying brakes, both will stop after certain distance and then:</td>
+                    <td>
+                        (a) Truck will cover less distance before stopping.<br>
+                        (b) Car will cover less distance before stopping.<br>
+                        (c) Both will cover equal distance.<br>
+                        (d) None of the above.
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. In which of the following cases, the net force is not zero?</td>
+                    <td>
+                        (a) An object floating in air<br>
+                        (b) A ball freely falling from a certain height.<br>
+                        (c) A cork floating on the surface of water<br>
+                        (d) All the cases.
+                    </td>
+                </tr>
+                <tr>
+                    <td>3. A force acts on a body of mass 3kg such that its velocity changes from 4 m/s to 10 m/s. The change in momentum of the body is:</td>
+                    <td>
+                        (a) 42 kg m/s<br>
+                        (b) 2 kg m/s<br>
+                        (c) 18 kg m/s<br>
+                        (d) 14 kg m/s
+                    </td>
+                </tr>
+                <tr>
+                    <td>4. While opening a tap with two fingers, the force applied are:</td>
+                    <td>
+                        (a) equal in magnitude<br>
+                        (b) Parallel to each other<br>
+                        (c) opposite in direction<br>
+                        (d) All of the above
+                    </td>
+                </tr>
+                <tr>
+                    <td>5. The engine of a car produces an acceleration of 4 m/s² in a car, if this car pulls another car of same mass, what is the acceleration produced?</td>
+                    <td>
+                        (a) 8 m/s²<br>
+                        (b) 2 m/s²<br>
+                        (c) 4 m/s²<br>
+                        (d) 0.5 m/s²
+                    </td>
+                </tr>
+                <tr>
+                    <td>6. A force 100N acts in a body mass 2kg for 10 sec. The change in the velocity of the body is.</td>
+                    <td>
+                        (a) 100 m/s<br>
+                        (b) 250 m/s<br>
+                        (c) 500 m/s<br>
+                        (d) 1000 m/s
+                    </td>
+                </tr>
+            </table>
+            
+            <h3>Assertion and Reason Type Questions</h3>
+            <div class="key-point">
+                <h4>Instructions</h4>
+                <p>Choose the appropriate answer:</p>
+                <ol type="A">
+                    <li>If both assertion and reason are CORRECT and reason is the CORRECT explanation of the assertion.</li>
+                    <li>If both assertion and reason are CORRECT but reason is NOT THE CORRECT explanation of the assertion.</li>
+                    <li>If assertion is CORRECT but reason is INCORRECT</li>
+                    <li>If assertion is INCORRECT but reason is CORRECT</li>
+                    <li>If both assertion and reason are INCORRECT</li>
+                </ol>
+            </div>
+            
+            <ol>
+                <li><strong>Assertion:</strong> If the net external force on the body is zero, then its acceleration is zero.<br>
+                    <strong>Reason:</strong> Acceleration does not depend on force.</li>
+                <li><strong>Assertion:</strong> If two objects of different masses have same momentum, the lighter body possesses greater velocity.<br>
+                    <strong>Reason:</strong> For all bodies momentum always remains same.</li>
+                <li><strong>Assertion:</strong> Newton's third law of motion is applicable only when bodies are in motion.<br>
+                    <strong>Reason:</strong> Newton's third law applies to all types of forces (gravitational, electric or magnetic force etc.)</li>
+            </ol>
+        </section>
+        
+        <section class="section fade-in slide-up">
+            <h2>Concept Mapping</h2>
+            <div class="key-point">
+                <h4>Force And Laws Of Motion</h4>
+                <ul>
+                    <li><strong>Force:</strong> \( F = m \times a \) (Unit = Newton)</li>
+                    <li><strong>Newton's Laws of Motion:</strong>
+                        <ol>
+                            <li>First Law (Law of Inertia)</li>
+                            <li>Second Law (\( F = m \times a \))</li>
+                            <li>Third Law (Action-Reaction)</li>
+                        </ol>
+                    </li>
+                    <li><strong>Types of Forces:</strong>
+                        <ul>
+                            <li>Balanced force (Resultant force is zero)</li>
+                            <li>Unbalanced force (Resultant force is greater than zero)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Momentum:</strong> \( p = m \times v \) (Unit = kg m/s)</li>
+                    <li><strong>Inertia:</strong> Mass is the measurement of inertia (tendency to resist change)</li>
+                    <li><strong>Law of Conservation of Momentum:</strong> Total momentum of the system remains constant</li>
+                    <li><strong>Action-Reaction:</strong> For every action there is an equal and opposite reaction</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="fade-in slide-up">
+        <div class="container">
+            <p>© 2023 Notes by Mohit Sir | All Rights Reserved</p>
+            <p>For educational purposes only</p>
+        </div>
+    </footer>
+    
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+    
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        if (savedTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            themeToggle.textContent = '🌞';
+        } else {
+            body.removeAttribute('data-theme');
+            themeToggle.textContent = '🌓';
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = '🌓';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = '🌞';
+            }
+        });
+        
+        // Back to top button functionality
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Animation on scroll
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in', 'slide-up');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
