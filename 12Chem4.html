@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemical Kinetics | THP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --text: #333;
+            --bg: #f9f9ff;
+            --card-bg: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --border: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --primary: #8a4dbf;
+            --secondary: #b56cff;
+            --accent: #ff9a7f;
+            --text: #f0f0f0;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --border: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(106, 48, 147, 0.1) 0%, transparent 20%), 
+                        radial-gradient(circle at 80% 70%, rgba(160, 68, 255, 0.1) 0%, transparent 20%);
+            z-index: -1;
+            animation: float 15s infinite alternate;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(-10px, -10px);
+            }
+            100% {
+                transform: translate(10px, 10px);
+            }
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(106, 48, 147, 0.2);
+            font-size: 24px;
+            font-weight: bold;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.1)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+            opacity: 0.2;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 10px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px var(--shadow);
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        .section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section h2::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, rgba(106, 48, 147, 0.1), rgba(160, 68, 255, 0.1));
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        .formula-box .math {
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .styled-list {
+            list-style-type: none;
+            margin: 20px 0;
+        }
+
+        .styled-list li {
+            padding: 10px 15px 10px 35px;
+            margin-bottom: 10px;
+            background-color: rgba(106, 48, 147, 0.05);
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .styled-list li:hover {
+            background-color: rgba(106, 48, 147, 0.1);
+            transform: translateX(5px);
+        }
+
+        .styled-list li::before {
+            content: "";
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        .key-point {
+            background: rgba(255, 126, 95, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+
+        .key-point::before {
+            content: "💡";
+            position: absolute;
+            left: -25px;
+            top: 15px;
+            font-size: 1.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(106, 48, 147, 0.05);
+        }
+
+        tr:hover {
+            background-color: rgba(106, 48, 147, 0.1);
+        }
+
+        .image-container {
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            position: relative;
+        }
+
+        .image-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(106, 48, 147, 0.1), rgba(160, 68, 255, 0.1));
+            z-index: -1;
+        }
+
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .image-caption {
+            padding: 10px;
+            background-color: var(--card-bg);
+            text-align: center;
+            font-style: italic;
+            border-top: 1px solid var(--border);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow);
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .theme-toggle {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Animation delays for sections */
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+        .section:nth-child(9) { animation-delay: 0.9s; }
+        .section:nth-child(10) { animation-delay: 1.0s; }
+    </style>
+</head>
+<body>
+    <div class="watermark">THP</div>
+    
+    <button class="theme-toggle" id="themeToggle">
+        <span class="icon">🌓</span>
+        <span class="text">Toggle Theme</span>
+    </button>
+    
+    <div class="container">
+        <header>
+            <h1>4 - CHEMICAL KINETICS</h1>
+            <p class="subtitle">The study of reaction rates and mechanisms</p>
+        </header>
+        
+        <main>
+            <section class="section">
+                <h2>Introduction to Chemical Kinetics</h2>
+                <p>Chemical kinetics is the branch of chemistry which deals with the study of the reaction rates, the factors affecting the rate of reactions and the mechanisms by which the reactions proceed.</p>
+                
+                <p>The factors that affect the rate of a reaction are concentration, temperature, pressure and catalyst.</p>
+                
+                <p>Based upon the rate of chemical reaction, chemical reactions are of three types:</p>
+                
+                <ul class="styled-list">
+                    <li><strong>Very fast reactions:</strong>
+                        <ul>
+                            <li>Some reactions (such as ionic reactions) occur very fast.</li>
+                            <li>Example: production of AgCl from AgNO₃ and NaCl.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Very slow reactions:</strong>
+                        <ul>
+                            <li>Some reactions are very slow.</li>
+                            <li>Example: rusting of iron in the presence of air and moisture.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Moderately slow reactions:</strong>
+                        <ul>
+                            <li>Some reactions occur at moderate rate.</li>
+                            <li>Example: Inversion of cane sugar and hydrolysis of starch.</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <p><strong>Rate of Chemical Reaction:</strong></p>
+                <p>Rate of a chemical reaction can be defined as the change in concentration of reactants or products per unit time. It can be expressed in terms of:</p>
+                <ol class="styled-list">
+                    <li>The rate of decrease in concentration of any one of the reactants or</li>
+                    <li>The rate of increase in concentration of any one of the products.</li>
+                </ol>
+            </section>
+            
+            <section class="section">
+                <h2>Rate Expressions</h2>
+                <p>For the reaction, \( R \rightarrow P \):</p>
+                
+                <div class="formula-box">
+                    <p>Rate of disappearance of \( R = \frac{\text{Decrease in concentration of } R}{\text{Time taken}} \)</p>
+                    <p class="math">\[ = -\frac{\Delta [R]}{\Delta t} \]</p>
+                    
+                    <p>Rate of appearance of \( P = \frac{\text{Increase in concentration of } P}{\text{Time taken}} = +\frac{\Delta [P]}{\Delta t} \)</p>
+                </div>
+                
+                <div class="formula-box">
+                    <p>Examples:</p>
+                    <p class="math">\[
+                    \begin{aligned}
+                    &(1) \quad PCl_5 \rightarrow PCl_3 + Cl_2 \\
+                    &Rate = -\frac{\Delta [PCl_5]}{\Delta t} = +\frac{\Delta [PCl_3]}{\Delta t} = +\frac{\Delta [Cl_2]}{\Delta t} \\
+                    &(2) \quad H_{2(g)} + Cl_{2(g)} \rightarrow 2HCl_{(g)} \\
+                    &Rate = -\frac{\Delta [H_{2}]}{\Delta t} = -\frac{\Delta [Cl_{2}]}{\Delta t} = +\frac{1}{2}\frac{\Delta [HCl]}{\Delta t} \\
+                    &(3) \quad 2HI_{(g)} \rightarrow H_{2(g)} + I_{2(g)} \\
+                    &Rate = -\frac{1}{2} \frac{\Delta [HI]}{\Delta t} = +\frac{\Delta [H_2]}{\Delta t} = +\frac{\Delta [I_2]}{\Delta t} \\
+                    &(4) \quad 5 Br^- + BrO_3^- + 6 H^+ \rightarrow 3 Br_2 + 3 H_2O \\
+                    &Rate = -\frac{1}{5} \frac{\Delta [Br^-]}{\Delta t} = - \frac{\Delta [BrO_3^-]}{\Delta t} = -\frac{1}{6} \frac{\Delta [H^+]}{\Delta t} \\
+                    &= +\frac{1}{3} \frac{\Delta [Br_2]}{\Delta t} = +\frac{1}{3} \frac{\Delta [H_2O]}{\Delta t}
+                    \end{aligned}
+                    \]</p>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Units of Rate of Reaction</h2>
+                <div class="formula-box">
+                    <p class="math">\[\text{Unit} \Rightarrow \text{mol L}^{-1} \text{s}^{-1}\]</p>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Note:</strong> In gaseous reactions when concentration of gases is in terms of their partial pressures, the unit becomes \(\text{atm s}^{-1}\).</p>
+                </div>
+                
+                <h3>Average Rate of a Reaction</h3>
+                <p>The average rate of reaction is the appearance of products or disappearance of reactants over a long period of time interval.</p>
+                
+                <div class="formula-box">
+                    <p class="math">\[V_{\text{av}} = -\frac{\Delta [R]}{\Delta t} = \frac{\Delta [P]}{\Delta t}\]</p>
+                </div>
+                
+                <h3>Instantaneous Rate of a Reaction</h3>
+                <p>Reaction rate, at a particular moment of time is called instantaneous rate of reaction.</p>
+                
+                <div class="formula-box">
+                    <p class="math">\[V_{\text{inst}} = -\frac{d[R]}{dt} = +\frac{d[P]}{dt}\]</p>
+                    <p>As \(\Delta t \to 0\), instantaneous rate = Average rate.</p>
+                </div>
+                
+                <h3>Experimental Determination of Rate of Reaction</h3>
+                <p>Rate of reaction can be determined from the slope of the graph between the concentrations of any of the reactants or products and time as given below.</p>
+                
+                <div class="formula-box">
+                    <p class="math">\[V_{\text{av}} = -\frac{\Delta [R]}{\Delta t} = -\left\{\frac{[R]_2-[R]_1}{t_2-t_1}\right\}\]</p>
+                    <p class="math">\[V_{\text{inst}} = -\frac{d[R]}{dt}\]</p>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Factors Influencing Rate of a Reaction</h2>
+                <p>Rate of a reaction depends upon the experimental conditions like concentrations of one or more reactants (pressure in case of gases), temperature, catalyst and surface area of the reactants.</p>
+                
+                <ol class="styled-list">
+                    <li><strong>Concentration of reactants:</strong>
+                        <ul>
+                            <li>Reactions occur with greater speed when concentration of the reactants is high.</li>
+                            <li>Conversely, reaction rate decreases as the concentrations of the reactants decrease.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Temperature:</strong>
+                        <ul>
+                            <li>Reactions occur with greater speed at higher temperatures.</li>
+                            <li>Speed of a reaction nearly doubles on 10°C rise in temperature.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Catalyst:</strong>
+                        <ul>
+                            <li>A catalyst alters the speed of reaction, it helps to attain the equilibrium quickly.</li>
+                            <li>It participates in the reaction without being consumed.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Surface area of the reactants:</strong>
+                        <ul>
+                            <li>The smaller the particle size, greater the surface area and faster the reaction.</li>
+                            <li>Powdered form of catalyst is better catalyst.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+            
+            <section class="section">
+                <h2>Dependence of Rate on Concentration</h2>
+                <p>The representation of rate of reaction in terms of concentration of the reactants is called the "rate law" or rate equation or rate expression.</p>
+                
+                <h3>Rate expression & Rate constant</h3>
+                <p>Consider a general reaction:</p>
+                <div class="formula-box">
+                    <p class="math">\[aA + bB \rightarrow cC + dD\]</p>
+                    <p>Where \(a, b, c\) and \(d\) are the stoichiometric coefficients of reactants and products.</p>
+                    
+                    <p>The rate expression for this reaction is:</p>
+                    <p class="math">\[\text{Rate} \propto [A]^x[B]^y\]</p>
+                    <p>where \(x\) and \(y\) may or may not be equal to the stoichiometric coefficients (a and b) of the reactants.</p>
+                    
+                    <p class="math">\[\text{Rate} = k[A]^x[B]^y\]</p>
+                    <p class="math">\[-\frac{d[A]}{dt} = k[A]^x[B]^y\]</p>
+                    <p>This form of equation is known as differential rate equation, where \(k\) is the proportionality constant called rate constant or velocity constant.</p>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Rate Law:</strong> Rate law is the expression in which the reaction rate is given in terms of molar concentration of reactants with each term raised to some power, which may or may not be same as the stoichiometric coefficient of the reacting species in a balanced chemical equation.</p>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Note:</strong> Rate law for a chemical reaction cannot be decided from the balanced chemical equation, i.e., theoretically. It has to be determined experimentally.</p>
+                </div>
+                
+                <div class="formula-box">
+                    <p>Examples:</p>
+                    <p class="math">\[
+                    \begin{aligned}
+                    &(1) \quad 2NO_{(g)} + O_{2(g)} \rightarrow 2NO_{2(g)} \\
+                    &\text{Rate} = k [NO]^{2} [O_{2}] \\
+                    &\frac{-d[R]}{dt} = k [NO]^{2} [O_{2}] \\
+                    &(2) \quad CHCl_3 + Cl_2 \rightarrow CCl_4 + HCl \\
+                    &\text{Rate} = k [CHCl_3] [Cl_2]^{1/2} \\
+                    &(3) \quad CH_3COOC_2H_5 + H_2O \rightarrow CH_3COOH + C_2H_5OH \\
+                    &\text{Rate} = k [CH_3COOC_2H_5]^{1} [H_2O]^{0}
+                    \end{aligned}
+                    \]</p>
+                </div>
+                
+                <h3>Characteristics of Rate constants:</h3>
+                <ol class="styled-list">
+                    <li>Greater the value of the rate constant, faster is the reaction.</li>
+                    <li>The value of rate constant depends on temperature.</li>
+                    <li>Its value does not depend upon the concentrations of the reactants.</li>
+                    <li>The unit of rate constant depends upon the order of reaction.</li>
+                </ol>
+            </section>
+            
+            <section class="section">
+                <h2>Order of a Chemical Reaction</h2>
+                <p>The sum of the powers of the concentrations of the reactants in the rate law expression is called the order of the chemical reaction.</p>
+                
+                <div class="formula-box">
+                    <p>For the reaction:</p>
+                    <p class="math">\[aA + bB \rightarrow cC + dD, \quad \text{Rate} = k[A]^x[B]^y\]</p>
+                    <p>Order, \(n = x + y\).</p>
+                </div>
+                
+                <h3>Elementary Reactions:</h3>
+                <p>The reactions taking place in one step are called the elementary reactions.</p>
+                
+                <h3>Complex Reactions:</h3>
+                <p>The reactions taking place in several steps are called complex reactions. Each step in a complex reaction is called elementary step of a reaction.</p>
+                
+                <h3>Molecularity of a reaction:</h3>
+                <p>The number of reacting species (atoms or molecules) taking part in an elementary reaction, which must collide simultaneously to bring about a chemical reaction is called molecularity of a reaction.</p>
+                
+                <div class="formula-box">
+                    <p>Examples:</p>
+                    <p>Unimolecular reactions (Molecularity = 1):</p>
+                    <p class="math">\[
+                    \begin{aligned}
+                    &NH_4NO_2 \rightarrow N_2 + 2H_2O \\
+                    &O_3F_2 \rightarrow O_2 + F_2
+                    \end{aligned}
+                    \]</p>
+                    
+                    <p>Bimolecular reactions (Molecularity = 2):</p>
+                    <p class="math">\[2HI \rightarrow H_2 + I_2\]</p>
+                    
+                    <p>Termolecular reactions (Molecularity = 3):</p>
+                    <p class="math">\[2NO + O_2 \rightarrow 2NO_2\]</p>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Notes:</strong></p>
+                    <ol>
+                        <li>Reactions with molecularity greater than three are not found as probability of more than three molecules collecting simultaneously and reacting to form product is small.</li>
+                        <li>Molecularity has no meaning for complex reactions.</li>
+                    </ol>
+                </div>
+                
+                <p>The slowest step of a reaction is the rate determining step of a chemical reaction and decides the overall rate of the reaction.</p>
+                
+                <h3>Difference between Order and Molecularity</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ORDER</th>
+                            <th>MOLECULARITY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1) The sum of the powers of the concentrations of the reactants in the rate law expression is called the order of the chemical reaction.</td>
+                            <td>1) The number of reacting species which must collide simultaneously to bring about a chemical reaction is called molecularity.</td>
+                        </tr>
+                        <tr>
+                            <td>2) Order of a reaction may be zero, whole number or fractional values.</td>
+                            <td>2) Molecularity is always a whole number. It cannot be zero or a fraction.</td>
+                        </tr>
+                        <tr>
+                            <td>3) Order of a reaction is determined experimentally.</td>
+                            <td>3) It is a theoretical quantity.</td>
+                        </tr>
+                        <tr>
+                            <td>4) It is applicable to elementary as well as complex reactions.</td>
+                            <td>4) It is applicable only to elementary reactions.</td>
+                        </tr>
+                        <tr>
+                            <td>5) Order of reaction may or may not be equal to the stoichiometric values of the reactants, as seen from the balanced equations.</td>
+                            <td>5) Molecularity can be observed from the stoichiometric coefficients of the equations.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section class="section">
+                <h2>Units of Rate Constants</h2>
+                <div class="formula-box">
+                    <p>Unit of rate constant, \(k = \frac{\text{mol L}^{-1}}{\text{(mol L}^{-1})^n \text{s}}\)</p>
+                    <p>where, \(n\) = order of the reaction.</p>
+                    
+                    <p>1) For zero-order reactions, \(n=0\):</p>
+                    <p class="math">\[\text{unit of } k = \frac{\text{mol L}^{-1}}{\text{s}} = \text{mol L}^{-1} \text{s}^{-1}\]</p>
+                    
+                    <p>2) For first order reactions, \(n=1\):</p>
+                    <p class="math">\[\text{unit of } k = \frac{\text{mol L}^{-1}}{\text{(mol L}^{-1})^1 \text{s}} = \text{s}^{-1}\]</p>
+                    
+                    <p>3) For second order reactions, \(n=2\):</p>
+                    <p class="math">\[\text{unit of } k = \frac{\text{mol L}^{-1}}{\text{(mol L}^{-1})^2 \text{s}} = \text{mol}^{-1} \text{L s}^{-1}\]</p>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Integrated Rate Equations</h2>
+                <p>The integrated rate equation gives a relation between directly measured experimental quantities, i.e., concentrations at different times and rate constant.</p>
+                
+                <h3>Zero order reactions:</h3>
+                <p>Zero order reaction means that the differential rate of reaction is proportional to zero power of the concentration of reactants. Consider, \( R \rightarrow P \).</p>
+                
+                <div class="formula-box">
+                    <p class="math">\[
+                    \begin{aligned}
+                    &\text{Rate} = -\frac{d[R]}{dt} = k [R]^0 \\
+                    &-\frac{d[R]}{dt} = k
+                    \end{aligned}
+                    \]</p>
+                    <p>Integrating both sides:</p>
+                    <p class="math">\[
+                    \begin{aligned}
+                    &\int d[R] = \int -k dt \\
+                    &[R] = -kt + I \quad \text{(1)}
+                    \end{aligned}
+                    \]</p>
+                    <p>At \( t = 0 \), the concentration of the reactant \([R] = [R]_0\). Equation (1) becomes:</p>
+                    <p class="math">\[
+                    \begin{aligned}
+                    &[R]_0 = -k \times 0 + I \\
+                    &\text{i.e., } I = [R]_0
+                    \end{aligned}
+                    \]</p>
+                    <p>Substitute the value of \( I \) in (1):</p>
+                    <p class="math">\[[R] = -kt + [R]_0 \quad \text{(2)}\]</p>
+                    <p class="math">\[kt = [R]_0 - [R]\]</p>
+                    <p class="math">\[k = \frac{[R]_0 - [R]}{t} \quad \text{(3)}\]</p>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Graph:</strong> Variation in the concentration vs time plot for a zero order reaction:</p>
+                    <p class="math">\[[R] = -kt + [R]_0\]</p>
+                    <p>Slope = \(-k\), Intercept = \([R]_0\).</p>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Examples:</strong> Some enzyme catalyzed reactions and reactions which occur on metal surfaces are zero order reactions.</p>
+                    <ol>
+                        <li>Decomposition of NH₃ on platinum surface:
+                            <p class="math">\[2NH_3 \xrightarrow{Pt} N_{2(g)} + 3H_{2(g)}\]</p>
+                            <p class="math">\[\text{Rate} = k [NH_3]^0\]</p>
+                        </li>
+                        <li>Thermal decomposition of HI on gold surface:
+                            <p class="math">\[2HI_{(g)} \xrightarrow{Au} H_{2(g)} + I_{2(g)}\]</p>
+                            <p class="math">\[\text{Rate} = k[HI]^0\]</p>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>First Order Reactions</h2>
+                <p>First order reaction means that the rate of reaction is proportional to the first power of the concentration of the reactant \( R \).</p>
+                <p>For the reaction, \( R \rightarrow P \):</p>
+                
+                <div class="formula-box">
+                    <p class="math">\[
+                    \begin{aligned}
+                    &\text{Rate} = -\frac{d[R]}{dt} = k[R] \\
+                    &\frac{d[R]}{[R]} = -k dt \\
+                    &\text{On integration: } \int \frac{d[R]}{[R]} = \int -k dt \\
+                    &\ln[R] = -kt + I \quad \text{(1)}
+                    \end{aligned}
+                    \]</p>
+                    <p>When \( t = 0 \), \([R] = [R]_0\), where \([R]_0\) is the initial concentration of the reactant.</p>
+                    <p>Equation (1) becomes:</p>
+                    <p class="math">\[
+                    \begin{aligned}
+                    &\ln[R]_0 = -k \times 0 + I \\
+                    &\text{i.e., } I = \ln[R]_0
+                    \end{aligned}
+                    \]</p>
+                    <p>Substitute the value of \( I \) in (1):</p>
+                    <p class="math">\[
+                    \begin{aligned}
+                    &\ln[R] = -kt + \ln[R]_0 \quad \text{(2)} \\
+                    &\ln[R] - \ln[R]_0 = -kt \\
+                    &\ln\frac{[R]}{[R]_0} = -kt \quad \text{(3)} \\
+                    &k = -\frac{1}{t} \ln\frac{[R]}{[R]_0} \\
+                    &k = \frac{1}{t} \ln\frac{[R]_0}{[R]} \\
+                    &k = \frac{2.303}{t} \log \frac{[R]_0}{[R]} \\
+                    &\frac{[R]}{[R]_0} = e^{-kt} \\
+                    &[R] = [R]_0 e^{-kt}
+                    \end{aligned}
+                    \]</p>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Graph:</strong></p>
+                    <p class="math">\[\ln[R] = -kt + \ln [R]_0\]</p>
+                    <p>Slope = \(-k\), Intercept = \(\ln [R]_0\)</p>
+                    <p>Alternatively:</p>
+                    <p class="math">\[\log [R] = \frac{-kt}{2.303} + \log [R]_0\]</p>
+                    <p>Slope = \(\frac{-k}{2.303}\), Intercept = \(\log [R]_0\)</p>
+                    <p>Also:</p>
+                    <p class="math">\[\log \frac{[R]_0}{[R]} = \frac{kt}{2.303}\]</p>
+                    <p>Slope = \(\frac{k}{2.303}\)</p>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Examples of first order reactions:</strong></p>
+                    <ul>
+                        <li>All natural and artificial radioactive decay of unstable nuclei take place by first order kinetics.
+                            <p class="math">\[Ra \rightarrow Rn + \alpha\]</p>
+                            <p class="math">\[\text{Rate} = k [Ra]\]</p>
+                        </li>
+                        <li>Hydrolysis of esters</li>
+                        <li>Decomposition of \( N_2O_5 \) and \( N_2O \)</li>
+                    </ul>
+                </div>
+                
+                <h3>Integrated Rate Equation for a Typical First Order Gas Phase Reaction</h3>
+                <p>Consider a typical first order gas phase reaction:</p>
+                <p class="math">\[A_{(g)} \rightarrow B_{(g)} + C_{(g)}\]</p>
+                <p>Let \( P_i \) be the initial pressure of \( A \) at time \( t = 0 \), and \( P_t \) be the total pressure at time \( t \).</p>
+                <p>Total pressure, \( P_t = P_A + P_B + P_C \), where \( P_A \), \( P_B \) and \( P_C \) are the partial pressures of \( A \), \( B \) and \( C \) respectively.</p>
+                
+                <div class="formula-box">
+                    <p>If \( x \) atm be the decrease in pressure of \( A \) at time \( t \), and one mole each of \( B \) and \( C \) is being formed, then increase in pressure of \( B \) and \( C \) will also be \( x \) atm each.</p>
+                    <p class="math">\[
+                    \begin{aligned}
+                    &A_{(g)} \rightarrow B_{(g)} + C_{(g)} \\
+                    &\text{At } t = 0: \quad P_i \text{ atm} \quad 0 \quad 0 \\
+                    &\text{At time } t: \quad (P_i - x) \text{ atm} \quad x \text{ atm} \quad x \text{ atm} \\
+                    &P_t = P_A + P_B + P_C = P_i - x + x + x = P_i + x \\
+                    &\therefore x = P_t - P_i \\
+                    &\text{where, } P_A = P_i - x = P_i - (P_t - P_i) = 2P_i - P_t \\
+                    &k = \frac{2.303}{t} \log \frac{P_i}{P_A} = \frac{2.303}{t} \log \frac{P_i}{2P_i - P_t}
+                    \end{aligned}
+                    \]</p>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Half Life of a Reaction</h2>
+                <p>The time at which the concentration of a reactant is reduced to one-half of its initial concentration is called the half-life of a reactant. It is represented as \( t_{1/2} \).</p>
+                
+                <h3>For a zero order reaction:</h3>
+                <div class="formula-box">
+                    <p class="math">\[
+                    \begin{aligned}
+                    &k = \frac{[R]_0 - [R]}{t} \\
+                    &\text{At } t = t_{1/2}, [R] = \frac{[R]_0}{2} \\
+                    &k = \frac{[R]_0 - \frac{[R]_0}{2}}{t_{1/2}} = \frac{\frac{[R]_0}{2}}{t_{1/2}} \\
+                    &t_{1/2} = \frac{[R]_0}{2k}
+                    \end{aligned}
+                    \]</p>
+                </div>
+                <p>\( t_{1/2} \) for a zero order reaction is directly proportional to the initial concentration of the reactants and inversely proportional to the rate constant.</p>
+                
+                <h3>For first order reaction:</h3>
+                <div class="formula-box">
+                    <p class="math">\[
+                    \begin{aligned}
+                    &k = \frac{2.303}{t} \log \frac{[R]_0}{[R]} \\
+                    &\text{At } t = t_{1/2}, [R] = \frac{[R]_0}{2} \\
+                    &k = \frac{2.303}{t_{1/2}} \log \frac{[R]_0}{\frac{[R]_0}{2}} = \frac{2.303}{t_{1/2}} \log 2 \\
+                    &t_{1/2} = \frac{2.303}{k} \log 2 = \frac{2.303 \times 0.3010}{k} \\
+                    &t_{1/2} = \frac{0.693}{k}
+                    \end{aligned}
+                    \]</p>
+                </div>
+                <p>For first order reactions, \( t_{1/2} \) is independent of \( [R]_0 \).</p>
+                
+                <h3>Integrated rate laws for zero and first order reactions</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Zero Order</th>
+                            <th>First Order</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Reaction type</td>
+                            <td>\( R \rightarrow P \)</td>
+                            <td>\( R \rightarrow P \)</td>
+                        </tr>
+                        <tr>
+                            <td>Differential rate law</td>
+                            <td>\(-\frac{d[R]}{dt} = k\)</td>
+                            <td>\(-\frac{d[R]}{dt} = k[R]\)</td>
+                        </tr>
+                        <tr>
+                            <td>Integrated rate law</td>
+                            <td>\(kt = [R]_0 - [R]\)</td>
+                            <td>\(k = \frac{2.303}{t} \log \frac{[R]_0}{[R]}\)</td>
+                        </tr>
+                        <tr>
+                            <td>Straight line plot</td>
+                            <td>\([R]\) vs \(t\)</td>
+                            <td>\(\ln[R]\) vs \(t\)</td>
+                        </tr>
+                        <tr>
+                            <td>Half-life</td>
+                            <td>\(\frac{[R]_0}{2k}\)</td>
+                            <td>\(\frac{0.693}{k}\)</td>
+                        </tr>
+                        <tr>
+                            <td>Units of \(k\)</td>
+                            <td>\(\text{mol L}^{-1} \text{s}^{-1}\)</td>
+                            <td>\(\text{s}^{-1}\)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section class="section">
+                <h2>Pseudo First Order Reactions</h2>
+                <p>A reaction which is not truly of first order but under certain conditions becomes a first order reaction is called pseudo first order reactions.</p>
+                
+                <div class="formula-box">
+                    <p>Examples:</p>
+                    <p>1) Inversion of cane sugar:</p>
+                    <p class="math">\[C_{12}H_{22}O_{11} + H_2O \xrightarrow{H^+} C_6H_{12}O_6 + C_6H_{12}O_6\]</p>
+                    <p>\(\text{Rate} = k [C_{12}H_{22}O_{11}]^1 [H_2O]^0\)</p>
+                    
+                    <p>2) Hydrolysis of ester:</p>
+                    <p class="math">\[CH_3COOC_2H_5 + H_2O \xrightarrow{H^+} CH_3COOH + C_2H_5OH\]</p>
+                    <p>\(\text{Rate} = k [CH_3COOC_2H_5]^1 [H_2O]^0\)</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+    
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme) {
+            body.setAttribute('data-theme', currentTheme);
+            updateToggleText(currentTheme);
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleText(newTheme);
+        });
+        
+        function updateToggleText(theme) {
+            const icon = theme === 'dark' ? '☀️' : '🌙';
+            const text = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+            themeToggle.innerHTML = `<span class="icon">${icon}</span><span class="text">${text}</span>`;
+        }
+        
+        // Back to top button
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Animation for sections when they come into view
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.5s forwards';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
