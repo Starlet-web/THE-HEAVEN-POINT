@@ -1,0 +1,110 @@
+<!-- Add this button to your header (place it right after the <h1> tag) -->
+<button id="darkModeToggle" class="dark-mode-toggle">
+  <span class="toggle-icon">🌓</span> Dark Mode
+</button>
+
+<!-- Add this CSS to your style section -->
+<style>
+  .dark-mode-toggle {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px auto 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+
+  .dark-mode-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  .toggle-icon {
+    font-size: 1.1rem;
+  }
+
+  /* Dark mode styles */
+  body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+
+  body.dark-mode .section {
+    background-color: #1e1e1e;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  body.dark-mode table tr:nth-child(even) {
+    background-color: #2a2a2a;
+  }
+
+  body.dark-mode table tr:hover {
+    background-color: #333333;
+  }
+
+  body.dark-mode .formula-box {
+    background: #2a2a2a;
+    border-left: 4px solid var(--accent);
+  }
+
+  body.dark-mode .note-box {
+    background: #2a2a2a;
+  }
+
+  body.dark-mode .example-box {
+    background: #2a2a2a;
+  }
+
+  body.dark-mode::before {
+    color: rgba(106, 48, 147, 0.1);
+  }
+</style>
+
+<!-- Add this JavaScript at the end of your script section -->
+<script>
+  // Dark mode toggle functionality
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+  // Check for saved preference or system preference
+  if (localStorage.getItem('darkMode') === 'enabled' || 
+      (localStorage.getItem('darkMode') === null && prefersDarkScheme.matches)) {
+    document.body.classList.add('dark-mode');
+    darkModeToggle.innerHTML = '<span class="toggle-icon">☀️</span> Light Mode';
+  }
+
+  // Toggle dark mode
+  darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    
+    if (isDarkMode) {
+      darkModeToggle.innerHTML = '<span class="toggle-icon">☀️</span> Light Mode';
+      localStorage.setItem('darkMode', 'enabled');
+    } else {
+      darkModeToggle.innerHTML = '<span class="toggle-icon">🌓</span> Dark Mode';
+      localStorage.setItem('darkMode', 'disabled');
+    }
+  });
+
+  // Listen for system preference changes
+  prefersDarkScheme.addEventListener('change', e => {
+    if (localStorage.getItem('darkMode') === null) {
+      if (e.matches) {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.innerHTML = '<span class="toggle-icon">☀️</span> Light Mode';
+      } else {
+        document.body.classList.remove('dark-mode');
+        darkModeToggle.innerHTML = '<span class="toggle-icon">🌓</span> Dark Mode';
+      }
+    }
+  });
+</script>
