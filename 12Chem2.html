@@ -1,7 +1,313 @@
-<!-- Add this button to your header (place it right after the <h1> tag) -->
-<button id="darkModeToggle" class="dark-mode-toggle">
-  <span class="toggle-icon">🌓</span> Dark Mode
-</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions - Class 12th Chemistry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f5ff;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "THP";
+            position: fixed;
+            opacity: 0.03;
+            font-size: 40vw;
+            font-weight: 900;
+            color: var(--primary);
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-top: 2.5rem;
+            position: relative;
+            padding-left: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 5px;
+            height: 80%;
+            width: 5px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 5px;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin-top: 1.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid var(--primary);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #f5f5ff, #e6e6ff);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        ul li::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin-right: 10px;
+            position: relative;
+            top: -2px;
+        }
+        
+        .note-box {
+            background: #fff9e6;
+            border-left: 4px solid #ffcc00;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+            position: relative;
+        }
+        
+        .note-box::before {
+            content: "📌";
+            position: absolute;
+            left: -30px;
+            top: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .example-box {
+            background: #e6f7ff;
+            border-left: 4px solid #4da6ff;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        .floating-shape {
+            position: absolute;
+            background: rgba(106, 48, 147, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -100px;
+        }
+        
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            left: -50px;
+        }
+        
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            top: 30%;
+            left: 10%;
+        }
+        
+        .question-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--gray);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .question-box h4 {
+            margin-top: 0;
+            color: var(--dark);
+        }
+    </style>
+
 
 <!-- Add this CSS to your style section -->
 <style>
@@ -68,6 +374,648 @@
   }
 </style>
 
+
+</head>
+<body>
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Chapter-1 Solutions</h1>
+            <p>Class 12th Chemistry Notes By Mohit Sir (MSc)</p>
+        </header>
+        <button id="darkModeToggle" class="dark-mode-toggle">
+  <span class="toggle-icon">🌓</span> Dark Mode
+</button>
+        
+        <section class="section" style="animation-delay: 0.1s">
+            <h2>Introduction</h2>
+            <p>A Solution is a homogeneous mixture of two or more components. It is defined by using the terms "Solute" and "Solvent".</p>
+            
+            <h3>Solvent</h3>
+            <p>The component that is present in largest quantity is called Solvent. It determines the physical state of Solution.</p>
+            
+            <h3>Solute</h3>
+            <p>One or more components present in Solution other than Solvent is called Solute.</p>
+            
+            <h3>Binary Solutions</h3>
+            <p>Solution consisting of two components only.</p>
+        </section>
+        
+        <section class="section" style="animation-delay: 0.2s">
+            <h2>Types of Solutions</h2>
+            <p>According to the phase of Solvent, a binary Solution can be classified in following types:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Types of Solution</th>
+                        <th>Solute</th>
+                        <th>Solvent</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Gaseous Solution</td>
+                        <td>Gas</td>
+                        <td>Gas</td>
+                        <td>Mixture of O<sub>2</sub> and N<sub>2</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Gaseous Solution</td>
+                        <td>Liquid</td>
+                        <td>Gas</td>
+                        <td>Chloroform mixed with N<sub>2</sub> Gas</td>
+                    </tr>
+                    <tr>
+                        <td>Gaseous Solution</td>
+                        <td>Solid</td>
+                        <td>Gas</td>
+                        <td>Camphor in nitrogen</td>
+                    </tr>
+                    <tr>
+                        <td>Liquid Solutions</td>
+                        <td>Gas</td>
+                        <td>Liquid</td>
+                        <td>Oxygen dissolved in water</td>
+                    </tr>
+                    <tr>
+                        <td>Liquid Solutions</td>
+                        <td>Liquid</td>
+                        <td>Liquid</td>
+                        <td>Ethanol dissolved in water</td>
+                    </tr>
+                    <tr>
+                        <td>Liquid Solutions</td>
+                        <td>Solid</td>
+                        <td>Liquid</td>
+                        <td>Glucose dissolved in water</td>
+                    </tr>
+                    <tr>
+                        <td>Solid Solutions</td>
+                        <td>Gas</td>
+                        <td>Solid</td>
+                        <td>Solution of H<sub>2</sub> and Pd</td>
+                    </tr>
+                    <tr>
+                        <td>Solid Solutions</td>
+                        <td>Liquid</td>
+                        <td>Solid</td>
+                        <td>Amalgam of Hg with Na</td>
+                    </tr>
+                    <tr>
+                        <td>Solid Solutions</td>
+                        <td>Solid</td>
+                        <td>Solid</td>
+                        <td>Alloys like brass</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>In this chapter we are mainly focusing on binary solutions (solution made up of two components) or liquid known as liquid solutions.</p>
+        </section>
+        
+        <section class="section" style="animation-delay: 0.3s">
+            <h2>Gaseous Solutions</h2>
+            <ul>
+                <li>Solvent is a gas.</li>
+                <li>Small amounts of one gas are dissolved in a large amount of gas.</li>
+                <li>Examples: Air
+                    <ul>
+                        <li>78% nitrogen</li>
+                        <li>21% oxygen</li>
+                        <li>1% other gases</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="section" style="animation-delay: 0.4s">
+            <h2>Different Methods of Expressing Concentration of Solutions</h2>
+            <p>The Composition of Solution is defined via terms of concentration. There are several ways to define concentration of Solution as follows:</p>
+            
+            <h3>(A) Mass Percentage (ω/ω)</h3>
+            <div class="formula-box">
+                \[ \text{Mass %} \text{ of Component } = \frac{\text{Mass of the component in the Solution}}{\text{Total mass of Solution}} \times 100 \]
+            </div>
+            
+            <h3>(B) Volume Percentage (v/v)</h3>
+            <div class="formula-box">
+                \[ \text{Volume %} \text{ of Component } = \frac{\text{Volume of the Component in the Solution}}{\text{Total volume of Solution}} \times 100 \]
+            </div>
+            
+            <h3>(C) Mass by Volume percentage (ω/v)</h3>
+            <div class="formula-box">
+                \[ = \frac{\text{Mass of the component}}{100\text{mL Solution}} \]
+            </div>
+            
+            <h3>(D) Part Per million (ppm)</h3>
+            <div class="formula-box">
+                \[ \text{ppm} = \frac{\text{Number of Parts of Component } \times 10^6}{\text{Total Number of Parts of all Components of Solution}} \]
+            </div>
+            
+            <h3>(E) Mole Fraction</h3>
+            <div class="formula-box">
+                \[ \text{Mole fraction of Component } = \frac{\text{Moles of Component}}{\text{Total No. of moles of all the components}} \]
+            </div>
+            
+            <h3>(F) Molarity</h3>
+            <div class="formula-box">
+                \[ \text{Molarity} = \frac{\text{Moles of Solute}}{\text{Volume of Solution in Litre}} \]
+            </div>
+            
+            <h3>(G) Molality</h3>
+            <div class="formula-box">
+                \[ \text{Molality} = \frac{\text{Moles of Solute}}{\text{Mass of Solvent in Kg}} \]
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 0.5s">
+            <h2>Molarity and Molality</h2>
+            
+            <h3>Molarity (M)</h3>
+            <p>Molarity is the number of moles of solute present in 1 litre of solution.</p>
+            <div class="formula-box">
+                \[ \text{Molarity} = \frac{\text{moles of Solute (n)}}{\text{Volume of Solution (V)}_L} = \frac{w_b \times 1000}{M_b \times V_{mL}} \]
+                \[ \text{where } w_b = \text{mass of solute}, M_b = \text{molar mass of solute} \]
+            </div>
+            
+            <div class="question-box">
+                <h4>Question:</h4>
+                <p>Calculate the molarity of a solution containing 5g of NaOH in 450 ml solution.</p>
+                <p><strong>Solution:</strong></p>
+                <div class="formula-box">
+                    \[ \text{Molar mass of NaOH} = 23 + 16 + 1 = 40 \text{ g/mol} \]
+                    \[ \text{Molarity} = \frac{w_b \times 1000}{M_b \times V_{mL}} = \frac{5 \times 1000}{40 \times 450} = \frac{5000}{18000} = 0.278 \text{ M} \]
+                </div>
+            </div>
+            
+            <h3>Molality (m)</h3>
+            <p>Molality is the number of moles of solute present in 1 kg of solvent.</p>
+            <div class="formula-box">
+                \[ \text{Molality} = \frac{\text{moles of Solute (n)}}{\text{mass of solvent (w}_a\text{) in kg}} = \frac{w_b \times 1000}{M_b \times w_a \text{ (in grams)}} \]
+            </div>
+            
+            <div class="question-box">
+                <h4>Question:</h4>
+                <p>Calculate the molality of 2.5 g of ethanoic acid in 75 g of benzene.</p>
+                <p><strong>Solution:</strong></p>
+                <div class="formula-box">
+                    \[ \text{Molar mass of CH}_3\text{COOH} = 12 + 1 \times 3 + 12 + 16 + 16 + 1 = 60 \text{ g/mol} \]
+                    \[ \text{Molality} = \frac{2.5 \times 1000}{60 \times 75} = \frac{2500}{4500} = 0.556 \text{ m} \]
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 0.6s">
+            <h2>Normality</h2>
+            <p>Normality is the number of gram equivalent of solute dissolved per litre of solution.</p>
+            <div class="formula-box">
+                \[ \text{Normality} = \frac{\text{No. of gram equivalents of solute}}{\text{Volume of solution in litre}} \]
+                \[ \text{No. of gram equivalents} = \frac{\text{mass of solute}}{\text{equivalent mass}} \]
+                \[ \text{Equivalent mass} = \frac{\text{molar mass}}{\text{Basicity/Acidity}} \]
+                \[ N = \frac{w_b \times 1000}{E_b \times V_{mL}} \]
+            </div>
+            
+            <div class="note-box">
+                <p><strong>Note:</strong> Normality = Molarity × basicity (for Acid) or Molarity × acidity (for Base)</p>
+            </div>
+            
+            <div class="question-box">
+                <h4>Question:</h4>
+                <p>250 ml solution is prepared by dissolving 1.325 g of Anhydrous Sodium Carbonate (Na<sub>2</sub>CO<sub>3</sub>) in water. Equivalent weight of Anhydrous Sodium Carbonate is 53. Calculate the Normality of Solution.</p>
+                <p><strong>Solution:</strong></p>
+                <div class="formula-box">
+                    \[ \text{Normality} = \frac{1.325 \times 1000}{53 \times 250} = \frac{1325}{13250} = 0.1 \text{ N} \]
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 0.7s">
+            <h2>Mole Fraction</h2>
+            <div class="note-box">
+                <p>Mole fraction of a component = No. of moles of the component / Total No. of moles of all components</p>
+                <p>Denoted by a Greek letter 'X' (chi)</p>
+            </div>
+            
+            <div class="formula-box">
+                \[ X_B = \frac{n_B}{n_A + n_B} \]
+                \[ X_A = \frac{n_A}{n_A + n_B} \]
+                \[ X_A + X_B = 1 \]
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 0.8s">
+            <h2>Henry's Law</h2>
+            <p>Solubility of a gas in a liquid is directly proportional to the Partial Pressure of the gas present above the Surface of Liquid or Solution.</p>
+            <div class="formula-box">
+                \[ P \propto X \]
+                \[ P = k_H \cdot X \]
+                <p>where:</p>
+                <ul>
+                    <li>\( P \) = Partial Pressure</li>
+                    <li>\( X \) = Mole Fraction</li>
+                    <li>\( k_H \) = Henry's Law Constant</li>
+                </ul>
+            </div>
+            
+            <p>k<sub>H</sub> Value for O<sub>2</sub> increases with Increase in Temperature, So Solubility decreases with Increase in Temperature.</p>
+            
+            <h3>Henry's Law Applications:</h3>
+            <ul>
+                <li>Soda bottles</li>
+                <li>Scuba divers</li>
+            </ul>
+            
+            <div class="question-box">
+                <h4>Question:</h4>
+                <p>Henry's law constant for CO<sub>2</sub> in water is 1.67 × 10<sup>8</sup> Pa at 298 K. Calculate the quantity of CO<sub>2</sub> in 500 ml of Soda water when packed under 2.5 atm CO<sub>2</sub> pressure at 298 K.</p>
+                <p><strong>Solution:</strong></p>
+                <div class="formula-box">
+                    \[ P_{CO_2} = 2.5 \text{ atm} \times 1.01325 \times 10^5 \text{ Pa/atm} = 2.533 \times 10^5 \text{ Pa} \]
+                    \[ P_{CO_2} = k_H \times X_{CO_2} \]
+                    \[ 2.533 \times 10^5 = 1.67 \times 10^8 \times X_{CO_2} \]
+                    \[ X_{CO_2} = 0.001517 \]
+                    
+                    <p>Mass of H<sub>2</sub>O = 500 g (assuming density of water = 1 g/mL)</p>
+                    <p>Molar mass of water = 18 g/mol</p>
+                    \[ n_{H_2O} = \frac{500}{18} = 27.78 \text{ mol} \]
+                    
+                    \[ X_{CO_2} = \frac{n_{CO_2}}{n_{CO_2} + n_{H_2O}} \approx \frac{n_{CO_2}}{n_{H_2O}} \text{ (since } n_{CO_2} \ll n_{H_2O}\text{)} \]
+                    \[ n_{CO_2} = X_{CO_2} \times n_{H_2O} = 0.001517 \times 27.78 = 0.042 \text{ mol} \]
+                    
+                    <p>Molar Mass of CO<sub>2</sub> = 44 g/mol</p>
+                    \[ \text{Mass of CO}_2 = n_{CO_2} \times \text{Molar Mass of CO}_2 = 0.042 \times 44 = 1.848 \text{ g} \]
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 0.9s">
+            <h2>Vapour Pressure of Liquid Solution</h2>
+            <ul>
+                <li>Pressure exhibited by Vapour present above a liquid surface is known as Vapour Pressure.</li>
+                <li>Only in a closed container.</li>
+            </ul>
+            
+            <h3>Raoult's Law</h3>
+            <p>For a solution of a Volatile Liquid, the Partial Vapour Pressure of each component of the solution is directly proportional to the mole fraction present in the solution.</p>
+            <div class="formula-box">
+                \[ P_1 \propto x_1 \Rightarrow P_1 = P_1^0 x_1 \]
+                \[ P_2 \propto x_2 \Rightarrow P_2 = P_2^0 x_2 \]
+                <p>where:</p>
+                <ul>
+                    <li>\( P_1 \) = Partial Pressure of 1st liquid substance</li>
+                    <li>\( P_2 \) = Partial Pressure of 2nd liquid substance</li>
+                    <li>\( x_1 \) = mole fraction of 1st liquid substance</li>
+                    <li>\( x_2 \) = mole fraction of 2nd liquid substance</li>
+                    <li>\( P_1^0, P_2^0 \) = Vapour Pressure of Pure Components at the same temperature</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 1s">
+            <h2>Dalton's Law of Partial Pressures</h2>
+            <p>Total Pressure is equal to the sum of the partial pressures of the components.</p>
+            <div class="formula-box">
+                \[ P_{\text{total}} = P_1 + P_2 \text{ [when two components]} \]
+            </div>
+            
+            <h3>Total Vapour Pressure: Calculation</h3>
+            <div class="formula-box">
+                <p>Raoult's Law: \( P_1 = P_1^0 x_1 \), \( P_2 = P_2^0 x_2 \)</p>
+                <p>For Binary Solution: \( x_1 + x_2 = 1 \) ⇒ \( x_1 = 1 - x_2 \)</p>
+                <p>Dalton's Law: \( P_{\text{total}} = P_1 + P_2 \)</p>
+                \[ = P_1^0 x_1 + P_2^0 x_2 \]
+                \[ = P_1^0 (1 - x_2) + P_2^0 x_2 \]
+                \[ = P_1^0 - P_1^0 x_2 + P_2^0 x_2 \]
+                \[ P_{\text{total}} = P_1^0 + (P_2^0 - P_1^0) x_2 \]
+            </div>
+            <p>Total Vapour Pressure depends upon only one component mole fraction.</p>
+        </section>
+        
+        <section class="section" style="animation-delay: 1.1s">
+            <h2>Ideal and Non-ideal Solutions</h2>
+            
+            <h3>(A) Ideal Solutions</h3>
+            <p>An Ideal Solution is one that obeys Raoult's Law over the entire range of concentration and temperature.</p>
+            
+            <h4>Characteristics of Ideal Solution:</h4>
+            <ul>
+                <li>Obeys Raoult's Law \( P = P_1 + P_2 \) ⇒ \( P = P_1^0 x_1 + P_2^0 x_2 \)</li>
+                <li>Volume change on mixing is zero ⇒ \( \Delta V = 0 \)</li>
+                <li>The Enthalpy remains unchanged when the components are mixed ⇒ \( \Delta H = 0 \)</li>
+                <li>No change in intermolecular forces. The intermolecular forces A-A, B-B & A-B are nearly equal.</li>
+            </ul>
+            
+            <h4>Examples of Ideal Solution:</h4>
+            <ul>
+                <li>Benzene & Toluene</li>
+                <li>Mixture of Methanol & Ethanol</li>
+            </ul>
+            
+            <h3>(B) Non-Ideal Solution</h3>
+            <p>A non-ideal solution is one that does not obey Raoult's law over the entire range of concentration and temperature.</p>
+            
+            <h4>Characteristics of Non-Ideal Solution:</h4>
+            <ul>
+                <li>Does not obey Raoult's Law (\( P_1 \neq P_1^0 x_1 \) & \( P_2 \neq P_2^0 x_2 \))</li>
+                <li>These solutions show change in Volume when components are mixed ⇒ \( \Delta V \neq 0 \)</li>
+                <li>These solutions show change in Enthalpy when mixed ⇒ \( \Delta H \neq 0 \)</li>
+                <li>The intermolecular forces A-A & B-B are different from A-B resulting in deviation.</li>
+            </ul>
+            
+            <h4>Types of Non-Ideal Solutions:</h4>
+            <p><strong>Positive Deviation:</strong> Partial Vapour Pressure is more than predicted by Raoult's law. It occurs when intermolecular forces (A-B force) are weaker than solute-solute (A-A) and solvent-solvent (B-B) forces.</p>
+        </section>
+        
+        <section class="section" style="animation-delay: 1.2s">
+            <h2>Colligative Properties</h2>
+            <p>The Properties which depend upon the number of Solute Particles present in a definite amount of solvent, but not on the chemical nature of Solute.</p>
+            
+            <p>The Important Colligative Properties are:</p>
+            <ol>
+                <li>Relative Lowering of Vapour Pressure (RLVP)</li>
+                <li>Elevation of boiling Point</li>
+                <li>Depression of freezing Point</li>
+                <li>Osmotic Pressure</li>
+            </ol>
+            
+            <h3>1. Relative Lowering of Vapour Pressure</h3>
+            <p>When a Non-Volatile Solute is added to the solvent, the V.P. of the resulting Solution is lower than that of pure Solvent. This phenomenon is called lowering of V.P.</p>
+            
+            <p><strong>Why it happens:</strong> The Solute particles occupy space at the surface of the liquid. Thus fewer solvent molecules can escape into vapour Phase. Hence, the V.P. decreases.</p>
+            
+            <div class="formula-box">
+                \[ \text{Lowering of vapour pressure} = P^0 - P \]
+                \[ \text{Relative lowering of vapour pressure} = \frac{P^0 - P}{P^0} \text{ (RLVP)} \]
+                <p>The Relative lowering of vapour pressure is equal to the Ratio of moles of Solute present in the Solution to the total No. of moles present in the Solution (mole fraction of the Solute).</p>
+                <p>According to the Raoult's Law:</p>
+                \[ \frac{P^0 - P}{P^0} = X_b = \frac{n_B}{n_A + n_B} \]
+                \[ \frac{n_B}{n_A + n_B} \approx \frac{n}{N} \text{ (for dilute solutions)} \]
+                <p>Calculation of Molecular Mass of Non Volatile Compound from Relative Lowering of Vapour Pressure:</p>
+                \[ \frac{P^0 - P}{P^0} = \frac{w_b \times M_A}{M_b \times w_A} \]
+            </div>
+            
+            <div class="question-box">
+                <h4>Question:</h4>
+                <p>The V.P. of pure Benzene at a certain temperature is 640 mm/Hg. A Non-Volatile Solid weighing 2.75 g is added to 39 g of benzene. Vapour Pressure of Solution obtained is 600 mm/Hg. Calculate the molecular weight of solid substance.</p>
+                <p><strong>Solution:</strong></p>
+                <div class="formula-box">
+                    \[ P^0 = 640 \text{ mm/Hg}, P = 600 \text{ mm/Hg} \]
+                    \[ w_b = 2.75 \text{ g}, w_A = 39 \text{ g} \]
+                    \[ M_A \text{ (benzene)} = 78 \text{ g/mol} \]
+                    \[ \frac{640 - 600}{640} = \frac{2.75 \times 78}{M_b \times 39} \]
+                    \[ \frac{40}{640} = \frac{2.75 \times 2}{M_b} \]
+                    \[ \frac{1}{16} = \frac{5.5}{M_b} \]
+                    \[ M_b = 5.5 \times 16 = 88 \text{ g/mol} \]
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 1.3s">
+            <h2>Elevation of Boiling Point</h2>
+            <p>The increase in the boiling point of the solvent on addition of solute to it is called the Elevation of boiling point of solvent. It is represented by \( \Delta T_b \).</p>
+            <div class="formula-box">
+                \[ \Delta T_b = T_b - T_b^0 \]
+                <p>where:</p>
+                <ul>
+                    <li>\( T_b \) = boiling point of solution</li>
+                    <li>\( T_b^0 \) = boiling point of pure solvent</li>
+                </ul>
+                <p>From experiment it is observed that the elevation of boiling point is proportional to the molality of solute in the dilute solution.</p>
+                \[ \Delta T_b \propto m \]
+                \[ \Delta T_b = k_b \cdot m \]
+                <p>where \( k_b \) is molal Elevation constant or ebullioscopic constant.</p>
+                \[ \Delta T_b = k_b \cdot \frac{w_b \times 1000}{M_b \times w_A \text{ (in grams)}} \]
+            </div>
+            
+            <div class="question-box">
+                <h4>Question:</h4>
+                <p>The boiling point of benzene is 353.23 K. When 1.80 g of a Non-volatile Solute was dissolved in 90 g of benzene, the boiling point is raised to 354.11 K. Calculate the molar mass of Solute (K<sub>b</sub> for benzene: 2.53 K kg/mol).</p>
+                <p><strong>Solution:</strong></p>
+                <div class="formula-box">
+                    \[ \Delta T_b = T_b - T_b^0 = 354.11 - 353.23 = 0.88 \text{ K} \]
+                    \[ \Delta T_b = k_b \cdot m = k_b \cdot \frac{w_b \times 1000}{M_b \times w_A} \]
+                    \[ 0.88 = 2.53 \times \frac{1.80 \times 1000}{M_b \times 90} \]
+                    \[ M_b = \frac{2.53 \times 1.80 \times 1000}{0.88 \times 90} \]
+                    \[ M_b = \frac{4554}{79.2} = 57.5 \text{ g/mol} \]
+                </div>
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 1.4s">
+            <h2>Depression of Freezing Point</h2>
+            <p>The decrease in the freezing point of the solvent on adding of non-volatile solute is known as depression of freezing point.</p>
+            <div class="formula-box">
+                \[ \Delta T_f = T_f^0 - T_f \]
+                <p>where:</p>
+                <ul>
+                    <li>\( T_f^0 \) = freezing point of pure solvent</li>
+                    <li>\( T_f \) = freezing point of solution</li>
+                </ul>
+                <p>From experiment it is observed that depression of freezing point \( \Delta T_f \) is directly proportional to the molality of the solute in the dilute solution.</p>
+                \[ \Delta T_f \propto m \]
+                \[ \Delta T_f = k_f \times m \]
+                \[ \Delta T_f = k_f \times \frac{w_b \times 1000}{M_b \times w_A \text{ (in grams)}} \]
+                <p>where \( k_f \) is molal depression constant or cryoscopic constant.</p>
+            </div>
+        </section>
+        
+        <section class="section" style="animation-delay: 1.5s">
+            <h2>Osmosis and Osmotic Pressure</h2>
+            
+            <h3>(A) Osmosis</h3>
+            <p>The spontaneous flow of the solvent through a semi-permeable membrane from a pure solvent to a solution or from a dilute solution to a concentrated solution is called osmosis.</p>
+            
+            <h4>Difference between Osmosis and Diffusion:</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Osmosis</th>
+                        <th>Diffusion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>In osmosis, the solvent molecules move from the lower concentrated solution to higher concentrated solution.</td>
+                        <td>In diffusion, the molecules move from the higher concentrated region to the region of lower concentration.</td>
+                    </tr>
+                    <tr>
+                        <td>In osmosis, semi-permeable membrane is necessary.</td>
+                        <td>No membrane is required in diffusion.</td>
+                    </tr>
+                    <tr>
+                        <td>Osmosis takes place only in solutions.</td>
+                        <td>Diffusion takes place in gases and liquids.</td>
+                    </tr>
+                    <tr>
+                        <td>In osmosis, the flow of solvent particles is in one direction only.</td>
+                        <td>In diffusion both the solute as well as solvent particles flow in opposite directions.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+
+
+    <h2>Osmotic Solutions Concepts</h2>
+    
+    <div class="note-box">
+        <h3>IDENTIFICATION</h3>
+        <p><strong>ISOTONIC SOLUTION</strong></p>
+        <ul>
+            <li>Two solutions having same osmotic pressure</li>
+            <li>Example: 0.9% solution of NaCl is isotonic with blood plasma</li>
+        </ul>
+        
+        <p><strong>HYPERTONIC SOLUTION</strong></p>
+        <ul>
+            <li>Having higher osmotic pressure than reference solution</li>
+            <li>Causes water to move out of cells (plasmolysis)</li>
+        </ul>
+        
+        <p><strong>HYPOTONIC SOLUTION</strong></p>
+        <ul>
+            <li>Having lower osmotic pressure than reference solution</li>
+            <li>Causes water to move into cells (cytolysis)</li>
+        </ul>
+    </div>
+    
+    <div class="note-box">
+        <h3>OSMOSIS PROCESSES</h3>
+        <p><strong>EXOSMOSIS</strong></p>
+        <p>Outward flow of water or solvent from a cell through semi-permeable membrane (occurs in hypertonic solutions)</p>
+        
+        <p><strong>ENDOSMOSIS</strong></p>
+        <p>Inward flow of water or solvent into a cell through semi-permeable membrane (occurs in hypotonic solutions)</p>
+    </div>
+    
+
+    <h2>Law of Osmotic Pressure (van't Hoff's Law)</h2>
+    
+    <div class="note-box">
+        <p><strong>Definition:</strong> Osmotic pressure (π) is the minimum pressure required to prevent osmosis when a solution is separated from pure solvent by a semipermeable membrane.</p>
+    </div>
+
+    
+  
+    <h3>1. van't Hoff Equation for Dilute Solutions</h3>
+    <div class="formula-box">
+        \[ \pi = C R T \]
+        <p>Where:</p>
+        <ul>
+            <li>\( \pi \) = Osmotic pressure (atm)</li>
+            <li>\( C \) = Molar concentration (mol/L)</li>
+            <li>\( R \) = Universal gas constant (0.0821 L·atm·K⁻¹·mol⁻¹)</li>
+            <li>\( T \) = Absolute temperature (K)</li>
+        </ul>
+    </div>
+    <div class="formula-box">
+        <h3>ABNORMAL MOLECULAR MASS</h3>
+        <p>Observed colligative properties deviate from normal calculated values due to:</p>
+        <ul>
+            <li><strong>Association</strong> of molecules (e.g., dimerization of acetic acid in benzene)</li>
+            <li><strong>Dissociation</strong> of molecules (e.g., ionization of NaCl in water)</li>
+        </ul>
+        <p>Higher values observed in case of dissociation</p>
+        <p>Lower values observed in case of association</p>
+    </div>
+<h3>4. Van't Hoff Factor (i)</h3>
+    <div class="formula-box">
+        <p><strong>Definition</strong>: Accounts for dissociation/association of solutes.</p>
+      \[ i = \frac{\text{Observed Colligative Property}}{\text{Calculated Colligative Property}} \]
+        \[ i = \frac{\text{Normal Molecular Mass}}{\text{Observed Molecular Mass}} \]
+        \[ i = \frac{\text{Number of particles after association/dissociation}}{\text{Number of particles initially}} \]
+        <p><strong>Examples</strong>:</p>
+        <ul>
+            <li>NaCl → \( i \approx 2 \) (dissociates into Na⁺ + Cl⁻)</li>
+            <li>Glucose → \( i = 1 \) (no dissociation)</li>
+        </ul>
+    </div>
+
+    <div class="example-box">
+        <h4>Example Calculation:</h4>
+        <p>Calculate osmotic pressure of 0.1M glucose solution at 300K.</p>
+        <div class="formula-box">
+            \[ \pi = (0.1 \text{ mol/L})(0.0821 \text{ L·atm·K⁻¹·mol⁻¹})(300 \text{ K}) \]
+            \[ \pi = 2.463 \text{ atm} \]
+        </div>
+    </div>
+
+ 
+    </div>
+    
+    <div class="back-to-top" id="backToTop">↑</div>
+    
+    <script>
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Floating shapes animation
+        const shapes = document.querySelectorAll('.floating-shape');
+        
+        shapes.forEach((shape, index) => {
+            let x = 0;
+            let y = 0;
+            let speedX = (Math.random() * 0.5 + 0.1) * (index % 2 === 0 ? 1 : -1);
+            let speedY = (Math.random() * 0.5 + 0.1) * (index % 3 === 0 ? 1 : -1);
+            
+            function animate() {
+                x += speedX;
+                y += speedY;
+                
+                const rect = shape.getBoundingClientRect();
+                
+                if (x + rect.width > window.innerWidth || x < 0) {
+                    speedX *= -1;
+                }
+                
+                if (y + rect.height > window.innerHeight || y < 0) {
+                    speedY *= -1;
+                }
+                
+                shape.style.transform = `translate(${x}px, ${y}px)`;
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        });
+        
+        // Animate sections on scroll
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+    
+ 
 <!-- Add this JavaScript at the end of your script section -->
 <script>
   // Dark mode toggle functionality
@@ -108,3 +1056,6 @@
     }
   });
 </script>
+    
+</body>
+</html>
