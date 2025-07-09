@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table Master Notes | THP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #28a745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(106, 48, 147, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(160, 68, 255, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            color: rgba(106, 48, 147, 0.3);
+            font-weight: 700;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 20px 0 15px;
+            font-size: 1.4rem;
+        }
+        
+        h4 {
+            color: var(--primary);
+            margin: 15px 0 10px;
+            font-size: 1.2rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        ul li::before {
+            content: "";
+            position: absolute;
+            left: -20px;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        ol {
+            counter-reset: item;
+        }
+        
+        ol li {
+            counter-increment: item;
+        }
+        
+        ol li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: -25px;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .formula-box {
+            background-color: rgba(106, 48, 147, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .formula-box p {
+            margin: 0;
+        }
+        
+        .highlight {
+            background-color: rgba(255, 126, 95, 0.2);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .info-box {
+            background-color: rgba(160, 68, 255, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+            position: relative;
+        }
+        
+        .info-box::before {
+            content: "💡";
+            position: absolute;
+            left: 15px;
+            top: -15px;
+            font-size: 24px;
+            background-color: white;
+            padding: 0 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(106, 48, 147, 0.05);
+        }
+        
+        tr:hover {
+            background-color: rgba(160, 68, 255, 0.1);
+        }
+        
+        .image-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
+        }
+        
+        .caption {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(106, 48, 147, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(106, 48, 147, 0.4);
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(106, 48, 147, 0.3);
+            cursor: pointer;
+            z-index: 100;
+            border: none;
+            font-size: 1.2rem;
+        }
+        
+        /* Interactive Elements */
+        .interactive-table {
+            margin: 30px auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            box-shadow: 0 0 0 2px var(--primary);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .element-card {
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .element-card:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        
+        .s-block { background-color: rgba(255,126,95,0.15); }
+        .p-block { background-color: rgba(106,48,147,0.15); }
+        .d-block { background-color: rgba(0,180,216,0.15); }
+        .f-block { background-color: rgba(144,224,239,0.15); }
+        
+        .element-symbol {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+        
+        .element-number {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+        
+        .element-name {
+            display: none;
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            font-size: 0.6rem;
+            background: var(--primary);
+            color: white;
+            padding: 2px;
+            border-radius: 3px;
+        }
+        
+        .element-card:hover .element-name {
+            display: block;
+        }
+        
+        .trend-arrow {
+            display: inline-block;
+            margin: 0 5px;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .exception-note {
+            background-color: rgba(255,193,7,0.2);
+            border-left: 3px solid #ffc107;
+            padding: 10px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+        
+        .trend-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .trend-box {
+            flex: 1;
+            min-width: 300px;
+            margin: 10px;
+            padding: 15px;
+            background: rgba(106,48,147,0.05);
+            border-radius: 8px;
+        }
+        
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode::before {
+            background: radial-gradient(circle at 20% 30%, rgba(106, 48, 147, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(160, 68, 255, 0.2) 0%, transparent 50%);
+        }
+        
+        body.dark-mode .section {
+            background-color: #1e1e1e;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode table tr:nth-child(even) {
+            background-color: rgba(106, 48, 147, 0.1);
+        }
+        
+        body.dark-mode table tr:hover {
+            background-color: rgba(160, 68, 255, 0.2);
+        }
+        
+        body.dark-mode .formula-box {
+            background-color: rgba(106, 48, 147, 0.2);
+        }
+        
+        body.dark-mode .info-box {
+            background-color: rgba(160, 68, 255, 0.2);
+        }
+        
+        body.dark-mode .info-box::before {
+            background-color: #1e1e1e;
+        }
+        
+        body.dark-mode .image-container img {
+            border: 1px solid #333;
+        }
+        
+        body.dark-mode .element-card {
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+        
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+        .section:nth-child(9) { animation-delay: 0.9s; }
+        .section:nth-child(10) { animation-delay: 1.0s; }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            th, td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            .back-to-top, .dark-mode-toggle {
+                width: 40px;
+                height: 40px;
+                bottom: 20px;
+            }
+            
+            .back-to-top {
+                right: 20px;
+            }
+            
+            .dark-mode-toggle {
+                left: 20px;
+            }
+            
+            .element-card {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .element-symbol {
+                font-size: 1rem;
+            }
+            
+            .element-number {
+                font-size: 0.6rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 20px 0;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            ul, ol {
+                padding-left: 20px;
+            }
+            
+            ul li::before {
+                left: -15px;
+            }
+            
+            ol li::before {
+                left: -20px;
+            }
+            
+            .trend-box {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="watermark">THP</div>
+    
+    <header>
+        <div class="container">
+            <h1>Periodic Table</h1>
+            <p class="subtitle">Complete Class 11 Chemistry Reference</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Interactive Periodic Table -->
+        <section class="section">
+            <h2>Interactive Periodic Table</h2>
+            <div class="image-container">
+                <table class="interactive-table">
+                    <!-- Period 1 -->
+                    <tr>
+                        <td class="element-card s-block">
+                            <div class="element-number">1</div>
+                            <div class="element-symbol">H</div>
+                            <div class="element-name">Hydrogen</div>
+                        </td>
+                        <td colspan="16"></td>
+                        <td class="element-card p-block">
+                            <div class="element-number">2</div>
+                            <div class="element-symbol">He</div>
+                            <div class="element-name">Helium</div>
+                        </td>
+                    </tr>
+                    <!-- Period 2 -->
+                    <tr>
+                        <td class="element-card s-block">
+                            <div class="element-number">3</div>
+                            <div class="element-symbol">Li</div>
+                            <div class="element-name">Lithium</div>
+                        </td>
+                        <td class="element-card s-block">
+                            <div class="element-number">4</div>
+                            <div class="element-symbol">Be</div>
+                            <div class="element-name">Beryllium</div>
+                        </td>
+                        <td colspan="10"></td>
+                        <td class="element-card p-block">
+                            <div class="element-number">5</div>
+                            <div class="element-symbol">B</div>
+                            <div class="element-name">Boron</div>
+                        </td>
+                        <td class="element-card p-block">
+                            <div class="element-number">6</div>
+                            <div class="element-symbol">C</div>
+                            <div class="element-name">Carbon</div>
+                        </td>
+                        <td class="element-card p-block">
+                            <div class="element-number">7</div>
+                            <div class="element-symbol">N</div>
+                            <div class="element-name">Nitrogen</div>
+                        </td>
+                        <td class="element-card p-block">
+                            <div class="element-number">8</div>
+                            <div class="element-symbol">O</div>
+                            <div class="element-name">Oxygen</div>
+                        </td>
+                        <td class="element-card p-block">
+                            <div class="element-number">9</div>
+                            <div class="element-symbol">F</div>
+                            <div class="element-name">Fluorine</div>
+                        </td>
+                        <td class="element-card p-block">
+                            <div class="element-number">10</div>
+                            <div class="element-symbol">Ne</div>
+                            <div class="element-name">Neon</div>
+                        </td>
+                    </tr>
+                    <!-- Period 3 -->
+                    <tr>
+                        <td class="element-card s-block">
+                            <div class="element-number">11</div>
+                            <div class="element-symbol">Na</div>
+                            <div class="element-name">Sodium</div>
+                        </td>
+                        
