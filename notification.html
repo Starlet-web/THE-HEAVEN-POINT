@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Coaching Notifications</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --thp-primary: #6C5CE7;
+            --thp-secondary: #00CEFF;
+            --new-accent: #FF4757;
+            --old-accent: #A4B0BE;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .notifications-container {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .notification {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.08),
+                0 1px 2px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        
+        .notification::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--thp-primary);
+        }
+        
+        .notification.new::before {
+            background: var(--new-accent);
+        }
+        
+        .notification.old::before {
+            background: var(--old-accent);
+            opacity: 0.7;
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        
+        .app-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .app-icon {
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, var(--thp-primary), var(--thp-secondary));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: #2d3436;
+        }
+        
+        .status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .new-badge {
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--new-accent);
+        }
+        
+        .old-badge {
+            background: rgba(164, 176, 190, 0.1);
+            color: var(--old-accent);
+        }
+        
+        .notification-content {
+            padding: 16px;
+        }
+        
+        .sender-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .sender-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6C5CE7, #00CEFF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sender-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2d3436;
+        }
+        
+        .sender-title {
+            font-size: 11px;
+            color: #636e72;
+            margin-top: 2px;
+        }
+        
+        .message-content {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #2d3436;
+            margin-left: 42px;
+        }
+        
+        .message-highlight {
+            background: rgba(108, 92, 231, 0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: var(--thp-primary);
+            font-weight: 500;
+        }
+        
+        .notification-footer {
+            padding: 12px 16px;
+            background: rgba(245, 247, 250, 0.7);
+            border-top: 1px solid rgba(0, 0, 0, 0.03);
+            font-size: 12px;
+            color: #636e72;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .notification:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 25px rgba(0, 0, 0, 0.12),
+                0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        
+        .notification.old {
+            opacity: 0.9;
+        }
+        
+        .notification.old:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="notifications-container">
+        <!-- New Notification -->
+        <div class="notification new">
+            <div class="notification-header">
+                <div class="app-info">
+                    <div class="app-icon">THP</div>
+                    <div class="app-name">THP Coaching</div>
+                </div>
+                <div class="status-badge new-badge">New</div>
+            </div>
+            <div class="notification-content">
+                <div class="sender-info">
+                    <div class="sender-avatar">TH</div>
+                    <div>
+                        <div class="sender-name">THP Coaching Team</div>
+                        <div class="sender-title">Certified Career Coach</div>
+                    </div>
+                </div>
+                <div class="message-content">
+                    Your <span class="message-highlight">weekly progress report</span> is ready! You've completed <span class="message-highlight">12/15 tasks</span> - great work! Let's discuss your remaining goals in our next session.
+                </div>
+            </div>
+            <div class="notification-footer">
+                <span>Career Development</span>
+                <span>Priority: High</span>
+            </div>
+        </div>
+        
+        <!-- Old Notification -->
+        <div class="notification old">
+            <div class="notification-header">
+                <div class="app-info">
+                    <div class="app-icon">THP</div>
+                    <div class="app-name">THP Coaching</div>
+                </div>
+                <div class="status-badge old-badge">Old</div>
+            </div>
+            <div class="notification-content">
+                <div class="sender-info">
+                    <div class="sender-avatar">TH</div>
+                    <div>
+                        <div class="sender-name">THP Coaching Team</div>
+                        <div class="sender-title">Certified Career Coach</div>
+                    </div>
+                </div>
+                <div class="message-content">
+                    Reminder: Your <span class="message-highlight">skill assessment</span> is due tomorrow. Complete it before 5PM to receive personalized feedback in time for our Thursday session.
+                </div>
+            </div>
+            <div class="notification-footer">
+                <span>Skill Development</span>
+                <span>Priority: Medium</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
