@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravitation Notes | THP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary: #8a4fff;
+            --secondary: #b264ff;
+            --accent: #ff9e7f;
+            --light: #343a40;
+            --dark: #f8f9fa;
+            --gray: #adb5bd;
+            --light-gray: #495057;
+            --white: #212529;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            transition: var(--transition);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(106, 48, 147, 0.1) 0%, transparent 20%), 
+                        radial-gradient(circle at 90% 80%, rgba(160, 68, 255, 0.1) 0%, transparent 20%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+        }
+
+        .watermark {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 120px;
+            font-weight: 700;
+            color: var(--primary);
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 5px solid var(--primary);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin: 15px 0 10px;
+            font-size: 1.3rem;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        ol {
+            counter-reset: item;
+        }
+
+        ol li {
+            counter-increment: item;
+        }
+
+        ol li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .formula-box {
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary);
+            overflow-x: auto;
+        }
+
+        .formula-title {
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(106, 48, 147, 0.05);
+        }
+
+        tr:hover {
+            background-color: rgba(106, 48, 147, 0.1);
+        }
+
+        .highlight-box {
+            background-color: rgba(255, 126, 95, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .highlight-box h4::before {
+            content: "💡";
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+            
+            .watermark {
+                font-size: 80px;
+            }
+        }
+
+        /* Animation delays for sections */
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">
+        <span id="themeIcon">🌙</span> <span id="themeText">Dark Mode</span>
+    </button>
+
+    <div class="container">
+        <header>
+            <div class="watermark">THP</div>
+            <h1>Gravitation Notes</h1>
+            <p class="subtitle">Notes by Mohit Sir(MSc)</p>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2>Gravitational Force</h2>
+                <p>All objects in this universe attract each other; this force of attraction is called Gravitational Force.</p>
+                
+                <h3>Newton's Observations</h3>
+                <ul>
+                    <li>Why does an apple fall on Earth from a tree?</li>
+                    <li>Because Earth attracts it towards itself.</li>
+                </ul>
+                
+                <div class="highlight-box">
+                      <h4>Centripetal Force</h4>
+                <p>When a body moves in a circular path, it changes its direction at every point. The force which keeps the body in the circular path acts towards the centre of the circle. This force is called centripetal force.</p>
+                <div class="highlight-box">
+                    <h4>Key Point</h4>
+                    <p>If there is no centripetal force, the body will move in a straight line tangent to the circular path.</p>
+                </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Universal Law of Gravitation</h2>
+                <p>Newton's law of gravitation (1687)-</p>
+                  <img src="https://cdn.entrance360.com/media/uploads/2024/09/26/gravitation.png" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px;">
+                
+              
+                   <p>The universal law of gravitation states that, <em>'Every object in the universe attracts every other object with a force which is directly proportional to product of the masses and inversely proportional to the square of the distance between them.'</em></p>
+                
+                
+                <div class="formula-box">
+                    <span class="formula-title">Mathematical Representation</span>
+                    <p>Let \( m_1 \) and \( m_2 \) be the masses of two objects and distance \( d \), then force of attraction between them:</p>
+                    \[ F \propto m_1 \times m_2 \quad \text{(i)} \]
+                    \[ F \propto \frac{1}{d^2} \quad \text{(ii)} \]
+                    <p>From above equations, we can write:</p>
+                    \[ F \propto \frac{m_1 m_2}{d^2} \]
+                    \[ F = \frac{G m_1 m_2}{d^2} \]
+                    <p>where \( G \) is the gravitational constant.</p>
+                </div>
+                
+                <ul>
+                    <li><strong>SI Unit:</strong> \( Nm^2 kg^{-2} \)</li>
+                    <li><strong>Value of \( G \):</strong> \( 6.673 \times 10^{-11} Nm^2 kg^{-2} \) (found out by Henry Cavendish)</li>
+                </ul>
+            </section>
+
+            <section class="section">
+               <h2>Importance of Universal Law of Gravitation</h2>
+<ol>
+    <li>Binds us to the Earth.</li>
+    <li>Controls Moon's motion around Earth.</li>
+    <li>Explains Earth's motion around the Sun.</li>
+    <li>Causes tides in seas due to the Moon.</li>
+</ol>
+
+                
+                <h3>Free Fall</h3>
+              <p><strong>Free Fall:</strong> When an object falls under the influence of Earth's gravitational force alone, it is called free fall.</p>
+<p><strong>Acceleration due to Gravity:</strong> The acceleration experienced by an object during free fall due to Earth's gravity is called acceleration due to gravity.</p>
+
+                    <li>Denoted by 'g'</li>
+                    <li>SI unit = \( ms^{-2} \) (same as acceleration)</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Value of 'g' on the Surface of Earth</h2>
+                <p>We know that force acting on an object:</p>
+                \[ F = \frac{G M_e m}{R^2} \quad \text{(i)} \]
+                <p>where:<br>
+                \( M_e \) = mass of Earth<br>
+                \( m \) = mass of object<br>
+                \( R \) = radius of Earth</p>
+                
+                <p>We also know from 2nd law of motion:</p>
+                \[ F = mg \quad \text{(ii)} \]
+                <p>From equations (i) and (ii), we have:</p>
+                \[ m \times g = \frac{G M_e m}{R^2} \]
+                \[ g = \frac{G M_e}{R^2} \]
+                
+                <p>When a body is at distance 'r' from the center of Earth then:</p>
+                \[ g = \frac{G M}{r^2} \]
+                
+                <div class="highlight-box">
+                    <h4>Key Point</h4>
+                    <p>Value of 'g' may vary at different parts of Earth:</p>
+                    <ul>
+                        <li>From the equation \( g = \frac{G M}{r^2} \), it is clear that the value of g depends on \( r \) (distance of object from Earth's center).</li>
+                        <li>Because the shape of Earth is not a perfect sphere - it is flat at poles and bulged out at the equator.</li>
+                        <li>Therefore, the value of 'g' is greater at the poles and lesser at the equator. But for convenience, we take 'g' as constant.</li>
+                    </ul>
+                </div>
+                
+                <div class="formula-box">
+                    <span class="formula-title">Calculation of g</span>
+                    \[ g = \frac{G M}{R^2} \]
+                    \[ = \frac{6.673 \times 10^{-11} \times 6 \times 10^{24} kg}{(6.4 \times 10^6 m)^2} \]
+                    \[ g = 9.8 ms^{-2} \]
+                    <p>Mass of Earth = \( 6 \times 10^{24} kg \)</p>
+                    <p>Radius of Earth = \( 6.4 \times 10^6 m \)</p>
+                    <p>Standard value: \( g = 9.8 ms^{-2} \)</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Difference between G and g</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gravitational Constant (G)</th>
+                            <th>Gravitational Acceleration (g)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. Its value is \( 6.673 \times 10^{-11} Nm^2/kg^2 \).</td>
+                            <td>1. Its value is \( 9.8 m/s^2 \).</td>
+                        </tr>
+                        <tr>
+                            <td>2. Its value remains constant everywhere.</td>
+                            <td>2. Its value varies at different places.</td>
+                        </tr>
+                        <tr>
+                            <td>3. Its unit is \( Nm^2/kg^2 \).</td>
+                            <td>3. Its unit is \( m/s^2 \).</td>
+                        </tr>
+                        <tr>
+                            <td>4. It is a scalar quantity.</td>
+                            <td>4. It is a vector quantity.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="section">
+                <h2>Equations of Motion for Free Fall</h2>
+                <div class="highlight-box">
+                    <h4>Case 1: Object falling towards Earth with initial velocity (u)</h4>
+                    \[ v = u + gt \]
+                    \[ s = ut + \frac{1}{2}gt^2 \]
+                    \[ v^2 = u^2 + 2gh \]
+                </div>
+                
+                <div class="highlight-box">
+                    <h4>Case 2: Object falling from rest (initial velocity u=0)</h4>
+                    \[ v = gt \]
+                    \[ s = \frac{1}{2}gt^2 \]
+                    \[ v^2 = 2gh \]
+                </div>
+                
+                <div class="highlight-box">
+                    <h4>Case 3: Object thrown vertically upwards with initial velocity (u)</h4>
+                    <p>Gravitational acceleration (g) will be negative:</p>
+                    \[ v = u - gt \]
+                    \[ s = ut - \frac{1}{2}gt^2 \]
+                    \[ v^2 = u^2 - 2gh \]
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Mass and Weight</h2>
+                <h3>Mass</h3>
+                <p>Mass of an object is the measure of its inertia.</p>
+                <ul>
+                    <li>SI unit = Kilogram (kg)</li>
+                    <li>Mass is a scalar quantity.</li>
+                    <li>Mass of a body remains constant.</li>
+                    <li>Mass of a body cannot be zero.</li>
+                </ul>
+                
+                <h3>Weight</h3>
+                <p>The force by which an object is attracted towards the center of Earth is called Weight of that object.</p>
+                <p>We know, force = mass × acceleration:</p>
+                \[ F = m \times g \quad (\text{as } a = g) \]
+                <p>From above definition, this force is weight so:</p>
+                \[ W = m \times g \]
+                <ul>
+                    <li>SI unit = Newton (N)</li>
+                    <li>Vector quantity.</li>
+                </ul>
+            </section>
+<h4>Weight of an Object on the Moon</h4>
+<p>The Moon, having less mass than Earth, pulls objects with less force.</p>
+<div class="highlight-box">
+    <h4>Important Conclusion</h4>
+    <p>An object’s weight on the Moon is one-sixth of its weight on Earth.</p>
+</div>
+
+             <section class="section">
+                <h3>Thrust and Pressure</h3>
+                
+                <h4>a) Thrust</h4>
+                <p>Thrust is the force acting on an object perpendicular to the surface.</p>
+                <div class="example-box">
+                    <h4>Example</h4>
+                    <p>When you stand on loose sand the force (weight) of your body is acting on an area equal to the area of your feet. When you lie down, the same force acts on an area equal to the contact area of the whole body. In both cases the force acting on the sand (thrust) is the same.</p>
+                </div>
+                
+                <h4>b) Pressure</h4>
+                <p>Pressure is the force acting on unit area of a surface.</p>
+                
+                <div class="formula-box">
+                    \[ \text{Pressure} = \frac{\text{Thrust}}{\text{Area}} \]
+                </div>
+                
+                <div class="example-box">
+                    <h4>Example</h4>
+                    <p>The effect of thrust on loose sand is larger while standing than while lying down.</p>
+                </div>
+                
+                <ul>
+                    <li>The SI unit of thrust is \( N/m^2 \) or \( N m^{-2} \).</li>
+                    <li>It is called Pascal (Pa).</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h3>Pressure in Fluids</h3>
+                
+                <h4>a) Pressure in fluids (Liquids and gases)</h4>
+                <ul>
+                    <li>Fluids exert pressure on the base and walls of the container.</li>
+                    <li>Fluids exert pressure in all directions.</li>
+                    <li>Pressure exerted on fluids is transmitted equally in all directions.</li>
+                </ul>
+                
+                <h4>b) Buoyancy (Upthrust)</h4>
+                <p>When an object is immersed in a fluid it experiences an upward force called buoyant force. This property is called buoyancy or upthrust.</p>
+                <p>The force of gravity pulls the object downward and the buoyant force pushes it upwards.</p>
+                <p>The magnitude of the buoyant force depends upon the density of the fluid.</p>
+                 <img src="https://thumbs.dreamstime.com/b/buoyant-force-infographic-diagram-examples-cork-wood-iron-showing-gravity-force-downward-which-depends-object-weight-245887113.jpg?w=768" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px;">
+                
+                <h4>c) Why objects float or sink in water?</h4>
+                <p>If the density of an object is less than the density of a liquid, it will float on the liquid and if the density of an object is more than the density of a liquid, it will sink in the liquid.</p>
+                
+                <div class="example-box">
+                    <h4>Activity</h4>
+                    <p>Take some water in a beaker. Take a piece of cork and an iron nail of the same mass. Place them on the water. The cork floats and the nail sinks.</p>
+                    <ul>
+                        <li>The cork floats because the density of cork is less than the density of water and the upthrust of water is more than the weight of the cork.</li>
+                        <li>The nail sinks because the density of the iron nail is more than the density of water and the upthrust of water is less than the weight of the nail.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>Archimedes' Principle</h3>
+                <p>Archimedes' principle states that, <em>'When a body is partially or fully immersed in a fluid it experiences an upward force that is equal to the weight of the fluid displaced by it.'</em></p>
+                
+                <div class="highlight-box">
+                    <h4>Applications</h4>
+                    <p>Archimedes principle has many uses:</p>
+                    <ul>
+                        <li>It is used in designing ships and submarines.</li>
+                        <li>Hydrometers used to determine the density of liquids.</li>
+                        <li>Lactometers used to determine purity of milk.</li>
+                    </ul>
+                    <img src="https://praxilabs.com/en/blog/wp-content/uploads/2024/06/Archimedes-principle.jpg" alt="Weight on Moon vs Earth" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 8px;">
+
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>Density and Relative Density</h3>
+                
+                <h4>i) Density</h4>
+                <p>The density of a substance is the mass of a unit volume of the substance.</p>
+                
+                <div class="formula-box">
+                    \[ \text{Density} = \frac{\text{Mass}}{\text{Volume}} \]
+                </div>
+                
+                <ul>
+                    <li>The unit of density is kilogram per metre cube \( (kg m^{-3}) \).</li>
+                </ul>
+                
+                <h4>ii) Relative Density</h4>
+                <p>The relative density of a substance is the ratio of the density of a substance to the density of water.</p>
+                
+                <div class="formula-box">
+                    \[ \text{Relative density} = \frac{\text{Density of a substance}}{\text{Density of water}} \]
+                </div>
+                
+                <div class="highlight-box">
+                    <h4>Key Point</h4>
+                    <p>Since relative density is a ratio of similar quantities, it has no unit.</p>
+                </div>
+            </section>
+        </main>
+
+
+
+        <footer>
+            <p>© 2023 THP - Notes by Mohit Sir | All rights reserved</p>
+        </footer>
+    </div>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const body = document.body;
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        if (savedTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light Mode';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light Mode';
+            }
+        });
+        
+        // Back to top button functionality
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Animation on scroll
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s forwards';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>   
