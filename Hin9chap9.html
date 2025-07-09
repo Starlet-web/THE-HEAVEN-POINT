@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>बल तथा गति के नियम | मोहित सर के नोट्स</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+       :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --text: #333;
+            --light: #f9f9f9;
+            --gray: #e0e0e0;
+            --dark-gray: #777;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary: #8a4dbf;
+            --secondary: #b56cff;
+            --accent: #ff9e7f;
+            --text: #f0f0f0;
+            --light: #222;
+            --gray: #444;
+            --dark-gray: #aaa;
+            --white: #333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--transition);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: 'THP';
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 72px;
+            font-weight: 700;
+            color: rgba(106, 48, 147, 0.05);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tag {
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .section {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin: 20px 0 10px;
+            font-size: 1.4rem;
+        }
+
+        p, li {
+            margin-bottom: 10px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+        }
+
+        ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+        }
+
+        ol {
+            counter-reset: item;
+        }
+
+        ol li {
+            counter-increment: item;
+        }
+
+        ol li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .formula-box {
+            background-color: rgba(106, 48, 147, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+            overflow-x: auto;
+        }
+
+        .formula-box p {
+            margin: 0;
+            font-family: monospace;
+            color: var(--text);
+        }
+
+        .example {
+            background-color: rgba(160, 68, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .example h4 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .example h4::before {
+            content: '📌';
+            margin-right: 10px;
+        }
+
+        .key-point {
+            background-color: rgba(255, 126, 95, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent);
+            position: relative;
+        }
+
+        .key-point h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .key-point h4::before {
+            content: '💡';
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(106, 48, 147, 0.05);
+        }
+
+        tr:hover {
+            background-color: rgba(160, 68, 255, 0.1);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+    
+    <header>
+       
+        <div class="container">
+            <h1>बल तथा गति के नियम</h1>
+            <div class="tag">मोहित सर के नोट्स</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="section fade-in slide-up">
+            <h2>बल (Force)</h2>
+            <p>बल वह धक्का या खिंचाव है जो किसी वस्तु की अवस्था को बदलने का प्रयास करता है या बदल देता है।</p>
+            
+            <h3>बल के प्रभाव</h3>
+            <ul>
+                <li>बल वस्तु की गति की चाल को बदल सकता है</li>
+                <li>यह गति की दिशा को बदल सकता है</li>
+                <li>यह वस्तु के आकार को बदल सकता है</li>
+            </ul>
+            
+            <h3>संतुलित बल (Balanced Forces)</h3>
+            <p>जब किसी वस्तु पर लगने वाले दो या अधिक बल परिमाण में बराबर किंतु दिशा में विपरीत होते हैं, तो उन्हें संतुलित बल कहते हैं।</p>
+            <div class="formula-box">
+                <p>\[ \text{50N} \leftarrow \text{रस्सी} \rightarrow \text{50N} \]</p>
+                <p>रस्सी नहीं हिलती</p>
+            </div>
+            
+            <h3>असंतुलित बल (Unbalanced Forces)</h3>
+            <p>जब बल बराबर नहीं होते। यह हमेशा गति उत्पन्न करता है।</p>
+            <div class="formula-box">
+                <p>\[ \text{70 N} \rightarrow 🚗 \leftarrow \text{60 N} \]</p>
+                <p>कार अधिक बल की दिशा में चलती है</p>
+            </div>
+        </section>
+
+        <section class="section fade-in slide-up">
+            <h2>न्यूटन के गति के नियम</h2>
+            
+            <h3>प्रथम नियम (जड़त्व का नियम)</h3>
+            <p>कोई वस्तु तब तक अपनी विराम अवस्था या सरल रेखा में एकसमान गति की अवस्था में रहती है जब तक कि उस पर कोई बाह्य बल न लगाया जाए।</p>
+            <div class="formula-box">
+                <p>यदि F<sub>net</sub> = 0, तो v = स्थिर</p>
+            </div>
+            
+            <div class="key-point">
+                <h4>जड़त्व (Inertia)</h4>
+                <p>प्रत्येक वस्तु का अपनी गति की अवस्था को बदलने का विरोध करने का गुण जड़त्व कहलाता है।</p>
+                <ul>
+                    <li>वस्तु का जड़त्व उसके द्रव्यमान के समानुपाती होता है।</li>
+                </ul>
+            </div>
+            
+            <h4>जड़त्व के प्रकार</h4>
+            <ol>
+                <li><strong>विराम का जड़त्व:</strong> वस्तु का विराम अवस्था में रहने का गुण (जैसे - अचानक बस के चलने पर यात्री पीछे की ओर गिरते हैं)</li>
+                <li><strong>गति का जड़त्व:</strong> वस्तु का गतिशील अवस्था में रहने का गुण (जैसे - अचानक बस के रुकने पर यात्री आगे की ओर गिरते हैं)</li>
+                <li><strong>दिशा का जड़त्व:</strong> वस्तु का अपनी गति की दिशा बनाए रखने का गुण (जैसे - घूमते टायर से कीचड़ उछलकर बाहर आता है)</li>
+            </ol>
+        </section>
+        
+        <section class="section fade-in slide-up">
+            <h2>रैखिक संवेग (Linear Momentum)</h2>
+            <ul>
+                <li>संवेग किसी वस्तु की गति का माप है</li>
+                <li>द्रव्यमान और वेग के गुणनफल को संवेग कहते हैं। संवेग को 'p' से दर्शाते हैं</li>
+            </ul>
+            
+            <div class="formula-box">
+                <p>वस्तु का संवेग = द्रव्यमान × वेग</p>
+                <p>या, \( p = m \times v \)</p>
+                <p>जहाँ, \( p \) = संवेग, \( m \) = वस्तु का द्रव्यमान और \( v \) = वस्तु का वेग</p>
+            </div>
+            
+            <div class="example">
+                <h4>उदाहरण</h4>
+                <p>यदि हम एक हल्की और एक भारी वस्तु को एक मीनार से एक साथ गिराएँ, तो दोनों का तल पर वेग समान होगा, लेकिन भारी वस्तु का संवेग अधिक होगा।</p>
+            </div>
+        </section>
+        
+        <section class="section fade-in slide-up">
+            <h2>न्यूटन का द्वितीय गति नियम</h2>
+            <p>किसी वस्तु के संवेग में परिवर्तन की दर उस पर लगने वाले असंतुलित बल के अनुक्रमानुपाती होती है।</p>
+            
+            <div class="formula-box">
+                <p>\[ F \propto \frac{\Delta p}{\Delta t} \]</p>
+                <p>\[ F = k \times \frac{m(v - u)}{t} \] (जहाँ k = 1)</p>
+                <p>\[ F = m \times a \]</p>
+            </div>
+            
+            <div class="key-point">
+                <h4>1 न्यूटन की परिभाषा</h4>
+                <p>जब 1 kg द्रव्यमान की वस्तु में 1 m/s² का त्वरण उत्पन्न होता है, तो वस्तु पर लगा बल 1 न्यूटन कहलाता है।</p>
+            </div>
+        </section>
+        
+        <section class="section fade-in slide-up">
+            <h2>न्यूटन का तृतीय गति नियम</h2>
+            <p>प्रत्येक क्रिया की समान एवं विपरीत प्रतिक्रिया होती है।</p>
+            
+            <div class="formula-box">
+                <p>\[ F_{AB} = -F_{BA} \]</p>
+            </div>
+            
+            <h4>अनुप्रयोग:</h4>
+            <ol>
+                <li>चलने में तृतीय नियम कार्य करता है</li>
+                <li>नाव से उतरते समय नाव पीछे हटती है</li>
+                <li>बंदूक चलाने पर पीछे की ओर धक्का लगता है</li>
+                <li>नाव खेने में</li>
+            </ol>
+            
+            <h3>संवेग संरक्षण का नियम</h3>
+            <p>जब दो या अधिक वस्तुएँ एक-दूसरे पर बल लगाती हैं तो बाह्य बल की अनुपस्थिति में उनका कुल संवेग स्थिर रहता है।</p>
+            
+            <div class="formula-box">
+                <p>प्रारंभिक संवेग = अंतिम संवेग</p>
+                <p>\[ m_1u_1 + m_2u_2 = m_1v_1 + m_2v_2 \]</p>
+            </div>
+            
+            <div class="example">
+                <h4>उदाहरण 1: पिस्तौल का प्रतिक्षेप वेग</h4>
+                <p>20 g द्रव्यमान की एक गोली को 150 m/s के वेग से 2 kg द्रव्यमान की पिस्तौल से क्षैतिज दिशा में दागा जाता है। पिस्तौल का प्रतिक्षेप वेग ज्ञात कीजिए।</p>
+                <p><strong>हल:</strong></p>
+                <p>दिया है:</p>
+                <ul>
+                    <li>गोली का द्रव्यमान (m₁) = 20 g = 0.02 kg</li>
+                    <li>पिस्तौल का द्रव्यमान (m₂) = 2 kg</li>
+                    <li>प्रारंभिक वेग = 0 (चूंकि गोली स्थिर बंदूक के अंदर है)</li>
+                    <li>गोली का अंतिम वेग (v₁) = 150 m/s</li>
+                </ul>
+                <p>संवेग संरक्षण के नियम से:</p>
+                <div class="formula-box">
+                    <p>\[ 0 = m_1v_1 + m_2v_2 \]</p>
+                    <p>\[ 0 = 0.02 \times 150 + 2 \times v_2 \]</p>
+                    <p>\[ 3 + 2v_2 = 0 \]</p>
+                    <p>\[ v_2 = -1.5 \, \text{m/s} \]</p>
+                </div>
+                <p>ऋणात्मक चिह्न दर्शाता है कि पिस्तौल गोली की विपरीत दिशा में हटती है।</p>
+            </div>
+        </section>
+
+        <section class="section fade-in slide-up">
+            <h2>प्रश्नावली</h2>
+            
+            <h3>अति लघु उत्तरीय प्रश्न</h3>
+            <ol>
+                <li>क्या बल ऋणात्मक हो सकता है? कब?</li>
+                <li>वस्तु की अपनी गति की अवस्था को बदलने का विरोध करने की प्रवृत्ति को क्या कहते हैं?</li>
+                <li>जड़त्व को वस्तु के ______ द्वारा भी मापा जाता है।</li>
+                <li>वस्तु का द्रव्यमान जितना अधिक होगा, उसका ______ उतना ही अधिक होगा।</li>
+                <li>त्वरण ______ द्वारा निर्धारित होता है जो वस्तु का द्रव्यमान भी है।</li>
+                <li>जब बस में अचानक ब्रेक लगाए जाते हैं तो सीटों के ऊपर रखा सामान क्यों गिर जाता है?</li>
+                <li>जब पेड़ को हिलाया जाता है तो उसके फल और पत्ते क्यों गिरते हैं?</li>
+                <li>किसी वस्तु के संवेग को परिभाषित कीजिए।</li>
+                <li>किसी वस्तु का संवेग किन कारकों पर निर्भर करता है?</li>
+                <li>फिसलन भरी सड़क पर चलना क्यों मुश्किल होता है?</li>
+            </ol>
+            
+            <h3>लघु उत्तरीय प्रश्न</h3>
+            <ol>
+                <li>वस्तु में निहित गति की मात्रा को ______ कहते हैं।</li>
+                <li>संवेग का मात्रक ______ है।</li>
+                <li>1 न्यूटन को परिभाषित कीजिए।</li>
+                <li>हम जानते हैं कि कोई गतिशील वस्तु अनंत समय तक गति करती रहेगी जब तक उस पर कोई बाह्य बल न लगे, तो फिर जमीन पर फेंकी गई गेंद क्यों रुक जाती है?</li>
+                <li>ट्रक को अचानक रोकना मोटरसाइकिल की तुलना में क्यों मुश्किल होता है?</li>
+                <li>जब मेट्रो अचानक रुकती है तो सभी यात्री आगे की ओर क्यों गिरते हैं?</li>
+                <li>हमारे ऊपर एक विशाल वायुमंडल है जो हमारे कंधों, सिर और पूरे शरीर पर भारी दबाव डालता है। फिर भी हम इसके नीचे क्यों नहीं कुचले जाते?</li>
+                <li>1 kg द्रव्यमान का एक सिक्का और 5 kg द्रव्यमान का एक पत्थर 10 m/s² के त्वरण के साथ एफिल टॉवर से नीचे फेंके जाते हैं। कौन सा वस्तु पहले जमीन पर पहुंचेगा और क्यों?</li>
+                <li>गति के प्रथम नियम (जड़त्व) के अनुप्रयोग दीजिए।</li>
+                <li>(a) घर्षण को ______ में मापा जाता है। (b) संतुलित और असंतुलित बलों में अंतर कीजिए।</li>
+            </ol>
+        </section>
+
+        <section class="section fade-in slide-up">
+            <h2>संकल्पना मानचित्र</h2>
+            <div class="key-point">
+                <h4>बल तथा गति के नियम</h4>
+                <ul>
+                    <li><strong>बल:</strong> \( F = m \times a \) (मात्रक = न्यूटन)</li>
+                    <li><strong>न्यूटन के गति के नियम:</strong>
+                        <ol>
+                            <li>प्रथम नियम (जड़त्व का नियम)</li>
+                            <li>द्वितीय नियम (\( F = m \times a \))</li>
+                            <li>तृतीय नियम (क्रिया-प्रतिक्रिया)</li>
+                        </ol>
+                    </li>
+                    <li><strong>बल के प्रकार:</strong>
+                        <ul>
+                            <li>संतुलित बल (परिणामी बल शून्य)</li>
+                            <li>असंतुलित बल (परिणामी बल शून्य से अधिक)</li>
+                        </ul>
+                    </li>
+                    <li><strong>संवेग:</strong> \( p = m \times v \) (मात्रक = kg m/s)</li>
+                    <li><strong>जड़त्व:</strong> द्रव्यमान जड़त्व का माप है (परिवर्तन का विरोध करने की प्रवृत्ति)</li>
+                    <li><strong>संवेग संरक्षण का नियम:</strong> निकाय का कुल संवेग स्थिर रहता है</li>
+                    <li><strong>क्रिया-प्रतिक्रिया:</strong> प्रत्येक क्रिया की समान एवं विपरीत प्रतिक्रिया होती है</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="fade-in slide-up">
+        <div class="container">
+            <p>© 2023 मोहित सर के नोट्स | सर्वाधिकार सुरक्षित</p>
+            <p>केवल शैक्षणिक उद्देश्यों के लिए</p>
+        </div>
+    </footer>
+    
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+    
+    <script>
+        
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or use preferred color scheme
+        const savedTheme = localStorage.getItem('theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        if (savedTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            themeToggle.textContent = '🌞';
+        } else {
+            body.removeAttribute('data-theme');
+            themeToggle.textContent = '🌓';
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = '🌓';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = '🌞';
+            }
+        });
+        
+        // Back to top button functionality
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Animation on scroll
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in', 'slide-up');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
+ 
