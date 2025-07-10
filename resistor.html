@@ -1,466 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THP Coaching - Login & Signup</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>THP - Login & Signup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <style>
     :root {
-      --primary: #4361ee;
-      --primary-dark: #3a0ca3;
-      --primary-light: #4895ef;
-      --secondary: #f72585;
-      --accent: #4cc9f0;
-      --dark: #1a1a2e;
-      --light: #f8f9fa;
-      --gray: #6c757d;
-      --success: #4bb543;
-      --error: #ff3333;
-      --border-radius: 12px;
-      --box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #f43f5e;
+      --dark: #1e293b;
+      --light: #f8fafc;
     }
     
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      color: var(--dark);
-      line-height: 1.6;
+      background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+      overflow-x: hidden;
     }
     
-    /* Glassmorphism Card */
-    .card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: var(--border-radius);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: var(--box-shadow);
-      width: 100%;
-      max-width: 420px;
-      padding: 40px;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      transition: var(--transition);
+    .fade {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
-    .card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-      z-index: -1;
-      animation: rotate 15s linear infinite;
+    .form-input {
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
     
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    
-    .logo {
-      width: 60px;
-      height: 60px;
-      background: var(--primary);
-      color: white;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 15px;
-      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
-      transition: var(--transition);
-    }
-    
-    .logo:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
-    }
-    
-    .logo svg {
-      width: 30px;
-      height: 30px;
-    }
-    
-    .title {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--primary-dark);
-      margin-bottom: 5px;
-    }
-    
-    .subtitle {
-      font-size: 14px;
-      color: var(--gray);
-      font-weight: 400;
-    }
-    
-    /* Form Elements */
-    .form-group {
-      margin-bottom: 20px;
-      position: relative;
-    }
-    
-    .form-label {
-      position: absolute;
-      top: 18px;
-      left: 15px;
-      color: var(--gray);
-      background-color: transparent;
-      padding: 0 5px;
-      transition: var(--transition);
-      pointer-events: none;
-      font-size: 14px;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 18px 15px 8px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      font-size: 14px;
-      color: var(--dark);
-      background-color: rgba(255, 255, 255, 0.8);
-      transition: var(--transition);
-    }
-    
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-    }
-    
-    .form-control:focus + .form-label,
-    .form-control:not(:placeholder-shown) + .form-label {
-      top: 8px;
-      font-size: 11px;
-      color: var(--primary);
-      background-color: rgba(255, 255, 255, 0.9);
-    }
-    
-    select.form-control {
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      background-size: 16px;
-    }
-    
-    /* Button */
-    .btn {
-      width: 100%;
-      padding: 14px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
+    .form-input:focus {
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
     }
     
     .btn-primary {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3), 0 2px 4px -1px rgba(99, 102, 241, 0.2);
+      cursor: pointer;
     }
     
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+      background-image: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-1px);
+      box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.2);
     }
     
     .btn-primary:active {
       transform: translateY(0);
     }
     
-    /* Loader */
-    .loader {
-      width: 18px;
-      height: 18px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-left: 10px;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* Footer */
-    .form-footer {
-      text-align: center;
-      margin-top: 25px;
-      font-size: 14px;
-      color: var(--gray);
-    }
-    
-    .link {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
+    .btn-secondary {
+      background-image: linear-gradient(to right, #f43f5e, #e11d48);
+      box-shadow: 0 4px 6px -1px rgba(244, 63, 94, 0.3), 0 2px 4px -1px rgba(244, 63, 94, 0.2);
       cursor: pointer;
-      transition: var(--transition);
     }
     
-    .link:hover {
-      color: var(--primary-dark);
-      text-decoration: underline;
+    .btn-secondary:hover {
+      background-image: linear-gradient(to right, #e11d48, #f43f5e);
     }
     
-    /* Checkbox */
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .checkbox {
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border: 1px solid var(--gray);
-      border-radius: 4px;
-      margin-right: 10px;
-      cursor: pointer;
-      position: relative;
-      transition: var(--transition);
-    }
-    
-    .checkbox:checked {
-      background-color: var(--primary);
-      border-color: var(--primary);
-    }
-    
-    .checkbox:checked::after {
-      content: '';
+    .floating-label {
       position: absolute;
-      left: 5px;
-      top: 1px;
-      width: 5px;
-      height: 10px;
-      border: solid white;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
+      top: 0;
+      left: 0;
+      transform: translate(12px, 12px);
+      transition: all 0.2s ease-out;
+      pointer-events: none;
+      color: #64748b;
+      font-size: 14px;
     }
     
-    /* Popup Message */
-    .popup {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 24px;
-      border-radius: 8px;
-      color: white;
-      font-weight: 500;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+    .input-filled + .floating-label,
+    .form-input:focus + .floating-label {
+      transform: translate(8px, -8px) scale(0.85);
+      background-color: white;
+      padding: 0 4px;
+      color: var(--primary);
     }
     
-    .popup.success {
-      background-color: var(--success);
+    .input-group {
+      position: relative;
     }
     
-    .popup.error {
-      background-color: var(--error);
-    }
-    
-    .popup.info {
-      background-color: var(--primary);
-    }
-    
-    @keyframes slideIn {
-      from { top: -50px; opacity: 0; }
-      to { top: 20px; opacity: 1; }
-    }
-    
-    @keyframes fadeOut {
-      to { opacity: 0; visibility: hidden; }
-    }
-    
-    /* Background Elements */
-    .bg-blob {
-      position: fixed;
-      width: 300px;
-      height: 300px;
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #e0e7ff;
+      border-bottom-color: var(--primary);
       border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.15;
+      display: inline-block;
+      box-sizing: border-box;
+      animation: rotation 1s linear infinite;
+    }
+    
+    @keyframes rotation {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .card {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      border: 1px solid rgba(209, 213, 219, 0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) #f1f1f1;
+    }
+    
+    .card::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .card::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    
+    .card::-webkit-scrollbar-thumb {
+      background-color: var(--primary);
+      border-radius: 10px;
+    }
+    
+    .wave {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      transform: rotate(180deg);
       z-index: -1;
     }
     
-    .bg-blob-1 {
-      background-color: var(--primary);
-      top: -50px;
-      left: -50px;
-      animation: float 8s ease-in-out infinite;
+    .wave svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: 150px;
     }
     
-    .bg-blob-2 {
-      background-color: var(--secondary);
-      bottom: -50px;
-      right: -50px;
-      animation: float 10s ease-in-out infinite 2s;
+    .wave .shape-fill {
+      fill: rgba(99, 102, 241, 0.1);
     }
     
-    .bg-blob-3 {
-      background-color: var(--accent);
-      bottom: 100px;
-      left: 50px;
-      width: 200px;
-      height: 200px;
-      animation: float 12s ease-in-out infinite 1s;
+    .clickable {
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
     
-    @keyframes float {
-      0%, 100% { transform: translateY(0) translateX(0); }
-      25% { transform: translateY(-20px) translateX(20px); }
-      50% { transform: translateY(10px) translateX(-20px); }
-      75% { transform: translateY(-10px) translateX(10px); }
+    .clickable:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
     }
     
-    /* Responsive */
-    @media (max-width: 480px) {
+    .clickable:active {
+      transform: scale(0.98);
+    }
+    
+    @media (max-height: 700px) {
       .card {
-        padding: 30px 20px;
-      }
-      
-      .title {
-        font-size: 24px;
+        max-height: 80vh;
       }
     }
   </style>
 </head>
-<body>
-  <!-- Background elements -->
-  <div class="bg-blob bg-blob-1"></div>
-  <div class="bg-blob bg-blob-2"></div>
-  <div class="bg-blob bg-blob-3"></div>
-
-  <!-- Main card -->
-  <div class="card">
-    <div class="header">
-      <div class="logo clickable" onclick="window.location.reload()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-        </svg>
-      </div>
-      <h1 class="title">THP Coaching</h1>
-      <p class="subtitle" id="formTitle">Login to your account</p>
-    </div>
-
-    <form id="authForm">
-      <div id="nameField" class="form-group hidden">
-        <input type="text" id="name" class="form-control" placeholder=" ">
-        <label class="form-label">Full Name</label>
-      </div>
-
-      <div id="mobileField" class="form-group hidden">
-        <input type="text" id="mobile" class="form-control" placeholder=" ">
-        <label class="form-label">Mobile Number</label>
-      </div>
-
-      <div id="courseField" class="form-group hidden">
-        <select id="course" class="form-control" placeholder=" ">
-          <option value="" selected disabled></option>
-          <option value="Class 9">Class 9</option>
-          <option value="Class 10">Class 10</option>
-          <option value="Class 11">Class 11</option>
-          <option value="Class 12">Class 12</option>
-          <option value="NEET">NEET</option>
-          <option value="IIT/JEE">IIT/JEE</option>
-          <option value="BSc">BSc</option>
-          <option value="SSC/BANK/RAILWAY">SSC/BANK/RAILWAY</option>
-          <option value="CUET UG">CUET UG</option>
-        </select>
-        <label class="form-label">Choose Course</label>
-      </div>
-
-      <div class="form-group">
-        <input type="email" id="email" class="form-control" placeholder=" " required>
-        <label class="form-label">Email Address</label>
-      </div>
-
-      <div class="form-group">
-        <input type="password" id="password" class="form-control" placeholder=" " required>
-        <label class="form-label">Password</label>
-      </div>
-
-      <div class="checkbox-container">
-        <input type="checkbox" id="remember" class="checkbox clickable">
-        <label for="remember" class="clickable">Remember me</label>
-        <button type="button" id="forgotPassword" class="link" style="margin-left: auto;">Forgot Password?</button>
-      </div>
-
-      <button type="submit" id="authBtn" class="btn btn-primary">
-        <span id="authText">Login</span>
-        <span id="spinner" class="loader hidden"></span>
-      </button>
-
-      <div class="form-footer">
-        <span id="toggleFormText">Don't have an account?</span>
-        <button type="button" id="toggleForm" class="link">Sign Up</button>
-      </div>
-    </form>
+<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+  <!-- Background Elements -->
+  <div class="absolute inset-0 overflow-hidden z-0">
+    <div class="absolute top-0 left-0 w-64 h-64 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+    <div class="absolute top-0 right-0 w-64 h-64 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+    <div class="absolute bottom-0 right-0 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
   </div>
 
-  <script>
-    // Load critical Firebase scripts without blocking
-    function loadFirebase() {
-      const firebaseScripts = [
-        'https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js',
-        'https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js',
-        'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js'
-      ];
-      
-      return Promise.all(firebaseScripts.map(url => {
-        return new Promise((resolve) => {
-          const script = document.createElement('script');
-          script.src = url;
-          script.onload = resolve;
-          document.head.appendChild(script);
-        });
-      }));
-    }
+  <!-- Loader -->
+  <div id="loader" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 transition-opacity duration-500">
+    <div class="text-center">
+      <div class="loader mb-4"></div>
+      <p class="text-indigo-600 font-medium">Loading THP...</p>
+    </div>
+  </div>
 
-    // Initialize the app when everything is loaded
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Load Firebase asynchronously
-      await loadFirebase();
-      
-      const firebaseConfig = {
+  <!-- Form Container -->
+  <div class="w-full max-w-md card shadow-2xl fade opacity-0 transform translate-y-4 mx-auto my-8" id="formContainer">
+    <div class="p-8">
+      <div class="text-center mb-8">
+        <div class="flex justify-center mb-4 clickable" onclick="window.location.reload()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+          </svg>
+        </div>
+        <h2 class="text-3xl font-bold text-indigo-700 mb-2 clickable" onclick="window.location.reload()">THP</h2>
+        <p class="text-gray-500" id="formTitle">Login to your account</p>
+      </div>
+
+      <form id="authForm" class="space-y-6">
+        <div id="nameField" class="hidden">
+          <div class="input-group">
+            <input type="text" id="name" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
+            <label class="floating-label">Full Name</label>
+          </div>
+        </div>
+
+        <div id="mobileField" class="hidden">
+          <div class="input-group">
+            <input type="text" id="mobile" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
+            <label class="floating-label">Mobile Number</label>
+          </div>
+        </div>
+
+        <div id="courseField" class="hidden">
+          <div class="input-group">
+            <select id="course" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none appearance-none">
+              <option value=""></option>
+              <option value="Class 9 and 10">Class 9 and 10</option>
+              <option value="Class 11 and 12">Class 11 and 12</option>
+              <option value="BSc">BSc</option>
+              <option value="NEET/IIT/JEE/CUET">NEET/IIT/JEE/CUET</option>
+              <option value="SSC/Bank/Railway">SSC/Bank/Railway</option>
+            </select>
+            <label class="floating-label">Choose Course</label>
+            <div class="absolute right-3 top-3 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <input type="email" id="email" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
+          <label class="floating-label">Email Address</label>
+        </div>
+
+        <div class="input-group">
+          <input type="password" id="password" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
+          <label class="floating-label">Password</label>
+        </div>
+
+        <div class="flex justify-between items-center text-sm">
+          <div class="flex items-center">
+            <input id="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded clickable">
+            <label for="remember" class="ml-2 block text-gray-600 clickable">Remember me</label>
+          </div>
+          <button type="button" id="forgotPassword" class="text-indigo-600 hover:text-indigo-800 transition-colors clickable">Forgot Password?</button>
+        </div>
+
+        <button type="submit" id="authBtn" class="btn-primary w-full text-white p-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 clickable">
+          <span id="authText">Login</span>
+          <svg id="spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0h8z"/>
+          </svg>
+        </button>
+
+        <div class="text-center text-sm text-gray-600">
+          <span id="toggleFormText">Don't have an account?</span>
+          <button type="button" id="toggleForm" class="ml-1 text-indigo-600 hover:text-indigo-800 font-medium transition-colors clickable">Sign Up</button>
+        </div>
+
+        <div id="payNow" class="hidden text-center pt-4 border-t border-gray-100">
+          <p class="text-gray-600 mb-3">You haven't purchased access yet.</p>
+          <a href="GPay.html" class="btn-secondary inline-block px-6 py-2 text-white rounded-lg transition-all clickable">Pay Now</a>
+        </div>
+      </form>
+
+      <div id="popupMessage" class="hidden mt-6 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg"></div>
+            
+      <div class="mt-8 text-center text-xs text-gray-400">
+        <p class="clickable" onclick="window.location.href='terms.html'">Terms of Service</p>
+        <p class="clickable mt-1" onclick="window.location.href='privacy.html'">Privacy Policy</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave Decoration -->
+  <div class="wave">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+      <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+      <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+    </svg>
+  </div>
+
+  <!-- Firebase Auth & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+    const firebaseConfig = {
         apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
         authDomain: "login-form-eee86.firebaseapp.com",
         projectId: "login-form-eee86",
@@ -470,115 +304,167 @@
         measurementId: "G-VV0D9TNK0Y"
       };
 
-      // Initialize Firebase
-      const app = firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth(app);
-      const db = firebase.firestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-      // DOM elements
-      const authForm = document.getElementById('authForm');
-      const toggleFormBtn = document.getElementById('toggleForm');
-      const toggleFormText = document.getElementById('toggleFormText');
-      const authText = document.getElementById('authText');
-      const formTitle = document.getElementById('formTitle');
-      const spinner = document.getElementById('spinner');
-      const authBtn = document.getElementById('authBtn');
-
-      // Form state
-      let isLogin = true;
-
-      // Show popup message
-      function showMessage(msg, type = 'success') {
-        const popup = document.createElement('div');
-        popup.className = `popup ${type}`;
-        popup.textContent = msg;
-        document.body.appendChild(popup);
-        setTimeout(() => popup.remove(), 3000);
+    // Floating label functionality
+    document.querySelectorAll('.form-input').forEach(input => {
+      // Check if input has value on page load
+      if(input.value) {
+        input.classList.add('input-filled');
       }
+            
+      // Add event listeners
+      input.addEventListener('input', () => {
+        if(input.value) {
+          input.classList.add('input-filled');
+        } else {
+          input.classList.remove('input-filled');
+        }
+      });
+    });
 
-      // Toggle between login and signup forms
-      function toggleForm() {
-        isLogin = !isLogin;
-        document.getElementById("nameField").classList.toggle("hidden", isLogin);
-        document.getElementById("mobileField").classList.toggle("hidden", isLogin);
-        document.getElementById("courseField").classList.toggle("hidden", isLogin);
-        formTitle.textContent = isLogin ? "Login to your account" : "Create a new account";
-        authText.textContent = isLogin ? "Login" : "Sign Up";
-        toggleFormText.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
-        toggleFormBtn.textContent = isLogin ? "Sign Up" : "Login";
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const docSnap = await getDoc(doc(db, "users", user.uid));
+        if (docSnap.exists() && docSnap.data().hasAccess) {
+          // Redirect to dashboard.html regardless of course
+          window.location.replace("dashboard.html");
+        } else {
+          await signOut(auth);
+          document.getElementById("loader").classList.add("hidden");
+          document.getElementById("formContainer").classList.remove("opacity-0");
+          document.getElementById("formContainer").classList.remove("translate-y-4");
+        }
+      } else {
+        document.getElementById("loader").classList.add("hidden");
+        document.getElementById("formContainer").classList.remove("opacity-0");
+        document.getElementById("formContainer").classList.remove("translate-y-4");
       }
+    });
 
-      // Form submission
-      authForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        
-        authText.textContent = isLogin ? "Logging in..." : "Signing up...";
-        spinner.classList.remove('hidden');
-        authBtn.disabled = true;
+    let isLogin = true;
+    const toggleFormBtn = document.getElementById("toggleForm");
+    const toggleFormText = document.getElementById("toggleFormText");
+    const authText = document.getElementById("authText");
+    const formTitle = document.getElementById("formTitle");
+    const popup = document.getElementById("popupMessage");
 
-        try {
-          if (isLogin) {
-            await auth.signInWithEmailAndPassword(email, password);
-            showMessage("Login successful! Redirecting...", 'success');
+    function showMessage(msg, bg = 'bg-green-600') {
+      popup.textContent = msg;
+      popup.className = `block mt-6 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg ${bg}`;
+      popup.classList.remove("hidden");
+      setTimeout(() => popup.classList.add("hidden"), 3000);
+    }
+
+    function toggleForm() {
+      isLogin = !isLogin;
+      document.getElementById("nameField").classList.toggle("hidden", isLogin);
+      document.getElementById("mobileField").classList.toggle("hidden", isLogin);
+      document.getElementById("courseField").classList.toggle("hidden", isLogin);
+      formTitle.textContent = isLogin ? "Login to your account" : "Create a new account";
+      authText.textContent = isLogin ? "Login" : "Sign Up";
+      toggleFormText.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
+      toggleFormBtn.textContent = isLogin ? "Sign Up" : "Login";
+            
+      // Reset form fields when toggling
+      if(isLogin) {
+        document.getElementById("name").value = "";
+        document.getElementById("mobile").value = "";
+        document.getElementById("course").value = "";
+        document.getElementById("name").classList.remove('input-filled');
+        document.getElementById("mobile").classList.remove('input-filled');
+        document.getElementById("course").classList.remove('input-filled');
+      }
+    }
+
+    toggleFormBtn.addEventListener("click", () => {
+      document.getElementById("formContainer").classList.add("opacity-0");
+      document.getElementById("formContainer").classList.add("translate-y-4");
+      setTimeout(() => {
+        toggleForm();
+        document.getElementById("formContainer").classList.remove("opacity-0");
+        document.getElementById("formContainer").classList.remove("translate-y-4");
+      }, 300);
+    });
+
+    document.getElementById("authForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const spinner = document.getElementById("spinner");
+      const authBtn = document.getElementById("authBtn");
+
+      authText.textContent = isLogin ? "Logging in..." : "Signing up...";
+      spinner.classList.remove("hidden");
+      authBtn.disabled = true;
+
+      try {
+        if (isLogin) {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const docSnap = await getDoc(doc(db, "users", userCredential.user.uid));
+          if (docSnap.exists() && docSnap.data().hasAccess) {
+            showMessage("Login successful! Redirecting...");
             setTimeout(() => window.location.replace("dashboard.html"), 1000);
           } else {
-            const name = document.getElementById('name').value.trim();
-            const mobile = document.getElementById('mobile').value.trim();
-            const course = document.getElementById('course').value;
-
-            if(!name || !mobile || !course) {
-              throw new Error("Please fill all required fields");
-            }
-
-            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            await db.collection('users').doc(userCredential.user.uid).set({
-              name, email, mobile, course, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showMessage("Account created successfully! Please login.", 'success');
-            setTimeout(toggleForm, 1500);
+            document.getElementById("payNow").classList.remove("hidden");
+            await signOut(auth);
+            showMessage("Please complete your payment to access content", 'bg-indigo-600');
           }
-        } catch (error) {
-          showMessage(error.message, 'error');
-        } finally {
-          authText.textContent = isLogin ? "Login" : "Sign Up";
-          spinner.classList.add('hidden');
-          authBtn.disabled = false;
-        }
-      });
+        } else {
+          const name = document.getElementById("name").value.trim();
+          const mobile = document.getElementById("mobile").value.trim();
+          const course = document.getElementById("course").value;
 
-      // Forgot password
-      document.getElementById('forgotPassword').addEventListener('click', async () => {
-        const email = document.getElementById('email').value.trim();
-        
-        if(!email) {
-          showMessage("Please enter your email first", 'error');
-          document.getElementById('email').focus();
-          return;
-        }
-        
-        try {
-          await auth.sendPasswordResetEmail(email);
-          showMessage("Password reset email sent. Check your inbox.", 'info');
-        } catch (error) {
-          showMessage(error.message, 'error');
-        }
-      });
-
-      // Toggle form button
-      toggleFormBtn.addEventListener('click', toggleForm);
-
-      // Check auth state
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          const doc = await db.collection('users').doc(user.uid).get();
-          if (doc.exists) {
-            window.location.replace("dashboard.html");
-          } else {
-            await auth.signOut();
+          if(!name || !mobile || !course) {
+            throw new Error("Please fill all required fields");
           }
+
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          await setDoc(doc(db, "users", userCredential.user.uid), {
+            name, email, mobile, course, hasAccess: false
+          });
+          showMessage("Account created successfully! Please login.");
+          setTimeout(() => toggleForm(), 1500);
         }
+      } catch (error) {
+        showMessage(error.message, 'bg-red-500');
+      } finally {
+        authText.textContent = isLogin ? "Login" : "Sign Up";
+        spinner.classList.add("hidden");
+        authBtn.disabled = false;
+      }
+    });
+
+    document.getElementById("forgotPassword").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+            
+      if(!email) {
+        showMessage("Please enter your email in the email field first", 'bg-indigo-600');
+        document.getElementById("email").focus();
+        return;
+      }
+            
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showMessage("Password reset email sent. Check your inbox.", 'bg-indigo-600');
+      } catch (error) {
+        showMessage("Error: " + error.message, 'bg-red-500');
+      }
+    });
+
+    // Add click effects to all clickable elements
+    document.querySelectorAll('.clickable').forEach(element => {
+      element.addEventListener('mousedown', () => {
+        element.classList.add('active:scale-95');
+      });
+      element.addEventListener('mouseup', () => {
+        element.classList.remove('active:scale-95');
+      });
+      element.addEventListener('mouseleave', () => {
+        element.classList.remove('active:scale-95');
       });
     });
   </script>
