@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>आवर्त सारणी - रसायन विज्ञान नोट्स | THP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #28a745;
+        }
+        
+        body {
+            font-family: 'Hind', 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+        
+        .watermark {
+            position: fixed;
+            opacity: 0.1;
+            font-size: 120px;
+            color: var(--primary);
+            transform: rotate(-30deg);
+            z-index: -1;
+            pointer-events: none;
+            white-space: nowrap;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-weight: 300;
+            margin-top: 10px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-top: 0;
+            position: relative;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin-top: 20px;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .example {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4682b4;
+        }
+        
+        .example-title {
+            font-weight: 600;
+            color: #4682b4;
+            margin-bottom: 10px;
+        }
+        
+        .note {
+            background-color: #fffaf0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ffa500;
+            position: relative;
+        }
+        
+        .note:before {
+            content: 'नोट:';
+            font-weight: 600;
+            color: #ffa500;
+            margin-right: 5px;
+        }
+        
+        .key-point {
+            background-color: #f0fff0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--success);
+            position: relative;
+        }
+        
+        .key-point:before {
+            content: '✓';
+            font-weight: 600;
+            color: var(--success);
+            margin-right: 5px;
+        }
+        
+        ul.custom-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        ul.custom-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        ul.custom-list li:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 15px;
+            height: 15px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
+        
+        .caption {
+            margin-top: 10px;
+            font-style: italic;
+            color: var(--gray);
+            text-align: center;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 99;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 99;
+        }
+        
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .section {
+            background-color: #1e1e1e;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        body.dark-mode .formula-box {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1e1e1e 100%);
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .example {
+            background-color: #1a2a3a;
+            border-left-color: #5d9cec;
+        }
+        
+        body.dark-mode .note {
+            background-color: #2a241a;
+            border-left-color: #ffb347;
+        }
+        
+        body.dark-mode .key-point {
+            background-color: #1a2a1a;
+            border-left-color: #5cb85c;
+        }
+        
+        body.dark-mode td {
+            border-bottom-color: #333;
+        }
+        
+        body.dark-mode tr:nth-child(even) {
+            background-color: #252525;
+        }
+        
+        body.dark-mode tr:hover {
+            background-color: #333;
+        }
+        
+        /* New styles for merged content */
+        .trend-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .trend-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .trend-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .trend-arrow {
+            font-size: 24px;
+            text-align: center;
+            margin: 5px 0;
+            color: var(--secondary);
+        }
+        
+        .comparison-table th, .comparison-table td {
+            text-align: center;
+        }
+        
+        .mnemonic-box {
+            background-color: #f8f0ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .mnemonic-title {
+            font-weight: 600;
+            color: #9c27b0;
+            margin-bottom: 5px;
+        }
+        
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 5px;
+            margin: 20px 0;
+        }
+        
+        .element {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .element:hover {
+            transform: scale(1.1);
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        
+        .element-number {
+            font-size: 0.6rem;
+            color: var(--gray);
+        }
+        
+        .element-symbol {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .element-name {
+            font-size: 0.7rem;
+            margin-top: 3px;
+            display: none;
+        }
+        
+        .element:hover .element-name {
+            display: block;
+        }
+        
+        .s-block {
+            background-color: #ff9999;
+        }
+        
+        .p-block {
+            background-color: #99ff99;
+        }
+        
+        .d-block {
+            background-color: #9999ff;
+        }
+        
+        .f-block {
+            background-color: #ff99ff;
+        }
+        
+        .noble-gas {
+            background-color: #ffcc99;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 20px 0;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .back-to-top, .dark-mode-toggle {
+                width: 40px;
+                height: 40px;
+                bottom: 20px;
+            }
+            
+            .back-to-top {
+                right: 20px;
+            }
+            
+            .dark-mode-toggle {
+                left: 20px;
+            }
+            
+            .trend-container {
+                flex-direction: column;
+            }
+            
+            .periodic-table {
+                grid-template-columns: repeat(9, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="watermark">THP</div>
+    
+    <header>
+        <div class="container">
+            <h1>आवर्त सारणी - रसायन विज्ञान नोट्स</h1>
+            <div class="subtitle">Notes By Mohit Sir (MSc)</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Historical Development -->
+        <section class="section" style="animation-delay: 0.1s;">
+            <h2>आवर्त सारणी का ऐतिहासिक विकास</h2>
+            <p>आवर्त सारणी कई वैज्ञानिकों के योगदान से विकसित हुई जिन्होंने तत्वों को उनके गुणों के आधार पर व्यवस्थित करने का प्रयास किया।</p>
+            
+            <h3>डोबेराइनर के त्रिक (1829)</h3>
+            <p>जोहान वोल्फगैंग डोबेराइनर ने तत्वों को तीन-तीन के समूहों में व्यवस्थित किया जिनके गुण समान थे और दिखाया कि मध्य तत्व का परमाणु भार अन्य दो तत्वों के परमाणु भार का लगभग औसत था।</p>
+            
+            <div class="formula-box">
+                उदाहरण त्रिक: Cl (35.5), Br (80), I (127)<br>
+                (35.5 + 127)/2 = 81.25 ≈ 80 (Br)
+            </div>
+            
+            <div class="note">
+                सीमा: केवल कुछ तत्वों को ही त्रिक में वर्गीकृत किया जा सका, जिससे यह वर्गीकरण अधूरा रहा।
+            </div>
+            
+            <h3>न्यूलैंड्स का अष्टक नियम (1864)</h3>
+            <p>जॉन न्यूलैंड्स ने देखा कि जब तत्वों को परमाणु भार के अनुसार व्यवस्थित किया जाता है, तो हर आठवें तत्व के गुण पहले तत्व के समान होते हैं, जैसे संगीत के अष्टक।</p>
+            
+            <div class="example">
+                <div class="example-title">उदाहरण</div>
+                Li (1), Be (2), B (3), C (4), N (5), O (6), F (7), Na (8) - Na के गुण Li के समान दिखाई देते हैं
+            </div>
+            
+            <div class="note">
+                सीमा: यह पैटर्न कैल्शियम के बाद टूट गया और नियम नए तत्वों को समायोजित नहीं कर सका।
+            </div>
+        </section>
+        
+        <!-- Mendeleev's Periodic Table -->
+        <section class="section" style="animation-delay: 0.2s;">
+            <h2>मेंडेलीफ की आवर्त सारणी (1869)</h2>
+            <p>दिमित्री मेंडेलीफ ने आवर्त नियम के आधार पर पहली सफल आवर्त सारणी बनाई:</p>
+            
+            <div class="key-point">
+                <strong>मेंडेलीफ का आवर्त नियम:</strong> "तत्वों के गुण उनके परमाणु भारों के आवर्त फलन होते हैं।"
+            </div>
+            
+            <h3>मेंडेलीफ की सारणी की प्रमुख विशेषताएं</h3>
+            <ul class="custom-list">
+                <li>तत्वों को परमाणु भार के बढ़ते क्रम में व्यवस्थित किया गया</li>
+                <li>समान गुणों वाले ऊर्ध्वाधर स्तंभों को समूह कहा गया</li>
+                <li>क्षैतिज पंक्तियों को आवर्त कहा गया</li>
+                <li>अज्ञात तत्वों के लिए रिक्त स्थान छोड़े गए (जिनके गुणों का सही अनुमान लगाया)</li>
+                <li>आवर्त प्रवृत्तियों के आधार पर कुछ तत्वों के परमाणु भारों को सही किया</li>
+            </ul>
+            
+            <h3>मेंडेलीफ की सारणी के गुण</h3>
+            <ul class="custom-list">
+                <li>ज्ञात तत्वों का व्यवस्थित वर्गीकरण</li>
+                <li>नए तत्वों का सफल अनुमान (Ga, Ge, Sc)</li>
+                <li>परमाणु भारों का सुधार (Be, U, आदि)</li>
+                <li>तत्वों के गुणों का अध्ययन आसान हो गया</li>
+            </ul>
+            
+            <h3>मेंडेलीफ की सारणी की सीमाएं</h3>
+            <ul class="custom-list">
+                <li>हाइड्रोजन के लिए कोई निश्चित स्थान नहीं (क्षार धातुओं और हैलोजन दोनों से मिलता-जुलता)</li>
+                <li>कुछ तत्व जिनका परमाणु भार अधिक है, उन्हें कम परमाणु भार वाले तत्वों से पहले रखा गया (Ar/K, Co/Ni, Te/I)</li>
+                <li>आवर्तिता के लिए कोई स्पष्टीकरण नहीं</li>
+                <li>लैंथेनाइड और एक्टिनाइड को ठीक से समायोजित नहीं किया जा सका</li>
+                <li>धातुओं और अधातुओं के बीच कोई अंतर नहीं किया गया</li>
+            </ul>
+        </section>
+        
+        <!-- Modern Periodic Table -->
+        <section class="section" style="animation-delay: 0.3s;">
+            <h2>आधुनिक आवर्त सारणी</h2>
+            <p>हेनरी मोसले के परमाणु संख्या पर कार्य ने आधुनिक आवर्त नियम को जन्म दिया:</p>
+            
+            <div class="key-point">
+                <strong>आधुनिक आवर्त नियम:</strong> "तत्वों के भौतिक और रासायनिक गुण उनकी परमाणु संख्याओं के आवर्त फलन होते हैं।"
+            </div>
+            
+            <div class="image-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Periodic_table_%28polyatomic%29.svg/1200px-Periodic_table_%28polyatomic%29.svg.png" alt="आधुनिक आवर्त सारणी">
+                <div class="caption">समूह और आवर्त वर्गीकरण के साथ आधुनिक आवर्त सारणी</div>
+            </div>
+            
+            <h3>आधुनिक आवर्त सारणी की संरचना</h3>
+            <ul class="custom-list">
+                <li><strong>18 समूह</strong> (ऊर्ध्वाधर स्तंभ) - समान संयोजकता इलेक्ट्रॉन वाले तत्व</li>
+                <li><strong>7 आवर्त</strong> (क्षैतिज पंक्तियाँ) - समान संख्या में कोश वाले तत्व</li>
+                <li><strong>4 ब्लॉक</strong> इलेक्ट्रॉन विन्यास के आधार पर:
+                    <ul>
+                        <li>s-ब्लॉक (समूह 1-2)</li>
+                        <li>p-ब्लॉक (समूह 13-18)</li>
+                        <li>d-ब्लॉक (समूह 3-12)</li>
+                        <li>f-ब्लॉक (लैंथेनाइड और एक्टिनाइड)</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <h3>समूहों की नामकरण पद्धति</h3>
+            <table>
+                <tr>
+                    <th>समूह</th>
+                    <th>नाम</th>
+                    <th>संयोजकता विन्यास</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>क्षार धातु</td>
+                    <td>ns<sup>1</sup></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>क्षारीय मृदा धातु</td>
+                    <td>ns<sup>2</sup></td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>बोरॉन परिवार</td>
+                    <td>ns<sup>2</sup>np<sup>1</sup></td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>कार्बन परिवार</td>
+                    <td>ns<sup>2</sup>np<sup>2</sup></td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td>नाइट्रोजन परिवार</td>
+                    <td>ns<sup>2</sup>np<sup>3</sup></td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>कैल्कोजन</td>
+                    <td>ns<sup>2</sup>np<sup>4</sup></td>
+                </tr>
+                <tr>
+                    <td>17</td>
+                    <td>हैलोजन</td>
+                    <td>ns<sup>2</sup>np<sup>5</sup></td>
+                </tr>
+                <tr>
+                    <td>18</td>
+                    <td>उत्कृष्ट गैसें</td>
+                    <td>ns<sup>2</sup>np<sup>6</sup></td>
+                </tr>
+            </table>
+        </section>
+        
+        <!-- Periodic Trends -->
+        <section class="section" style="animation-delay: 0.4s;">
+            <h2>गुणों में आवर्ती प्रवृत्तियाँ</h2>
+            
+            <div class="trend-container">
+                <div class="trend-box" style="background-color: #ffe6e6;">
+                    <div class="trend-label">परमाणु त्रिज्या</div>
+                    <div class="trend-arrow">→</div>
+                    <p><strong>आवर्त में:</strong> घटती है (बढ़ा हुआ नाभिकीय आवेश इलेक्ट्रॉनों को करीब खींचता है)</p>
+                    <div class="trend-arrow">↓</div>
+                    <p><strong>समूह में नीचे:</strong> बढ़ती है (अतिरिक्त इलेक्ट्रॉन कोश)</p>
+                </div>
+                
+                <div class="trend-box" style="background-color: #e6ffe6;">
+                    <div class="trend-label">आयनन ऊर्जा</div>
+                    <div class="trend-arrow">←</div>
+                    <p><strong>आवर्त में:</strong> बढ़ती है (मजबूत नाभिकीय आकर्षण इलेक्ट्रॉन निष्कासन को कठिन बनाता है)</p>
+                    <div class="trend-arrow">↑</div>
+                    <p><strong>समूह में नीचे:</strong> घटती है (संयोजकता इलेक्ट्रॉन नाभिक से दूर)</p>
+                </div>
+                
+                <div class="trend-box" style="background-color: #e6e6ff;">
+                    <div class="trend-label">विद्युतऋणात्मकता</div>
+                    <div class="trend-arrow">→</div>
+                    <p><strong>आवर्त में:</strong> बढ़ती है (उच्च नाभिकीय आवेश इलेक्ट्रॉनों को अधिक सशक्त रूप से आकर्षित करता है)</p>
+                    <div class="trend-arrow">↑</div>
+                    <p><strong>समूह में नीचे:</strong> घटती है (बढ़ा हुआ परिरक्षण और परमाणु आकार)</p>
+                </div>
+            </div>
+            
+            <h3>परिरक्षण प्रभाव</h3>
+            <p>आंतरिक इलेक्ट्रॉनों के कारण बाहरी इलेक्ट्रॉनों पर प्रभावी नाभिकीय आवेश में कमी को परिरक्षण प्रभाव कहा जाता है। यह समूह में नीचे जाने पर बढ़ता है क्योंकि अधिक आंतरिक कोश जोड़े जाते हैं।</p>
+            
+            <div class="formula-box">
+                प्रभावी नाभिकीय आवेश (Z<sub>eff</sub>) = Z - S<br>
+                जहाँ Z = परमाणु संख्या, S = परिरक्षण स्थिरांक
+            </div>
+            
+            <h3>इलेक्ट्रॉन लब्धि एन्थैल्पी</h3>
+            <p>तटस्थ गैसीय परमाणु में एक इलेक्ट्रॉन जोड़ने पर ऊर्जा परिवर्तन:</p>
+            
+            <div class="formula-box">
+                X(g) + e<sup>-</sup> → X<sup>-</sup>(g) + ऊर्जा
+            </div>
+            
+            <p><strong>प्रवृत्तियाँ:</strong> आवर्त में अधिक ऋणात्मक हो जाती है (उत्कृष्ट गैसों को छोड़कर), समूह में नीचे कम ऋणात्मक हो जाती है</p>
+            
+            <div class="note">
+                अपवाद: स्थिर विन्यास वाले तत्वों (अर्ध-भरे या पूर्ण-भरे कक्षक) की इलेक्ट्रॉन लब्धि एन्थैल्पी अपेक्षा से कम ऋणात्मक होती है (जैसे, N, Mg, P)।
+            </div>
+            
+            <h3>धात्विक गुण</h3>
+            <ul class="custom-list">
+                <li><strong>आवर्त में:</strong> घटता है (तत्व कम धात्विक और अधिक अधात्विक हो जाते हैं)</li>
+                <li><strong>समूह में नीचे:</strong> बढ़ता है (बड़े परमाणु आकार के कारण इलेक्ट्रॉन त्याग आसान)</li>
+            </ul>
+        </section>
+        
+        <!-- Blocks in Periodic Table -->
+        <section class="section" style="animation-delay: 0.5s;">
+            <h2>आवर्त सारणी में ब्लॉक</h2>
+            
+            <h3>S-ब्लॉक तत्व (समूह 1-2)</h3>
+            <p>वे तत्व जिनमें अंतिम इलेक्ट्रॉन s-कक्षक में प्रवेश करता है। क्षार धातु (समूह 1) और क्षारीय मृदा धातु (समूह 2) शामिल हैं।</p>
+            <ul class="custom-list">
+                <li>बाह्य विन्यास: ns<sup>1-2</sup></li>
+                <li>अत्यधिक अभिक्रियाशील धातु (H को छोड़कर)</li>
+                <li>कम आयनन ऊर्जा</li>
+                <li>क्षारकीय ऑक्साइड और आयनिक यौगिक बनाते हैं</li>
+                <li>प्रबल अपचायक</li>
+            </ul>
+            
+            <h3>P-ब्लॉक तत्व (समूह 13-18)</h3>
+            <p>वे तत्व जिनमें अंतिम इलेक्ट्रॉन p-कक्षक में प्रवेश करता है। धातु, उपधातु और अधातु शामिल हैं।</p>
+            <ul class="custom-list">
+                <li>बाह्य विन्यास: ns<sup>2</sup>np<sup>1-6</sup></li>
+                <li>परिवर्तनशील ऑक्सीकरण अवस्था दिखाते हैं</li>
+                <li>सहसंयोजक यौगिक (छोटे परमाणु) और आयनिक यौगिक (बड़े परमाणु) बनाते हैं</li>
+                <li>सभी अधातु और उपधातु शामिल हैं</li>
+            </ul>
+            
+            <h3>D-ब्लॉक तत्व (संक्रमण धातु, समूह 3-12)</h3>
+            <p>वे तत्व जिनमें अंतिम इलेक्ट्रॉन अंतिम से पहले कोश के d-कक्षक में प्रवेश करता है।</p>
+            <ul class="custom-list">
+                <li>बाह्य विन्यास: (n-1)d<sup>1-10</sup>ns<sup>0-2</sup></li>
+                <li>परिवर्तनशील ऑक्सीकरण अवस्था दिखाते हैं</li>
+                <li>रंगीन यौगिक बनाते हैं</li>
+                <li>उत्प्रेरक के रूप में कार्य करते हैं</li>
+                <li>अनुचुंबकीय प्रकृति (अयुग्मित d-इलेक्ट्रॉन)</li>
+                <li>संकुल यौगिक बनाते हैं</li>
+            </ul>
+            
+            <h3>F-ब्लॉक तत्व (आंतरिक संक्रमण धातु)</h3>
+            <p>वे तत्व जिनमें अंतिम इलेक्ट्रॉन अंतिम से दो कोश पहले के f-कक्षक में प्रवेश करता है।</p>
+            <ul class="custom-list">
+                <li>बाह्य विन्यास: (n-2)f<sup>1-14</sup>(n-1)d<sup>0-1</sup>ns<sup>2</sup></li>
+                <li>लैंथेनाइड (4f श्रेणी) और एक्टिनाइड (5f श्रेणी)</li>
+                <li>मुख्य रूप से +3 ऑक्सीकरण अवस्था दिखाते हैं</li>
+                <li>रेडियोधर्मी तत्व (विशेषकर एक्टिनाइड)</li>
+                <li>लैंथेनाइड संकुचन के कारण लैंथेनाइड के बाद के तत्वों के आकार समान हो जाते हैं</li>
+            </ul>
+            
+            <div class="key-point">
+                संपूर्ण अर्धचालक उद्योग समूह 14 तत्वों (C, Si, Ge) के आवर्ती गुणों की हमारी समझ पर आधारित है!
+            </div>
+        </section>
+        
+        <!-- Anomalies and Special Cases -->
+        <section class="section" style="animation-delay: 0.6s;">
+            <h2>विसंगतियाँ और विशेष मामले</h2>
+            
+            <h3>हाइड्रोजन की स्थिति</h3>
+            <p>हाइड्रोजन क्षार धातुओं (H<sup>+</sup> बनाने के लिए इलेक्ट्रॉन त्यागता है) और हैलोजन (H<sup>-</sup> बनाने के लिए इलेक्ट्रॉन ग्रहण करता है) दोनों के गुण दिखाता है, जिससे इसकी स्थिति अस्पष्ट हो जाती है।</p>
+            
+            <h3>द्वितीय आवर्त के तत्वों के विषम गुण</h3>
+            <p>द्वितीय आवर्त के तत्व (Li से F) अपने समजातों की तुलना में भिन्न व्यवहार दिखाते हैं क्योंकि:</p>
+            <ul class="custom-list">
+                <li>छोटा आकार</li>
+                <li>उच्च विद्युतऋणात्मकता</li>
+                <li>d-कक्षकों का अभाव</li>
+                <li>pπ-pπ बहुबंध बनाने की प्रबल प्रवृत्ति</li>
+            </ul>
+            
+            <div class="example">
+                <div class="example-title">उदाहरण:</div>
+                <ul>
+                    <li>नाइट्रोजन N≡N (प्रबल त्रिबंध) बनाता है जबकि फॉस्फोरस P-P एकल बंध बनाता है</li>
+                    <li>ऑक्सीजन O=O द्विबंध बनाता है जबकि सल्फर S-S एकल बंध बनाता है</li>
+                    <li>कार्बन सिलिकॉन की तुलना में बहुत अधिक सीमा तक शृंखलन (C-C शृंखलाएँ) दिखाता है</li>
+                </ul>
+            </div>
+            
+            <h3>लैंथेनाइड संकुचन</h3>
+            <p>4f इलेक्ट्रॉनों द्वारा खराब परिरक्षण के कारण लैंथेनाइड (La से Lu) की परमाणु और आयनिक त्रिज्या में स्थिर कमी के कारण:</p>
+            <ul class="custom-list">
+                <li>4d और 5d संक्रमण श्रेणी के तत्वों के आकार समान हो जाते हैं</li>
+                <li>लैंथेनाइड के पृथक्करण में कठिनाई</li>
+                <li>5d श्रेणी के तत्वों का घनत्व और कठोरता बढ़ जाती है</li>
+            </ul>
+        </section>
+        
+        <!-- Applications and Importance -->
+        <section class="section" style="animation-delay: 0.7s;">
+            <h2>आवर्ती गुणों के अनुप्रयोग</h2>
+            
+            <h3>जैविक प्रणालियों में</h3>
+            <ul class="custom-list">
+                <li><strong>Na/K पंप:</strong> आकार का अंतर तंत्रिका आवेग संचरण के लिए महत्वपूर्ण</li>
+                <li><strong>क्लोरोफिल में Mg:</strong> पोर्फिरिन वलय के साथ समन्वय के लिए आदर्श आकार</li>
+                <li><strong>हीमोग्लोबिन में Fe:</strong> परिवर्तनशील ऑक्सीकरण अवस्था ऑक्सीजन परिवहन की अनुमति देती है</li>
+                <li><strong>हड्डियों में Ca:</strong> फॉस्फेट के साथ स्थायी यौगिक बनाता है</li>
+                <li><strong>सूक्ष्म तत्व:</strong> कई d-ब्लॉक तत्व छोटी मात्रा में आवश्यक होते हैं</li>
+            </ul>
+            
+            <h3>उद्योग और प्रौद्योगिकी में</h3>
+            <ul class="custom-list">
+                <li><strong>एल्युमिनियम उत्पादन:</strong> Al की कम अपचयन क्षमता इलेक्ट्रोलिसिस को आवश्यक बनाती है</li>
+                <li><strong>उत्प्रेरक:</strong> परिवर्तनशील ऑक्सीकरण अवस्था के कारण संक्रमण धातु का उपयोग</li>
+                <li><strong>अर्धचालक:</strong> p-ब्लॉक तत्व (Si, Ge) मध्यवर्ती चालकता के साथ</li>
+                <li><strong>बैटरी:</strong> क्षार और संक्रमण धातुओं के रेडॉक्स अभिक्रियाओं पर आधारित</li>
+                <li><strong>मिश्र धातु:</strong> विभिन्न गुणों वाली धातुओं को मिलाकर उत्कृष्ट सामग्री बनाना</li>
+            </ul>
+        </section>
+        
+        <!-- NCERT Important Questions & Mnemonics -->
+        <section class="section" style="animation-delay: 0.8s;">
+            <h2>एनसीईआरटी महत्वपूर्ण प्रश्न और स्मृति सहायक</h2>
+            
+            <div class="mnemonic-box">
+                <div class="mnemonic-title">समूह 1 (क्षार धातु) के लिए स्मृति सहायक:</div>
+                <p><strong>"लीना की रूबी से फ्रेंडशिप"</strong><br>
+                Li (लिथियम), Na (सोडियम), K (पोटैशियम), Rb (रुबिडियम), Cs (सीज़ियम), Fr (फ्रेंसियम)</p>
+            </div>
+            
+            <div class="mnemonic-box">
+                <div class="mnemonic-title">समूह 17 (हैलोजन) के लिए स्मृति सहायक:</div>
+                <p><strong>"फिर कॉल कर बाहर आई आंटी"</strong><br>
+                F (फ्लोरीन), Cl (क्लोरीन), Br (ब्रोमीन), I (आयोडीन), At (एस्टाटीन)</p>
+            </div>
+            
+            <h3>महत्वपूर्ण एनसीईआरटी प्रश्न</h3>
+            <div class="example">
+                <div class="example-title">प्रश्न 1. समूह में नीचे जाने पर आयनन एन्थैल्पी क्यों घटती है?</div>
+                <p><strong>उत्तर:</strong> बढ़ते परमाणु आकार और परिरक्षण प्रभाव के कारण जो बढ़े हुए नाभिकीय आवेश से अधिक हो जाता है, जिससे इलेक्ट्रॉन निष्कासन आसान हो जाता है।</p>
+            </div>
+            
+            <div class="example">
+                <div class="example-title">प्रश्न 2. किस तत्व की इलेक्ट्रॉन लब्धि एन्थैल्पी सर्वाधिक है?</div>
+                <p><strong>उत्तर:</strong> क्लोरीन (फ्लोरीन नहीं) क्योंकि फ्लोरीन के छोटे आकार के कारण इलेक्ट्रॉन-इलेक्ट्रॉन प्रतिकर्षण होता है जो मुक्त ऊर्जा को कम कर देता है।</p>
+            </div>
+            
+            <div class="example">
+                <div class="example-title">प्रश्न 3. लैंथेनाइड संकुचन क्या है? इसके परिणाम क्या हैं?</div>
+                <p><strong>उत्तर:</strong> 4f इलेक्ट्रॉनों द्वारा खराब परिरक्षण के कारण लैंथेनाइड की परमाणु/आयनिक त्रिज्या में क्रमिक कमी। परिणाम:
+                <ul>
+                    <li>लैंथेनाइड के बाद के तत्वों के आकार समान हो जाते हैं (Zr/Hf, Nb/Ta, आदि)</li>
+                    <li>लैंथेनाइड के पृथक्करण में कठिनाई</li>
+                    <li>5d श्रेणी के तत्वों का घनत्व बढ़ जाता है</li>
+                </ul>
+                </p>
+            </div>
+        </section>
+        
+        <!-- Interactive Periodic Table -->
+        <section class="section" style="animation-delay: 0.9s;">
+            <h2>इंटरएक्टिव आवर्त सारणी</h2>
+            
+            <div class="periodic-table">
+                <!-- आवर्त 1 -->
+                <div class="element s-block" title="हाइड्रोजन">
+                    <div class="element-number">1</div>
+                    <div class="element-symbol">H</div>
+                    <div class="element-name">हाइड्रोजन</div>
+                </div>
+                <div class="element noble-gas" title="हीलियम">
+                    <div class="element-number">2</div>
+                    <div class="element-symbol">He</div>
+                    <div class="element-name">हीलियम</div>
+                </div>
+                
+                <!-- आवर्त 2 -->
+                <div class="element s-block" title="लिथियम">
+                    <div class="element-number">3</div>
+                    <div class="element-symbol">Li</div>
+                </div>
+                <div class="element s-block" title="बेरिलियम">
+                    <div class="element-number">4</div>
+                    <div class="element-symbol">Be</div>
+                </div>
+                <div class="element p-block" title="बोरॉन">
+                    <div class="element-number">5</div>
+                    <div class="element-symbol">B</div>
+                </div>
+                <div class="element p-block" title="कार्बन">
+                    <div class="element-number">6</div>
+                    <div class="element-symbol">C</div>
+                </div>
+                <div class="element p-block" title="नाइट्रोजन">
+                    <div class="element-number">7</div>
+                    <div class="element-symbol">N</div>
+                </div>
+                <div class="element p-block" title="ऑक्सीजन">
+                    <div class="element-number">8</div>
+                    <div class="element-symbol">O</div>
+                </div>
+                <div class="element p-block" title="फ्लोरीन">
+                    <div class="element-number">9</div>
+                    <div class="element-symbol">F</div>
+                </div>
+                <div class="element noble-gas" title="नियॉन">
+                    <div class="element-number">10</div>
+                    <div class="element-symbol">Ne</div>
+                </div>
+                
+                <!-- आवर्त 3 -->
+                <div class="element s-block" title="सोडियम">
+                    <div class="element-number">11</div>
+                    <div class="element-symbol">Na</div>
+                </div>
+                <div class="element s-block" title="मैग्नीशियम">
+                    <div class="element-number">12</div>
+                    <div class="element-symbol">Mg</div>
+                </div>
+                <div class="element p-block" title="एल्युमिनियम">
+                    <div class="element-number">13</div>
+                    <div class="element-symbol">Al</div>
+                </div>
+                <div class="element p-block" title="सिलिकॉन">
+                    <div class="element-number">14</div>
+                    <div class="element-symbol">Si</div>
+                </div>
+                <div class="element p-block" title="फॉस्फोरस">
+                    <div class="element-number">15</div>
+                    <div class="element-symbol">P</div>
+                </div>
+                <div class="element p-block" title="सल्फर">
+                    <div class="element-number">16</div>
+                    <div class="element-symbol">S</div>
+                </div>
+                <div class="element p-block" title="क्लोरीन">
+                    <div class="element-number">17</div>
+                    <div class="element-symbol">Cl</div>
+                </div>
+                <div class="element noble-gas" title="आर्गन">
+                    <div class="element-number">18</div>
+                    <div class="element-symbol">Ar</div>
+                </div>
+                
+                <!-- [अधिक तत्व पूर्ण संस्करण में जोड़े जाएंगे] -->
+            </div>
+            
+            <div class="key-point">
+                तत्वों पर होवर करने से उनके नाम दिखाई देंगे। रंग विभिन्न ब्लॉकों को दर्शाते हैं: <span style="color:#ff9999">s-ब्लॉक</span>, 
+                <span style="color:#99ff99">p-ब्लॉक</span>, <span style="color:#9999ff">d-ब्लॉक</span>, 
+                <span style="color:#ff99ff">f-ब्लॉक</span>, <span style="color:#ffcc99">उत्कृष्ट गैसें</span>।
+            </div>
+        </section>
+        
+        <!-- Naming of Elements -->
+        <section class="section" style="animation-delay: 1.0s;">
+            <h2>परमाणु संख्या >100 वाले तत्वों का नामकरण</h2>
+            <p>परमाणु संख्या >100 वाले तत्वों के लिए, अंकों को मूल शब्दों में लिखकर उसके बाद 'ium' जोड़ा जाता है।</p>
+            
+            <table>
+                <tr>
+                    <th>अंक</th>
+                    <th>मूल</th>
+                    <th>उदाहरण (Z=104)</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>nil (n)</td>
+                    <td>Unnilquadium (Unq)</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>un (u)</td>
+                    <td>रदरफोर्डियम (Rf)</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>bi (b)</td>
+                    <td>डब्नियम (Db)</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>tri (t)</td>
+                    <td>सीबोर्गियम (Sg)</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>quad (q)</td>
+                    <td>बोहरियम (Bh)</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>pent (p)</td>
+                    <td>हैसियम (Hs)</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>hex (h)</td>
+                    <td>माइट्नेरियम (Mt)</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>sep (s)</td>
+                    <td>डार्मस्टाटियम (Ds)</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>oct (o)</td>
+                    <td>रॉन्टजेनियम (Rg)</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>enn (e)</td>
+                    <td>कोपरनिसियम (Cn)</td>
+                </tr>
+            </table>
+            
+            <div class="note">
+                खोज के बाद, तत्वों को वैज्ञानिकों, स्थानों या गुणों के सम्मान में स्थायी नाम दिए जाते हैं (जैसे, फ्लेरोवियम, लिवरमोरियम)।
+            </div>
+        </section>
+    </div>
+    
+    <div class="back-to-top">↑</div>
+    <div class="dark-mode-toggle">☀</div>
+    
+    <script>
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Dark mode toggle
+        const darkModeToggle = document.querySelector('.dark-mode-toggle');
+        const body = document.body;
+        
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            darkModeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀';
+        });
+        
+        // Animate sections on scroll
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Interactive periodic table hover effects
+        const elements = document.querySelectorAll('.element');
+        elements.forEach(el => {
+            el.addEventListener('mouseover', function() {
+                this.querySelector('.element-name').style.display = 'block';
+            });
+            el.addEventListener('mouseout', function() {
+                this.querySelector('.element-name').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
