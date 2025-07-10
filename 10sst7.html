@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Sharing - THP Coaching Classes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --light-bg: #f8f9fa;
+            --section-bg: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(106, 48, 147, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 126, 95, 0.05) 0%, transparent 50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "THP";
+            position: fixed;
+            opacity: 0.03;
+            font-size: 40vw;
+            font-weight: 900;
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            pointer-events: none;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            margin: 0.5rem 0 0;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1rem;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background-color: var(--section-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .section h2 {
+            color: var(--primary);
+            margin-top: 0;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(to right, var(--primary), var(--accent)) 1;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .section h2::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .mcq-list {
+            margin: 1.5rem 0;
+        }
+
+        .mcq-item {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 3px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .mcq-item:hover {
+            border-left: 3px solid var(--accent);
+            transform: translateX(5px);
+        }
+
+        .mcq-question {
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .mcq-answer {
+            color: var(--primary);
+            font-weight: 500;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .mcq-answer::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .qa-item {
+            margin-bottom: 2rem;
+            background: var(--section-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .qa-item:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            border-left: 4px solid var(--accent);
+        }
+
+        .question {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .question::before {
+            content: "Q.";
+            font-weight: 700;
+            color: var(--accent);
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .answer {
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .answer p {
+            margin-bottom: 1rem;
+        }
+
+        .answer ol, .answer ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .answer li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background-color: rgba(106, 48, 147, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.2rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        .image-placeholder {
+            background-color: var(--light-bg);
+            border: 2px dashed #ccc;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            border-radius: 8px;
+            color: var(--text-light);
+            font-style: italic;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 48%, rgba(106, 48, 147, 0.1) 49%, rgba(106, 48, 147, 0.1) 51%, transparent 52%);
+            background-size: 10px 10px;
+            opacity: 0.3;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="50" font-family="Arial" font-size="20" fill="rgba(255,255,255,0.05)">THP</text></svg>');
+            opacity: 0.2;
+        }
+
+        .footer p {
+            margin: 0;
+            position: relative;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(106, 48, 147, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(106, 48, 147, 0.6);
+        }
+
+        @media print {
+            .header, .footer, .back-to-top {
+                display: none;
+            }
+            body::before, body::after {
+                display: none;
+            }
+            .section {
+                border: none;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+            .container {
+                padding: 0;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.2rem;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .section {
+                padding: 1.5rem;
+            }
+            .section h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .container {
+                padding: 0 1rem;
+            }
+            .section {
+                padding: 1.2rem;
+            }
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+        }
+
+        /* Animation delays for sections */
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>THP Coaching Classes</h1>
+        <p>Conceptual Notes by Rohit Sir</p>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Power Sharing</h2>
+            
+            <div class="mcq-list">
+                <h3>Multiple Choice Questions</h3>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">1. What is the capital of Belgium?</div>
+                    <div class="mcq-answer">Brussels</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">2. The principle of majoritarianism led to a civil war in ______.</div>
+                    <div class="mcq-answer">Sri Lanka</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">3. Which of the following is not the benefit of power sharing?</div>
+                    <div class="mcq-answer">Should you be satisfied if you get their period.</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">4. Tamil matters of Sri Lanka are called ______.</div>
+                    <div class="mcq-answer">Sri Lankan Tamils</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">5. Which of the following is not the form of power sharing?</div>
+                    <div class="mcq-answer">Division of power shooting</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">6. What is linguistic composition of Belgium?</div>
+                    <div class="mcq-answer">59% speaks Dutch, 40% speaks French, and 1% speaks German.</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">7. Which language was recognised as the official language after independence in Sri Lanka?</div>
+                    <div class="mcq-answer">Sinhala</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">8. Which are the two major ethnic groups of Belgium?</div>
+                    <div class="mcq-answer">Dutch and French</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">9. Most of the Sinhala-speaking people in Sri Lanka are—</div>
+                    <div class="mcq-answer">Buddhists</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">10. Sri Lanka became independent in the year.</div>
+                    <div class="mcq-answer">1948</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">11. What does Tamil eelam mean?</div>
+                    <div class="mcq-answer">Tamil state</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">12. There is a third kind of govt. apart from the central and the state govt. in Belgium, what is this govt. known as?</div>
+                    <div class="mcq-answer">Community govt.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Answer the following questions</h2>
+            
+            <div class="qa-item">
+                <div class="question">1. Explain the difference between horizontal power sharing and vertical power sharing.</div>
+                <div class="answer">
+                    <p><strong>Horizontal power sharing:</strong></p>
+                    <ol>
+                        <li>Under the horizontal power sharing, power is shared among the different organs of the government such as the legislative, the executive and the judiciary.</li>
+                        <li>Under horizontal distribution of power, the organs of the govt. are placed at the same level to exercise different powers.</li>
+                        <li>Under this system, each organ checks the other.</li>
+                    </ol>
+                    
+                    <p><strong>Vertical power sharing:</strong></p>
+                    <ol>
+                        <li>Under the vertical power sharing, power is shared among the different levels of the government.</li>
+                        <li>The vertical division of power involves the higher and the lower levels of the government.</li>
+                        <li>Under this system, the lower organs work under the higher organs.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">2. What is a civil war? Explain with context to Sri Lanka.</div>
+                <div class="answer">
+                    <p>Civil war is a violent conflict between opposing groups within a country that becomes so intense that it appears like a war.</p>
+                    <ol>
+                        <li>Due to the violent conflict between both ethnic groups in Sri Lanka, thousands of people of both communities have been killed.</li>
+                        <li>Many families were forced to leave the country as refugees and many more lost their livelihoods.</li>
+                        <li>The civil war has caused a terrible setback to the social, cultural and economic life of the country.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">3. What is power sharing? Why is it important in a democracy?</div>
+                <div class="answer">
+                    <p>Power sharing means the distribution of power among different organs and levels of government.</p>
+                    <p>It is important because:</p>
+                    <ol>
+                        <li>It prevents the concentration of power in one hand.</li>
+                        <li>It ensures stability in democracy.</li>
+                        <li>It promotes unity and reduces conflict among different groups.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">4. What is community government? Explain the concept of community government with context to Belgium.</div>
+                <div class="answer">
+                    <p>A community government is one in which different social groups are given the power to handle the affairs related to their communities.</p>
+                    <p>They are expected to work jointly for the common benefit of the people without undermining any one community.</p>
+                    <p>The community government is elected by people belonging to one language community — Dutch, French and German-speaking — no matter where they live.</p>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">5. Why is power sharing desirable? Explain moral reasons in this regard.</div>
+                <div class="answer">
+                    <p><strong>Moral reasons:</strong></p>
+                    <ol>
+                        <li>Power sharing is the very spirit of democracy. A democratic rule involves sharing power with those affected by its exercise and who have to live with its effects.</li>
+                        <li>People have a right to be consulted on how they are to be governed.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+
+    <div class="footer">
+        <p>THP Coaching Classes &copy; 2023 | Conceptual Notes by Rohit Sir</p>
+    </div>
+
+    <script>
+        // Back to top button functionality
+        const backToTop = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // Add animation to elements when they come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {threshold: 0.1});
+
+        document.querySelectorAll('.section, .qa-item, .mcq-item').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
