@@ -233,6 +233,24 @@
           </div>
         </div>
 
+        <div id="batchField" class="hidden">
+          <div class="input-group">
+            <select id="batch" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none appearance-none">
+              <option value=""></option>
+              <option value="Morning Batch">Morning Batch</option>
+              <option value="Afternoon Batch">Afternoon Batch</option>
+              <option value="Evening Batch">Evening Batch</option>
+              <option value="Weekend Batch">Weekend Batch</option>
+            </select>
+            <label class="floating-label">Choose Batch</label>
+            <div class="absolute right-3 top-3 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
         <div class="input-group">
           <input type="email" id="email" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
           <label class="floating-label">Email Address</label>
@@ -291,18 +309,33 @@
   <!-- Firebase Auth & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-    import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      createUserWithEmailAndPassword, 
+      sendPasswordResetEmail, 
+      onAuthStateChanged, 
+      signOut 
+    } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { 
+      getFirestore, 
+      collection, 
+      doc, 
+      setDoc, 
+      getDoc, 
+      writeBatch, 
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
-        authDomain: "login-form-eee86.firebaseapp.com",
-        projectId: "login-form-eee86",
-        storageBucket: "login-form-eee86.appspot.com",
-        messagingSenderId: "717475952542",
-        appId: "1:717475952542:web:f79db77ed1f60d117b488f",
-        measurementId: "G-VV0D9TNK0Y"
-      };
+      apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
+      authDomain: "login-form-eee86.firebaseapp.com",
+      projectId: "login-form-eee86",
+      storageBucket: "login-form-eee86.appspot.com",
+      messagingSenderId: "717475952542",
+      appId: "1:717475952542:web:f79db77ed1f60d117b488f",
+      measurementId: "G-VV0D9TNK0Y"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -310,12 +343,10 @@
 
     // Floating label functionality
     document.querySelectorAll('.form-input').forEach(input => {
-      // Check if input has value on page load
       if(input.value) {
         input.classList.add('input-filled');
       }
             
-      // Add event listeners
       input.addEventListener('input', () => {
         if(input.value) {
           input.classList.add('input-filled');
@@ -329,7 +360,6 @@
       if (user) {
         const docSnap = await getDoc(doc(db, "users", user.uid));
         if (docSnap.exists() && docSnap.data().hasAccess) {
-          // Redirect to dashboard.html regardless of course
           window.location.replace("dashboard.html");
         } else {
           await signOut(auth);
@@ -363,19 +393,21 @@
       document.getElementById("nameField").classList.toggle("hidden", isLogin);
       document.getElementById("mobileField").classList.toggle("hidden", isLogin);
       document.getElementById("courseField").classList.toggle("hidden", isLogin);
+      document.getElementById("batchField").classList.toggle("hidden", isLogin);
       formTitle.textContent = isLogin ? "Login to your account" : "Create a new account";
       authText.textContent = isLogin ? "Login" : "Sign Up";
       toggleFormText.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
       toggleFormBtn.textContent = isLogin ? "Sign Up" : "Login";
             
-      // Reset form fields when toggling
       if(isLogin) {
         document.getElementById("name").value = "";
         document.getElementById("mobile").value = "";
         document.getElementById("course").value = "";
+        document.getElementById("batch").value = "";
         document.getElementById("name").classList.remove('input-filled');
         document.getElementById("mobile").classList.remove('input-filled');
         document.getElementById("course").classList.remove('input-filled');
+        document.getElementById("batch").classList.remove('input-filled');
       }
     }
 
@@ -416,15 +448,90 @@
           const name = document.getElementById("name").value.trim();
           const mobile = document.getElementById("mobile").value.trim();
           const course = document.getElementById("course").value;
+          const batch = document.getElementById("batch").value;
 
-          if(!name || !mobile || !course) {
+          if(!name || !mobile || !course || !batch) {
             throw new Error("Please fill all required fields");
           }
 
+          // Create user in authentication
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          await setDoc(doc(db, "users", userCredential.user.uid), {
-            name, email, mobile, course, hasAccess: false
+          const userId = userCredential.user.uid;
+          const now = serverTimestamp();
+
+          // Initialize batch write
+          const batchWrite = writeBatch(db);
+
+          // 1. Create user document
+          const userRef = doc(db, "users", userId);
+          batchWrite.set(userRef, {
+            name,
+            email,
+            mobile,
+            course,
+            batch,
+            joinDate: now,
+            hasAccess: false,
+            role: "student"
           });
+
+          // 2. Create course document
+          const courseRef = doc(collection(db, "courses"));
+          batchWrite.set(courseRef, {
+            title: course,
+            description: `${course} course`,
+            teacher: "To be assigned",
+            startDate: now,
+            endDate: null,
+            syllabus: []
+          });
+
+          // 3. Create enrollment document
+          const enrollmentRef = doc(collection(db, "enrollments"));
+          batchWrite.set(enrollmentRef, {
+            userId: userRef,
+            courseId: courseRef,
+            enrollmentDate: now,
+            progress: 0,
+            lastAccessed: now
+          });
+
+          // 4. Create initial test document
+          const testRef = doc(collection(db, "tests"));
+          batchWrite.set(testRef, {
+            title: `${course} Diagnostic Test`,
+            courseId: courseRef,
+            date: null,
+            maxMarks: 100,
+            averageScore: 0
+          });
+
+          // 5. Create test results document
+          const testResultRef = doc(collection(db, "testResults"));
+          batchWrite.set(testResultRef, {
+            userId: userRef,
+            testId: testRef,
+            score: null,
+            rank: null,
+            totalStudents: 0,
+            subject: course.split(' ').pop(),
+            answers: {}
+          });
+
+          // 6. Create initial deadline
+          const deadlineRef = doc(collection(db, "deadlines"));
+          batchWrite.set(deadlineRef, {
+            title: "First Assignment",
+            courseId: courseRef,
+            dueDate: null,
+            type: "assignment",
+            description: "Introductory assignment",
+            status: "pending"
+          });
+
+          // Commit all writes
+          await batchWrite.commit();
+
           showMessage("Account created successfully! Please login.");
           setTimeout(() => toggleForm(), 1500);
         }
@@ -470,4 +577,3 @@
   </script>
 </body>
 </html>
-Store My data in all collection that are in pic 
