@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>THP Coaching Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8fafc;
+      min-height: 100vh;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(226, 232, 240, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      position: relative;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      border-radius: 3px;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      background-color: #e2e8f0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      transition: width 0.5s ease;
+    }
+    
+    .test-score {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+    
+    .test-score-circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) 0% var(--percentage), #e2e8f0 var(--percentage) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .test-score-inner {
+      width: 70%;
+      height: 70%;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    
+    .nav-item.active {
+      color: var(--primary-dark);
+      font-weight: 500;
+      position: relative;
+    }
+    
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <div class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200">
+      <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+        <div class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+            <i class="fas fa-graduation-cap text-xl"></i>
+          </div>
+          <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
+        </div>
+      </div>
+      <div class="flex flex-col flex-grow p-4 overflow-auto">
+        <nav class="flex-1 space-y-2">
+          <div class="nav-item active" data-section="dashboard">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            <span>Dashboard</span>
+          </div>
+          <div class="nav-item" data-section="courses">
+            <i class="fas fa-book mr-3"></i>
+            <span>My Courses</span>
+          </div>
+          <div class="nav-item" data-section="performance">
+            <i class="fas fa-chart-line mr-3"></i>
+            <span>Performance</span>
+          </div>
+          <div class="nav-item" data-section="tests">
+            <i class="fas fa-clipboard-list mr-3"></i>
+            <span>Test Results</span>
+          </div>
+          <div class="nav-item" data-section="resources">
+            <i class="fas fa-file-alt mr-3"></i>
+            <span>Study Resources</span>
+          </div>
+          <div class="nav-item" data-section="profile">
+            <i class="fas fa-user mr-3"></i>
+            <span>Profile</span>
+          </div>
+        </nav>
+      </div>
+      <div class="p-4 border-t border-gray-200">
+        <button onclick="logout()" class="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 text-sm">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Top Navigation -->
+      <header class="bg-white border-b border-gray-200 flex items-center justify-between h-16 px-4">
+        <div class="flex items-center md:hidden">
+          <button id="sidebarToggle" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+          <div class="flex items-center gap-2 ml-4">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <div class="hidden md:flex items-center gap-2">
+            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+              <i class="fas fa-user-graduate text-indigo-600 mr-1"></i>
+              <span id="userName"></span>
+            </span>
+            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+              <i class="fas fa-book text-indigo-600 mr-1"></i>
+              <span id="userCourse"></span>
+            </span>
+          </div>
+          <div id="userAvatar" class="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center text-white font-medium">
+            <!-- Initial will be inserted here -->
+          </div>
+        </div>
+      </header>
+
+      <!-- Mobile Sidebar -->
+      <div id="mobileSidebar" class="fixed inset-0 z-50 bg-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+        <div class="flex flex-col h-full">
+          <div class="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+            <div class="flex items-center gap-2">
+              <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+                <i class="fas fa-graduation-cap text-xl"></i>
+              </div>
+              <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
+            </div>
+            <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="flex-grow p-4 overflow-y-auto">
+            <nav class="space-y-4">
+              <div class="nav-item active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                <span>Dashboard</span>
+              </div>
+              <div class="nav-item" data-section="courses">
+                <i class="fas fa-book mr-3"></i>
+                <span>My Courses</span>
+              </div>
+              <div class="nav-item" data-section="performance">
+                <i class="fas fa-chart-line mr-3"></i>
+                <span>Performance</span>
+              </div>
+              <div class="nav-item" data-section="tests">
+                <i class="fas fa-clipboard-list mr-3"></i>
+                <span>Test Results</span>
+              </div>
+              <div class="nav-item" data-section="resources">
+                <i class="fas fa-file-alt mr-3"></i>
+                <span>Study Resources</span>
+              </div>
+              <div class="nav-item" data-section="profile">
+                <i class="fas fa-user mr-3"></i>
+                <span>Profile</span>
+              </div>
+            </nav>
+          </div>
+          <div class="p-4 border-t border-gray-200">
+            <button onclick="logout()" class="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 text-sm">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="section-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Welcome Card -->
+            <div class="glass-card p-6 col-span-1 md:col-span-2 lg:col-span-3">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 class="section-title">Welcome back, <span id="welcomeUserName" class="text-indigo-600"></span>!</h2>
+                  <p class="text-gray-600 leading-relaxed">
+                    Track your progress, access your courses, and improve your performance with THP Coaching.
+                  </p>
+                </div>
+                <div class="mt-4 md:mt-0 flex items-center gap-2">
+                  <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">
+                    <i class="fas fa-calendar-day mr-1"></i>
+                    <span id="currentDate"></span>
+                  </span>
+                  <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">
+                    <i class="fas fa-clock mr-1"></i>
+                    <span id="currentTime"></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Performance Overview -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Performance Overview</h2>
+              <div class="mt-4">
+                <canvas id="performanceChart" height="200"></canvas>
+              </div>
+              <div class="mt-4 grid grid-cols-3 gap-4">
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-indigo-600" id="avgScore">0%</div>
+                  <div class="text-xs text-gray-500">Avg. Score</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-indigo-600" id="testsTaken">0</div>
+                  <div class="text-xs text-gray-500">Tests Taken</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-indigo-600" id="rank">-</div>
+                  <div class="text-xs text-gray-500">Batch Rank</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course Progress -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Course Progress</h2>
+              <div class="mt-4 space-y-4">
+                <div>
+                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Syllabus Covered</span>
+                    <span id="syllabusCoverage">0%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="syllabusProgress" style="width: 0%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Concept Mastery</span>
+                    <span id="conceptMastery">0%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="conceptProgress" style="width: 0%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Practice Completed</span>
+                    <span id="practiceCompleted">0%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="practiceProgress" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6">
+                <button class="w-full px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium text-sm flex items-center justify-center">
+                  <i class="fas fa-chart-pie mr-2"></i> View Detailed Analytics
+                </button>
+              </div>
+            </div>
+
+            <!-- Recent Tests -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Recent Tests</h2>
+              <div class="mt-4 space-y-4" id="recentTests">
+                <!-- Test items will be inserted here -->
+                <div class="text-center py-8 text-gray-400">
+                  <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+                  <p>No recent tests found</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Quick Actions</h2>
+              <div class="mt-4 grid grid-cols-2 gap-3">
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                  <i class="fas fa-file-pdf text-indigo-600 text-xl mb-2"></i>
+                  <span class="text-sm font-medium">Study Material</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                  <i class="fas fa-video text-indigo-600 text-xl mb-2"></i>
+                  <span class="text-sm font-medium">Recorded Lectures</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                  <i class="fas fa-question-circle text-indigo-600 text-xl mb-2"></i>
+                  <span class="text-sm font-medium">Doubt Solving</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                  <i class="fas fa-calendar-alt text-indigo-600 text-xl mb-2"></i>
+                  <span class="text-sm font-medium">Schedule</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Upcoming Deadlines -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Upcoming Deadlines</h2>
+              <div class="mt-4 space-y-3" id="upcomingDeadlines">
+                <!-- Deadline items will be inserted here -->
+                <div class="text-center py-8 text-gray-400">
+                  <i class="fas fa-calendar-check text-3xl mb-2"></i>
+                  <p>No upcoming deadlines</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="coursesSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="section-title">My Courses</h2>
+              <div class="flex items-center gap-2">
+                <button class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg text-sm font-medium">
+                  <i class="fas fa-filter mr-2"></i> Filter
+                </button>
+                <button class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg text-sm font-medium">
+                  <i class="fas fa-sort mr-2"></i> Sort
+                </button>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="coursesList">
+              <!-- Course cards will be inserted here -->
+              <div class="text-center py-12 text-gray-400 col-span-3">
+                <i class="fas fa-book text-3xl mb-2"></i>
+                <p>No courses enrolled yet</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Performance Section -->
+        <section id="performanceSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <h2 class="section-title">Performance Analytics</h2>
+            <div class="mt-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 class="font-medium text-gray-700 mb-3">Score Trend</h3>
+                  <div class="bg-white p-4 rounded-lg">
+                    <canvas id="scoreTrendChart" height="250"></canvas>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-medium text-gray-700 mb-3">Subject-wise Performance</h3>
+                  <div class="bg-white p-4 rounded-lg">
+                    <canvas id="subjectChart" height="250"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6">
+                <h3 class="font-medium text-gray-700 mb-3">Detailed Analysis</h3>
+                <div class="bg-white p-4 rounded-lg overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Test</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Score</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Rank</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Analysis</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="performanceTable">
+                      <!-- Performance data will be inserted here -->
+                      <tr>
+                        <td colspan="5" class="px-4 py-4 text-center text-gray-400">No performance data available</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Test Results Section -->
+        <section id="testsSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <h2 class="section-title">Test Results</h2>
+            <div class="mt-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="testResults">
+                <!-- Test result cards will be inserted here -->
+                <div class="text-center py-12 text-gray-400 col-span-3">
+                  <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+                  <p>No test results found</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Study Resources Section -->
+        <section id="resourcesSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <h2 class="section-title">Study Resources</h2>
+            <div class="mt-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                  <div class="bg-indigo-50 p-4">
+                    <i class="fas fa-file-pdf text-indigo-600 text-3xl"></i>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-medium text-gray-800">Class Notes</h3>
+                    <p class="text-sm text-gray-500 mt-1">Comprehensive notes for all subjects</p>
+                    <div class="mt-4">
+                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                        View Resources <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                  <div class="bg-indigo-50 p-4">
+                    <i class="fas fa-video text-indigo-600 text-3xl"></i>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-medium text-gray-800">Recorded Lectures</h3>
+                    <p class="text-sm text-gray-500 mt-1">Access all past lectures</p>
+                    <div class="mt-4">
+                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                        View Lectures <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                  <div class="bg-indigo-50 p-4">
+                    <i class="fas fa-question-circle text-indigo-600 text-3xl"></i>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-medium text-gray-800">Practice Questions</h3>
+                    <p class="text-sm text-gray-500 mt-1">Chapter-wise practice sets</p>
+                    <div class="mt-4">
+                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                        Start Practicing <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                  <div class="bg-indigo-50 p-4">
+                    <i class="fas fa-book text-indigo-600 text-3xl"></i>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-medium text-gray-800">Reference Books</h3>
+                    <p class="text-sm text-gray-500 mt-1">Recommended reading materials</p>
+                    <div class="mt-4">
+                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                        View List <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profileSection" class="section-content hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-1">
+              <div class="glass-card p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
+                <div class="text-center mb-4">
+                  <div id="profileAvatar" class="w-24 h-24 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mx-auto">
+                    <!-- Initial will be inserted here -->
+                  </div>
+                  <h3 class="text-lg font-semibold mt-3 text-gray-800" id="profileName"></h3>
+                  <p class="text-sm text-indigo-600" id="profileCourse"></p>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-envelope text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileEmail"></span>
+                  </div>
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-phone text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileMobile"></span>
+                  </div>
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-calendar-alt text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileJoinDate"></span>
+                  </div>
+                  <div class="flex items-center py-2">
+                    <i class="fas fa-users text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileBatch"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-2">
+              <div class="glass-card p-6">
+                <h2 class="section-title">Account Settings</h2>
+                <div class="mt-4">
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                      <input type="email" id="profileEmailInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" disabled>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+                      <input type="tel" id="profileMobileInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Change Password</label>
+                      <input type="password" id="newPassword" placeholder="New Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 mb-2">
+                      <input type="password" id="confirmPassword" placeholder="Confirm Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="pt-2">
+                      <button id="updateProfileBtn" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium">
+                        <i class="fas fa-save mr-2"></i> Save Changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Firebase Initialization -->
+  <script>
+    // Firebase configuration - REPLACE WITH YOUR ACTUAL CONFIG
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
+      authDomain: "starlet-registor.firebaseapp.com",
+      projectId: "starlet-registor",
+      storageBucket: "starlet-registor.appspot.com",
+      messagingSenderId: "904193225045",
+      appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Helper functions
+    function getInitials(name) {
+      if (!name) return '?';
+      const names = name.split(' ');
+      let initials = names[0].substring(0, 1).toUpperCase();
+      if (names.length > 1) {
+        initials += names[names.length - 1].substring(0, 1).toUpperCase();
+      }
+      return initials;
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return 'Not available';
+      const date = dateString.toDate();
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+    }
+
+    function formatDateTime(dateString) {
+      if (!dateString) return '';
+      const date = dateString.toDate();
+      return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Update current date and time
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
+        hour: '2-digit', 
+        minute: '2-digit'
+      });
+    }
+
+    // Initialize charts
+    let performanceChart, scoreTrendChart, subjectChart;
+
+    function initPerformanceChart() {
+      const ctx = document.getElementById('performanceChart').getContext('2d');
+      performanceChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Correct', 'Incorrect', 'Unattempted'],
+          datasets: [{
+            data: [65, 20, 15],
+            backgroundColor: [
+              '#4f46e5',
+              '#f43f5e',
+              '#e2e8f0'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          cutout: '70%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 20
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function initScoreTrendChart() {
+      const ctx = document.getElementById('scoreTrendChart').getContext('2d');
+      scoreTrendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Your Score',
+            data: [65, 59, 70, 71, 76, 82],
+            borderColor: '#4f46e5',
+            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+            tension: 0.3,
+            fill: true,
+            borderWidth: 2
+          }, {
+            label: 'Batch Average',
+            data: [55, 52, 58, 60, 65, 68],
+            borderColor: '#94a3b8',
+            backgroundColor: 'rgba(148, 163, 184, 0.1)',
+            tension: 0.3,
+            fill: true,
+            borderWidth: 2,
+            borderDash: [5, 5]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              min: 40,
+              max: 100
+            }
+          }
+        }
+      });
+    }
+
+    function initSubjectChart() {
+      const ctx = document.getElementById('subjectChart').getContext('2d');
+      subjectChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Physics', 'Chemistry', 'Mathematics', 'Biology', 'English'],
+          datasets: [{
+            label: 'Your Score',
+            data: [75, 82, 68, 88, 90],
+            backgroundColor: '#4f46e5',
+            borderRadius: 4
+          }, {
+            label: 'Batch Average',
+            data: [65, 70, 62, 75, 78],
+            backgroundColor: '#94a3b8',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
+    }
+
+    // Render test cards
+    function renderTestCards(tests) {
+      const container = document.getElementById('testResults');
+      container.innerHTML = '';
+      
+      if (tests.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-gray-400 col-span-3">
+            <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+            <p>No test results found</p>
+          </div>
+        `;
+        return;
+      }
+      
+      tests.forEach(test => {
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
+        card.innerHTML = `
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-medium text-gray-800">${test.title}</h3>
+                <p class="text-sm text-gray-500 mt-1">${formatDate(test.date)}</p>
+              </div>
+              <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                percentage >= 80 ? 'bg-green-100 text-green-800' : 
+                percentage >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+              }">
+                ${percentage}%
+              </span>
+            </div>
+            <div class="mt-4 flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="relative w-16 h-16">
+                  <div class="absolute top-0 left-0 w-full h-full rounded-full" 
+                       style="background: conic-gradient(#4f46e5 0% ${percentage}%, #e2e8f0 ${percentage}% 100%)">
+                    <div class="absolute inset-1/4 bg-white rounded-full flex items-center justify-center">
+                      <span class="text-sm font-bold">${percentage}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ml-3">
+                  <p class="text-xs text-gray-500">Rank</p>
+                  <p class="font-medium">${test.rank}/${test.totalStudents}</p>
+                </div>
+              </div>
+              <div>
+                <a href="#" class="text-indigo-600 text-xs font-medium flex items-center">
+                  View Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Render recent tests
+    function renderRecentTests(tests) {
+      const container = document.getElementById('recentTests');
+      container.innerHTML = '';
+      
+      if (tests.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-gray-400">
+            <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+            <p>No recent tests found</p>
+          </div>
+        `;
+        return;
+      }
+      
+      tests.slice(0, 3).forEach(test => {
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100';
+        item.innerHTML = `
+          <div>
+            <h4 class="font-medium text-sm">${test.title}</h4>
+            <p class="text-xs text-gray-500">${formatDate(test.date)}</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-medium ${
+              percentage >= 80 ? 'text-green-600' : 
+              percentage >= 60 ? 'text-blue-600' : 'text-red-600'
+            }">
+              ${percentage}%
+            </span>
+            <span class="text-xs text-gray-500">Rank: ${test.rank}</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Render course cards
+    function renderCourseCards(courses) {
+      const container = document.getElementById('coursesList');
+      container.innerHTML = '';
+      
+      if (courses.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-gray-400 col-span-3">
+            <i class="fas fa-book text-3xl mb-2"></i>
+            <p>No courses enrolled yet</p>
+          </div>
+        `;
+        return;
+      }
+      
+      courses.forEach(course => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
+        card.innerHTML = `
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-medium text-gray-800">${course.title}</h3>
+                <p class="text-sm text-gray-500 mt-1">${course.teacher}</p>
+              </div>
+              <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                course.progress >= 80 ? 'bg-green-100 text-green-800' : 
+                course.progress >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+              }">
+                ${course.progress}%
+              </span>
+            </div>
+            <div class="mt-4">
+              <div class="flex justify-between text-xs text-gray-500 mb-1">
+                <span>Course Progress</span>
+                <span>${course.progress}%</span>
+              </div>
+              <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-500" 
+                     style="width: ${course.progress}%"></div>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <p class="text-gray-500">Start Date</p>
+                <p class="font-medium">${formatDate(course.startDate)}</p>
+              </div>
+              <div>
+                <p class="text-gray-500">End Date</p>
+                <p class="font-medium">${formatDate(course.endDate)}</p>
+              </div>
+            </div>
+            <div class="mt-4">
+              <a href="#" class="text-indigo-600 text-xs font-medium flex items-center">
+                View Course <i class="fas fa-arrow-right ml-1 text-xs"></i>
+              </a>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Render upcoming deadlines
+    function renderUpcomingDeadlines(deadlines) {
+      const container = document.getElementById('upcomingDeadlines');
+      container.innerHTML = '';
+      
+      if (deadlines.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-gray-400">
+            <i class="fas fa-calendar-check text-3xl mb-2"></i>
+            <p>No upcoming deadlines</p>
+          </div>
+        `;
+        return;
+      }
+      
+      deadlines.forEach(deadline => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100';
+        item.innerHTML = `
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center ${
+              deadline.type === 'test' ? 'bg-red-100 text-red-600' : 
+              deadline.type === 'assignment' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'
+            }">
+              <i class="fas ${
+                deadline.type === 'test' ? 'fa-clipboard-list' : 
+                deadline.type === 'assignment' ? 'fa-file-alt' : 'fa-project-diagram'
+              } text-sm"></i>
+            </div>
+            <div class="ml-3">
+              <h4 class="font-medium text-sm">${deadline.title}</h4>
+              <p class="text-xs text-gray-500">${deadline.subject || ''}</p>
+            </div>
+          </div>
+          <span class="text-xs font-medium text-gray-700">${formatDateTime(deadline.dueDate)}</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Render performance table
+    function renderPerformanceTable(tests) {
+      const container = document.getElementById('performanceTable');
+      container.innerHTML = '';
+      
+      if (tests.length === 0) {
+        container.innerHTML = `
+          <tr>
+            <td colspan="5" class="px-4 py-4 text-center text-gray-400">No performance data available</td>
+          </tr>
+        `;
+        return;
+      }
+      
+      tests.forEach(test => {
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
+        row.innerHTML = `
+          <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${test.title}</td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${formatDate(test.date)}</td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm ${
+            percentage >= 80 ? 'text-green-600' : 
+            percentage >= 60 ? 'text-blue-600' : 'text-red-600'
+          } font-medium">
+            ${percentage}%
+          </td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${test.rank}/${test.totalStudents}</td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+            <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+          </td>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Navigation functionality
+    function setupNavigation() {
+      const navItems = document.querySelectorAll('.nav-item');
+      
+      navItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // Remove active class from all items
+          navItems.forEach(navItem => {
+            navItem.classList.remove('active');
+          });
+          
+          // Add active class to clicked item
+          this.classList.add('active');
+          
+          // Hide all sections
+          document.querySelectorAll('.section-content').forEach(section => {
+            section.classList.add('hidden');
+          });
+          
+          // Show the selected section
+          const sectionId = this.getAttribute('data-section') + 'Section';
+          document.getElementById(sectionId).classList.remove('hidden');
+        });
+      });
+      
+      // Mobile sidebar toggle
+      document.getElementById('sidebarToggle').addEventListener('click', function() {
+        document.getElementById('mobileSidebar').classList.remove('-translate-x-full');
+      });
+      
+      document.getElementById('closeSidebar').addEventListener('click', function() {
+        document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+      });
+    }
+
+    // Logout function
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      }).catch((error) => {
+        console.error("Logout Error:", error);
+        alert("Logout failed. Please try again.");
+      });
+    }
+
+    // Update profile handler
+    document.getElementById('updateProfileBtn').addEventListener('click', function() {
+      const newMobile = document.getElementById('profileMobileInput').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (newPassword && newPassword !== confirmPassword) {
+        alert("Passwords don't match!");
+        return;
+      }
+      
+      const user = auth.currentUser;
+      const userRef = db.collection('users').doc(user.uid);
+      
+      // Update mobile number in Firestore
+      userRef.update({
+        mobile: newMobile
+      }).then(() => {
+        // Update password if provided
+        if (newPassword) {
+          return user.updatePassword(newPassword).then(() => {
+            alert("Profile updated successfully!");
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+          });
+        } else {
+          alert("Profile updated successfully!");
+        }
+      }).catch(error => {
+        console.error("Error updating profile:", error);
+        alert("Error updating profile. Please try again.");
+      });
+    });
+
+    // Fetch user dashboard data
+    async function fetchUserDashboardData(userId) {
+      try {
+        // Get user document
+        const userDoc = await db.collection('users').doc(userId).get();
+        const userData = userDoc.data();
+        
+        // Get enrollments with course details
+        const enrollmentsSnap = await db.collection('enrollments')
+          .where('userId', '==', userId)
+          .get();
+        
+        const courses = await Promise.all(
+          enrollmentsSnap.docs.map(async doc => {
+            const enrollment = doc.data();
+            const courseDoc = await db.collection('courses').doc(enrollment.courseId).get();
+            return {
+              ...courseDoc.data(),
+              progress: enrollment.progress || 0,
+              id: courseDoc.id
+            };
+          })
+        );
+        
+        // Get test results
+        const testsSnap = await db.collection('testResults')
+          .where('userId', '==', userId)
+          .orderBy('date', 'desc')
+          .limit(5)
+          .get();
+        
+        const tests = testsSnap.docs.map(doc => doc.data());
+        
+        // Get upcoming deadlines
+        const deadlinesSnap = await db.collection('deadlines')
+          .where('dueDate', '>=', new Date())
+          .orderBy('dueDate', 'asc')
+          .limit(3)
+          .get();
+        
+        const deadlines = deadlinesSnap.docs.map(doc => doc.data());
+        
+        return {
+          user: userData,
+          courses,
+          tests,
+          deadlines
+        };
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        return null;
+      }
+    }
+
+    // Initialize the dashboard
+    async function initDashboard(userId) {
+      // Update date and time every minute
+      updateDateTime();
+      setInterval(updateDateTime, 60000);
+      
+      // Initialize charts
+      initPerformanceChart();
+      initScoreTrendChart();
+      initSubjectChart();
+      
+      // Fetch and render data
+      const dashboardData = await fetchUserDashboardData(userId);
+      
+      if (dashboardData) {
+        const { user, courses, tests, deadlines } = dashboardData;
+        
+        // Update user info
+        const initials = getInitials(user.name);
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userCourse').textContent = user.course;
+        document.getElementById('userAvatar').textContent = initials;
+        document.getElementById('welcomeUserName').textContent = user.name.split(' ')[0];
+        
+        // Update profile section
+        document.getElementById('profileName').textContent = user.name;
+        document.getElementById('profileCourse').textContent = user.course;
+        document.getElementById('profileMobile').textContent = user.mobile || 'Not provided';
+        document.getElementById('profileEmail').textContent = user.email;
+        document.getElementById('profileJoinDate').textContent = formatDate(user.joinDate);
+        document.getElementById('profileBatch').textContent = user.batch || 'Not specified';
+        document.getElementById('profileAvatar').textContent = initials;
+        document.getElementById('profileEmailInput').value = user.email;
+        document.getElementById('profileMobileInput').value = user.mobile || '';
+        
+        // Render data
+        renderCourseCards(courses);
+        renderTestCards(tests);
+        renderRecentTests(tests);
+        renderUpcomingDeadlines(deadlines);
+        renderPerformanceTable(tests);
+        
+        // Calculate and display performance metrics
+        if (tests.length > 0) {
+          const avgScore = tests.reduce((sum, test) => sum + (test.score / test.maxMarks * 100), 0) / tests.length;
+          document.getElementById('avgScore').textContent = Math.round(avgScore) + '%';
+          document.getElementById('testsTaken').textContent = tests.length;
+          
+          // Find best rank
+          const bestRank = Math.min(...tests.map(t => t.rank));
+          document.getElementById('rank').textContent = bestRank + getOrdinalSuffix(bestRank);
+        }
+        
+        // Calculate progress (mock values - replace with actual calculations)
+        document.getElementById('syllabusCoverage').textContent = '72%';
+        document.getElementById('syllabusProgress').style.width = '72%';
+        document.getElementById('conceptMastery').textContent = '65%';
+        document.getElementById('conceptProgress').style.width = '65%';
+        document.getElementById('practiceCompleted').textContent = '58%';
+        document.getElementById('practiceProgress').style.width = '58%';
+      }
+      
+      // Setup navigation
+      setupNavigation();
+    }
+
+    // Helper function for ordinal suffixes
+    function getOrdinalSuffix(num) {
+      const j = num % 10, k = num % 100;
+      if (j == 1 && k != 11) return 'st';
+      if (j == 2 && k != 12) return 'nd';
+      if (j == 3 && k != 13) return 'rd';
+      return 'th';
+    }
+
+    // Auth state change handler
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in
+        initDashboard(user.uid);
+      } else {
+        // No user is signed in
+        window.location.href = "login.html";
+      }
+    });
+
+  </script>
+</body>
+</html>
