@@ -168,6 +168,34 @@
         max-height: 80vh;
       }
     }
+    
+    /* Added animation for background blobs */
+    @keyframes blob {
+      0% {
+        transform: translate(0px, 0px) scale(1);
+      }
+      33% {
+        transform: translate(30px, -50px) scale(1.1);
+      }
+      66% {
+        transform: translate(-20px, 20px) scale(0.9);
+      }
+      100% {
+        transform: translate(0px, 0px) scale(1);
+      }
+    }
+    
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+    
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+    
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
   </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
@@ -203,14 +231,14 @@
         <div id="nameField" class="hidden">
           <div class="input-group">
             <input type="text" id="name" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
-            <label class="floating-label">Full Name</label>
+            <label for="name" class="floating-label">Full Name</label>
           </div>
         </div>
 
         <div id="mobileField" class="hidden">
           <div class="input-group">
-            <input type="text" id="mobile" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
-            <label class="floating-label">Mobile Number</label>
+            <input type="tel" id="mobile" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
+            <label for="mobile" class="floating-label">Mobile Number</label>
           </div>
         </div>
 
@@ -224,7 +252,7 @@
               <option value="NEET/IIT/JEE/CUET">NEET/IIT/JEE/CUET</option>
               <option value="SSC/Bank/Railway">SSC/Bank/Railway</option>
             </select>
-            <label class="floating-label">Choose Course</label>
+            <label for="course" class="floating-label">Choose Course</label>
             <div class="absolute right-3 top-3 text-gray-400">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -242,7 +270,7 @@
               <option value="Evening Batch">Evening Batch</option>
               <option value="Weekend Batch">Weekend Batch</option>
             </select>
-            <label class="floating-label">Choose Batch</label>
+            <label for="batch" class="floating-label">Choose Batch</label>
             <div class="absolute right-3 top-3 text-gray-400">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -253,12 +281,12 @@
 
         <div class="input-group">
           <input type="email" id="email" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
-          <label class="floating-label">Email Address</label>
+          <label for="email" class="floating-label">Email Address</label>
         </div>
 
         <div class="input-group">
-          <input type="password" id="password" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
-          <label class="floating-label">Password</label>
+          <input type="password" id="password" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required minlength="6" />
+          <label for="password" class="floating-label">Password</label>
         </div>
 
         <div class="flex justify-between items-center text-sm">
@@ -341,46 +369,54 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Floating label functionality
-    document.querySelectorAll('.form-input').forEach(input => {
-      if(input.value) {
-        input.classList.add('input-filled');
-      }
-            
-      input.addEventListener('input', () => {
+    // DOM Elements
+    const loader = document.getElementById('loader');
+    const formContainer = document.getElementById('formContainer');
+    const authForm = document.getElementById('authForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const nameInput = document.getElementById('name');
+    const mobileInput = document.getElementById('mobile');
+    const courseSelect = document.getElementById('course');
+    const batchSelect = document.getElementById('batch');
+    const rememberCheckbox = document.getElementById('remember');
+    const forgotPasswordBtn = document.getElementById('forgotPassword');
+    const authBtn = document.getElementById('authBtn');
+    const authText = document.getElementById('authText');
+    const spinner = document.getElementById('spinner');
+    const toggleFormBtn = document.getElementById('toggleForm');
+    const toggleFormText = document.getElementById('toggleFormText');
+    const formTitle = document.getElementById('formTitle');
+    const popup = document.getElementById('popupMessage');
+    const payNowSection = document.getElementById('payNow');
+
+    // Form fields containers
+    const nameField = document.getElementById('nameField');
+    const mobileField = document.getElementById('mobileField');
+    const courseField = document.getElementById('courseField');
+    const batchField = document.getElementById('batchField');
+
+    // State
+    let isLogin = true;
+
+    // Initialize floating labels
+    function initFloatingLabels() {
+      document.querySelectorAll('.form-input').forEach(input => {
         if(input.value) {
           input.classList.add('input-filled');
-        } else {
-          input.classList.remove('input-filled');
         }
+                
+        input.addEventListener('input', () => {
+          if(input.value) {
+            input.classList.add('input-filled');
+          } else {
+            input.classList.remove('input-filled');
+          }
+        });
       });
-    });
+    }
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docSnap = await getDoc(doc(db, "users", user.uid));
-        if (docSnap.exists() && docSnap.data().hasAccess) {
-          window.location.replace("dashboard.html");
-        } else {
-          await signOut(auth);
-          document.getElementById("loader").classList.add("hidden");
-          document.getElementById("formContainer").classList.remove("opacity-0");
-          document.getElementById("formContainer").classList.remove("translate-y-4");
-        }
-      } else {
-        document.getElementById("loader").classList.add("hidden");
-        document.getElementById("formContainer").classList.remove("opacity-0");
-        document.getElementById("formContainer").classList.remove("translate-y-4");
-      }
-    });
-
-    let isLogin = true;
-    const toggleFormBtn = document.getElementById("toggleForm");
-    const toggleFormText = document.getElementById("toggleFormText");
-    const authText = document.getElementById("authText");
-    const formTitle = document.getElementById("formTitle");
-    const popup = document.getElementById("popupMessage");
-
+    // Show message popup
     function showMessage(msg, bg = 'bg-green-600') {
       popup.textContent = msg;
       popup.className = `block mt-6 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg ${bg}`;
@@ -388,71 +424,91 @@
       setTimeout(() => popup.classList.add("hidden"), 3000);
     }
 
+    // Toggle between login and signup forms
     function toggleForm() {
       isLogin = !isLogin;
-      document.getElementById("nameField").classList.toggle("hidden", isLogin);
-      document.getElementById("mobileField").classList.toggle("hidden", isLogin);
-      document.getElementById("courseField").classList.toggle("hidden", isLogin);
-      document.getElementById("batchField").classList.toggle("hidden", isLogin);
+      
+      // Toggle fields visibility
+      nameField.classList.toggle("hidden", isLogin);
+      mobileField.classList.toggle("hidden", isLogin);
+      courseField.classList.toggle("hidden", isLogin);
+      batchField.classList.toggle("hidden", isLogin);
+      
+      // Update UI text
       formTitle.textContent = isLogin ? "Login to your account" : "Create a new account";
       authText.textContent = isLogin ? "Login" : "Sign Up";
       toggleFormText.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
       toggleFormBtn.textContent = isLogin ? "Sign Up" : "Login";
-            
+      
+      // Clear and reset additional fields when switching to login
       if(isLogin) {
-        document.getElementById("name").value = "";
-        document.getElementById("mobile").value = "";
-        document.getElementById("course").value = "";
-        document.getElementById("batch").value = "";
-        document.getElementById("name").classList.remove('input-filled');
-        document.getElementById("mobile").classList.remove('input-filled');
-        document.getElementById("course").classList.remove('input-filled');
-        document.getElementById("batch").classList.remove('input-filled');
+        nameInput.value = "";
+        mobileInput.value = "";
+        courseSelect.value = "";
+        batchSelect.value = "";
+        nameInput.classList.remove('input-filled');
+        mobileInput.classList.remove('input-filled');
+        courseSelect.classList.remove('input-filled');
+        batchSelect.classList.remove('input-filled');
       }
     }
 
-    toggleFormBtn.addEventListener("click", () => {
-      document.getElementById("formContainer").classList.add("opacity-0");
-      document.getElementById("formContainer").classList.add("translate-y-4");
-      setTimeout(() => {
-        toggleForm();
-        document.getElementById("formContainer").classList.remove("opacity-0");
-        document.getElementById("formContainer").classList.remove("translate-y-4");
-      }, 300);
-    });
-
-    document.getElementById("authForm").addEventListener("submit", async (e) => {
+    // Handle form submission
+    async function handleAuthFormSubmit(e) {
       e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const spinner = document.getElementById("spinner");
-      const authBtn = document.getElementById("authBtn");
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      
+      // Validate inputs
+      if (!email || !password) {
+        showMessage("Please fill in all required fields", 'bg-red-500');
+        return;
+      }
+      
+      if (!isLogin) {
+        const name = nameInput.value.trim();
+        const mobile = mobileInput.value.trim();
+        const course = courseSelect.value;
+        const batch = batchSelect.value;
 
+        if(!name || !mobile || !course || !batch) {
+          showMessage("Please fill all required fields", 'bg-red-500');
+          return;
+        }
+        
+        // Validate mobile number format (basic validation)
+        if (!/^\d{10}$/.test(mobile)) {
+          showMessage("Please enter a valid 10-digit mobile number", 'bg-red-500');
+          return;
+        }
+      }
+
+      // Show loading state
       authText.textContent = isLogin ? "Logging in..." : "Signing up...";
       spinner.classList.remove("hidden");
       authBtn.disabled = true;
 
       try {
         if (isLogin) {
+          // Login logic
           const userCredential = await signInWithEmailAndPassword(auth, email, password);
           const docSnap = await getDoc(doc(db, "users", userCredential.user.uid));
+          
           if (docSnap.exists() && docSnap.data().hasAccess) {
             showMessage("Login successful! Redirecting...");
             setTimeout(() => window.location.replace("dashboard.html"), 1000);
           } else {
-            document.getElementById("payNow").classList.remove("hidden");
+            payNowSection.classList.remove("hidden");
             await signOut(auth);
             showMessage("Please complete your payment to access content", 'bg-indigo-600');
           }
         } else {
-          const name = document.getElementById("name").value.trim();
-          const mobile = document.getElementById("mobile").value.trim();
-          const course = document.getElementById("course").value;
-          const batch = document.getElementById("batch").value;
-
-          if(!name || !mobile || !course || !batch) {
-            throw new Error("Please fill all required fields");
-          }
+          // Signup logic
+          const name = nameInput.value.trim();
+          const mobile = mobileInput.value.trim();
+          const course = courseSelect.value;
+          const batch = batchSelect.value;
 
           // Create user in authentication
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -536,21 +592,38 @@
           setTimeout(() => toggleForm(), 1500);
         }
       } catch (error) {
-        showMessage(error.message, 'bg-red-500');
+        console.error("Auth error:", error);
+        let errorMessage = error.message;
+        
+        // More user-friendly error messages
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = "This email is already registered. Please login instead.";
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = "Please enter a valid email address.";
+        } else if (error.code === 'auth/weak-password') {
+          errorMessage = "Password should be at least 6 characters.";
+        } else if (error.code === 'auth/user-not-found') {
+          errorMessage = "No account found with this email.";
+        } else if (error.code === 'auth/wrong-password') {
+          errorMessage = "Incorrect password. Please try again.";
+        }
+        
+        showMessage(errorMessage, 'bg-red-500');
       } finally {
+        // Reset loading state
         authText.textContent = isLogin ? "Login" : "Sign Up";
         spinner.classList.add("hidden");
         authBtn.disabled = false;
       }
-    });
+    }
 
-    document.getElementById("forgotPassword").addEventListener("click", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
+    // Handle forgot password
+    async function handleForgotPassword() {
+      const email = emailInput.value.trim();
             
       if(!email) {
         showMessage("Please enter your email in the email field first", 'bg-indigo-600');
-        document.getElementById("email").focus();
+        emailInput.focus();
         return;
       }
             
@@ -560,20 +633,58 @@
       } catch (error) {
         showMessage("Error: " + error.message, 'bg-red-500');
       }
-    });
+    }
 
-    // Add click effects to all clickable elements
-    document.querySelectorAll('.clickable').forEach(element => {
-      element.addEventListener('mousedown', () => {
-        element.classList.add('active:scale-95');
+    // Initialize the application
+    function init() {
+      // Initialize floating labels
+      initFloatingLabels();
+      
+      // Check auth state
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const docSnap = await getDoc(doc(db, "users", user.uid));
+          if (docSnap.exists() && docSnap.data().hasAccess) {
+            window.location.replace("dashboard.html");
+          } else {
+            await signOut(auth);
+            loader.classList.add("hidden");
+            formContainer.classList.remove("opacity-0", "translate-y-4");
+          }
+        } else {
+          loader.classList.add("hidden");
+          formContainer.classList.remove("opacity-0", "translate-y-4");
+        }
       });
-      element.addEventListener('mouseup', () => {
-        element.classList.remove('active:scale-95');
+
+      // Event listeners
+      toggleFormBtn.addEventListener("click", () => {
+        formContainer.classList.add("opacity-0", "translate-y-4");
+        setTimeout(() => {
+          toggleForm();
+          formContainer.classList.remove("opacity-0", "translate-y-4");
+        }, 300);
       });
-      element.addEventListener('mouseleave', () => {
-        element.classList.remove('active:scale-95');
+
+      authForm.addEventListener("submit", handleAuthFormSubmit);
+      forgotPasswordBtn.addEventListener("click", handleForgotPassword);
+
+      // Add click effects to all clickable elements
+      document.querySelectorAll('.clickable').forEach(element => {
+        element.addEventListener('mousedown', () => {
+          element.classList.add('active:scale-95');
+        });
+        element.addEventListener('mouseup', () => {
+          element.classList.remove('active:scale-95');
+        });
+        element.addEventListener('mouseleave', () => {
+          element.classList.remove('active:scale-95');
+        });
       });
-    });
+    }
+
+    // Start the app
+    init();
   </script>
 </body>
 </html>
