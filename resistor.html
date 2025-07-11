@@ -163,34 +163,6 @@
       transform: scale(0.98);
     }
     
-    /* Success popup styles */
-    .success-popup {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-      background: white;
-      border-left: 5px solid #10B981;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      padding: 1rem;
-      border-radius: 0.375rem;
-      display: flex;
-      align-items: center;
-      max-width: 350px;
-      transform: translateX(120%);
-      transition: transform 0.3s ease-in-out;
-    }
-    
-    .success-popup.show {
-      transform: translateX(0);
-    }
-    
-    .success-icon {
-      color: #10B981;
-      margin-right: 0.75rem;
-      flex-shrink: 0;
-    }
-    
     @media (max-height: 700px) {
       .card {
         max-height: 80vh;
@@ -211,17 +183,6 @@
     <div class="text-center">
       <div class="loader mb-4"></div>
       <p class="text-indigo-600 font-medium">Loading THP...</p>
-    </div>
-  </div>
-
-  <!-- Success Popup (hidden by default) -->
-  <div id="successPopup" class="success-popup">
-    <svg class="success-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>
-    <div>
-      <p class="font-medium text-gray-800" id="successTitle">Success!</p>
-      <p class="text-sm text-gray-600" id="successMessage">Your account has been created successfully.</p>
     </div>
   </div>
 
@@ -257,20 +218,11 @@
           <div class="input-group">
             <select id="course" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none appearance-none">
               <option value=""></option>
-              <option value="Class 9">Class 9</option>
-              <option value="Class 10">Class 10</option>
-              <option value="Class 11 (Science)">Class 11 (Science)</option>
-              <option value="Class 11 (Commerce)">Class 11 (Commerce)</option>
-              <option value="Class 11 (Arts)">Class 11 (Arts)</option>
-              <option value="Class 12 (Science)">Class 12 (Science)</option>
-              <option value="Class 12 (Commerce)">Class 12 (Commerce)</option>
-              <option value="Class 12 (Arts)">Class 12 (Arts)</option>
-              <option value="NEET Preparation">NEET Preparation</option>
-              <option value="JEE Preparation">JEE Preparation</option>
-              <option value="CUET Preparation">CUET Preparation</option>
-              <option value="SSC Exams">SSC Exams</option>
-              <option value="Banking Exams">Banking Exams</option>
-              <option value="Railway Exams">Railway Exams</option>
+              <option value="Class 9 and 10">Class 9 and 10</option>
+              <option value="Class 11 and 12">Class 11 and 12</option>
+              <option value="BSc">BSc</option>
+              <option value="NEET/IIT/JEE/CUET">NEET/IIT/JEE/CUET</option>
+              <option value="SSC/Bank/Railway">SSC/Bank/Railway</option>
             </select>
             <label class="floating-label">Choose Course</label>
             <div class="absolute right-3 top-3 text-gray-400">
@@ -343,14 +295,13 @@
     import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
-        authDomain: "login-form-eee86.firebaseapp.com",
-        projectId: "login-form-eee86",
-        storageBucket: "login-form-eee86.appspot.com",
-        messagingSenderId: "717475952542",
-        appId: "1:717475952542:web:f79db77ed1f60d117b488f",
-        measurementId: "G-VV0D9TNK0Y"
-      };
+      apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
+      authDomain: "starlet-registor.firebaseapp.com",
+      projectId: "starlet-registor",
+      storageBucket: "starlet-registor.appspot.com",
+      messagingSenderId: "904193225045",
+      appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -373,51 +324,12 @@
       });
     });
 
-    // Show success popup function
-    function showSuccessPopup(title, message) {
-      const popup = document.getElementById('successPopup');
-      document.getElementById('successTitle').textContent = title;
-      document.getElementById('successMessage').textContent = message;
-      
-      popup.classList.add('show');
-      
-      // Hide after 5 seconds
-      setTimeout(() => {
-        popup.classList.remove('show');
-      }, 5000);
-    }
-
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const docSnap = await getDoc(doc(db, "users", user.uid));
         if (docSnap.exists() && docSnap.data().hasAccess) {
-          // Redirect to specific course page based on user's course selection
-          const course = docSnap.data().course;
-          let redirectPage = "dashboard.html"; // default
-          
-          // Map courses to their respective pages
-          const coursePages = {
-            "Class 9": "class9.html",
-            "Class 10": "class10.html",
-            "Class 11 (Science)": "class11-science.html",
-            "Class 11 (Commerce)": "class11-commerce.html",
-            "Class 11 (Arts)": "class11-arts.html",
-            "Class 12 (Science)": "class12-science.html",
-            "Class 12 (Commerce)": "class12-commerce.html",
-            "Class 12 (Arts)": "class12-arts.html",
-            "NEET Preparation": "neet.html",
-            "JEE Preparation": "jee.html",
-            "CUET Preparation": "cuet.html",
-            "SSC Exams": "ssc.html",
-            "Banking Exams": "banking.html",
-            "Railway Exams": "railway.html"
-          };
-          
-          if (coursePages[course]) {
-            redirectPage = coursePages[course];
-          }
-          
-          window.location.replace(redirectPage);
+          // Redirect to dashboard.html regardless of course
+          window.location.replace("dashboard.html");
         } else {
           await signOut(auth);
           document.getElementById("loader").classList.add("hidden");
@@ -493,33 +405,7 @@
           const docSnap = await getDoc(doc(db, "users", userCredential.user.uid));
           if (docSnap.exists() && docSnap.data().hasAccess) {
             showMessage("Login successful! Redirecting...");
-            setTimeout(() => {
-              const course = docSnap.data().course;
-              // Redirect to specific course page
-              if (course.includes("Class 9")) {
-                window.location.replace("class9.html");
-              } else if (course.includes("Class 10")) {
-                window.location.replace("class10.html");
-              } else if (course.includes("Class 11")) {
-                window.location.replace("class11.html");
-              } else if (course.includes("Class 12")) {
-                window.location.replace("class12.html");
-              } else if (course.includes("NEET")) {
-                window.location.replace("neet.html");
-              } else if (course.includes("JEE")) {
-                window.location.replace("jee.html");
-              } else if (course.includes("CUET")) {
-                window.location.replace("cuet.html");
-              } else if (course.includes("SSC")) {
-                window.location.replace("ssc.html");
-              } else if (course.includes("Banking")) {
-                window.location.replace("banking.html");
-              } else if (course.includes("Railway")) {
-                window.location.replace("railway.html");
-              } else {
-                window.location.replace("dashboard.html");
-              }
-            }, 1000);
+            setTimeout(() => window.location.replace("dashboard.html"), 1000);
           } else {
             document.getElementById("payNow").classList.remove("hidden");
             await signOut(auth);
@@ -538,22 +424,8 @@
           await setDoc(doc(db, "users", userCredential.user.uid), {
             name, email, mobile, course, hasAccess: false
           });
-          
-          // Show success popup with more details
-          showSuccessPopup(
-            "Account Created Successfully!", 
-            `Welcome ${name}! You've signed up for ${course}. Please login to continue.`
-          );
-          
-          // Reset form and toggle to login
-          setTimeout(() => {
-            document.getElementById("email").value = "";
-            document.getElementById("password").value = "";
-            document.getElementById("name").value = "";
-            document.getElementById("mobile").value = "";
-            document.getElementById("course").value = "";
-            toggleForm();
-          }, 1500);
+          showMessage("Account created successfully! Please login.");
+          setTimeout(() => toggleForm(), 1500);
         }
       } catch (error) {
         showMessage(error.message, 'bg-red-500');
