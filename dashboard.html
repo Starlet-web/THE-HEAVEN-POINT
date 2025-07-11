@@ -2,317 +2,612 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THP - Login & Signup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>THP Coaching Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
     :root {
       --primary: #6366f1;
       --primary-dark: #4f46e5;
       --primary-light: #818cf8;
-      --secondary: #f43f5e;
-      --dark: #1e293b;
-      --light: #f8fafc;
     }
     
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f9fafb, #f3f4f6);
-      overflow-x: hidden;
+      background: #f8fafc;
+      min-height: 100vh;
     }
     
-    .fade {
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .form-input {
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(226, 232, 240, 0.3);
       transition: all 0.3s ease;
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
     
-    .form-input:focus {
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      position: relative;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
     }
     
-    .btn-primary {
-      background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
-      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3), 0 2px 4px -1px rgba(99, 102, 241, 0.2);
-      cursor: pointer;
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      border-radius: 3px;
     }
     
-    .btn-primary:hover {
-      background-image: linear-gradient(to right, var(--primary-dark), var(--primary));
-      transform: translateY(-1px);
-      box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.2);
+    .progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      background-color: #e2e8f0;
+      overflow: hidden;
     }
     
-    .btn-primary:active {
-      transform: translateY(0);
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      transition: width 0.5s ease;
     }
     
-    .btn-secondary {
-      background-image: linear-gradient(to right, #f43f5e, #e11d48);
-      box-shadow: 0 4px 6px -1px rgba(244, 63, 94, 0.3), 0 2px 4px -1px rgba(244, 63, 94, 0.2);
-      cursor: pointer;
+    .test-score {
+      position: relative;
+      width: 80px;
+      height: 80px;
     }
     
-    .btn-secondary:hover {
-      background-image: linear-gradient(to right, #e11d48, #f43f5e);
-    }
-    
-    .floating-label {
+    .test-score-circle {
       position: absolute;
       top: 0;
       left: 0;
-      transform: translate(12px, 12px);
-      transition: all 0.2s ease-out;
-      pointer-events: none;
-      color: #64748b;
-      font-size: 14px;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) 0% var(--percentage), #e2e8f0 var(--percentage) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
-    .input-filled + .floating-label,
-    .form-input:focus + .floating-label {
-      transform: translate(8px, -8px) scale(0.85);
-      background-color: white;
-      padding: 0 4px;
-      color: var(--primary);
+    .test-score-inner {
+      width: 70%;
+      height: 70%;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--primary-dark);
     }
     
-    .input-group {
+    .nav-item.active {
+      color: var(--primary-dark);
+      font-weight: 500;
       position: relative;
     }
     
-    .loader {
-      width: 48px;
-      height: 48px;
-      border: 5px solid #e0e7ff;
-      border-bottom-color: var(--primary);
-      border-radius: 50%;
-      display: inline-block;
-      box-sizing: border-box;
-      animation: rotation 1s linear infinite;
-    }
-    
-    @keyframes rotation {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .card {
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 12px;
-      border: 1px solid rgba(209, 213, 219, 0.3);
-      max-height: 90vh;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--primary) #f1f1f1;
-    }
-    
-    .card::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .card::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-    
-    .card::-webkit-scrollbar-thumb {
-      background-color: var(--primary);
-      border-radius: 10px;
-    }
-    
-    .wave {
-      position: fixed;
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      overflow: hidden;
-      line-height: 0;
-      transform: rotate(180deg);
-      z-index: -1;
-    }
-    
-    .wave svg {
-      position: relative;
-      display: block;
-      width: calc(100% + 1.3px);
-      height: 150px;
-    }
-    
-    .wave .shape-fill {
-      fill: rgba(99, 102, 241, 0.1);
-    }
-    
-    .clickable {
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .clickable:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
-    }
-    
-    .clickable:active {
-      transform: scale(0.98);
-    }
-    
-    @media (max-height: 700px) {
-      .card {
-        max-height: 80vh;
-      }
+      height: 2px;
+      background: var(--primary);
     }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-  <!-- Background Elements -->
-  <div class="absolute inset-0 overflow-hidden z-0">
-    <div class="absolute top-0 left-0 w-64 h-64 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-    <div class="absolute top-0 right-0 w-64 h-64 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-    <div class="absolute bottom-0 right-0 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
-  </div>
-
-  <!-- Loader -->
-  <div id="loader" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 transition-opacity duration-500">
-    <div class="text-center">
-      <div class="loader mb-4"></div>
-      <p class="text-indigo-600 font-medium">Loading THP...</p>
-    </div>
-  </div>
-
-  <!-- Form Container -->
-  <div class="w-full max-w-md card shadow-2xl fade opacity-0 transform translate-y-4 mx-auto my-8" id="formContainer">
-    <div class="p-8">
-      <div class="text-center mb-8">
-        <div class="flex justify-center mb-4 clickable" onclick="window.location.reload()">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-          </svg>
+<body class="bg-gray-50">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <div class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200">
+      <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+        <div class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+            <i class="fas fa-graduation-cap text-xl"></i>
+          </div>
+          <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
         </div>
-        <h2 class="text-3xl font-bold text-indigo-700 mb-2 clickable" onclick="window.location.reload()">THP</h2>
-        <p class="text-gray-500" id="formTitle">Login to your account</p>
       </div>
-
-      <form id="authForm" class="space-y-6">
-        <div id="nameField" class="hidden">
-          <div class="input-group">
-            <input type="text" id="name" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
-            <label class="floating-label">Full Name</label>
+      <div class="flex flex-col flex-grow p-4 overflow-auto">
+        <nav class="flex-1 space-y-2">
+          <div class="nav-item active" data-section="dashboard">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            <span>Dashboard</span>
           </div>
-        </div>
-
-        <div id="mobileField" class="hidden">
-          <div class="input-group">
-            <input type="text" id="mobile" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
-            <label class="floating-label">Mobile Number</label>
+          <div class="nav-item" data-section="courses">
+            <i class="fas fa-book mr-3"></i>
+            <span>My Courses</span>
           </div>
-        </div>
-
-        <div id="courseField" class="hidden">
-          <div class="input-group">
-            <select id="course" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none appearance-none">
-              <option value=""></option>
-              <option value="Class 9 and 10">Class 9 and 10</option>
-              <option value="Class 11 and 12">Class 11 and 12</option>
-              <option value="BSc">BSc</option>
-              <option value="NEET/IIT/JEE/CUET">NEET/IIT/JEE/CUET</option>
-              <option value="SSC/Bank/Railway">SSC/Bank/Railway</option>
-            </select>
-            <label class="floating-label">Choose Course</label>
-            <div class="absolute right-3 top-3 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
-            </div>
+          <div class="nav-item" data-section="performance">
+            <i class="fas fa-chart-line mr-3"></i>
+            <span>Performance</span>
           </div>
-        </div>
-
-        <div id="batchField" class="hidden">
-          <div class="input-group">
-            <select id="batch" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none appearance-none">
-              <option value=""></option>
-              <option value="Morning Batch">Morning Batch</option>
-              <option value="Afternoon Batch">Afternoon Batch</option>
-              <option value="Evening Batch">Evening Batch</option>
-              <option value="Weekend Batch">Weekend Batch</option>
-            </select>
-            <label class="floating-label">Choose Batch</label>
-            <div class="absolute right-3 top-3 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
-            </div>
+          <div class="nav-item" data-section="tests">
+            <i class="fas fa-clipboard-list mr-3"></i>
+            <span>Test Results</span>
           </div>
-        </div>
-
-        <div class="input-group">
-          <input type="email" id="email" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
-          <label class="floating-label">Email Address</label>
-        </div>
-
-        <div class="input-group">
-          <input type="password" id="password" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
-          <label class="floating-label">Password</label>
-        </div>
-
-        <div class="flex justify-between items-center text-sm">
-          <div class="flex items-center">
-            <input id="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded clickable">
-            <label for="remember" class="ml-2 block text-gray-600 clickable">Remember me</label>
+          <div class="nav-item" data-section="resources">
+            <i class="fas fa-file-alt mr-3"></i>
+            <span>Study Resources</span>
           </div>
-          <button type="button" id="forgotPassword" class="text-indigo-600 hover:text-indigo-800 transition-colors clickable">Forgot Password?</button>
-        </div>
-
-        <button type="submit" id="authBtn" class="btn-primary w-full text-white p-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 clickable">
-          <span id="authText">Login</span>
-          <svg id="spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0h8z"/>
-          </svg>
+          <div class="nav-item" data-section="profile">
+            <i class="fas fa-user mr-3"></i>
+            <span>Profile</span>
+          </div>
+        </nav>
+      </div>
+      <div class="p-4 border-t border-gray-200">
+        <button onclick="logout()" class="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 text-sm">
+          <i class="fas fa-sign-out-alt"></i> Logout
         </button>
-
-        <div class="text-center text-sm text-gray-600">
-          <span id="toggleFormText">Don't have an account?</span>
-          <button type="button" id="toggleForm" class="ml-1 text-indigo-600 hover:text-indigo-800 font-medium transition-colors clickable">Sign Up</button>
-        </div>
-
-        <div id="payNow" class="hidden text-center pt-4 border-t border-gray-100">
-          <p class="text-gray-600 mb-3">You haven't purchased access yet.</p>
-          <a href="GPay.html" class="btn-secondary inline-block px-6 py-2 text-white rounded-lg transition-all clickable">Pay Now</a>
-        </div>
-      </form>
-
-      <div id="popupMessage" class="hidden mt-6 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg"></div>
-            
-      <div class="mt-8 text-center text-xs text-gray-400">
-        <p class="clickable" onclick="window.location.href='terms.html'">Terms of Service</p>
-        <p class="clickable mt-1" onclick="window.location.href='privacy.html'">Privacy Policy</p>
       </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Top Navigation -->
+      <header class="bg-white border-b border-gray-200 flex items-center justify-between h-16 px-4">
+        <div class="flex items-center md:hidden">
+          <button id="sidebarToggle" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+          <div class="flex items-center gap-2 ml-4">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <div class="hidden md:flex items-center gap-2">
+            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+              <i class="fas fa-user-graduate text-indigo-600 mr-1"></i>
+              <span id="userName"></span>
+            </span>
+            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+              <i class="fas fa-book text-indigo-600 mr-1"></i>
+              <span id="userCourse"></span>
+            </span>
+          </div>
+          <div id="userAvatar" class="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center text-white font-medium">
+            <!-- Initial will be inserted here -->
+          </div>
+        </div>
+      </header>
+
+      <!-- Mobile Sidebar -->
+      <div id="mobileSidebar" class="fixed inset-0 z-50 bg-white transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+        <div class="flex flex-col h-full">
+          <div class="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+            <div class="flex items-center gap-2">
+              <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+                <i class="fas fa-graduation-cap text-xl"></i>
+              </div>
+              <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
+            </div>
+            <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="flex-grow p-4 overflow-y-auto">
+            <nav class="space-y-4">
+              <div class="nav-item active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                <span>Dashboard</span>
+              </div>
+              <div class="nav-item" data-section="courses">
+                <i class="fas fa-book mr-3"></i>
+                <span>My Courses</span>
+              </div>
+              <div class="nav-item" data-section="performance">
+                <i class="fas fa-chart-line mr-3"></i>
+                <span>Performance</span>
+              </div>
+              <div class="nav-item" data-section="tests">
+                <i class="fas fa-clipboard-list mr-3"></i>
+                <span>Test Results</span>
+              </div>
+              <div class="nav-item" data-section="resources">
+                <i class="fas fa-file-alt mr-3"></i>
+                <span>Study Resources</span>
+              </div>
+              <div class="nav-item" data-section="profile">
+                <i class="fas fa-user mr-3"></i>
+                <span>Profile</span>
+              </div>
+            </nav>
+          </div>
+          <div class="p-4 border-t border-gray-200">
+            <button onclick="logout()" class="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 text-sm">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="section-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Welcome Card -->
+            <div class="glass-card p-6 col-span-1 md:col-span-2 lg:col-span-3">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 class="section-title">Welcome back, <span id="welcomeUserName" class="text-indigo-600"></span>!</h2>
+                  <p class="text-gray-600 leading-relaxed">
+                    Track your progress, access your courses, and improve your performance with THP Coaching.
+                  </p>
+                </div>
+                <div class="mt-4 md:mt-0 flex items-center gap-2">
+                  <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">
+                    <i class="fas fa-calendar-day mr-1"></i>
+                    <span id="currentDate"></span>
+                  </span>
+                  <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">
+                    <i class="fas fa-clock mr-1"></i>
+                    <span id="currentTime"></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Performance Overview -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Performance Overview</h2>
+              <div class="mt-4">
+                <canvas id="performanceChart" height="200"></canvas>
+              </div>
+              <div class="mt-4 grid grid-cols-3 gap-4">
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-indigo-600" id="avgScore">0%</div>
+                  <div class="text-xs text-gray-500">Avg. Score</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-indigo-600" id="testsTaken">0</div>
+                  <div class="text-xs text-gray-500">Tests Taken</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-2xl font-bold text-indigo-600" id="rank">-</div>
+                  <div class="text-xs text-gray-500">Batch Rank</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course Progress -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Course Progress</h2>
+              <div class="mt-4 space-y-4">
+                <div>
+                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Syllabus Covered</span>
+                    <span id="syllabusCoverage">0%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="syllabusProgress" style="width: 0%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Concept Mastery</span>
+                    <span id="conceptMastery">0%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="conceptProgress" style="width: 0%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Practice Completed</span>
+                    <span id="practiceCompleted">0%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="practiceProgress" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6">
+                <button class="w-full px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium text-sm flex items-center justify-center">
+                  <i class="fas fa-chart-pie mr-2"></i> View Detailed Analytics
+                </button>
+              </div>
+            </div>
+
+            <!-- Recent Tests -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Recent Tests</h2>
+              <div class="mt-4 space-y-4" id="recentTests">
+                <!-- Test items will be inserted here -->
+                <div class="text-center py-8 text-gray-400">
+                  <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+                  <p>No recent tests found</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Quick Actions</h2>
+              <div class="mt-4 grid grid-cols-2 gap-3">
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                  <i class="fas fa-file-pdf text-indigo-600 text-xl mb-2"></i>
+                  <span class="text-sm font-medium">Study Material</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                  <i class="fas fa-video text-indigo-600 text-xl mb-2"></i>
+                  <span class="text-sm font-medium">Recorded Lectures</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                  <i class="fas fa-question-circle text-indigo-600 text-xl mb-2"></i>
+                  <span class="text-sm font-medium">Doubt Solving</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                  <i class="fas fa-calendar-alt text-indigo-600 text-xl mb-2"></i>
+                  <span class="text-sm font-medium">Schedule</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Upcoming Deadlines -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Upcoming Deadlines</h2>
+              <div class="mt-4 space-y-3" id="upcomingDeadlines">
+                <!-- Deadline items will be inserted here -->
+                <div class="text-center py-8 text-gray-400">
+                  <i class="fas fa-calendar-check text-3xl mb-2"></i>
+                  <p>No upcoming deadlines</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="coursesSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="section-title">My Courses</h2>
+              <div class="flex items-center gap-2">
+                <button class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg text-sm font-medium">
+                  <i class="fas fa-filter mr-2"></i> Filter
+                </button>
+                <button class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg text-sm font-medium">
+                  <i class="fas fa-sort mr-2"></i> Sort
+                </button>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="coursesList">
+              <!-- Course cards will be inserted here -->
+              <div class="text-center py-12 text-gray-400 col-span-3">
+                <i class="fas fa-book text-3xl mb-2"></i>
+                <p>No courses enrolled yet</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Performance Section -->
+        <section id="performanceSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <h2 class="section-title">Performance Analytics</h2>
+            <div class="mt-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 class="font-medium text-gray-700 mb-3">Score Trend</h3>
+                  <div class="bg-white p-4 rounded-lg">
+                    <canvas id="scoreTrendChart" height="250"></canvas>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-medium text-gray-700 mb-3">Subject-wise Performance</h3>
+                  <div class="bg-white p-4 rounded-lg">
+                    <canvas id="subjectChart" height="250"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6">
+                <h3 class="font-medium text-gray-700 mb-3">Detailed Analysis</h3>
+                <div class="bg-white p-4 rounded-lg overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Test</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Score</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Rank</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Analysis</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="performanceTable">
+                      <!-- Performance data will be inserted here -->
+                      <tr>
+                        <td colspan="5" class="px-4 py-4 text-center text-gray-400">No performance data available</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Test Results Section -->
+        <section id="testsSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <h2 class="section-title">Test Results</h2>
+            <div class="mt-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="testResults">
+                <!-- Test result cards will be inserted here -->
+                <div class="text-center py-12 text-gray-400 col-span-3">
+                  <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+                  <p>No test results found</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Study Resources Section -->
+        <section id="resourcesSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <h2 class="section-title">Study Resources</h2>
+            <div class="mt-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                  <div class="bg-indigo-50 p-4">
+                    <i class="fas fa-file-pdf text-indigo-600 text-3xl"></i>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-medium text-gray-800">Class Notes</h3>
+                    <p class="text-sm text-gray-500 mt-1">Comprehensive notes for all subjects</p>
+                    <div class="mt-4">
+                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                        View Resources <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                  <div class="bg-indigo-50 p-4">
+                    <i class="fas fa-video text-indigo-600 text-3xl"></i>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-medium text-gray-800">Recorded Lectures</h3>
+                    <p class="text-sm text-gray-500 mt-1">Access all past lectures</p>
+                    <div class="mt-4">
+                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                        View Lectures <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                  <div class="bg-indigo-50 p-4">
+                    <i class="fas fa-question-circle text-indigo-600 text-3xl"></i>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-medium text-gray-800">Practice Questions</h3>
+                    <p class="text-sm text-gray-500 mt-1">Chapter-wise practice sets</p>
+                    <div class="mt-4">
+                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                        Start Practicing <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                  <div class="bg-indigo-50 p-4">
+                    <i class="fas fa-book text-indigo-600 text-3xl"></i>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-medium text-gray-800">Reference Books</h3>
+                    <p class="text-sm text-gray-500 mt-1">Recommended reading materials</p>
+                    <div class="mt-4">
+                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                        View List <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profileSection" class="section-content hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-1">
+              <div class="glass-card p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
+                <div class="text-center mb-4">
+                  <div id="profileAvatar" class="w-24 h-24 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mx-auto">
+                    <!-- Initial will be inserted here -->
+                  </div>
+                  <h3 class="text-lg font-semibold mt-3 text-gray-800" id="profileName"></h3>
+                  <p class="text-sm text-indigo-600" id="profileCourse"></p>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-envelope text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileEmail"></span>
+                  </div>
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-phone text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileMobile"></span>
+                  </div>
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-calendar-alt text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileJoinDate"></span>
+                  </div>
+                  <div class="flex items-center py-2">
+                    <i class="fas fa-users text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileBatch"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-2">
+              <div class="glass-card p-6">
+                <h2 class="section-title">Account Settings</h2>
+                <div class="mt-4">
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                      <input type="email" id="profileEmailInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" disabled>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+                      <input type="tel" id="profileMobileInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Change Password</label>
+                      <input type="password" id="newPassword" placeholder="New Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 mb-2">
+                      <input type="password" id="confirmPassword" placeholder="Confirm Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="pt-2">
+                      <button id="updateProfileBtn" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium">
+                        <i class="fas fa-save mr-2"></i> Save Changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   </div>
 
-  <!-- Wave Decoration -->
-  <div class="wave">
-    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
-      <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
-      <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
-    </svg>
-  </div>
-
-  <!-- Firebase Auth & Logic -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-    import { getFirestore, setDoc, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-
-    const firebaseConfig = {
+  <!-- Firebase Initialization -->
+  <script>
+    // Firebase configuration - REPLACE WITH YOUR ACTUAL CONFIG
+   const firebaseConfig = {
       apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
       authDomain: "login-form-eee86.firebaseapp.com",
       projectId: "login-form-eee86",
@@ -320,263 +615,628 @@
       messagingSenderId: "717475952542",
       appId: "1:717475952542:web:f79db77ed1f60d117b488f",
       measurementId: "G-VV0D9TNK0Y"
-    };
+    }; 
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    // Floating label functionality
-    document.querySelectorAll('.form-input').forEach(input => {
-      // Check if input has value on page load
-      if(input.value) {
-        input.classList.add('input-filled');
+    // Helper functions
+    function getInitials(name) {
+      if (!name) return '?';
+      const names = name.split(' ');
+      let initials = names[0].substring(0, 1).toUpperCase();
+      if (names.length > 1) {
+        initials += names[names.length - 1].substring(0, 1).toUpperCase();
       }
-            
-      // Add event listeners
-      input.addEventListener('input', () => {
-        if(input.value) {
-          input.classList.add('input-filled');
-        } else {
-          input.classList.remove('input-filled');
+      return initials;
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return 'Not available';
+      const date = dateString.toDate();
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+    }
+
+    function formatDateTime(dateString) {
+      if (!dateString) return '';
+      const date = dateString.toDate();
+      return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Update current date and time
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
+        hour: '2-digit', 
+        minute: '2-digit'
+      });
+    }
+
+    // Initialize charts
+    let performanceChart, scoreTrendChart, subjectChart;
+
+    function initPerformanceChart() {
+      const ctx = document.getElementById('performanceChart').getContext('2d');
+      performanceChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Correct', 'Incorrect', 'Unattempted'],
+          datasets: [{
+            data: [65, 20, 15],
+            backgroundColor: [
+              '#4f46e5',
+              '#f43f5e',
+              '#e2e8f0'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          cutout: '70%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 20
+              }
+            }
+          }
         }
       });
-    });
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docSnap = await getDoc(doc(db, "users", user.uid));
-        if (docSnap.exists() && docSnap.data().hasAccess) {
-          // Redirect to dashboard.html regardless of course
-          window.location.replace("dashboard.html");
-        } else {
-          await signOut(auth);
-          document.getElementById("loader").classList.add("hidden");
-          document.getElementById("formContainer").classList.remove("opacity-0");
-          document.getElementById("formContainer").classList.remove("translate-y-4");
-        }
-      } else {
-        document.getElementById("loader").classList.add("hidden");
-        document.getElementById("formContainer").classList.remove("opacity-0");
-        document.getElementById("formContainer").classList.remove("translate-y-4");
-      }
-    });
-
-    let isLogin = true;
-    const toggleFormBtn = document.getElementById("toggleForm");
-    const toggleFormText = document.getElementById("toggleFormText");
-    const authText = document.getElementById("authText");
-    const formTitle = document.getElementById("formTitle");
-    const popup = document.getElementById("popupMessage");
-
-    function showMessage(msg, bg = 'bg-green-600') {
-      popup.textContent = msg;
-      popup.className = `block mt-6 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg ${bg}`;
-      popup.classList.remove("hidden");
-      setTimeout(() => popup.classList.add("hidden"), 3000);
     }
 
-    async function createInitialTest(courseName, userId) {
-      try {
-        // Create a test in the tests collection
-        const testRef = await addDoc(collection(db, "tests"), {
-          title: "Initial Assessment Test",
-          courseId: courseName,
-          date: serverTimestamp(),
-          maxMarks: 100,
-          averageScore: 0
-        });
-
-        // Create a test result for the user
-        await addDoc(collection(db, "testResults"), {
-          userId: userId,
-          testId: testRef.id,
-          score: 0,
-          rank: 0,
-          totalStudents: 1,
-          subject: "Initial Assessment",
-          answers: {}
-        });
-
-        console.log("Initial test created successfully");
-      } catch (error) {
-        console.error("Error creating initial test: ", error);
-      }
-    }
-
-    async function createCourseDeadlines(courseName, userId) {
-      try {
-        // Add some sample deadlines for the course
-        const deadlines = [
-          {
-            title: "First Assignment Submission",
-            courseId: courseName,
-            dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-            type: "assignment",
-            description: "Complete and submit the first assignment",
-            status: "pending"
+    function initScoreTrendChart() {
+      const ctx = document.getElementById('scoreTrendChart').getContext('2d');
+      scoreTrendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Your Score',
+            data: [65, 59, 70, 71, 76, 82],
+            borderColor: '#4f46e5',
+            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+            tension: 0.3,
+            fill: true,
+            borderWidth: 2
+          }, {
+            label: 'Batch Average',
+            data: [55, 52, 58, 60, 65, 68],
+            borderColor: '#94a3b8',
+            backgroundColor: 'rgba(148, 163, 184, 0.1)',
+            tension: 0.3,
+            fill: true,
+            borderWidth: 2,
+            borderDash: [5, 5]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
           },
-          {
-            title: "Mid-Term Test",
-            courseId: courseName,
-            dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
-            type: "test",
-            description: "Prepare for the mid-term test",
-            status: "pending"
+          scales: {
+            y: {
+              beginAtZero: false,
+              min: 40,
+              max: 100
+            }
           }
-        ];
-
-        for (const deadline of deadlines) {
-          await addDoc(collection(db, "deadlines"), deadline);
         }
-
-        console.log("Course deadlines created successfully");
-      } catch (error) {
-        console.error("Error creating course deadlines: ", error);
-      }
+      });
     }
 
-    function toggleForm() {
-      isLogin = !isLogin;
-      document.getElementById("nameField").classList.toggle("hidden", isLogin);
-      document.getElementById("mobileField").classList.toggle("hidden", isLogin);
-      document.getElementById("courseField").classList.toggle("hidden", isLogin);
-      document.getElementById("batchField").classList.toggle("hidden", isLogin);
-      formTitle.textContent = isLogin ? "Login to your account" : "Create a new account";
-      authText.textContent = isLogin ? "Login" : "Sign Up";
-      toggleFormText.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
-      toggleFormBtn.textContent = isLogin ? "Sign Up" : "Login";
-            
-      // Reset form fields when toggling
-      if(isLogin) {
-        document.getElementById("name").value = "";
-        document.getElementById("mobile").value = "";
-        document.getElementById("course").value = "";
-        document.getElementById("batch").value = "";
-        document.getElementById("name").classList.remove('input-filled');
-        document.getElementById("mobile").classList.remove('input-filled');
-        document.getElementById("course").classList.remove('input-filled');
-        document.getElementById("batch").classList.remove('input-filled');
-      }
+    function initSubjectChart() {
+      const ctx = document.getElementById('subjectChart').getContext('2d');
+      subjectChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Physics', 'Chemistry', 'Mathematics', 'Biology', 'English'],
+          datasets: [{
+            label: 'Your Score',
+            data: [75, 82, 68, 88, 90],
+            backgroundColor: '#4f46e5',
+            borderRadius: 4
+          }, {
+            label: 'Batch Average',
+            data: [65, 70, 62, 75, 78],
+            backgroundColor: '#94a3b8',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
     }
 
-    toggleFormBtn.addEventListener("click", () => {
-      document.getElementById("formContainer").classList.add("opacity-0");
-      document.getElementById("formContainer").classList.add("translate-y-4");
-      setTimeout(() => {
-        toggleForm();
-        document.getElementById("formContainer").classList.remove("opacity-0");
-        document.getElementById("formContainer").classList.remove("translate-y-4");
-      }, 300);
-    });
-
-    document.getElementById("authForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const spinner = document.getElementById("spinner");
-      const authBtn = document.getElementById("authBtn");
-
-      authText.textContent = isLogin ? "Logging in..." : "Signing up...";
-      spinner.classList.remove("hidden");
-      authBtn.disabled = true;
-
-      try {
-        if (isLogin) {
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          const docSnap = await getDoc(doc(db, "users", userCredential.user.uid));
-          if (docSnap.exists() && docSnap.data().hasAccess) {
-            showMessage("Login successful! Redirecting...");
-            setTimeout(() => window.location.replace("dashboard.html"), 1000);
-          } else {
-            document.getElementById("payNow").classList.remove("hidden");
-            await signOut(auth);
-            showMessage("Please complete your payment to access content", 'bg-indigo-600');
-          }
-        } else {
-          const name = document.getElementById("name").value.trim();
-          const mobile = document.getElementById("mobile").value.trim();
-          const course = document.getElementById("course").value;
-          const batch = document.getElementById("batch").value;
-
-          if(!name || !mobile || !course || !batch) {
-            throw new Error("Please fill all required fields");
-          }
-
-          // Create user in Firebase Auth
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const userId = userCredential.user.uid;
-          const joinDate = serverTimestamp();
-
-          // Create user document in 'users' collection
-          await setDoc(doc(db, "users", userId), {
-            name, 
-            email, 
-            mobile, 
-            course, 
-            batch,
-            joinDate,
-            hasAccess: false,
-            role: "student"
-          });
-
-          // Create enrollment in 'enrollments' collection
-          await addDoc(collection(db, "enrollments"), {
-            userId: userId,
-            courseId: course,
-            enrollmentDate: joinDate,
-            progress: 0,
-            lastAccessed: joinDate
-          });
-
-          // Create initial test and results
-          await createInitialTest(course, userId);
-
-          // Create course deadlines
-          await createCourseDeadlines(course, userId);
-
-          showMessage("Account created successfully! Please login.");
-          setTimeout(() => toggleForm(), 1500);
-        }
-      } catch (error) {
-        showMessage(error.message, 'bg-red-500');
-      } finally {
-        authText.textContent = isLogin ? "Login" : "Sign Up";
-        spinner.classList.add("hidden");
-        authBtn.disabled = false;
-      }
-    });
-
-    document.getElementById("forgotPassword").addEventListener("click", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-            
-      if(!email) {
-        showMessage("Please enter your email in the email field first", 'bg-indigo-600');
-        document.getElementById("email").focus();
+    // Render test cards
+    function renderTestCards(tests) {
+      const container = document.getElementById('testResults');
+      container.innerHTML = '';
+      
+      if (tests.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-gray-400 col-span-3">
+            <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+            <p>No test results found</p>
+          </div>
+        `;
         return;
       }
-            
+      
+      tests.forEach(test => {
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
+        card.innerHTML = `
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-medium text-gray-800">${test.title}</h3>
+                <p class="text-sm text-gray-500 mt-1">${formatDate(test.date)}</p>
+              </div>
+              <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                percentage >= 80 ? 'bg-green-100 text-green-800' : 
+                percentage >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+              }">
+                ${percentage}%
+              </span>
+            </div>
+            <div class="mt-4 flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="relative w-16 h-16">
+                  <div class="absolute top-0 left-0 w-full h-full rounded-full" 
+                       style="background: conic-gradient(#4f46e5 0% ${percentage}%, #e2e8f0 ${percentage}% 100%)">
+                    <div class="absolute inset-1/4 bg-white rounded-full flex items-center justify-center">
+                      <span class="text-sm font-bold">${percentage}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ml-3">
+                  <p class="text-xs text-gray-500">Rank</p>
+                  <p class="font-medium">${test.rank}/${test.totalStudents}</p>
+                </div>
+              </div>
+              <div>
+                <a href="#" class="text-indigo-600 text-xs font-medium flex items-center">
+                  View Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Render recent tests
+    function renderRecentTests(tests) {
+      const container = document.getElementById('recentTests');
+      container.innerHTML = '';
+      
+      if (tests.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-gray-400">
+            <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+            <p>No recent tests found</p>
+          </div>
+        `;
+        return;
+      }
+      
+      tests.slice(0, 3).forEach(test => {
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100';
+        item.innerHTML = `
+          <div>
+            <h4 class="font-medium text-sm">${test.title}</h4>
+            <p class="text-xs text-gray-500">${formatDate(test.date)}</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-medium ${
+              percentage >= 80 ? 'text-green-600' : 
+              percentage >= 60 ? 'text-blue-600' : 'text-red-600'
+            }">
+              ${percentage}%
+            </span>
+            <span class="text-xs text-gray-500">Rank: ${test.rank}</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Render course cards
+    function renderCourseCards(courses) {
+      const container = document.getElementById('coursesList');
+      container.innerHTML = '';
+      
+      if (courses.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-gray-400 col-span-3">
+            <i class="fas fa-book text-3xl mb-2"></i>
+            <p>No courses enrolled yet</p>
+          </div>
+        `;
+        return;
+      }
+      
+      courses.forEach(course => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
+        card.innerHTML = `
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-medium text-gray-800">${course.title}</h3>
+                <p class="text-sm text-gray-500 mt-1">${course.teacher}</p>
+              </div>
+              <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                course.progress >= 80 ? 'bg-green-100 text-green-800' : 
+                course.progress >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+              }">
+                ${course.progress}%
+              </span>
+            </div>
+            <div class="mt-4">
+              <div class="flex justify-between text-xs text-gray-500 mb-1">
+                <span>Course Progress</span>
+                <span>${course.progress}%</span>
+              </div>
+              <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-500" 
+                     style="width: ${course.progress}%"></div>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <p class="text-gray-500">Start Date</p>
+                <p class="font-medium">${formatDate(course.startDate)}</p>
+              </div>
+              <div>
+                <p class="text-gray-500">End Date</p>
+                <p class="font-medium">${formatDate(course.endDate)}</p>
+              </div>
+            </div>
+            <div class="mt-4">
+              <a href="#" class="text-indigo-600 text-xs font-medium flex items-center">
+                View Course <i class="fas fa-arrow-right ml-1 text-xs"></i>
+              </a>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Render upcoming deadlines
+    function renderUpcomingDeadlines(deadlines) {
+      const container = document.getElementById('upcomingDeadlines');
+      container.innerHTML = '';
+      
+      if (deadlines.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 text-gray-400">
+            <i class="fas fa-calendar-check text-3xl mb-2"></i>
+            <p>No upcoming deadlines</p>
+          </div>
+        `;
+        return;
+      }
+      
+      deadlines.forEach(deadline => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100';
+        item.innerHTML = `
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center ${
+              deadline.type === 'test' ? 'bg-red-100 text-red-600' : 
+              deadline.type === 'assignment' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'
+            }">
+              <i class="fas ${
+                deadline.type === 'test' ? 'fa-clipboard-list' : 
+                deadline.type === 'assignment' ? 'fa-file-alt' : 'fa-project-diagram'
+              } text-sm"></i>
+            </div>
+            <div class="ml-3">
+              <h4 class="font-medium text-sm">${deadline.title}</h4>
+              <p class="text-xs text-gray-500">${deadline.subject || ''}</p>
+            </div>
+          </div>
+          <span class="text-xs font-medium text-gray-700">${formatDateTime(deadline.dueDate)}</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Render performance table
+    function renderPerformanceTable(tests) {
+      const container = document.getElementById('performanceTable');
+      container.innerHTML = '';
+      
+      if (tests.length === 0) {
+        container.innerHTML = `
+          <tr>
+            <td colspan="5" class="px-4 py-4 text-center text-gray-400">No performance data available</td>
+          </tr>
+        `;
+        return;
+      }
+      
+      tests.forEach(test => {
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
+        row.innerHTML = `
+          <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${test.title}</td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${formatDate(test.date)}</td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm ${
+            percentage >= 80 ? 'text-green-600' : 
+            percentage >= 60 ? 'text-blue-600' : 'text-red-600'
+          } font-medium">
+            ${percentage}%
+          </td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${test.rank}/${test.totalStudents}</td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+            <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+          </td>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Navigation functionality
+    function setupNavigation() {
+      const navItems = document.querySelectorAll('.nav-item');
+      
+      navItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // Remove active class from all items
+          navItems.forEach(navItem => {
+            navItem.classList.remove('active');
+          });
+          
+          // Add active class to clicked item
+          this.classList.add('active');
+          
+          // Hide all sections
+          document.querySelectorAll('.section-content').forEach(section => {
+            section.classList.add('hidden');
+          });
+          
+          // Show the selected section
+          const sectionId = this.getAttribute('data-section') + 'Section';
+          document.getElementById(sectionId).classList.remove('hidden');
+        });
+      });
+      
+      // Mobile sidebar toggle
+      document.getElementById('sidebarToggle').addEventListener('click', function() {
+        document.getElementById('mobileSidebar').classList.remove('-translate-x-full');
+      });
+      
+      document.getElementById('closeSidebar').addEventListener('click', function() {
+        document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+      });
+    }
+
+    // Logout function
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      }).catch((error) => {
+        console.error("Logout Error:", error);
+        alert("Logout failed. Please try again.");
+      });
+    }
+
+    // Update profile handler
+    document.getElementById('updateProfileBtn').addEventListener('click', function() {
+      const newMobile = document.getElementById('profileMobileInput').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (newPassword && newPassword !== confirmPassword) {
+        alert("Passwords don't match!");
+        return;
+      }
+      
+      const user = auth.currentUser;
+      const userRef = db.collection('users').doc(user.uid);
+      
+      // Update mobile number in Firestore
+      userRef.update({
+        mobile: newMobile
+      }).then(() => {
+        // Update password if provided
+        if (newPassword) {
+          return user.updatePassword(newPassword).then(() => {
+            alert("Profile updated successfully!");
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+          });
+        } else {
+          alert("Profile updated successfully!");
+        }
+      }).catch(error => {
+        console.error("Error updating profile:", error);
+        alert("Error updating profile. Please try again.");
+      });
+    });
+
+    // Fetch user dashboard data
+    async function fetchUserDashboardData(userId) {
       try {
-        await sendPasswordResetEmail(auth, email);
-        showMessage("Password reset email sent. Check your inbox.", 'bg-indigo-600');
+        // Get user document
+        const userDoc = await db.collection('users').doc(userId).get();
+        const userData = userDoc.data();
+        
+        // Get enrollments with course details
+        const enrollmentsSnap = await db.collection('enrollments')
+          .where('userId', '==', userId)
+          .get();
+        
+        const courses = await Promise.all(
+          enrollmentsSnap.docs.map(async doc => {
+            const enrollment = doc.data();
+            const courseDoc = await db.collection('courses').doc(enrollment.courseId).get();
+            return {
+              ...courseDoc.data(),
+              progress: enrollment.progress || 0,
+              id: courseDoc.id
+            };
+          })
+        );
+        
+        // Get test results
+        const testsSnap = await db.collection('testResults')
+          .where('userId', '==', userId)
+          .orderBy('date', 'desc')
+          .limit(5)
+          .get();
+        
+        const tests = testsSnap.docs.map(doc => doc.data());
+        
+        // Get upcoming deadlines
+        const deadlinesSnap = await db.collection('deadlines')
+          .where('dueDate', '>=', new Date())
+          .orderBy('dueDate', 'asc')
+          .limit(3)
+          .get();
+        
+        const deadlines = deadlinesSnap.docs.map(doc => doc.data());
+        
+        return {
+          user: userData,
+          courses,
+          tests,
+          deadlines
+        };
       } catch (error) {
-        showMessage("Error: " + error.message, 'bg-red-500');
+        console.error("Error fetching dashboard data:", error);
+        return null;
+      }
+    }
+
+    // Initialize the dashboard
+    async function initDashboard(userId) {
+      // Update date and time every minute
+      updateDateTime();
+      setInterval(updateDateTime, 60000);
+      
+      // Initialize charts
+      initPerformanceChart();
+      initScoreTrendChart();
+      initSubjectChart();
+      
+      // Fetch and render data
+      const dashboardData = await fetchUserDashboardData(userId);
+      
+      if (dashboardData) {
+        const { user, courses, tests, deadlines } = dashboardData;
+        
+        // Update user info
+        const initials = getInitials(user.name);
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userCourse').textContent = user.course;
+        document.getElementById('userAvatar').textContent = initials;
+        document.getElementById('welcomeUserName').textContent = user.name.split(' ')[0];
+        
+        // Update profile section
+        document.getElementById('profileName').textContent = user.name;
+        document.getElementById('profileCourse').textContent = user.course;
+        document.getElementById('profileMobile').textContent = user.mobile || 'Not provided';
+        document.getElementById('profileEmail').textContent = user.email;
+        document.getElementById('profileJoinDate').textContent = formatDate(user.joinDate);
+        document.getElementById('profileBatch').textContent = user.batch || 'Not specified';
+        document.getElementById('profileAvatar').textContent = initials;
+        document.getElementById('profileEmailInput').value = user.email;
+        document.getElementById('profileMobileInput').value = user.mobile || '';
+        
+        // Render data
+        renderCourseCards(courses);
+        renderTestCards(tests);
+        renderRecentTests(tests);
+        renderUpcomingDeadlines(deadlines);
+        renderPerformanceTable(tests);
+        
+        // Calculate and display performance metrics
+        if (tests.length > 0) {
+          const avgScore = tests.reduce((sum, test) => sum + (test.score / test.maxMarks * 100), 0) / tests.length;
+          document.getElementById('avgScore').textContent = Math.round(avgScore) + '%';
+          document.getElementById('testsTaken').textContent = tests.length;
+          
+          // Find best rank
+          const bestRank = Math.min(...tests.map(t => t.rank));
+          document.getElementById('rank').textContent = bestRank + getOrdinalSuffix(bestRank);
+        }
+        
+        // Calculate progress (mock values - replace with actual calculations)
+        document.getElementById('syllabusCoverage').textContent = '72%';
+        document.getElementById('syllabusProgress').style.width = '72%';
+        document.getElementById('conceptMastery').textContent = '65%';
+        document.getElementById('conceptProgress').style.width = '65%';
+        document.getElementById('practiceCompleted').textContent = '58%';
+        document.getElementById('practiceProgress').style.width = '58%';
+      }
+      
+      // Setup navigation
+      setupNavigation();
+    }
+
+    // Helper function for ordinal suffixes
+    function getOrdinalSuffix(num) {
+      const j = num % 10, k = num % 100;
+      if (j == 1 && k != 11) return 'st';
+      if (j == 2 && k != 12) return 'nd';
+      if (j == 3 && k != 13) return 'rd';
+      return 'th';
+    }
+
+    // Auth state change handler
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in
+        initDashboard(user.uid);
+      } else {
+        // No user is signed in
+        window.location.href = "login.html";
       }
     });
 
-    // Add click effects to all clickable elements
-    document.querySelectorAll('.clickable').forEach(element => {
-      element.addEventListener('mousedown', () => {
-        element.classList.add('active:scale-95');
-      });
-      element.addEventListener('mouseup', () => {
-        element.classList.remove('active:scale-95');
-      });
-      element.addEventListener('mouseleave', () => {
-        element.classList.remove('active:scale-95');
-      });
-    });
   </script>
 </body>
 </html>
