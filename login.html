@@ -6,14 +6,12 @@
   <title>THP Coaching Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -40,11 +38,6 @@
       transition: all 0.3s ease;
     }
     
-    .glass-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    }
-    
     .section-title {
       font-size: 1.3rem;
       font-weight: 600;
@@ -65,113 +58,6 @@
       border-radius: 3px;
     }
     
-    .stylish-logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-      border: none;
-    }
-    
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-    }
-    
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      color: white;
-      transition: all 0.3s ease;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
-    }
-    
-    .user-avatar:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-    }
-    
-    .tag {
-      display: inline-block;
-      padding: 4px 10px;
-      background-color: #eef2ff;
-      color: var(--primary-dark);
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-    
-    .user-info-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 8px;
-      background-color: #f8fafc;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      margin-right: 6px;
-      border: 1px solid #e2e8f0;
-    }
-    
-    .user-info-badge i {
-      margin-right: 4px;
-      color: var(--primary);
-    }
-    
-    .user-profile-card {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(79, 70, 229, 0.05) 100%);
-      border: 1px solid rgba(99, 102, 241, 0.1);
-    }
-    
-    .initials-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-weight: 600;
-      color: white;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-      margin: 0 auto;
-    }
-    
-    .profile-detail-item {
-      display: flex;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(99, 102, 241, 0.05);
-    }
-    
-    .profile-detail-item:last-child {
-      border-bottom: none;
-    }
-    
-    .profile-detail-item i {
-      width: 24px;
-      color: var(--primary);
-      text-align: center;
-    }
-    
     .progress-bar {
       height: 8px;
       border-radius: 4px;
@@ -184,19 +70,6 @@
       border-radius: 4px;
       background: linear-gradient(90deg, var(--primary), var(--primary-light));
       transition: width 0.5s ease;
-    }
-    
-    .performance-card {
-      border-left: 4px solid var(--primary);
-    }
-    
-    .course-card {
-      transition: all 0.3s ease;
-    }
-    
-    .course-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
     
     .test-score {
@@ -230,40 +103,24 @@
       color: var(--primary-dark);
     }
     
-    .nav-item {
+    .nav-item.active {
+      color: var(--primary-dark);
+      font-weight: 500;
       position: relative;
-      padding: 10px 0;
-      cursor: pointer;
-      transition: all 0.3s ease;
     }
     
-    .nav-item::after {
+    .nav-item.active::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 0;
+      width: 100%;
       height: 2px;
       background: var(--primary);
-      transition: width 0.3s ease;
-    }
-    
-    .nav-item:hover::after {
-      width: 100%;
-    }
-    
-    .nav-item.active::after {
-      width: 100%;
-    }
-    
-    .nav-item.active {
-      color: var(--primary-dark);
-      font-weight: 500;
     }
   </style>
 </head>
 <body class="bg-gray-50">
-
   <div class="flex min-h-screen">
     <!-- Sidebar -->
     <div class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200">
@@ -272,7 +129,7 @@
           <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
             <i class="fas fa-graduation-cap text-xl"></i>
           </div>
-          <h1 class="stylish-logo">THP</h1>
+          <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
         </div>
       </div>
       <div class="flex flex-col flex-grow p-4 overflow-auto">
@@ -304,7 +161,7 @@
         </nav>
       </div>
       <div class="p-4 border-t border-gray-200">
-        <button onclick="logout()" class="w-full px-4 py-2 rounded-lg btn-primary font-medium flex items-center justify-center gap-2 text-sm">
+        <button onclick="logout()" class="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 text-sm">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
@@ -322,22 +179,22 @@
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
               <i class="fas fa-graduation-cap"></i>
             </div>
-            <h1 class="stylish-logo text-xl">THP</h1>
+            <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
           </div>
         </div>
         
         <div class="flex items-center gap-4">
           <div class="hidden md:flex items-center gap-2">
-            <span class="user-info-badge">
-              <i class="fas fa-user-graduate"></i>
+            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+              <i class="fas fa-user-graduate text-indigo-600 mr-1"></i>
               <span id="userName"></span>
             </span>
-            <span class="user-info-badge">
-              <i class="fas fa-book"></i>
+            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
+              <i class="fas fa-book text-indigo-600 mr-1"></i>
               <span id="userCourse"></span>
             </span>
           </div>
-          <div id="userAvatar" class="user-avatar">
+          <div id="userAvatar" class="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center text-white font-medium">
             <!-- Initial will be inserted here -->
           </div>
         </div>
@@ -351,7 +208,7 @@
               <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
                 <i class="fas fa-graduation-cap text-xl"></i>
               </div>
-              <h1 class="stylish-logo">THP</h1>
+              <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">THP</h1>
             </div>
             <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">
               <i class="fas fa-times text-xl"></i>
@@ -386,7 +243,7 @@
             </nav>
           </div>
           <div class="p-4 border-t border-gray-200">
-            <button onclick="logout()" class="w-full px-4 py-2 rounded-lg btn-primary font-medium flex items-center justify-center gap-2 text-sm">
+            <button onclick="logout()" class="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium flex items-center justify-center gap-2 text-sm">
               <i class="fas fa-sign-out-alt"></i> Logout
             </button>
           </div>
@@ -408,11 +265,11 @@
                   </p>
                 </div>
                 <div class="mt-4 md:mt-0 flex items-center gap-2">
-                  <span class="tag bg-indigo-100 text-indigo-800">
+                  <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">
                     <i class="fas fa-calendar-day mr-1"></i>
                     <span id="currentDate"></span>
                   </span>
-                  <span class="tag bg-indigo-100 text-indigo-800">
+                  <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">
                     <i class="fas fa-clock mr-1"></i>
                     <span id="currentTime"></span>
                   </span>
@@ -475,9 +332,9 @@
                 </div>
               </div>
               <div class="mt-6">
-                <a href="#" class="inline-flex items-center px-4 py-2 btn-primary rounded-lg font-medium text-sm">
+                <button class="w-full px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium text-sm flex items-center justify-center">
                   <i class="fas fa-chart-pie mr-2"></i> View Detailed Analytics
-                </a>
+                </button>
               </div>
             </div>
 
@@ -498,7 +355,7 @@
               <h2 class="section-title">Quick Actions</h2>
               <div class="mt-4 grid grid-cols-2 gap-3">
                 <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
-                  <i class="fas fa-book-open text-indigo-600 text-xl mb-2"></i>
+                  <i class="fas fa-file-pdf text-indigo-600 text-xl mb-2"></i>
                   <span class="text-sm font-medium">Study Material</span>
                 </a>
                 <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
@@ -621,7 +478,7 @@
             <h2 class="section-title">Study Resources</h2>
             <div class="mt-4">
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
                   <div class="bg-indigo-50 p-4">
                     <i class="fas fa-file-pdf text-indigo-600 text-3xl"></i>
                   </div>
@@ -635,7 +492,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
                   <div class="bg-indigo-50 p-4">
                     <i class="fas fa-video text-indigo-600 text-3xl"></i>
                   </div>
@@ -649,7 +506,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
                   <div class="bg-indigo-50 p-4">
                     <i class="fas fa-question-circle text-indigo-600 text-3xl"></i>
                   </div>
@@ -663,7 +520,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
                   <div class="bg-indigo-50 p-4">
                     <i class="fas fa-book text-indigo-600 text-3xl"></i>
                   </div>
@@ -686,30 +543,30 @@
         <section id="profileSection" class="section-content hidden">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-1">
-              <div class="glass-card p-6 user-profile-card">
+              <div class="glass-card p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
                 <div class="text-center mb-4">
-                  <div id="profileAvatar" class="initials-avatar">
+                  <div id="profileAvatar" class="w-24 h-24 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mx-auto">
                     <!-- Initial will be inserted here -->
                   </div>
                   <h3 class="text-lg font-semibold mt-3 text-gray-800" id="profileName"></h3>
                   <p class="text-sm text-indigo-600" id="profileCourse"></p>
                 </div>
                 <div class="space-y-2">
-                  <div class="profile-detail-item">
-                    <i class="fas fa-envelope"></i>
-                    <span class="text-sm text-gray-600" id="profileEmail"></span>
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-envelope text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileEmail"></span>
                   </div>
-                  <div class="profile-detail-item">
-                    <i class="fas fa-phone"></i>
-                    <span class="text-sm text-gray-600" id="profileMobile"></span>
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-phone text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileMobile"></span>
                   </div>
-                  <div class="profile-detail-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span class="text-sm text-gray-600" id="profileJoinDate"></span>
+                  <div class="flex items-center py-2 border-b border-gray-100">
+                    <i class="fas fa-calendar-alt text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileJoinDate"></span>
                   </div>
-                  <div class="profile-detail-item">
-                    <i class="fas fa-id-card"></i>
-                    <span class="text-sm text-gray-600" id="profileBatch"></span>
+                  <div class="flex items-center py-2">
+                    <i class="fas fa-users text-indigo-600 w-6 text-center"></i>
+                    <span class="text-sm text-gray-600 ml-2" id="profileBatch"></span>
                   </div>
                 </div>
               </div>
@@ -733,7 +590,7 @@
                       <input type="password" id="confirmPassword" placeholder="Confirm Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                     <div class="pt-2">
-                      <button id="updateProfileBtn" class="px-4 py-2 btn-primary rounded-lg font-medium">
+                      <button id="updateProfileBtn" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium">
                         <i class="fas fa-save mr-2"></i> Save Changes
                       </button>
                     </div>
@@ -747,18 +604,19 @@
     </div>
   </div>
 
-  <!-- Firebase Config & Auth -->
+  <!-- Firebase Initialization -->
   <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
-      authDomain: "starlet-registor.firebaseapp.com",
-      projectId: "starlet-registor",
-      storageBucket: "starlet-registor.appspot.com",
-      messagingSenderId: "904193225045",
-      appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
-    };
-    
+    // Firebase configuration - REPLACE WITH YOUR ACTUAL CONFIG
+   const firebaseConfig = {
+      apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
+      authDomain: "login-form-eee86.firebaseapp.com",
+      projectId: "login-form-eee86",
+      storageBucket: "login-form-eee86.appspot.com",
+      messagingSenderId: "717475952542",
+      appId: "1:717475952542:web:f79db77ed1f60d117b488f",
+      measurementId: "G-VV0D9TNK0Y"
+    }; 
+
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
@@ -777,16 +635,22 @@
 
     function formatDate(dateString) {
       if (!dateString) return 'Not available';
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const date = dateString.toDate();
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      });
     }
 
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      }).catch((error) => {
-        console.error("Logout Error:", error);
-        alert("Logout failed. Please try again.");
+    function formatDateTime(dateString) {
+      if (!dateString) return '';
+      const date = dateString.toDate();
+      return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
       });
     }
 
@@ -794,10 +658,14 @@
     function updateDateTime() {
       const now = new Date();
       document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', { 
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
       });
       document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
-        hour: '2-digit', minute: '2-digit'
+        hour: '2-digit', 
+        minute: '2-digit'
       });
     }
 
@@ -913,110 +781,6 @@
       });
     }
 
-    // Generate mock test data
-    function generateMockTests() {
-      const tests = [
-        {
-          id: 1,
-          title: 'Weekly Test - Physics',
-          date: '2025-06-10',
-          score: 78,
-          total: 100,
-          rank: 12,
-          totalStudents: 45,
-          subject: 'Physics'
-        },
-        {
-          id: 2,
-          title: 'Monthly Assessment',
-          date: '2025-05-28',
-          score: 85,
-          total: 100,
-          rank: 8,
-          totalStudents: 45,
-          subject: 'Combined'
-        },
-        {
-          id: 3,
-          title: 'Chemistry Chapter Test',
-          date: '2025-05-15',
-          score: 92,
-          total: 100,
-          rank: 3,
-          totalStudents: 45,
-          subject: 'Chemistry'
-        }
-      ];
-      return tests;
-    }
-
-    // Generate mock course data
-    function generateMockCourses() {
-      const courses = [
-        {
-          id: 1,
-          title: 'Class 11 Physics',
-          progress: 65,
-          teacher: 'Dr. Sharma',
-          startDate: '2025-06-01',
-          endDate: '2025-12-15'
-        },
-        {
-          id: 2,
-          title: 'Class 11 Chemistry',
-          progress: 58,
-          teacher: 'Prof. Gupta',
-          startDate: '2025-06-01',
-          endDate: '2025-12-15'
-        },
-        {
-          id: 3,
-          title: 'Class 11 Mathematics',
-          progress: 72,
-          teacher: 'Mr. Patel',
-          startDate: '2025-06-01',
-          endDate: '2025-12-15'
-        },
-        {
-          id: 4,
-          title: 'Class 11 Biology',
-          progress: 80,
-          teacher: 'Dr. Singh',
-          startDate: '2025-06-01',
-          endDate: '2025-12-15'
-        }
-      ];
-      return courses;
-    }
-
-    // Generate mock deadlines
-    function generateMockDeadlines() {
-      const deadlines = [
-        {
-          id: 1,
-          title: 'Physics Assignment',
-          date: '2025-06-15',
-          subject: 'Physics',
-          type: 'assignment'
-        },
-        {
-          id: 2,
-          title: 'Chemistry Test',
-          date: '2025-06-18',
-          subject: 'Chemistry',
-          type: 'test'
-        },
-        {
-          id: 3,
-          title: 'Maths Project Submission',
-          date: '2025-06-20',
-          subject: 'Mathematics',
-          type: 'project'
-        }
-      ];
-      return deadlines;
-    }
-
     // Render test cards
     function renderTestCards(tests) {
       const container = document.getElementById('testResults');
@@ -1033,9 +797,9 @@
       }
       
       tests.forEach(test => {
-        const percentage = Math.round((test.score / test.total) * 100);
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
         const card = document.createElement('div');
-        card.className = 'course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
+        card.className = 'bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
         card.innerHTML = `
           <div class="p-4">
             <div class="flex justify-between items-start">
@@ -1043,24 +807,30 @@
                 <h3 class="font-medium text-gray-800">${test.title}</h3>
                 <p class="text-sm text-gray-500 mt-1">${formatDate(test.date)}</p>
               </div>
-              <span class="tag ${percentage >= 80 ? 'bg-green-100 text-green-800' : percentage >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}">
+              <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                percentage >= 80 ? 'bg-green-100 text-green-800' : 
+                percentage >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+              }">
                 ${percentage}%
               </span>
             </div>
             <div class="mt-4 flex items-center justify-between">
               <div class="flex items-center">
-                <div class="test-score">
-                  <div class="test-score-circle" style="--percentage: ${percentage}%">
-                    <div class="test-score-inner">${percentage}</div>
+                <div class="relative w-16 h-16">
+                  <div class="absolute top-0 left-0 w-full h-full rounded-full" 
+                       style="background: conic-gradient(#4f46e5 0% ${percentage}%, #e2e8f0 ${percentage}% 100%)">
+                    <div class="absolute inset-1/4 bg-white rounded-full flex items-center justify-center">
+                      <span class="text-sm font-bold">${percentage}</span>
+                    </div>
                   </div>
                 </div>
                 <div class="ml-3">
-                  <p class="text-sm text-gray-500">Rank</p>
+                  <p class="text-xs text-gray-500">Rank</p>
                   <p class="font-medium">${test.rank}/${test.totalStudents}</p>
                 </div>
               </div>
               <div>
-                <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                <a href="#" class="text-indigo-600 text-xs font-medium flex items-center">
                   View Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
                 </a>
               </div>
@@ -1087,7 +857,7 @@
       }
       
       tests.slice(0, 3).forEach(test => {
-        const percentage = Math.round((test.score / test.total) * 100);
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
         const item = document.createElement('div');
         item.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100';
         item.innerHTML = `
@@ -1096,7 +866,10 @@
             <p class="text-xs text-gray-500">${formatDate(test.date)}</p>
           </div>
           <div class="flex items-center gap-3">
-            <span class="text-sm font-medium ${percentage >= 80 ? 'text-green-600' : percentage >= 60 ? 'text-blue-600' : 'text-red-600'}">
+            <span class="text-sm font-medium ${
+              percentage >= 80 ? 'text-green-600' : 
+              percentage >= 60 ? 'text-blue-600' : 'text-red-600'
+            }">
               ${percentage}%
             </span>
             <span class="text-xs text-gray-500">Rank: ${test.rank}</span>
@@ -1123,7 +896,7 @@
       
       courses.forEach(course => {
         const card = document.createElement('div');
-        card.className = 'course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
+        card.className = 'bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
         card.innerHTML = `
           <div class="p-4">
             <div class="flex justify-between items-start">
@@ -1131,7 +904,10 @@
                 <h3 class="font-medium text-gray-800">${course.title}</h3>
                 <p class="text-sm text-gray-500 mt-1">${course.teacher}</p>
               </div>
-              <span class="tag ${course.progress >= 80 ? 'bg-green-100 text-green-800' : course.progress >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}">
+              <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                course.progress >= 80 ? 'bg-green-100 text-green-800' : 
+                course.progress >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+              }">
                 ${course.progress}%
               </span>
             </div>
@@ -1140,8 +916,9 @@
                 <span>Course Progress</span>
                 <span>${course.progress}%</span>
               </div>
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: ${course.progress}%"></div>
+              <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-500" 
+                     style="width: ${course.progress}%"></div>
               </div>
             </div>
             <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
@@ -1155,7 +932,7 @@
               </div>
             </div>
             <div class="mt-4">
-              <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+              <a href="#" class="text-indigo-600 text-xs font-medium flex items-center">
                 View Course <i class="fas fa-arrow-right ml-1 text-xs"></i>
               </a>
             </div>
@@ -1185,15 +962,21 @@
         item.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100';
         item.innerHTML = `
           <div class="flex items-center">
-            <div class="w-8 h-8 rounded-full flex items-center justify-center ${deadline.type === 'test' ? 'bg-red-100 text-red-600' : deadline.type === 'assignment' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}">
-              <i class="fas ${deadline.type === 'test' ? 'fa-clipboard-list' : deadline.type === 'assignment' ? 'fa-file-alt' : 'fa-project-diagram'} text-sm"></i>
+            <div class="w-8 h-8 rounded-full flex items-center justify-center ${
+              deadline.type === 'test' ? 'bg-red-100 text-red-600' : 
+              deadline.type === 'assignment' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'
+            }">
+              <i class="fas ${
+                deadline.type === 'test' ? 'fa-clipboard-list' : 
+                deadline.type === 'assignment' ? 'fa-file-alt' : 'fa-project-diagram'
+              } text-sm"></i>
             </div>
             <div class="ml-3">
               <h4 class="font-medium text-sm">${deadline.title}</h4>
-              <p class="text-xs text-gray-500">${deadline.subject}</p>
+              <p class="text-xs text-gray-500">${deadline.subject || ''}</p>
             </div>
           </div>
-          <span class="text-xs font-medium text-gray-700">${formatDate(deadline.date)}</span>
+          <span class="text-xs font-medium text-gray-700">${formatDateTime(deadline.dueDate)}</span>
         `;
         container.appendChild(item);
       });
@@ -1214,13 +997,16 @@
       }
       
       tests.forEach(test => {
-        const percentage = Math.round((test.score / test.total) * 100);
+        const percentage = Math.round((test.score / test.maxMarks) * 100);
         const row = document.createElement('tr');
         row.className = 'hover:bg-gray-50';
         row.innerHTML = `
           <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${test.title}</td>
           <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${formatDate(test.date)}</td>
-          <td class="px-4 py-3 whitespace-nowrap text-sm ${percentage >= 80 ? 'text-green-600' : percentage >= 60 ? 'text-blue-600' : 'text-red-600'} font-medium">
+          <td class="px-4 py-3 whitespace-nowrap text-sm ${
+            percentage >= 80 ? 'text-green-600' : 
+            percentage >= 60 ? 'text-blue-600' : 'text-red-600'
+          } font-medium">
             ${percentage}%
           </td>
           <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${test.rank}/${test.totalStudents}</td>
@@ -1267,100 +1053,15 @@
       });
     }
 
-    // Initialize the dashboard
-    function initDashboard() {
-      // Update date and time every minute
-      updateDateTime();
-      setInterval(updateDateTime, 60000);
-      
-      // Initialize charts
-      initPerformanceChart();
-      initScoreTrendChart();
-      initSubjectChart();
-      
-      // Generate and render mock data
-      const tests = generateMockTests();
-      const courses = generateMockCourses();
-      const deadlines = generateMockDeadlines();
-      
-      renderTestCards(tests);
-      renderRecentTests(tests);
-      renderCourseCards(courses);
-      renderUpcomingDeadlines(deadlines);
-      renderPerformanceTable(tests);
-      
-      // Calculate and display performance metrics
-      const avgScore = tests.reduce((sum, test) => sum + (test.score / test.total * 100), 0) / tests.length;
-      document.getElementById('avgScore').textContent = Math.round(avgScore) + '%';
-      document.getElementById('testsTaken').textContent = tests.length;
-      document.getElementById('rank').textContent = '12th';
-      
-      // Update progress bars
-      document.getElementById('syllabusCoverage').textContent = '72%';
-      document.getElementById('syllabusProgress').style.width = '72%';
-      document.getElementById('conceptMastery').textContent = '65%';
-      document.getElementById('conceptProgress').style.width = '65%';
-      document.getElementById('practiceCompleted').textContent = '58%';
-      document.getElementById('practiceProgress').style.width = '58%';
-      
-      // Setup navigation
-      setupNavigation();
-    }
-
-    // Auth state change handler
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        // User is signed in
-        const userRef = db.collection('users').doc(user.uid);
-        
-        userRef.get().then((doc) => {
-          if (doc.exists) {
-            const userData = doc.data();
-            const firstName = userData.name ? userData.name.split(' ')[0] : 'Student';
-            const initials = getInitials(userData.name);
-            const joinDate = userData.joinDate || new Date().toISOString();
-            
-            // Update desktop view
-            document.getElementById('userName').textContent = userData.name || 'Not provided';
-            document.getElementById('userCourse').textContent = userData.course || 'Not provided';
-            document.getElementById('userAvatar').textContent = initials;
-            
-            // Update profile view
-            document.getElementById('profileName').textContent = userData.name || 'Not provided';
-            document.getElementById('profileCourse').textContent = userData.course || 'Not provided';
-            document.getElementById('profileMobile').textContent = userData.mobile || 'Not provided';
-            document.getElementById('profileEmail').textContent = user.email;
-            document.getElementById('profileJoinDate').textContent = formatDate(joinDate);
-            document.getElementById('profileBatch').textContent = userData.batch || 'Not specified';
-            document.getElementById('profileAvatar').textContent = initials;
-            
-            // Update form fields
-            document.getElementById('profileEmailInput').value = user.email;
-            document.getElementById('profileMobileInput').value = userData.mobile || '';
-            
-            // Update welcome message
-            document.getElementById('welcomeUserName').textContent = firstName;
-            
-            // Initialize dashboard
-            initDashboard();
-          } else {
-            console.log("No such document!");
-            // Fallback if no user data
-            document.getElementById('userAvatar').textContent = '?';
-            document.getElementById('profileAvatar').textContent = '?';
-            document.getElementById('welcomeUserName').textContent = 'Student';
-            
-            // Initialize dashboard
-            initDashboard();
-          }
-        }).catch((error) => {
-          console.log("Error getting document:", error);
-        });
-      } else {
-        // No user is signed in
+    // Logout function
+    function logout() {
+      auth.signOut().then(() => {
         window.location.href = "login.html";
-      }
-    });
+      }).catch((error) => {
+        console.error("Logout Error:", error);
+        alert("Logout failed. Please try again.");
+      });
+    }
 
     // Update profile handler
     document.getElementById('updateProfileBtn').addEventListener('click', function() {
@@ -1384,6 +1085,8 @@
         if (newPassword) {
           return user.updatePassword(newPassword).then(() => {
             alert("Profile updated successfully!");
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
           });
         } else {
           alert("Profile updated successfully!");
@@ -1393,6 +1096,147 @@
         alert("Error updating profile. Please try again.");
       });
     });
+
+    // Fetch user dashboard data
+    async function fetchUserDashboardData(userId) {
+      try {
+        // Get user document
+        const userDoc = await db.collection('users').doc(userId).get();
+        const userData = userDoc.data();
+        
+        // Get enrollments with course details
+        const enrollmentsSnap = await db.collection('enrollments')
+          .where('userId', '==', userId)
+          .get();
+        
+        const courses = await Promise.all(
+          enrollmentsSnap.docs.map(async doc => {
+            const enrollment = doc.data();
+            const courseDoc = await db.collection('courses').doc(enrollment.courseId).get();
+            return {
+              ...courseDoc.data(),
+              progress: enrollment.progress || 0,
+              id: courseDoc.id
+            };
+          })
+        );
+        
+        // Get test results
+        const testsSnap = await db.collection('testResults')
+          .where('userId', '==', userId)
+          .orderBy('date', 'desc')
+          .limit(5)
+          .get();
+        
+        const tests = testsSnap.docs.map(doc => doc.data());
+        
+        // Get upcoming deadlines
+        const deadlinesSnap = await db.collection('deadlines')
+          .where('dueDate', '>=', new Date())
+          .orderBy('dueDate', 'asc')
+          .limit(3)
+          .get();
+        
+        const deadlines = deadlinesSnap.docs.map(doc => doc.data());
+        
+        return {
+          user: userData,
+          courses,
+          tests,
+          deadlines
+        };
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        return null;
+      }
+    }
+
+    // Initialize the dashboard
+    async function initDashboard(userId) {
+      // Update date and time every minute
+      updateDateTime();
+      setInterval(updateDateTime, 60000);
+      
+      // Initialize charts
+      initPerformanceChart();
+      initScoreTrendChart();
+      initSubjectChart();
+      
+      // Fetch and render data
+      const dashboardData = await fetchUserDashboardData(userId);
+      
+      if (dashboardData) {
+        const { user, courses, tests, deadlines } = dashboardData;
+        
+        // Update user info
+        const initials = getInitials(user.name);
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userCourse').textContent = user.course;
+        document.getElementById('userAvatar').textContent = initials;
+        document.getElementById('welcomeUserName').textContent = user.name.split(' ')[0];
+        
+        // Update profile section
+        document.getElementById('profileName').textContent = user.name;
+        document.getElementById('profileCourse').textContent = user.course;
+        document.getElementById('profileMobile').textContent = user.mobile || 'Not provided';
+        document.getElementById('profileEmail').textContent = user.email;
+        document.getElementById('profileJoinDate').textContent = formatDate(user.joinDate);
+        document.getElementById('profileBatch').textContent = user.batch || 'Not specified';
+        document.getElementById('profileAvatar').textContent = initials;
+        document.getElementById('profileEmailInput').value = user.email;
+        document.getElementById('profileMobileInput').value = user.mobile || '';
+        
+        // Render data
+        renderCourseCards(courses);
+        renderTestCards(tests);
+        renderRecentTests(tests);
+        renderUpcomingDeadlines(deadlines);
+        renderPerformanceTable(tests);
+        
+        // Calculate and display performance metrics
+        if (tests.length > 0) {
+          const avgScore = tests.reduce((sum, test) => sum + (test.score / test.maxMarks * 100), 0) / tests.length;
+          document.getElementById('avgScore').textContent = Math.round(avgScore) + '%';
+          document.getElementById('testsTaken').textContent = tests.length;
+          
+          // Find best rank
+          const bestRank = Math.min(...tests.map(t => t.rank));
+          document.getElementById('rank').textContent = bestRank + getOrdinalSuffix(bestRank);
+        }
+        
+        // Calculate progress (mock values - replace with actual calculations)
+        document.getElementById('syllabusCoverage').textContent = '72%';
+        document.getElementById('syllabusProgress').style.width = '72%';
+        document.getElementById('conceptMastery').textContent = '65%';
+        document.getElementById('conceptProgress').style.width = '65%';
+        document.getElementById('practiceCompleted').textContent = '58%';
+        document.getElementById('practiceProgress').style.width = '58%';
+      }
+      
+      // Setup navigation
+      setupNavigation();
+    }
+
+    // Helper function for ordinal suffixes
+    function getOrdinalSuffix(num) {
+      const j = num % 10, k = num % 100;
+      if (j == 1 && k != 11) return 'st';
+      if (j == 2 && k != 12) return 'nd';
+      if (j == 3 && k != 13) return 'rd';
+      return 'th';
+    }
+
+    // Auth state change handler
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in
+        initDashboard(user.uid);
+      } else {
+        // No user is signed in
+        window.location.href = "login.html";
+      }
+    });
+
   </script>
 </body>
 </html>
