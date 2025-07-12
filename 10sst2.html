@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nationalism in India - THP Coaching Classes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --light-bg: #f8f9fa;
+            --section-bg: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(106, 48, 147, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 126, 95, 0.05) 0%, transparent 50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "THP";
+            position: fixed;
+            opacity: 0.03;
+            font-size: 40vw;
+            font-weight: 900;
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            pointer-events: none;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            margin: 0.5rem 0 0;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1rem;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background-color: var(--section-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .section h2 {
+            color: var(--primary);
+            margin-top: 0;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(to right, var(--primary), var(--accent)) 1;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .section h2::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .mcq-list {
+            margin: 1.5rem 0;
+        }
+
+        .mcq-item {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 3px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .mcq-item:hover {
+            border-left: 3px solid var(--accent);
+            transform: translateX(5px);
+        }
+
+        .mcq-question {
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .mcq-answer {
+            color: var(--primary);
+            font-weight: 500;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .mcq-answer::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .qa-item {
+            margin-bottom: 2rem;
+            background: var(--section-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .qa-item:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            border-left: 4px solid var(--accent);
+        }
+
+        .question {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .question::before {
+            content: "Q.";
+            font-weight: 700;
+            color: var(--accent);
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .answer {
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .answer p {
+            margin-bottom: 1rem;
+        }
+
+        .answer ol, .answer ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .answer li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .answer li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: -1rem;
+        }
+
+        .highlight-box {
+            background-color: rgba(106, 48, 147, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.2rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        .image-placeholder {
+            background-color: var(--light-bg);
+            border: 2px dashed #ccc;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            border-radius: 8px;
+            color: var(--text-light);
+            font-style: italic;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 48%, rgba(106, 48, 147, 0.1) 49%, rgba(106, 48, 147, 0.1) 51%, transparent 52%);
+            background-size: 10px 10px;
+            opacity: 0.3;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="50" font-family="Arial" font-size="20" fill="rgba(255,255,255,0.05)">THP</text></svg>');
+            opacity: 0.2;
+        }
+
+        .footer p {
+            margin: 0;
+            position: relative;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(106, 48, 147, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(106, 48, 147, 0.6);
+        }
+
+        @media print {
+            .header, .footer, .back-to-top {
+                display: none;
+            }
+            body::before, body::after {
+                display: none;
+            }
+            .section {
+                border: none;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+            .container {
+                padding: 0;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.2rem;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .section {
+                padding: 1.5rem;
+            }
+            .section h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .container {
+                padding: 0 1rem;
+            }
+            .section {
+                padding: 1.2rem;
+            }
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+        }
+
+        /* Animation delays for sections */
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>THP Coaching Classes</h1>
+        <p>Conceptual Notes by Rohit Sir</p>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Chapter 2: Nationalism in India</h2>
+            
+            <div class="mcq-list">
+                <h3>One Word Answers</h3>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">1. Movements launched by Mahatma Gandhi:</div>
+                    <div class="mcq-answer">Quit India movement, Non-cooperation movement, Civil disobedience movement, Champaran movement</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">2. Who was the author of the novel Anand Math?</div>
+                    <div class="mcq-answer">Bankim Chandra Chattopadhyay</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">3. Who wrote Vande Mataram?</div>
+                    <div class="mcq-answer">Bankim Chandra Chattopadhyay</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">4. Where was Gandhi's ashram located?</div>
+                    <div class="mcq-answer">Sabarmati</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">5. Who said "Swaraj is my birthright and I will have it"?</div>
+                    <div class="mcq-answer">Bal Gangadhar Tilak</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">6. Chauri Chaura incident took place in the year:</div>
+                    <div class="mcq-answer">1922</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">7. What was the result of Chauri-Chaura incident?</div>
+                    <div class="mcq-answer">Non-cooperation movement was taken back</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">8. The father of India:</div>
+                    <div class="mcq-answer">Mahatma Gandhi</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">9. When was Indian National Congress established?</div>
+                    <div class="mcq-answer">1885</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">10. Who is the author of "Hind Swaraj"?</div>
+                    <div class="mcq-answer">Mahatma Gandhi</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">11. Who initiated Purna Swaraj resolution?</div>
+                    <div class="mcq-answer">Jawaharlal Nehru</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">12. When was Rowlatt Act passed?</div>
+                    <div class="mcq-answer">1919</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">13. Who among the following led Bardoli Satyagraha?</div>
+                    <div class="mcq-answer">Vallabhbhai Patel</div>
+                </div>
+                
+                <div class="mcq-item">
+                    <div class="mcq-question">14. 13 April, 1919 is related to which incident?</div>
+                    <div class="mcq-answer">Jallianwala Bagh Massacre</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Answer the following questions</h2>
+            
+            <div class="qa-item">
+                <div class="question">1. What do you understand by Salt Satyagraha? OR What do you mean by Civil disobedience movement? Why did Mahatma Gandhi make salt the basis of his movement in 1930? What was the effect of this movement?</div>
+                <div class="answer">
+                    <p>The Salt Satyagraha was a mass civil disobedience movement initiated by Mahatma Gandhi against the salt tax imposed by the British government in India. He led a large group of people from Sabarmati Ashram on March 12, 1930 till Dandi, a coastal village in Gujarat, to break the salt law by producing salt from seawater.</p>
+                    
+                    <p><strong>Effect of Salt Satyagraha:</strong></p>
+                    <ol>
+                        <li>It pushed Indian freedom struggle into the limelight in western media.</li>
+                        <li>It showed the power of non-violent Satyagraha as a tool for fighting oppression.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">2. Why did Gandhi ji decide to launch a nationwide Satyagraha against the Rowlatt Act 1919? How was it organised? Explain it.</div>
+                <div class="answer">
+                    <ol>
+                        <li>The Rowlatt Act was passed in 1919 by the British government despite the united opposition of the Indian members.</li>
+                        <li>It gave enormous powers to the government.</li>
+                        <li>Indian people wanted to oppose it. Under the leadership of Mahatma Gandhi they decided to launch a nationwide Satyagraha against the Rowlatt Act 1919.</li>
+                        <li>Rallies were organised in various cities.</li>
+                        <li>Workers went on strike in railway workshops.</li>
+                        <li>Shops were shut down.</li>
+                    </ol>
+                    <p>To suppress the nationalists, the British administration:</p>
+                    <ol>
+                        <li>Put the local leaders in jail.</li>
+                        <li>Prevented Mahatma Gandhi from entering Delhi.</li>
+                        <li>On April 10, the police in Amritsar fired upon a peaceful procession.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">3. Why was Civil Disobedience movement called off by Gandhi? OR Why did Mahatma Gandhi decide to call off the civil disobedience movement? Explain.</div>
+                <div class="answer">
+                    <ol>
+                        <li>When Indian leaders were arrested, angry crowds demonstrated in the streets of Peshawar, facing police batons and firing. Many were killed.</li>
+                        <li>A month later Mahatma Gandhi himself was arrested; industrial workers attacked police posts, government buildings, law courts and railway stations and all institutions that symbolised the British rule.</li>
+                        <li>To break the deadlock between Congress and the government, Lord Irwin invited Gandhiji to a peace pact i.e. Gandhi-Irwin Pact.</li>
+                        <li>In such a situation, Gandhiji decided to call off the movement.</li>
+                        <li>It couldn't sustain the Khilafat movement launched.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">4. Describe the Khilafat Movement.</div>
+                <div class="answer">
+                    <p>Khilafat Movement was a united struggle launched by Mohammad Ali Jinnah and Shaukat Ali with the cooperation of Mahatma Gandhi.</p>
+                    <p>The First World War ended with the defeat of Ottoman Turkey. There were rumours that a harsh peace treaty was going to be imposed on the Ottoman emperor, the spiritual head of the Islamic world (the Khalifa). The Sultan was deprived of real authority even over those territories which were left under his control. This angered the Muslims in India.</p>
+                    <p>To defend the powers of Khalifa and avert harsh peace treaty to be imposed on the Ottoman Empire, the Khilafat Committee was formed in 1919 in Bombay.</p>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">5. Describe the provisions of Gandhi-Irwin Pact.</div>
+                <div class="answer">
+                    <ol>
+                        <li>The Civil Disobedience movement was to be withdrawn.</li>
+                        <li>Peaceful picketing was allowed but picketing for the boycott of foreign goods was not to be followed beyond a limit permitted by law.</li>
+                        <li>The National Congress was to participate in the second round table conference.</li>
+                        <li>Notifications declaring associations unlawful were to be withdrawn.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">6. Write a short note on Jallianwala Bagh massacre.</div>
+                <div class="answer">
+                    <p>On April 13, 1919 a large crowd gathered in the enclosed ground of Jallianwala Bagh - some to protest against the British government's repressive measures, others to attend the annual Baisakhi fair. The people were unaware of the imposition of Martial law in the city.</p>
+                    <p>General Dyer, the Commander blocked the exit points of the area and opened fire upon the innocent citizens. His intention was to produce a "moral effect" and favourable submission. Hundreds of innocent people including women and children were killed, and injured due to this indiscriminate firing by the British soldiers. This incident was the most brutal incident in the history of British India.</p>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">7. Write the names of any three leaders who participated in the Indian national movement?</div>
+                <div class="answer">
+                    <p>Lala Lajpat Rai, Bal Gangadhar Tilak, Bipin Chandra Pal (known as Lal-Bal-Pal)</p>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">8. Write any three reasons responsible for the failure of the first freedom struggle.</div>
+                <div class="answer">
+                    <ol>
+                        <li>The sepoys lacked one clear leader; there were several. They also did not have a coherent plan by which the foreigners would be ousted.</li>
+                        <li>Indian rulers who supported the revolt did not envision any plan for the country after the British were defeated.</li>
+                        <li>Majority of northern India was affected by the revolt while Bombay and Madras remained mostly unaffected.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="qa-item">
+                <div class="question">9. Analyse three Satyagraha movements launched by Mahatma Gandhi.</div>
+                <div class="answer">
+                    <p>After arriving in India, Mahatma Gandhi successfully organized Satyagraha movements in various places:</p>
+                    <ol>
+                        <li>In 1917, he travelled to Champaran in Bihar to inspire the peasants to struggle against the oppressive plantation system.</li>
+                        <li>Then in 1917, he organised a Satyagraha to support the peasants of Kheda district of Gujarat. Affected by crop failure and a plague epidemic, the peasants were unable to pay the revenue.</li>
+                        <li>In 1918, he went to Ahmedabad to organise a Satyagraha movement amongst cotton mill workers.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+
+    <div class="footer">
+        <p>THP Coaching Classes &copy; 2023 | Conceptual Notes by Rohit Sir</p>
+    </div>
+
+    <script>
+        // Back to top button functionality
+        const backToTop = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // Add animation to elements when they come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {threshold: 0.1});
+
+        document.querySelectorAll('.section, .qa-item, .mcq-item').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
