@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Coaching - Solutions Chemistry Test Series</title>
+    <style>
+        :root {
+            --primary-blue: #1a237e;
+            --primary-gold: #ffd700;
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #e0e0e0;
+            --light-bg: #f5f5f5;
+            --light-card: #ffffff;
+            --light-text: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        .thp-header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .thp-header img {
+            height: 60px;
+            width: auto;
+        }
+
+        .thp-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .thp-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: var(--light-card);
+            border-bottom: 1px solid #ddd;
+        }
+
+        body.dark-mode .controls {
+            background-color: var(--dark-card);
+            border-bottom-color: #444;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-blue);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .chapter {
+            margin-bottom: 2.5rem;
+            background-color: var(--light-card);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .chapter {
+            background-color: var(--dark-card);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .chapter-title {
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-gold);
+            font-size: 1.5rem;
+        }
+
+        body.dark-mode .chapter-title {
+            color: var(--primary-gold);
+        }
+
+        .question {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid var(--primary-gold);
+            border-radius: 4px;
+        }
+
+        body.dark-mode .question {
+            background-color: rgba(26, 35, 126, 0.3);
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .question-number {
+            color: var(--primary-gold);
+        }
+
+        .question-text {
+            margin-bottom: 0.5rem;
+        }
+
+        .options {
+            margin-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .option {
+            margin-bottom: 0.3rem;
+        }
+
+        .year-tag {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        body.dark-mode .year-tag {
+            background-color: var(--primary-gold);
+            color: var(--primary-blue);
+        }
+
+        .answer-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        body.dark-mode .answer-btn {
+            background-color: var(--primary-gold);
+            color: var(--primary-blue);
+        }
+
+        .answer-btn:hover {
+            background-color: #0d1b6b;
+        }
+
+        body.dark-mode .answer-btn:hover {
+            background-color: #e6c200;
+        }
+
+        .answer {
+            display: none;
+            padding: 1rem;
+            margin-top: 1rem;
+            background-color: rgba(26, 35, 126, 0.1);
+            border-radius: 4px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        body.dark-mode .answer {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-left-color: var(--primary-gold);
+        }
+
+        .answer.show {
+            display: block;
+        }
+
+        .tips-section {
+            background-color: rgba(255, 215, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border-left: 4px solid var(--primary-gold);
+        }
+
+        body.dark-mode .tips-section {
+            background-color: rgba(26, 35, 126, 0.2);
+        }
+
+        .tips-title {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .tips-title {
+            color: var(--primary-gold);
+        }
+
+        .tips-list {
+            list-style-type: none;
+        }
+
+        .tips-list li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .tips-list li:before {
+            content: "•";
+            color: var(--primary-gold);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -0.3rem;
+        }
+
+        body.dark-mode .tips-list li:before {
+            color: var(--primary-blue);
+        }
+
+        .thp-footer {
+            background-color: var(--primary-blue);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        body.dark-mode .thp-footer {
+            background-color: #0d1b6b;
+        }
+
+        .thp-footer p:first-child {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .thp-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .chapter {
+                padding: 1rem;
+            }
+        }
+
+        /* Icons */
+        .icon {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="thp-header">
+        <!-- Logo placeholder - replace with actual logo -->
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2zm0 2.8L18 9v9h-2v-6H8v6H6V9l6-6.2z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+        </svg>
+        <div>
+            <h1>THP Coaching - Test Series</h1>
+            <p>By Mohit Sir (MSc Neuroscience)</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="toggle-container">
+            <span>Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div>
+            <button id="expandAll">Expand All Answers</button>
+            <button id="collapseAll">Collapse All Answers</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Chapter 1: Concentration Terms -->
+        <div class="chapter">
+            <h2 class="chapter-title">Concentration Terms</h2>
+            
+            <!-- Q.1 -->
+            <div class="question">
+                <div class="question-number">Q.1.</div>
+                <div class="question-text">Mole fraction of 1.8 g glucose in 90 g water is :</div>
+                <div class="options">
+                    <div class="option">(a) 0.19</div>
+                    <div class="option">(b) 0.019 <span class="year-tag">2018</span></div>
+                    <div class="option">(c) 0.0019</div>
+                    <div class="option">(d) 0.00019</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (c) 0.0019<br>
+                    <strong>Solution:</strong> Moles of glucose = 1.8/180 = 0.01 mol; Moles of water = 90/18 = 5 mol; Mole fraction = 0.01/(0.01+5) = 0.0019
+                </div>
+            </div>
+            
+            <!-- Q.2 -->
+            <div class="question">
+                <div class="question-number">Q.2.</div>
+                <div class="question-text">Mole fraction of solute in 1 molal solution is :</div>
+                <div class="options">
+                    <div class="option">(a) 1</div>
+                    <div class="option">(b) 1.8 <span class="year-tag">2017</span></div>
+                    <div class="option">(c) 18</div>
+                    <div class="option">(d) 0.018</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (d) 0.018<br>
+                    <strong>Solution:</strong> For 1 molal solution: 1 mole solute in 1000g (55.56 moles) water. Mole fraction = 1/(1+55.56) ≈ 0.018
+                </div>
+            </div>
+            
+            <!-- Q.3 -->
+            <div class="question">
+                <div class="question-number">Q.3.</div>
+                <div class="question-text">If 18 g of glucose present as solute in 1000 g of solvent, then solution is said to be :</div>
+                <div class="options">
+                    <div class="option">(a) 1 molar</div>
+                    <div class="option">(b) 0.1 molar</div>
+                    <div class="option">(c) 0.5 molar</div>
+                    <div class="option">(d) -0.1 molar</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (b) 0.1 molar<br>
+                    <strong>Solution:</strong> Molar mass of glucose = 180g/mol; Moles = 18/180 = 0.1 mol in 1kg solvent = 0.1 molal solution
+                </div>
+            </div>
+            
+            <!-- Q.4 -->
+            <div class="question">
+                <div class="question-number">Q.4.</div>
+                <div class="question-text">Molarity (in mol/L) of distilled or pure water is :</div>
+                <div class="options">
+                    <div class="option">(a) 55.56</div>
+                    <div class="option">(b) 18</div>
+                    <div class="option">(c) 49.87</div>
+                    <div class="option">(d) 81</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (a) 55.56<br>
+                    <strong>Solution:</strong> Density of water = 1g/mL; 1000g water = 1000mL; Moles = 1000/18 = 55.56 mol in 1L ⇒ Molarity = 55.56 M
+                </div>
+            </div>
+            
+            <!-- Q.5 -->
+            <div class="question">
+                <div class="question-number">Q.5.</div>
+                <div class="question-text">The concentration of 0.2 M H₂SO₄ solution will be in g/L :</div>
+                <div class="options">
+                    <div class="option">(a) 21.4</div>
+                    <div class="option">(b) 39.2</div>
+                    <div class="option">(c) 9.8</div>
+                    <div class="option">(d) 19.6</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (d) 19.6<br>
+                    <strong>Solution:</strong> Molar mass H₂SO₄ = 98g/mol; 0.2M = 0.2 × 98 = 19.6 g/L
+                </div>
+            </div>
+            
+            <!-- Q.13 -->
+            <div class="question">
+                <div class="question-number">Q.13.</div>
+                <div class="question-text">8 g NaOH is dissolved in 450 mL solution. The molarity of solution is :</div>
+                <div class="options">
+                    <div class="option">(a) 0.444 M</div>
+                    <div class="option">(b) 0.492 M</div>
+                    <div class="option">(c) 0.0286 M</div>
+                    <div class="option">(d) 0.0392 M</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (a) 0.444 M<br>
+                    <strong>Solution:</strong> Moles of NaOH = 8/40 = 0.2 mol; Molarity = 0.2/(450/1000) = 0.444 M
+                </div>
+            </div>
+            
+            <!-- Q.14 -->
+            <div class="question">
+                <div class="question-number">Q.14.</div>
+                <div class="question-text">3.0 g of acetic acid is dissolved in 80 g of Benzene. The molarity of the solution is :</div>
+                <div class="options">
+                    <div class="option">(a) 0.0625 mol kg⁻¹</div>
+                    <div class="option">(b) 0.00625 mol kg⁻¹</div>
+                    <div class="option">(c) 0.625 mol kg⁻¹</div>
+                    <div class="option">(d) 6.25 mol kg⁻¹</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (c) 0.625 mol kg⁻¹<br>
+                    <strong>Solution:</strong> Moles of acetic acid = 3/60 = 0.05 mol; Molality = 0.05/(80/1000) = 0.625 mol/kg
+                </div>
+            </div>
+            
+            <!-- Q.20 -->
+            <div class="question">
+                <div class="question-number">Q.20.</div>
+                <div class="question-text">How many moles of water are present in 180 g of water?</div>
+                <div class="options">
+                    <div class="option">(a) 1 mole</div>
+                    <div class="option">(b) 18 moles</div>
+                    <div class="option">(c) 10 moles</div>
+                    <div class="option">(d) 100 moles</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (c) 10 moles<br>
+                    <strong>Solution:</strong> Molar mass of water = 18g/mol; Moles = 180/18 = 10 moles
+                </div>
+            </div>
+            
+            <!-- Q.21 -->
+            <div class="question">
+                <div class="question-number">Q.21.</div>
+                <div class="question-text">Necessary mass of Na₂CO₃ for 500 mL, 0.2 M solution is:</div>
+                <div class="options">
+                    <div class="option">(a) 1.53 g</div>
+                    <div class="option">(b) 3.06 g</div>
+                    <div class="option">(c) 5.3 g</div>
+                    <div class="option">(d) 10.6 g</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (d) 10.6 g<br>
+                    <strong>Solution:</strong> Moles needed = 0.2 × 0.5 = 0.1 mol; Molar mass Na₂CO₃ = 106g/mol; Mass = 0.1 × 106 = 10.6g
+                </div>
+            </div>
+            
+            <!-- Q.23 -->
+            <div class="question">
+                <div class="question-number">Q.23.</div>
+                <div class="question-text">In a 200 g solution of glucose with 10% mass percent, amount of glucose will be</div>
+                <div class="options">
+                    <div class="option">(a) 5.0 g</div>
+                    <div class="option">(b) 10.0 g</div>
+                    <div class="option">(c) 20.0 g</div>
+                    <div class="option">(d) 40.0 g</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (c) 20.0 g<br>
+                    <strong>Solution:</strong> 10% of 200g = 0.10 × 200 = 20g glucose
+                </div>
+            </div>
+            
+            <!-- Q.25 -->
+            <div class="question">
+                <div class="question-number">Q.25.</div>
+                <div class="question-text">5g NaOH is dissolved in 450 mL solution. Molarity of the solution is:</div>
+                <div class="options">
+                    <div class="option">(a) 0.125 mol L⁻¹</div>
+                    <div class="option">(b) 0.139 mol L⁻¹</div>
+                    <div class="option">(c) 0.250 mol L⁻¹</div>
+                    <div class="option">(d) 0.278 mol L⁻¹</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (d) 0.278 mol L⁻¹<br>
+                    <strong>Solution:</strong> Moles of NaOH = 5/40 = 0.125 mol; Molarity = 0.125/(450/1000) = 0.278 M
+                </div>
+            </div>
+            
+            <!-- Q.26 -->
+            <div class="question">
+                <div class="question-number">Q.26.</div>
+                <div class="question-text">5.85 g of NaCl is present in 200 mL solution. What molarity of the solution? (Na = 23, Cl = 35.5)</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> 0.5 M<br>
+                    <strong>Solution:</strong> M = (5.85/58.5) × (1000/200) = 0.5 M
+                </div>
+            </div>
+            
+            <!-- Mohit Sir's Tips for Concentration Terms -->
+            <div class="tips-section">
+                <h3 class="tips-title">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--primary-blue)">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    Mohit Sir's Tips: Concentration Terms
+                </h3>
+                <ul class="tips-list">
+                    <li><strong>Molarity (M)</strong> = moles of solute / liters of solution</li>
+                    <li><strong>Molality (m)</strong> = moles of solute / kg of solvent</li>
+                    <li><strong>Mole fraction (X)</strong> = moles of component / total moles of all components</li>
+                    <li><strong>Mass percentage</strong> = (mass of solute / mass of solution) × 100</li>
+                    <li>For dilute aqueous solutions, molarity ≈ molality (since 1L water ≈ 1kg)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Chapter 2: Colligative Properties -->
+        <div class="chapter">
+            <h2 class="chapter-title">Colligative Properties</h2>
+            
+            <!-- Q.6 -->
+            <div class="question">
+                <div class="question-number">Q.6.</div>
+                <div class="question-text">Among the following whose vapour pressure will be minimum?</div>
+                <div class="options">
+                    <div class="option">(a) 0.1 M barium chloride (BaCl₂) solution</div>
+                    <div class="option">(b) 0.1 M phenol solution</div>
+                    <div class="option">(c) 0.1 M sucrose solution</div>
+                    <div class="option">(d) 0.1 M sodium chloride solution</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (a) 0.1 M barium chloride (BaCl₂) solution<br>
+                    <strong>Solution:</strong> BaCl₂ gives maximum particles (3 ions) → maximum lowering of vapor pressure
+                </div>
+            </div>
+            
+            <!-- Q.7 -->
+            <div class="question">
+                <div class="question-number">Q.7.</div>
+                <div class="question-text">Amongst the following, which one is a colligative property?</div>
+                <div class="options">
+                    <div class="option">(a) Surface tension</div>
+                    <div class="option">(b) Viscosity</div>
+                    <div class="option">(c) Osmotic pressure</div>
+                    <div class="option">(d) Optical activity</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (c) Osmotic pressure<br>
+                    <strong>Solution:</strong> Colligative properties depend only on number of solute particles, not their identity
+                </div>
+            </div>
+            
+            <!-- Q.10 -->
+            <div class="question">
+                <div class="question-number">Q.10.</div>
+                <div class="question-text">Solution having maximum osmotic pressure is :</div>
+                <div class="options">
+                    <div class="option">(a) 1 M KCl</div>
+                    <div class="option">(b) 1 M (NH₄)₃PO₄</div>
+                    <div class="option">(c) 1 M BaCl₂</div>
+                    <div class="option">(d) 1 M C₆H₁₂O₆</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (b) 1 M (NH₄)₃PO₄<br>
+                    <strong>Solution:</strong> (NH₄)₃PO₄ → 4 ions (maximum particles) → highest osmotic pressure
+                </div>
+            </div>
+            
+            <!-- Q.11 -->
+            <div class="question">
+                <div class="question-number">Q.11.</div>
+                <div class="question-text">The aqueous solution having maximum boiling point is :</div>
+                <div class="options">
+                    <div class="option">(a) 0.015 M glucose</div>
+                    <div class="option">(b) 0.01 M KNO₃</div>
+                    <div class="option">(c) 0.015 M urea</div>
+                    <div class="option">(d) 0.01 M Na₂SO₄</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (d) 0.01 M Na₂SO₄<br>
+                    <strong>Solution:</strong> Na₂SO₄ → 3 ions → highest boiling point elevation (ΔTb = iKbm)
+                </div>
+            </div>
+            
+            <!-- Q.15 -->
+            <div class="question">
+                <div class="question-number">Q.15.</div>
+                <div class="question-text">The solution having lowest vapour pressure amongst the following is :</div>
+                <div class="options">
+                    <div class="option">(a) 1 M glucose</div>
+                    <div class="option">(b) 1 M sucrose</div>
+                    <div class="option">(c) 1 M NaCl</div>
+                    <div class="option">(d) 1 M K₂SO₄</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (d) 1 M K₂SO₄<br>
+                    <strong>Solution:</strong> K₂SO₄ → 3 ions → maximum lowering of vapor pressure
+                </div>
+            </div>
+            
+            <!-- Q.16 -->
+            <div class="question">
+                <div class="question-number">Q.16.</div>
+                <div class="question-text">The depression of freezing point is directly proportional to :</div>
+                <div class="options">
+                    <div class="option">(a) mole fraction of the solution</div>
+                    <div class="option">(b) molarity of the solution</div>
+                    <div class="option">(c) molality of the solution</div>
+                    <div class="option">(d) molarity of the solvent</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (c) molality of the solution<br>
+                    <strong>Solution:</strong> ΔTf = Kf × m (directly proportional to molality)
+                </div>
+            </div>
+            
+            <!-- Q.17 -->
+            <div class="question">
+                <div class="question-number">Q.17.</div>
+                <div class="question-text">Which pair of solutions is isotonic at same temperature?</div>
+                <div class="options">
+                    <div class="option">(a) 0.1 M NaCl and 0.1 M Na₂SO₄</div>
+                    <div class="option">(b) 0.1 M urea and 0.1 M NaCl</div>
+                    <div class="option">(c) 0.1 M urea and 0.2 M MgCl₂</div>
+                    <div class="option">(d) 0.1 M Ca(NO₃)₂ and 0.1 M Na₂SO₄</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (d) 0.1 M Ca(NO₃)₂ and 0.1 M Na₂SO₄<br>
+                    <strong>Solution:</strong> Both give 3 particles (same effective concentration)
+                </div>
+            </div>
+            
+            <!-- Q.18 -->
+            <div class="question">
+                <div class="question-number">Q.18.</div>
+                <div class="question-text">Which of the following solutions has the lowest freezing point?</div>
+                <div class="options">
+                    <div class="option">(a) Potassium sulphate</div>
+                    <div class="option">(b) Sodium chloride</div>
+                    <div class="option">(c) Glucose</div>
+                    <div class="option">(d) Urea</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (a) Potassium sulphate<br>
+                    <strong>Solution:</strong> K₂SO₄ → 3 particles → maximum freezing point depression
+                </div>
+            </div>
+            
+            <!-- Q.19 -->
+            <div class="question">
+                <div class="question-number">Q.19.</div>
+                <div class="question-text">Which of the following is not a colligative property of the solution?</div>
+                <div class="options">
+                    <div class="option">(a) Surface tension</div>
+                    <div class="option">(b) Osmotic pressure</div>
+                    <div class="option">(c) Vapour pressure depression</div>
+                    <div class="option">(d) Freezing point depression</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (a) Surface tension<br>
+                    <strong>Solution:</strong> Surface tension depends on nature of substance, not just particle count
+                </div>
+            </div>
+            
+            <!-- Q.24 -->
+            <div class="question">
+                <div class="question-number">Q.24.</div>
+                <div class="question-text">The colligative property of a solution depends upon:</div>
+                <div class="options">
+                    <div class="option">(a) the number of particles of solute</div>
+                    <div class="option">(b) the nature of particles of solute</div>
+                    <div class="option">(c) the nature of particles of solvent</div>
+                    <div class="option">(d) the number of particles of both solute and solvent</div>
+                </div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Ans.</strong> (a) the number of particles of solute<br>
+                    <strong>Solution:</strong> Colligative properties depend only on solute particle concentration
+                </div>
+            </div>
+            
+            <!-- Mohit Sir's Tips for Colligative Properties -->
+            <div class="tips-section">
+                <h3 class="tips-title">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--primary-blue)">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    Mohit Sir's Tips: Colligative Properties
+                </h3>
+                <ul class="tips-list">
+                    <li>Four main colligative properties: Vapor pressure lowering, Boiling point elevation, Freezing point depression, Osmotic pressure</li>
+                    <li>ΔTb = iKbm (i = van't Hoff factor, Kb = ebullioscopic constant)</li>
+                    <li>ΔTf = iKfm (Kf = cryoscopic constant)</li>
+                    <li>π = iCRT (π = osmotic pressure)</li>
+                    <li>For electrolytes, i > 1 due to dissociation; for non-electrolytes, i = 1</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Chapter 3: Numerical Problems -->
+        <div class="chapter">
+            <h2 class="chapter-title">Numerical Problems</h2>
+            
+            <!-- Q.27 -->
+            <div class="question">
+                <div class="question-number">Q.27.</div>
+                <div class="question-text">Relative density of 96% (w/w) sulphuric acid is 1.8 g. Calculate its molarity and normality.</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    Mass of 100 mL solution = 1.84 × 100 = 184 g<br>
+                    Acid present in 184 g solution = (96/100) × 184 = 176.64 g<br>
+                    Molarity = (176.64/98) × (1000/100) = 18.02 M<br>
+                    Normality = M × V.f = 18.02 × 2 = 36.04 N
+                </div>
+            </div>
+            
+            <!-- Q.28 -->
+            <div class="question">
+                <div class="question-number">Q.28.</div>
+                <div class="question-text">250 mL solution is prepared by dissolving 1.325 g anhydrous sodium carbonate in water. Equivalent weight of anhydrous sodium carbonate is 83. Calculate the normality of the solution.</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    Normality = (1.325/53) × (1000/250) = 0.1 N
+                </div>
+            </div>
+            
+            <!-- Q.29 -->
+            <div class="question">
+                <div class="question-number">Q.29.</div>
+                <div class="question-text">NaCl solution is isotonic with 7.2% glucose solution. What will be the van't Hoff's factor?</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    i × (1.2/58.5) = 1 × (7.2/180) ⇒ i = 2<br>
+                    So, Van't Hoff's factor for NaCl = 2
+                </div>
+            </div>
+            
+            <!-- Q.30 -->
+            <div class="question">
+                <div class="question-number">Q.30.</div>
+                <div class="question-text">1/10 mole of a solute is dissolved in 100 g solvent. Calculate the molality of solution.</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    Molality = (1/10) × (1000/100) = 1 m
+                </div>
+            </div>
+            
+            <!-- Q.31 -->
+            <div class="question">
+                <div class="question-number">Q.31.</div>
+                <div class="question-text">A sample of H₂SO₄ is 94% (w/V) and its density is 1.84 g/mL. Calculate the molarity of this solution.</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    94% (w/V) means 94 g H₂SO₄ in 100 mL solution<br>
+                    Mass of solution = 1.84 × 100 = 184.0 g<br>
+                    Mass of solvent = 184 - 94 = 90 g<br>
+                    Molality = (1000 × 94)/(90 × 98) = 10.65 m
+                </div>
+            </div>
+            
+            <!-- Q.7 (from page 3) -->
+            <div class="question">
+                <div class="question-number">Q.7.</div>
+                <div class="question-text">2.82 g of glucose (molar mass = 180 g mol⁻¹) is dissolved in 30 g of water. Calculate the molality of the solution. [2024]</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    Moles of glucose = 2.82/180<br>
+                    Mass of water = 30 g<br>
+                    Molality = (2.82/180) × (1000/30) = 0.522 M
+                </div>
+            </div>
+            
+            <!-- Q.8 -->
+            <div class="question">
+                <div class="question-number">Q.8.</div>
+                <div class="question-text">In 214.2 g syrup of sugar, 34.2 g sugar (C₁₂H₂₂O₁₁) is present. What will be the molality of sugar syrup? [2019]</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    Weight of water = 214.2 - 34.2 = 180.0 g<br>
+                    Moles of sugar = 34.2/342 = 0.1<br>
+                    Molality = (0.1/180) × 1000 = 0.56 M
+                </div>
+            </div>
+            
+            <!-- Q.9 -->
+            <div class="question">
+                <div class="question-number">Q.9.</div>
+                <div class="question-text">Calculate the molality of a solution when 20 g NaOH is dissolved in 440 g of solvent. [2019]</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    Molality = (20/40)/(440/1000) = 1.136 m
+                </div>
+            </div>
+            
+            <!-- Q.10 -->
+            <div class="question">
+                <div class="question-number">Q.10.</div>
+                <div class="question-text">At any temperature the vapour pressure of a solvent is 0.416 bar. 0.5 g of a non-volatile non-electrolyte solid was dissolved in 42 g solvent (molar mass = 84 g mol⁻¹). The vapour pressure of the resultant solution was found to be 0.414 bar. Calculate the molar mass of the solid. [2019]</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    (0.416 - 0.414)/0.416 = (0.5/m)/(42/84)<br>
+                    Solving gives m = 208 g mol⁻¹
+                </div>
+            </div>
+            
+            <!-- Q.11 -->
+            <div class="question">
+                <div class="question-number">Q.11.</div>
+                <div class="question-text">Define Raoult's law and give its limitations. [2016, 18, 24]</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    <strong>Raoult's Law:</strong> For a solution of volatile liquids, the partial vapor pressure of each component is directly proportional to its mole fraction.<br>
+                    <strong>Limitations:</strong><br>
+                    1. Only applicable for dilute solutions of non-volatile electrolytes<br>
+                    2. Only applicable for substances that don't react with solvent<br>
+                    3. Not applicable for electrolytes that dissociate<br>
+                    4. Not applicable for substances that associate in solution
+                </div>
+            </div>
+            
+            <!-- Q.12 -->
+            <div class="question">
+                <div class="question-number">Q.12.</div>
+                <div class="question-text">The vapour pressure of two liquids P and Q are 80 mm and 60 mm respectively. Calculate the total pressure of a solution obtained by mixing 3 moles of P and 2 moles of Q. [2014, 23]</div>
+                <button class="answer-btn">Show Answer</button>
+                <div class="answer">
+                    <strong>Solution:</strong><br>
+                    Pₚ = 80 × (3/5) = 48 mm<br>
+                    P_q = 60 × (2/5) = 24 mm<br>
+                    Total pressure = 48 + 24 = 72 mm
+                </div>
+            </div>
+            
+            <!-- Mohit Sir's Tips for Numerical Problems -->
+            <div class="tips-section">
+                <h3 class="tips-title">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--primary-blue)">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    Mohit Sir's Tips: Numerical Problems
+                </h3>
+                <ul class="tips-list">
+                    <li>Always check units - convert grams to moles, mL to L, etc.</li>
+                    <li>For vapor pressure problems: (P⁰ - Pₛ)/P⁰ = mole fraction of solute</li>
+                    <li>For molality: moles of solute per kg of solvent (not solution)</li>
+                    <li>For electrolyte solutions, remember van't Hoff factor (i)</li>
+                    <li>Osmotic pressure formula: π = iCRT (use R = 0.0821 L·atm/K·mol)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="thp-footer">
+        <p>"Chemistry Simplified with Neuro-Learning Techniques"</p>
+        <p>© THP Coaching | Specializing in 12th board Chemistry Preparation</p>
+    </div>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode', this.checked);
+        });
+
+        // Answer reveal system
+        const answerBtns = document.querySelectorAll('.answer-btn');
+        answerBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                answer.classList.toggle('show');
+                this.textContent = answer.classList.contains('show') ? 'Hide Answer' : 'Show Answer';
+            });
+        });
+
+        // Expand/Collapse all buttons
+        document.getElementById('expandAll').addEventListener('click', function() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('show');
+            });
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.textContent = 'Hide Answer';
+            });
+        });
+
+        document.getElementById('collapseAll').addEventListener('click', function() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('show');
+            });
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.textContent = 'Show Answer';
+            });
+        });
+
+        // Store dark mode preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+        darkModeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+    </script>
+</body>
+</html>
