@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acids, Bases and Salts | THP Coaching Classes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
             --acid-color: #ff4757;
             --base-color: #1dd1a1;
             --salt-color: #ff9f43;
@@ -13,18 +19,33 @@
             --dark-bg: #2f3640;
             --light-text: #f5f6fa;
             --thp-color: #8e44ad;
+            --dark-mode-bg: #121212;
+            --dark-mode-card: #1e1e1e;
+            --dark-mode-text: #e0e0e0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #f1f2f6;
+            background-color: #f9f9f9;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             position: relative;
             overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode {
+            background-color: var(--dark-mode-bg);
+            color: var(--dark-mode-text);
         }
         
         body::after {
@@ -35,21 +56,26 @@
             transform: translate(-50%, -50%) rotate(-30deg);
             font-size: 30vw;
             font-weight: bold;
-            color: rgba(142, 68, 173, 0.08);
+            color: rgba(106, 48, 147, 0.05);
             z-index: -1;
             pointer-events: none;
-            font-family: 'Arial Black', sans-serif;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body.dark-mode::after {
+            color: rgba(106, 48, 147, 0.03);
         }
         
         .header {
             text-align: center;
             margin-bottom: 40px;
             position: relative;
+            animation: fadeInDown 0.8s ease;
         }
         
         .header h1 {
             font-size: 2.8rem;
-            background: linear-gradient(90deg, var(--acid-color), var(--base-color), var(--salt-color));
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -59,7 +85,7 @@
         
         .header .subheading {
             font-size: 1.5rem;
-            color: var(--thp-color);
+            color: var(--primary);
             font-weight: bold;
             margin-bottom: 10px;
         }
@@ -70,11 +96,15 @@
             margin-bottom: 15px;
         }
         
+        body.dark-mode .header .credit {
+            color: #aaa;
+        }
+        
         .header::after {
             content: "";
             display: block;
             height: 4px;
-            background: linear-gradient(90deg, var(--acid-color), var(--base-color), var(--salt-color));
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             width: 60%;
             margin: 0 auto;
             border-radius: 2px;
@@ -90,6 +120,12 @@
             border-top: 4px solid;
             position: relative;
             overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        body.dark-mode .section {
+            background: var(--dark-mode-card);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .section::before {
@@ -99,10 +135,14 @@
             right: 10px;
             font-size: 5rem;
             font-weight: bold;
-            color: rgba(142, 68, 173, 0.05);
+            color: rgba(106, 48, 147, 0.05);
             z-index: 0;
-            font-family: 'Arial Black', sans-serif;
+            font-family: 'Poppins', sans-serif;
             line-height: 1;
+        }
+        
+        body.dark-mode .section::before {
+            color: rgba(106, 48, 147, 0.03);
         }
         
         .section > * {
@@ -113,6 +153,10 @@
         .section:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        body.dark-mode .section:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
         
         .section.acids {
@@ -129,8 +173,12 @@
         
         .section.ph {
             border-top-color: var(--neutral-color);
-            background: linear-gradient(135deg, #ff6b6b, #48dbfb);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
+        }
+        
+        body.dark-mode .section.ph {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
         }
         
         .section h2 {
@@ -139,6 +187,12 @@
             padding-bottom: 10px;
             border-bottom: 2px solid rgba(0,0,0,0.1);
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        body.dark-mode .section h2 {
+            border-bottom-color: rgba(255,255,255,0.1);
         }
         
         .section.ph h2 {
@@ -155,6 +209,10 @@
             padding-left: 35px;
             position: relative;
             border-bottom: 1px dashed #eee;
+        }
+        
+        body.dark-mode ul.properties li {
+            border-bottom-color: rgba(255,255,255,0.1);
         }
         
         ul.properties li::before {
@@ -191,6 +249,10 @@
             z-index: 1;
         }
         
+        body.dark-mode .reaction {
+            background: rgba(255,255,255,0.05);
+        }
+        
         .reaction.acid {
             border-left-color: var(--acid-color);
         }
@@ -210,6 +272,10 @@
             background: rgba(0,0,0,0.05);
         }
         
+        body.dark-mode .reaction.equation {
+            background: rgba(255,255,255,0.1);
+        }
+        
         .ph-scale {
             display: flex;
             height: 60px;
@@ -217,6 +283,10 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .ph-scale {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
         }
         
         .ph-segment {
@@ -254,9 +324,18 @@
             transition: all 0.3s ease;
         }
         
+        body.dark-mode .type-card {
+            background: var(--dark-mode-card);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
         .type-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .type-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
         .type-card h3 {
@@ -264,6 +343,10 @@
             padding-bottom: 8px;
             border-bottom: 1px solid #eee;
             margin-bottom: 15px;
+        }
+        
+        body.dark-mode .type-card h3 {
+            border-bottom-color: rgba(255,255,255,0.1);
         }
         
         .acid-card {
@@ -290,14 +373,26 @@
             border-radius: 0 4px 4px 0;
         }
         
+        body.dark-mode .note {
+            background: rgba(255,255,255,0.05);
+        }
+        
         .acid-note {
             border-left-color: var(--acid-color);
             background: rgba(255, 71, 87, 0.1);
         }
         
+        body.dark-mode .acid-note {
+            background: rgba(255, 71, 87, 0.15);
+        }
+        
         .base-note {
             border-left-color: var(--base-color);
             background: rgba(29, 209, 161, 0.1);
+        }
+        
+        body.dark-mode .base-note {
+            background: rgba(29, 209, 161, 0.15);
         }
         
         .uses-list {
@@ -310,6 +405,119 @@
             break-inside: avoid;
         }
         
+        .hindi {
+            font-style: italic;
+            color: #666;
+        }
+        
+        body.dark-mode .hindi {
+            color: #aaa;
+        }
+        
+        .emoji {
+            font-style: normal;
+        }
+        
+        .thp-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(106, 48, 147, 0.3);
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        .thp-banner h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .thp-banner p {
+            margin: 5px 0 0;
+            font-size: 1.1rem;
+        }
+        
+        /* Dark mode toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 100;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive styles */
         @media (max-width: 768px) {
             .uses-list {
                 columns: 1;
@@ -326,39 +534,25 @@
             body::after {
                 font-size: 25vh;
             }
-        }
-        
-        .hindi {
-            font-style: italic;
-            color: #666;
-        }
-        
-        .emoji {
-            font-style: normal;
-        }
-        
-        .thp-banner {
-            background: linear-gradient(135deg, var(--thp-color), #9b59b6);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
-        }
-        
-        .thp-banner h2 {
-            margin: 0;
-            font-size: 1.8rem;
-        }
-        
-        .thp-banner p {
-            margin: 5px 0 0;
-            font-size: 1.1rem;
+            
+            .section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .thp-banner h2 {
+                font-size: 1.5rem;
+            }
+            
+            .thp-banner p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <button class="dark-mode-toggle" title="Toggle Dark Mode">🌓</button>
+    <button class="back-to-top" title="Back to Top">↑</button>
+    
     <div class="thp-banner">
         <h2>THP Coaching Classes</h2>
         <p>Excellence in Science Education</p>
@@ -367,7 +561,7 @@
     <div class="header">
         <div class="subheading">THP Coaching Classes Presents</div>
         <h1>ACIDS, BASES AND SALTS</h1>
-        <div class="credit">Conceptual Notes by Mohit Sir</div>
+        <div class="credit">Conceptual Notes by Mohit Sir (MSc in Neuroscience)</div>
     </div>
     
     <div class="section acids">
@@ -679,7 +873,60 @@
     
     <div class="thp-banner" style="margin-top: 40px;">
         <h2>THP Coaching Classes</h2>
-        <p>Chemistry Notes | Mohit Sir </p>
+        <p>Chemistry Notes | Mohit Sir (MSc in Neuroscience)</p>
     </div>
+
+    <script>
+        // Dark mode toggle
+        const darkModeToggle = document.querySelector('.dark-mode-toggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            darkModeToggle.textContent = isDarkMode ? '🌞' : '🌓';
+        });
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.textContent = '🌞';
+        }
+
+        // Back to top button
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Add animation to sections when they come into view
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
 </body>
 </html>
