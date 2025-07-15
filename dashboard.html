@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>THP Coaching Dashboard</title>
+  <title>THP Student Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -14,44 +15,48 @@
 
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- ApexCharts -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    
     :root {
       --primary: #6366f1;
       --primary-dark: #4f46e5;
       --primary-light: #818cf8;
+      --secondary: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --light: #f8fafc;
     }
     
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: #f8fafc;
       min-height: 100vh;
     }
     
     .glass-card {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(226, 232, 240, 0.3);
-      transition: all 0.3s ease;
+      border: 1px solid rgba(226, 232, 240, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .glass-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
     }
     
     .section-title {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 600;
-      color: var(--primary-dark);
+      color: var(--dark);
       position: relative;
-      padding-bottom: 8px;
-      margin-bottom: 16px;
+      padding-bottom: 12px;
     }
     
     .section-title::after {
@@ -59,13 +64,13 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 40px;
-      height: 3px;
+      width: 48px;
+      height: 4px;
       background: linear-gradient(to right, var(--primary), var(--primary-dark));
-      border-radius: 3px;
+      border-radius: 4px;
     }
     
-    .stylish-logo {
+    .app-logo {
       font-size: 1.8rem;
       font-weight: 700;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -79,21 +84,22 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: white;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px rgba(99, 102, 241, 0.15);
       border: none;
+      font-weight: 500;
     }
     
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 10px 15px rgba(99, 102, 241, 0.25);
       background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
     }
     
     .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -101,75 +107,77 @@
       color: white;
       transition: all 0.3s ease;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
     }
     
     .user-avatar:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
     }
     
-    .tag {
-      display: inline-block;
+    .badge {
+      display: inline-flex;
+      align-items: center;
       padding: 4px 10px;
-      background-color: #eef2ff;
-      color: var(--primary-dark);
       border-radius: 20px;
       font-size: 0.75rem;
       font-weight: 500;
     }
     
-    .user-info-badge {
+    .badge-primary {
+      background-color: #eef2ff;
+      color: var(--primary-dark);
+    }
+    
+    .badge-secondary {
+      background-color: #fef3c7;
+      color: #b45309;
+    }
+    
+    .badge-success {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+    
+    .badge-danger {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+    
+    .user-info-chip {
       display: inline-flex;
       align-items: center;
-      padding: 4px 8px;
+      padding: 6px 12px;
       background-color: #f8fafc;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      margin-right: 6px;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      margin-right: 8px;
       border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
     }
     
-    .user-info-badge i {
-      margin-right: 4px;
+    .user-info-chip:hover {
+      background-color: #f1f5f9;
+    }
+    
+    .user-info-chip i {
+      margin-right: 6px;
       color: var(--primary);
-    }
-    
-    .user-profile-card {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(79, 70, 229, 0.05) 100%);
-      border: 1px solid rgba(99, 102, 241, 0.1);
     }
     
     .initials-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
+      width: 96px;
+      height: 96px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 600;
       color: white;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
       margin: 0 auto;
-    }
-    
-    .profile-detail-item {
-      display: flex;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(99, 102, 241, 0.05);
-    }
-    
-    .profile-detail-item:last-child {
-      border-bottom: none;
-    }
-    
-    .profile-detail-item i {
-      width: 24px;
-      color: var(--primary);
-      text-align: center;
     }
     
     .progress-bar {
@@ -184,19 +192,6 @@
       border-radius: 4px;
       background: linear-gradient(90deg, var(--primary), var(--primary-light));
       transition: width 0.5s ease;
-    }
-    
-    .performance-card {
-      border-left: 4px solid var(--primary);
-    }
-    
-    .course-card {
-      transition: all 0.3s ease;
-    }
-    
-    .course-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
     
     .test-score {
@@ -232,79 +227,298 @@
     
     .nav-item {
       position: relative;
-      padding: 10px 0;
+      padding: 12px 16px;
       cursor: pointer;
       transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 4px 0;
+      display: flex;
+      align-items: center;
     }
     
-    .nav-item::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-    
-    .nav-item:hover::after {
-      width: 100%;
-    }
-    
-    .nav-item.active::after {
-      width: 100%;
+    .nav-item:hover {
+      background-color: #f1f5f9;
     }
     
     .nav-item.active {
+      background-color: #eef2ff;
       color: var(--primary-dark);
       font-weight: 500;
     }
+    
+    .nav-item.active i {
+      color: var(--primary-dark);
+    }
+    
+    .nav-item i {
+      width: 24px;
+      color: #64748b;
+      text-align: center;
+      margin-right: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .course-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+      border-color: #c7d2fe;
+    }
+    
+    .course-card-header {
+      height: 120px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    
+    .course-card-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+    }
+    
+    .course-card-title {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      color: white;
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+    
+    .stats-card {
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stats-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+    }
+    
+    .stats-card-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .stats-card-label {
+      font-size: 0.8125rem;
+      color: #64748b;
+    }
+    
+    .stats-card-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      opacity: 0.1;
+    }
+    
+    .test-card {
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    
+    .test-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+      border-color: #c7d2fe;
+    }
+    
+    .resource-card {
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+      border-color: #c7d2fe;
+    }
+    
+    .resource-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      margin-bottom: 16px;
+    }
+    
+    .deadline-item {
+      border-left: 4px solid var(--primary);
+      transition: all 0.3s ease;
+    }
+    
+    .deadline-item:hover {
+      transform: translateX(4px);
+    }
+    
+    .subject-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background-color: #eef2ff;
+      color: var(--primary-dark);
+    }
+    
+    .blur-load {
+      filter: blur(10px);
+      transition: filter 0.5s ease;
+    }
+    
+    .blur-load.loaded {
+      filter: blur(0);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #c7d2fe;
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a5b4fc;
+    }
+    
+    /* Animation classes */
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 1.125rem;
+      }
+      
+      .stats-card-value {
+        font-size: 1.5rem;
+      }
+      
+      .initials-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+      }
+    }
   </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 antialiased">
 
   <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <div class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200">
-      <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
-        <div class="flex items-center gap-2">
-          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
-            <i class="fas fa-graduation-cap text-xl"></i>
+    <div class="hidden md:flex flex-col w-72 bg-white border-r border-gray-200">
+      <div class="flex items-center justify-center h-20 px-6 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg">
+            <i class="fas fa-graduation-cap text-2xl"></i>
           </div>
-          <h1 class="stylish-logo">THP</h1>
+          <h1 class="app-logo">THP</h1>
         </div>
       </div>
       <div class="flex flex-col flex-grow p-4 overflow-auto">
-        <nav class="flex-1 space-y-2">
+        <nav class="flex-1 space-y-1">
           <div class="nav-item active" data-section="dashboard">
-            <i class="fas fa-tachometer-alt mr-3"></i>
+            <i class="fas fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </div>
           <div class="nav-item" data-section="courses">
-            <i class="fas fa-book mr-3"></i>
+            <i class="fas fa-book-open"></i>
             <span>My Courses</span>
           </div>
           <div class="nav-item" data-section="performance">
-            <i class="fas fa-chart-line mr-3"></i>
+            <i class="fas fa-chart-line"></i>
             <span>Performance</span>
           </div>
           <div class="nav-item" data-section="tests">
-            <i class="fas fa-clipboard-list mr-3"></i>
+            <i class="fas fa-clipboard-list"></i>
             <span>Test Results</span>
           </div>
           <div class="nav-item" data-section="resources">
-            <i class="fas fa-file-alt mr-3"></i>
+            <i class="fas fa-file-alt"></i>
             <span>Study Resources</span>
           </div>
+          <div class="nav-item" data-section="schedule">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Schedule</span>
+          </div>
           <div class="nav-item" data-section="profile">
-            <i class="fas fa-user mr-3"></i>
+            <i class="fas fa-user-cog"></i>
             <span>Profile</span>
           </div>
         </nav>
       </div>
       <div class="p-4 border-t border-gray-200">
-        <button onclick="logout()" class="w-full px-4 py-2 rounded-lg btn-primary font-medium flex items-center justify-center gap-2 text-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <div id="sidebarUserAvatar" class="user-avatar rounded-xl">
+            <!-- Initial will be inserted here -->
+          </div>
+          <div>
+            <div class="font-medium text-sm" id="sidebarUserName">Loading...</div>
+            <div class="text-xs text-gray-500" id="sidebarUserCourse">Student</div>
+          </div>
+        </div>
+        <button onclick="logout()" class="w-full px-4 py-2.5 rounded-xl btn-primary font-medium flex items-center justify-center gap-2 text-sm">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
@@ -313,31 +527,35 @@
     <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-hidden">
       <!-- Top Navigation -->
-      <header class="bg-white border-b border-gray-200 flex items-center justify-between h-16 px-4">
+      <header class="bg-white border-b border-gray-200 flex items-center justify-between h-16 px-4 md:px-6 sticky top-0 z-10">
         <div class="flex items-center md:hidden">
-          <button id="sidebarToggle" class="text-gray-500 hover:text-gray-700">
+          <button id="sidebarToggle" class="text-gray-500 hover:text-gray-700 mr-4">
             <i class="fas fa-bars text-xl"></i>
           </button>
-          <div class="flex items-center gap-2 ml-4">
+          <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
               <i class="fas fa-graduation-cap"></i>
             </div>
-            <h1 class="stylish-logo text-xl">THP</h1>
+            <h1 class="app-logo text-xl">THP</h1>
+          </div>
+        </div>
+        
+        <div class="flex-1 max-w-2xl mx-4 hidden md:block">
+          <div class="relative">
+            <input type="text" placeholder="Search courses, resources..." class="w-full pl-10 pr-4 py-2 bg-gray-100 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:shadow-sm transition-all">
+            <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
           </div>
         </div>
         
         <div class="flex items-center gap-4">
-          <div class="hidden md:flex items-center gap-2">
-            <span class="user-info-badge">
-              <i class="fas fa-user-graduate"></i>
-              <span id="userName"></span>
-            </span>
-            <span class="user-info-badge">
-              <i class="fas fa-book"></i>
-              <span id="userCourse"></span>
-            </span>
-          </div>
-          <div id="userAvatar" class="user-avatar">
+          <button class="w-10 h-10 rounded-xl flex items-center justify-center text-gray-500 hover:bg-gray-100 md:hidden">
+            <i class="fas fa-search"></i>
+          </button>
+          <button class="w-10 h-10 rounded-xl flex items-center justify-center text-gray-500 hover:bg-gray-100 relative">
+            <i class="fas fa-bell"></i>
+            <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          <div id="userAvatar" class="user-avatar rounded-xl">
             <!-- Initial will be inserted here -->
           </div>
         </div>
@@ -351,42 +569,55 @@
               <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
                 <i class="fas fa-graduation-cap text-xl"></i>
               </div>
-              <h1 class="stylish-logo">THP</h1>
+              <h1 class="app-logo text-xl">THP</h1>
             </div>
             <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">
               <i class="fas fa-times text-xl"></i>
             </button>
           </div>
           <div class="flex-grow p-4 overflow-y-auto">
-            <nav class="space-y-4">
+            <nav class="space-y-1">
               <div class="nav-item active" data-section="dashboard">
-                <i class="fas fa-tachometer-alt mr-3"></i>
+                <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
               </div>
               <div class="nav-item" data-section="courses">
-                <i class="fas fa-book mr-3"></i>
+                <i class="fas fa-book-open"></i>
                 <span>My Courses</span>
               </div>
               <div class="nav-item" data-section="performance">
-                <i class="fas fa-chart-line mr-3"></i>
+                <i class="fas fa-chart-line"></i>
                 <span>Performance</span>
               </div>
               <div class="nav-item" data-section="tests">
-                <i class="fas fa-clipboard-list mr-3"></i>
+                <i class="fas fa-clipboard-list"></i>
                 <span>Test Results</span>
               </div>
               <div class="nav-item" data-section="resources">
-                <i class="fas fa-file-alt mr-3"></i>
+                <i class="fas fa-file-alt"></i>
                 <span>Study Resources</span>
               </div>
+              <div class="nav-item" data-section="schedule">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Schedule</span>
+              </div>
               <div class="nav-item" data-section="profile">
-                <i class="fas fa-user mr-3"></i>
+                <i class="fas fa-user-cog"></i>
                 <span>Profile</span>
               </div>
             </nav>
           </div>
           <div class="p-4 border-t border-gray-200">
-            <button onclick="logout()" class="w-full px-4 py-2 rounded-lg btn-primary font-medium flex items-center justify-center gap-2 text-sm">
+            <div class="flex items-center gap-3 mb-4">
+              <div id="mobileSidebarUserAvatar" class="user-avatar rounded-xl">
+                <!-- Initial will be inserted here -->
+              </div>
+              <div>
+                <div class="font-medium text-sm" id="mobileSidebarUserName">Loading...</div>
+                <div class="text-xs text-gray-500" id="mobileSidebarUserCourse">Student</div>
+              </div>
+            </div>
+            <button onclick="logout()" class="w-full px-4 py-2.5 rounded-xl btn-primary font-medium flex items-center justify-center gap-2 text-sm">
               <i class="fas fa-sign-out-alt"></i> Logout
             </button>
           </div>
@@ -397,57 +628,78 @@
       <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
         <!-- Dashboard Section -->
         <section id="dashboardSection" class="section-content">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Welcome Card -->
-            <div class="glass-card p-6 col-span-1 md:col-span-2 lg:col-span-3">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                <div>
-                  <h2 class="section-title">Welcome back, <span id="welcomeUserName" class="text-indigo-600"></span>!</h2>
-                  <p class="text-gray-600 leading-relaxed">
-                    Track your progress, access your courses, and improve your performance with THP Coaching.
-                  </p>
-                </div>
-                <div class="mt-4 md:mt-0 flex items-center gap-2">
-                  <span class="tag bg-indigo-100 text-indigo-800">
-                    <i class="fas fa-calendar-day mr-1"></i>
-                    <span id="currentDate"></span>
-                  </span>
-                  <span class="tag bg-indigo-100 text-indigo-800">
-                    <i class="fas fa-clock mr-1"></i>
-                    <span id="currentTime"></span>
-                  </span>
-                </div>
+          <!-- Welcome Banner -->
+          <div class="glass-card p-6 mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+              <div class="mb-4 md:mb-0">
+                <h2 class="text-2xl font-bold mb-2">Welcome back, <span id="welcomeUserName" class="text-white"></span>!</h2>
+                <p class="opacity-90">Here's what's happening with your studies today.</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="badge bg-white bg-opacity-20 backdrop-blur-sm">
+                  <i class="fas fa-calendar-day mr-1"></i>
+                  <span id="currentDate"></span>
+                </span>
+                <span class="badge bg-white bg-opacity-20 backdrop-blur-sm">
+                  <i class="fas fa-clock mr-1"></i>
+                  <span id="currentTime"></span>
+                </span>
               </div>
             </div>
-
-            <!-- Performance Overview -->
-            <div class="glass-card p-6">
-              <h2 class="section-title">Performance Overview</h2>
-              <div class="mt-4">
-                <canvas id="performanceChart" height="200"></canvas>
+          </div>
+          
+          <!-- Quick Stats -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="stats-card bg-white">
+              <div class="stats-card-icon">
+                <i class="fas fa-chart-line"></i>
               </div>
-              <div class="mt-4 grid grid-cols-3 gap-4">
-                <div class="text-center">
-                  <div class="text-2xl font-bold text-indigo-600" id="avgScore">0%</div>
-                  <div class="text-xs text-gray-500">Avg. Score</div>
-                </div>
-                <div class="text-center">
-                  <div class="text-2xl font-bold text-indigo-600" id="testsTaken">0</div>
-                  <div class="text-xs text-gray-500">Tests Taken</div>
-                </div>
-                <div class="text-center">
-                  <div class="text-2xl font-bold text-indigo-600" id="rank">-</div>
-                  <div class="text-xs text-gray-500">Batch Rank</div>
-                </div>
-              </div>
+              <div class="stats-card-value text-indigo-600" id="avgScore">0%</div>
+              <div class="stats-card-label">Average Score</div>
             </div>
-
-            <!-- Course Progress -->
+            <div class="stats-card bg-white">
+              <div class="stats-card-icon">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              <div class="stats-card-value text-amber-500" id="testsTaken">0</div>
+              <div class="stats-card-label">Tests Completed</div>
+            </div>
+            <div class="stats-card bg-white">
+              <div class="stats-card-icon">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <div class="stats-card-value text-emerald-600" id="rank">-</div>
+              <div class="stats-card-label">Batch Rank</div>
+            </div>
+            <div class="stats-card bg-white">
+              <div class="stats-card-icon">
+                <i class="fas fa-book"></i>
+              </div>
+              <div class="stats-card-value text-blue-600" id="coursesEnrolled">0</div>
+              <div class="stats-card-label">Courses Enrolled</div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Performance Chart -->
+            <div class="glass-card p-6 lg:col-span-2">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="section-title">Performance Overview</h2>
+                <div class="flex items-center gap-2">
+                  <button class="text-xs px-3 py-1 rounded-lg bg-indigo-50 text-indigo-600">Weekly</button>
+                  <button class="text-xs px-3 py-1 rounded-lg bg-gray-100 text-gray-500">Monthly</button>
+                  <button class="text-xs px-3 py-1 rounded-lg bg-gray-100 text-gray-500">Yearly</button>
+                </div>
+              </div>
+              <div id="performanceChart"></div>
+            </div>
+            
+            <!-- Progress Overview -->
             <div class="glass-card p-6">
-              <h2 class="section-title">Course Progress</h2>
-              <div class="mt-4 space-y-4">
+              <h2 class="section-title">Progress Overview</h2>
+              <div class="mt-6 space-y-5">
                 <div>
-                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
                     <span>Syllabus Covered</span>
                     <span id="syllabusCoverage">0%</span>
                   </div>
@@ -456,7 +708,7 @@
                   </div>
                 </div>
                 <div>
-                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
                     <span>Concept Mastery</span>
                     <span id="conceptMastery">0%</span>
                   </div>
@@ -465,7 +717,7 @@
                   </div>
                 </div>
                 <div>
-                  <div class="flex justify-between text-sm text-gray-600 mb-1">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
                     <span>Practice Completed</span>
                     <span id="practiceCompleted">0%</span>
                   </div>
@@ -473,18 +725,32 @@
                     <div class="progress-fill" id="practiceProgress" style="width: 0%"></div>
                   </div>
                 </div>
+                <div>
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>Attendance</span>
+                    <span id="attendance">0%</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="attendanceProgress" style="width: 0%"></div>
+                  </div>
+                </div>
               </div>
               <div class="mt-6">
-                <a href="#" class="inline-flex items-center px-4 py-2 btn-primary rounded-lg font-medium text-sm">
+                <a href="#" class="inline-flex items-center px-4 py-2 btn-primary rounded-xl font-medium text-sm">
                   <i class="fas fa-chart-pie mr-2"></i> View Detailed Analytics
                 </a>
               </div>
             </div>
-
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Recent Tests -->
             <div class="glass-card p-6">
-              <h2 class="section-title">Recent Tests</h2>
-              <div class="mt-4 space-y-4" id="recentTests">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="section-title">Recent Tests</h2>
+                <a href="#" class="text-sm text-indigo-600 font-medium">View All</a>
+              </div>
+              <div class="space-y-4" id="recentTests">
                 <!-- Test items will be inserted here -->
                 <div class="text-center py-8 text-gray-400">
                   <i class="fas fa-clipboard-list text-3xl mb-2"></i>
@@ -492,39 +758,50 @@
                 </div>
               </div>
             </div>
-
-            <!-- Quick Actions -->
-            <div class="glass-card p-6">
-              <h2 class="section-title">Quick Actions</h2>
-              <div class="mt-4 grid grid-cols-2 gap-3">
-                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
-                  <i class="fas fa-book-open text-indigo-600 text-xl mb-2"></i>
-                  <span class="text-sm font-medium">Study Material</span>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
-                  <i class="fas fa-video text-indigo-600 text-xl mb-2"></i>
-                  <span class="text-sm font-medium">Recorded Lectures</span>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
-                  <i class="fas fa-question-circle text-indigo-600 text-xl mb-2"></i>
-                  <span class="text-sm font-medium">Doubt Solving</span>
-                </a>
-                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
-                  <i class="fas fa-calendar-alt text-indigo-600 text-xl mb-2"></i>
-                  <span class="text-sm font-medium">Schedule</span>
-                </a>
-              </div>
-            </div>
-
+            
             <!-- Upcoming Deadlines -->
             <div class="glass-card p-6">
-              <h2 class="section-title">Upcoming Deadlines</h2>
-              <div class="mt-4 space-y-3" id="upcomingDeadlines">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="section-title">Upcoming Deadlines</h2>
+                <a href="#" class="text-sm text-indigo-600 font-medium">View All</a>
+              </div>
+              <div class="space-y-3" id="upcomingDeadlines">
                 <!-- Deadline items will be inserted here -->
                 <div class="text-center py-8 text-gray-400">
                   <i class="fas fa-calendar-check text-3xl mb-2"></i>
                   <p>No upcoming deadlines</p>
                 </div>
+              </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="glass-card p-6">
+              <h2 class="section-title">Quick Actions</h2>
+              <div class="mt-4 grid grid-cols-2 gap-3">
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors">
+                  <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-2">
+                    <i class="fas fa-book-open text-xl"></i>
+                  </div>
+                  <span class="text-sm font-medium text-center">Study Material</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors">
+                  <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-2">
+                    <i class="fas fa-video text-xl"></i>
+                  </div>
+                  <span class="text-sm font-medium text-center">Recorded Lectures</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors">
+                  <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-2">
+                    <i class="fas fa-question-circle text-xl"></i>
+                  </div>
+                  <span class="text-sm font-medium text-center">Doubt Solving</span>
+                </a>
+                <a href="#" class="flex flex-col items-center justify-center p-4 bg-indigo-50 rounded-xl hover:bg-indigo-100 transition-colors">
+                  <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-2">
+                    <i class="fas fa-calendar-alt text-xl"></i>
+                  </div>
+                  <span class="text-sm font-medium text-center">Schedule</span>
+                </a>
               </div>
             </div>
           </div>
@@ -533,330 +810,32 @@
         <!-- Courses Section -->
         <section id="coursesSection" class="section-content hidden">
           <div class="glass-card p-6">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
               <h2 class="section-title">My Courses</h2>
-              <div class="flex items-center gap-2">
-                <button class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg text-sm font-medium">
-                  <i class="fas fa-filter mr-2"></i> Filter
-                </button>
-                <button class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-lg text-sm font-medium">
-                  <i class="fas fa-sort mr-2"></i> Sort
+              <div class="flex items-center gap-3 mt-4 md:mt-0">
+                <div class="relative">
+                  <select class="appearance-none pl-3 pr-8 py-2 bg-gray-100 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:shadow-sm">
+                    <option>All Subjects</option>
+                    <option>Physics</option>
+                    <option>Chemistry</option>
+                    <option>Mathematics</option>
+                    <option>Biology</option>
+                    <option>English</option>
+                    <option>Hindi</option>
+                  </select>
+                  <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
+                </div>
+                <button class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-medium flex items-center gap-2">
+                  <i class="fas fa-plus"></i> New Course
                 </button>
               </div>
             </div>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="coursesList">
-              <!-- Class 11 Courses -->
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 11 Physics</h3>
-                      <p class="text-sm text-gray-500 mt-1">Shivam Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">65%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>65%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 65%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="11textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 11 Chemistry</h3>
-                      <p class="text-sm text-gray-500 mt-1">Mohit Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">72%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>72%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 72%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="11textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 11 Mathematics</h3>
-                      <p class="text-sm text-gray-500 mt-1">Shivam Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">58%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>58%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 58%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="11textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 11 Biology</h3>
-                      <p class="text-sm text-gray-500 mt-1">Mohit Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">80%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>80%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 80%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="11textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 11 English</h3>
-                      <p class="text-sm text-gray-500 mt-1">Satyam Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">75%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>75%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 75%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="11textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 11 Hindi</h3>
-                      <p class="text-sm text-gray-500 mt-1">Satyam Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">68%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>68%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 68%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="11textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Class 12 Courses -->
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 12 Physics</h3>
-                      <p class="text-sm text-gray-500 mt-1">Shivam Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">70%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>70%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 70%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="12textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 12 Chemistry</h3>
-                      <p class="text-sm text-gray-500 mt-1">Mohit Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">78%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>78%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 78%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="testseries/12/chem.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 12 Mathematics</h3>
-                      <p class="text-sm text-gray-500 mt-1">Shivam Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">65%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>65%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 65%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="12textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 12 Biology</h3>
-                      <p class="text-sm text-gray-500 mt-1">Mohit Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">85%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>85%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 85%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="12textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 12 English</h3>
-                      <p class="text-sm text-gray-500 mt-1">Satyam Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">82%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>82%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 82%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="12textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                <div class="p-4">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="font-medium text-gray-800">Class 12 Hindi</h3>
-                      <p class="text-sm text-gray-500 mt-1">Satyam Sir</p>
-                    </div>
-                    <span class="tag bg-blue-100 text-blue-800">75%</span>
-                  </div>
-                  <div class="mt-4">
-                    <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Course Progress</span>
-                      <span>75%</span>
-                    </div>
-                    <div class="progress-bar">
-                      <div class="progress-fill" style="width: 75%"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <a href="12textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                      View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                    </a>
-                  </div>
-                </div>
+              <!-- Course cards will be inserted here -->
+              <div class="text-center py-12 text-gray-400 col-span-3">
+                <i class="fas fa-book-open text-3xl mb-2"></i>
+                <p>No courses enrolled yet</p>
               </div>
             </div>
           </div>
@@ -866,32 +845,29 @@
         <section id="performanceSection" class="section-content hidden">
           <div class="glass-card p-6">
             <h2 class="section-title">Performance Analytics</h2>
-            <div class="mt-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+            <div class="mt-6">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white p-4 rounded-xl">
                   <h3 class="font-medium text-gray-700 mb-3">Score Trend</h3>
-                  <div class="bg-white p-4 rounded-lg">
-                    <canvas id="scoreTrendChart" height="250"></canvas>
-                  </div>
+                  <div id="scoreTrendChart"></div>
                 </div>
-                <div>
+                <div class="bg-white p-4 rounded-xl">
                   <h3 class="font-medium text-gray-700 mb-3">Subject-wise Performance</h3>
-                  <div class="bg-white p-4 rounded-lg">
-                    <canvas id="subjectChart" height="250"></canvas>
-                  </div>
+                  <div id="subjectChart"></div>
                 </div>
               </div>
-              <div class="mt-6">
+              
+              <div class="bg-white p-4 rounded-xl">
                 <h3 class="font-medium text-gray-700 mb-3">Detailed Analysis</h3>
-                <div class="bg-white p-4 rounded-lg overflow-x-auto">
+                <div class="overflow-x-auto">
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                       <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Test</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Score</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Rank</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Analysis</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Analysis</th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200" id="performanceTable">
@@ -910,14 +886,37 @@
         <!-- Test Results Section -->
         <section id="testsSection" class="section-content hidden">
           <div class="glass-card p-6">
-            <h2 class="section-title">Test Results</h2>
-            <div class="mt-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="testResults">
-                <!-- Test result cards will be inserted here -->
-                <div class="text-center py-12 text-gray-400 col-span-3">
-                  <i class="fas fa-clipboard-list text-3xl mb-2"></i>
-                  <p>No test results found</p>
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+              <h2 class="section-title">Test Results</h2>
+              <div class="flex items-center gap-3 mt-4 md:mt-0">
+                <div class="relative">
+                  <select class="appearance-none pl-3 pr-8 py-2 bg-gray-100 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:shadow-sm">
+                    <option>All Tests</option>
+                    <option>Physics</option>
+                    <option>Chemistry</option>
+                    <option>Mathematics</option>
+                    <option>Biology</option>
+                    <option>English</option>
+                    <option>Hindi</option>
+                  </select>
+                  <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
                 </div>
+                <div class="relative">
+                  <select class="appearance-none pl-3 pr-8 py-2 bg-gray-100 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white focus:shadow-sm">
+                    <option>Sort by Date</option>
+                    <option>Sort by Score</option>
+                    <option>Sort by Subject</option>
+                  </select>
+                  <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="testResults">
+              <!-- Test result cards will be inserted here -->
+              <div class="text-center py-12 text-gray-400 col-span-3">
+                <i class="fas fa-clipboard-list text-3xl mb-2"></i>
+                <p>No test results found</p>
               </div>
             </div>
           </div>
@@ -927,68 +926,76 @@
         <section id="resourcesSection" class="section-content hidden">
           <div class="glass-card p-6">
             <h2 class="section-title">Study Resources</h2>
-            <div class="mt-4">
+            <div class="mt-6">
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                  <div class="bg-indigo-50 p-4">
-                    <i class="fas fa-file-pdf text-indigo-600 text-3xl"></i>
+                <div class="resource-card bg-white">
+                  <div class="p-5">
+                    <div class="resource-icon bg-gradient-to-br from-indigo-500 to-purple-600">
+                      <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800 text-lg mb-2">Class Notes</h3>
+                    <p class="text-sm text-gray-500 mb-4">Comprehensive notes for all subjects</p>
+                    <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                      View Resources <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
                   </div>
-                  <div class="p-4">
-                    <h3 class="font-medium text-gray-800">Class Notes</h3>
-                    <p class="text-sm text-gray-500 mt-1">Comprehensive notes for all subjects</p>
-                    <div class="mt-4">
-                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
-                        View Resources <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                </div>
+                <div class="resource-card bg-white">
+                  <div class="p-5">
+                    <div class="resource-icon bg-gradient-to-br from-blue-500 to-blue-600">
+                      <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800 text-lg mb-2">Recorded Lectures</h3>
+                    <p class="text-sm text-gray-500 mb-4">Access all past lectures</p>
+                    <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                      View Lectures <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="resource-card bg-white">
+                  <div class="p-5">
+                    <div class="resource-icon bg-gradient-to-br from-amber-500 to-amber-600">
+                      <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800 text-lg mb-2">Practice Questions</h3>
+                    <p class="text-sm text-gray-500 mb-4">Chapter-wise practice sets</p>
+                    <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                      Start Practicing <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="resource-card bg-white">
+                  <div class="p-5">
+                    <div class="resource-icon bg-gradient-to-br from-emerald-500 to-emerald-600">
+                      <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800 text-lg mb-2">Text Series</h3>
+                    <p class="text-sm text-gray-500 mb-4">Class 11 & 12 study materials</p>
+                    <div class="flex space-x-3">
+                      <a href="11textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
+                        Class 11 <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                      </a>
+                      <a href="12textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
+                        Class 12 <i class="fas fa-arrow-right ml-2 text-xs"></i>
                       </a>
                     </div>
                   </div>
                 </div>
-                <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                  <div class="bg-indigo-50 p-4">
-                    <i class="fas fa-video text-indigo-600 text-3xl"></i>
-                  </div>
-                  <div class="p-4">
-                    <h3 class="font-medium text-gray-800">Recorded Lectures</h3>
-                    <p class="text-sm text-gray-500 mt-1">Access all past lectures</p>
-                    <div class="mt-4">
-                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
-                        View Lectures <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                  <div class="bg-indigo-50 p-4">
-                    <i class="fas fa-question-circle text-indigo-600 text-3xl"></i>
-                  </div>
-                  <div class="p-4">
-                    <h3 class="font-medium text-gray-800">Practice Questions</h3>
-                    <p class="text-sm text-gray-500 mt-1">Chapter-wise practice sets</p>
-                    <div class="mt-4">
-                      <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
-                        Start Practicing <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                  <div class="bg-indigo-50 p-4">
-                    <i class="fas fa-book text-indigo-600 text-3xl"></i>
-                  </div>
-                  <div class="p-4">
-                    <h3 class="font-medium text-gray-800">Text Series</h3>
-                    <p class="text-sm text-gray-500 mt-1">Class 11 & 12 study materials</p>
-                    <div class="mt-4">
-                      <div class="flex space-x-2">
-                        <a href="11textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                          Class 11 <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                        </a>
-                        <a href="12textseries.html" class="text-indigo-600 text-sm font-medium flex items-center">
-                          Class 12 <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="scheduleSection" class="section-content hidden">
+          <div class="glass-card p-6">
+            <h2 class="section-title">My Schedule</h2>
+            <div class="mt-6">
+              <div id="calendar" class="bg-white rounded-xl overflow-hidden">
+                <!-- Calendar will be rendered here -->
+                <div class="p-8 text-center text-gray-400">
+                  <i class="fas fa-calendar-alt text-3xl mb-2"></i>
+                  <p>Schedule data will be displayed here</p>
                 </div>
               </div>
             </div>
@@ -999,30 +1006,47 @@
         <section id="profileSection" class="section-content hidden">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-1">
-              <div class="glass-card p-6 user-profile-card">
-                <div class="text-center mb-4">
+              <div class="glass-card p-6">
+                <div class="text-center mb-6">
                   <div id="profileAvatar" class="initials-avatar">
                     <!-- Initial will be inserted here -->
                   </div>
-                  <h3 class="text-lg font-semibold mt-3 text-gray-800" id="profileName"></h3>
+                  <h3 class="text-xl font-semibold mt-4 text-gray-800" id="profileName"></h3>
                   <p class="text-sm text-indigo-600" id="profileCourse"></p>
+                  <div class="mt-3 flex justify-center gap-2">
+                    <span class="badge bg-indigo-100 text-indigo-800">
+                      <i class="fas fa-user-graduate mr-1"></i>
+                      <span id="profileBatch"></span>
+                    </span>
+                  </div>
                 </div>
-                <div class="space-y-2">
-                  <div class="profile-detail-item">
-                    <i class="fas fa-envelope"></i>
-                    <span class="text-sm text-gray-600" id="profileEmail"></span>
+                <div class="space-y-3">
+                  <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3">
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500">Email</p>
+                      <p class="text-sm font-medium" id="profileEmail"></p>
+                    </div>
                   </div>
-                  <div class="profile-detail-item">
-                    <i class="fas fa-phone"></i>
-                    <span class="text-sm text-gray-600" id="profileMobile"></span>
+                  <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3">
+                      <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500">Mobile</p>
+                      <p class="text-sm font-medium" id="profileMobile"></p>
+                    </div>
                   </div>
-                  <div class="profile-detail-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span class="text-sm text-gray-600" id="profileJoinDate"></span>
-                  </div>
-                  <div class="profile-detail-item">
-                    <i class="fas fa-id-card"></i>
-                    <span class="text-sm text-gray-600" id="profileBatch"></span>
+                  <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3">
+                      <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500">Joined On</p>
+                      <p class="text-sm font-medium" id="profileJoinDate"></p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1030,24 +1054,63 @@
             <div class="lg:col-span-2">
               <div class="glass-card p-6">
                 <h2 class="section-title">Account Settings</h2>
-                <div class="mt-4">
-                  <div class="space-y-4">
+                <div class="mt-6">
+                  <div class="space-y-5">
                     <div>
-                      <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                      <input type="email" id="profileEmailInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" disabled>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                      <input type="email" id="profileEmailInput" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" disabled>
                     </div>
                     <div>
-                      <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
-                      <input type="tel" id="profileMobileInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">Mobile Number</label>
+                      <input type="tel" id="profileMobileInput" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                     <div>
-                      <label class="block text-sm font-medium text-gray-700 mb-1">Change Password</label>
-                      <input type="password" id="newPassword" placeholder="New Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 mb-2">
-                      <input type="password" id="confirmPassword" placeholder="Confirm Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">Change Password</label>
+                      <input type="password" id="newPassword" placeholder="New Password" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 mb-3">
+                      <input type="password" id="confirmPassword" placeholder="Confirm Password" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                     <div class="pt-2">
-                      <button id="updateProfileBtn" class="px-4 py-2 btn-primary rounded-lg font-medium">
-                        <i class="fas fa-save mr-2"></i> Save Changes
+                      <button id="updateProfileBtn" class="px-6 py-3 btn-primary rounded-xl font-medium flex items-center gap-2">
+                        <i class="fas fa-save"></i> Save Changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="glass-card p-6 mt-6">
+                <h2 class="section-title">Learning Preferences</h2>
+                <div class="mt-6">
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Study Time</label>
+                      <select class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option>Morning (6AM - 12PM)</option>
+                        <option>Afternoon (12PM - 5PM)</option>
+                        <option>Evening (5PM - 9PM)</option>
+                        <option>Night (9PM - 12AM)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">Notification Preferences</label>
+                      <div class="space-y-2">
+                        <label class="flex items-center">
+                          <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2">
+                          <span class="text-sm text-gray-700">Email Notifications</span>
+                        </label>
+                        <label class="flex items-center">
+                          <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" checked>
+                          <span class="text-sm text-gray-700">SMS Notifications</span>
+                        </label>
+                        <label class="flex items-center">
+                          <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" checked>
+                          <span class="text-sm text-gray-700">Push Notifications</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="pt-2">
+                      <button class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium flex items-center gap-2 hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-cog"></i> Update Preferences
                       </button>
                     </div>
                   </div>
@@ -1092,7 +1155,22 @@
     function formatDate(dateString) {
       if (!dateString) return 'Not available';
       const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      });
+    }
+
+    function formatDateTime(dateString) {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      return date.toLocaleString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
     }
 
     function logout() {
@@ -1100,18 +1178,40 @@
         window.location.href = "index.html";
       }).catch((error) => {
         console.error("Logout Error:", error);
-        alert("Logout failed. Please try again.");
+        showToast("Logout failed. Please try again.", "error");
       });
+    }
+
+    // Toast notification
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      toast.className = `fixed bottom-4 right-4 px-4 py-2 rounded-lg shadow-lg text-white ${
+        type === "success" ? "bg-green-500" : 
+        type === "error" ? "bg-red-500" : 
+        "bg-blue-500"
+      }`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "transition-opacity", "duration-300");
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 3000);
     }
 
     // Update current date and time
     function updateDateTime() {
       const now = new Date();
       document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', { 
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+        weekday: 'short', 
+        month: 'short', 
+        day: 'numeric' 
       });
       document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
-        hour: '2-digit', minute: '2-digit'
+        hour: '2-digit', 
+        minute: '2-digit'
       });
     }
 
@@ -1119,112 +1219,240 @@
     let performanceChart, scoreTrendChart, subjectChart;
 
     function initPerformanceChart() {
-      const ctx = document.getElementById('performanceChart').getContext('2d');
-      performanceChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Correct', 'Incorrect', 'Unattempted'],
-          datasets: [{
-            data: [65, 20, 15],
-            backgroundColor: [
-              '#4f46e5',
-              '#f43f5e',
-              '#e2e8f0'
-            ],
-            borderWidth: 0
-          }]
+      const options = {
+        series: [{
+          name: 'Performance',
+          data: [65, 59, 70, 71, 76, 82]
+        }, {
+          name: 'Batch Average',
+          data: [55, 52, 58, 60, 65, 68]
+        }],
+        chart: {
+          height: 300,
+          type: 'area',
+          toolbar: {
+            show: false
+          },
+          zoom: {
+            enabled: false
+          }
         },
-        options: {
-          cutout: '70%',
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                usePointStyle: true,
-                padding: 20
-              }
+        colors: ['#6366f1', '#94a3b8'],
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 2
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.7,
+            opacityTo: 0.3,
+            stops: [0, 90, 100]
+          }
+        },
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          labels: {
+            style: {
+              colors: '#64748b',
+              fontSize: '12px'
+            }
+          }
+        },
+        yaxis: {
+          min: 40,
+          max: 100,
+          labels: {
+            style: {
+              colors: '#64748b',
+              fontSize: '12px'
+            }
+          }
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'right',
+          fontSize: '14px',
+          markers: {
+            radius: 12
+          },
+          itemMargin: {
+            horizontal: 10
+          }
+        },
+        grid: {
+          borderColor: '#e2e8f0',
+          strokeDashArray: 4
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val + "%";
             }
           }
         }
-      });
+      };
+
+      performanceChart = new ApexCharts(document.querySelector("#performanceChart"), options);
+      performanceChart.render();
     }
 
     function initScoreTrendChart() {
-      const ctx = document.getElementById('scoreTrendChart').getContext('2d');
-      scoreTrendChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{
-            label: 'Your Score',
-            data: [65, 59, 70, 71, 76, 82],
-            borderColor: '#4f46e5',
-            backgroundColor: 'rgba(79, 70, 229, 0.1)',
-            tension: 0.3,
-            fill: true,
-            borderWidth: 2
-          }, {
-            label: 'Batch Average',
-            data: [55, 52, 58, 60, 65, 68],
-            borderColor: '#94a3b8',
-            backgroundColor: 'rgba(148, 163, 184, 0.1)',
-            tension: 0.3,
-            fill: true,
-            borderWidth: 2,
-            borderDash: [5, 5]
-          }]
+      const options = {
+        series: [{
+          name: 'Your Score',
+          data: [65, 59, 70, 71, 76, 82]
+        }, {
+          name: 'Batch Average',
+          data: [55, 52, 58, 60, 65, 68]
+        }],
+        chart: {
+          height: 300,
+          type: 'line',
+          toolbar: {
+            show: false
+          }
         },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
+        colors: ['#6366f1', '#94a3b8'],
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth',
+          width: [3, 3],
+          dashArray: [0, 5]
+        },
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          labels: {
+            style: {
+              colors: '#64748b',
+              fontSize: '12px'
             }
+          }
+        },
+        yaxis: {
+          min: 40,
+          max: 100,
+          labels: {
+            style: {
+              colors: '#64748b',
+              fontSize: '12px'
+            }
+          }
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'right',
+          fontSize: '14px',
+          markers: {
+            radius: 12
           },
-          scales: {
-            y: {
-              beginAtZero: false,
-              min: 40,
-              max: 100
+          itemMargin: {
+            horizontal: 10
+          }
+        },
+        grid: {
+          borderColor: '#e2e8f0',
+          strokeDashArray: 4
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val + "%";
             }
           }
         }
-      });
+      };
+
+      scoreTrendChart = new ApexCharts(document.querySelector("#scoreTrendChart"), options);
+      scoreTrendChart.render();
     }
 
     function initSubjectChart() {
-      const ctx = document.getElementById('subjectChart').getContext('2d');
-      subjectChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Physics', 'Chemistry', 'Mathematics', 'Biology', 'English', 'Hindi'],
-          datasets: [{
-            label: 'Your Score',
-            data: [75, 82, 68, 88, 90, 85],
-            backgroundColor: '#4f46e5',
-            borderRadius: 4
-          }, {
-            label: 'Batch Average',
-            data: [65, 70, 62, 75, 78, 72],
-            backgroundColor: '#94a3b8',
-            borderRadius: 4
-          }]
+      const options = {
+        series: [{
+          name: 'Your Score',
+          data: [75, 82, 68, 88, 90, 85]
+        }, {
+          name: 'Batch Average',
+          data: [65, 70, 62, 75, 78, 72]
+        }],
+        chart: {
+          type: 'bar',
+          height: 300,
+          toolbar: {
+            show: false
+          }
         },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            }
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded',
+            borderRadius: 6
           },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100
+        },
+        colors: ['#6366f1', '#94a3b8'],
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: ['Physics', 'Chemistry', 'Mathematics', 'Biology', 'English', 'Hindi'],
+          labels: {
+            style: {
+              colors: '#64748b',
+              fontSize: '12px'
+            }
+          }
+        },
+        yaxis: {
+          max: 100,
+          labels: {
+            style: {
+              colors: '#64748b',
+              fontSize: '12px'
+            }
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'right',
+          fontSize: '14px',
+          markers: {
+            radius: 12
+          },
+          itemMargin: {
+            horizontal: 10
+          }
+        },
+        grid: {
+          borderColor: '#e2e8f0',
+          strokeDashArray: 4
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val + "%";
             }
           }
         }
-      });
+      };
+
+      subjectChart = new ApexCharts(document.querySelector("#subjectChart"), options);
+      subjectChart.render();
     }
 
     // Generate mock test data
@@ -1308,7 +1536,9 @@
           progress: 65,
           teacher: 'Shivam Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Physics',
+          image: 'https://source.unsplash.com/random/300x200/?physics'
         },
         {
           id: 2,
@@ -1316,7 +1546,9 @@
           progress: 72,
           teacher: 'Mohit Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Chemistry',
+          image: 'https://source.unsplash.com/random/300x200/?chemistry'
         },
         {
           id: 3,
@@ -1324,7 +1556,9 @@
           progress: 58,
           teacher: 'Shivam Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Mathematics',
+          image: 'https://source.unsplash.com/random/300x200/?mathematics'
         },
         {
           id: 4,
@@ -1332,7 +1566,9 @@
           progress: 80,
           teacher: 'Mohit Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Biology',
+          image: 'https://source.unsplash.com/random/300x200/?biology'
         },
         {
           id: 5,
@@ -1340,7 +1576,9 @@
           progress: 75,
           teacher: 'Satyam Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'English',
+          image: 'https://source.unsplash.com/random/300x200/?english'
         },
         {
           id: 6,
@@ -1348,7 +1586,9 @@
           progress: 68,
           teacher: 'Satyam Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Hindi',
+          image: 'https://source.unsplash.com/random/300x200/?hindi'
         },
         {
           id: 7,
@@ -1356,7 +1596,9 @@
           progress: 70,
           teacher: 'Shivam Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Physics',
+          image: 'https://source.unsplash.com/random/300x200/?physics,science'
         },
         {
           id: 8,
@@ -1364,7 +1606,9 @@
           progress: 78,
           teacher: 'Mohit Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Chemistry',
+          image: 'https://source.unsplash.com/random/300x200/?chemistry,laboratory'
         },
         {
           id: 9,
@@ -1372,7 +1616,9 @@
           progress: 65,
           teacher: 'Shivam Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Mathematics',
+          image: 'https://source.unsplash.com/random/300x200/?mathematics,algebra'
         },
         {
           id: 10,
@@ -1380,7 +1626,9 @@
           progress: 85,
           teacher: 'Mohit Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Biology',
+          image: 'https://source.unsplash.com/random/300x200/?biology,microscope'
         },
         {
           id: 11,
@@ -1388,7 +1636,9 @@
           progress: 82,
           teacher: 'Satyam Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'English',
+          image: 'https://source.unsplash.com/random/300x200/?english,literature'
         },
         {
           id: 12,
@@ -1396,7 +1646,9 @@
           progress: 75,
           teacher: 'Satyam Sir',
           startDate: '2025-06-01',
-          endDate: '2025-12-15'
+          endDate: '2025-12-15',
+          subject: 'Hindi',
+          image: 'https://source.unsplash.com/random/300x200/?hindi,language'
         }
       ];
       return courses;
@@ -1407,51 +1659,57 @@
       const deadlines = [
         {
           id: 1,
-          title: 'Physics Assignment',
-          date: '2025-06-15',
+          title: 'Physics Assignment - Chapter 5',
+          date: '2025-06-15T23:59:00',
           subject: 'Physics',
           type: 'assignment',
-          teacher: 'Shivam Sir'
+          teacher: 'Shivam Sir',
+          priority: 'high'
         },
         {
           id: 2,
-          title: 'Chemistry Test',
-          date: '2025-06-18',
+          title: 'Chemistry Test - Organic Chemistry',
+          date: '2025-06-18T10:00:00',
           subject: 'Chemistry',
           type: 'test',
-          teacher: 'Mohit Sir'
+          teacher: 'Mohit Sir',
+          priority: 'high'
         },
         {
           id: 3,
           title: 'Maths Project Submission',
-          date: '2025-06-20',
+          date: '2025-06-20T23:59:00',
           subject: 'Mathematics',
           type: 'project',
-          teacher: 'Shivam Sir'
+          teacher: 'Shivam Sir',
+          priority: 'medium'
         },
         {
           id: 4,
-          title: 'Biology Lab Report',
-          date: '2025-06-22',
+          title: 'Biology Lab Report - Experiment 3',
+          date: '2025-06-22T23:59:00',
           subject: 'Biology',
           type: 'assignment',
-          teacher: 'Mohit Sir'
+          teacher: 'Mohit Sir',
+          priority: 'medium'
         },
         {
           id: 5,
           title: 'English Essay Submission',
-          date: '2025-06-25',
+          date: '2025-06-25T23:59:00',
           subject: 'English',
           type: 'assignment',
-          teacher: 'Satyam Sir'
+          teacher: 'Satyam Sir',
+          priority: 'low'
         },
         {
           id: 6,
           title: 'Hindi Poetry Recitation',
-          date: '2025-06-28',
+          date: '2025-06-28T10:00:00',
           subject: 'Hindi',
           type: 'test',
-          teacher: 'Satyam Sir'
+          teacher: 'Satyam Sir',
+          priority: 'low'
         }
       ];
       return deadlines;
@@ -1475,38 +1733,50 @@
       tests.forEach(test => {
         const percentage = Math.round((test.score / test.total) * 100);
         const card = document.createElement('div');
-        card.className = 'course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
+        card.className = 'test-card bg-white overflow-hidden';
+        
         card.innerHTML = `
-          <div class="p-4">
-            <div class="flex justify-between items-start">
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-3">
               <div>
-                <h3 class="font-medium text-gray-800">${test.title}</h3>
-                <p class="text-sm text-gray-500 mt-1">${formatDate(test.date)} - ${test.teacher || ''}</p>
+                <h3 class="font-medium text-gray-800 text-lg">${test.title}</h3>
+                <p class="text-sm text-gray-500 mt-1">${test.subject} • ${test.teacher || ''}</p>
               </div>
-              <span class="tag ${percentage >= 80 ? 'bg-green-100 text-green-800' : percentage >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}">
+              <span class="badge ${percentage >= 80 ? 'badge-success' : percentage >= 60 ? 'badge-primary' : 'badge-danger'}">
                 ${percentage}%
               </span>
             </div>
-            <div class="mt-4 flex items-center justify-between">
-              <div class="flex items-center">
-                <div class="test-score">
-                  <div class="test-score-circle" style="--percentage: ${percentage}%">
-                    <div class="test-score-inner">${percentage}</div>
+            
+            <div class="flex items-center justify-between mt-4">
+              <div class="flex items-center gap-4">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-2">
+                    <i class="fas fa-calendar-day text-xs"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs text-gray-500">Date</p>
+                    <p class="text-sm font-medium">${formatDate(test.date)}</p>
                   </div>
                 </div>
-                <div class="ml-3">
-                  <p class="text-sm text-gray-500">Rank</p>
-                  <p class="font-medium">${test.rank}/${test.totalStudents}</p>
+                
+                <div class="flex items-center">
+                  <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-2">
+                    <i class="fas fa-trophy text-xs"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs text-gray-500">Rank</p>
+                    <p class="text-sm font-medium">${test.rank}/${test.totalStudents}</p>
+                  </div>
                 </div>
               </div>
-              <div>
-                <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
-                  View Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                </a>
-              </div>
+              
+              <a href="#" class="text-indigo-600 text-sm font-medium flex items-center">
+                Details <i class="fas fa-chevron-right ml-1 text-xs"></i>
+              </a>
             </div>
           </div>
         `;
+        
         container.appendChild(card);
       });
     }
@@ -1529,19 +1799,26 @@
       tests.slice(0, 3).forEach(test => {
         const percentage = Math.round((test.score / test.total) * 100);
         const item = document.createElement('div');
-        item.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100';
+        item.className = 'flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-indigo-200 transition-colors';
+        
         item.innerHTML = `
-          <div>
-            <h4 class="font-medium text-sm">${test.title}</h4>
-            <p class="text-xs text-gray-500">${formatDate(test.date)} - ${test.teacher || ''}</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div>
+              <h4 class="font-medium text-sm">${test.title}</h4>
+              <p class="text-xs text-gray-500">${test.subject} • ${formatDate(test.date)}</p>
+            </div>
           </div>
           <div class="flex items-center gap-3">
-            <span class="text-sm font-medium ${percentage >= 80 ? 'text-green-600' : percentage >= 60 ? 'text-blue-600' : 'text-red-600'}">
+            <span class="text-sm font-medium ${percentage >= 80 ? 'text-emerald-600' : percentage >= 60 ? 'text-blue-600' : 'text-red-600'}">
               ${percentage}%
             </span>
-            <span class="text-xs text-gray-500">Rank: ${test.rank}</span>
+            <span class="text-xs px-2 py-1 rounded-lg bg-gray-100">Rank: ${test.rank}</span>
           </div>
         `;
+        
         container.appendChild(item);
       });
     }
@@ -1554,7 +1831,7 @@
       if (courses.length === 0) {
         container.innerHTML = `
           <div class="text-center py-12 text-gray-400 col-span-3">
-            <i class="fas fa-book text-3xl mb-2"></i>
+            <i class="fas fa-book-open text-3xl mb-2"></i>
             <p>No courses enrolled yet</p>
           </div>
         `;
@@ -1563,19 +1840,23 @@
       
       courses.forEach(course => {
         const card = document.createElement('div');
-        card.className = 'course-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100';
+        card.className = 'course-card bg-white overflow-hidden';
+        
         card.innerHTML = `
-          <div class="p-4">
-            <div class="flex justify-between items-start">
+          <div class="course-card-header" style="background-image: url('${course.image}')">
+            <h3 class="course-card-title">${course.title}</h3>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-center mb-4">
               <div>
-                <h3 class="font-medium text-gray-800">${course.title}</h3>
-                <p class="text-sm text-gray-500 mt-1">${course.teacher}</p>
+                <p class="text-sm text-gray-500">${course.teacher}</p>
               </div>
-              <span class="tag ${course.progress >= 80 ? 'bg-green-100 text-green-800' : course.progress >= 60 ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}">
-                ${course.progress}%
+              <span class="badge ${course.progress >= 80 ? 'badge-success' : course.progress >= 60 ? 'badge-primary' : 'badge-danger'}">
+                ${course.progress}% Complete
               </span>
             </div>
-            <div class="mt-4">
+            
+            <div class="mb-4">
               <div class="flex justify-between text-xs text-gray-500 mb-1">
                 <span>Course Progress</span>
                 <span>${course.progress}%</span>
@@ -1584,7 +1865,8 @@
                 <div class="progress-fill" style="width: ${course.progress}%"></div>
               </div>
             </div>
-            <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+            
+            <div class="grid grid-cols-2 gap-3 text-xs mb-4">
               <div>
                 <p class="text-gray-500">Start Date</p>
                 <p class="font-medium">${formatDate(course.startDate)}</p>
@@ -1594,13 +1876,27 @@
                 <p class="font-medium">${formatDate(course.endDate)}</p>
               </div>
             </div>
-            <div class="mt-4">
+            
+            <div class="flex justify-between items-center">
+              <span class="subject-tag">${course.subject}</span>
               <a href="${course.title.includes('11') ? '11textseries.html' : '12textseries.html'}" class="text-indigo-600 text-sm font-medium flex items-center">
-                View Text Series <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                View <i class="fas fa-chevron-right ml-1 text-xs"></i>
               </a>
             </div>
           </div>
         `;
+        
+        // Add lazy loading for images
+        const img = card.querySelector('.course-card-header');
+        img.classList.add('blur-load');
+        
+        const realImg = new Image();
+        realImg.src = course.image;
+        realImg.onload = () => {
+          img.style.backgroundImage = `url('${course.image}')`;
+          img.classList.add('loaded');
+        };
+        
         container.appendChild(card);
       });
     }
@@ -1620,21 +1916,34 @@
         return;
       }
       
-      deadlines.forEach(deadline => {
+      deadlines.slice(0, 4).forEach(deadline => {
         const item = document.createElement('div');
-        item.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-100';
+        item.className = 'deadline-item flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-indigo-200 transition-colors';
+        
+        const iconClass = deadline.type === 'test' ? 'fa-clipboard-list text-red-500' : 
+                         deadline.type === 'assignment' ? 'fa-file-alt text-blue-500' : 
+                         'fa-project-diagram text-purple-500';
+        
+        const priorityBadge = deadline.priority === 'high' ? 'bg-red-100 text-red-800' : 
+                            deadline.priority === 'medium' ? 'bg-amber-100 text-amber-800' : 
+                            'bg-gray-100 text-gray-800';
+        
         item.innerHTML = `
-          <div class="flex items-center">
-            <div class="w-8 h-8 rounded-full flex items-center justify-center ${deadline.type === 'test' ? 'bg-red-100 text-red-600' : deadline.type === 'assignment' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}">
-              <i class="fas ${deadline.type === 'test' ? 'fa-clipboard-list' : deadline.type === 'assignment' ? 'fa-file-alt' : 'fa-project-diagram'} text-sm"></i>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-gray-100 ${deadline.type === 'test' ? 'text-red-500' : deadline.type === 'assignment' ? 'text-blue-500' : 'text-purple-500'} flex items-center justify-center">
+              <i class="fas ${iconClass}"></i>
             </div>
-            <div class="ml-3">
+            <div>
               <h4 class="font-medium text-sm">${deadline.title}</h4>
-              <p class="text-xs text-gray-500">${deadline.subject} - ${deadline.teacher}</p>
+              <p class="text-xs text-gray-500">${deadline.subject} • ${deadline.teacher}</p>
             </div>
           </div>
-          <span class="text-xs font-medium text-gray-700">${formatDate(deadline.date)}</span>
+          <div class="text-right">
+            <span class="text-xs px-2 py-1 rounded-lg ${priorityBadge} mb-1 inline-block">${deadline.priority}</span>
+            <p class="text-xs font-medium">${formatDateTime(deadline.date)}</p>
+          </div>
         `;
+        
         container.appendChild(item);
       });
     }
@@ -1657,17 +1966,40 @@
         const percentage = Math.round((test.score / test.total) * 100);
         const row = document.createElement('tr');
         row.className = 'hover:bg-gray-50';
+        
         row.innerHTML = `
-          <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${test.title}</td>
-          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${formatDate(test.date)}</td>
-          <td class="px-4 py-3 whitespace-nowrap text-sm ${percentage >= 80 ? 'text-green-600' : percentage >= 60 ? 'text-blue-600' : 'text-red-600'} font-medium">
-            ${percentage}%
+          <td class="px-4 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-gray-900">${test.title}</div>
+                <div class="text-xs text-gray-500">${test.subject}</div>
+              </div>
+            </div>
           </td>
-          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${test.rank}/${test.totalStudents}</td>
           <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-            <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+            ${formatDate(test.date)}
+          </td>
+          <td class="px-4 py-3 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                <div class="h-2 rounded-full ${percentage >= 80 ? 'bg-emerald-500' : percentage >= 60 ? 'bg-blue-500' : 'bg-red-500'}" style="width: ${percentage}%"></div>
+              </div>
+              <span class="text-sm font-medium ${percentage >= 80 ? 'text-emerald-600' : percentage >= 60 ? 'text-blue-600' : 'text-red-600'}">
+                ${percentage}%
+              </span>
+            </div>
+          </td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+            <span class="px-2 py-1 rounded-lg bg-gray-100">${test.rank}/${test.totalStudents}</span>
+          </td>
+          <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+            <a href="#" class="text-indigo-600 hover:text-indigo-900 font-medium">View</a>
           </td>
         `;
+        
         container.appendChild(row);
       });
     }
@@ -1694,6 +2026,9 @@
           // Show the selected section
           const sectionId = this.getAttribute('data-section') + 'Section';
           document.getElementById(sectionId).classList.remove('hidden');
+          
+          // Close mobile sidebar if open
+          document.getElementById('mobileSidebar').classList.add('-translate-x-full');
         });
       });
       
@@ -1734,6 +2069,7 @@
       document.getElementById('avgScore').textContent = Math.round(avgScore) + '%';
       document.getElementById('testsTaken').textContent = tests.length;
       document.getElementById('rank').textContent = '12th';
+      document.getElementById('coursesEnrolled').textContent = courses.length;
       
       // Update progress bars
       document.getElementById('syllabusCoverage').textContent = '72%';
@@ -1742,6 +2078,8 @@
       document.getElementById('conceptProgress').style.width = '65%';
       document.getElementById('practiceCompleted').textContent = '58%';
       document.getElementById('practiceProgress').style.width = '58%';
+      document.getElementById('attendance').textContent = '92%';
+      document.getElementById('attendanceProgress').style.width = '92%';
       
       // Setup navigation
       setupNavigation();
@@ -1760,10 +2098,18 @@
             const initials = getInitials(userData.name);
             const joinDate = userData.joinDate || new Date().toISOString();
             
-            // Update desktop view
-            document.getElementById('userName').textContent = userData.name || 'Not provided';
-            document.getElementById('userCourse').textContent = userData.course || 'Not provided';
+            // Update user info in top bar
             document.getElementById('userAvatar').textContent = initials;
+            
+            // Update sidebar user info
+            document.getElementById('sidebarUserName').textContent = userData.name || 'Not provided';
+            document.getElementById('sidebarUserCourse').textContent = userData.course || 'Not provided';
+            document.getElementById('sidebarUserAvatar').textContent = initials;
+            
+            // Update mobile sidebar user info
+            document.getElementById('mobileSidebarUserName').textContent = userData.name || 'Not provided';
+            document.getElementById('mobileSidebarUserCourse').textContent = userData.course || 'Not provided';
+            document.getElementById('mobileSidebarUserAvatar').textContent = initials;
             
             // Update profile view
             document.getElementById('profileName').textContent = userData.name || 'Not provided';
@@ -1784,9 +2130,11 @@
             // Initialize dashboard
             initDashboard();
           } else {
-            console.log("No such document!");
+            console.log("No user data found");
             // Fallback if no user data
             document.getElementById('userAvatar').textContent = '?';
+            document.getElementById('sidebarUserAvatar').textContent = '?';
+            document.getElementById('mobileSidebarUserAvatar').textContent = '?';
             document.getElementById('profileAvatar').textContent = '?';
             document.getElementById('welcomeUserName').textContent = 'Student';
             
@@ -1794,7 +2142,8 @@
             initDashboard();
           }
         }).catch((error) => {
-          console.log("Error getting document:", error);
+          console.log("Error getting user document:", error);
+          showToast("Error loading user data", "error");
         });
       } else {
         // No user is signed in
@@ -1809,7 +2158,7 @@
       const confirmPassword = document.getElementById('confirmPassword').value;
       
       if (newPassword && newPassword !== confirmPassword) {
-        alert("Passwords don't match!");
+        showToast("Passwords don't match!", "error");
         return;
       }
       
@@ -1818,19 +2167,22 @@
       
       // Update mobile number in Firestore
       userRef.update({
-        mobile: newMobile
+        mobile: newMobile,
+        updatedAt: new Date().toISOString()
       }).then(() => {
         // Update password if provided
         if (newPassword) {
           return user.updatePassword(newPassword).then(() => {
-            alert("Profile updated successfully!");
+            showToast("Profile updated successfully!", "success");
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
           });
         } else {
-          alert("Profile updated successfully!");
+          showToast("Profile updated successfully!", "success");
         }
       }).catch(error => {
         console.error("Error updating profile:", error);
-        alert("Error updating profile. Please try again.");
+        showToast("Error updating profile. Please try again.", "error");
       });
     });
   </script>
