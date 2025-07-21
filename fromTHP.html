@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <style>
     :root {
       --primary: #4361ee;
@@ -17,6 +19,7 @@
       --light: #f8f9fa;
       --success: #4cc9f0;
       --warning: #f8961e;
+      --error: #ff6b6b;
       --card-bg: #ffffff;
       --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -37,90 +40,59 @@
     }
     
     .container {
-      max-width: 900px;
+      max-width: 600px;
       margin: 0 auto;
       padding: 2rem;
     }
     
     .admission-card {
       background: var(--card-bg);
-      border-radius: 20px;
+      border-radius: 15px;
       box-shadow: var(--shadow);
       overflow: hidden;
-      transition: var(--transition);
-      transform: translateY(0);
-    }
-    
-    .admission-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
     }
     
     .card-header {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      padding: 2rem;
+      padding: 1.5rem;
       text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .card-header::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-      transform: rotate(30deg);
     }
     
     .card-header h1 {
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 1.5rem;
+      font-weight: 600;
       margin-bottom: 0.5rem;
-      position: relative;
-    }
-    
-    .card-header p {
-      opacity: 0.9;
-      font-weight: 300;
-      position: relative;
     }
     
     .card-body {
-      padding: 2.5rem;
+      padding: 1.5rem;
     }
     
     .form-group {
-      margin-bottom: 1.5rem;
-      position: relative;
+      margin-bottom: 1.25rem;
     }
     
     .form-group label {
       display: block;
       margin-bottom: 0.5rem;
       font-weight: 500;
-      color: var(--dark);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
     
     .form-control {
       width: 100%;
-      padding: 1rem 1.25rem;
+      padding: 0.8rem 1rem;
       border: 1px solid #e0e0e0;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 1rem;
-      transition: var(--transition);
       background-color: #f9f9f9;
     }
     
     .form-control:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
       outline: none;
-      background-color: white;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
     }
     
     .select-wrapper {
@@ -132,17 +104,15 @@
       font-size: 1.25rem;
       color: var(--dark);
       position: absolute;
-      right: 1.25rem;
+      right: 1rem;
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      z-index: 2;
     }
     
     select.form-control {
       appearance: none;
-      padding-right: 3rem;
-      background-image: none;
+      padding-right: 2.5rem;
     }
     
     .btn {
@@ -152,238 +122,187 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       border: none;
-      padding: 1.1rem 2rem;
-      border-radius: 10px;
+      padding: 0.9rem 1.5rem;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 500;
       transition: var(--transition);
       width: 100%;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
     }
     
     .btn:hover {
       background: linear-gradient(135deg, var(--primary-dark), #2f3bb7);
-      transform: translateY(-2px);
-      box-shadow: 0 7px 20px rgba(67, 97, 238, 0.3);
-    }
-    
-    .btn:active {
-      transform: translateY(0);
     }
     
     .btn i {
       margin-right: 0.5rem;
-      font-size: 1.1rem;
     }
     
     .payment-section {
       display: none;
-      margin-top: 2rem;
-      padding: 2rem;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
       background: white;
-      border-radius: 15px;
+      border-radius: 12px;
       border-left: 4px solid var(--primary);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
     
     .payment-section.active {
       display: block;
-      animation: fadeInUp 0.5s ease both;
+      animation: fadeIn 0.3s ease-out;
     }
     
     .price-display {
-      font-size: 1.75rem;
-      font-weight: 700;
+      font-size: 1.25rem;
+      font-weight: 600;
       color: var(--primary);
-      margin: 1.5rem 0;
-      display: flex;
-      align-items: center;
+      margin: 1rem 0;
     }
     
     .discount-badge {
       background: var(--secondary);
       color: white;
-      padding: 0.3rem 0.8rem;
+      padding: 0.25rem 0.75rem;
       border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      display: inline-block;
-      margin-left: 1rem;
-      animation: pulse 2s infinite;
-    }
-    
-    .final-amount {
-      font-size: 1.25rem;
-      margin: 1.5rem 0;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .final-amount strong {
-      color: var(--primary);
-      font-size: 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-left: 0.75rem;
     }
     
     .payment-options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
+      margin-top: 1.5rem;
     }
     
     .payment-option {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 1rem;
       cursor: pointer;
       transition: var(--transition);
-      border: 1px solid #e0e0e0;
-      text-align: center;
     }
     
     .payment-option:hover {
       border-color: var(--primary);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(67, 97, 238, 0.15);
-    }
-    
-    .payment-option.gpay {
-      background: linear-gradient(135deg, #4285f4, #34a853);
-      border-color: transparent;
-      color: white;
-    }
-    
-    .payment-option.gpay:hover {
-      background: linear-gradient(135deg, #3a7ae8, #2d9747);
-    }
-    
-    .payment-option img {
-      max-width: 120px;
-      height: auto;
-      margin-bottom: 1rem;
-    }
-    
-    .payment-option h3 {
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .payment-option p {
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    
-    .qr-code {
-      text-align: center;
-      margin: 1.5rem 0;
-      padding: 1rem;
-      background: white;
-      border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
     
-    .qr-code img {
-      max-width: 180px;
-      border: 1px solid #eee;
-      padding: 0.5rem;
-      background: white;
-    }
-    
-    .upi-details {
-      background: #f8f9fa;
-      padding: 1rem;
-      border-radius: 10px;
-      margin-top: 1.5rem;
-      text-align: center;
-    }
-    
-    .upi-details p {
-      margin-bottom: 0.5rem;
-      font-size: 0.95rem;
-    }
-    
-    .upi-details strong {
+    .payment-option i {
+      font-size: 1.5rem;
       color: var(--primary);
-      font-weight: 600;
+      margin-right: 0.75rem;
     }
     
-    .success-message {
-      display: none;
-      text-align: center;
-      padding: 3rem 2rem;
-      background: white;
-      border-radius: 15px;
+    .toast {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--error);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
       box-shadow: var(--shadow);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
     }
     
-    .success-icon {
-      font-size: 5rem;
-      color: var(--success);
-      margin-bottom: 1.5rem;
-      animation: bounceIn 0.75s ease both;
-    }
-    
-    .success-message h2 {
-      color: var(--success);
-      margin-bottom: 1rem;
-      font-size: 1.75rem;
-    }
-    
-    .success-message p {
-      margin-bottom: 1rem;
-      font-size: 1.05rem;
-    }
-    
-    .success-message .btn {
-      max-width: 250px;
-      margin: 1.5rem auto 0;
+    .toast.success {
       background: var(--success);
     }
     
-    .success-message .btn:hover {
-      background: #3ab5d9;
+    .toast.warning {
+      background: var(--warning);
     }
     
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
+    .toast i {
+      margin-right: 0.5rem;
+    }
+    
+    /* Receipt styles */
+    #receipt {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    
+    .receipt-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .receipt-header h2 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .receipt-details {
+      margin: 1.5rem 0;
+    }
+    
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    
+    .receipt-total {
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-top: 1px solid #eee;
+      padding-top: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    
+    .receipt-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #eee;
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #receipt, #receipt * {
+        visibility: visible;
+      }
+      #receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
     
-    @keyframes bounceIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      50% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1); }
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    @media (max-width: 768px) {
+    @media (max-width: 480px) {
       .container {
         padding: 1rem;
       }
       
-      .card-header {
-        padding: 1.5rem;
-      }
-      
-      .card-body {
-        padding: 1.5rem;
-      }
-      
-      .payment-options {
-        grid-template-columns: 1fr;
+      .card-header, .card-body {
+        padding: 1.25rem;
       }
     }
   </style>
@@ -401,20 +320,6 @@
           <div class="form-group">
             <label for="name">Full Name</label>
             <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="class">Class/Grade</label>
-            <div class="select-wrapper">
-              <select id="class" class="form-control" required>
-                <option value="">Select your class</option>
-                <option value="9">Class 9</option>
-                <option value="10">Class 10</option>
-                <option value="11">Class 11</option>
-                <option value="12">Class 12</option>
-                <option value="college">College/Other</option>
-              </select>
-            </div>
           </div>
           
           <div class="form-group">
@@ -437,10 +342,6 @@
                 <option value="NEET">NEET Preparation</option>
                 <option value="JEE">JEE Preparation</option>
                 <option value="SSC">SSC Preparation</option>
-                <option value="BANK">Bank Exam Preparation</option>
-                <option value="RAILWAY">Railway Exam Preparation</option>
-                <option value="9-10">Class 9-10 Foundation</option>
-                <option value="11-12">Class 11-12 Foundation</option>
               </select>
             </div>
           </div>
@@ -451,57 +352,89 @@
         </form>
         
         <div id="paymentSection" class="payment-section">
-          <h2><i class="fas fa-lock"></i> Secure Payment</h2>
-          <p>Complete your admission with our 100% secure payment process</p>
+          <h3><i class="fas fa-lock"></i> Secure Payment</h3>
+          <p>Complete your admission with our secure payment process</p>
           
           <div class="price-display">
             <span>Course Fee: ₹<span id="courseFee">0</span></span>
             <span class="discount-badge">10% OFF</span>
           </div>
           
-          <div class="final-amount">
-            <span>Final Amount:</span>
-            <strong>₹<span id="finalAmount">0</span></strong>
-          </div>
-          
           <div class="payment-options">
-            <div class="payment-option gpay" onclick="initiateGPay()">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg/1200px-Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg.png" alt="Google Pay">
-              <h3>Pay with Google Pay</h3>
-              <p>Instant & secure payment</p>
+            <div class="payment-option" onclick="processPayment('upi')">
+              <i class="fas fa-mobile-alt"></i>
+              <span>Pay via UPI</span>
             </div>
             
-            <div class="payment-option">
-              <i class="fas fa-qrcode" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-              <h3>UPI QR Code</h3>
-              <p>Scan with any UPI app</p>
-              
-              <div class="qr-code">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=1000&cu=INR" alt="UPI QR Code" id="qrCode">
-              </div>
-              
-              <div class="upi-details">
-                <p><strong>UPI ID:</strong> mgbhaukali@oksbi</p>
-                <p><strong>Name:</strong> THP Coaching</p>
-              </div>
+            <div class="payment-option" onclick="processPayment('card')">
+              <i class="fas fa-credit-card"></i>
+              <span>Credit/Debit Card</span>
+            </div>
+            
+            <div class="payment-option" onclick="processPayment('netbanking')">
+              <i class="fas fa-university"></i>
+              <span>Net Banking</span>
             </div>
           </div>
           
-          <button type="button" id="completeBtn" class="btn" style="margin-top: 1.5rem;">
-            <i class="fas fa-check-circle"></i> I've Completed the Payment
+          <button type="button" id="completeBtn" class="btn no-print" style="margin-top: 1rem; display: none;">
+            <i class="fas fa-check-circle"></i> Payment Completed
           </button>
+          
+          <div id="paymentStatus" style="margin-top: 1rem; text-align: center; display: none;">
+            <p><i class="fas fa-info-circle"></i> <span id="statusMessage"></span></p>
+          </div>
         </div>
         
-        <div id="successMessage" class="success-message">
-          <div class="success-icon">
-            <i class="fas fa-check-circle"></i>
+        <div id="receipt">
+          <div class="receipt-header">
+            <h2>THP Coaching</h2>
+            <p>Academic Excellence Since 2010</p>
+            <h3>Payment Receipt</h3>
           </div>
-          <h2>Admission Successful!</h2>
-          <p>Thank you for enrolling with THP Coaching.</p>
-          <p>We've sent the confirmation details to your email address.</p>
-          <p>Our academic counselor will contact you within 24 hours.</p>
-          <button class="btn" onclick="window.location.reload()">
-            <i class="fas fa-home"></i> Back to Home
+          
+          <div class="receipt-details">
+            <div class="receipt-row">
+              <span>Receipt No:</span>
+              <span id="receiptNumber">THP-2023-001</span>
+            </div>
+            <div class="receipt-row">
+              <span>Date:</span>
+              <span id="receiptDate">01/01/2023</span>
+            </div>
+            <div class="receipt-row">
+              <span>Student Name:</span>
+              <span id="receiptName">John Doe</span>
+            </div>
+            <div class="receipt-row">
+              <span>Course:</span>
+              <span id="receiptCourse">NEET Preparation</span>
+            </div>
+          </div>
+          
+          <div class="receipt-details">
+            <div class="receipt-row">
+              <span>Course Fee:</span>
+              <span>₹<span id="receiptFee">2000</span></span>
+            </div>
+            <div class="receipt-row">
+              <span>Discount (10%):</span>
+              <span>-₹<span id="receiptDiscount">200</span></span>
+            </div>
+            <div class="receipt-row receipt-total">
+              <span>Total Paid:</span>
+              <span>₹<span id="receiptTotal">1800</span></span>
+            </div>
+          </div>
+          
+          <div class="receipt-footer">
+            <p>Thank you for choosing THP Coaching</p>
+            <p>Contact: support@thpcoaching.com | Phone: +91 9876543210</p>
+            <p>This is a computer generated receipt. No signature required.</p>
+          </div>
+          
+          <button onclick="printReceipt()" class="btn no-print" style="margin-top: 1.5rem;">
+            <i class="fas fa-print"></i> Print Receipt
           </button>
         </div>
       </div>
@@ -523,193 +456,231 @@
     
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
     const database = firebase.database();
     
     // Course pricing
     const coursePrices = {
       'CUET': 2000, 'IIT': 2000, 'NEET': 2000, 'JEE': 2000,
-      'SSC': 1500, 'BANK': 1500, 'RAILWAY': 1500,
-      '9-10': 2000, '11-12': 2500
+      'SSC': 1500
     };
     
-    let tempUserKey = null;
+    let admissionData = {};
+    let paymentVerified = false;
     
     // Proceed to payment button click handler
     document.getElementById('proceedBtn').addEventListener('click', function() {
       const name = document.getElementById('name').value;
-      const studentClass = document.getElementById('class').value;
       const email = document.getElementById('email').value;
       const phone = document.getElementById('phone').value;
       const course = document.getElementById('course').value;
       
       // Validate form
-      if (!name || !studentClass || !email || !phone || !course) {
-        showErrorToast('Please fill all the fields');
+      if (!name || !email || !phone || !course) {
+        showToast('Please fill all the fields', 'error');
+        return;
+      }
+      
+      // Validate email format
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        showToast('Please enter a valid email address', 'error');
+        return;
+      }
+      
+      // Validate phone number (Indian format)
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        showToast('Please enter a valid 10-digit phone number', 'error');
         return;
       }
       
       // Calculate fees with 10% discount
       const baseFee = coursePrices[course];
-      const discountedFee = baseFee * 0.9;
+      const discount = baseFee * 0.1;
+      const finalAmount = baseFee - discount;
       
       // Update payment section
       document.getElementById('courseFee').textContent = baseFee;
-      document.getElementById('finalAmount').textContent = discountedFee.toFixed(2);
+      document.getElementById('finalAmount').textContent = finalAmount.toFixed(2);
       
-      // Update QR code with amount
-      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
-      document.getElementById('qrCode').src = qrCodeUrl;
+      // Store admission data
+      admissionData = {
+        name: name,
+        email: email,
+        phone: phone,
+        course: course,
+        baseFee: baseFee,
+        paidAmount: finalAmount,
+        paymentDate: new Date().toISOString(),
+        status: 'pending',
+        receiptGenerated: false
+      };
       
       // Show payment section
       document.getElementById('paymentSection').classList.add('active');
       
-      // Scroll to payment section smoothly
-      document.getElementById('paymentSection').scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'center'
-      });
-      
-      // Create temporary admission record
-      const admissionData = {
-        name: name,
-        class: studentClass,
-        email: email,
-        phone: phone,
-        course: course,
-        baseFee: baseFee,
-        paidAmount: discountedFee,
-        paymentDate: new Date().toISOString(),
-        status: 'pending payment'
-      };
-      
-      const newUserRef = database.ref('pendingAdmissions').push();
-      newUserRef.set(admissionData)
-        .then(() => {
-          tempUserKey = newUserRef.key;
-        })
-        .catch((error) => {
-          console.error('Error saving temporary data:', error);
-          showErrorToast('Error processing your request. Please try again.');
-        });
+      // Scroll to payment section
+      document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
     });
     
-    // Complete payment button click handler
-    document.getElementById('completeBtn').addEventListener('click', function() {
-      const name = document.getElementById('name').value;
-      const studentClass = document.getElementById('class').value;
-      const email = document.getElementById('email').value;
-      const phone = document.getElementById('phone').value;
-      const course = document.getElementById('course').value;
-      const baseFee = coursePrices[course];
-      const discountedFee = baseFee * 0.9;
-      
-      // Create final admission data object
-      const finalData = {
-        name: name,
-        class: studentClass,
-        email: email,
-        phone: phone,
-        course: course,
-        baseFee: baseFee,
-        paidAmount: discountedFee,
-        paymentDate: new Date().toISOString(),
-        status: 'pending verification',
-        paymentMethod: 'UPI',
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      };
-      
-      // Save to final admissions collection
-      database.ref('admissions').push(finalData)
-        .then(() => {
-          // Remove temporary record if exists
-          if (tempUserKey) {
-            database.ref('pendingAdmissions/' + tempUserKey).remove();
-          }
-          
-          // Show success message
-          document.getElementById('admissionForm').style.display = 'none';
-          document.getElementById('paymentSection').style.display = 'none';
-          document.getElementById('successMessage').style.display = 'block';
-          
-          // Scroll to success message
-          document.getElementById('successMessage').scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'center'
-          });
-          
-          // Here you would typically send a confirmation email
-          // sendConfirmationEmail(email, name, course, discountedFee);
-        })
-        .catch((error) => {
-          console.error('Error saving final data:', error);
-          showErrorToast('There was an error completing your admission. Please contact support.');
-        });
-    });
-    
-    // Google Pay payment initiation
-    function initiateGPay() {
-      const course = document.getElementById('course').value;
-      if (!course || !coursePrices[course]) {
-        showErrorToast('Please select a valid course first');
+    // Process payment (simulated)
+    function processPayment(method) {
+      if (!admissionData.course) {
+        showToast('Please complete the form first', 'error');
         return;
       }
       
-      const discountedFee = coursePrices[course] * 0.9;
-      const upiLink = `upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR&tn=THP%20Coaching%20Fee%20Payment`;
+      // Show loading state
+      const options = document.querySelectorAll('.payment-option');
+      options.forEach(opt => {
+        opt.style.opacity = '0.6';
+        opt.style.pointerEvents = 'none';
+      });
       
-      // Try to open Google Pay directly
-      window.location.href = upiLink;
-      
-      // Fallback for desktop or if UPI app not installed
+      // Simulate payment processing
       setTimeout(() => {
-        if (!document.hidden) {
-          window.open(`https://tez.google.com/pay?upiLink=${encodeURIComponent(upiLink)}`, '_blank');
+        // Randomly determine success (80% chance) for demo purposes
+        const isSuccess = Math.random() > 0.2;
+        
+        if (isSuccess) {
+          // Payment success
+          admissionData.status = 'completed';
+          admissionData.paymentMethod = method;
+          admissionData.paymentDate = new Date().toISOString();
+          
+          // Save to Firebase
+          saveAdmissionData();
+          
+          // Show success state
+          document.getElementById('completeBtn').style.display = 'inline-flex';
+          document.getElementById('paymentStatus').style.display = 'block';
+          document.getElementById('statusMessage').textContent = 'Payment successful! Generating receipt...';
+          document.getElementById('statusMessage').parentElement.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Payment successful! Generating receipt...';
+          
+          // Generate receipt after delay
+          setTimeout(generateReceipt, 1500);
+        } else {
+          // Payment failed
+          showToast('Payment failed. Please try again.', 'error');
+          admissionData.status = 'failed';
+          
+          // Save to Firebase
+          saveAdmissionData();
+          
+          // Show failed state
+          document.getElementById('paymentStatus').style.display = 'block';
+          document.getElementById('statusMessage').textContent = 'Payment failed. Please try again.';
+          document.getElementById('statusMessage').parentElement.innerHTML = '<i class="fas fa-times-circle" style="color: var(--error);"></i> Payment failed. Please try again.';
+          
+          // Reset options
+          options.forEach(opt => {
+            opt.style.opacity = '1';
+            opt.style.pointerEvents = 'auto';
+          });
         }
-      }, 500);
+      }, 2000);
     }
     
-    // Update payment details when course changes
-    document.getElementById('course').addEventListener('change', function() {
-      if (document.getElementById('paymentSection').classList.contains('active')) {
-        const course = this.value;
-        if (course && coursePrices[course]) {
-          const baseFee = coursePrices[course];
-          const discountedFee = baseFee * 0.9;
-          
-          document.getElementById('courseFee').textContent = baseFee;
-          document.getElementById('finalAmount').textContent = discountedFee.toFixed(2);
-          
-          const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=mgbhaukali@oksbi&pn=THP%20Coaching&am=${discountedFee}&cu=INR`;
-          document.getElementById('qrCode').src = qrCodeUrl;
-        }
-      }
-    });
+    // Save admission data to Firebase
+    function saveAdmissionData() {
+      // Save to Realtime Database
+      database.ref('admissions').push(admissionData)
+        .then(() => {
+          console.log('Admission data saved to Realtime Database');
+        })
+        .catch(error => {
+          console.error('Error saving to Realtime Database:', error);
+        });
+      
+      // Also save to Firestore
+      db.collection('admissions').add(admissionData)
+        .then(() => {
+          console.log('Admission data saved to Firestore');
+        })
+        .catch(error => {
+          console.error('Error saving to Firestore:', error);
+        });
+    }
     
-    // Helper function to show error messages
-    function showErrorToast(message) {
+    // Generate receipt
+    function generateReceipt() {
+      if (!admissionData.name || !admissionData.course) return;
+      
+      // Generate receipt number (THP-YYYY-XXX)
+      const now = new Date();
+      const receiptNumber = `THP-${now.getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+      
+      // Format date (DD/MM/YYYY)
+      const receiptDate = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+      
+      // Update receipt
+      document.getElementById('receiptNumber').textContent = receiptNumber;
+      document.getElementById('receiptDate').textContent = receiptDate;
+      document.getElementById('receiptName').textContent = admissionData.name;
+      document.getElementById('receiptCourse').textContent = admissionData.course + ' Preparation';
+      document.getElementById('receiptFee').textContent = admissionData.baseFee;
+      document.getElementById('receiptDiscount').textContent = (admissionData.baseFee * 0.1).toFixed(2);
+      document.getElementById('receiptTotal').textContent = admissionData.paidAmount.toFixed(2);
+      
+      // Mark receipt as generated
+      admissionData.receiptGenerated = true;
+      admissionData.receiptNumber = receiptNumber;
+      
+      // Update in Firebase
+      saveAdmissionData();
+      
+      // Show receipt
+      document.getElementById('paymentSection').style.display = 'none';
+      document.getElementById('receipt').style.display = 'block';
+      
+      // Auto-scroll to receipt
+      document.getElementById('receipt').scrollIntoView({ behavior: 'smooth' });
+      
+      // Auto-print receipt (commented out for user experience)
+      // setTimeout(printReceipt, 1000);
+    }
+    
+    // Print receipt
+    function printReceipt() {
+      window.print();
+    }
+    
+    // Show toast message
+    function showToast(message, type = 'error') {
       const toast = document.createElement('div');
-      toast.style.position = 'fixed';
-      toast.style.bottom = '20px';
-      toast.style.left = '50%';
-      toast.style.transform = 'translateX(-50%)';
-      toast.style.backgroundColor = '#ff6b6b';
-      toast.style.color = 'white';
-      toast.style.padding = '12px 24px';
-      toast.style.borderRadius = '8px';
-      toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-      toast.style.zIndex = '1000';
-      toast.style.animation = 'fadeInUp 0.3s ease-out';
-      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${message}`;
       
       document.body.appendChild(toast);
       
       setTimeout(() => {
-        toast.style.animation = 'fadeOut 0.3s ease-out';
+        toast.style.opacity = '0';
         setTimeout(() => {
           document.body.removeChild(toast);
         }, 300);
       }, 3000);
     }
+    
+    // Check payment status on page load (simulated)
+    function checkPaymentStatus() {
+      // In a real app, you would check Firebase for existing payment status
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('payment') === 'success') {
+        // Simulate successful payment
+        setTimeout(() => {
+          document.getElementById('paymentStatus').style.display = 'block';
+          document.getElementById('statusMessage').innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Payment verified! Generating receipt...';
+          setTimeout(generateReceipt, 1500);
+        }, 1000);
+      } else if (params.get('payment') === 'pending') {
+        // Simulate pending payment
+        document.getElementById('paymentStatus').style.display = 'block';
+        document.getElementById('statusMessage').innerHTML = '<i class="fas fa-clock" style="color: var(--warning);"></i> Payment processing. Please wait 2 hours for receipt.';
+      }
+    }
+    
+    // Initialize on page load
+    window.addEventListener('load', checkPaymentStatus);
   </script>
 </body>
 </html>
