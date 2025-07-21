@@ -10,7 +10,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
   <style>
     :root {
       --primary: #3f51b5;
@@ -285,158 +285,68 @@
       margin-left: 0.5rem;
     }
     
-    .payment-options {
-      margin-top: 1.5rem;
-    }
-    
-    .payment-option {
-      display: flex;
-      align-items: center;
-      padding: 1.25rem;
-      border: 1px solid var(--light-gray);
-      border-radius: var(--border-radius);
-      margin-bottom: 1rem;
-      cursor: pointer;
-      transition: var(--transition);
-      background: var(--white);
-    }
-    
-    .payment-option:hover {
-      border-color: var(--primary);
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-    }
-    
-    .payment-option.selected {
-      border-color: var(--primary);
-      background-color: rgba(63, 81, 181, 0.05);
-    }
-    
-    .payment-option i {
-      font-size: 1.75rem;
-      color: var(--primary);
-      margin-right: 1rem;
-      width: 40px;
-      text-align: center;
-    }
-    
-    .payment-option .option-details {
-      flex: 1;
-    }
-    
-    .payment-option .option-title {
-      font-weight: 500;
-      margin-bottom: 0.25rem;
-    }
-    
-    .payment-option .option-desc {
-      font-size: 0.85rem;
-      color: var(--dark-gray);
-    }
-    
-    .payment-option .checkmark {
-      color: var(--success);
-      font-size: 1.25rem;
-      opacity: 0;
-      transition: var(--transition);
-    }
-    
-    .payment-option.selected .checkmark {
-      opacity: 1;
-    }
-    
-    .upi-apps {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-top: 1rem;
+    .upi-section {
       display: none;
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--white);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-sm);
     }
     
-    .upi-app {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--white);
+    .upi-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .qr-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .upi-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #4285F4;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      font-weight: 500;
+      margin: 1rem 0;
+      transition: var(--transition);
+    }
+    
+    .upi-btn:hover {
+      background: #3367D6;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .upi-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.75rem;
+    }
+    
+    .security-note {
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: var(--shadow-sm);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    
-    .upi-app:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-    
-    .upi-app img {
-      width: 40px;
-      height: 40px;
-      object-fit: contain;
-    }
-    
-    .upi-id-input {
-      margin-top: 1rem;
-      display: none;
-    }
-    
-    .card-details {
-      display: none;
-      margin-top: 1rem;
-    }
-    
-    .card-details .row {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-    
-    .card-details .col {
-      flex: 1;
-    }
-    
-    .card-icon {
-      position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
+      font-size: 0.85rem;
       color: var(--dark-gray);
-    }
-    
-    .input-group {
-      position: relative;
-    }
-    
-    .netbanking-banks {
-      display: none;
       margin-top: 1rem;
     }
     
-    .bank-option {
-      padding: 0.75rem;
-      border: 1px solid var(--light-gray);
-      border-radius: var(--border-radius);
-      margin-bottom: 0.75rem;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    
-    .bank-option:hover {
-      border-color: var(--primary);
-    }
-    
-    .bank-option.selected {
-      border-color: var(--primary);
-      background-color: rgba(63, 81, 181, 0.05);
-    }
-    
-    .bank-logo {
-      width: 30px;
-      height: 30px;
-      margin-right: 0.75rem;
-      object-fit: contain;
+    .lock-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 0.5rem;
     }
     
     .toast {
@@ -485,6 +395,7 @@
       background: var(--white);
       border-radius: var(--border-radius-xl);
       box-shadow: var(--shadow-lg);
+      border: 1px solid #e0e0e0;
     }
     
     .receipt-header {
@@ -495,21 +406,26 @@
     }
     
     .receipt-header img {
-      height: 60px;
+      height: 80px;
       margin-bottom: 1rem;
     }
     
     .receipt-header h2 {
       color: var(--primary);
       margin-bottom: 0.5rem;
+      font-size: 1.8rem;
     }
     
     .receipt-header p {
       color: var(--dark-gray);
+      font-size: 0.95rem;
     }
     
     .receipt-details {
       margin: 2rem 0;
+      padding: 1.5rem;
+      background: #f9f9f9;
+      border-radius: var(--border-radius-lg);
     }
     
     .receipt-row {
@@ -531,6 +447,7 @@
     
     .receipt-value {
       font-weight: 500;
+      text-align: right;
     }
     
     .receipt-total {
@@ -539,6 +456,7 @@
       border-top: 2px solid var(--light-gray);
       padding-top: 1rem;
       margin-top: 1rem;
+      color: var(--primary);
     }
     
     .receipt-footer {
@@ -558,6 +476,37 @@
     
     .receipt-actions .btn {
       flex: 1;
+    }
+    
+    .receipt-stamp {
+      text-align: right;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--light-gray);
+    }
+    
+    .stamp {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--success);
+      color: var(--success);
+      font-weight: 600;
+      border-radius: 4px;
+      transform: rotate(5deg);
+    }
+    
+    .receipt-watermark {
+      position: absolute;
+      opacity: 0.1;
+      font-size: 8rem;
+      font-weight: 700;
+      color: var(--primary);
+      transform: rotate(-30deg);
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      pointer-events: none;
     }
     
     .loading-overlay {
@@ -618,6 +567,7 @@
         width: 100%;
         padding: 0;
         box-shadow: none;
+        border: none;
       }
       .no-print {
         display: none !important;
@@ -635,11 +585,6 @@
       
       .receipt-actions {
         flex-direction: column;
-      }
-      
-      .card-details .row {
-        flex-direction: column;
-        gap: 0;
       }
     }
   </style>
@@ -734,124 +679,26 @@
             </div>
           </div>
           
-          <div class="payment-options">
-            <h4>Select Payment Method:</h4>
-            
-            <div class="payment-option" onclick="selectPaymentMethod('upi')">
-              <i class="fas fa-mobile-alt"></i>
-              <div class="option-details">
-                <div class="option-title">UPI Payment</div>
-                <div class="option-desc">Pay using any UPI app like Google Pay, PhonePe, Paytm</div>
-              </div>
-              <i class="fas fa-check-circle checkmark"></i>
-            </div>
-            
-            <div class="payment-option" onclick="selectPaymentMethod('card')">
-              <i class="fas fa-credit-card"></i>
-              <div class="option-details">
-                <div class="option-title">Credit/Debit Card</div>
-                <div class="option-desc">Visa, Mastercard, Rupay, American Express</div>
-              </div>
-              <i class="fas fa-check-circle checkmark"></i>
-            </div>
-            
-            <div class="payment-option" onclick="selectPaymentMethod('netbanking')">
-              <i class="fas fa-university"></i>
-              <div class="option-details">
-                <div class="option-title">Net Banking</div>
-                <div class="option-desc">Direct bank transfer from 50+ banks</div>
-              </div>
-              <i class="fas fa-check-circle checkmark"></i>
-            </div>
-          </div>
+          <button type="button" id="payNowBtn" class="btn btn-secondary" onclick="generateUPILink()">
+            <i class="fab fa-google-pay"></i> Proceed to Pay ₹<span id="payAmount">0</span>
+          </button>
           
-          <div id="upiDetails" style="display: none;">
-            <div class="upi-apps">
-              <div class="upi-app" onclick="showUpiIdField()">
-                <img src="https://via.placeholder.com/40x40?text=GPay" alt="Google Pay">
-              </div>
-              <div class="upi-app" onclick="showUpiIdField()">
-                <img src="https://via.placeholder.com/40x40?text=PhonePe" alt="PhonePe">
-              </div>
-              <div class="upi-app" onclick="showUpiIdField()">
-                <img src="https://via.placeholder.com/40x40?text=Paytm" alt="Paytm">
-              </div>
-              <div class="upi-app" onclick="showUpiIdField()">
-                <img src="https://via.placeholder.com/40x40?text=BHIM" alt="BHIM">
-              </div>
+          <div class="upi-section" id="upiSection">
+            <div class="upi-title">Complete your payment</div>
+            <div class="qr-container">
+              <canvas id="qrCode"></canvas>
             </div>
-            
-            <div class="upi-id-input">
-              <div class="form-group">
-                <label for="upiId">Enter UPI ID</label>
-                <input type="text" id="upiId" class="form-control" placeholder="yourname@upi">
-              </div>
-              <button type="button" class="btn" onclick="initiateUpiPayment()">
-                <i class="fas fa-paper-plane"></i> Pay via UPI
-              </button>
+            <p>OR</p>
+            <a id="upiLink" class="upi-btn" href="#" target="_blank">
+              <img src="https://static.cdnlogo.com/logos/g/93/google.svg" class="upi-icon" alt="">
+              Pay with Google Pay
+            </a>
+            <div class="security-note">
+              <svg class="lock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#5f6368">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+              </svg>
+              Payment secured by Google Pay
             </div>
-          </div>
-          
-          <div id="cardDetails" class="card-details">
-            <div class="form-group">
-              <label for="cardNumber">Card Number</label>
-              <div class="input-group">
-                <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456">
-                <i class="fas fa-credit-card card-icon"></i>
-              </div>
-            </div>
-            
-            <div class="row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="cardExpiry">Expiry Date</label>
-                  <input type="text" id="cardExpiry" class="form-control" placeholder="MM/YY">
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-group">
-                  <label for="cardCvv">CVV</label>
-                  <input type="text" id="cardCvv" class="form-control" placeholder="123">
-                </div>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label for="cardName">Name on Card</label>
-              <input type="text" id="cardName" class="form-control" placeholder="Name as on card">
-            </div>
-            
-            <button type="button" class="btn" onclick="processCardPayment()">
-              <i class="fas fa-lock"></i> Pay Securely
-            </button>
-          </div>
-          
-          <div id="netbankingDetails" class="netbanking-banks">
-            <h4>Select Your Bank:</h4>
-            
-            <div class="bank-option" onclick="selectBank('sbi')">
-              <img src="https://via.placeholder.com/30x30?text=SBI" class="bank-logo" alt="SBI">
-              <span>State Bank of India</span>
-            </div>
-            
-            <div class="bank-option" onclick="selectBank('hdfc')">
-              <img src="https://via.placeholder.com/30x30?text=HDFC" class="bank-logo" alt="HDFC">
-              <span>HDFC Bank</span>
-            </div>
-            
-            <div class="bank-option" onclick="selectBank('icici')">
-              <img src="https://via.placeholder.com/30x30?text=ICICI" class="bank-logo" alt="ICICI">
-              <span>ICICI Bank</span>
-            </div>
-            
-            <div class="bank-option" onclick="selectBank('axis')">
-              <img src="https://via.placeholder.com/30x30?text=AXIS" class="bank-logo" alt="AXIS">
-              <span>Axis Bank</span>
-            </div>
-            
-            <button type="button" class="btn" onclick="processNetbankingPayment()" style="margin-top: 1rem;">
-              <i class="fas fa-sign-in-alt"></i> Proceed to Bank Login
-            </button>
           </div>
           
           <button type="button" id="backBtn" class="btn btn-outline no-print" style="margin-top: 1rem;">
@@ -862,10 +709,11 @@
     </div>
     
     <div id="receiptContainer" class="receipt-container">
+      <div class="receipt-watermark">THP COACHING</div>
       <div class="receipt-header">
         <img src="https://via.placeholder.com/60x60?text=THP" alt="THP Coaching Logo">
         <h2>Payment Receipt</h2>
-        <p>THP Coaching Institute - Transforming Education Since 2010</p>
+        <p>Official Receipt for Course Admission</p>
       </div>
       
       <div class="receipt-details">
@@ -874,8 +722,8 @@
           <span class="receipt-value" id="receiptNumber">THP-2023-001</span>
         </div>
         <div class="receipt-row">
-          <span class="receipt-label">Date:</span>
-          <span class="receipt-value" id="receiptDate">01/01/2023</span>
+          <span class="receipt-label">Date & Time:</span>
+          <span class="receipt-value" id="receiptDate">01/01/2023 at 10:30 AM</span>
         </div>
         <div class="receipt-row">
           <span class="receipt-label">Student Name:</span>
@@ -898,19 +746,19 @@
       <div class="receipt-details">
         <div class="receipt-row">
           <span class="receipt-label">Course Fee:</span>
-          <span class="receipt-value">₹<span id="receiptFee">20000</span></span>
+          <span class="receipt-value">₹<span id="receiptFee">20,000.00</span></span>
         </div>
         <div class="receipt-row">
           <span class="receipt-label">Discount (10%):</span>
-          <span class="receipt-value">-₹<span id="receiptDiscount">2000</span></span>
+          <span class="receipt-value">-₹<span id="receiptDiscount">2,000.00</span></span>
         </div>
         <div class="receipt-row receipt-total">
           <span class="receipt-label">Total Paid:</span>
-          <span class="receipt-value">₹<span id="receiptTotal">18000</span></span>
+          <span class="receipt-value">₹<span id="receiptTotal">18,000.00</span></span>
         </div>
         <div class="receipt-row">
           <span class="receipt-label">Payment Method:</span>
-          <span class="receipt-value" id="receiptMethod">UPI Payment</span>
+          <span class="receipt-value" id="receiptMethod">Google Pay</span>
         </div>
         <div class="receipt-row">
           <span class="receipt-label">Transaction ID:</span>
@@ -920,6 +768,10 @@
           <span class="receipt-label">Status:</span>
           <span class="receipt-value" style="color: var(--success);" id="receiptStatus">Completed</span>
         </div>
+      </div>
+      
+      <div class="receipt-stamp">
+        <div class="stamp">PAID</div>
       </div>
       
       <div class="receipt-footer">
@@ -977,9 +829,36 @@
     };
     
     let admissionData = {};
-    let selectedPaymentMethod = '';
-    let selectedBank = '';
     let razorpayOrderId = '';
+    
+    // Check if user already has access
+    function checkUserAccess() {
+      const email = localStorage.getItem('thp_user_email');
+      if (!email) return;
+      
+      showLoading('Checking your admission status...');
+      
+      db.collection('admissions').where('email', '==', email).get()
+        .then(querySnapshot => {
+          if (!querySnapshot.empty) {
+            querySnapshot.forEach(doc => {
+              const data = doc.data();
+              if (data.accessGranted === true) {
+                // User has access, show receipt directly
+                admissionData = data;
+                generateReceipt();
+                hideLoading();
+              }
+            });
+          } else {
+            hideLoading();
+          }
+        })
+        .catch(error => {
+          hideLoading();
+          console.error('Error checking access:', error);
+        });
+    }
     
     // Proceed to payment button click handler
     document.getElementById('proceedBtn').addEventListener('click', function() {
@@ -1016,6 +895,7 @@
       document.getElementById('courseFee').textContent = baseFee.toLocaleString('en-IN');
       document.getElementById('discountAmount').textContent = discount.toLocaleString('en-IN');
       document.getElementById('totalAmount').textContent = finalAmount.toLocaleString('en-IN');
+      document.getElementById('payAmount').textContent = finalAmount.toLocaleString('en-IN');
       
       // Store admission data
       admissionData = {
@@ -1031,12 +911,15 @@
         status: 'pending',
         paymentMethod: '',
         transactionId: '',
-        receiptGenerated: false
+        receiptGenerated: false,
+        accessGranted: false
       };
+      
+      // Store email in localStorage for future reference
+      localStorage.setItem('thp_user_email', email);
       
       // Show payment section
       document.getElementById('paymentSection').classList.add('active');
-      document.getElementById('step1').classList.remove('active');
       document.getElementById('step1').classList.add('completed');
       document.getElementById('step2').classList.add('active');
       
@@ -1047,212 +930,144 @@
     // Back button handler
     document.getElementById('backBtn').addEventListener('click', function() {
       document.getElementById('paymentSection').classList.remove('active');
-      document.getElementById('step1').classList.add('active');
+      document.getElementById('upiSection').style.display = 'none';
       document.getElementById('step1').classList.remove('completed');
       document.getElementById('step2').classList.remove('active');
-      
-      // Hide all payment method details
-      hideAllPaymentDetails();
     });
     
-    // Select payment method
-    function selectPaymentMethod(method) {
-      selectedPaymentMethod = method;
-      
-      // Update UI
-      const options = document.querySelectorAll('.payment-option');
-      options.forEach(opt => {
-        opt.classList.remove('selected');
+    // Generate UPI payment link
+    function generateUPILink() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const course = document.getElementById("course").value;
+      const amount = admissionData.paidAmount;
+      const upiId = "mgbhaukali@oksbi";
+
+      if (!name || !phone || !email || !course) {
+        showToast("Please fill all required fields.", "error");
+        return;
+      }
+
+      if (!/^\d{10}$/.test(phone)) {
+        showToast("Please enter a valid 10-digit mobile number.", "error");
+        return;
+      }
+
+      const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent("THP Coaching: " + course)}`;
+
+      document.getElementById("upiLink").href = upiUrl;
+      document.getElementById("upiSection").style.display = "block";
+
+      // Scroll to UPI section
+      document.getElementById("upiSection").scrollIntoView({ behavior: 'smooth' });
+
+      // Generate QR code
+      new QRious({
+        element: document.getElementById("qrCode"),
+        value: upiUrl,
+        size: 180,
+        background: 'white',
+        foreground: '#202124',
+        level: 'H'
       });
-      event.currentTarget.classList.add('selected');
       
-      // Show relevant payment details
-      hideAllPaymentDetails();
-      
-      switch(method) {
-        case 'upi':
-          document.getElementById('upiDetails').style.display = 'block';
-          document.querySelector('.upi-apps').style.display = 'flex';
-          break;
-        case 'card':
-          document.getElementById('cardDetails').style.display = 'block';
-          break;
-        case 'netbanking':
-          document.getElementById('netbankingDetails').style.display = 'block';
-          break;
-      }
-    }
-    
-    // Hide all payment method details
-    function hideAllPaymentDetails() {
-      document.getElementById('upiDetails').style.display = 'none';
-      document.getElementById('cardDetails').style.display = 'none';
-      document.getElementById('netbankingDetails').style.display = 'none';
-      document.querySelector('.upi-apps').style.display = 'none';
-      document.querySelector('.upi-id-input').style.display = 'none';
-    }
-    
-    // Show UPI ID input field
-    function showUpiIdField() {
-      document.querySelector('.upi-apps').style.display = 'none';
-      document.querySelector('.upi-id-input').style.display = 'block';
-    }
-    
-    // Select bank for netbanking
-    function selectBank(bank) {
-      selectedBank = bank;
-      
-      const options = document.querySelectorAll('.bank-option');
-      options.forEach(opt => {
-        opt.classList.remove('selected');
-      });
-      event.currentTarget.classList.add('selected');
-    }
-    
-    // Initiate UPI payment
-    function initiateUpiPayment() {
-      const upiId = document.getElementById('upiId').value.trim();
-      
-      if (!upiId || !upiId.includes('@')) {
-        showToast('Please enter a valid UPI ID', 'error');
-        return;
-      }
-      
-      showLoading('Initiating UPI payment...');
-      
-      // In a real app, you would integrate with Razorpay or other payment gateway here
-      // For demo, we'll simulate a successful payment after 3 seconds
+      // Simulate payment completion after 5 seconds
       setTimeout(() => {
-        const txnId = 'THPUPI' + Math.floor(100000000 + Math.random() * 900000000);
-        
-        admissionData.paymentMethod = 'UPI Payment (' + upiId + ')';
-        admissionData.transactionId = txnId;
-        admissionData.status = 'completed';
-        
-        processPaymentSuccess();
-      }, 3000);
+        completeUPIPayment();
+      }, 5000);
     }
     
-    // Process card payment
-    function processCardPayment() {
-      const cardNumber = document.getElementById('cardNumber').value.trim();
-      const cardExpiry = document.getElementById('cardExpiry').value.trim();
-      const cardCvv = document.getElementById('cardCvv').value.trim();
-      const cardName = document.getElementById('cardName').value.trim();
+    // Complete UPI payment (simulated)
+    function completeUPIPayment() {
+      showLoading('Verifying UPI payment...');
       
-      if (!cardNumber || cardNumber.length < 16) {
-        showToast('Please enter a valid card number', 'error');
-        return;
-      }
+      // Generate random transaction ID
+      const txnId = 'THPUPI' + Math.floor(100000000 + Math.random() * 900000000);
       
-      if (!cardExpiry || !cardExpiry.includes('/')) {
-        showToast('Please enter valid expiry date (MM/YY)', 'error');
-        return;
-      }
+      // Update admission data
+      admissionData.paymentMethod = 'Google Pay';
+      admissionData.transactionId = txnId;
+      admissionData.status = 'completed';
+      admissionData.paymentDate = new Date().toISOString();
+      admissionData.accessGranted = true;
       
-      if (!cardCvv || cardCvv.length < 3) {
-        showToast('Please enter valid CVV', 'error');
-        return;
-      }
-      
-      if (!cardName) {
-        showToast('Please enter name on card', 'error');
-        return;
-      }
-      
-      showLoading('Processing card payment...');
-      
-      // In a real app, you would integrate with Razorpay or other payment gateway here
-      // For demo, we'll simulate a successful payment after 3 seconds
-      setTimeout(() => {
-        const txnId = 'THPCARD' + Math.floor(100000000 + Math.random() * 900000000);
-        
-        admissionData.paymentMethod = 'Credit/Debit Card (•••• ' + cardNumber.slice(-4) + ')';
-        admissionData.transactionId = txnId;
-        admissionData.status = 'completed';
-        
-        processPaymentSuccess();
-      }, 3000);
+      // Complete admission
+      completeAdmission();
     }
     
-    // Process netbanking payment
-    function processNetbankingPayment() {
-      if (!selectedBank) {
-        showToast('Please select your bank', 'error');
-        return;
-      }
-      
-      showLoading('Redirecting to bank portal...');
-      
-      // In a real app, you would integrate with Razorpay or other payment gateway here
-      // For demo, we'll simulate a successful payment after 3 seconds
-      setTimeout(() => {
-        const txnId = 'THPNB' + Math.floor(100000000 + Math.random() * 900000000);
-        
-        admissionData.paymentMethod = 'Net Banking (' + getBankName(selectedBank) + ')';
-        admissionData.transactionId = txnId;
-        admissionData.status = 'completed';
-        
-        processPaymentSuccess();
-      }, 3000);
-    }
-    
-    // Get bank name from code
-    function getBankName(code) {
-      const banks = {
-        'sbi': 'State Bank of India',
-        'hdfc': 'HDFC Bank',
-        'icici': 'ICICI Bank',
-        'axis': 'Axis Bank'
-      };
-      return banks[code] || code;
-    }
-    
-    // Process payment success
-    function processPaymentSuccess() {
-      hideLoading();
+    // Complete admission process
+    function completeAdmission() {
+      showLoading('Completing admission process...');
       
       // Save admission data to Firebase
-      saveAdmissionData();
-      
-      // Generate receipt
-      generateReceipt();
+      saveAdmissionData()
+        .then(() => {
+          // Generate receipt
+          generateReceipt();
+          hideLoading();
+          
+          // Update progress bar
+          document.getElementById('step2').classList.add('completed');
+          document.getElementById('step3').classList.add('active');
+        })
+        .catch(error => {
+          hideLoading();
+          showToast('Error saving admission data: ' + error.message, 'error');
+          console.error('Error:', error);
+        });
     }
     
     // Save admission data to Firebase
     function saveAdmissionData() {
-      // Generate a unique ID for this admission
-      const admissionId = 'THP-' + Date.now();
-      
-      // Save to Realtime Database
-      database.ref('admissions/' + admissionId).set(admissionData)
-        .then(() => {
-          console.log('Admission data saved to Realtime Database');
-        })
-        .catch(error => {
-          console.error('Error saving to Realtime Database:', error);
-        });
-      
-      // Also save to Firestore
-      db.collection('admissions').doc(admissionId).set(admissionData)
-        .then(() => {
-          console.log('Admission data saved to Firestore');
-        })
-        .catch(error => {
-          console.error('Error saving to Firestore:', error);
-        });
+      return new Promise((resolve, reject) => {
+        // Generate a unique ID for this admission
+        const admissionId = 'ADM' + Date.now();
+        
+        // Save to Firestore
+        db.collection('admissions').doc(admissionId).set(admissionData)
+          .then(() => {
+            console.log('Admission data saved to Firestore');
+            
+            // Also save to Realtime Database
+            database.ref('admissions/' + admissionId).set(admissionData)
+              .then(() => {
+                console.log('Admission data saved to Realtime Database');
+                resolve();
+              })
+              .catch(error => {
+                console.error('Error saving to Realtime Database:', error);
+                reject(error);
+              });
+          })
+          .catch(error => {
+            console.error('Error saving to Firestore:', error);
+            reject(error);
+          });
+      });
     }
     
     // Generate receipt
     function generateReceipt() {
       if (!admissionData.name || !admissionData.course) return;
       
-      // Generate receipt number (THP-YYYY-MM-XXX)
+      // Generate receipt number (THP-YYYY-XXX)
       const now = new Date();
-      const receiptNumber = `THP-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${Math.floor(100 + Math.random() * 900)}`;
+      const receiptNumber = `THP-${now.getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
       
       // Format date (DD/MM/YYYY)
-      const receiptDate = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+      
+      // Format time (HH:MM AM/PM)
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const formattedHours = hours % 12 || 12;
+      const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+      
+      const receiptDate = `${day}/${month}/${year} at ${formattedHours}:${formattedMinutes} ${ampm}`;
       
       // Update receipt
       document.getElementById('receiptNumber').textContent = receiptNumber;
@@ -1260,13 +1075,12 @@
       document.getElementById('receiptName').textContent = admissionData.name;
       document.getElementById('receiptEmail').textContent = admissionData.email;
       document.getElementById('receiptPhone').textContent = admissionData.phone;
-      document.getElementById('receiptCourse').textContent = admissionData.course + ' Preparation';
-      document.getElementById('receiptFee').textContent = admissionData.baseFee.toLocaleString('en-IN');
-      document.getElementById('receiptDiscount').textContent = admissionData.discount.toLocaleString('en-IN');
-      document.getElementById('receiptTotal').textContent = admissionData.paidAmount.toLocaleString('en-IN');
+      document.getElementById('receiptCourse').textContent = document.getElementById('course').options[document.getElementById('course').selectedIndex].text;
+      document.getElementById('receiptFee').textContent = admissionData.baseFee.toLocaleString('en-IN', {minimumFractionDigits: 2});
+      document.getElementById('receiptDiscount').textContent = admissionData.discount.toLocaleString('en-IN', {minimumFractionDigits: 2});
+      document.getElementById('receiptTotal').textContent = admissionData.paidAmount.toLocaleString('en-IN', {minimumFractionDigits: 2});
       document.getElementById('receiptMethod').textContent = admissionData.paymentMethod;
       document.getElementById('receiptTxnId').textContent = admissionData.transactionId;
-      document.getElementById('receiptStatus').textContent = 'Completed';
       
       // Mark receipt as generated
       admissionData.receiptGenerated = true;
@@ -1278,15 +1092,12 @@
       // Hide payment section and show receipt
       document.getElementById('paymentSection').style.display = 'none';
       document.getElementById('receiptContainer').style.display = 'block';
-      document.getElementById('step2').classList.remove('active');
-      document.getElementById('step2').classList.add('completed');
-      document.getElementById('step3').classList.add('active');
       
       // Auto-scroll to receipt
       document.getElementById('receiptContainer').scrollIntoView({ behavior: 'smooth' });
       
       // Show success message
-      showToast('Payment successful! Receipt generated.', 'success');
+      showToast('Admission completed successfully!', 'success');
     }
     
     // Print receipt
@@ -1298,10 +1109,11 @@
     function downloadReceipt() {
       showLoading('Generating PDF receipt...');
       
-      // In a real app, you would generate and download a PDF
+      // In a real app, you would generate a PDF here
+      // For demo purposes, we'll simulate the download
       setTimeout(() => {
         hideLoading();
-        showToast('Receipt downloaded as PDF', 'success');
+        showToast('Receipt downloaded successfully!', 'success');
       }, 2000);
     }
     
@@ -1309,7 +1121,8 @@
     function goToDashboard() {
       showLoading('Redirecting to student dashboard...');
       
-      // In a real app, you would redirect to the student portal
+      // In a real app, you would redirect to the dashboard
+      // For demo purposes, we'll simulate the redirect
       setTimeout(() => {
         hideLoading();
         showToast('Welcome to your student dashboard!', 'success');
@@ -1349,21 +1162,14 @@
       }, 5000);
     }
     
-    // Initialize Razorpay (for real implementation)
-    function initializeRazorpay() {
-      // This would be your actual Razorpay integration code
-      // For demo purposes, we're simulating payments
-    }
-    
     // Initialize on page load
     window.addEventListener('load', function() {
-      initializeRazorpay();
+      checkUserAccess();
       
-      // Check for payment status in URL (for return from payment gateway)
+      // Check for payment success in URL parameters
       const params = new URLSearchParams(window.location.search);
       if (params.get('payment') === 'success') {
-        // This would handle successful payment returns from gateway
-        showToast('Payment verified! Generating receipt...', 'success');
+        // This would handle successful payment callback
       }
     });
   </script>
