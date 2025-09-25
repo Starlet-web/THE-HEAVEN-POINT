@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Structure Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary: #8a4dcc;
+            --secondary: #b366ff;
+            --accent: #ff9e80;
+            --light: #1a1a2e;
+            --dark: #e6e6e6;
+            --gray: #a0a0a0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            transition: var(--transition);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "THP";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30vw;
+            font-weight: 900;
+            color: rgba(106, 48, 147, 0.03);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate(-100px, -100px) rotate(360deg);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        nav li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        section {
+            padding: 3rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .section-heading h2 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: 15px;
+        }
+
+        .section-heading i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .dark-mode .content-card {
+            background: #252545;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .styled-list li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dark-mode td {
+            border-bottom: 1px solid #444;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .dark-mode tr:nth-child(even) {
+            background-color: #2a2a4a;
+        }
+
+        tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .dark-mode tr:hover {
+            background-color: #3a3a5a;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .key-point {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .dark-mode .key-point {
+            background: #1a3a5f;
+        }
+
+        .key-point i {
+            color: #2196f3;
+            margin-right: 10px;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .image-container {
+            border: 2px solid;
+            border-image: linear-gradient(135deg, var(--primary), var(--secondary)) 1;
+            padding: 10px;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .caption {
+            font-style: italic;
+            margin-top: 10px;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 5px 0;
+            }
+            
+            .section-heading h2 {
+                font-size: 1.5rem;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <div class="container">
+            <h1>The Structure of the Atom</h1>
+            <p class="subtitle">Interactive Notes on Atomic Theory and Subatomic Particles</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#subatomic-particles">Subatomic Particles</a></li>
+                <li><a href="#atomic-models">Atomic Models</a></li>
+                <li><a href="#electron-configuration">Electron Configuration</a></li>
+                <li><a href="#isotopes-isobars">Isotopes & Isobars</a></li>
+                <li><a href="#ions">Ions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="subatomic-particles" class="visible">
+            <div class="section-heading">
+                <h2>Discovery of Subatomic Particles</h2>
+                <i>🔬</i>
+            </div>
+            
+            <div class="content-card">
+                <p>The <strong>atom</strong> is the basic unit of matter, and it is made up of three subatomic particles: electrons, protons, and neutrons.</p>
+                
+                <ul class="styled-list">
+                    <li><strong>Electrons</strong> were discovered by J.J. Thomson in 1897. They are negatively charged particles.</li>
+                    <li><strong>Protons</strong> were discovered after E. Goldstein found new, positively charged radiations called canal rays in 1886. Protons have a positive charge.</li>
+                    <li><strong>Neutrons</strong> were discovered in 1932 by James Chadwick. They have no charge.</li>
+                </ul>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Particle</th>
+                            <th>Symbol</th>
+                            <th>Charge</th>
+                            <th>Mass</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Electron</strong></td>
+                            <td>\( e^{-} \)</td>
+                            <td>Negative</td>
+                            <td>Approx \( \frac{1}{2000} \) the mass of a hydrogen atom</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Proton</strong></td>
+                            <td>\( p^{+} \)</td>
+                            <td>Positive</td>
+                            <td>Equal to the mass of a hydrogen atom (1 unit)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Neutron</strong></td>
+                            <td>\( n \)</td>
+                            <td>No charge</td>
+                            <td>Equal to the mass of a hydrogen atom (1 unit)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="atomic-models">
+            <div class="section-heading">
+                <h2>Atomic Models</h2>
+                <i>⚛️</i>
+            </div>
+            
+            <div class="content-card">
+                <h3>Thomson's Atomic Model</h3>
+                <ul class="styled-list">
+                    <li>J.J. Thomson proposed that an atom is a positively charged sphere with negatively charged electrons embedded within it.</li>
+                    <li>This model is often compared to a Christmas pudding or a watermelon, where the positive charge is the pudding/edible part, and the electrons are like dry fruits or seeds.</li>
+                    <li>According to Thomson, the positive and negative charges in an atom are equal, making the atom as a whole electrically neutral.</li>
+                </ul>
+                
+                <div class="key-point">
+                    <i>💡</i>
+                    <div>
+                        <strong>Limitation:</strong> This model couldn't explain how the positive charge held the electrons in place or why an atom is stable. It also didn't mention the nucleus.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h3>Rutherford's Gold Foil Experiment</h3>
+                <ul class="styled-list">
+                    <li>In 1911, Rutherford conducted the <strong>alpha (α) scattering experiment</strong> by bombarding a thin sheet of gold foil (about 1000 atoms thick) with high-speed alpha-particles.</li>
+                    <li>Alpha-particles are positively charged helium nuclei (\( He^{2+} \)).</li>
+                </ul>
+                
+                <h4>Observations:</h4>
+                <ul class="styled-list">
+                    <li>Most alpha-particles passed straight through the foil without deflection.</li>
+                    <li>Some alpha-particles were deflected by small angles.</li>
+                    <li>A very small number of alpha-particles bounced back.</li>
+                </ul>
+                
+                <h4>Conclusions:</h4>
+                <ul class="styled-list">
+                    <li>Most of the atom is <strong>empty space</strong>.</li>
+                    <li>The atom has a small, positively charged <strong>nucleus</strong>.</li>
+                    <li>The <strong>nucleus</strong> is where most of the atom's mass is located.</li>
+                    <li>The nucleus is very small compared to the overall size of the atom.</li>
+                </ul>
+                
+                <div class="image-container">
+                    <!-- Placeholder for Rutherford experiment diagram -->
+                    <div style="background: #f0f0f0; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
+                        Rutherford's Gold Foil Experiment Diagram
+                    </div>
+                    <p class="caption">Diagram showing alpha particles being deflected by the nucleus</p>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h3>Rutherford's Atomic Model</h3>
+                <ul class="styled-list">
+                    <li>An atom has a positively charged nucleus at its center.</li>
+                    <li>Electrons revolve around the nucleus in different orbits.</li>
+                </ul>
+                
+                <div class="key-point">
+                    <i>💡</i>
+                    <div>
+                        <strong>Defect:</strong> This model couldn't explain the stability of an atom. A charged particle in a circular orbit would accelerate, radiate energy, and eventually fall into the nucleus, causing the atom to collapse.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h3>Bohr's Atomic Model</h3>
+                <ul class="styled-list">
+                    <li>An atom has a positively charged nucleus at its center, containing most of the atom's mass.</li>
+                    <li>Electrons revolve around the nucleus in specific, stable orbits called discrete orbits or shells.</li>
+                    <li>These shells are represented by the letters K, L, M, N or the numbers 1, 2, 3, 4, and so on.</li>
+                    <li>Electrons do not radiate energy while in these discrete orbits, which explains why atoms are stable.</li>
+                </ul>
+                
+                <div class="image-container">
+                    <!-- Placeholder for Bohr model diagram -->
+                    <div style="background: #f0f0f0; height: 200px; display: flex; align-items: center; justify-content: center; color: #666;">
+                        Bohr's Atomic Model Diagram
+                    </div>
+                    <p class="caption">Bohr model showing electrons in discrete energy levels</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="electron-configuration">
+            <div class="section-heading">
+                <h2>Electron Configuration and Valency</h2>
+                <i>⚡</i>
+            </div>
+            
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li><strong>Valence Electrons:</strong> The electrons in an atom's outermost shell are called valence electrons.</li>
+                    <li><strong>Octet Rule:</strong> An atom is stable if its outermost shell contains 8 electrons. Noble gases already have 8 electrons in their outer shell, so they are not reactive.</li>
+                    <li><strong>Duplet Rule:</strong> The first shell (K shell) can hold a maximum of 2 electrons. A complete K shell also makes an atom stable, like in the case of Helium.</li>
+                    <li><strong>Valency:</strong> The combining capacity of an element. It is the number of electrons an atom gives, accepts, or shares to form a bond.</li>
+                </ul>
+                
+                <div class="key-point">
+                    <i>💡</i>
+                    <div>
+                        <strong>Valency Rules:</strong><br>
+                        - For elements with 1, 2, or 3 valence electrons, the valency is equal to the number of valence electrons. These elements tend to lose electrons and become <strong>cations</strong> (positively charged ions).<br>
+                        - For elements with 5, 6, or 7 valence electrons, the valency is calculated as <strong>8 - (number of valence electrons)</strong>. These elements tend to gain electrons and become <strong>anions</strong> (negatively charged ions).<br>
+                        - Elements with 4 valence electrons tend to share them and have <strong>metalloid</strong> properties.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h3>Atomic Number and Mass Number</h3>
+                <ul class="styled-list">
+                    <li><strong>Atomic Number (Z):</strong> This is the number of protons in an atom's nucleus. All atoms of the same element have the same atomic number. In a neutral atom, the atomic number is also equal to the number of electrons.</li>
+                    <li><strong>Mass Number (A):</strong> This is the sum of the number of protons and neutrons (also called nucleons) in an atom's nucleus. The mass of an atom is primarily determined by its protons and neutrons.</li>
+                </ul>
+                
+                <div class="formula-box">
+                    <p><strong>Mass Number Formula:</strong> \( A = Z + N \)</p>
+                    <p>Where \( N \) is the number of neutrons</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="isotopes-isobars">
+            <div class="section-heading">
+                <h2>Isotopes and Isobars</h2>
+                <i>🧪</i>
+            </div>
+            
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li><strong>Isotopes:</strong> Atoms of the <strong>same element</strong> that have the same atomic number but different mass numbers. This means they have the same number of protons but a different number of neutrons. For example, Protium, Deuterium, and Tritium are isotopes of Hydrogen.</li>
+                    <li><strong>Isobars:</strong> Atoms of <strong>different elements</strong> that have different atomic numbers but the same mass number. This means they have a different number of protons but the same total number of nucleons. For example, Argon-40, Potassium-40, and Calcium-40 are isobars.</li>
+                    <li><strong>Radio-isotopes</strong> are isotopes that are radioactive and have various applications, such as Carbon-14 for measuring the age of fossils and Cobalt-60 for curing cancer and preserving food.</li>
+                </ul>
+                
+                <div class="image-container">
+                    <!-- Placeholder for isotopes diagram -->
+                    <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; color: #666;">
+                        Isotopes of Hydrogen Diagram
+                    </div>
+                    <p class="caption">Protium, Deuterium, and Tritium - isotopes of hydrogen</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ions">
+            <div class="section-heading">
+                <h2>Formation of Ions</h2>
+                <i>⚡</i>
+            </div>
+            
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li><strong>Ions</strong> are formed when atoms lose or gain electrons to achieve a full outer shell (octet rule).</li>
+                    <li><strong>Cations</strong> are formed when an atom loses one or more electrons, resulting in a positive charge. A metal that has lost electrons has the same name as the element, for example, Na\(^+\) is a sodium ion and Ca\(^{2+}\) is a calcium ion.</li>
+                    <li><strong>Anions</strong> are formed when an atom gains one or more electrons, resulting in a negative charge. A nonmetal that has gained electrons changes its name to end in "-ide" (e.g., chloride ion, fluoride ion).</li>
+                    <li>A cation or an anion will often have the same number of electrons as its nearest noble gas, a state known as being <strong>isoelectronic</strong>.</li>
+                </ul>
+                
+                <div class="formula-box">
+                    <p><strong>Ion Formation Examples:</strong></p>
+                    <p>Na → Na\(^+\) + e\(^-\) (Sodium loses 1 electron to form a cation)</p>
+                    <p>Cl + e\(^-\) → Cl\(^-\) (Chlorine gains 1 electron to form an anion)</p>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h3>Electronic Configuration Query</h3>
+                <p>Do you want to know about the electronic configuration of a specific element?</p>
+                <div style="margin-top: 15px;">
+                    <input type="text" id="elementInput" placeholder="Enter element symbol (e.g., Na)" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 200px;">
+                    <button id="configButton" style="padding: 8px 15px; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">Get Configuration</button>
+                </div>
+                <div id="configResult" style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 4px; display: none;"></div>
+            </div>
+        </section>
+    </main>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <footer>
+        <div class="container">
+            <p>Atomic Structure Notes &copy; 2023 | THP Branding</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Section animation on scroll
+        const sections = document.querySelectorAll('section');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Electronic configuration functionality
+        const elementConfigs = {
+            'H': '1s¹',
+            'He': '1s²',
+            'Li': '1s² 2s¹',
+            'Be': '1s² 2s²',
+            'B': '1s² 2s² 2p¹',
+            'C': '1s² 2s² 2p²',
+            'N': '1s² 2s² 2p³',
+            'O': '1s² 2s² 2p⁴',
+            'F': '1s² 2s² 2p⁵',
+            'Ne': '1s² 2s² 2p⁶',
+            'Na': '1s² 2s² 2p⁶ 3s¹',
+            'Mg': '1s² 2s² 2p⁶ 3s²',
+            'Al': '1s² 2s² 2p⁶ 3s² 3p¹',
+            'Si': '1s² 2s² 2p⁶ 3s² 3p²',
+            'P': '1s² 2s² 2p⁶ 3s² 3p³',
+            'S': '1s² 2s² 2p⁶ 3s² 3p⁴',
+            'Cl': '1s² 2s² 2p⁶ 3s² 3p⁵',
+            'Ar': '1s² 2s² 2p⁶ 3s² 3p⁶',
+            'K': '1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹',
+            'Ca': '1s² 2s² 2p⁶ 3s² 3p⁶ 4s²'
+        };
+
+        const configButton = document.getElementById('configButton');
+        const elementInput = document.getElementById('elementInput');
+        const configResult = document.getElementById('configResult');
+
+        configButton.addEventListener('click', () => {
+            const element = elementInput.value.trim();
+            if (element in elementConfigs) {
+                configResult.textContent = `Electronic configuration of ${element}: ${elementConfigs[element]}`;
+                configResult.style.display = 'block';
+                configResult.style.background = '#e8f5e9';
+                configResult.style.borderLeft = '4px solid #4caf50';
+            } else {
+                configResult.textContent = `Electronic configuration for "${element}" not found. Please try another element.`;
+                configResult.style.display = 'block';
+                configResult.style.background = '#ffebee';
+                configResult.style.borderLeft = '4px solid #f44336';
+            }
+        });
+
+        // Allow Enter key to trigger the configuration search
+        elementInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                configButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
