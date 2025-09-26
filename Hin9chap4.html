@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>परमाणु संरचना नोट्स</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light-bg: #f9f7fe;
+            --dark-bg: #2d2b3a;
+            --text-dark: #333;
+            --text-light: #fff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --light-bg: #2d2b3a;
+            --dark-bg: #1a1825;
+            --text-dark: #f0f0f0;
+            --text-light: #fff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .hindi {
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-light);
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: 'THP';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20vw;
+            font-weight: 900;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            z-index: 10;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .content-section {
+            margin: 3rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(to right, var(--primary), var(--secondary)) 1;
+        }
+
+        .section-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .dark-mode .content-card {
+            background: var(--dark-bg);
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .subheading {
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        ul.styled-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul.styled-list li {
+            padding: 0.5rem 0 0.5rem 2rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        ul.styled-list li::before {
+            content: '•';
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dark-mode table td {
+            border-bottom: 1px solid #444;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .dark-mode table tr:nth-child(even) {
+            background-color: #363445;
+        }
+
+        table tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .dark-mode table tr:hover {
+            background-color: #3d3b4a;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+            font-family: 'Times New Roman', serif;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .formula-box {
+            background: linear-gradient(135deg, #3d3b4a, #2d2b3a);
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #fff9e6, #fff0cc);
+            border-left: 4px solid #ffcc00;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .dark-mode .key-point {
+            background: linear-gradient(135deg, #3d3b4a, #2d2b3a);
+        }
+
+        .key-point::before {
+            content: '💡';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        .image-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-image: linear-gradient(135deg, var(--primary), var(--secondary)) 1;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .image-caption {
+            margin-top: 0.5rem;
+            font-style: italic;
+            color: #666;
+        }
+
+        .dark-mode .image-caption {
+            color: #aaa;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .content-card {
+                padding: 1rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .hindi-term {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .bilingual {
+            display: flex;
+            flex-direction: column;
+            margin: 0.5rem 0;
+        }
+
+        .hindi-text {
+            font-size: 1.1rem;
+        }
+
+        .english-text {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 0.2rem;
+        }
+
+        .dark-mode .english-text {
+            color: #aaa;
+        }
+    </style>
+</head>
+<body class="hindi">
+    <header>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <div class="container">
+            <h1>परमाणु की संरचना</h1>
+            <p>परमाणु संरचना और गुणों पर इंटरएक्टिव नोट्स</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="content-section" id="introduction">
+            <div class="section-header">
+                <div class="section-icon">⚛️</div>
+                <h2 class="section-title">परिचय</h2>
+            </div>
+            <div class="content-card">
+                <p><span class="hindi-term">परमाणु</span> पदार्थ की मूल इकाई है, और यह तीन उपपरमाण्विक कणों से मिलकर बना है: इलेक्ट्रॉन, प्रोटॉन और न्यूट्रॉन।</p>
+            </div>
+        </section>
+
+        <section class="content-section" id="discovery">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2 class="section-title">उपपरमाण्विक कणों की खोज</h2>
+            </div>
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li>
+                        <div class="bilingual">
+                            <div class="hindi-text"><span class="hindi-term">इलेक्ट्रॉन</span> की खोज 1897 में जे.जे. थॉमसन ने की थी। ये ऋणात्मक आवेशित कण हैं।</div>
+                            <div class="english-text">Electrons were discovered by J.J. Thomson in 1897. They are negatively charged particles.</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bilingual">
+                            <div class="hindi-text"><span class="hindi-term">प्रोटॉन</span> की खोज ई. गोल्डस्टीन द्वारा 1886 में की गई थी, जब उन्होंने नई, धनात्मक आवेशित किरणें पाईं जिन्हें केनाल किरणें कहा जाता है। प्रोटॉन में धनात्मक आवेश होता है।</div>
+                            <div class="english-text">Protons were discovered after E. Goldstein found new, positively charged radiations called canal rays in 1886. Protons have a positive charge.</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="bilingual">
+                            <div class="hindi-text"><span class="hindi-term">न्यूट्रॉन</span> की खोज 1932 में जेम्स चैडविक ने की थी। इनमें कोई आवेश नहीं होता है।</div>
+                            <div class="english-text">Neutrons were discovered in 1932 by James Chadwick. They have no charge.</div>
+                        </div>
+                    </li>
+                </ul>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>कण</th>
+                            <th>प्रतीक</th>
+                            <th>आवेश</th>
+                            <th>द्रव्यमान</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="hindi-term">इलेक्ट्रॉन</span></td>
+                            <td>\( e^{-} \)</td>
+                            <td>ऋणात्मक</td>
+                            <td>हाइड्रोजन परमाणु के द्रव्यमान का लगभग 1/2000 भाग</td>
+                        </tr>
+                        <tr>
+                            <td><span class="hindi-term">प्रोटॉन</span></td>
+                            <td>\( p^{+} \)</td>
+                            <td>धनात्मक</td>
+                            <td>हाइड्रोजन परमाणु के द्रव्यमान के बराबर (1 इकाई)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="hindi-term">न्यूट्रॉन</span></td>
+                            <td>\( n \)</td>
+                            <td>कोई आवेश नहीं</td>
+                            <td>हाइड्रोजन परमाणु के द्रव्यमान के बराबर (1 इकाई)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="content-section" id="atomic-models">
+            <div class="section-header">
+                <div class="section-icon">🧩</div>
+                <h2 class="section-title">परमाणु मॉडल</h2>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="subheading">थॉमसन का परमाणु मॉडल</h3>
+                <ul class="styled-list">
+                    <li>जे.जे. थॉमसन ने प्रस्तावित किया कि एक परमाणु एक धनात्मक आवेशित गोला है जिसमें ऋणात्मक आवेशित इलेक्ट्रॉन सन्निहित हैं।</li>
+                    <li>इस मॉडल की तुलना अक्सर क्रिसमस पुडिंग या तरबूज से की जाती है, जहां धनात्मक आवेश पुडिंग/खाने योग्य भाग है, और इलेक्ट्रॉन सूखे मेवे या बीजों की तरह हैं।</li>
+                    <li>थॉमसन के अनुसार, परमाणु में धनात्मक और ऋणात्मक आवेश समान होते हैं, जिससे परमाणु समग्र रूप से विद्युतीय रूप से उदासीन होता है।</li>
+                </ul>
+                
+                <div class="key-point">
+                    <strong>सीमा:</strong> यह मॉडल यह नहीं समझा सका कि धनात्मक आवेश इलेक्ट्रॉनों को कैसे स्थिर रखता है या परमाणु स्थिर क्यों होता है। इसमें नाभिक का भी उल्लेख नहीं किया गया था।
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="subheading">रदरफोर्ड का गोल्ड फॉयल प्रयोग</h3>
+                <ul class="styled-list">
+                    <li>1911 में, रदरफोर्ड ने <span class="hindi-term">अल्फा कण प्रकीर्णन प्रयोग</span> आयोजित किया, जिसमें उन्होंने उच्च-गति वाले अल्फा कणों के साथ सोने की पन्नी की एक पतली शीट (लगभग 1000 परमाणु मोटी) पर बमबारी की।</li>
+                    <li>अल्फा कण धनात्मक आवेशित हीलियम नाभिक (\( He^{2+} \)) होते हैं।</li>
+                </ul>
+                
+                <h4 class="subheading">प्रेक्षण:</h4>
+                <ul class="styled-list">
+                    <li>अधिकांश अल्फा कण बिना विक्षेपित हुए सीधे पन्नी से गुजर गए।</li>
+                    <li>कुछ अल्फा कण छोटे कोणों से विक्षेपित हुए।</li>
+                    <li>बहुत कम संख्या में अल्फा कण वापस उछल गए।</li>
+                </ul>
+                
+                <h4 class="subheading">निष्कर्ष:</h4>
+                <ul class="styled-list">
+                    <li>परमाणु का अधिकांश भाग <span class="hindi-term">रिक्त स्थान</span> है।</li>
+                    <li>परमाणु में एक छोटा, धनात्मक आवेशित <span class="hindi-term">नाभिक</span> होता है।</li>
+                    <li><span class="hindi-term">नाभिक</span> वह स्थान है जहां परमाणु का अधिकांश द्रव्यमान स्थित होता है।</li>
+                    <li>नाभिक परमाणु के समग्र आकार की तुलना में बहुत छोटा होता है।</li>
+                </ul>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="subheading">रदरफोर्ड का परमाणु मॉडल</h3>
+                <ul class="styled-list">
+                    <li>एक परमाणु के केंद्र में एक धनात्मक आवेशित नाभिक होता है।</li>
+                    <li>इलेक्ट्रॉन नाभिक के चारों ओर विभिन्न कक्षाओं में परिक्रमा करते हैं।</li>
+                </ul>
+                
+                <div class="key-point">
+                    <strong>दोष:</strong> यह मॉडल परमाणु की स्थिरता की व्याख्या नहीं कर सका। एक वृत्ताकार कक्षा में एक आवेशित कण त्वरित होगा, ऊर्जा विकिरणित करेगा और अंततः नाभिक में गिर जाएगा, जिससे परमाणु का पतन हो जाएगा।
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="subheading">बोहर का परमाणु मॉडल</h3>
+                <ul class="styled-list">
+                    <li>एक परमाणु के केंद्र में एक धनात्मक आवेशित नाभिक होता है, जिसमें परमाणु का अधिकांश द्रव्यमान होता है।</li>
+                    <li>इलेक्ट्रॉन नाभिक के चारों ओर विशिष्ट, स्थिर कक्षाओं में परिक्रमा करते हैं जिन्हें असतत कक्षाएं या कोश कहा जाता है।</li>
+                    <li>इन कोशों को K, L, M, N अक्षरों या संख्याओं 1, 2, 3, 4, आदि द्वारा दर्शाया जाता है।</li>
+                    <li>इलेक्ट्रॉन इन असतत कक्षाओं में रहते हुए ऊर्जा विकिरणित नहीं करते हैं, जो यह समझाता है कि परमाणु स्थिर क्यों होते हैं।</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section" id="electron-configuration">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2 class="section-title">इलेक्ट्रॉन विन्यास और संयोजकता</h2>
+            </div>
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li><span class="hindi-term">संयोजकता इलेक्ट्रॉन:</span> किसी परमाणु के सबसे बाहरी कोश में स्थित इलेक्ट्रॉनों को संयोजकता इलेक्ट्रॉन कहा जाता है।</li>
+                    <li><span class="hindi-term">अष्टक नियम:</span> एक परमाणु स्थिर होता है यदि उसके सबसे बाहरी कोश में 8 इलेक्ट्रॉन होते हैं। उत्कृष्ट गैसों के पहले से ही उनके बाहरी कोश में 8 इलेक्ट्रॉन होते हैं, इसलिए वे अक्रियाशील होते हैं।</li>
+                    <li><span class="hindi-term">द्विक नियम:</span> पहला कोश (K कोश) अधिकतम 2 इलेक्ट्रॉन धारण कर सकता है। एक पूर्ण K कोश भी एक परमाणु को स्थिर बनाता है, जैसे हीलियम के मामले में।</li>
+                    <li><span class="hindi-term">संयोजकता:</span> किसी तत्व की संयोजन क्षमता। यह इलेक्ट्रॉनों की वह संख्या है जिसे एक परमाणु बंधन बनाने के लिए देता है, स्वीकार करता है या साझा करता है।
+                        <ul class="styled-list">
+                            <li>1, 2, या 3 संयोजकता इलेक्ट्रॉन वाले तत्वों के लिए, संयोजकता संयोजकता इलेक्ट्रॉनों की संख्या के बराबर होती है। ये तत्व इलेक्ट्रॉन खो देते हैं और <span class="hindi-term">धनायन</span> (धनात्मक आवेशित आयन) बन जाते हैं।</li>
+                            <li>5, 6, या 7 संयोजकता इलेक्ट्रॉन वाले तत्वों के लिए, संयोजकता की गणना <strong>8 - (संयोजकता इलेक्ट्रॉनों की संख्या)</strong> के रूप में की जाती है। ये तत्व इलेक्ट्रॉन प्राप्त करते हैं और <span class="hindi-term">ऋणायन</span> (ऋणात्मक आवेशित आयन) बन जाते हैं।</li>
+                            <li>4 संयोजकता इलेक्ट्रॉन वाले तत्व उन्हें साझा करते हैं और <span class="hindi-term">धातुसदृश</span> गुण रखते हैं।</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section" id="atomic-numbers">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2 class="section-title">परमाणु संख्या और द्रव्यमान संख्या</h2>
+            </div>
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li><span class="hindi-term">परमाणु संख्या (Z):</span> यह किसी परमाणु के नाभिक में प्रोटॉनों की संख्या है। एक ही तत्व के सभी परमाणुओं की परमाणु संख्या समान होती है। एक उदासीन परमाणु में, परमाणु संख्या इलेक्ट्रॉनों की संख्या के भी बराबर होती है।</li>
+                    <li><span class="hindi-term">द्रव्यमान संख्या (A):</span> यह किसी परमाणु के नाभिक में प्रोटॉनों और न्यूट्रॉनों (जिन्हें न्यूक्लिऑन भी कहा जाता है) की संख्या का योग है। परमाणु का द्रव्यमान मुख्य रूप से उसके प्रोटॉनों और न्यूट्रॉनों द्वारा निर्धारित होता है।</li>
+                </ul>
+                
+                <div class="formula-box">
+                    <p>\( A = Z + N \)</p>
+                    <p>जहाँ A द्रव्यमान संख्या है, Z परमाणु संख्या है, और N न्यूट्रॉनों की संख्या है।</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="isotopes-isobars">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2 class="section-title">समस्थानिक और समभारिक</h2>
+            </div>
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li><span class="hindi-term">समस्थानिक:</span> एक ही तत्व के वे परमाणु जिनकी परमाणु संख्या समान होती है लेकिन द्रव्यमान संख्या भिन्न होती है। इसका मतलब है कि उनमें प्रोटॉनों की संख्या समान होती है लेकिन न्यूट्रॉनों की संख्या भिन्न होती है। उदाहरण के लिए, प्रोटियम, ड्यूटेरियम और ट्राइटियम हाइड्रोजन के समस्थानिक हैं।</li>
+                    <li><span class="hindi-term">समभारिक:</span> विभिन्न तत्वों के वे परमाणु जिनकी परमाणु संख्या भिन्न होती है लेकिन द्रव्यमान संख्या समान होती है। इसका मतलब है कि उनमें प्रोटॉनों की संख्या भिन्न होती है लेकिन न्यूक्लिऑनों की कुल संख्या समान होती है। उदाहरण के लिए, आर्गन-40, पोटैशियम-40 और कैल्शियम-40 समभारिक हैं।</li>
+                    <li><span class="hindi-term">रेडियो-समस्थानिक</span> वे समस्थानिक हैं जो रेडियोधर्मी होते हैं और इनके विभिन्न अनुप्रयोग हैं, जैसे जीवाश्मों की आयु मापने के लिए कार्बन-14 और कैंसर के इलाज तथा भोजन संरक्षण के लिए कोबाल्ट-60।</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section" id="ions">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2 class="section-title">आयनों का निर्माण</h2>
+            </div>
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li><span class="hindi-term">आयन</span> तब बनते हैं जब परमाणु पूर्ण बाहरी कोश (अष्टक नियम) प्राप्त करने के लिए इलेक्ट्रॉन खो देते हैं या प्राप्त करते हैं।</li>
+                    <li><span class="hindi-term">धनायन</span> तब बनते हैं जब एक परमाणु एक या अधिक इलेक्ट्रॉन खो देता है, जिसके परिणामस्वरूप धनात्मक आवेश होता है। एक धातु जिसने इलेक्ट्रॉन खो दिए हैं, उसका नाम तत्व के समान ही होता है, उदाहरण के लिए, Na\(^+\) एक सोडियम आयन है और Ca\(^{2+}\) एक कैल्शियम आयन है।</li>
+                    <li><span class="hindi-term">ऋणायन</span> तब बनते हैं जब एक परमाणु एक या अधिक इलेक्ट्रॉन प्राप्त करता है, जिसके परिणामस्वरूप ऋणात्मक आवेश होता है। एक अधातु जिसने इलेक्ट्रॉन प्राप्त किए हैं, उसका नाम "-आइड" में बदल जाता है (उदाहरण के लिए, क्लोराइड आयन, फ्लोराइड आयन)।</li>
+                    <li>एक धनायन या ऋणायन में अक्सर उसके निकटतम उत्कृष्ट गैस के समान संख्या में इलेक्ट्रॉन होते हैं, एक अवस्था जिसे <span class="hindi-term">समइलेक्ट्रॉनिक</span> कहा जाता है।</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>परमाणु संरचना नोट्स | THP शैक्षिक संसाधन</p>
+        </div>
+    </footer>
+
+    <div class="back-to-top" id="backToTop">↑</div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+
+        // Back to top button functionality
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animate sections on scroll
+        const sections = document.querySelectorAll('.content-section');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = '0.2s';
+                    entry.target.style.animation = 'fadeInUp 0.8s forwards';
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Initialize MathJax
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+</body>
+</html>
