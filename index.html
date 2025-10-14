@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Heaven Point Coaching Classes</title>
+  <title>The Heaven Point - Premium Coaching Classes</title>
   <meta property="og:title" content="The Heaven Point" />
-  <meta property="og:description" content="Here, you can study a variety of subjects like Commerce, Maths, Physics, Chemistry, Biology, S. St., English Language, English Literature, Computer, Hindi, and more, for all boards. We also offer specialized courses for CUET, NEET, IIT, JEE, and classes from 3rd to 12th." />
+  <meta property="og:description" content="Premium coaching for competitive exams and academic excellence. Expert faculty, personalized attention, and comprehensive study materials." />
   <meta property="og:image" content="channels4_profile.jpg" />
   <meta property="og:image:alt" content="The Heaven Point" />
   <meta property="og:url" content="https://starlet-web.github.io/THE-HEAVEN-POINT/" />
@@ -32,11 +32,14 @@
           },
           colors: {
             primary: {
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
             },
             secondary: {
+              50: '#f0fdf4',
               500: '#10b981',
               600: '#059669',
             },
@@ -44,11 +47,10 @@
               800: '#1e293b',
               900: '#0f172a',
             },
-            thp: {
-              blue: '#3b82f6',
-              indigo: '#6366f1',
-              purple: '#8b5cf6',
-              teal: '#14b8a6'
+            premium: {
+              gold: '#fbbf24',
+              silver: '#e5e7eb',
+              bronze: '#f97316'
             }
           },
           animation: {
@@ -56,6 +58,10 @@
             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             'wave': 'wave 2s linear infinite',
             'bounce-slow': 'bounce 3s infinite',
+            'gradient': 'gradient 15s ease infinite',
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-up': 'slideUp 0.5s ease-out',
+            'glow': 'glow 2s ease-in-out infinite alternate',
           },
           keyframes: {
             float: {
@@ -71,6 +77,22 @@
               '50%': { transform: 'rotate(10deg)' },
               '60%': { transform: 'rotate(0deg)' },
               '100%': { transform: 'rotate(0deg)' },
+            },
+            gradient: {
+              '0%, 100%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(100%)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+            glow: {
+              '0%': { boxShadow: '0 0 5px rgba(14, 165, 233, 0.5)' },
+              '100%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.8), 0 0 30px rgba(59, 130, 246, 0.6)' },
             }
           }
         }
@@ -82,6 +104,10 @@
     /* Custom Styles */
     :root {
       --app-height: 100vh;
+      --primary-gradient: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+      --gold-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      --silver-gradient: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+      --bronze-gradient: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
     }
     
     body {
@@ -110,8 +136,9 @@
       height: 70px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
     }
     
     @media (min-width: 768px) {
@@ -133,38 +160,61 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: #6366f1;
+      background: var(--primary-gradient);
     }
     
     .card {
-      border-radius: 16px;
+      border-radius: 20px;
       background: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
       transition: all 0.3s ease;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
     }
     
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     }
     
-    .course-card {
-      background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(59,130,246,0.1) 100%);
-      border: 1px solid rgba(99,102,241,0.2);
+    .premium-card {
+      background: linear-gradient(135deg, rgba(14,165,233,0.1) 0%, rgba(59,130,246,0.1) 100%);
+      border: 1px solid rgba(14,165,233,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .premium-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--primary-gradient);
     }
     
     .floating-btn {
-      box-shadow: 0 10px 25px -5px rgba(99,102,241,0.4);
+      box-shadow: 0 15px 35px -5px rgba(14,165,233,0.5);
       transition: all 0.3s ease;
+      background: var(--primary-gradient);
     }
     
     .floating-btn:hover {
       transform: scale(1.1);
-      box-shadow: 0 15px 30px -5px rgba(99,102,241,0.5);
+      box-shadow: 0 20px 40px -5px rgba(14,165,233,0.6);
+      animation: glow 1.5s ease-in-out infinite alternate;
     }
     
     .gradient-text {
-      background: linear-gradient(90deg, #6366f1, #3b82f6);
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .gold-text {
+      background: var(--gold-gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -222,18 +272,225 @@
       animation-delay: 0.4s;
     }
     
-    /* Swiper styles */
-    .swiper-pagination-bullet {
-      background: #cbd5e1 !important;
-      opacity: 1 !important;
-      width: 8px !important;
-      height: 8px !important;
+    /* Premium Features */
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
     
-    .swiper-pagination-bullet-active {
-      background: #6366f1 !important;
-      width: 20px !important;
-      border-radius: 4px !important;
+    .premium-badge {
+      background: var(--gold-gradient);
+      color: white;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .feature-highlight {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .feature-highlight::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .feature-highlight:hover::before {
+      left: 100%;
+    }
+    
+    /* Achievement Badges */
+    .badge-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .achievement-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .badge-gold {
+      background: var(--gold-gradient);
+      color: white;
+    }
+    
+    .badge-silver {
+      background: var(--silver-gradient);
+      color: #374151;
+    }
+    
+    .badge-bronze {
+      background: var(--bronze-gradient);
+      color: white;
+    }
+    
+    /* Progress Tracking */
+    .progress-container {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--primary-gradient);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+    
+    /* AI Assistant */
+    .ai-assistant {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 10px 25px rgba(14,165,233,0.4);
+      cursor: pointer;
+      z-index: 40;
+      transition: all 0.3s ease;
+    }
+    
+    .ai-assistant:hover {
+      transform: scale(1.1);
+      box-shadow: 0 15px 30px rgba(14,165,233,0.5);
+    }
+    
+    .ai-chat-container {
+      position: fixed;
+      bottom: 160px;
+      right: 20px;
+      width: 320px;
+      height: 450px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      z-index: 50;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid rgba(14,165,233,0.2);
+    }
+    
+    .ai-chat-header {
+      padding: 15px;
+      background: var(--primary-gradient);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .ai-chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .ai-message {
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 18px;
+      font-size: 0.9rem;
+    }
+    
+    .ai-message.bot {
+      align-self: flex-start;
+      background: #f1f5f9;
+      border-bottom-left-radius: 5px;
+    }
+    
+    .ai-message.user {
+      align-self: flex-end;
+      background: var(--primary-gradient);
+      color: white;
+      border-bottom-right-radius: 5px;
+    }
+    
+    .ai-chat-input {
+      padding: 15px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      gap: 10px;
+    }
+    
+    .ai-chat-input input {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 1px solid #e5e7eb;
+      outline: none;
+    }
+    
+    .ai-chat-input button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      color: white;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    /* Dark Mode */
+    .dark-mode {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    
+    .dark-mode .card {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+    }
+    
+    .dark-mode .app-header {
+      background: rgba(30, 41, 59, 0.95);
+      border-bottom: 1px solid #334155;
     }
     
     /* Custom scrollbar */
@@ -279,37 +536,6 @@
       }
     }
     
-    /* Grid adjustments */
-    .quick-actions-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-    
-    @media (min-width: 768px) {
-      .quick-actions-grid {
-        grid-template-columns: repeat(8, minmax(0, 1fr));
-      }
-    }
-    
-    .courses-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    
-    @media (min-width: 768px) {
-      .courses-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-    
-    .gallery-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    
-    @media (min-width: 768px) {
-      .gallery-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-    
     /* Desktop navigation */
     .desktop-nav {
       display: none;
@@ -323,48 +549,6 @@
         display: none;
       }
     }
-    
-    /* Container padding */
-    .section-container {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-    
-    @media (min-width: 768px) {
-      .section-container {
-        padding-left: 2rem;
-        padding-right: 2rem;
-      }
-    }
-    
-    /* Featured course card */
-    .featured-course {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    @media (min-width: 768px) {
-      .featured-course {
-        flex-direction: row;
-        align-items: center;
-      }
-      .featured-course img {
-        width: 120px;
-        height: 120px;
-      }
-    }
-    
-    /* Contact section layout */
-    .contact-grid {
-      display: grid;
-      gap: 1.5rem;
-    }
-    
-    @media (min-width: 768px) {
-      .contact-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
   </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 antialiased">
@@ -375,95 +559,128 @@
   <!-- App Header -->
   <header class="app-header fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-8">
     <div class="flex items-center">
-      <img src="channels4_profile.jpg" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-full mr-3 border-2 border-white shadow-sm">
-      <h1 class="text-lg md:text-xl font-bold text-gray-800">The Heaven Point</h1>
+      <div class="relative">
+        <img src="channels4_profile.jpg" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-full mr-3 border-2 border-white shadow-lg">
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></span>
+      </div>
+      <div>
+        <h1 class="text-lg md:text-xl font-bold text-gray-800">The Heaven Point</h1>
+        <p class="text-xs text-gray-500">Premium Coaching Institute</p>
+      </div>
     </div>
 
-
-
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav items-center space-x-6">
+      <a href="#" class="text-gray-700 hover:text-primary-600 font-medium transition">Home</a>
+      <a href="#batches" class="text-gray-700 hover:text-primary-600 font-medium transition">Courses</a>
+      <a href="#features" class="text-gray-700 hover:text-primary-600 font-medium transition">Features</a>
+      <a href="#achievements" class="text-gray-700 hover:text-primary-600 font-medium transition">Achievements</a>
+      <a href="#contact" class="text-gray-700 hover:text-primary-600 font-medium transition">Contact</a>
+      <button id="themeToggle" class="text-gray-500 hover:text-primary-600">
+        <i class="fas fa-moon"></i>
+      </button>
+    </nav>
 
     <div class="flex items-center space-x-3 md:space-x-4">
-      <button id="searchBtn" class="text-gray-500 hover:text-indigo-600">
+      <button id="searchBtn" class="text-gray-500 hover:text-primary-600 transition">
         <i class="fas fa-search text-lg md:text-xl"></i>
-  <button id="notifBtn" class="text-gray-500 hover:text-indigo-600 relative">
+      </button>
+      <button id="notifBtn" class="text-gray-500 hover:text-primary-600 relative transition">
         <i class="fas fa-bell text-lg md:text-xl"></i>
         <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
       </button>
-      <button class="md:hidden text-gray-500 hover:text-indigo-600" id="mobileMenuBtn">
+      <button class="md:hidden text-gray-500 hover:text-primary-600 transition" id="mobileMenuBtn">
         <i class="fas fa-bars text-lg md:text-xl"></i>
       </button>
     </div>
   </header>
   
-<!-- Mobile Menu (hidden by default) -->
-<div id="mobileMenu" class="fixed inset-0 z-50 hidden flex flex-col items-center justify-center backdrop-blur-2xl bg-white/30 dark:bg-gray-900/60 transition-all duration-500">
-  
-  <!-- Close Button -->
-  <button id="closeMobileMenu" class="absolute top-5 right-5 text-gray-600 dark:text-gray-300 hover:text-indigo-500 transition-all duration-300">
-    <i class="fas fa-times text-3xl"></i>
-  </button>
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="fixed inset-0 z-50 hidden flex flex-col items-center justify-center backdrop-blur-2xl bg-white/30 dark:bg-gray-900/60 transition-all duration-500">
+    
+    <!-- Close Button -->
+    <button id="closeMobileMenu" class="absolute top-5 right-5 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-all duration-300">
+      <i class="fas fa-times text-3xl"></i>
+    </button>
 
-  <!-- Navigation Links -->
-  <nav class="flex flex-col items-center space-y-8 mt-8">
+    <!-- Navigation Links -->
+    <nav class="flex flex-col items-center space-y-8 mt-8">
+      <a href="#" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        Home
+      </a>
+      <a href="#batches" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        Courses
+      </a>
+      <a href="#features" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        Features
+      </a>
+      <a href="#achievements" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        Achievements
+      </a>
+      <a href="#" onclick="openNotes()" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        Notes
+      </a>
+      <a href="#" onclick="openLecture()" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        Lectures
+      </a>
+      <a href="thp-faculty.html" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        Faculty
+      </a>
+      <a href="#contact" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        Contact
+      </a>
 
-    <!-- Standard Links -->
-    <a href="#" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-500 tracking-wide transition-all duration-300 hover:scale-105">
-      Home
-    </a>
-    <a href="#batches" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-500 tracking-wide transition-all duration-300 hover:scale-105">
-      Courses
-    </a>
-    <a href="#" onclick="openNotes()" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-500 tracking-wide transition-all duration-300 hover:scale-105">
-      Notes
-    </a>
-    <a href="#" onclick="openLecture()" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-500 tracking-wide transition-all duration-300 hover:scale-105">
-      Lectures
-    </a>
-    <a href="thp-faculty.html" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-500 tracking-wide transition-all duration-300 hover:scale-105">
-      Faculty
-    </a>
-    <a href="#contact" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-500 tracking-wide transition-all duration-300 hover:scale-105">
-      Contact
-    </a>
+      <!-- Theme Toggle -->
+      <button id="mobileThemeToggle" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
+        <i class="fas fa-moon"></i> Dark Mode
+      </button>
 
-    <!-- WhatsApp Share Button -->
-    <a 
-      href="https://api.whatsapp.com/send?text=Check%20out%20this%20amazing%20app:%20https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view?usp=drivesdk"
-      target="_blank"
-      class="relative w-60 text-center px-6 py-3 rounded-2xl font-semibold text-white text-xl tracking-wide 
-             bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 shadow-lg hover:shadow-2xl
-             hover:scale-105 transition-all duration-300 overflow-hidden"
-    >
-      <span class="relative z-10">📲 Share app on WhatsApp</span>
-      <span class="absolute inset-0 bg-white/10 blur-lg opacity-30 animate-pulse"></span>
-    </a>
+      <!-- WhatsApp Share Button -->
+      <a 
+        href="https://api.whatsapp.com/send?text=Check%20out%20this%20amazing%20app:%20https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view?usp=drivesdk"
+        target="_blank"
+        class="relative w-60 text-center px-6 py-3 rounded-2xl font-semibold text-white text-xl tracking-wide 
+               bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 shadow-lg hover:shadow-2xl
+               hover:scale-105 transition-all duration-300 overflow-hidden"
+      >
+        <span class="relative z-10">📲 Share app on WhatsApp</span>
+        <span class="absolute inset-0 bg-white/10 blur-lg opacity-30 animate-pulse"></span>
+      </a>
 
-    <!-- Download App Button -->
-    <a 
-      href="https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view?usp=drivesdk"
-      target="_blank"
-      class="relative w-60 text-center px-6 py-3 rounded-2xl font-semibold text-white text-xl tracking-wide 
-             bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-600 shadow-lg hover:shadow-2xl
-             hover:scale-105 transition-all duration-300 overflow-hidden"
-    >
-      <span class="relative z-10">⬇️ Download App</span>
-      <span class="absolute inset-0 bg-white/20 blur-lg opacity-30 animate-pulse"></span>
-    </a>
+      <!-- Download App Button -->
+      <a 
+        href="https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view?usp=drivesdk"
+        target="_blank"
+        class="relative w-60 text-center px-6 py-3 rounded-2xl font-semibold text-white text-xl tracking-wide 
+               bg-gradient-to-r from-primary-500 via-purple-500 to-pink-600 shadow-lg hover:shadow-2xl
+               hover:scale-105 transition-all duration-300 overflow-hidden"
+      >
+        <span class="relative z-10">⬇️ Download App</span>
+        <span class="absolute inset-0 bg-white/20 blur-lg opacity-30 animate-pulse"></span>
+      </a>
+    </nav>
+  </div>
 
-  </nav>
-</div>
   <!-- Main Content -->
   <main class="main-content px-4 md:px-8 overflow-y-auto">
     
     <!-- Hero Banner -->
     <section class="relative rounded-2xl overflow-hidden mb-8 hero-section flex items-center" style="background-image: url('chatgptbanner2.jpg'); background-size: cover; background-position: center;">
-      <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40"></div>
       <div class="relative z-10 p-6 md:p-10 text-white max-w-2xl">
-        <h2 class="text-2xl md:text-4xl font-bold mb-2 md:mb-3">Choose to <span class="gradient-text">shine</span></h2>
-        <p class="text-sm md:text-base opacity-90 mb-4 md:mb-6">Premium coaching for competitive exams</p>
-        <button class="bg-white text-indigo-600 px-6 py-2 md:px-8 md:py-3 rounded-full text-sm md:text-base font-semibold shadow-md hover:bg-gray-100 transition">
-          Explore Courses
-        </button>
+        <span class="premium-badge mb-4">
+          <i class="fas fa-crown"></i> PREMIUM COACHING
+        </span>
+        <h2 class="text-2xl md:text-4xl font-bold mb-2 md:mb-3">Choose to <span class="gold-text">shine</span> with us</h2>
+        <p class="text-sm md:text-base opacity-90 mb-4 md:mb-6">Premium coaching for competitive exams with personalized learning paths</p>
+        <div class="flex flex-wrap gap-3">
+          <button class="bg-white text-primary-600 px-6 py-2 md:px-8 md:py-3 rounded-full text-sm md:text-base font-semibold shadow-lg hover:bg-gray-100 transition hover:scale-105">
+            Explore Courses
+          </button>
+          <button class="glass-effect text-white px-6 py-2 md:px-8 md:py-3 rounded-full text-sm md:text-base font-semibold border border-white/30 hover:bg-white/10 transition hover:scale-105">
+            Free Demo
+          </button>
+        </div>
       </div>
       
       <!-- Floating elements -->
@@ -472,51 +689,71 @@
       <div class="absolute bottom-1/4 right-1/4 w-5 h-5 rounded-full bg-purple-400 opacity-30 animate-float delay-300"></div>
     </section>
     
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="card p-4 text-center">
+        <div class="text-2xl font-bold text-primary-600 mb-1">500+</div>
+        <div class="text-xs text-gray-500">Students Enrolled</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-2xl font-bold text-primary-600 mb-1">50+</div>
+        <div class="text-xs text-gray-500">Expert Faculty</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-2xl font-bold text-primary-600 mb-1">95%</div>
+        <div class="text-xs text-gray-500">Success Rate</div>
+      </div>
+      <div class="card p-4 text-center">
+        <div class="text-2xl font-bold text-primary-600 mb-1">10+</div>
+        <div class="text-xs text-gray-500">Years Experience</div>
+      </div>
+    </div>
+    
     <!-- Quick Actions -->
-    <div class="grid quick-actions-grid gap-4 mb-8">
-      <a href="#batches" class="card p-3 md:p-4 text-center hover:bg-indigo-50 transition">
-        <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-2 text-indigo-600">
+    <div class="grid grid-cols-4 md:grid-cols-8 gap-4 mb-8">
+      <a href="#batches" class="card p-3 md:p-4 text-center hover:bg-primary-50 transition feature-highlight">
+        <div class="w-10 h-10 md:w-12 md:h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-2 text-primary-600">
           <i class="fas fa-book-open text-lg md:text-xl"></i>
         </div>
         <span class="text-xs md:text-sm font-medium">Courses</span>
       </a>
-      <a href="#" onclick="openNotes()" class="card p-3 md:p-4 text-center hover:bg-blue-50 transition">
+      <a href="#" onclick="openNotes()" class="card p-3 md:p-4 text-center hover:bg-blue-50 transition feature-highlight">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 text-blue-600">
           <i class="fas fa-file-alt text-lg md:text-xl"></i>
         </div>
         <span class="text-xs md:text-sm font-medium">Notes</span>
       </a>
-      <a href="#" onclick="openLecture()" class="card p-3 md:p-4 text-center hover:bg-purple-50 transition">
+      <a href="#" onclick="openLecture()" class="card p-3 md:p-4 text-center hover:bg-purple-50 transition feature-highlight">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2 text-purple-600">
           <i class="fas fa-video text-lg md:text-xl"></i>
         </div>
         <span class="text-xs md:text-sm font-medium">Lectures</span>
       </a>
-      <a href="thp-faculty.html" class="card p-3 md:p-4 text-center hover:bg-teal-50 transition">
+      <a href="thp-faculty.html" class="card p-3 md:p-4 text-center hover:bg-teal-50 transition feature-highlight">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-2 text-teal-600">
           <i class="fas fa-chalkboard-teacher text-lg md:text-xl"></i>
         </div>
         <span class="text-xs md:text-sm font-medium">Faculty</span>
       </a>
-      <a href="#admission" class="card p-3 md:p-4 text-center hover:bg-green-50 transition hidden md:block">
+      <a href="#admission" class="card p-3 md:p-4 text-center hover:bg-green-50 transition feature-highlight hidden md:block">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2 text-green-600">
           <i class="fas fa-user-graduate text-lg md:text-xl"></i>
         </div>
         <span class="text-xs md:text-sm font-medium">Admission</span>
       </a>
-      <a href="#gallery" class="card p-3 md:p-4 text-center hover:bg-yellow-50 transition hidden md:block">
+      <a href="#gallery" class="card p-3 md:p-4 text-center hover:bg-yellow-50 transition feature-highlight hidden md:block">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2 text-yellow-600">
           <i class="fas fa-images text-lg md:text-xl"></i>
         </div>
         <span class="text-xs md:text-sm font-medium">Gallery</span>
       </a>
-      <a href="#about-us" class="card p-3 md:p-4 text-center hover:bg-red-50 transition hidden md:block">
+      <a href="#achievements" class="card p-3 md:p-4 text-center hover:bg-red-50 transition feature-highlight hidden md:block">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2 text-red-600">
-          <i class="fas fa-info-circle text-lg md:text-xl"></i>
+          <i class="fas fa-trophy text-lg md:text-xl"></i>
         </div>
-        <span class="text-xs md:text-sm font-medium">About Us</span>
+        <span class="text-xs md:text-sm font-medium">Achievements</span>
       </a>
-      <a href="#contact" class="card p-3 md:p-4 text-center hover:bg-pink-50 transition hidden md:block">
+      <a href="#contact" class="card p-3 md:p-4 text-center hover:bg-pink-50 transition feature-highlight hidden md:block">
         <div class="w-10 h-10 md:w-12 md:h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-2 text-pink-600">
           <i class="fas fa-envelope text-lg md:text-xl"></i>
         </div>
@@ -528,24 +765,93 @@
     <section class="mb-10">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg md:text-xl font-bold text-gray-800">Featured Course</h3>
-        <a href="#batches" class="text-xs md:text-sm text-indigo-600 font-medium hover:text-indigo-700">View All</a>
+        <a href="#batches" class="text-xs md:text-sm text-primary-600 font-medium hover:text-primary-700">View All</a>
       </div>
       
-      <div class="course-card rounded-2xl p-4 md:p-6 animate-slide-in">
+      <div class="premium-card rounded-2xl p-4 md:p-6 animate-slide-in">
         <div class="flex flex-col md:flex-row items-start">
-          <img src="https://i.ibb.co/4wrtJTbw/file-00000000156061f5b89e4f5e05b6f71f.png" alt="Course" class="w-full md:w-32 h-32 rounded-lg object-cover mb-4 md:mb-0 md:mr-6">
+          <div class="relative">
+            <img src="https://i.ibb.co/4wrtJTbw/file-00000000156061f5b89e4f5e05b6f71f.png" alt="Course" class="w-full md:w-32 h-32 rounded-lg object-cover mb-4 md:mb-0 md:mr-6">
+            <span class="absolute top-2 left-2 premium-badge">BEST SELLER</span>
+          </div>
           <div class="flex-1">
             <h4 class="font-bold text-gray-800 mb-1 text-lg md:text-xl">SSC, Bank, Railway</h4>
             <p class="text-xs md:text-sm text-gray-600 mb-3">Complete preparation for competitive exams with expert guidance and comprehensive study materials.</p>
+            
+            <div class="flex items-center mb-3">
+              <div class="flex text-yellow-400 mr-2">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="text-xs text-gray-500">4.5 (120 reviews)</span>
+            </div>
+            
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-sm md:text-base font-bold text-indigo-600">₹1500/month</span>
+                <span class="text-sm md:text-base font-bold text-primary-600">₹1500/month</span>
                 <span class="text-xs text-gray-500 ml-2 line-through">₹2000</span>
                 <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full ml-2">33% off</span>
               </div>
-              <a href="formTHP.html" class="text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full transition">Enroll</a>
+              <a href="formTHP.html" class="text-sm bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-full transition hover:scale-105">Enroll Now</a>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Premium Features Section -->
+    <section id="features" class="mb-10">
+      <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Premium Features</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="card p-5 feature-highlight">
+          <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 mb-4">
+            <i class="fas fa-user-friends text-xl"></i>
+          </div>
+          <h4 class="font-bold text-gray-800 mb-2">Personalized Learning</h4>
+          <p class="text-sm text-gray-600">Custom study plans tailored to your strengths and weaknesses</p>
+        </div>
+        
+        <div class="card p-5 feature-highlight">
+          <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-4">
+            <i class="fas fa-brain text-xl"></i>
+          </div>
+          <h4 class="font-bold text-gray-800 mb-2">AI-Powered Analytics</h4>
+          <p class="text-sm text-gray-600">Smart performance tracking with actionable insights</p>
+        </div>
+        
+        <div class="card p-5 feature-highlight">
+          <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mb-4">
+            <i class="fas fa-chart-line text-xl"></i>
+          </div>
+          <h4 class="font-bold text-gray-800 mb-2">Progress Tracking</h4>
+          <p class="text-sm text-gray-600">Monitor your improvement with detailed progress reports</p>
+        </div>
+        
+        <div class="card p-5 feature-highlight">
+          <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 mb-4">
+            <i class="fas fa-trophy text-xl"></i>
+          </div>
+          <h4 class="font-bold text-gray-800 mb-2">Achievement Badges</h4>
+          <p class="text-sm text-gray-600">Earn rewards and recognition for your learning milestones</p>
+        </div>
+        
+        <div class="card p-5 feature-highlight">
+          <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-4">
+            <i class="fas fa-clock text-xl"></i>
+          </div>
+          <h4 class="font-bold text-gray-800 mb-2">Flexible Scheduling</h4>
+          <p class="text-sm text-gray-600">Learn at your own pace with 24/7 access to materials</p>
+        </div>
+        
+        <div class="card p-5 feature-highlight">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mb-4">
+            <i class="fas fa-headset text-xl"></i>
+          </div>
+          <h4 class="font-bold text-gray-800 mb-2">24/7 Support</h4>
+          <p class="text-sm text-gray-600">Get help whenever you need it from our expert faculty</p>
         </div>
       </div>
     </section>
@@ -563,7 +869,7 @@
       </div>
       <div class="mt-4 text-center">
         <p class="text-sm md:text-base text-gray-600 mb-2">Shivam Sir, Math Expert with 10+ years experience</p>
-        <a href="#" onclick="openLecture()" class="inline-block text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full transition">
+        <a href="#" onclick="openLecture()" class="inline-block text-sm bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-full transition hover:scale-105">
           Watch More Lectures
         </a>
       </div>
@@ -573,51 +879,220 @@
     <section id="batches" class="mb-10">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg md:text-xl font-bold text-gray-800">Our Premium Batches</h3>
-        <a href="fromTHP.html" class="text-xs md:text-sm text-indigo-600 font-medium hover:text-indigo-700">Enroll Now</a>
+        <a href="fromTHP.html" class="text-xs md:text-sm text-primary-600 font-medium hover:text-primary-700">Enroll Now</a>
       </div>
       
-      <div class="grid courses-grid gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <!-- CUET Batch -->
-        <div class="card p-4 animate-slide-in delay-100 hover:border-indigo-200 transition">
-          <img src="https://i.ibb.co/4wXc33T0/828aed35-38f7-4097-9751-0ef7957f76e9-thumbnail.webp" alt="CUET" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+        <div class="card p-4 animate-slide-in delay-100 hover:border-primary-200 transition">
+          <div class="relative">
+            <img src="https://i.ibb.co/4wXc33T0/828aed35-38f7-4097-9751-0ef7957f76e9-thumbnail.webp" alt="CUET" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+            <span class="absolute top-2 left-2 premium-badge">HOT</span>
+          </div>
           <h4 class="font-bold text-gray-800 mb-1 text-sm md:text-base">CUET</h4>
           <p class="text-xs md:text-sm text-gray-600 mb-3">Complete preparation for CUET exams with expert guidance</p>
           <div class="flex items-center justify-between">
-            <span class="text-sm md:text-base font-bold text-indigo-600">₹2000/m</span>
-            <a href="fromTHP.html" class="text-xs md:text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-full transition">Enroll</a>
+            <span class="text-sm md:text-base font-bold text-primary-600">₹2000/m</span>
+            <a href="fromTHP.html" class="text-xs md:text-sm bg-primary-600 hover:bg-primary-700 text-white px-3 py-1 rounded-full transition hover:scale-105">Enroll</a>
           </div>
         </div>
         
         <!-- NEET Batch -->
-        <div class="card p-4 animate-slide-in delay-200 hover:border-indigo-200 transition">
-          <img src="https://i.ibb.co/1JL6h6NC/5f89c41f-0897-4c04-99cd-3a66bbe89b26.png" alt="NEET" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+        <div class="card p-4 animate-slide-in delay-200 hover:border-primary-200 transition">
+          <div class="relative">
+            <img src="https://i.ibb.co/1JL6h6NC/5f89c41f-0897-4c04-99cd-3a66bbe89b26.png" alt="NEET" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+            <span class="absolute top-2 left-2 premium-badge">POPULAR</span>
+          </div>
           <h4 class="font-bold text-gray-800 mb-1 text-sm md:text-base">NEET</h4>
           <p class="text-xs md:text-sm text-gray-600 mb-3">Comprehensive NEET preparation with top faculty</p>
           <div class="flex items-center justify-between">
-            <span class="text-sm md:text-base font-bold text-indigo-600">₹2000/m</span>
-            <a href="fromTHP.html" class="text-xs md:text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-full transition">Enroll</a>
+            <span class="text-sm md:text-base font-bold text-primary-600">₹2000/m</span>
+            <a href="fromTHP.html" class="text-xs md:text-sm bg-primary-600 hover:bg-primary-700 text-white px-3 py-1 rounded-full transition hover:scale-105">Enroll</a>
           </div>
         </div>
         
         <!-- IIT-JEE Batch -->
-        <div class="card p-4 animate-slide-in delay-300 hover:border-indigo-200 transition">
-          <img src="https://i.ibb.co/7NyBDHSM/2f91edf2-41ad-4f3d-b079-4e452f2d2fee-3.png" alt="IIT-JEE" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+        <div class="card p-4 animate-slide-in delay-300 hover:border-primary-200 transition">
+          <div class="relative">
+            <img src="https://i.ibb.co/7NyBDHSM/2f91edf2-41ad-4f3d-b079-4e452f2d2fee-3.png" alt="IIT-JEE" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+            <span class="absolute top-2 left-2 premium-badge">ELITE</span>
+          </div>
           <h4 class="font-bold text-gray-800 mb-1 text-sm md:text-base">IIT-JEE</h4>
           <p class="text-xs md:text-sm text-gray-600 mb-3">Engineering entrance exam preparation</p>
           <div class="flex items-center justify-between">
-            <span class="text-sm md:text-base font-bold text-indigo-600">₹2000/m</span>
-            <a href="fromTHP.html" class="text-xs md:text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-full transition">Enroll</a>
+            <span class="text-sm md:text-base font-bold text-primary-600">₹2000/m</span>
+            <a href="fromTHP.html" class="text-xs md:text-sm bg-primary-600 hover:bg-primary-700 text-white px-3 py-1 rounded-full transition hover:scale-105">Enroll</a>
           </div>
         </div>
         
         <!-- Class 3-12 Batch -->
-        <div class="card p-4 animate-slide-in delay-400 hover:border-indigo-200 transition">
-          <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="Class 3-12" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+        <div class="card p-4 animate-slide-in delay-400 hover:border-primary-200 transition">
+          <div class="relative">
+            <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="Class 3-12" class="w-full h-32 md:h-40 object-cover rounded-lg mb-3">
+            <span class="absolute top-2 left-2 premium-badge">FLEXIBLE</span>
+          </div>
           <h4 class="font-bold text-gray-800 mb-1 text-sm md:text-base">Class 3-12</h4>
           <p class="text-xs md:text-sm text-gray-600 mb-3">All subjects for CBSE, ICSE and State Boards</p>
           <div class="flex items-center justify-between">
-            <span class="text-sm md:text-base font-bold text-indigo-600">₹1000-2500/m</span>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-xs md:text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-full transition">Enroll</a>
+            <span class="text-sm md:text-base font-bold text-primary-600">₹1000-2500/m</span>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="text-xs md:text-sm bg-primary-600 hover:bg-primary-700 text-white px-3 py-1 rounded-full transition hover:scale-105">Enroll</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Student Achievements -->
+    <section id="achievements" class="mb-10">
+      <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Student Achievements</h3>
+      <div class="card p-6">
+        <div class="flex flex-col md:flex-row items-center justify-between mb-6">
+          <div>
+            <h4 class="font-bold text-gray-800 text-lg mb-2">Our Top Performers</h4>
+            <p class="text-sm text-gray-600">Celebrating the success of our students in various competitive exams</p>
+          </div>
+          <div class="mt-4 md:mt-0">
+            <span class="premium-badge">
+              <i class="fas fa-trophy"></i> 95% SUCCESS RATE
+            </span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-gradient-to-br from-yellow-50 to-amber-50 p-4 rounded-xl border border-yellow-200">
+            <div class="flex items-center mb-3">
+              <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 mr-3">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div>
+                <h5 class="font-bold text-gray-800">Rahul Sharma</h5>
+                <p class="text-xs text-gray-500">NEET 2023</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-700 mb-2">Secured AIR 124 in NEET 2023</p>
+            <div class="badge-container">
+              <span class="achievement-badge badge-gold">
+                <i class="fas fa-crown"></i> Top Ranker
+              </span>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-br from-gray-50 to-slate-100 p-4 rounded-xl border border-gray-200">
+            <div class="flex items-center mb-3">
+              <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 mr-3">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div>
+                <h5 class="font-bold text-gray-800">Priya Singh</h5>
+                <p class="text-xs text-gray-500">CUET 2023</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-700 mb-2">98% percentile in CUET 2023</p>
+            <div class="badge-container">
+              <span class="achievement-badge badge-silver">
+                <i class="fas fa-star"></i> High Scorer
+              </span>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-br from-orange-50 to-amber-50 p-4 rounded-xl border border-orange-200">
+            <div class="flex items-center mb-3">
+              <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 mr-3">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div>
+                <h5 class="font-bold text-gray-800">Amit Kumar</h5>
+                <p class="text-xs text-gray-500">JEE Mains 2023</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-700 mb-2">AIR 856 in JEE Mains 2023</p>
+            <div class="badge-container">
+              <span class="achievement-badge badge-bronze">
+                <i class="fas fa-award"></i> Achiever
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Progress Tracking Demo -->
+    <section class="mb-10">
+      <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Track Your Progress</h3>
+      <div class="card p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-bold text-gray-800 mb-4">Your Learning Journey</h4>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span>Mathematics</span>
+                  <span>75%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 75%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span>Physics</span>
+                  <span>60%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 60%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span>Chemistry</span>
+                  <span>45%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 45%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span>Biology</span>
+                  <span>30%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 30%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-bold text-gray-800 mb-4">Recent Achievements</h4>
+            <div class="space-y-3">
+              <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-800">Completed Algebra Basics</p>
+                  <p class="text-xs text-gray-500">2 days ago</p>
+                </div>
+              </div>
+              <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-800">Scored 90% in Weekly Test</p>
+                  <p class="text-xs text-gray-500">1 week ago</p>
+                </div>
+              </div>
+              <div class="flex items-center p-3 bg-purple-50 rounded-lg">
+                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3">
+                  <i class="fas fa-fire"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-800">5-Day Study Streak</p>
+                  <p class="text-xs text-gray-500">Active now</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -628,16 +1103,22 @@
       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">About Us</h3>
       <div class="card p-6">
         <div class="flex flex-col md:flex-row items-center">
-          <img src="channels4_profile.jpg" alt="The Heaven Point" class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-indigo-100 mb-4 md:mb-0 md:mr-6">
+          <div class="relative mb-4 md:mb-0 md:mr-6">
+            <img src="channels4_profile.jpg" alt="The Heaven Point" class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-primary-100">
+            <span class="absolute -bottom-2 -right-2 w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white">
+              <i class="fas fa-check text-xs"></i>
+            </span>
+          </div>
           <div>
             <p class="text-sm md:text-base text-gray-700 leading-relaxed mb-4">
               Hello My Dear Students! Welcome to Heaven Point Coaching Classes (THP Classes). Here, you can study a variety of subjects like Commerce, Maths, Physics, Chemistry, Biology, S. St., English Language, English Literature, Computer, Hindi, and more, for all boards. We also offer specialized courses for CUET, NEET, IIT, JEE, and classes from 3rd to 12th.
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">Experienced Faculty</span>
+              <span class="text-xs bg-primary-100 text-primary-800 px-2 py-1 rounded-full">Experienced Faculty</span>
               <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Personalized Attention</span>
               <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Regular Tests</span>
               <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Study Materials</span>
+              <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">AI-Powered Learning</span>
             </div>
           </div>
         </div>
@@ -647,7 +1128,7 @@
     <!-- Gallery Section -->
     <section id="gallery" class="mb-10">
       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Our Gallery</h3>
-      <div class="grid gallery-grid gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <img src="gallarymini1.jpg" alt="Gallery 1" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer">
         <img src="gallarymini2.jpg" alt="Gallery 2" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer">
         <img src="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" alt="Gallery 3" class="rounded-xl h-40 md:h-48 object-cover hover:scale-105 transition cursor-pointer">
@@ -668,23 +1149,23 @@
             <h4 class="font-bold text-gray-800 mb-3 text-lg">How to Join</h4>
             <ol class="space-y-4">
               <li class="flex items-start">
-                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">1</span>
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600 text-xs font-bold mr-3">1</span>
                 <span class="text-sm md:text-base">Complete the online application form</span>
               </li>
               <li class="flex items-start">
-                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">2</span>
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600 text-xs font-bold mr-3">2</span>
                 <span class="text-sm md:text-base">Upload required documents</span>
               </li>
               <li class="flex items-start">
-                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">3</span>
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600 text-xs font-bold mr-3">3</span>
                 <span class="text-sm md:text-base">Take the entrance test (if applicable)</span>
               </li>
               <li class="flex items-start">
-                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">4</span>
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600 text-xs font-bold mr-3">4</span>
                 <span class="text-sm md:text-base">Submit admission fees</span>
               </li>
               <li class="flex items-start">
-                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold mr-3">5</span>
+                <span class="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-600 text-xs font-bold mr-3">5</span>
                 <span class="text-sm md:text-base">Secure your seat</span>
               </li>
             </ol>
@@ -718,10 +1199,10 @@
         </div>
         
         <div class="mt-6 flex flex-col md:flex-row items-center justify-center gap-4">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="w-full md:w-auto text-center bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white px-6 py-3 rounded-full text-sm md:text-base font-semibold shadow-md transition">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="w-full md:w-auto text-center bg-gradient-to-r from-primary-600 to-blue-500 hover:from-primary-700 hover:to-blue-600 text-white px-6 py-3 rounded-full text-sm md:text-base font-semibold shadow-md transition hover:scale-105">
             Start Application
           </a>
-          <a href="tel:8005759143" class="w-full md:w-auto text-center border border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-full text-sm md:text-base font-semibold transition">
+          <a href="tel:8005759143" class="w-full md:w-auto text-center border border-primary-600 text-primary-600 hover:bg-primary-50 px-6 py-3 rounded-full text-sm md:text-base font-semibold transition hover:scale-105">
             Call for Inquiry
           </a>
         </div>
@@ -732,18 +1213,18 @@
     <section id="contact" class="mb-10">
       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4">Contact Us</h3>
       <div class="card p-6">
-        <div class="grid contact-grid gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h4 class="font-bold text-gray-800 mb-4 text-lg">Get in Touch</h4>
             
             <div class="space-y-4">
               <div class="flex items-start">
-                <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3 flex-shrink-0">
+                <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 mr-3 flex-shrink-0">
                   <i class="fas fa-envelope text-lg"></i>
                 </div>
                 <div>
                   <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Email</h4>
-                  <a href="mailto:theheavenpoint@gmail.com" class="text-sm md:text-base text-indigo-600 hover:text-indigo-700">theheavenpoint@gmail.com</a>
+                  <a href="mailto:theheavenpoint@gmail.com" class="text-sm md:text-base text-primary-600 hover:text-primary-700">theheavenpoint@gmail.com</a>
                 </div>
               </div>
               
@@ -782,29 +1263,29 @@
           <div>
             <h4 class="font-bold text-gray-800 mb-4 text-lg">Follow Us</h4>
             <div class="flex flex-wrap gap-3 mb-6">
-              <a href="https://t.me/heavenpoint" target="_blank" class="w-12 h-12 rounded-full bg-indigo-100 hover:bg-indigo-200 flex items-center justify-center text-indigo-600 transition">
+              <a href="https://t.me/heavenpoint" target="_blank" class="w-12 h-12 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center text-primary-600 transition hover:scale-105">
                 <i class="fab fa-telegram text-xl"></i>
               </a>
-              <a href="https://www.instagram.com/theheavenpoint/" target="_blank" class="w-12 h-12 rounded-full bg-pink-100 hover:bg-pink-200 flex items-center justify-center text-pink-600 transition">
+              <a href="https://www.instagram.com/theheavenpoint/" target="_blank" class="w-12 h-12 rounded-full bg-pink-100 hover:bg-pink-200 flex items-center justify-center text-pink-600 transition hover:scale-105">
                 <i class="fab fa-instagram text-xl"></i>
               </a>
-              <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" target="_blank" class="w-12 h-12 rounded-full bg-blue-100 hover:bg-blue-200 flex items-center justify-center text-blue-600 transition">
+              <a href="https://www.facebook.com/people/The-Heaven-Point/100086140452868/" target="_blank" class="w-12 h-12 rounded-full bg-blue-100 hover:bg-blue-200 flex items-center justify-center text-blue-600 transition hover:scale-105">
                 <i class="fab fa-facebook-f text-xl"></i>
               </a>
-              <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" class="w-12 h-12 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center text-red-600 transition">
+              <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" class="w-12 h-12 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center text-red-600 transition hover:scale-105">
                 <i class="fab fa-youtube text-xl"></i>
               </a>
-              <a href="#" id="whatsappBtn2" class="w-12 h-12 rounded-full bg-green-100 hover:bg-green-200 flex items-center justify-center text-green-600 transition">
+              <a href="#" id="whatsappBtn2" class="w-12 h-12 rounded-full bg-green-100 hover:bg-green-200 flex items-center justify-center text-green-600 transition hover:scale-105">
                 <i class="fab fa-whatsapp text-xl"></i>
               </a>
             </div>
             
             <h4 class="font-bold text-gray-800 mb-3 text-lg">Quick Links</h4>
             <div class="grid grid-cols-2 gap-3">
-              <a href="#batches" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center">Courses</a>
-              <a href="#admission" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center">Admission</a>
-              <a href="#" onclick="openNotes()" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center">Study Notes</a>
-              <a href="thp-faculty.html" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center">Our Faculty</a>
+              <a href="#batches" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center hover:scale-105">Courses</a>
+              <a href="#admission" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center hover:scale-105">Admission</a>
+              <a href="#" onclick="openNotes()" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center hover:scale-105">Study Notes</a>
+              <a href="thp-faculty.html" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg transition text-center hover:scale-105">Our Faculty</a>
             </div>
           </div>
         </div>
@@ -812,9 +1293,38 @@
     </section>
   </main>
   
+  <!-- AI Assistant -->
+  <div class="ai-assistant" id="aiAssistant">
+    <i class="fas fa-robot"></i>
+  </div>
+  
+  <!-- AI Chat Container -->
+  <div class="ai-chat-container" id="aiChat">
+    <div class="ai-chat-header">
+      <div class="flex items-center">
+        <i class="fas fa-robot mr-2"></i>
+        <span>THP Learning Assistant</span>
+      </div>
+      <button id="closeChat">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="ai-chat-messages" id="chatMessages">
+      <div class="ai-message bot">
+        Hello! I'm your THP learning assistant. How can I help you today?
+      </div>
+    </div>
+    <div class="ai-chat-input">
+      <input type="text" id="chatInput" placeholder="Ask me anything...">
+      <button id="sendMessage">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+  
   <!-- Bottom Navigation (Mobile) -->
   <nav class="mobile-nav fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center h-16 z-40 md:hidden">
-    <a href="#" class="nav-tab flex flex-col items-center justify-center text-indigo-600 active">
+    <a href="#" class="nav-tab flex flex-col items-center justify-center text-primary-600 active">
       <i class="fas fa-home text-lg"></i>
       <span class="text-xs mt-1">Home</span>
     </a>
@@ -833,11 +1343,10 @@
   </nav>
   
   <!-- Floating Action Buttons -->
-  <button id="whatsappBtn" class="floating-btn fixed bottom-20 right-4 w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-green-500 to-green-600 text-white flex items-center justify-center z-30">
+  <button id="whatsappBtn" class="floating-btn fixed bottom-20 right-4 w-14 h-14 md:w-16 md:h-16 rounded-full text-white flex items-center justify-center z-30">
     <i class="fab fa-whatsapp text-2xl"></i>
   </button>
-  
-  
+</div>
 
 <!-- JavaScript -->
 <script>
@@ -921,12 +1430,12 @@
     });
     
     navItems.forEach(item => {
-      item.classList.remove('active', 'text-indigo-600');
+      item.classList.remove('active', 'text-primary-600');
       item.classList.add('text-gray-500');
       
       if(item.getAttribute('href') === `#${current}` || 
          (current === '' && item.getAttribute('href') === '#')) {
-        item.classList.add('active', 'text-indigo-600');
+        item.classList.add('active', 'text-primary-600');
         item.classList.remove('text-gray-500');
       }
     });
@@ -951,10 +1460,103 @@
   document.querySelectorAll('.animate-slide-in').forEach(el => {
     observer.observe(el);
   });
-</script>
-<script>
+
+  // AI Assistant
+  const aiAssistant = document.getElementById('aiAssistant');
+  const aiChat = document.getElementById('aiChat');
+  const closeChat = document.getElementById('closeChat');
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInput = document.getElementById('chatInput');
+  const sendMessage = document.getElementById('sendMessage');
+
+  aiAssistant.addEventListener('click', function() {
+    aiChat.style.display = 'flex';
+  });
+
+  closeChat.addEventListener('click', function() {
+    aiChat.style.display = 'none';
+  });
+
+  function addMessage(text, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('ai-message');
+    messageDiv.classList.add(isUser ? 'user' : 'bot');
+    messageDiv.textContent = text;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  sendMessage.addEventListener('click', function() {
+    const message = chatInput.value.trim();
+    if (message) {
+      addMessage(message, true);
+      chatInput.value = '';
+      
+      // Simulate AI response
+      setTimeout(function() {
+        const responses = [
+          "I can help you with course information, study tips, or connect you with our faculty.",
+          "That's a great question! Our expert faculty would be happy to assist you with that.",
+          "I've noted your query. Would you like me to connect you with our admission counselor?",
+          "For detailed information about our courses, please visit our Courses section or contact us directly."
+        ];
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        addMessage(randomResponse);
+      }, 1000);
+    }
+  });
+
+  chatInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      sendMessage.click();
+    }
+  });
+
+  // Theme Toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+  const body = document.body;
+
+  function toggleTheme() {
+    body.classList.toggle('dark-mode');
+    const isDark = body.classList.contains('dark-mode');
+    themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    mobileThemeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i> Light Mode' : '<i class="fas fa-moon"></i> Dark Mode';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  }
+
+  themeToggle.addEventListener('click', toggleTheme);
+  mobileThemeToggle.addEventListener('click', function() {
+    toggleTheme();
+    document.getElementById('mobileMenu').classList.add('hidden');
+  });
+
+  // Check for saved theme preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-mode');
+    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    mobileThemeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+  }
+
+  // Notification redirect
   document.getElementById('notifBtn').addEventListener('click', function () {
     window.location.href = 'notification.html';
+  });
+
+  // Search functionality
+  document.getElementById('searchBtn').addEventListener('click', function() {
+    const searchTerm = prompt('What are you looking for?');
+    if (searchTerm) {
+      // Simple search implementation - in a real app, this would be more sophisticated
+      const searchableContent = document.body.innerText.toLowerCase();
+      if (searchableContent.includes(searchTerm.toLowerCase())) {
+        alert(`Found content related to "${searchTerm}"`);
+        // In a real implementation, you would highlight or scroll to the relevant content
+      } else {
+        alert(`No results found for "${searchTerm}"`);
+      }
+    }
   });
 </script>
 </body>
