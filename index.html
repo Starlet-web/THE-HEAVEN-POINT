@@ -568,173 +568,137 @@
         <p class="text-xs text-gray-500">Coaching Classes</p>
       </div>
     </div>
-
     <!-- Desktop Navigation -->
-    <nav class="desktop-nav items-center space-x-6">
-      <a href="#" class="text-gray-700 hover:text-primary-600 font-medium transition">Home</a>
-      <a href="#batches" class="text-gray-700 hover:text-primary-600 font-medium transition">Courses</a>
-      <a href="#features" class="text-gray-700 hover:text-primary-600 font-medium transition">Features</a>
-      <a href="#achievements" class="text-gray-700 hover:text-primary-600 font-medium transition">Achievements</a>
-      <a href="#contact" class="text-gray-700 hover:text-primary-600 font-medium transition">Contact</a>
-      <button id="themeToggle" class="text-gray-500 hover:text-primary-600">
+    <nav class="hidden md:flex items-center space-x-6">
+      <a href="#" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Home</a>
+      <a href="#batches" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Courses</a>
+      <a href="#features" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Features</a>
+      <a href="#achievements" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Achievements</a>
+      <a href="#contact" class="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Contact</a>
+
+      <!-- Theme Toggle -->
+      <button id="themeToggle" class="ml-4 text-gray-500 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition focus:outline-none" aria-label="Toggle Dark Mode">
         <i class="fas fa-moon"></i>
       </button>
     </nav>
 
-    <div class="flex items-center space-x-3 md:space-x-4">
-      <button id="searchBtn" class="text-gray-500 hover:text-primary-600 transition">
+    <!-- Right Side Buttons -->
+    <div class="flex items-center space-x-3">
+
+      <!-- Search Button -->
+      <button id="searchBtn" class="text-gray-500 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition focus:outline-none" aria-label="Search">
         <i class="fas fa-search text-lg md:text-xl"></i>
       </button>
-      <div class="nav-actions">
-                <button id="notifBtn" class="text-gray-500 hover:text-primary-600 relative transition">
-                    <i class="fas fa-bell text-lg md:text-xl"></i>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-                
-                <!-- Notification Dropdown -->
-                <div class="notification-dropdown">
-                    <div class="notification-header">
-                        <div class="notification-title">Notifications</div>
-                        <div class="notification-actions">
-                            <button class="action-btn">Mark all as read</button>
-                            <button class="action-btn">Settings</button>
-                        </div>
-                    </div>
-                    
-                    <div class="notification-container">
-                        <div class="notification unread">
-                            <div class="notification-icon diwali">
-                                <i class="fas fa-fire"></i>
-                            </div>
-                            <div class="notification-content">
-                                <div class="notification-message">
-                                    <strong>Happy Diwali!</strong> May this festival bring joy and success in your career. 
-                                    <span class="highlight">Special sessions</span> available.
-                                    <span class="badge badge-high">High</span>
-                                </div>
-                                <div class="notification-time">Just now</div>
-                            </div>
-                        </div>
-                        
-                        <div class="notification unread">
-                            <div class="notification-icon workshop">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                            </div>
-                            <div class="notification-content">
-                                <div class="notification-message">
-                                    <strong>Diwali Workshop:</strong> Join our career planning session with festive discounts.
-                                    <span class="badge badge-medium">Medium</span>
-                                </div>
-                                <div class="notification-time">2 hours ago</div>
-                            </div>
-                        </div>
-                        
-                        <div class="notification">
-                            <div class="notification-icon career">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <div class="notification-content">
-                                <div class="notification-message">
-                                    <strong>Career Guidance:</strong> Your session with Coach Sarah is confirmed for tomorrow.
-                                </div>
-                                <div class="notification-time">Yesterday</div>
-                            </div>
-                        </div>
-                        
-                        <div class="notification">
-                            <div class="notification-icon career">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <div class="notification-content">
-                                <div class="notification-message">
-                                    <strong>New Resources:</strong> Study materials for advanced techniques are now available.
-                                </div>
-                                <div class="notification-time">2 days ago</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="notification-footer">
-                        <a href="#" class="view-all">View all notifications</a>
-                    </div>
-                </div>
-                
-                <button class="action-btn">
-                    <i class="fas fa-user-circle text-xl text-gray-500"></i>
-                </button>
+
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notifBtn" class="text-gray-500 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 relative transition focus:outline-none" aria-label="Notifications">
+          <i class="fas fa-bell text-lg md:text-xl"></i>
+          <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+        </button>
+
+        <!-- Notification Dropdown -->
+        <div id="notifDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 transition-all duration-300">
+          <div class="flex justify-between items-center p-3 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="font-semibold text-gray-800 dark:text-gray-200">Notifications</h3>
+            <div class="flex space-x-2">
+              <button class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none">Mark all as read</button>
+              <button class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none">Settings</button>
             </div>
-        </nav>
-      <button class="md:hidden text-gray-500 hover:text-primary-600 transition" id="mobileMenuBtn">
+          </div>
+          <div class="max-h-60 overflow-y-auto">
+            <!-- Notification Example -->
+            <div class="flex p-3 border-b border-gray-100 dark:border-gray-700">
+              <div class="text-yellow-500 mr-3"><i class="fas fa-fire"></i></div>
+              <div class="flex-1">
+                <p class="text-sm text-gray-700 dark:text-gray-200"><strong>Happy Diwali!</strong> May this festival bring joy and success in your career. <span class="text-primary-600 font-medium">Special sessions</span></p>
+                <span class="text-xs text-gray-400">Just now</span>
+              </div>
+            </div>
+            <div class="flex p-3 border-b border-gray-100 dark:border-gray-700">
+              <div class="text-blue-500 mr-3"><i class="fas fa-chalkboard-teacher"></i></div>
+              <div class="flex-1">
+                <p class="text-sm text-gray-700 dark:text-gray-200"><strong>Workshop:</strong> Join our career planning session.</p>
+                <span class="text-xs text-gray-400">2 hours ago</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 border-t border-gray-200 dark:border-gray-700 text-center">
+            <a href="#" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">View all notifications</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Icon -->
+      <button class="ml-2 text-gray-500 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none" aria-label="User Profile">
+        <i class="fas fa-user-circle text-xl"></i>
+      </button>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobileMenuBtn" class="md:hidden text-gray-500 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none" aria-label="Open Mobile Menu">
         <i class="fas fa-bars text-lg md:text-xl"></i>
       </button>
     </div>
-  </header>
   
-  <!-- Mobile Menu -->
-  <div id="mobileMenu" class="fixed inset-0 z-50 hidden flex flex-col items-center justify-center backdrop-blur-2xl bg-white/30 dark:bg-gray-900/60 transition-all duration-500">
-    
-    <!-- Close Button -->
-    <button id="closeMobileMenu" class="absolute top-5 right-5 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-all duration-300">
-      <i class="fas fa-times text-3xl"></i>
+</header>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="fixed inset-0 z-50 hidden flex-col items-center justify-center backdrop-blur-2xl bg-white/30 dark:bg-gray-900/60 transition-all duration-500">
+  <!-- Close Button -->
+  <button id="closeMobileMenu" class="absolute top-5 right-5 text-gray-600 dark:text-gray-300 hover:text-primary-500 transition text-3xl focus:outline-none">
+    <i class="fas fa-times"></i>
+  </button>
+
+  <!-- Menu Links -->
+  <nav class="flex flex-col items-center space-y-6 mt-8">
+    <a href="#" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 transition transform hover:scale-105">Home</a>
+    <a href="#batches" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 transition transform hover:scale-105">Courses</a>
+    <a href="#features" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 transition transform hover:scale-105">Features</a>
+    <a href="#achievements" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 transition transform hover:scale-105">Achievements</a>
+    <a href="#contact" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 transition transform hover:scale-105">Contact</a>
+
+    <!-- Theme Toggle -->
+    <button id="mobileThemeToggle" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 transition transform hover:scale-105 focus:outline-none">
+      <i class="fas fa-moon mr-2"></i> Dark Mode
     </button>
 
-    <!-- Navigation Links -->
-    <nav class="flex flex-col items-center space-y-8 mt-8">
-      <a href="#" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        Home
-      </a>
-      <a href="#batches" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        Courses
-      </a>
-      <a href="#features" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        Features
-      </a>
-      <a href="#achievements" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        Achievements
-      </a>
-      <a href="#" onclick="openNotes()" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        Notes
-      </a>
-      <a href="#" onclick="openLecture()" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        Lectures
-      </a>
-      <a href="thp-faculty.html" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        Faculty
-      </a>
-      <a href="#contact" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        Contact
-      </a>
+    <!-- WhatsApp Share -->
+    <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20app!" target="_blank"
+      class="relative w-60 text-center px-6 py-3 rounded-2xl font-semibold text-white text-xl bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 shadow-lg hover:shadow-2xl hover:scale-105 transition overflow-hidden">
+      <span class="relative z-10">📲 Share app on WhatsApp</span>
+      <span class="absolute inset-0 bg-white/10 blur-lg opacity-30 animate-pulse"></span>
+    </a>
 
-      <!-- Theme Toggle -->
-      <button id="mobileThemeToggle" class="text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-primary-500 tracking-wide transition-all duration-300 hover:scale-105">
-        <i class="fas fa-moon"></i> Dark Mode
-      </button>
+    <!-- Download App -->
+    <a href="https://drive.google.com/file/d/..." target="_blank"
+      class="relative w-60 text-center px-6 py-3 rounded-2xl font-semibold text-white text-xl bg-gradient-to-r from-primary-500 via-purple-500 to-pink-600 shadow-lg hover:shadow-2xl hover:scale-105 transition overflow-hidden">
+      <span class="relative z-10">⬇️ Download App</span>
+      <span class="absolute inset-0 bg-white/20 blur-lg opacity-30 animate-pulse"></span>
+    </a>
+  </nav>
+</div>
 
-      <!-- WhatsApp Share Button -->
-      <a 
-        href="https://api.whatsapp.com/send?text=Check%20out%20this%20amazing%20app:%20https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view?usp=drivesdk"
-        target="_blank"
-        class="relative w-60 text-center px-6 py-3 rounded-2xl font-semibold text-white text-xl tracking-wide 
-               bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 shadow-lg hover:shadow-2xl
-               hover:scale-105 transition-all duration-300 overflow-hidden"
-      >
-        <span class="relative z-10">📲 Share app on WhatsApp</span>
-        <span class="absolute inset-0 bg-white/10 blur-lg opacity-30 animate-pulse"></span>
-      </a>
+<!-- Scripts -->
+<script>
+  // Theme Toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+  function toggleTheme() { document.documentElement.classList.toggle('dark'); }
+  themeToggle.addEventListener('click', toggleTheme);
+  mobileThemeToggle.addEventListener('click', toggleTheme);
 
-      <!-- Download App Button -->
-      <a 
-        href="https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view?usp=drivesdk"
-        target="_blank"
-        class="relative w-60 text-center px-6 py-3 rounded-2xl font-semibold text-white text-xl tracking-wide 
-               bg-gradient-to-r from-primary-500 via-purple-500 to-pink-600 shadow-lg hover:shadow-2xl
-               hover:scale-105 transition-all duration-300 overflow-hidden"
-      >
-        <span class="relative z-10">⬇️ Download App</span>
-        <span class="absolute inset-0 bg-white/20 blur-lg opacity-30 animate-pulse"></span>
-      </a>
-    </nav>
-  </div>
+  // Mobile Menu
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMobileMenu = document.getElementById('closeMobileMenu');
+  mobileMenuBtn.addEventListener('click', () => { mobileMenu.classList.remove('hidden'); document.body.style.overflow = 'hidden'; });
+  closeMobileMenu.addEventListener('click', () => { mobileMenu.classList.add('hidden'); document.body.style.overflow = ''; });
+
+  // Notification Dropdown
+  const notifBtn = document.getElementById('notifBtn');
+  const notifDropdown = document.getElementById('notifDropdown');
+  notifBtn.addEventListener('click', () => { notifDropdown.classList.toggle('hidden'); });
+</script>
 
   <!-- Main Content -->
   <main class="main-content px-4 md:px-8 overflow-y-auto">
