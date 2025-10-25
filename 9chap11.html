@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Coaching Classes - Class 9 Physics: Work and Energy</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #5D3A9B;
+            --secondary: #8e44ad;
+            --light-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --light-purple: #f9f7ff;
+            --highlight-bg: #f5ecff;
+            --accent: #3498db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #ffffff;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .branding {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .class-info {
+            text-align: left;
+        }
+        
+        .class-info h1 {
+            font-family: Georgia, serif;
+            font-size: 1.8rem;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .class-info p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .chapter-title {
+            font-family: Georgia, serif;
+            font-size: 2.2rem;
+            margin-top: 0.5rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        /* Navigation */
+        .chapter-nav {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Section Cards */
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            padding: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+            position: relative;
+        }
+        
+        .section-card:nth-child(2) { animation-delay: 0.1s; }
+        .section-card:nth-child(3) { animation-delay: 0.2s; }
+        .section-card:nth-child(4) { animation-delay: 0.3s; }
+        .section-card:nth-child(5) { animation-delay: 0.4s; }
+        .section-card:nth-child(6) { animation-delay: 0.5s; }
+        .section-card:nth-child(7) { animation-delay: 0.6s; }
+        .section-card:nth-child(8) { animation-delay: 0.7s; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-card h2 {
+            font-family: Georgia, serif;
+            color: var(--primary);
+            border-bottom: 3px solid;
+            border-image-slice: 1;
+            border-image-source: linear-gradient(to right, var(--primary), #e8d9ff);
+            padding-bottom: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        /* Content Styling */
+        .content {
+            font-size: 1.05rem;
+        }
+        
+        .content p {
+            margin-bottom: 1.2rem;
+        }
+        
+        .content ul, .content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Formula Styling */
+        .formula {
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            background: var(--light-purple);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            text-align: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        /* Mnemonic Styling */
+        .mnemonic {
+            background: linear-gradient(135deg, var(--highlight-bg), #e8d9ff);
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+            font-size: 1.05em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .mnemonic-icon {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+        
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: #ffffff;
+            text-align: center;
+            padding: 12px;
+            font-weight: 600;
+        }
+        
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        td {
+            padding: 12px 10px;
+        }
+        
+        /* Diagram Styling */
+        .diagram-figure {
+            margin: 20px auto;
+            padding: 0;
+            border: none;
+            text-align: center;
+        }
+        
+        .chem-image {
+            display: block;
+            margin: 10px auto;
+            border-radius: 10px;
+            max-width: 100%;
+            height: auto;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            transition: transform 0.3s ease;
+        }
+        
+        .chem-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .diagram-figure figcaption {
+            font-size: 0.9em;
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        /* Definition Box */
+        .definition {
+            background: #f0f8ff;
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .definition:before {
+            content: "Definition";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* Example Box */
+        .example {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .example:before {
+            content: "Example";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #ffc107;
+            color: #333;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* Important Note */
+        .important {
+            background: #ffeaa7;
+            border-left: 4px solid #fdcb6e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .important:before {
+            content: "Important";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #fdcb6e;
+            color: #333;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* Key Points */
+        .key-points {
+            background: #e8f5e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .key-points h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .class-info h1 {
+                font-size: 1.5rem;
+            }
+            
+            .chapter-title {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .section-card {
+                padding: 1.5rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links a {
+                width: 80%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .class-info h1 {
+                font-size: 1.3rem;
+            }
+            
+            .chapter-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-card {
+                padding: 1rem;
+            }
+            
+            .content {
+                font-size: 1rem;
+            }
+            
+            .formula {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="branding">
+            <div class="logo">THP</div>
+            <div class="class-info">
+                <h1>THP Coaching Classes</h1>
+                <p>Class 9 - Science - Physics (MOHIT SIR NOTES)</p>
+            </div>
+        </div>
+        <h1 class="chapter-title">Chapter 11: Work and Energy</h1>
+        
+       
+    </header>
+    
+    <div class="container">
+        <div class="section-card" id="work">
+            <h2><span class="section-icon">📘</span> Introduction to Work</h2>
+            <div class="content">
+                <p><strong>Work</strong> is done when a force is applied on an object to produce a displacement in the direction of the applied force.</p>
+                
+                <div class="definition">
+                    <p><strong>Work</strong> is said to be done when a force causes displacement of an object in the direction of the force.</p>
+                </div>
+                
+                <div class="formula">
+                    W = F × S
+                </div>
+                
+                <p>Where:<br>
+                <strong>W</strong> = Work done (in Joules)<br>
+                <strong>F</strong> = Force applied (in Newtons)<br>
+                <strong>S</strong> = Displacement in the direction of force (in meters)</p>
+                
+                <div class="important">
+                    <p>Work is a <strong>scalar quantity</strong> - it has magnitude but no direction.</p>
+                </div>
+                
+                <div class="formula">
+                    1 Joule (J) = 1 Newton (N) × 1 meter (m)
+                </div>
+                
+                <div class="definition">
+                    <p><strong>Definition of 1 Joule:</strong> If 1 N force is applied on an object and the displacement is 1 meter in the direction of force, then the work done is 1 J.</p>
+                </div>
+                
+                <h3>Conditions for Work to be Done</h3>
+                <ul>
+                    <li>A force must be applied on the object</li>
+                    <li>The object must be displaced</li>
+                    <li>There must be a component of displacement in the direction of force</li>
+                </ul>
+                
+                <h3>Types of Work</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Condition</th>
+                            <th>Example</th>
+                            <th>Work Done</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Positive Work</strong></td>
+                            <td>Force and displacement in same direction</td>
+                            <td>Pushing a box forward</td>
+                            <td>W > 0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Negative Work</strong></td>
+                            <td>Force and displacement in opposite directions</td>
+                            <td>Friction slowing down a moving object</td>
+                            <td>W < 0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Zero Work</strong></td>
+                            <td>No displacement or perpendicular displacement</td>
+                            <td>Pushing a wall that doesn't move</td>
+                            <td>W = 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="example">
+                    <p><strong>Example 1:</strong> A force of 10 N is applied to move a box through a distance of 5 m in the direction of force. Calculate the work done.</p>
+                    <p><strong>Solution:</strong> W = F × S = 10 N × 5 m = 50 J</p>
+                </div>
+                
+                <div class="mnemonic">
+                    <span class="mnemonic-icon">💡</span>
+                    <div>
+                        <strong>Remember:</strong> Work = Force × Displacement (in the direction of force)<br>
+                        Positive work adds energy, negative work removes energy
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-card" id="energy">
+            <h2><span class="section-icon">⚡</span> Energy</h2>
+            <div class="content">
+                <p><strong>Energy</strong> is the capacity to do work.</p>
+                
+                <div class="definition">
+                    <p><strong>Energy</strong> of a body is its capacity to do work. The SI unit of energy is Joule (J).</p>
+                </div>
+                
+                <div class="formula">
+                    1 Joule of energy = Capacity to do 1 Joule of work
+                </div>
+                
+                <div class="key-points">
+                    <h3><span class="section-icon">🔑</span> Key Points About Energy</h3>
+                    <ul>
+                        <li>Energy is a scalar quantity</li>
+                        <li>SI unit is Joule (J)</li>
+                        <li>Larger units: 1 kJ = 1000 J</li>
+                        <li>Energy can be transformed from one form to another</li>
+                    </ul>
+                </div>
+                
+                <h3>Sources of Energy</h3>
+                <p>The ultimate source of energy is the <strong>Sun</strong>. We also get energy from:</p>
+                <ul>
+                    <li>Nuclei of atoms (Nuclear energy)</li>
+                    <li>Interior of the Earth (Geothermal energy)</li>
+                    <li>Tides (Tidal energy)</li>
+                    <li>Wind (Wind energy)</li>
+                </ul>
+                
+                <h3>Forms of Energy</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Form of Energy</th>
+                            <th>Description</th>
+                            <th>Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Mechanical Energy</strong></td>
+                            <td>Energy due to position or motion</td>
+                            <td>Moving car, water in dam</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Heat Energy</strong></td>
+                            <td>Energy due to temperature difference</td>
+                            <td>Hot objects, geothermal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chemical Energy</strong></td>
+                            <td>Energy stored in chemical bonds</td>
+                            <td>Food, fuels, batteries</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Electrical Energy</strong></td>
+                            <td>Energy due to moving charges</td>
+                            <td>Electric current, lightning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Light Energy</strong></td>
+                            <td>Energy in the form of electromagnetic waves</td>
+                            <td>Sunlight, lamps</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nuclear Energy</strong></td>
+                            <td>Energy stored in atomic nuclei</td>
+                            <td>Nuclear reactors, stars</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="mnemonic">
+                    <span class="mnemonic-icon">💡</span>
+                    <div>
+                        <strong>Remember:</strong> The Sun is the ultimate source of energy for most life on Earth.<br>
+                        Energy can change forms but cannot be created or destroyed.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-card" id="kinetic">
+            <h2><span class="section-icon">🏃</span> Kinetic Energy</h2>
+            <div class="content">
+                <p><strong>Kinetic Energy</strong> is the energy possessed by an object due to its motion.</p>
+                
+                <div class="definition">
+                    <p><strong>Kinetic Energy</strong> of an object is the energy it possesses due to its motion.</p>
+                </div>
+                
+                <div class="formula">
+                    E<sub>k</sub> = ½ mv²
+                </div>
+                
+                <p>Where:<br>
+                <strong>E<sub>k</sub></strong> = Kinetic energy (in Joules)<br>
+                <strong>m</strong> = Mass of the object (in kg)<br>
+                <strong>v</strong> = Velocity of the object (in m/s)</p>
+                
+                <div class="important">
+                    <p>Kinetic energy depends on both mass and velocity, but it's more sensitive to changes in velocity since velocity is squared in the formula.</p>
+                </div>
+                
+                <h3>Derivation of Kinetic Energy Formula</h3>
+                <p>Consider an object of mass <strong>m</strong>, initially moving with velocity <strong>u</strong>. A force <strong>F</strong> is applied, producing acceleration <strong>a</strong>, and the object reaches velocity <strong>v</strong> after displacement <strong>S</strong>.</p>
+                
+                <p>From equations of motion:</p>
+                <div class="formula">
+                    v² - u² = 2aS
+                </div>
+                
+                <p>Rearranging:</p>
+                <div class="formula">
+                    S = (v² - u²) / 2a
+                </div>
+                
+                <p>From Newton's second law:</p>
+                <div class="formula">
+                    F = ma
+                </div>
+                
+                <p>Work done on the object:</p>
+                <div class="formula">
+                    W = F × S = ma × (v² - u²) / 2a = ½ m(v² - u²)
+                </div>
+                
+                <p>If the object starts from rest (u = 0):</p>
+                <div class="formula">
+                    W = ½ mv²
+                </div>
+                
+                <p>This work done is stored as kinetic energy:</p>
+                <div class="formula">
+                    E<sub>k</sub> = ½ mv²
+                </div>
+                
+                <div class="example">
+                    <p><strong>Example 2:</strong> Calculate the kinetic energy of a car of mass 1000 kg moving with a velocity of 20 m/s.</p>
+                    <p><strong>Solution:</strong> E<sub>k</sub> = ½ mv² = ½ × 1000 × (20)² = 500 × 400 = 200,000 J = 200 kJ</p>
+                </div>
+                
+                <figure class="diagram-figure">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Kinetic_energy.svg/640px-Kinetic_energy.svg.png" alt="Kinetic Energy Diagram" class="chem-image">
+                    <figcaption>Fig. 1 — Relationship between kinetic energy and velocity</figcaption>
+                </figure>
+                
+                <div class="mnemonic">
+                    <span class="mnemonic-icon">💡</span>
+                    <div>
+                        <strong>Remember:</strong> Kinetic energy depends on the square of velocity.<br>
+                        Doubling velocity quadruples kinetic energy: E<sub>k</sub> ∝ v²
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-card" id="potential">
+            <h2><span class="section-icon">📈</span> Potential Energy</h2>
+            <div class="content">
+                <p><strong>Potential Energy</strong> is the energy stored in an object due to its position or configuration.</p>
+                
+                <div class="definition">
+                    <p><strong>Potential Energy</strong> is the energy possessed by a body by virtue of its position or configuration.</p>
+                </div>
+                
+                <div class="formula">
+                    E<sub>p</sub> = mgh
+                </div>
+                
+                <p>Where:<br>
+                <strong>E<sub>p</sub></strong> = Potential energy (in Joules)<br>
+                <strong>m</strong> = Mass of the object (in kg)<br>
+                <strong>g</strong> = Acceleration due to gravity (9.8 m/s²)<br>
+                <strong>h</strong> = Height of the object above reference point (in meters)</p>
+                
+                <h3>Derivation of Potential Energy Formula</h3>
+                <p>Consider an object of mass <strong>m</strong> raised to a height <strong>h</strong> from the ground. The minimum force required is equal to the weight of the object (mg).</p>
+                
+                <p>Work done against gravity:</p>
+                <div class="formula">
+                    W = F × S = mg × h
+                </div>
+                
+                <p>This work is stored as potential energy:</p>
+                <div class="formula">
+                    E<sub>p</sub> = mgh
+                </div>
+                
+                <div class="important">
+                    <p>The reference point for measuring height (h) is important. Potential energy is always measured relative to a reference level.</p>
+                </div>
+                
+                <div class="example">
+                    <p><strong>Example 3:</strong> A book of mass 2 kg is placed on a shelf 3 m above the ground. Calculate its potential energy. (Take g = 9.8 m/s²)</p>
+                    <p><strong>Solution:</strong> E<sub>p</sub> = mgh = 2 × 9.8 × 3 = 58.8 J</p>
+                </div>
+                
+                <h3>Types of Potential Energy</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Gravitational Potential Energy</strong></td>
+                            <td>Energy due to position in gravitational field</td>
+                            <td>Water in dam, raised object</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Elastic Potential Energy</strong></td>
+                            <td>Energy stored in stretched/compressed objects</td>
+                            <td>Stretched spring, compressed ball</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chemical Potential Energy</strong></td>
+                            <td>Energy stored in chemical bonds</td>
+                            <td>Food, fuels, batteries</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <figure class="diagram-figure">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Potential_energy.svg/640px-Potential_energy.svg.png" alt="Potential Energy Diagram" class="chem-image">
+                    <figcaption>Fig. 2 — Gravitational potential energy increases with height</figcaption>
+                </figure>
+                
+                <div class="mnemonic">
+                    <span class="mnemonic-icon">💡</span>
+                    <div>
+                        <strong>Remember:</strong> Potential energy depends on height, mass, and gravity.<br>
+                        More height = More potential energy
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-card" id="conservation">
+            <h2><span class="section-icon">♻️</span> Law of Conservation of Energy</h2>
+            <div class="content">
+                <p><strong>Law of Conservation of Energy:</strong> Energy can only be converted from one form to another; it can neither be created nor destroyed.</p>
+                
+                <div class="definition">
+                    <p><strong>Law of Conservation of Energy</strong> states that energy can neither be created nor destroyed, but can be transformed from one form to another. The total energy before and after transformation remains constant.</p>
+                </div>
+                
+                <div class="formula">
+                    Total Energy<sub>initial</sub> = Total Energy<sub>final</sub>
+                </div>
+                
+                <h3>Examples of Energy Transformation</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Process</th>
+                            <th>Energy Transformation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hydroelectric power plant</td>
+                            <td>Potential → Kinetic → Electrical</td>
+                        </tr>
+                        <tr>
+                            <td>Photosynthesis</td>
+                            <td>Light → Chemical</td>
+                        </tr>
+                        <tr>
+                            <td>Electric heater</td>
+                            <td>Electrical → Heat</td>
+                        </tr>
+                        <tr>
+                            <td>Burning of fuel</td>
+                            <td>Chemical → Heat + Light</td>
+                        </tr>
+                        <tr>
+                            <td>Solar cell</td>
+                            <td>Light → Electrical</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="example">
+                    <p><strong>Example 4:</strong> A ball is dropped from a height of 10 m. Assuming no air resistance, calculate its velocity just before it hits the ground. (Take g = 10 m/s²)</p>
+                    <p><strong>Solution:</strong> <br>
+                    Potential energy at top = Kinetic energy at bottom<br>
+                    mgh = ½ mv²<br>
+                    gh = ½ v²<br>
+                    10 × 10 = ½ v²<br>
+                    100 = ½ v²<br>
+                    v² = 200<br>
+                    v = √200 = 14.14 m/s</p>
+                </div>
+                
+                <figure class="diagram-figure">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Pendulum_energy.svg/640px-Pendulum_energy.svg.png" alt="Energy Conservation in a Pendulum" class="chem-image">
+                    <figcaption>Fig. 3 — Energy transformation in a pendulum demonstrates conservation of energy</figcaption>
+                </figure>
+                
+                <div class="mnemonic">
+                    <span class="mnemonic-icon">💡</span>
+                    <div>
+                        <strong>Remember:</strong> Energy is conserved - it changes form but the total amount stays constant.<br>
+                        In real systems, some energy is always "lost" as heat due to friction.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-card" id="power">
+            <h2><span class="section-icon">⚡</span> Power</h2>
+            <div class="content">
+                <p><strong>Power</strong> is the rate of doing work or the rate of transfer of energy.</p>
+                
+                <div class="definition">
+                    <p><strong>Power</strong> is defined as the rate of doing work or the rate at which energy is transferred or converted.</p>
+                </div>
+                
+                <div class="formula">
+                    P = W / t
+                </div>
+                
+                <p>Where:<br>
+                <strong>P</strong> = Power (in Watts)<br>
+                <strong>W</strong> = Work done (in Joules)<br>
+                <strong>t</strong> = Time taken (in seconds)</p>
+                
+                <div class="formula">
+                    1 Watt (W) = 1 Joule (J) / 1 second (s)
+                </div>
+                
+                <div class="definition">
+                    <p><strong>Definition of 1 Watt:</strong> 1 watt is the power of an object which does work at the rate of 1 joule per second.</p>
+                </div>
+                
+                <h3>Commercial Unit of Energy</h3>
+                <p>The commercial unit of energy is <strong>kilowatt-hour (kWh)</strong>, commonly called a "unit".</p>
+                
+                <div class="definition">
+                    <p><strong>Definition of 1 kWh:</strong> 1 kWh is the energy used in one hour at the rate of 1000 J/s (or 1 kW).</p>
+                </div>
+                
+                <div class="formula">
+                    1 kWh = 1 kW × 1 hour = 1000 W × 3600 s = 3.6 × 10⁶ J
+                </div>
+                
+                <div class="example">
+                    <p><strong>Example 5:</strong> A 100 W bulb is used for 5 hours daily. Calculate the energy consumed in kWh in 30 days.</p>
+                    <p><strong>Solution:</strong><br>
+                    Power = 100 W = 0.1 kW<br>
+                    Time per day = 5 hours<br>
+                    Energy per day = 0.1 kW × 5 h = 0.5 kWh<br>
+                    Energy in 30 days = 0.5 × 30 = 15 kWh = 15 units</p>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Unit</th>
+                            <th>Equivalent</th>
+                            <th>Conversion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1 Joule (J)</td>
+                            <td>1 N·m</td>
+                            <td>Basic SI unit of work/energy</td>
+                        </tr>
+                        <tr>
+                            <td>1 Kilojoule (kJ)</td>
+                            <td>1000 J</td>
+                            <td>1 kJ = 10³ J</td>
+                        </tr>
+                        <tr>
+                            <td>1 Watt (W)</td>
+                            <td>1 J/s</td>
+                            <td>SI unit of power</td>
+                        </tr>
+                        <tr>
+                            <td>1 Kilowatt (kW)</td>
+                            <td>1000 W</td>
+                            <td>1 kW = 10³ W</td>
+                        </tr>
+                        <tr>
+                            <td>1 Kilowatt-hour (kWh)</td>
+                            <td>3.6 × 10⁶ J</td>
+                            <td>Commercial unit of energy</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="mnemonic">
+                    <span class="mnemonic-icon">💡</span>
+                    <div>
+                        <strong>Remember:</strong> Power measures how fast work is done.<br>
+                        1 kWh = 1 unit of electricity in our electricity bills.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-card" id="numericals">
+            <h2><span class="section-icon">🔢</span> Practice Problems</h2>
+            <div class="content">
+                <h3>Numerical Problems</h3>
+                
+                <div class="example">
+                    <p><strong>Problem 1:</strong> A force of 50 N is applied to move a box through a distance of 8 m in the direction of force. Calculate the work done.</p>
+                </div>
+                
+                <div class="example">
+                    <p><strong>Problem 2:</strong> A crane lifts a load of 2000 kg to a height of 25 m. Calculate the work done by the crane. (Take g = 10 m/s²)</p>
+                </div>
+                
+                <div class="example">
+                    <p><strong>Problem 3:</strong> Calculate the kinetic energy of a car of mass 1200 kg moving at 25 m/s.</p>
+                </div>
+                
+                <div class="example">
+                    <p><strong>Problem 4:</strong> A ball of mass 0.5 kg is thrown vertically upwards with a velocity of 20 m/s. Calculate the maximum height it reaches. (Take g = 10 m/s²)</p>
+                </div>
+                
+                <div class="example">
+                    <p><strong>Problem 5:</strong> A man does 600 J of work in 2 minutes. Calculate his power.</p>
+                </div>
+                
+                <div class="example">
+                    <p><strong>Problem 6:</strong> An electric heater of power 1500 W is used for 3 hours daily. Calculate the energy consumed in kWh in 15 days.</p>
+                </div>
+                
+                <h3>Conceptual Questions</h3>
+                <ol>
+                    <li>Define work. Give an example of zero work.</li>
+                    <li>Differentiate between kinetic energy and potential energy.</li>
+                    <li>State the law of conservation of energy with an example.</li>
+                    <li>Why is the work done by centripetal force zero?</li>
+                    <li>Explain why a person carrying a load on his head does no work while walking on a horizontal road.</li>
+                    <li>What is the commercial unit of energy? Express it in joules.</li>
+                </ol>
+                
+                <div class="mnemonic">
+                    <span class="mnemonic-icon">💡</span>
+                    <div>
+                        <strong>Exam Tips:</strong><br>
+                        - Always write formulas with proper notation<br>
+                        - Include units in calculations and final answers<br>
+                        - Draw diagrams where applicable<br>
+                        - Show all steps in numerical problems
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <p>© 2023 THP Coaching Classes - Class 9 Physics</p>
+            <p>Work and Energy - Complete Chapter Notes</p>
+        </div>
+    </footer>
+</body>
+</html>
