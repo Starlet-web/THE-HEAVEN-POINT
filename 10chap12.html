@@ -3,745 +3,1578 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electricity - Class 10 Science Notes | THP Coaching</title>
+    <title>Electricity - Premium Digital Textbook | THP Coaching Classes</title>
     <style>
-        :root {
-            --primary-color: #8e44ad;
-            --secondary-color: #9b59b6;
-            --text-color: #333;
-            --light-bg: #f9f9f9;
-            --border-color: #ddd;
-        }
-        
+        /* ===== CSS RESET & BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #5D3A9B;
+            --primary-dark: #432b70;
+            --secondary: #9B59B6;
+            --secondary-light: #e6d4f0;
+            --accent: #27ae60;
+            --accent-light: #d5f4e3;
+            --warning: #f39c12;
+            --warning-light: #fdebd0;
+            --danger: #e74c3c;
+            --danger-light: #fadbd8;
+            --background: #f8f9fa;
+            --surface: #ffffff;
+            --text: #2c3e50;
+            --text-light: #5d6d7e;
+            --text-lighter: #7f8c8d;
+            --border: #e3e8f0;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --header-height: 80px;
+            --sidebar-width: 280px;
+            --gradient-primary: linear-gradient(135deg, #5D3A9B 0%, #9B59B6 100%);
+            --gradient-secondary: linear-gradient(135deg, #9B59B6 0%, #6C3483 100%);
+        }
+        
+        html {
+            scroll-behavior: smooth;
         }
         
         body {
-            color: var(--text-color);
-            line-height: 1.6;
-            background-color: white;
-            position: relative;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--background);
+            font-size: 16px;
             overflow-x: hidden;
         }
         
-        body::after {
-            content: "THP";
-            position: fixed;
-            opacity: 0.05;
-            font-size: 40vw;
-            font-weight: bold;
-            color: var(--primary-color);
-            z-index: -1;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        h1, h2, h3, h4, h5 {
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.3;
         }
         
-        .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            padding-bottom: 0.75rem;
         }
         
-        .header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
         }
         
-        .header p {
-            font-size: 1rem;
-            opacity: 0.9;
+        h2 {
+            font-size: 2.2rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--secondary-light);
+            position: relative;
         }
         
-        .container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
+        h2:before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-secondary);
         }
         
-        .footer {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            text-align: center;
-            padding: 1.5rem;
+        h3 {
+            font-size: 1.7rem;
             margin-top: 2rem;
-        }
-        
-        .section {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .section h2 {
-            color: var(--primary-color);
             margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color);
+            color: var(--secondary);
+            padding-left: 0.75rem;
+            border-left: 4px solid var(--secondary);
         }
         
-        .section h3 {
-            color: var(--secondary-color);
-            margin: 1.5rem 0 1rem;
+        h4 {
+            font-size: 1.35rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-dark);
         }
         
-        .section p, .section ul, .section ol {
-            margin-bottom: 1rem;
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
         }
         
-        .section ul, .section ol {
-            padding-left: 2rem;
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
         }
         
-        .section li {
-            margin-bottom: 0.5rem;
+        a:hover {
+            color: var(--secondary);
         }
         
-        .reaction {
-            font-family: monospace;
-            background-color: var(--light-bg);
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-            text-align: center;
-            overflow-x: auto;
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
         
-        .formula {
-            font-weight: bold;
-            color: var(--primary-color);
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         
-        .image-placeholder {
-            background-color: var(--light-bg);
-            border: 1px dashed var(--border-color);
-            padding: 2rem;
-            text-align: center;
-            margin: 1rem 0;
-            border-radius: 4px;
-            color: #666;
+        /* ===== HEADER ===== */
+        .header {
+            background-color: var(--surface);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: var(--header-height);
+            border-bottom: 1px solid var(--border);
         }
         
-        .note-box {
-            background-color: #f0e6f5;
-            border-left: 4px solid var(--primary-color);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0 4px 4px 0;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
         }
         
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
         
-        .comparison-table th, .comparison-table td {
-            border: 1px solid var(--border-color);
-            padding: 0.75rem;
-            text-align: left;
-        }
-        
-        .comparison-table th {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .comparison-table tr:nth-child(even) {
-            background-color: var(--light-bg);
-        }
-        
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: var(--primary-color);
-            color: white;
+        .logo-icon {
             width: 50px;
             height: 50px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-main {
+            font-family: Georgia, serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+        
+        .logo-sub {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+        }
+        
+        /* ===== CONTENT LAYOUT ===== */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+        
+        /* ===== SIDEBAR NAVIGATION ===== */
+        .sidebar-nav {
+            width: var(--sidebar-width);
+            background-color: var(--surface);
+            box-shadow: var(--shadow);
+            padding: 2rem 1.5rem;
+            position: sticky;
+            top: var(--header-height);
+            align-self: flex-start;
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+            z-index: 100;
+            border-right: 1px solid var(--border);
+        }
+        
+        .nav-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .nav-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .nav-title:before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+        }
+        
+        .chapter-nav {
+            list-style: none;
+        }
+        
+        .chapter-nav li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .chapter-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1.25rem;
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            background-color: transparent;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            font-weight: 500;
+        }
+        
+        .chapter-nav a:hover {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            border-left-color: var(--secondary);
+            transform: translateX(5px);
+            text-decoration: none;
+        }
+        
+        .chapter-nav a.active {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .nav-icon {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 3rem 3rem 4rem;
+            max-width: calc(100% - var(--sidebar-width));
+        }
+        
+        .chapter-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .chapter-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+        
+        /* ===== SECTION CARDS ===== */
+        .section-card {
+            background-color: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            transition: var(--transition);
+            animation: fade-in-up 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-card:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-5px);
+        }
+        
+        .section-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-primary);
+        }
+        
+        @keyframes fade-in-up {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Stagger animation for multiple cards */
+        .section-card:nth-child(1) { animation-delay: 0.1s; }
+        .section-card:nth-child(2) { animation-delay: 0.15s; }
+        .section-card:nth-child(3) { animation-delay: 0.2s; }
+        .section-card:nth-child(4) { animation-delay: 0.25s; }
+        .section-card:nth-child(5) { animation-delay: 0.3s; }
+        .section-card:nth-child(6) { animation-delay: 0.35s; }
+        .section-card:nth-child(7) { animation-delay: 0.4s; }
+        .section-card:nth-child(8) { animation-delay: 0.45s; }
+        .section-card:nth-child(9) { animation-delay: 0.5s; }
+        .section-card:nth-child(10) { animation-delay: 0.55s; }
+        
+        /* ===== SPECIAL COMPONENTS ===== */
+        .reaction {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--secondary-light);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            overflow-x: auto;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .reaction:before {
+            content: '🧪';
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            font-size: 1.5rem;
+            background: var(--surface);
+            padding: 0 10px;
+        }
+        
+        .reaction .equation {
+            font-size: 1.25rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .reaction .desc {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .mnemonic {
+            background: linear-gradient(135deg, #fdf2ff 0%, #f0e6f5 100%);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            margin: 1.75rem 0;
+            border-left: 5px solid var(--secondary);
+            position: relative;
+            padding-left: 4rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .mnemonic:before {
+            content: '💡';
+            position: absolute;
+            left: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .mnemonic-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        /* ===== TABLES ===== */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.75rem 0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        thead {
+            background: var(--gradient-primary);
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        
+        th {
+            padding: 1.25rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-family: Georgia, serif;
+            font-size: 1.05rem;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        tbody tr:hover {
+            background-color: var(--secondary-light);
+            transform: scale(1.002);
+        }
+        
+        td {
+            padding: 1.25rem 1rem;
+            vertical-align: top;
+        }
+        
+        /* ===== IMAGES & DIAGRAMS ===== */
+        .diagram {
+            width: 100%;
+            max-width: 700px;
+            margin: 1.75rem auto;
+            text-align: center;
+        }
+        
+        .diagram-placeholder {
+            width: 100%;
+            height: 300px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-style: italic;
+            border: 2px dashed var(--border);
+        }
+        
+        figcaption {
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+        
+        /* ===== DEFINITION BOXES ===== */
+        .definition {
+            background-color: #f8f9fa;
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            margin: 1.75rem 0;
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+        
+        .definition:before {
+            content: '📘';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--surface);
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            opacity: 0;
-            transition: opacity 0.3s;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-sm);
         }
         
-        .back-to-top.visible {
-            opacity: 1;
+        .definition-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
         }
         
-        @media print {
-            .header, .footer, .back-to-top {
-                display: none;
+        /* ===== FORMULAS ===== */
+        .formula {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 1.75rem 0;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .formula:before {
+            content: 'Σ';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 3rem;
+            color: rgba(93, 58, 155, 0.1);
+            font-weight: bold;
+        }
+        
+        .formula-header {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .formula-content {
+            font-size: 1.8rem;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 1rem 0;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 1rem;
+            background-color: white;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            background-color: var(--surface);
+            padding: 2.5rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.03);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .copyright {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        .author {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .footer-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        /* ===== UTILITY CLASSES ===== */
+        .highlight {
+            background: linear-gradient(120deg, #fffacd 0%, #fffacd 100%);
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .note {
+            background-color: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .important {
+            background-color: #ffeaa7;
+            border-left: 4px solid #fdcb6e;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .key-term {
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .key-term:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--secondary);
+            opacity: 0.3;
+        }
+        
+        .unit {
+            font-style: italic;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .sidebar-nav {
+                width: 250px;
+                padding: 1.5rem 1.25rem;
             }
             
-            body::after {
-                display: none;
+            .main-content {
+                padding: 2.5rem 2rem;
+                max-width: calc(100% - 250px);
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .content-wrapper {
+                flex-direction: column;
             }
             
-            .section {
+            .sidebar-nav {
+                width: 100%;
+                height: auto;
+                position: static;
+                top: 0;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
                 box-shadow: none;
-                page-break-inside: avoid;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .main-content {
+                max-width: 100%;
+                padding: 2rem;
+            }
+            
+            .chapter-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .chapter-nav li {
+                margin-bottom: 0;
+                flex: 1;
+                min-width: calc(50% - 0.5rem);
+            }
+            
+            .chapter-nav a {
+                padding: 0.75rem 1rem;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+            
+            .chapter-nav a.active,
+            .chapter-nav a:hover {
+                border-left: none;
+                border-bottom-color: var(--primary);
+                transform: none;
             }
         }
         
         @media (max-width: 768px) {
-            .header h1 {
+            .container {
+                padding: 0 1.5rem;
+            }
+            
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .section-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .logo-main {
+                font-size: 1.4rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            h3 {
                 font-size: 1.5rem;
             }
             
+            .chapter-nav li {
+                min-width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
             .container {
                 padding: 0 1rem;
             }
             
-            .section {
-                padding: 1rem;
+            .main-content {
+                padding: 1.25rem;
+            }
+            
+            .section-card {
+                padding: 1.75rem 1.25rem;
+            }
+            
+            .formula-content {
+                font-size: 1.5rem;
+                padding: 0.75rem;
+            }
+            
+            h1 {
+                font-size: 1.9rem;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+            
+            h3 {
+                font-size: 1.3rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+        
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .header, .sidebar-nav, .footer {
+                display: none;
+            }
+            
+            .main-content {
+                padding: 0;
+                max-width: 100%;
+            }
+            
+            .section-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            a {
+                color: var(--text);
+                text-decoration: none;
+            }
+            
+            .formula-content {
+                font-size: 1.4rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>THP Coaching Classes</h1>
-        <p>NCERT Class 10 Science - Electricity (Chapter 12)</p>
-    </div>
-    
-    <div class="container">
-        <!-- Introduction -->
-        <div class="section">
-            <h2>Introduction to Electricity</h2>
-            <p>Electricity is a fundamental form of energy that powers our modern world. In this chapter, we'll explore:</p>
-            <ul>
-                <li>Basic concepts of electric charge and current</li>
-                <li>Circuit components and Ohm's Law</li>
-                <li>Resistance and its factors</li>
-                <li>Practical applications of heating effect</li>
-                <li>Electrical power and energy calculations</li>
-            </ul>
-        </div>
-
-        <!-- Electric Charge -->
-        <div class="section">
-            <h2>Electric Charge</h2>
-            <p>Charge is the fundamental property of matter that causes it to experience a force in an electric field.</p>
+    <div class="main-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="container header-content">
+                <div class="logo">
+                    <div class="logo-icon">THP</div>
+                    <div class="logo-text">
+                        <div class="logo-main">THP Coaching Classes</div>
+                        <div class="logo-sub">Premium Digital Textbook Series</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+       
             
-            <h3>Key Concepts:</h3>
-            <ul>
-                <li><strong>Two types of charges:</strong> 
+            <!-- Main Content -->
+            <main class="main-content" id="mainContent">
+                <!-- Chapter Header -->
+                <div class="chapter-header">
+                    <h1>CHAPTER 12: ELECTRICITY</h1>
+                </div>
+                
+                <!-- Electric Charge -->
+                <article class="section-card" id="charge">
+                    <h2>Electric Charge (q)</h2>
+                    <p><span class="key-term">Charge</span> is the physical property of matter that causes it to experience a force when placed in an electromagnetic field. Electric charge can be positive or negative, and like charges repel while opposite charges attract.</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Particle</th>
+                                    <th>Charge Type</th>
+                                    <th>Charge Value</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Proton</strong></td>
+                                    <td>Positive</td>
+                                    <td>+1.6 × 10<sup>-19</sup> <span class="unit">C</span></td>
+                                    <td>Located in the nucleus, stable positive charge</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Electron</strong></td>
+                                    <td>Negative</td>
+                                    <td>-1.6 × 10<sup>-19</sup> <span class="unit">C</span></td>
+                                    <td>Revolves around the nucleus, primary charge carrier in conductors</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Neutron</strong></td>
+                                    <td>Neutral</td>
+                                    <td>0 <span class="unit">C</span></td>
+                                    <td>No charge, located in nucleus, provides stability</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <p><strong>SI unit of charge:</strong> Coulomb (C)</p>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Net Charge Formula</div>
+                        <div class="formula-content">Q = n × e</div>
+                        <p>Where: Q = total charge (C), n = number of electrons, e = charge on one electron (1.6 × 10<sup>-19</sup> C)</p>
+                    </div>
+                    
+                    <div class="reaction">
+                        <div class="equation">1 C = 6.25 × 10<sup>18</sup> electrons</div>
+                        <div class="desc">One coulomb of charge is equivalent to approximately 6.25 × 10<sup>18</sup> electrons</div>
+                    </div>
+                </article>
+                
+                <!-- Conductors and Insulators -->
+                <article class="section-card" id="conductors">
+                    <h2>Conductors and Insulators</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">🔌 Conductors</div>
+                        <p>Materials that allow electric charge to flow through them easily. Electrons are free to move anywhere in the material. <span class="highlight">All metals are good conductors.</span> Examples: copper, aluminum, silver, gold.</p>
+                    </div>
+                    
+                    <div class="definition">
+                        <div class="definition-title">🚫 Insulators</div>
+                        <p>Materials that do not allow electric charge to flow through them. Electrons are not free to move and are fixed in position. Examples: plastic, wood, rubber, glass, ceramic, dry air.</p>
+                    </div>
+                    
+                    <div class="important">
+                        <p><strong>Key Difference:</strong> Conductors have free electrons that can move throughout the material, while insulators have electrons tightly bound to their atoms.</p>
+                    </div>
+                </article>
+                
+                <!-- Electric Current -->
+                <article class="section-card" id="current">
+                    <h2>Electric Current (I)</h2>
+                    <p><span class="key-term">Electric current</span> is the rate of flow of electric charge through a cross-sectional area. It represents how much charge passes through a point per unit time.</p>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Electric Current Formula</div>
+                        <div class="formula-content">I = Q / t</div>
+                        <p>Where: I = current (Amperes), Q = charge (Coulombs), t = time (seconds)</p>
+                    </div>
+                    
+                    <p><strong>SI unit of current:</strong> Ampere (A)</p>
+                    
+                    <div class="definition">
+                        <div class="definition-title">📏 1 Ampere Definition</div>
+                        <p>One ampere is defined as one coulomb of charge flowing per second through a cross-section of a conductor.</p>
+                        <div class="reaction">
+                            <div class="equation">1 A = 1 C / 1 s</div>
+                        </div>
+                    </div>
+                    
+                    <div class="note">
+                        <p><strong>Direction of Current Flow:</strong> Conventional current flows from positive to negative terminal (historical convention). However, electron flow (actual charge carriers) is from negative to positive terminal. In circuit analysis, we use conventional current direction.</p>
+                    </div>
+                </article>
+                
+                <!-- Potential Difference -->
+                <article class="section-card" id="potential">
+                    <h2>Potential Difference (V)</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">⚡ Electric Potential Difference</div>
+                        <p>The work done per unit charge in moving a small positive test charge from one point to another in an electric field. It's the "electrical pressure" that drives current through a circuit.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Potential Difference Formula</div>
+                        <div class="formula-content">V = W / Q</div>
+                        <p>Where: V = potential difference (Volts), W = work done (Joules), Q = charge (Coulombs)</p>
+                    </div>
+                    
+                    <p><strong>SI unit:</strong> Volt (V)</p>
+                    
+                    <div class="definition">
+                        <div class="definition-title">⚡ 1 Volt Definition</div>
+                        <p>One volt is defined as when 1 joule of work is done to move 1 coulomb of charge between two points.</p>
+                        <div class="reaction">
+                            <div class="equation">1 V = 1 J / 1 C</div>
+                        </div>
+                    </div>
+                    
+                    <h3>Cell and Battery</h3>
+                    <p>A <span class="key-term">cell</span> produces potential difference through chemical reactions. When connected in a circuit, current flows from the high potential terminal (positive) to the low potential terminal (negative). A <span class="key-term">battery</span> is a combination of two or more cells connected together.</p>
+                    
+                    <div class="diagram">
+                        <div class="diagram-placeholder">
+                            Simple Circuit Diagram: Cell → Conductor → Load
+                        </div>
+                        <figcaption>Basic circuit showing direction of current flow from positive to negative terminal</figcaption>
+                    </div>
+                </article>
+                
+                <!-- Electric Circuit -->
+                <article class="section-card" id="circuit">
+                    <h2>Electric Circuit</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">🔌 Circuit Definition</div>
+                        <p>An <span class="key-term">electric circuit</span> is a closed path along which electric current can flow, consisting of a power source, conductors, and electrical components. A complete circuit is required for continuous current flow.</p>
+                    </div>
+                    
+                    <h3>Circuit Components</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Component</th>
+                                    <th>Symbol</th>
+                                    <th>Function</th>
+                                    <th>Connection</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Ammeter</strong></td>
+                                    <td>A</td>
+                                    <td>Measures electric current</td>
+                                    <td>Always in series</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Voltmeter</strong></td>
+                                    <td>V</td>
+                                    <td>Measures potential difference</td>
+                                    <td>Always in parallel</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resistor</strong></td>
+                                    <td>⏊⏊⏊</td>
+                                    <td>Opposes current flow</td>
+                                    <td>Series or parallel</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cell/Battery</strong></td>
+                                    <td>|+ ||</td>
+                                    <td>Provides potential difference</td>
+                                    <td>Power source</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Switch</strong></td>
+                                    <td>⏊</td>
+                                    <td>Opens/closes circuit</td>
+                                    <td>In series</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="note">
+                        <p><strong>Important:</strong> For current to flow, there must be a complete closed path (circuit) and a potential difference (like electric pressure difference). An open circuit has infinite resistance, while a short circuit has nearly zero resistance.</p>
+                    </div>
+                    
+                    <div class="diagram">
+                        <div class="diagram-placeholder">
+                            Complete Electric Circuit Diagram with Components
+                        </div>
+                        <figcaption>Example of a complete electric circuit with battery, switch, resistor, and measuring instruments</figcaption>
+                    </div>
+                </article>
+                
+                <!-- Ohm's Law -->
+                <article class="section-card" id="ohms-law">
+                    <h2>Ohm's Law</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">📐 Ohm's Law Statement</div>
+                        <p>This fundamental law states that the electric current flowing through a conductor is directly proportional to the potential difference across its ends, provided the physical conditions (temperature, material, dimensions) remain constant.</p>
+                    </div>
+                    
+                    <div class="reaction">
+                        <div class="equation">I ∝ V (when R is constant)</div>
+                        <div class="desc">Current is directly proportional to voltage when resistance is constant</div>
+                    </div>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Ohm's Law Formula</div>
+                        <div class="formula-content">V = I × R</div>
+                        <p>Where: V = potential difference (Volts), I = current (Amperes), R = resistance (Ohms)</p>
+                    </div>
+                    
+                    <div class="note">
+                        <p><strong>Definition of Ohm:</strong> 1 ohm (Ω) of resistance allows 1 ampere of current to flow when a potential difference of 1 volt is applied across it.</p>
+                        <div class="reaction">
+                            <div class="equation">1 Ω = 1 V / 1 A</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mnemonic">
+                        <div class="mnemonic-title">Memory Aid:</div>
+                        <p>"Voltage equals Current times Resistance" - Remember as VIR (like the virus) to recall V = I × R</p>
+                    </div>
+                </article>
+                
+                <!-- Resistance -->
+                <article class="section-card" id="resistance">
+                    <h2>Resistance (R)</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">⏊ Electrical Resistance</div>
+                        <p><span class="key-term">Resistance</span> is the property of a conductor that opposes the flow of electric current through it. Components designed to provide resistance are called resistors. Resistance converts electrical energy into other forms (usually heat).</p>
+                    </div>
+                    
+                    <p><strong>SI unit:</strong> Ohm (Ω)</p>
+                    
+                    <h3>Factors Affecting Resistance</h3>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Factor</th>
+                                    <th>Relationship</th>
+                                    <th>Explanation</th>
+                                    <th>Practical Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Length (L)</strong></td>
+                                    <td>R ∝ L</td>
+                                    <td>Resistance increases with length</td>
+                                    <td>Long wires have more resistance</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cross-sectional Area (A)</strong></td>
+                                    <td>R ∝ 1/A</td>
+                                    <td>Resistance decreases with area</td>
+                                    <td>Thick wires have less resistance</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Material (ρ)</strong></td>
+                                    <td>R ∝ ρ</td>
+                                    <td>Depends on material resistivity</td>
+                                    <td>Copper has lower ρ than iron</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Temperature</strong></td>
+                                    <td>Varies</td>
+                                    <td>Usually increases with temperature</td>
+                                    <td>Filament resistance increases when hot</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Resistance Formula</div>
+                        <div class="formula-content">R = ρ × (L / A)</div>
+                        <p>Where: R = resistance (Ω), ρ = resistivity (Ω·m), L = length (m), A = cross-sectional area (m²)</p>
+                    </div>
+                </article>
+                
+                <!-- Resistivity -->
+                <article class="section-card" id="resistivity">
+                    <h2>Resistivity (ρ)</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">🧪 Electrical Resistivity</div>
+                        <p><span class="key-term">Resistivity</span> is an intrinsic property of a material that quantifies how strongly it opposes electric current. It is the resistance offered by a wire of unit length and unit cross-sectional area. Resistivity depends only on the material and temperature, not on dimensions.</p>
+                    </div>
+                    
+                    <p><strong>SI unit:</strong> Ohm-meter (Ω·m)</p>
+                    
+                    <h3>Resistivity Values of Common Materials</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Resistivity (Ω·m)</th>
+                                    <th>Classification</th>
+                                    <th>Common Uses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Silver</strong></td>
+                                    <td>1.60 × 10<sup>-8</sup></td>
+                                    <td>Excellent conductor</td>
+                                    <td>Specialized circuits, contacts</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Copper</strong></td>
+                                    <td>1.62 × 10<sup>-8</sup></td>
+                                    <td>Very good conductor</td>
+                                    <td>Electrical wiring, cables</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Aluminum</strong></td>
+                                    <td>2.65 × 10<sup>-8</sup></td>
+                                    <td>Good conductor</td>
+                                    <td>Transmission lines, wiring</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Constantan</strong></td>
+                                    <td>49 × 10<sup>-8</sup></td>
+                                    <td>Alloy (Cu + Ni)</td>
+                                    <td>Resistance wires, thermocouples</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Glass</strong></td>
+                                    <td>10<sup>10</sup> - 10<sup>14</sup></td>
+                                    <td>Excellent insulator</td>
+                                    <td>Insulators, windows</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Rubber</strong></td>
+                                    <td>10<sup>13</sup> - 10<sup>16</sup></td>
+                                    <td>Excellent insulator</td>
+                                    <td>Protective coating, insulation</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="important">
+                        <p><strong>Key Points about Resistivity:</strong></p>
+                        <ul>
+                            <li>Resistivity is a constant for a material at a given temperature</li>
+                            <li>Alloys have higher resistivity than their constituent metals</li>
+                            <li>Alloys don't oxidize easily at high temperatures, making them ideal for heating elements</li>
+                            <li>Tungsten (ρ = 5.6 × 10<sup>-8</sup> Ω·m) is used in bulb filaments due to high melting point (3380°C)</li>
+                        </ul>
+                    </div>
+                </article>
+                
+                <!-- Series and Parallel Connections -->
+                <article class="section-card" id="series-parallel">
+                    <h2>Series and Parallel Connections</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">🔗 Series Connection</div>
+                        <p>Resistors connected end-to-end so that the same current flows through each resistor. There is only one path for current to flow.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Total Resistance in Series</div>
+                        <div class="formula-content">R<sub>total</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub> + ... + R<sub>n</sub></div>
+                        <p>The total resistance is the sum of individual resistances (maximum effective resistance)</p>
+                    </div>
+                    
+                    <div class="definition">
+                        <div class="definition-title">⫻ Parallel Connection</div>
+                        <p>Resistors connected between the same two points so that each has the same potential difference. There are multiple paths for current to flow.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Total Resistance in Parallel</div>
+                        <div class="formula-content">1/R<sub>total</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub> + ... + 1/R<sub>n</sub></div>
+                        <p>The reciprocal of total resistance equals sum of reciprocals of individual resistances (minimum effective resistance)</p>
+                    </div>
+                    
+                    <h3>Comparison of Series vs. Parallel</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Series Circuit</th>
+                                    <th>Parallel Circuit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Current</strong></td>
+                                    <td>Same through all components</td>
+                                    <td>Divides among branches</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Voltage</strong></td>
+                                    <td>Divides among components</td>
+                                    <td>Same across all branches</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Resistance</strong></td>
+                                    <td>R<sub>total</sub> = R<sub>1</sub> + R<sub>2</sub> + ...</td>
+                                    <td>1/R<sub>total</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + ...</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>If one device fails</strong></td>
+                                    <td>Entire circuit breaks</td>
+                                    <td>Other devices keep working</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Domestic use</strong></td>
+                                    <td>Not practical for homes</td>
+                                    <td>Used in all household wiring</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Brightness of bulbs</strong></td>
+                                    <td>Dim if many bulbs</td>
+                                    <td>Same brightness regardless of number</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mnemonic">
+                        <div class="mnemonic-title">Practical Tip:</div>
+                        <p>Household appliances are connected in parallel because: (1) Each can be operated independently, (2) All get the same voltage (220V in India), (3) If one fails, others continue working, (4) Each appliance draws current according to its power rating.</p>
+                    </div>
+                </article>
+                
+                <!-- Heating Effect of Electric Current -->
+                <article class="section-card" id="heating-effect">
+                    <h2>Heating Effect of Electric Current</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">🔥 Joule's Law of Heating</div>
+                        <p>When electric current flows through a conductor, the electrical energy is converted into heat energy due to resistance. This phenomenon is known as the heating effect of electric current, discovered by James Prescott Joule.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Joule's Law Formula</div>
+                        <div class="formula-content">H = I² × R × t</div>
+                        <p>Where: H = heat produced (Joules), I = current (Amperes), R = resistance (Ohms), t = time (seconds)</p>
+                    </div>
+                    
+                    <div class="reaction">
+                        <div class="equation">Derivation: W = VIt = (IR)It = I²Rt</div>
+                        <div class="desc">Since all work done is converted to heat: H = I²Rt</div>
+                    </div>
+                    
+                    <h3>Factors Affecting Heat Production</h3>
                     <ul>
-                        <li>Positive (carried by protons)</li>
-                        <li>Negative (carried by electrons)</li>
+                        <li><strong>Directly proportional to square of current (I²)</strong> - Doubling current quadruples heat</li>
+                        <li><strong>Directly proportional to resistance (R)</strong> - Higher resistance produces more heat</li>
+                        <li><strong>Directly proportional to time (t)</strong> - Longer time means more heat</li>
                     </ul>
-                </li>
-                <li><strong>Law of charges:</strong> Like charges repel, unlike charges attract</li>
-                <li><strong>SI unit:</strong> Coulomb (C)</li>
-                <li><strong>Elementary charge:</strong> 
-                    <div class="reaction">
-                        Charge of 1 electron (e) = -1.6 × 10<sup>-19</sup> C
+                    
+                    <div class="note">
+                        <p><strong>Practical Insight:</strong> This heating effect is why wires get warm when carrying current, and why high-current devices need thicker wires to prevent overheating. It's also the principle behind many heating appliances.</p>
                     </div>
-                </li>
-                <li><strong>Quantization:</strong> All charges are integral multiples of elementary charge
-                    <div class="reaction">
-                        Q = ±ne (where n is integer)
+                </article>
+                
+                <!-- Applications -->
+                <article class="section-card" id="applications">
+                    <h2>Applications of Heating Effect</h2>
+                    
+                    <h3>1. Electric Iron</h3>
+                    <p>Contains a heating coil (nichrome) placed in grooves. Mica insulation separates the coil from the metal plate. A bimetallic thermostat automatically breaks the circuit when desired temperature is reached (indicated by red light turning on/off).</p>
+                    
+                    <h3>2. Electric Bulb</h3>
+                    <p>Tungsten filament (melting point: 3380°C) heats up and emits light when current passes through. Bulb is filled with inert gas (argon/nitrogen) to prevent filament oxidation. The glass bulb prevents oxygen from reaching the hot filament.</p>
+                    
+                    <h3>3. Electric Heater</h3>
+                    <p>Uses nichrome coil (high resistance) wound on ceramic material. Current through the coil produces heat, making it glow red. Used for space heating, water heating, cooking, etc.</p>
+                    
+                    <h3>4. Electric Fuse</h3>
+                    <div class="definition">
+                        <div class="definition-title">⚡ Electric Fuse</div>
+                        <p>A safety device that protects circuits by melting when excessive current flows, thereby breaking the circuit and preventing damage to appliances or fire.</p>
                     </div>
-                </li>
-            </ul>
-            
-            <div class="note-box">
-                <strong>NCERT Example:</strong> How many electrons make 1 Coulomb?
-                <div class="reaction">
-                    n = Q/e = 1C/(1.6×10<sup>-19</sup>C) ≈ 6.25 × 10<sup>18</sup> electrons
-                </div>
-            </div>
-        </div>
-
-        <!-- Electric Current -->
-        <div class="section">
-            <h2>Electric Current</h2>
-            <p>The flow of electric charge constitutes electric current.</p>
-            
-            <div class="reaction">
-                I = Q/t
-            </div>
-            <p>Where:<br>
-            I = Current (Ampere, A)<br>
-            Q = Charge (Coulomb, C)<br>
-            t = Time (seconds, s)</p>
-            
-            <h3>Key Points:</h3>
-            <ul>
-                <li><strong>Direction:</strong> Conventional current flows from positive to negative terminal (opposite to electron flow)</li>
-                <li><strong>Ammeter:</strong> Always connected in series to measure current</li>
-                <li><strong>1 Ampere:</strong> Flow of 1 Coulomb charge per second</li>
-                <li><strong>Types:</strong>
+                    
+                    <p><strong>Fuse characteristics:</strong></p>
                     <ul>
-                        <li>Direct Current (DC): Flows in one direction (cells, batteries)</li>
-                        <li>Alternating Current (AC): Changes direction periodically (household supply)</li>
+                        <li>Connected in series with the device</li>
+                        <li>Made of low melting point alloy (tin, lead, aluminum)</li>
+                        <li>Rated as 1A, 2A, 3A, 5A, 10A etc. based on appliance power</li>
+                        <li>Melts when current exceeds rated value (due to heating effect)</li>
+                        <li>Once melted, needs replacement (unlike circuit breakers)</li>
                     </ul>
-                </li>
-            </ul>
-            
-            <div class="image-placeholder">
-                [NCERT Diagram: Fig 12.1 - Conventional current vs electron flow]
-            </div>
-            
-            <div class="note-box">
-                <strong>NCERT Definition:</strong> The amount of charge flowing through a cross-section of a conductor in unit time is called current.
-            </div>
-        </div>
-
-        <!-- Electric Potential and Potential Difference -->
-        <div class="section">
-            <h2>Electric Potential and Potential Difference</h2>
-            
-            <h3>Electric Potential:</h3>
-            <ul>
-                <li>Work done to bring unit positive charge from infinity to a point</li>
-                <li>Unit: Volt (V)</li>
-            </ul>
-            
-            <h3>Potential Difference:</h3>
-            <p>The difference in electric potential between two points in a circuit.</p>
-            <div class="reaction">
-                V = W/Q
-            </div>
-            <p>Where:<br>
-            V = Potential difference (Volts, V)<br>
-            W = Work done (Joules, J)<br>
-            Q = Charge (Coulomb, C)</p>
-            
-            <div class="note-box">
-                <strong>NCERT Activity 12.1:</strong> The potential difference between two points is 1V if 1J of work is done to move 1C of charge between them.
-            </div>
-            
-            <h3>Key Points:</h3>
-            <ul>
-                <li>Voltmeter measures potential difference (connected in parallel)</li>
-                <li>Battery maintains potential difference in a circuit</li>
-                <li>Positive terminal is at higher potential than negative terminal</li>
-            </ul>
-            
-            <div class="image-placeholder">
-                [NCERT Diagram: Fig 12.2 - Measuring potential difference]
-            </div>
-        </div>
-
-        <!-- Circuit Diagram -->
-        <div class="section">
-            <h2>Electric Circuit Components</h2>
-            <p>An electric circuit consists of various components connected with conducting wires:</p>
-            
-            <table class="comparison-table">
-                <tr>
-                    <th>Component</th>
-                    <th>Symbol</th>
-                    <th>Function</th>
-                    <th>Connection</th>
-                </tr>
-                <tr>
-                    <td>Cell</td>
-                    <td>| | (long line is +ve)</td>
-                    <td>Provides potential difference (1.5V)</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>Battery</td>
-                    <td>| | | (multiple cells)</td>
-                    <td>Higher voltage source</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>Switch</td>
-                    <td>⎔— (open/closed)</td>
-                    <td>Controls current flow</td>
-                    <td>Series</td>
-                </tr>
-                <tr>
-                    <td>Resistor</td>
-                    <td>⎺⎺⎺⎺⎺ or ⏢⏢⏢</td>
-                    <td>Limits current</td>
-                    <td>Series/Parallel</td>
-                </tr>
-                <tr>
-                    <td>Ammeter</td>
-                    <td>A in circle</td>
-                    <td>Measures current</td>
-                    <td>Series</td>
-                </tr>
-                <tr>
-                    <td>Voltmeter</td>
-                    <td>V in circle</td>
-                    <td>Measures voltage</td>
-                    <td>Parallel</td>
-                </tr>
-                <tr>
-                    <td>Bulb</td>
-                    <td>⨀ with × inside</td>
-                    <td>Converts electrical energy to light</td>
-                    <td>Series/Parallel</td>
-                </tr>
-            </table>
-            
-            <div class="image-placeholder">
-                [NCERT Diagram: Fig 12.3 - Simple circuit diagram]
-            </div>
-            
-            <h3>Circuit Conditions:</h3>
-            <ul>
-                <li><strong>Open circuit:</strong> No current flows (switch open)</li>
-                <li><strong>Closed circuit:</strong> Current flows (switch closed)</li>
-                <li><strong>Short circuit:</strong> Very high current flows (dangerous)</li>
-            </ul>
-        </div>
-
-        <!-- Ohm's Law -->
-        <div class="section">
-            <h2>Ohm's Law</h2>
-            <p>At constant temperature, the current (I) through a conductor is directly proportional to the potential difference (V) across its ends.</p>
-            
-            <div class="reaction">
-                V ∝ I ⇒ V = IR
-            </div>
-            <p>Where R is the constant of proportionality called resistance.</p>
-            
-            <h3>NCERT Verification Activity (12.2):</h3>
-            <ol>
-                <li>Set up circuit with resistor, ammeter, voltmeter, battery and rheostat</li>
-                <li>Record current (I) for different voltages (V) by adjusting rheostat</li>
-                <li>Plot V-I graph → Straight line verifies Ohm's law</li>
-                <li>Slope gives resistance (R)</li>
-            </ol>
-            
-            <div class="image-placeholder">
-                [NCERT Diagram: Fig 12.6 - Ohm's law verification setup]
-            </div>
-            
-            <div class="note-box">
-                <strong>Resistance (R):</strong> 
-                <ul>
-                    <li>Opposition to flow of current</li>
-                    <li>SI unit: ohm (Ω)</li>
-                    <li>Slope of V-I graph gives resistance</li>
-                    <div class="reaction">
-                        R = V/I
+                    
+                    <div class="important">
+                        <p><strong>Safety Note:</strong> Never replace a fuse with a higher rating or with copper wire, as this defeats its safety purpose and can cause fire.</p>
                     </div>
-                </ul>
-            </div>
-            
-            <h3>Limitations:</h3>
-            <ul>
-                <li>Valid only when physical conditions (especially temperature) remain constant</li>
-                <li>Doesn't apply to semiconductors, electrolytes, gases</li>
-            </ul>
-        </div>
-
-        <!-- Factors Affecting Resistance -->
-        <div class="section">
-            <h2>Factors Affecting Resistance</h2>
-            <p>As per NCERT experiments, resistance depends on:</p>
-            
-            <table class="comparison-table">
-                <tr>
-                    <th>Factor</th>
-                    <th>Relation</th>
-                    <th>Explanation</th>
-                    <th>Formula</th>
-                </tr>
-                <tr>
-                    <td>Length (L)</td>
-                    <td>R ∝ L</td>
-                    <td>Longer wire → more collisions → higher resistance</td>
-                    <td rowspan="2">R = ρ(L/A)<br>ρ = resistivity</td>
-                </tr>
-                <tr>
-                    <td>Area (A)</td>
-                    <td>R ∝ 1/A</td>
-                    <td>Thicker wire → more space for electrons → lower resistance</td>
-                </tr>
-                <tr>
-                    <td>Material (ρ)</td>
-                    <td>Depends on ρ</td>
-                    <td>Silver (best conductor) → Copper → Tungsten (high ρ)</td>
-                    <td>ρ = RA/L</td>
-                </tr>
-                <tr>
-                    <td>Temperature</td>
-                    <td>Metals: R increases<br>Semiconductors: R decreases</td>
-                    <td>Metals: Increased vibrations obstruct flow<br>Semiconductors: More charge carriers</td>
-                    <td>-</td>
-                </tr>
-            </table>
-            
-            <div class="note-box">
-                <strong>Resistivity (ρ):</strong> 
-                <ul>
-                    <li>Characteristic property of material</li>
-                    <li>Independent of dimensions</li>
-                    <li>Unit: Ωm (ohm-meter)</li>
-                    <li>Increases with temperature for metals</li>
-                </ul>
-            </div>
-            
-            <div class="image-placeholder">
-                [NCERT Diagram: Fig 12.5 - Resistance depends on length and area]
-            </div>
-        </div>
-
-        <!-- Resistor Combinations -->
-        <div class="section">
-            <h2>Resistor Combinations</h2>
-            
-            <h3>Series Combination (NCERT Fig 12.7):</h3>
-            <ul>
-                <li>Same current flows through all resistors</li>
-                <li>Total voltage gets divided (V = V₁ + V₂ + V₃)</li>
-                <li>Equivalent resistance is sum of all resistances:</li>
-                <div class="reaction">
-                    R<sub>eq</sub> = R₁ + R₂ + R₃ + ...
-                </div>
-                <li>Used when higher resistance needed</li>
-            </ul>
-            
-            <h3>Parallel Combination (NCERT Fig 12.8):</h3>
-            <ul>
-                <li>Same voltage across all resistors</li>
-                <li>Current gets divided (I = I₁ + I₂ + I₃)</li>
-                <li>Equivalent resistance is less than smallest resistance:</li>
-                <div class="reaction">
-                    1/R<sub>eq</sub> = 1/R₁ + 1/R₂ + 1/R₃ + ...
-                </div>
-                <li>Used when lower resistance needed</li>
-            </ul>
-            
-            <div class="note-box">
-                <strong>Practical Applications:</strong>
-                <ul>
-                    <li><strong>Household wiring:</strong> All appliances connected in parallel (each gets full voltage)</li>
-                    <li><strong>Decorative lights:</strong> Sometimes in series (but if one fails, all stop working)</li>
-                    <li><strong>Resistance boxes:</strong> Use combination to get desired resistance</li>
-                </ul>
-            </div>
-            
-            <div class="image-placeholder">
-                [NCERT Diagram: Fig 12.7 & 12.8 - Series and parallel combinations]
-            </div>
-        </div>
-
-        <!-- Heating Effect -->
-        <div class="section">
-            <h2>Heating Effect of Electric Current (Joule's Law)</h2>
-            <p>When current flows through a conductor, heat is produced due to resistance.</p>
-            
-            <div class="reaction">
-                H = I<sup>2</sup>Rt
-            </div>
-            <p>Where:<br>
-            H = Heat energy (Joules, J)<br>
-            I = Current (Amperes, A)<br>
-            R = Resistance (Ohms, Ω)<br>
-            t = Time (seconds, s)</p>
-            
-            <h3>Derivation:</h3>
-            <ol>
-                <li>Work done to move charge Q: W = VQ</li>
-                <li>Since I = Q/t ⇒ Q = It</li>
-                <li>From Ohm's law: V = IR</li>
-                <li>Therefore: W = VIt = I<sup>2</sup>Rt</li>
-                <li>This work appears as heat: H = I<sup>2</sup>Rt</li>
-            </ol>
-            
-            <h3>Practical Applications (NCERT Examples):</h3>
-            <ul>
-                <li><strong>Electric heater:</strong> Nichrome wire (high ρ) gets red hot</li>
-                <li><strong>Fuse:</strong> Thin wire melts when excess current flows (safety device)</li>
-                <li><strong>Light bulb:</strong> Tungsten filament heats up to glow (melting point 3380°C)</li>
-                <li><strong>Electric iron:</strong> Heating element converts electrical energy to heat</li>
-                <li><strong>Electric kettle:</strong> Heats water quickly</li>
-            </ul>
-            
-            <div class="note-box">
-                <strong>Why Tungsten in Bulbs?</strong>
-                <ul>
-                    <li>High melting point (3380°C)</li>
-                    <li>High resistivity</li>
-                    <li>Doesn't oxidize easily in vacuum/argon</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Electric Power -->
-        <div class="section">
-            <h2>Electric Power</h2>
-            <p>Rate at which electric energy is consumed or dissipated.</p>
-            
-            <div class="reaction">
-                P = W/t = VI = I<sup>2</sup>R = V<sup>2</sup>/R
-            </div>
-            <p>Unit: Watt (W) = Joule/second</p>
-            
-            <h3>Commercial Unit of Energy:</h3>
-            <p>Electricity bills use kilowatt-hour (kWh) instead of joule:</p>
-            <div class="reaction">
-                1 kWh = 1000 W × 1 hour = 1000 W × 3600 s = 3.6 × 10<sup>6</sup> J
-            </div>
-            <p>1 kWh = 1 "unit" of electricity</p>
-            
-            <h3>Power Rating Examples:</h3>
-            <ul>
-                <li>LED bulb: 5-15 W</li>
-                <li>Fan: 50-80 W</li>
-                <li>Geyser: 2000-3000 W</li>
-                <li>AC: 1500-2500 W</li>
-            </ul>
-            
-            <div class="note-box">
-                <strong>NCERT Example 12.8:</strong><br>
-                An electric bulb is connected to a 220V generator. The current is 0.50A. What is the power of the bulb?
-                <div class="reaction">
-                    P = VI = 220 × 0.50 = 110 W
-                </div>
-            </div>
-            
-            <div class="note-box">
-                <strong>Energy Conservation Tip:</strong><br>
-                Using a 15W LED bulb (equivalent to 100W incandescent) for 5 hours daily:<br>
-                <div class="reaction">
-                    Daily consumption = 15W × 5h = 75 Wh = 0.075 kWh<br>
-                    Monthly savings = (100W-15W) × 5h × 30 = 12.75 kWh
-                </div>
-            </div>
-        </div>
-
-        <!-- NCERT Questions Focus -->
-        <div class="section">
-            <h2>Important NCERT Questions</h2>
-            <ol>
-                <li>Define 1 ampere current. (Q12.1)</li>
-                <li>Why are coils of electric toasters made of alloy rather than pure metal? (Q12.4)</li>
-                <li>Compute heat generated while transferring 96000C through 1Ω in 1 hour. (Q12.7)</li>
-                <li>Compare power used in 2Ω resistor in both circuits (series vs parallel). (Q12.8)</li>
-                <li>What determines the rate at which energy is delivered by a current? (Q12.5)</li>
-                <li>An electric motor takes 5A from 220V line. Determine power and energy consumed in 2h. (Q12.11)</li>
-            </ol>
-            
-            <h3>Numerical Problem Solving Approach:</h3>
-            <ol>
-                <li>Identify given quantities and what to find</li>
-                <li>Choose appropriate formula</li>
-                <li>Convert units if necessary</li>
-                <li>Substitute values and calculate</li>
-                <li>Include proper units in final answer</li>
-            </ol>
-            
-            <div class="note-box">
-                <strong>Example Solution (Q12.7):</strong><br>
-                Calculate heat produced when 96000C charge is transferred in 1 hour through a potential difference of 50V.
-                <div class="reaction">
-                    Given: Q = 96000C, t = 1h = 3600s, V = 50V<br>
-                    I = Q/t = 96000/3600 = 26.67A<br>
-                    H = VIt = 50 × 26.67 × 3600 = 4.8 × 10<sup>6</sup> J<br>
-                    Alternative: H = VQ = 50 × 96000 = 4.8 × 10<sup>6</sup> J
-                </div>
-            </div>
+                </article>
+                
+                <!-- Electric Power -->
+                <article class="section-card" id="power">
+                    <h2>Electric Power and Energy</h2>
+                    
+                    <div class="definition">
+                        <div class="definition-title">⚡ Electric Power</div>
+                        <p>The rate at which electrical energy is consumed or dissipated in a circuit. Power indicates how fast energy is being used or converted.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        <div class="formula-header">Power Formulas</div>
+                        <div class="formula-content">P = V × I</div>
+                        <div style="margin: 0.75rem 0; font-size: 1.2rem;">or</div>
+                        <div class="formula-content">P = I² × R</div>
+                        <div style="margin: 0.75rem 0; font-size: 1.2rem;">or</div>
+                        <div class="formula-content">P = V² / R</div>
+                        <p>All are equivalent forms derived from P = VI and Ohm's Law (V = IR)</p>
+                    </div>
+                    
+                    <p><strong>SI unit:</strong> Watt (W)</p>
+                    
+                    <div class="definition">
+                        <div class="definition-title">🔋 1 Watt Definition</div>
+                        <p>1 watt is the power consumed when 1 ampere of current flows at a potential difference of 1 volt.</p>
+                        <div class="reaction">
+                            <div class="equation">1 W = 1 V × 1 A</div>
+                        </div>
+                    </div>
+                    
+                    <h3>Electrical Energy</h3>
+                    <div class="formula">
+                        <div class="formula-header">Electrical Energy Formula</div>
+                        <div class="formula-content">E = P × t</div>
+                        <p>Where: E = electrical energy, P = power (Watts), t = time (seconds)</p>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Unit</th>
+                                    <th>Symbol</th>
+                                    <th>Equivalent</th>
+                                    <th>Usage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Joule</strong></td>
+                                    <td>J</td>
+                                    <td>1 Ws (watt-second)</td>
+                                    <td>SI unit, scientific calculations</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Kilowatt-hour</strong></td>
+                                    <td>kWh</td>
+                                    <td>3.6 × 10<sup>6</sup> J</td>
+                                    <td>Commercial, domestic electricity billing</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Watt-hour</strong></td>
+                                    <td>Wh</td>
+                                    <td>3600 J</td>
+                                    <td>Small appliance ratings</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="reaction">
+                        <div class="equation">1 kWh = 1000 W × 3600 s = 3.6 × 10⁶ J</div>
+                        <div class="desc">One kilowatt-hour (unit) equals 3.6 million joules - the energy consumed by a 1000W device in 1 hour</div>
+                    </div>
+                    
+                    <div class="note">
+                        <p><strong>Conversion:</strong> 1 horsepower (hp) = 746 watts. This is useful for comparing mechanical and electrical power, especially in motors and engines.</p>
+                    </div>
+                    
+                    <div class="mnemonic">
+                        <div class="mnemonic-title">Billing Calculation:</div>
+                        <p>Electricity bill = (Power in kW) × (Time in hours) × (Rate per kWh). For example, a 100W bulb used for 10 hours daily for 30 days at ₹5 per unit: Energy = 0.1kW × 10h × 30 = 30 kWh, Cost = 30 × 5 = ₹150</p>
+                    </div>
+                </article>
+            </main>
         </div>
         
-        <!-- Summary -->
-        <div class="section">
-            <h2>Chapter Summary</h2>
-            <table class="comparison-table">
-                <tr>
-                    <th>Concept</th>
-                    <th>Formula</th>
-                    <th>Unit</th>
-                </tr>
-                <tr>
-                    <td>Current</td>
-                    <td>I = Q/t</td>
-                    <td>Ampere (A)</td>
-                </tr>
-                <tr>
-                    <td>Potential Difference</td>
-                    <td>V = W/Q</td>
-                    <td>Volt (V)</td>
-                </tr>
-                <tr>
-                    <td>Ohm's Law</td>
-                    <td>V = IR</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>Resistance</td>
-                    <td>R = ρL/A</td>
-                    <td>Ohm (Ω)</td>
-                </tr>
-                <tr>
-                    <td>Resistivity</td>
-                    <td>ρ = RA/L</td>
-                    <td>Ωm</td>
-                </tr>
-                <tr>
-                    <td>Series Combination</td>
-                    <td>R<sub>eq</sub> = R₁ + R₂ + ...</td>
-                    <td>Ω</td>
-                </tr>
-                <tr>
-                    <td>Parallel Combination</td>
-                    <td>1/R<sub>eq</sub> = 1/R₁ + 1/R₂ + ...</td>
-                    <td>Ω</td>
-                </tr>
-                <tr>
-                    <td>Heating Effect</td>
-                    <td>H = I<sup>2</sup>Rt</td>
-                    <td>Joule (J)</td>
-                </tr>
-                <tr>
-                    <td>Electric Power</td>
-                    <td>P = VI = I<sup>2</sup>R = V<sup>2</sup>/R</td>
-                    <td>Watt (W)</td>
-                </tr>
-                <tr>
-                    <td>Electrical Energy</td>
-                    <td>E = Pt = VIt</td>
-                    <td>kWh</td>
-                </tr>
-            </table>
-        </div>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container footer-content">
+                <div class="footer-logo">
+                    <div class="footer-logo-icon">THP</div>
+                    <div>
+                        <div class="logo-main" style="font-size: 1.3rem;">THP Coaching Classes</div>
+                        <div class="logo-sub">Premium Digital Textbook Series</div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>© 2026 THP Coaching Classes. All rights reserved.</p>
+                    <p>Chapter 12: Electricity | Physics - Class 10 | Author: <span class="author">Physics Department</span></p>
+                </div>
+            </div>
+        </footer>
     </div>
-    
-    <div class="footer">
-        <p>THP Coaching Classes - NCERT Aligned Notes</p>
-        <p>Science Chapter 12 - Electricity | Conceptual Notes by Mohit Sir</p>
-    </div>
-    
-    <a href="#" class="back-to-top" id="backToTop">↑</a>
-    
+
     <script>
-        // Back to top button functionality
-        const backToTopButton = document.getElementById('backToTop');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.add('visible');
-            } else {
-                backToTopButton.classList.remove('visible');
+        // JavaScript for interactive navigation and smooth scrolling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all navigation links
+            const navLinks = document.querySelectorAll('.chapter-nav a');
+            const sections = document.querySelectorAll('.section-card');
+            
+            // Function to highlight active navigation link
+            function highlightNavLink() {
+                let scrollPosition = window.scrollY + 150;
+                
+                // Remove active class from all links
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                // Find current section
+                let currentSectionId = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+                
+                // Add active class to current link
+                if (currentSectionId) {
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('href') === `#${currentSectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
             }
-        });
-        
-        backToTopButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Smooth scroll to section when clicking navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        // Update active link
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Smooth scroll to section
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Highlight active link on scroll
+            window.addEventListener('scroll', highlightNavLink);
+            
+            // Initialize with first link active
+            if (navLinks.length > 0) {
+                navLinks[0].classList.add('active');
+            }
+            
+            // Add subtle animation to cards when they come into view
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all section cards
+            sections.forEach(section => {
+                observer.observe(section);
+            });
         });
     </script>
 </body>
