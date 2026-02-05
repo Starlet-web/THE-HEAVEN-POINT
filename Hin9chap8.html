@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>गति - कक्षा 9 भौतिकी नोट्स</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --text: #333333;
+            --text-light: #555555;
+            --bg: #f9f9ff;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --border: #e0e0e0;
+            --table-header: #f5f5f5;
+            --table-border: #dddddd;
+            --note-bg: rgba(255, 126, 95, 0.1);
+            --formula-bg: rgba(106, 48, 147, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #9c6bbe;
+            --secondary: #b56cff;
+            --accent: #ff9e7f;
+            --text: #f0f0f0;
+            --text-light: #cccccc;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --border: #333333;
+            --table-header: #2d2d2d;
+            --table-border: #444444;
+            --note-bg: rgba(255, 158, 127, 0.15);
+            --formula-bg: rgba(156, 107, 190, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Dark Mode Toggle */
+        .theme-switch-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 60px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            background-color: var(--primary);
+            bottom: 4px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 26px;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--card-bg);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+            background-color: var(--accent);
+        }
+
+        .theme-icon {
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: var(--text);
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        section {
+            margin: 50px 0;
+        }
+
+        .section-header {
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin: 20px 0 10px;
+        }
+
+        p, li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .formula-box {
+            background: var(--formula-bg);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+            overflow-x: auto;
+        }
+
+        .formula-box p {
+            margin: 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .note {
+            background: var(--note-bg);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+            position: relative;
+        }
+
+        .note::before {
+            content: '📌';
+            position: absolute;
+            left: 10px;
+            top: -12px;
+            font-size: 1.2rem;
+            background: var(--card-bg);
+            padding: 0 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--card-bg);
+        }
+
+        th, td {
+            border: 1px solid var(--table-border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--table-header);
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-item {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 3px 10px var(--shadow);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            .theme-switch-wrapper {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <div class="theme-switch-wrapper">
+        <i class="fas fa-sun theme-icon"></i>
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox">
+            <div class="slider round"></div>
+        </label>
+        <i class="fas fa-moon theme-icon"></i>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>गति</h1>
+            <p class="subtitle">मोहित सर (एमएससी) द्वारा व्यापक नोट्स</p>
+        </header>
+
+        <section id="basic-concepts">
+            <div class="section-header">
+                <h2>गति की मूल अवधारणाएं</h2>
+            </div>
+            
+            <div class="card">
+                <h3>गति क्या है?</h3>
+                <p>जब किसी वस्तु की स्थिति संदर्भ बिंदु (फ्रेम ऑफ रेफरेंस) के सापेक्ष समय के साथ बदलती है, तो उसे गति में कहा जाता है।</p>
+                
+                <div class="note">
+                    <p><strong>संदर्भ बिंदु:</strong> एक निश्चित बिंदु या वस्तु जिसके सापेक्ष अन्य वस्तुओं की स्थिति का वर्णन किया जाता है (उदाहरण: एक पेड़, भवन, या स्थिर वस्तु)।</p>
+                </div>
+                
+                <h3>गति के प्रकार</h3>
+                <ul>
+                    <li><strong>स्थानांतरीय गति:</strong> सीधी या वक्र रेखा के अनुदिश गति
+                        <ul>
+                            <li>रेखीय गति (सीधी रेखा)</li>
+                            <li>वक्ररेखीय गति (वक्र पथ)</li>
+                        </ul>
+                    </li>
+                    <li><strong>घूर्णन गति:</strong> किसी अक्ष के परितः घूमना (उदाहरण: लट्टू)</li>
+                    <li><strong>आवर्ती गति:</strong> नियमित अंतराल पर दोहराव (उदाहरण: लोलक)</li>
+                    <li><strong>वृत्तीय गति:</strong> वृत्ताकार पथ के अनुदिश गति</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="scalar-vector">
+            <div class="section-header">
+                <h2>अदिश और सदिश राशियाँ</h2>
+            </div>
+            
+            <div class="comparison">
+                <div class="comparison-item">
+                    <h3>अदिश राशियाँ</h3>
+                    <p>केवल परिमाण होता है (दिशा नहीं)</p>
+                    <ul>
+                        <li>दूरी</li>
+                        <li>चाल</li>
+                        <li>समय</li>
+                        <li>द्रव्यमान</li>
+                        <li>तापमान</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-item">
+                    <h3>सदिश राशियाँ</h3>
+                    <p>परिमाण और दिशा दोनों होते हैं</p>
+                    <ul>
+                        <li>विस्थापन</li>
+                        <li>वेग</li>
+                        <li>त्वरण</li>
+                        <li>बल</li>
+                        <li>संवेग</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="distance-displacement">
+            <div class="section-header">
+                <h2>दूरी बनाम विस्थापन</h2>
+            </div>
+            
+            <div class="card">
+                <h3>परिभाषाएं</h3>
+                <p><strong>दूरी:</strong> किसी वस्तु द्वारा तय किए गए पथ की वास्तविक लंबाई।</p>
+                <p><strong>विस्थापन:</strong> प्रारंभिक स्थिति से अंतिम स्थिति तक की सबसे छोटी दूरी।</p>
+                
+                <table>
+                    <tr>
+                        <th>दूरी</th>
+                        <th>विस्थापन</th>
+                    </tr>
+                    <tr>
+                        <td>तय की गई कुल पथ लंबाई</td>
+                        <td>प्रारंभिक और अंतिम स्थिति के बीच की न्यूनतम दूरी</td>
+                    </tr>
+                    <tr>
+                        <td>अदिश राशि</td>
+                        <td>सदिश राशि</td>
+                    </tr>
+                    <tr>
+                        <td>सदैव धनात्मक</td>
+                        <td>धनात्मक, ऋणात्मक या शून्य हो सकता है</td>
+                    </tr>
+                    <tr>
+                        <td>पथ पर निर्भर करती है</td>
+                        <td>पथ से स्वतंत्र होता है</td>
+                    </tr>
+                </table>
+                
+                <div class="note">
+                    <p><strong>उदाहरण:</strong> यदि कोई व्यक्ति 3 किमी पूर्व की ओर और फिर 4 किमी उत्तर की ओर चलता है:
+                    <br>दूरी = 3 + 4 = 7 किमी
+                    <br>विस्थापन = √(3² + 4²) = 5 किमी उत्तर-पूर्व</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="uniform-motion">
+            <div class="section-header">
+                <h2>समान और असमान गति</h2>
+            </div>
+            
+            <div class="card">
+                <h3>समान गति</h3>
+                <p>यदि कोई वस्तु समान समय अंतरालों में समान दूरी तय करती है, तो उसे समान गति में कहा जाता है।</p>
+                
+                <h3>असमान गति</h3>
+                <p>यदि कोई वस्तु समान समय अंतरालों में असमान दूरी तय करती है, तो उसे असमान गति में कहा जाता है।</p>
+                
+                <h3>चाल</h3>
+                <p>किसी वस्तु की चाल इकाई समय में उसके द्वारा तय की गई दूरी है।</p>
+                <div class="formula-box">
+                    <p>\[ \text{चाल} = \frac{\text{दूरी}}{\text{समय}} \]</p>
+                </div>
+                <p>यदि कोई वस्तु समय t में दूरी s तय करती है, तो उसकी चाल v होगी:</p>
+                <div class="formula-box">
+                    <p>\[ v = \frac{s}{t} \]</p>
+                </div>
+                <p>चाल का SI मात्रक मीटर प्रति सेकंड (m/s या ms⁻¹) है।</p>
+                <p>चूंकि चाल में केवल परिमाण होता है, यह एक अदिश राशि है।</p>
+                
+                <h3>औसत चाल</h3>
+                <p>औसत चाल कुल तय की गई दूरी और कुल लिए गए समय का अनुपात है।</p>
+                <div class="formula-box">
+                    <p>\[ \text{औसत चाल} = \frac{\text{कुल तय दूरी}}{\text{कुल लिया गया समय}} \]</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="velocity">
+            <div class="section-header">
+                <h2>दिशा सहित चाल (वेग)</h2>
+            </div>
+            
+            <div class="card">
+                <p>किसी वस्तु की गति की दर अधिक सार्थक होती है यदि हम चाल के साथ-साथ गति की दिशा भी निर्दिष्ट करें। वह राशि जो गति की दिशा और चाल दोनों को निर्दिष्ट करती है, <strong>वेग</strong> कहलाती है।</p>
+                
+                <h3>वेग</h3>
+                <p>किसी वस्तु का वेग प्रति इकाई समय में वस्तु का विस्थापन है।</p>
+                <div class="formula-box">
+                    <p>\[ \text{वेग} = \frac{\text{विस्थापन}}{\text{लिया गया समय}} \]</p>
+                </div>
+                <p>चूंकि वेग में परिमाण और दिशा दोनों होते हैं, यह एक सदिश राशि है।</p>
+                
+                <h3>औसत वेग</h3>
+                <p>औसत वेग कुल विस्थापन और कुल लिए गए समय का अनुपात है।</p>
+                <div class="formula-box">
+                    <p>\[ \text{औसत वेग} = \frac{\text{कुल विस्थापन}}{\text{कुल लिया गया समय}} \]</p>
+                </div>
+                <p>औसत वेग प्रारंभिक वेग u और अंतिम वेग v का माध्य भी होता है।</p>
+                <div class="formula-box">
+                    <p>\[ \text{औसत वेग} = \frac{u + v}{2} \]</p>
+                </div>
+                <p>चाल और वेग के मात्रक समान होते हैं - m/s या ms⁻¹।</p>
+            </div>
+        </section>
+
+        <section id="speed-velocity">
+            <div class="section-header">
+                <h2>चाल और वेग की तुलना</h2>
+            </div>
+            
+            <div class="card">
+                <table>
+                    <tr>
+                        <th>चाल</th>
+                        <th>वेग</th>
+                    </tr>
+                    <tr>
+                        <td>प्रति इकाई समय में तय की गई दूरी</td>
+                        <td>प्रति इकाई समय में विस्थापन</td>
+                    </tr>
+                    <tr>
+                        <td>अदिश राशि</td>
+                        <td>सदिश राशि</td>
+                    </tr>
+                    <tr>
+                        <td>सदैव धनात्मक</td>
+                        <td>धनात्मक, ऋणात्मक या शून्य हो सकता है</td>
+                    </tr>
+                    <tr>
+                        <td>\[ \text{चाल} = \frac{\text{दूरी}}{\text{समय}} \]</td>
+                        <td>\[ \text{वेग} = \frac{\text{विस्थापन}}{\text{समय}} \]</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="acceleration">
+            <div class="section-header">
+                <h2>त्वरण</h2>
+            </div>
+            
+            <div class="card">
+                <p>वेग के परिवर्तन की समय के साथ दर।</p>
+                <div class="formula-box">
+                    <p>\[ \text{त्वरण} = \frac{\text{वेग में परिवर्तन}}{\text{समय}} = \frac{v - u}{t} \]</p>
+                </div>
+                <p>जहाँ:<br>
+                u = प्रारंभिक वेग, v = अंतिम वेग, t = समय</p>
+                
+                <h3>त्वरण के प्रकार</h3>
+                <ul>
+                    <li><strong>धनात्मक त्वरण:</strong> समय के साथ वेग बढ़ता है</li>
+                    <li><strong>ऋणात्मक त्वरण (मंदन):</strong> समय के साथ वेग घटता है</li>
+                    <li><strong>समान त्वरण:</strong> वेग परिवर्तन की नियत दर</li>
+                    <li><strong>असमान त्वरण:</strong> वेग परिवर्तन की परिवर्तनशील दर</li>
+                </ul>
+                
+                <div class="note">
+                    <p><strong>महत्वपूर्ण:</strong> किसी वस्तु का वेग शून्य हो सकता है और फिर भी वह त्वरित हो सकती है (उदाहरण: ऊर्ध्वाधर फेंक के उच्चतम बिंदु पर)।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="graphs">
+            <div class="section-header">
+                <h2>गति का आलेखीय निरूपण</h2>
+            </div>
+            
+            <div class="card">
+                <h3>दूरी-समय आलेख</h3>
+                <ul>
+                    <li><strong>विरामावस्था में:</strong> समय अक्ष के समांतर सीधी रेखा</li>
+                    <li><strong>समान चाल:</strong> नियत ढाल वाली सीधी रेखा</li>
+                    <li><strong>असमान चाल:</strong> वक्र रेखा (ढाल परिवर्तित होती है)</li>
+                </ul>
+                <p><strong>ढाल:</strong> चाल को प्रदर्शित करती है</p>
+                
+                <h3>वेग-समय आलेख</h3>
+                <ul>
+                    <li><strong>समान वेग:</strong> समय अक्ष के समांतर सीधी रेखा</li>
+                    <li><strong>समान त्वरण:</strong> नियत ढाल वाली सीधी रेखा</li>
+                    <li><strong>असमान त्वरण:</strong> वक्र रेखा</li>
+                </ul>
+                <p><strong>ढाल:</strong> त्वरण को प्रदर्शित करती है</p>
+                <p><strong>वक्र के नीचे का क्षेत्रफल:</strong> विस्थापन को प्रदर्शित करता है</p>
+            </div>
+        </section>
+
+        <section id="equations">
+            <div class="section-header">
+                <h2>समान त्वरित गति के समीकरण</h2>
+            </div>
+            
+            <div class="card">
+                <p>समान त्वरण वाली गति का वर्णन करने वाले तीन समीकरण:</p>
+                <div class="formula-box">
+                    <p>1. \( v = u + at \)</p>
+                    <p>2. \( s = ut + \frac{1}{2}at^2 \)</p>
+                    <p>3. \( v^2 = u^2 + 2as \)</p>
+                </div>
+                <p>जहाँ:<br>
+                u = प्रारंभिक वेग, v = अंतिम वेग,<br>
+                a = त्वरण, s = दूरी, t = समय</p>
+                
+                <h3>अनुप्रयोग</h3>
+                <ul>
+                    <li>मुक्त रूप से गिरते पिंड (a = g = 9.8 m/s² नीचे की ओर)</li>
+                    <li>ऊर्ध्वाधर ऊपर की ओर फेंके गए पिंड</li>
+                    <li>समान रूप से त्वरित वाहन</li>
+                </ul>
+                
+                <div class="note">
+                    <p><strong>याद रखें:</strong> ये समीकरण केवल तभी मान्य हैं जब त्वरण नियत हो।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="circular-motion">
+            <div class="section-header">
+                <h2>समान वृत्तीय गति</h2>
+            </div>
+            
+            <div class="card">
+                <p>जब कोई वस्तु नियत चाल से वृत्ताकार पथ पर गति करती है।</p>
+                <div class="formula-box">
+                    <p>\[ \text{वेग} = \frac{2\pi r}{T} \]</p>
+                </div>
+                <p>जहाँ:<br>
+                r = त्रिज्या, T = एक चक्कर के लिए आवर्तकाल</p>
+                
+                <h3>विशेषताएं</h3>
+                <ul>
+                    <li>चाल नियत होती है परंतु वेग परिवर्तित होता है (दिशा बदलती है)</li>
+                    <li>त्वरित गति (अभिकेंद्रीय त्वरण)</li>
+                    <li>त्वरण की दिशा केंद्र की ओर होती है</li>
+                </ul>
+                
+                <div class="note">
+                    <p><strong>उदाहरण:</strong> सूर्य के चारों ओर पृथ्वी की परिक्रमा, नाभिक के चारों ओर इलेक्ट्रॉन, झूले का घोड़ा।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="numericals">
+            <div class="section-header">
+                <h2>महत्वपूर्ण संख्यात्मक प्रश्न</h2>
+            </div>
+            
+            <div class="card">
+                <h3>प्रकार 1: मूल गणनाएं</h3>
+                <p><strong>उदाहरण:</strong> एक कार 20 सेकंड में 300 मीटर चलती है। इसकी चाल की गणना करें।</p>
+                <div class="formula-box">
+                    <p>\[ \text{चाल} = \frac{300}{20} = 15 \text{ m/s} \]</p>
+                </div>
+                
+                <h3>प्रकार 2: त्वरण संबंधी प्रश्न</h3>
+                <p><strong>उदाहरण:</strong> एक बस विरामावस्था से 10 सेकंड में 20 m/s की चाल तक समान रूप से त्वरित होती है। त्वरण ज्ञात कीजिए।</p>
+                <div class="formula-box">
+                    <p>\[ a = \frac{v - u}{t} = \frac{20 - 0}{10} = 2 \text{ m/s}^2 \]</p>
+                </div>
+                
+                <h3>प्रकार 3: गति के समीकरण</h3>
+                <p><strong>उदाहरण:</strong> 10 m/s की चाल से चलती हुई एक बाइक 2 m/s² के त्वरण से 5 सेकंड तक त्वरित होती है। अंतिम वेग ज्ञात कीजिए।</p>
+                <div class="formula-box">
+                    <p>\[ v = u + at = 10 + (2 × 5) = 20 \text{ m/s} \]</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>कक्षा 9 भौतिकी - गति (अध्याय 8)</strong></p>
+            <p>मोहित सर (एमएससी) द्वारा व्यापक नोट्स</p>
+        </footer>
+    </div>
+
+    <script>
+        // Dark Mode Toggle Functionality
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+        const sunIcon = document.querySelector('.fa-sun');
+        const moonIcon = document.querySelector('.fa-moon');
+
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            
+            if (currentTheme === 'dark') {
+                toggleSwitch.checked = true;
+                sunIcon.style.color = 'var(--text-light)';
+                moonIcon.style.color = 'var(--accent)';
+            } else {
+                sunIcon.style.color = 'var(--accent)';
+                moonIcon.style.color = 'var(--text-light)';
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                sunIcon.style.color = 'var(--text-light)';
+                moonIcon.style.color = 'var(--accent)';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                sunIcon.style.color = 'var(--accent)';
+                moonIcon.style.color = 'var(--text-light)';
+            }
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s, transform 0.6s';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
