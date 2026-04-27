@@ -1,321 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Special THP Notes</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    /* Global Styles */
-    :root {
-      --primary: #ff6b6b;
-      --secondary: #4ecdc4;
-      --accent: #ffe66d;
-      --dark: #292f36;
-      --light: #f7fff7;
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      color: var(--light);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Notes • Premium Study Materials</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #f59e0b;
+            --surface: rgba(255,255,255,0.95);
+            --text: #1e293b;
+            --text-light: #64748b;
+            --shadow: 0 20px 50px rgba(0,0,0,0.12);
+        }
 
-    /* Gradient Animation */
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Main Container */
-    .main-container {
-      width: 90%;
-      max-width: 1200px;
-      padding: 2rem;
-      text-align: center;
-    }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 40%, #ddd6fe 100%);
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-    /* Heading Styles */
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 3.5rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      margin-bottom: 2rem;
-      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-      position: relative;
-      display: inline-block;
-      padding-bottom: 1rem;
-    }
-    
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
-    
-    h1 span {
-      color: var(--accent);
-    }
+        /* Ambient background shapes */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
 
-    /* Subheading */
-    .subtitle {
-      font-size: 1.2rem;
-      margin-bottom: 3rem;
-      opacity: 0.9;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.6;
-    }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -80px;
+            left: -80px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 10s ease-in-out infinite reverse;
+        }
 
-    /* Box Wrapper */
-    .boxes-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    
-    .medium-box {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 2rem;
-      width: 100%;
-      max-width: 500px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .medium-box:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -25px); }
+        }
 
-    .medium-box h2 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-      color: white;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .medium-box h2::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background: var(--accent);
-      border-radius: 3px;
-    }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
 
-    /* Button Container */
-    .button-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
 
-    /* Stylish Buttons */
-    .class-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
-      color: white;
-      padding: 1rem 1.5rem;
-      font-size: 1.1rem;
-      text-decoration: none;
-      border-radius: 12px;
-      border: none;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-    
-    .class-button i {
-      margin-right: 8px;
-      font-size: 1.2rem;
-    }
-    
-    .class-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, var(--secondary), var(--primary));
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-    
-    .class-button:hover::before {
-      opacity: 1;
-    }
-    
-    .class-button:hover {
-      transform: translateY(-5px) scale(1.03);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    }
-    
-    .class-button:active {
-      transform: translateY(0) scale(0.98);
-    }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 20px rgba(99,102,241,0.3);
+        }
 
-    /* Footer */
-    footer {
-      margin-top: 3rem;
-      padding: 1.5rem;
-      font-size: 0.9rem;
-      opacity: 0.8;
-      text-align: center;
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2.5rem;
-      }
-      
-      .subtitle {
-        font-size: 1rem;
-      }
-      
-      .button-container {
-        grid-template-columns: 1fr;
-      }
-      
-      .medium-box {
-        padding: 1.5rem;
-      }
-    }
-    
-    /* Floating Animation */
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-    
-    .floating {
-      animation: float 6s ease-in-out infinite;
-    }
-    
-    /* Pulse Animation */
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    .pulse {
-      animation: pulse 3s ease infinite;
-    }
-  </style>
+        .badge i {
+            font-size: 0.9rem;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 1.75rem;
+            padding: 2rem 1.75rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: var(--shadow);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .icon-english {
+            background: #eef2ff;
+            color: var(--primary);
+        }
+
+        .icon-hindi {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .card h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        /* Button Grid */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1rem;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            position: relative;
+            overflow: hidden;
+            color: white;
+            background: var(--primary);
+            box-shadow: 0 4px 15px rgba(99,102,241,0.25);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(0.97);
+        }
+
+        .btn i {
+            font-size: 0.95rem;
+        }
+
+        /* Hindi card buttons */
+        .card:nth-child(2) .btn {
+            background: #d97706;
+            box-shadow: 0 4px 15px rgba(217,119,6,0.25);
+        }
+
+        .card:nth-child(2) .btn:hover {
+            box-shadow: 0 8px 25px rgba(217,119,6,0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            body {
+                padding: 1rem;
+            }
+            .card {
+                padding: 1.5rem 1.25rem;
+                border-radius: 1.5rem;
+            }
+            .btn-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                padding: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="main-container floating">
-    <h1>Special <span>THP Notes</span></h1>
-    <p class="subtitle">Click on your class to access high-quality notes.</p>
-    
-    <div class="boxes-container">
-      <!-- English Medium Section -->
-      <div class="medium-box pulse">
-        <h2><i class="fas fa-language"></i> English Medium</h2>
-        <div class="button-container">
-          <a href="class9_english.html" class="class-button" target="_blank">
-            <i class="fas fa-book-open"></i> Class 9
-          </a>
-          <a href="class10_english.html" class="class-button" target="_blank">
-            <i class="fas fa-graduation-cap"></i> Class 10
-          </a>
-          <a href="class11_english.html" class="class-button" target="_blank">
-            <i class="fas fa-atom"></i> Class 11
-          </a>
-          <a href="class12_english.html" class="class-button" target="_blank">
-            <i class="fas fa-user-graduate"></i> Class 12
-          </a>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="badge">
+                <i class="fas fa-star"></i> Premium Notes
+            </div>
+            <h1>Special <span class="highlight">THP Notes</span></h1>
+            <p class="subtitle">Select your class & medium to access high-quality study materials</p>
         </div>
-      </div>
 
-      <!-- Hindi Medium Section -->
-      <div class="medium-box pulse">
-        <h2><i class="fas fa-language"></i> Hindi Medium</h2>
-        <div class="button-container">
-          <a href="class9_hindi.html" class="class-button" target="_blank">
-            <i class="fas fa-book-open"></i> Class 9
-          </a>
-          <a href="class10_hindi.html" class="class-button" target="_blank">
-            <i class="fas fa-graduation-cap"></i> Class 10
-          </a>
-          <a href="class11_hindi.html" class="class-button" target="_blank">
-            <i class="fas fa-atom"></i> Class 11
-          </a>
-          <a href="class12_hindi.html" class="class-button" target="_blank">
-            <i class="fas fa-user-graduate"></i> Class 12
-          </a>
+        <!-- Cards -->
+        <div class="cards-grid">
+            <!-- English Medium -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-english">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h2>English Medium</h2>
+                </div>
+                <div class="btn-grid">
+                    <a href="class9_english.html" class="btn" target="_blank">
+                        <i class="fas fa-book-open"></i> Class 9
+                    </a>
+                    <a href="class10_english.html" class="btn" target="_blank">
+                        <i class="fas fa-graduation-cap"></i> Class 10
+                    </a>
+                    <a href="class11_english.html" class="btn" target="_blank">
+                        <i class="fas fa-flask"></i> Class 11
+                    </a>
+                    <a href="class12_english.html" class="btn" target="_blank">
+                        <i class="fas fa-user-graduate"></i> Class 12
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hindi Medium -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-hindi">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h2>Hindi Medium</h2>
+                </div>
+                <div class="btn-grid">
+                    <a href="class9_hindi.html" class="btn" target="_blank">
+                        <i class="fas fa-book-open"></i> Class 9
+                    </a>
+                    <a href="class10_hindi.html" class="btn" target="_blank">
+                        <i class="fas fa-graduation-cap"></i> Class 10
+                    </a>
+                    <a href="class11_hindi.html" class="btn" target="_blank">
+                        <i class="fas fa-flask"></i> Class 11
+                    </a>
+                    <a href="class12_hindi.html" class="btn" target="_blank">
+                        <i class="fas fa-user-graduate"></i> Class 12
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-
-  <footer>
-    <p>© 2026 THP Notes | Designed with <i class="fas fa-heart" style="color: var(--primary);"></i> for students</p>
-  </footer>
-
-  <script>
-    // Add interactive effects
-    document.querySelectorAll('.class-button').forEach(button => {
-      button.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-8px)';
-      });
-      
-      button.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-      });
-    });
-    
-    // Add animation delay to boxes
-    document.querySelectorAll('.medium-box').forEach((box, index) => {
-      box.style.animationDelay = `${index * 0.2}s`;
-    });
-  </script>
 </body>
-</html> 
+</html>
