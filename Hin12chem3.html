@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>THP कोचिंग क्लासेस | वैद्युत रसायन नोट्स</title>
+
+  <!-- Fonts: Clean sans-serif for headings, readable serif for Hindi body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- MathJax configuration -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        processEscapes: true
+      },
+      svg: {
+        fontCache: 'global'
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      /* Refined academic light palette */
+      --primary-color: #1e3b5a;
+      --primary-soft: #2c5282;
+      --accent-color: #b68b40;
+      --bg-color: #fcfaf7;
+      --surface-color: #ffffff;
+      --text-main: #1e1b1a;
+      --text-muted: #4a4540;
+      --text-soft: #5f5b55;
+      --border-color: #d9d2c5;
+      --table-border-strong: #2c3e50;
+      --table-border-weak: #e5ded4;
+      --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0,0,0,0.03);
+      --watermark-color: rgba(30, 59, 90, 0.025);
+      --highlight-bg: #f9f6f0;
+    }
+
+    body.dark-mode {
+      --primary-color: #b8cfe0;
+      --primary-soft: #9bb7d4;
+      --accent-color: #d4a853;
+      --bg-color: #1a1c1d;
+      --surface-color: #242628;
+      --text-main: #e9e3db;
+      --text-muted: #b7b0a6;
+      --text-soft: #9b958b;
+      --border-color: #3f4548;
+      --table-border-strong: #c0cfd8;
+      --table-border-weak: #3a3f42;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
+      --watermark-color: rgba(200, 210, 220, 0.03);
+      --highlight-bg: #2a2c2e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Lora', 'Georgia', serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.8;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Inter', 'Noto Sans Devanagari', system-ui, sans-serif;
+      color: var(--primary-color);
+      line-height: 1.4;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    h2 {
+      font-size: 1.9rem;
+      margin-top: 1.8rem;
+      margin-bottom: 1.2rem;
+      border-bottom: 2px solid var(--primary-soft);
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin: 1.9rem 0 0.9rem;
+      color: var(--primary-soft);
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1.3rem;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin: 1.1rem 0 1.6rem 2.2rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .watermark {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-35deg);
+      font-size: 12vw;
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      font-weight: 700;
+      color: var(--watermark-color);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: -1;
+      user-select: none;
+      letter-spacing: 0.08em;
+    }
+
+    .hero {
+      background-color: var(--surface-color);
+      padding: 70px 20px 50px;
+      text-align: center;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 40px;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin: 15px 0;
+      text-transform: uppercase;
+      color: var(--primary-color);
+    }
+
+    .hero p {
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      font-size: 1rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-date {
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 10px;
+      font-weight: 500;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      background-color: var(--surface-color);
+    }
+
+    .theme-toggle:hover {
+      background: var(--border-color);
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px 100px 20px;
+    }
+
+    .card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      padding: 45px 55px;
+      margin-bottom: 35px;
+      box-shadow: var(--shadow-sm);
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 30px 22px;
+      }
+      .hero h1 {
+        font-size: 2.3rem;
+      }
+    }
+
+    .formula-display {
+      margin: 1.3em 0;
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 2em 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.98rem;
+      background-color: var(--surface-color);
+    }
+
+    th {
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      font-weight: 600;
+      color: var(--text-main);
+      border-top: 2px solid var(--table-border-strong);
+      border-bottom: 1px solid var(--table-border-strong);
+      background-color: var(--highlight-bg);
+    }
+
+    td, th {
+      padding: 14px 16px;
+    }
+
+    td {
+      border-bottom: 1px solid var(--table-border-weak);
+      color: var(--text-muted);
+    }
+
+    tr:last-child td {
+      border-bottom: 2px solid var(--table-border-strong);
+    }
+
+    .image-placeholder {
+      border: 1px dashed var(--border-color);
+      padding: 25px;
+      text-align: center;
+      margin: 2em 0;
+      background-color: rgba(0,0,0,0.01);
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      font-size: 0.95rem;
+      border-radius: 8px;
+    }
+
+    .image-placeholder img {
+      max-width: 100%;
+      border: 1px solid var(--border-color);
+      margin-bottom: 10px;
+      background: #fff;
+      padding: 5px;
+      border-radius: 6px;
+      transition: transform 0.2s;
+    }
+    .image-placeholder img:hover {
+      transform: scale(1.01);
+    }
+
+    .qa-box {
+      margin: 2.4em 0;
+      padding-left: 22px;
+      border-left: 4px solid var(--accent-color);
+      background-color: var(--highlight-bg);
+      padding: 18px 22px;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .qa-box .question {
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 14px;
+      font-style: normal;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      justify-content: center;
+      margin: 55px 0 35px;
+    }
+
+    .academic-btn {
+      background: transparent;
+      border: 2px solid var(--primary-soft);
+      color: var(--primary-color);
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      padding: 14px 36px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background-color: var(--surface-color);
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .academic-btn:hover {
+      background-color: var(--primary-soft);
+      color: white;
+      border-color: var(--primary-soft);
+    }
+
+    #backToTop {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      background: var(--surface-color);
+      color: var(--text-main);
+      width: 46px;
+      height: 46px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    #backToTop.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      margin: 2.2rem 0;
+    }
+
+    .flex-images {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+      align-items: center;
+      margin: 2rem 0;
+    }
+    .flex-images img {
+      width: 48%;
+      max-width: 460px;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .note-muted {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="watermark">THP • रसायन</div>
+
+  <header class="hero">
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">डार्क मोड</button>
+    <p>THP कोचिंग क्लासेस</p>
+    <h1>वैद्युत रसायन</h1>
+    <div class="hero-date">मोहित सर (एमएससी न्यूरोसाइंस)</div>
+  </header>
+
+  <div class="container">
+    <!-- परिचय -->
+    <div class="card">
+      <h2>वैद्युत रसायन (Electrochemistry)</h2>
+      <p>वैद्युत रसायन उन रासायनिक प्रक्रमों का अध्ययन है जिनके कारण इलेक्ट्रॉन गति करते हैं। इलेक्ट्रॉनों की इस गति को विद्युत कहा जाता है, जो एक तत्व से दूसरे तत्व में इलेक्ट्रॉनों के स्थानांतरण द्वारा उत्पन्न होती है, इस अभिक्रिया को ऑक्सीकरण-अपचयन (रेडॉक्स) अभिक्रिया कहते हैं।</p>
+      <h3>दैनिक जीवन में वैद्युत रसायन के अनुप्रयोग</h3>
+      <ul>
+        <li>बैटरियाँ (कार बैटरी, डिजिटल घड़ियाँ, कैलकुलेटर)</li>
+        <li>औद्योगिक पदार्थों का संक्षारण। जैसे Al, Cl₂, NaOH...</li>
+        <li>कुछ रसायनों का निर्माण।</li>
+        <li>विश्लेषणात्मक रसायन में आयनों की सांद्रता ज्ञात करने में। जैसे रक्त में।</li>
+        <li>कुछ बीमारियों के विकास में।</li>
+      </ul>
+    </div>
+
+    <!-- सेल के प्रकार -->
+    <div class="card">
+      <h2>सेल के प्रकार</h2>
+      <h3>क) वैद्युत रासायनिक सेल (Electrochemical Cell) :-</h3>
+      <p>गैल्वैनी सेल एक ऐसा सेल है जो रासायनिक अभिक्रिया की सहायता से विद्युत उत्पन्न कर सकता है।</p>
+      <h3>ख) वैद्युत अपघटनी सेल (Electrolytic Cell) :-</h3>
+      <p>वैद्युत अपघटनी सेल वह सेल है जो किसी रासायनिक अभिक्रिया को आगे बढ़ाने के लिए विद्युत धारा का उपयोग करता है।</p>
+      <h3>वैद्युत रासायनिक सेल और वैद्युत अपघटनी सेल में अंतर</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead> <tr><th>वैद्युत रासायनिक सेल</th><th>वैद्युत अपघटनी सेल</th></tr> </thead>
+          <tbody>
+            <tr><td>रासायनिक ऊर्जा को विद्युत ऊर्जा में बदलता है।</td><td>विद्युत ऊर्जा को रासायनिक ऊर्जा में बदलता है।</td></tr>
+            <tr><td>एक स्वतःस्फूर्त (spontaneous) अभिक्रिया होती है।</td><td>एक अस्वतःस्फूर्त (non-spontaneous) अभिक्रिया होती है।</td></tr>
+            <tr><td>एनोड ऋणावेशित और कैथोड धनावेशित होता है।</td><td>एनोड धनावेशित, कैथोड ऋणावेशित होता है।</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- गैल्वैनी सेल -->
+    <div class="card">
+      <h2>गैल्वैनी सेल (Galvanic Cell) :-</h2>
+      <p>गैल्वैनी सेल एक वैद्युत रासायनिक सेल है जो एक स्वतःस्फूर्त रेडॉक्स अभिक्रिया के माध्यम से रासायनिक ऊर्जा को विद्युत ऊर्जा में परिवर्तित करता है। कुछ सामान्य उदाहरण हैं वोल्टीय सेल, डेनियल सेल, शुष्क सेल, लेक्लांशे सेल।</p>
+      <h3>गैल्वैनी सेल का निर्माण</h3>
+      <p>इसमें एक ताँबे का पात्र होता है जिसमें संतृप्त कॉपर सल्फेट विलयन (CuSO₄) और तनु सल्फ्यूरिक अम्ल (H₂SO₄) वैद्युत अपघट्य के रूप में भरा होता है। जिंक सल्फेट विलयन (ZnSO₄) में डूबी एक अमलगमित जिंक छड़ एनोड का कार्य करती है, जबकि ताँबा कैथोड का कार्य करता है।</p>
+      <p>संतृप्तता बनाए रखने के लिए कॉपर सल्फेट के क्रिस्टल विलयन के संपर्क में रखे जाते हैं। अभिक्रिया के दौरान, जिंक का ऑक्सीकरण होता है और कॉपर आयनों का अपचयन होता है, जिससे विद्युत धारा उत्पन्न होती है।</p>
+      <img src="https://glossary.periodni.com/images/cell_potential.jpg" alt="गैल्वैनी सेल आरेख" style="width:100%; max-width:700px; height:auto; display:block; margin:1.5rem auto; border-radius:8px;">
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>कैथोड</th><th>एनोड</th><th>लवण सेतु</th></tr></thead>
+          <tbody>
+            <tr><td>→ कॉपर</td><td>← जिंक</td><td>KCl</td></tr>
+            <tr><td>CuSO₄ विलयन</td><td>ZnSO₄ विलयन</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- इलेक्ट्रोड विभव -->
+    <div class="card">
+      <h2>इलेक्ट्रोड विभव (Electrode Potential) :-</h2>
+      <p>जब किसी धातु की छड़ को उसके लवण विलयन में डुबोया जाता है, तो धातु की छड़ पर धनात्मक या ऋणात्मक विद्युत विभव विकसित होता है और विलयन पर विपरीत विद्युत विभव विकसित होता है। अतः, धातु और उसके विलयन के बीच के इस विभवांतर को इलेक्ट्रोड विभव कहते हैं।</p>
+      <h3>डेनियल सेल में शामिल चरण</h3>
+      <p>डेनियल सेल में इलेक्ट्रॉन बाह्य परिपथ से जिंक इलेक्ट्रोड से कॉपर इलेक्ट्रोड की ओर प्रवाहित होते हैं, जबकि धातु आयन लवण सेतु के माध्यम से एक अर्ध-सेल से दूसरे अर्ध-सेल में जाते हैं।</p>
+      <p>विद्युत धारा कॉपर इलेक्ट्रोड से जिंक इलेक्ट्रोड की ओर प्रवाहित होती है, अर्थात कैथोड से एनोड की ओर।</p>
+      <h3>सेल अभिक्रिया :-</h3>
+      <p>Zn/ZnSO₄ अर्ध-सेल में ऑक्सीकरण अभिक्रिया होती है। (एनोड)</p>
+      <div class="formula-display">$$Zn \rightarrow Zn^{+2} + 2e^{-}$$</div>
+      <p>Cu/CuSO₄ अर्ध-सेल में अपचयन अभिक्रिया होती है। (कैथोड)</p>
+      <div class="formula-display">$$Cu^{+2} + 2e^{-} \rightarrow Cu$$</div>
+      <p>नेट सेल अभिक्रिया है</p>
+      <div class="formula-display">$$Zn + Cu^{+2} \rightarrow Zn^{+2} + Cu$$</div>
+      <p>सेल को इस प्रकार दर्शाया जाता है</p>
+      <div class="formula-display">$$Zn/Zn^{+2} \parallel Cu^{+2}/Cu$$</div>
+    </div>
+
+    <!-- लवण सेतु -->
+    <div class="card">
+      <h2>लवण सेतु (Salt Bridge) :-</h2>
+      <p>लवण सेतु आयनों की गति की अनुमति देकर दो अर्ध-सेलों के बीच विद्युत उदासीनता बनाए रखता है। यह एक काँच की नली होती है जो जिलेटिन रूप में पोटैशियम क्लोराइड (KCl) या अमोनियम नाइट्रेट (NH₄NO₃) से भरी होती है।</p>
+      <p>जिलेटिन आयनिक गति की अनुमति देता है लेकिन विलयनों के मिश्रण को रोकता है। धनायनों और ऋणायनों की समान आयनिक गतिशीलता के कारण आयन समान रूप से गति करते हैं।</p>
+    </div>
+
+    <!-- मानक इलेक्ट्रोड विभव -->
+    <div class="card">
+      <h2>मानक इलेक्ट्रोड विभव (Standard Electrode Potential) :-</h2>
+      <p>जब किसी धातु की छड़ को 298 K पर उसके आयनों के 1 M विलयन में डुबोया जाता है तो धातु और विलयन के बीच के विभवांतर को मानक इलेक्ट्रोड विभव कहते हैं। इसे $E^{\circ}$ द्वारा दर्शाया जाता है।</p>
+      <p>यह दो प्रकार के होते हैं:</p>
+      <h3>1. ऑक्सीकरण इलेक्ट्रोड विभव :- (एनोड)</h3>
+      <p>धातु इलेक्ट्रॉन खोकर आयन बनती है।</p>
+      <div class="formula-display">$$M_{(s)} \rightarrow M^{n+}_{(aq)} + ne^{-}$$</div>
+      <h3>2. अपचयन इलेक्ट्रोड विभव :- (कैथोड)</h3>
+      <p>आयन इलेक्ट्रॉन ग्रहण करके धातु बनते हैं।</p>
+      <div class="formula-display">$$M^{n+}_{(aq)} + ne^{-} \rightarrow M_{(s)}$$</div>
+      <div class="formula-display">$$E(सेल) = E_{कैथोड} - E_{एनोड}$$</div>
+      <div class="formula-display">$$E^{\circ} = E_{अपचयन} - E_{ऑक्सीकरण}$$</div>
+
+      <div class="qa-box">
+        <p class="question">प्र. मानक इलेक्ट्रोड विभव $E^{\circ}(Zn^{2+}/Zn) = -0.76~V$, $E^{\circ}(Cu^{2+}/Cu) = +0.34~V$ दिए गए हैं। सेल $Zn/Zn^{2+} (1M) \parallel Cu^{2+} (1M)/Cu$ का मानक EMF ($E^{\circ}सेल$) ज्ञात कीजिए।</p>
+        <p><strong>हल:</strong></p>
+        <p>$$E = E_{कैथोड} - E_{एनोड}$$</p>
+        <p>$$= +0.34 - (-0.76)$$</p>
+        <p>$$= 1.1~V$$</p>
+      </div>
+    </div>
+
+    <!-- SHE -->
+    <div class="card">
+      <h2>मानक हाइड्रोजन इलेक्ट्रोड का उपयोग कर मापन</h2>
+      <h3>मानक इलेक्ट्रोड विभव का मापन :-</h3>
+      <p>पूर्ण सेल विभव का उपयोग एक संदर्भ इलेक्ट्रोड के साथ दूसरे इलेक्ट्रोड के इलेक्ट्रोड विभव को मापने के लिए किया जाता है। मानक हाइड्रोजन इलेक्ट्रोड को संदर्भ के रूप में उपयोग किया जाता है (विभव = 0 V)।</p>
+      <h3>मानक हाइड्रोजन इलेक्ट्रोड (SHE) :-</h3>
+      <p>मानक हाइड्रोजन इलेक्ट्रोड एक संदर्भ इलेक्ट्रोड है जिसका नियत और पुनरुत्पादनीय वातावरण में 0.00 वोल्ट का विभव निर्धारित किया गया है।</p>
+      <img src="https://files.mtstatic.com/site_4334/16635/0?Expires=1778322352&Signature=R0kypKjBXKMl0O~qqFR9gpeoDHCs2R2kzNoACDSmDZ-mz7Pi485dLQ4Ubotg83LzKm8C2lSO~LRUGeEajTOejCT-1AJTe5bUxSK31YusXnTe6AAcS2ws-gwlzKBkczMTfTMqeJu7B6dwMHyQRyqTC2bgzVO7nf35ahVbuulU-qc_&Key-Pair-Id=APKAJ5Y6AV4GI7A555NA" alt="मानक हाइड्रोजन इलेक्ट्रोड" style="width:100%; max-width:600px; height:auto; display:block; margin:1.5rem auto;">
+      <h3>निर्माण :-</h3>
+      <p>प्लैटिनम ब्लैक से लेपित प्लैटिनम इलेक्ट्रोड का उपयोग किया जाता है। इलेक्ट्रोड को 1.0 M H⁺ आयनों (सामान्यतः 1.0 M HCl) के विलयन में रखा जाता है। 1 atm दाब पर हाइड्रोजन गैस इलेक्ट्रोड के ऊपर प्रवाहित की जाती है।</p>
+      <h3>SHE पर अभिक्रिया :-</h3>
+      <p>यह व्यवस्था एक उत्क्रमणीय रेडॉक्स अभिक्रिया सुनिश्चित करती है।</p>
+      <div class="formula-display">$$H_{2}(g) \rightleftharpoons 2H^{+} + 2e^{-}$$</div>
+      <p>यह सेल, जिस सेल में इसका उपयोग किया जाता है उसके आधार पर एनोड (ऑक्सीकरण) और कैथोड (अपचयन) दोनों के रूप में कार्य कर सकता है।</p>
+      <p>SHE का इलेक्ट्रोड विभव 298 K पर 0.00 वोल्ट होता है। इस मान का उपयोग अन्य सभी इलेक्ट्रोड विभवों को मापने के लिए एक संदर्भ बिंदु के रूप में किया जाता है।</p>
+    </div>
+
+    <!-- अभिक्रियाशीलता श्रेणी -->
+    <div class="card">
+      <h2>⚡ अभिक्रियाशीलता श्रेणी + इलेक्ट्रोड विभव</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ट्रिक शब्द</th>
+              <th>तत्व</th>
+              <th>मानक इलेक्ट्रोड विभव (E°)</th>
+              <th>अभिक्रिया प्रकार</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>ले</td><td>Li</td><td>-3.04 V</td><td rowspan="17"><strong>ऑक्सीकरण (एनोड)</strong><br>अपचायक क्षमता ↑</td></tr>
+            <tr><td>के</td><td>K</td><td>-2.93 V</td></tr>
+            <tr><td>भारत</td><td>Ba</td><td>-2.90 V</td></tr>
+            <tr><td>सरकार</td><td>Sr</td><td>-2.89 V</td></tr>
+            <tr><td>का</td><td>Ca</td><td>-2.87 V</td></tr>
+            <tr><td>नाम</td><td>Na</td><td>-2.71 V</td></tr>
+            <tr><td>मागे</td><td>Mg</td><td>-2.37 V</td></tr>
+            <tr><td>अलमारी</td><td>Al</td><td>-1.66 V</td></tr>
+            <tr><td>मन</td><td>Mn</td><td>-1.18 V</td></tr>
+            <tr><td>जाने</td><td>Zn</td><td>-0.76 V</td></tr>
+            <tr><td>करे</td><td>Cr</td><td>-0.74 V</td></tr>
+            <tr><td>फिर</td><td>Fe</td><td>-0.44 V</td></tr>
+            <tr><td>कनाडा</td><td>Cd</td><td>-0.40 V</td></tr>
+            <tr><td>को</td><td>Co</td><td>-0.28 V</td></tr>
+            <tr><td>नहीं</td><td>Ni</td><td>-0.25 V</td></tr>
+            <tr><td>सुनता</td><td>Sn</td><td>-0.14 V</td></tr>
+            <tr><td>प्रभात</td><td>Pb</td><td>-0.13 V</td></tr>
+            <tr><td>है</td><td>H</td><td>0.00 V</td><td rowspan="9"><strong>अपचयन (कैथोड)</strong><br>ऑक्सीकारक क्षमता ↑</td></tr>
+            <tr><td>क्या</td><td>Cu</td><td>+0.34 V</td></tr>
+            <tr><td>आई</td><td>I₂</td><td>+0.54 V</td></tr>
+            <tr><td>आगे</td><td>Ag</td><td>+0.80 V</td></tr>
+            <tr><td>होगी</td><td>Hg</td><td>+0.85 V</td></tr>
+            <tr><td>बाहर</td><td>Br₂</td><td>+1.07 V</td></tr>
+            <tr><td>Pt</td><td>Pt</td><td>+1.20 V</td></tr>
+            <tr><td>और</td><td>Au</td><td>+1.50 V</td></tr>
+            <tr><td>fast</td><td>F₂</td><td>+2.87 V</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- नर्नस्ट समीकरण -->
+    <div class="card">
+      <h2>नर्नस्ट समीकरण और गिब्स मुक्त ऊर्जा</h2>
+      <p>नर्नस्ट समीकरण अमानक परिस्थितियों में सेल विभव के निर्धारण को सक्षम बनाता है। यह मापे गए सेल विभव को अभिक्रिया भागफल से संबंधित करता है और साम्य स्थिरांकों के सटीक निर्धारण की अनुमति देता है।</p>
+      <p>नर्नस्ट समीकरण मानक परिस्थितियों में गिब्स मुक्त ऊर्जा में मानक परिवर्तनों से व्युत्पन्न होता है।</p>
+      <div class="formula-display">$$E^{\circ} = E_{अपचयन} - E_{ऑक्सीकरण} \quad ---(1)$$</div>
+      <p>$\Delta G$ सामान्य परिस्थितियों में E से निम्न प्रकार संबंधित है</p>
+      <div class="formula-display">$$\Delta G = -nFE \quad ---(2)$$</div>
+      <p>जहाँ n स्थानांतरित इलेक्ट्रॉनों की संख्या है। F फैराडे स्थिरांक (96,500 C/mol) है। E विभवांतर है।</p>
+      <p>मानक परिस्थितियों में, समीकरण 2 तब होगी</p>
+      <div class="formula-display">$$\Delta G^{\circ} = -nFE^{\circ} \quad ---(3)$$</div>
+      <p>ऊष्मागतिकी से अमानक परिस्थितियों में गिब्स ऊर्जा परिवर्तन को मानक परिस्थितियों में गिब्स ऊर्जा परिवर्तन से निम्न समीकरण द्वारा संबंधित किया जा सकता है</p>
+      <div class="formula-display">$$\Delta G = \Delta G^{\circ} + RT \ln Q$$</div>
+      <div class="formula-display">$$-nFE = -nFE^{\circ} + RT \ln Q$$</div>
+      <p>दोनों तरफ nF से भाग देने पर</p>
+      <div class="formula-display">$$\frac{-nFE}{nF} = \frac{-nFE^{\circ}}{nF} + \frac{RT}{nF} \ln Q$$</div>
+      <div class="formula-display">$$-E = -E^{\circ} + \frac{RT}{nF} \ln Q$$</div>
+      <p>दोनों तरफ (-) से गुणा करने पर</p>
+      <div class="formula-display">$$E = E^{\circ} - \frac{RT}{nF} \ln Q$$</div>
+      <div class="formula-display">$$E = E^{\circ} - \frac{2.303 RT}{nF} \log_{10} Q \quad ---(4)$$</div>
+      <p><em>$[\ln x = 2.303 \log_{10} x]$</em></p>
+      <p>मानक ताप $T = 298~K$, $R = 8.314$ और $F = 96,500$ पर, पद $\frac{2.303 RT}{F}$ का मान $0.0592~V$ होता है और समीकरण को इस प्रकार लिखा जा सकता है</p>
+      <div class="formula-display">$$E = E^{\circ} - \frac{0.0592~V}{n} \log_{10} Q$$</div>
+      <div class="formula-display">$$E = E^{\circ} - \frac{0.0592}{n} \log_{10} \frac{[उत्पाद]}{[अभिकारक]}$$</div>
+
+      <div class="qa-box">
+        <p class="question">प्र. उस सेल को निरूपित कीजिए जिसमें निम्नलिखित अभिक्रिया होती है:<br>$Mg(s) + 2Ag^{+}(0.0001M) \rightarrow Mg^{2+}(0.130M) + 2Ag(s)$<br>इसके Eसेल की गणना कीजिए, यदि $E^{\circ}_{सेल} = 3.17V$ है।</p>
+        <p><strong>हल:</strong> दिया है,</p>
+        <p>$E^{\circ} = 3.17~V$</p>
+        <p>$[Ag^{+}]$ की मोलर सांद्रता = $0.0001~M$</p>
+        <p>$[Mg^{2+}]$ की मोलर सांद्रता = $0.130~M$</p>
+        <p><strong>सेल निरूपण :-</strong></p>
+        <p>$$Mg/Mg^{2+} \parallel Ag^{+}/Ag$$</p>
+      </div>
+    </div>
+
+    <!-- Log मान और साम्य -->
+    <div class="card">
+      <h2>Log के मान</h2>
+      <div class="table-wrapper">
+        <table>
+          <tbody>
+            <tr><td>log (1) = 0</td><td>log (6) = 0.77</td></tr>
+            <tr><td>log (2) = 0.30</td><td>log (7) = 0.84</td></tr>
+            <tr><td>log (3) = 0.47</td><td>log (8) = 0.90</td></tr>
+            <tr><td>log (4) = 0.60</td><td>log (9) = 0.95</td></tr>
+            <tr><td>log (5) = 0.69</td><td>log (10) = 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>$E^\circ_{सेल}$ और $K_{eq}$ के बीच संबंध-</h3>    
+      <div class="formula-display">$$\Delta G^\circ = -nFE^\circ_{सेल}$$</div>
+      <div class="formula-display">$$\Delta G^\circ = -RT \ln K_{eq}$$</div>
+      <p>दोनों समीकरणों की तुलना करने पर:</p>
+      <div class="formula-display">$$nFE^\circ_{सेल} = RT \ln K_{eq}$$</div>
+      <div class="formula-display">$$nFE^\circ_{सेल} = 2.303RT \log K_{eq}$$</div>
+      <p>298 K पर,</p>
+      <div class="formula-display">$$E^\circ_{सेल} = \frac{0.0591}{n}\log K_{eq}$$</div>
+      <hr>
+    </div>
+
+    <!-- चालकता -->
+    <div class="card">
+      <h2>वैद्युत अपघटनी विलयन की चालकता :-</h2>
+      <h3>प्रतिरोध (Resistance):-</h3>
+      <p>यह चालक के माध्यम से विद्युत धारा के प्रवाह में बाधा है। अथवा यह इसकी लंबाई के अनुक्रमानुपाती और अनुप्रस्थ काट के क्षेत्रफल के व्युत्क्रमानुपाती होता है।</p>
+      <div class="formula-display">$$R \propto l \quad R \propto \frac{1}{A}$$</div>
+      <div class="formula-display">$$R = \rho \frac{l}{A}$$</div>
+      <p>जहाँ, $l$ = लंबाई, $A$ = अनुप्रस्थ काट का क्षेत्रफल, $\rho$ = विशिष्ट प्रतिरोधकता।</p>
+      <h3>विशिष्ट प्रतिरोधकता (Specific resistivity):-</h3>
+      <p>किसी पदार्थ की प्रतिरोधकता उसका प्रतिरोध है जब यह 1 cm लंबा हो और इसके अनुप्रस्थ काट का क्षेत्रफल 1 cm² हो।</p>
+      <div class="formula-display">$$\rho = R \cdot \frac{A}{l}$$</div>
+      <p>प्रतिरोध $R$ की इकाई = ओम ($\Omega$)</p>
+      <p>प्रतिरोधकता $\rho$ की इकाई = ओम मीटर ($\Omega~m$)</p>
+      <h3>चालकत्व (Conductance) :-</h3>
+      <p>प्रतिरोध का व्युत्क्रम।</p>
+      <div class="formula-display">$$G = \frac{1}{R}$$</div>
+      <div class="formula-display">$$G = \frac{1}{\rho} \times \frac{A}{l}$$</div>
+      <div class="formula-display">$$G = \frac{KA}{l}$$</div>
+      <p>जहाँ, $K$ = कापा।</p>
+      <p>चालकत्व की इकाई = $\Omega^{-1}$ (सीमेंस, महो)</p>
+    </div>
+
+    <!-- मोलर चालकता -->
+    <div class="card">
+      <h2>चालकता (Conductivity) :-</h2>
+      <p>यह प्रतिरोधकता का व्युत्क्रम है।</p>
+      <div class="formula-display">$$K = G \frac{l}{A} \quad \left[ K = \frac{1}{\rho} \right]$$</div>
+      <p>किसी पदार्थ की चालकता उसका चालकत्व है जब यह एक cm लंबा हो और इसके अनुप्रस्थ काट का क्षेत्रफल 1 cm² हो। $[A = 1cm^{2}, l = 1cm]$ $G = K$</p>
+      <p>चालकता की इकाई = $\Omega^{-1} cm^{-1}$, $S~m^{-1}$</p>
+      <h2>मोलर चालकता (Molar Conductivity)</h2>
+      <p>यह विलयन में वैद्युत अपघट्य के सभी आयनों के 1 gm mol को घोलने पर उत्पन्न चालकता है। इसे $\Lambda_{m}$ द्वारा दर्शाया जाता है।</p>
+      <div class="formula-display">$$\Lambda_{m} = K \times V$$</div>
+      <p>इकाई = $ohm^{-1} cm^{2} mol^{-1}$ या $S~cm^{2} mol^{-1}$</p>
+      <div class="formula-display">$$\Lambda_{m} = \frac{K \times 1000}{C (मोलरता)}$$</div>
+      <p>तनुकरण के साथ चालकता घटती है, जबकि मोलर चालकता बढ़ती है।</p>
+      <div class="image-placeholder">
+        <p><em>[ग्राफ: $\Lambda_{m}$ vs $\sqrt{c}$ प्रबल वैद्युत अपघट्य (रैखिक) और दुर्बल वैद्युत अपघट्य (वक्र) दर्शाता है]</em></p>
+      </div>
+    </div>
+
+    <!-- कोलरॉश -->
+    <div class="card">
+      <h2>कोलरॉश नियम (Kohlrausch Law)</h2>
+      <p>किसी वैद्युत अपघट्य की सीमांत मोलर चालकता, वैद्युत अपघट्य के धनायन और ऋणायन के व्यक्तिगत योगदान का योग होती है।</p>
+      <div class="formula-display">$$\Lambda^{\circ}_{m}AB = \Lambda^{\circ}_{m}A^{+} + \Lambda^{\circ}_{m}B^{-}$$</div>
+      <h3>कोलरॉश के अनुप्रयोग</h3>
+      <ul>
+        <li>दुर्बल वैद्युत अपघट्य की सीमांत मोलर चालकता की गणना।</li>
+        <li>वियोजन की मात्रा ($\alpha$) की गणना</li>
+      </ul>
+      <div class="formula-display">$$\alpha = \frac{\Lambda_{m}^{c}}{\Lambda^{\circ}_{m}}$$</div>
+      <ul><li>दुर्बल वैद्युत अपघट्य के वियोजन स्थिरांक की गणना</li></ul>
+      <div class="formula-display">$$Kc = \frac{C\alpha^{2}}{1-\alpha}$$</div>
+
+      <div class="qa-box">
+        <p class="question">प्र. 298 K पर 0.20 M KCl विलयन की चालकता 0.0248 S cm⁻¹ है। इसकी मोलर चालकता ज्ञात कीजिए।</p>
+        <p><strong>हल:</strong> दिया है, मोलरता = 0.20 M, $K = 0.0248~S~cm^{-1}$</p>
+        <p>$$\Lambda_{m} = \frac{K \times 1000}{मोलरता}$$</p>
+        <p>$$\Lambda_{m} = \frac{0.0248 \times 1000}{0.20} = 124~S~cm^{2} mol^{-1}$$</p>
+      </div>
+    </div>
+
+    <!-- फैराडे -->
+    <div class="card">
+      <h2>फैराडे स्थिरांक</h2>
+      <p>1 मोल $e^{-}$ का आवेश = $6.023 \times 10^{23} \times 1.6 \times 10^{-19} C = 96500~C$</p>
+      <h2>फैराडे के वैद्युत अपघटन के नियम</h2>
+      <h3>प्रथम नियम :-</h3>
+      <p>वैद्युत अपघटन के दौरान इलेक्ट्रोड पर निक्षेपित या मुक्त हुए किसी भी पदार्थ का द्रव्यमान प्रवाहित आवेश की मात्रा के अनुक्रमानुपाती होता है।</p>
+      <div class="formula-display">$$W \propto Q$$</div>
+      <div class="formula-display">$$W \propto I \cdot T$$</div>
+      <div class="formula-display">$$W = Z \cdot I \cdot T$$</div>
+      <p>जहाँ, $Z$ = वैद्युत रासायनिक तुल्यांक, $I$ = धारा, $T$ = समय</p>
+      <div class="formula-display">$$Z = \frac{E}{96500}$$</div>
+      <p>जहाँ, $E$ = तुल्यांकी भार</p>
+      <div class="formula-display">$$E = \frac{\text{मोलर द्रव्यमान}}{n \text{ गुणक}}$$</div>
+      <h3>द्वितीय नियम :-</h3>
+      <p>जब समान मात्रा की विद्युत श्रेणीक्रम में जुड़े दो विभिन्न वैद्युत अपघट्यों से प्रवाहित की जाती है तो इलेक्ट्रोड पर निक्षेपित पदार्थ का द्रव्यमान उनके तुल्यांकी भार के अनुक्रमानुपाती होता है।</p>
+      <div class="image-placeholder">
+        <p><em>[आरेख: AgNO₃ और CuSO₄ सेल श्रेणीक्रम में जुड़े हुए]</em></p>
+      </div>
+      <div class="qa-box">
+        <p class="question">प्र. CuSO₄ के एक विलयन का 10 मिनट तक 1.5 एम्पियर की धारा से वैद्युत अपघटन किया जाता है। कैथोड पर निक्षेपित कॉपर का द्रव्यमान क्या है?</p>
+        <p><strong>हल:</strong> समय $T = 10 \times 60 = 600~sec$, $I = 1.5~A$</p>
+        <p>$CuSO_{4} = Cu^{+2} + SO_{4}^{-2}$, $M = 63.5, n = 2$</p>
+        <p>$$W = \frac{63.5 \times 1.5 \times 600}{2 \times 96500} = \frac{57150}{193000} \approx 0.29~g$$</p>
+      </div>
+    </div>
+
+    <!-- बैटरियाँ -->
+    <div class="card">
+      <h2>बैटरियाँ (Batteries)</h2>
+      <p>बैटरियाँ दो प्रकार की होती हैं:</p>
+      <ol><li>प्राथमिक सेल</li><li>द्वितीयक सेल</li></ol>
+      <h3>1.) प्राथमिक सेल :-</h3>
+      <p>वह सेल जिसमें अभिक्रिया केवल एक बार होती है और कुछ समय तक उपयोग के बाद यह समाप्त हो जाती है। उदा: शुष्क सेल, मर्करी सेल।</p>
+      <h3>2.) द्वितीयक सेल :-</h3>
+      <p>वह सेल जिसे विपरीत दिशा में धारा प्रवाहित करके पुनः आवेशित किया जा सकता है, इसका पुनः उपयोग किया जा सकता है। उदा: लेड स्टोरेज बैटरी, Ni-Cd सेल।</p>
+      <h3>3.) ईंधन सेल :-</h3>
+      <p>वे सेल जिनमें हाइड्रोजन (H₂), CH₄, CH₃OH, आदि जैसे ईंधनों के दहन से विद्युत ऊर्जा उत्पन्न होती है। उदा: H₂-O₂ ईंधन सेल।</p>
+
+      <h2>शुष्क सेल :-</h2>
+      <p>इसके खोजकर्ता के नाम पर इसे लेक्लांशे सेल भी कहा जाता है। सबसे परिचित सेल जो अधिकतर रेडियो, रिमोट, खिलौने आदि में उपयोग होता है। यह सेल 1.25 - 1.50 V का विभव देता है।</p>
+      <p>इस सेल में जिंक का पात्र होता है जो एनोड का कार्य करता है जिस पर ऑक्सीकरण होता है। सेल के मध्य में ग्रेफाइट की छड़ रखी जाती है जो NH₄Cl + ZnCl₂ के लेप से भरी होती है। ग्रेफाइट छड़ कैथोड का कार्य करती है जिस पर अपचयन होता है, जो पिसे हुए MnO₂ से घिरी होती है।</p>
+      <h3>इलेक्ट्रोड अभिक्रियाएँ :-</h3>
+      <p>एनोड पर :</p>
+      <div class="formula-display">$$-Zn \rightarrow Zn^{+2} + 2e^{-}$$</div>
+      <p>कैथोड पर :</p>
+      <div class="formula-display">$$2MnO_{2} + 2NH_{4}^{+} + 2e^{-} \rightarrow Mn_{2}O_{3} + 2NH_{3} + H_{2}O$$</div>
+      <p>नेट:</p>
+      <div class="formula-display">$$Zn + 2MnO_{2} + 2NH_{4}^{+} \rightarrow Zn^{+2} + Mn_{2}O_{3} + 2NH_{3} + H_{2}O$$</div>
+      <div class="flex-images">
+        <img src="https://f.nooncdn.com/p/v1572860841/N15227925A_2.jpg?width=480" alt="शुष्क सेल">
+        <img src="https://glossary.periodni.com/images/leclanche_dry_cell.jpg" alt="लेक्लांशे सेल">
+      </div>
+    </div>
+
+    <!-- मर्करी और लेड बैटरी -->
+    <div class="card">
+      <h2>मर्करी सेल :-</h2>
+      <p>शुष्क सेल का छोटा रूप। यह सेल मुख्यतः कम धारा वाले उपकरणों जैसे श्रवण यंत्र, घड़ियों में उपयोग होता है। यह सेल 1.35 V का वोल्टेज देता है।</p>
+      <p>इस सेल में एक Zn कंटेनर होता है जो एनोड का कार्य करता है जिस पर ऑक्सीकरण होता है। सेल के मध्य में रखी ग्रेफाइट की छड़ कैथोड का कार्य करती है जिस पर अपचयन होता है। पात्र HgO + KOH के लेप से भरा होता है।</p>
+      <ul>
+        <li>एनोड = $Zn(s) + 2OH^{-} \rightarrow ZnO(s) + H_{2}O + 2e^{-}$</li>
+        <li>कैथोड = $HgO + H_{2}O + 2e^{-} \rightarrow Hg(l) + 2OH^{-}$</li>
+      </ul>
+      <div class="formula-display">$$Zn(s) + HgO(s) \rightarrow ZnO(s) + Hg(l)$$</div>
+      <div class="flex-images">
+        <img src="https://files.askiitians.com/cdn1/images/2016126-14420670-9919-12-galvanic-cells.jpg" alt="मर्करी सेल">
+        <img src="https://hi-static.z-dn.net/files/dc8/d86c66d7fbb5688323ad8e8a238a77d4.jpg" alt="मर्करी सेल आरेख">
+      </div>
+
+      <h2>लेड स्टोरेज बैटरी :-</h2>
+      <p>यह एक द्वितीयक सेल है जो ऑटोमोबाइल और इनवर्टर में उपयोग होती है। इस सेल में बारी-बारी से रखे छह वोल्टीय सेल होते हैं। यह सेल 12 V का वोल्टेज देता है जिसमें तीन सेल 2V देते हैं। ये पतली फाइबर ग्लास शीट से पृथक होते हैं।</p>
+      <ul><li>एनोड: Pb प्लेटें और एनोड का कार्य करती हैं।</li><li>कैथोड: PbO₂ और कैथोड का कार्य करता है।</li></ul>
+      <p>द्रव्यमान से 38% तनु H₂SO₄ वैद्युत अपघट्य के रूप में प्रयुक्त होता है।</p>
+      <ul><li>एनोड:</li></ul>
+      <div class="formula-display">$$Pb(s) + SO_{4}^{2-}(aq) \rightarrow PbSO_{4}(s) + 2e^{-}$$</div>
+      <ul><li>कैथोड:</li></ul>
+      <div class="formula-display">$$PbO_{2} + SO_{4}^{2-}(aq) + 4H^{+}(aq) + 2e^{-} \rightarrow PbSO_{4}(s) + 2H_{2}O$$</div>
+      <ul><li>नेट:</li></ul>
+      <div class="formula-display">$$Pb(s) + PbO_{2}(s) + 4H^{+}(aq) + 2SO_{4}^{2-}(aq) \rightarrow 2PbSO_{4}(s) + 2H_{2}O$$</div>
+      <div class="flex-images">
+        <img src="https://www.poriyaan.in/media/imgPori/images11/84AGYLY.png" alt="लेड बैटरी">
+        <img src="https://jmhpower.com/wp-content/uploads/2024/08/Lead-Acid-Battery.jpg" alt="लेड एसिड बैटरी">
+      </div>
+    </div>
+
+    <!-- कार्रवाई बटन -->
+    <div class="action-buttons">
+      <button class="academic-btn" id="btnPyqNumerical">📐 आंकिक PYQ</button>
+      <button class="academic-btn" id="btnMcqPrevious">📋 पिछले वर्ष MCQ</button>
+    </div>
+
+  </div><!-- end container -->
+
+  <button id="backToTop" onclick="scrollToTop()">↑</button>
+
+  <script>
+    (function() {
+      // Theme toggle
+      window.toggleTheme = function() {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.getElementById('themeToggle');
+        if (document.body.classList.contains('dark-mode')) {
+          btn.innerHTML = 'लाइट मोड';
+          localStorage.setItem('theme', 'dark');
+        } else {
+          btn.innerHTML = 'डार्क मोड';
+          localStorage.setItem('theme', 'light');
+        }
+      };
+
+      // Load saved theme
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeToggle').innerHTML = 'लाइट मोड';
+      }
+
+      // Back to top
+      const backBtn = document.getElementById('backToTop');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 350) {
+          backBtn.classList.add('show');
+        } else {
+          backBtn.classList.remove('show');
+        }
+      });
+      window.scrollToTop = function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      // Buttons actions (placeholders)
+      document.getElementById('btnPyqNumerical').addEventListener('click', function() {
+        alert('आंकिक PYQ अनुभाग यहाँ खुलेगा।\n(आप एक PDF या समर्पित पृष्ठ से लिंक कर सकते हैं।)');
+      });
+      document.getElementById('btnMcqPrevious').addEventListener('click', function() {
+        alert('पिछले वर्ष के MCQ का अनुभाग यहाँ खुलेगा।\n(आप एक PDF या समर्पित पृष्ठ से लिंक कर सकते हैं।)');
+      });
+    })();
+  </script>
+</body>
+</html>
