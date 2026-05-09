@@ -1,87 +1,999 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter: Electrochemistry | Notes by Mohit Sir</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Coaching Classes - Electrochemistry Notes</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .glass-header {
-      background: rgba(15, 23, 42, 0.9);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .iframe-container {
-      height: calc(100vh - 100px);
-      background: #0f172a;
-    }
-    .accent-gradient {
-      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
-      height: 4px;
-      width: 100%;
-    }
-  </style>
+    <style>
+        :root {
+            /* Academic Light Mode Variables */
+            --primary-color: #0f2b5b; /* Deep Oxford Blue */
+            --secondary-color: #1e3a8a;
+            --bg-color: #f8f9fa; /* Paper white */
+            --surface-color: #ffffff;
+            --text-main: #202124;
+            --text-muted: #4d5156;
+            --border-color: #dadce0;
+            --table-border-strong: #202124;
+            --table-border-weak: #e8eaed;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            --watermark-color: rgba(15, 43, 91, 0.03);
+        }
+
+        body.dark-mode {
+            /* Academic Dark Mode Variables */
+            --primary-color: #8ab4f8; /* Muted academic blue */
+            --secondary-color: #aecbfa;
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-main: #e8eaed;
+            --text-muted: #9aa0a6;
+            --border-color: #3c4043;
+            --table-border-strong: #e8eaed;
+            --table-border-weak: #3c4043;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            --watermark-color: rgba(255, 255, 255, 0.02);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lora', serif; /* Serif for academic reading */
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif; /* Clean sans-serif for headers */
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+
+        /* Formal Watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 14vw;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: var(--watermark-color);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: -1;
+            user-select: none;
+            letter-spacing: 0.05em;
+        }
+
+        /* Header / Title Page Style */
+        .hero {
+            background-color: var(--surface-color);
+            padding: 80px 20px 60px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            margin: 15px 0;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        .hero-date {
+            font-family: 'Inter', sans-serif;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+        }
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border-color);
+            color: var(--text-main);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 0 20px 100px 20px;
+        }
+
+        /* Sections / Cards */
+        .card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 45px 50px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            border-radius: 4px;
+        }
+
+        .card h2 {
+            font-size: 1.7rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            margin-top: 10px;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .card p {
+            margin-bottom: 1.2em;
+            text-align: justify;
+        }
+
+        .card ul, .card ol {
+            margin-bottom: 1.5em;
+            padding-left: 2em;
+        }
+
+        .card li {
+            margin-bottom: 0.5em;
+        }
+
+        /* Formulas Display (Unboxed & Academic) */
+        .formula-display {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            text-align: center;
+            font-size: 1.15rem;
+            color: var(--text-main);
+        }
+
+        /* Academic Tables (Booktabs style) */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 2em 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+        }
+
+        th {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--text-main);
+            border-top: 2px solid var(--table-border-strong);
+            border-bottom: 1px solid var(--table-border-strong);
+        }
+
+        td {
+            border-bottom: 1px solid var(--table-border-weak);
+            color: var(--text-muted);
+        }
+
+        tr:last-child td {
+            border-bottom: 2px solid var(--table-border-strong);
+        }
+
+        /* Images / Placeholders */
+        .image-placeholder {
+            border: 1px dashed var(--border-color);
+            padding: 20px;
+            text-align: center;
+            margin: 2em 0;
+            background-color: rgba(0,0,0,0.02);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .image-placeholder img {
+            max-width: 100%;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            background: #fff;
+            padding: 5px;
+        }
+        
+        .image-placeholder p {
+            text-align: center;
+            margin-bottom: 0;
+            color: var(--text-muted);
+        }
+
+        .image-placeholder ul {
+            display: inline-block;
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        /* Question & Answer Boxes */
+        .qa-box {
+            margin: 2.5em 0;
+            padding-left: 20px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .qa-box .question {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* Floating Back to Top Button */
+        #backToTop {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--surface-color);
+            color: var(--text-main);
+            width: 45px;
+            height: 45px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #backToTop:hover {
+            background: var(--border-color);
+        }
+
+        /* Print optimization for academic documents */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .theme-toggle, #backToTop, .watermark {
+                display: none;
+            }
+            .card {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                margin-bottom: 2em;
+            }
+            .hero {
+                border-bottom: 1px solid black;
+            }
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 20px 40px;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .card {
+                padding: 30px 25px;
+            }
+            #backToTop {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
 </head>
+<body>
 
-<body class="bg-slate-900 text-slate-100 flex flex-col min-h-screen">
+    <div class="watermark">THP • CHEM</div>
 
-  <!-- HEADER -->
-  <header class="glass-header sticky top-0 z-50 px-6 py-4 flex flex-col md:flex-row justify-between items-center shadow-2xl">
+    <header class="hero">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">Dark Mode</button>
+        <p>THP Coaching Classes</p>
+        <h1>Electrochemistry</h1>
+        <div class="hero-date">Mohit Sir (Msc Neuroscience )</div>
+    </header>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Electrochemistry</h2>
+            <p>Electrochemistry is study of chemical processes that cause electrons to move. This movement of electrons is Called electricity, which Can be generated by movement of electrons from one element to another in a reaction known as an Oxidation-reduction (redox) reaction.</p>
+            
+            <h3>Application of Electrochemistry in daily life</h3>
+            <ul>
+                <li>Batteries (car batteries, digital watches, calculators)</li>
+                <li>Corrosion of industrial materials. e.g. Al, Cl2, NaOH...</li>
+                <li>Preparation of some chemical.</li>
+                <li>In analytical chemistry to determine concentration of ion. e.g. in blood.</li>
+                <li>In development of a certain disease.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Types of Cells</h2>
+            <h3>A] ELECTROCHEMICAL CELL :-</h3>
+            <p>A Galvanic cell is a cell that can produce electricity with the help of chemical reaction.</p>
+            
+            <h3>B] ELECTROLYTIC CELL :-</h3>
+            <p>An electrolytic cell is a cell that uses an electric current for the progression of a chemical reaction.</p>
+
+            <h3>Difference of electrochemical cell and electrolytic cell</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Electrochemical cell</th>
+                            <th>Electrolytic cell</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Convert chemical energy into electrical energy.</td>
+                            <td>Convert electrical energy into chemical energy.</td>
+                        </tr>
+                        <tr>
+                            <td>A spontaneous reaction occurs.</td>
+                            <td>A non-spontaneous reaction occurs.</td>
+                        </tr>
+                        <tr>
+                            <td>The anode is negatively charged and the cathode is positively charged.</td>
+                            <td>The anode is positively charged, the cathode is negatively charged.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>GALVANIC CELL :-</h2>
+            <p>A galvanic cell is an electrochemical cell that converts chemical energy into electrical energy through a spontaneous redox reaction.. Some common example are Voltanic cell, Daniel cell, dry cell, leclanche cell.</p>
+            
+           
+
+<h3 style="font-size:28px; color:#0f172a;">
+    Construction of Galvanic Cell
+</h3>
+
+<p style="font-size:18px; line-height:1.8; color:#334155; text-align:justify;">
     
-    <div class="flex items-center space-x-4">
-      <div class="p-2 bg-indigo-600 rounded-lg shadow-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-        </svg>
-      </div>
+</p>
 
-      <div>
-        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">
-          Chapter: <span class="text-indigo-400">Electrochemistry</span>
-        </h1>
-        <p class="text-sm text-indigo-300 font-semibold tracking-wide">
-          Notes by Mohit Sir
-        </p>
-      </div>
+<p style="font-size:18px; line-height:1.8; color:#334155; text-align:justify;">
+    It consists of a copper vessel containing saturated copper sulphate solution (CuSO₄) and dilute sulphuric acid (H₂SO₄) as electrolyte. 
+    An amalgamated zinc rod dipped in zinc sulphate solution (ZnSO₄) acts as the anode, while copper acts as the cathode.
+</p>
+
+<p style="font-size:18px; line-height:1.8; color:#334155; text-align:justify;">
+    Copper sulphate crystals are kept in contact with the solution to maintain saturation. 
+    During the reaction, zinc is oxidized and copper ions are reduced, producing electric current.
+</p>
+
+
+            <img src="https://glossary.periodni.com/images/cell_potential.jpg" 
+style="width:100%; max-width:900px; height:auto; display:block; margin:auto;">
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cathode</th>
+                            <th>Anode-</th>
+                            <th>Salt bridge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>→ Copper</td>
+                            <td>←← Zinc</td>
+                            <td>KCl</td>
+                        </tr>
+                        <tr>
+                            <td>CuSO4 Solution</td>
+                            <td>ZnSO4 Solution</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Electrode Potential :-</h2>
+            <p>When a metal rod is deep into its salt solution, a positive or negative electric potential is developed on the metal rod and an opposite electric potential is developed on the solution. Therefore, this potential difference between metal and its solution is known as electrode potential.</p>
+            
+            <h3>Step involve in daniel cell</h3>
+            <p>In a daniel cell electrons flow from zinc electrode to copper electrode through an external circuit while metal ion from the one half cell to the other through the salt bridge.</p>
+            <p>The current flows from the copper electrode to zinc electrode thats is cathode to anode.</p>
+            
+            <h3>Cell Reaction :-</h3>
+            <p>In Zn/ZnSO4 half cell Oxidation reaction occurs. (Anode)</p>
+            <div class="formula-display">
+                $$Zn \rightarrow Zn^{+2} + 2e^{-}$$
+            </div>
+            <p>In Cu/CuSO4 half cell, reduction reaction occurs. (Cathode)</p>
+            <div class="formula-display">
+                $$Cu^{+2} + 2e^{-} \rightarrow Cu$$
+            </div>
+            <p>The net cell reaction is</p>
+            <div class="formula-display">
+                $$Zn + Cu^{+2} \rightarrow Zn^{+2} + Cu$$
+            </div>
+            <p>Cell is represented by</p>
+            <div class="formula-display">
+                $$Zn/Zn^{+2} \parallel Cu^{+2}/Cu$$
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Salt Bridge :-</h2>
+           
+
+</h2>
+
+<p style="font-size:18px; line-height:1.8; color:#334155; text-align:justify;">
+    A salt bridge maintains electrical neutrality between the two half-cells by allowing the movement of ions. 
+    It is a glass tube filled with potassium chloride (KCl) or ammonium nitrate (NH₄NO₃) in gelatin form.
+</p>
+
+<p style="font-size:18px; line-height:1.8; color:#334155; text-align:justify;">
+    The gelatin permits ionic movement but prevents mixing of the solutions. 
+    The ions move equally due to similar ionic mobilities of cations and anions.
+</p>
+
+
+        <div class="card">
+            <h2>STANDARD ELECTRODE POTENTIAL :-</h2>
+            <p>When a metal rod is deeped into 1 M solution of its ion at 298 k potential difference btween metal and solution is Called Standard electrode potential. It is represented by $E^{\circ}$.</p>
+            
+            <p>There are two types:</p>
+            <h3>1. Oxidation Electrode Potential :- (Anode)</h3>
+            <p>Metal loses electron and becoming ions.</p>
+            <div class="formula-display">
+                $$M_{(s)} \rightarrow M^{n+}_{(aq)} + ne^{-}$$
+            </div>
+
+            <h3>2. Reduction Electrode Potential :- (Cathode)</h3>
+            <p>Ions gain electron to become metal.</p>
+            <div class="formula-display">
+                $$M^{n+}_{(aq)} + ne^{-} \rightarrow M_{(s)}$$
+            </div>
+
+            <div class="formula-display">
+                $$E(cell) = E_{cathode} - E_{anode}$$
+                $$E^{\circ} = E_{Reduction} - E_{oxidation}$$
+            </div>
+
+            <div class="qa-box">
+                <p class="question">Q. Given the standard electrode potentials $E^{\circ}(Zn^{2+}/Zn) = -0.76~v$, $E^{\circ}(Cu^{2+}/Cu) = +0.34~v$. Calculate the standard EMF ($E^{\circ}cell$) of the cell $Zn/Zn^{2+} (1M) \parallel Cu^{2+} (1M)/Cu$</p>
+                <p><strong>Sol.</strong></p>
+                <p>$$E = E_{cathode} - E_{anode}$$</p>
+                <p>$$= +0.34 - (-0.76)$$</p>
+                <p>$$= 1.1~v$$</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Measurement using the Standard Hydrogen Electrode</h2>
+            <h3>Measurement of standard Electrode Potential :-</h3>
+            <p>Complete cell potential is use to measure the Electrode Potential of other electrode with a reference electrode. The standard hydrogen electrode is use as the reference (potential = 0v).</p>
+
+            <h3>Standard Hydrogen Electrode (SHE) :-</h3>
+            <p>The Standard Hydrogen electrode is a reference electrode with assigned potential of 0.00 Volt at constant and reproducible environment.</p>
+<img src="https://files.mtstatic.com/site_4334/16635/0?Expires=1778322352&Signature=R0kypKjBXKMl0O~qqFR9gpeoDHCs2R2kzNoACDSmDZ-mz7Pi485dLQ4Ubotg83LzKm8C2lSO~LRUGeEajTOejCT-1AJTe5bUxSK31YusXnTe6AAcS2ws-gwlzKBkczMTfTMqeJu7B6dwMHyQRyqTC2bgzVO7nf35ahVbuulU-qc_&Key-Pair-Id=APKAJ5Y6AV4GI7A555NA" 
+style="width:100%; max-width:900px; height:auto; display:block; margin:auto;">
+            <h3>Construction :-</h3>
+            <p>A Platinium electrode coated with platinium black is used. The electrode is placed in a solution of 1.0 M H ions (usually 1.0 M HCl). Hydrogen gas at 1 atm pressure is bubbled over the electrode.</p>
+
+            <h3>Reaction at SHE :-</h3>
+            <p>This setup insures a reversible redox reaction.</p>
+            <div class="formula-display">
+                $$H_{2}(g) \rightleftharpoons 2H^{+} + 2e^{-}$$
+            </div>
+            <p>This cell can acts as both anode (oxidation) and cathode (reduction) depending on the cell it is used in.</p>
+
+
+            <p>The Electrode Potential of SHE is 0.00 Volt at 298 k. This value used as a reference point to measure all the other electrode potential.</p>
+        </div>
+
+        <div class="card">
+            <h2>Reactivity Series Trick :-</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trick (Hindi)</th>
+                            <th>Element</th>
+                            <th>Reaction Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ले</td><td>Li</td><td rowspan="17"><strong>Oxidation (Anode)</strong><br>Water<br>H2O<br><br>Reducing Strength ↑</td></tr>
+                        <tr><td>के</td><td>K</td></tr>
+                        <tr><td>भारत</td><td>Ba</td></tr>
+                        <tr><td>सरकार</td><td>Sr</td></tr>
+                        <tr><td>का</td><td>Ca</td></tr>
+                        <tr><td>नाम</td><td>Na</td></tr>
+                        <tr><td>मागे</td><td>Mg</td></tr>
+                        <tr><td>अलमारी</td><td>Al</td></tr>
+                        <tr><td>मन</td><td>Mn</td></tr>
+                        <tr><td>जाने</td><td>Zn</td></tr>
+                        <tr><td>को</td><td>Cr</td></tr>
+                        <tr><td>करे</td><td>Fe</td></tr>
+                        <tr><td>फिर</td><td>Cd</td></tr>
+                        <tr><td>को</td><td>Co</td></tr>
+                        <tr><td>नही</td><td>Ni</td></tr>
+                        <tr><td>सुनता</td><td>Sn</td></tr>
+                        <tr><td>प्रभात</td><td>Pb</td></tr>
+                        <tr><td>क्यो</td><td>H, Cu</td><td rowspan="6"><strong>Reduction (Cathode)</strong><br><br>Oxidizing Strength ↑↑</td></tr>
+                        <tr><td>आई</td><td>I2</td></tr>
+                        <tr><td>आगे</td><td>Ag, Hg, Br2</td></tr>
+                        <tr><td>होगी</td><td>Pt</td></tr>
+                        <tr><td>बाहर</td><td>Cl2</td></tr>
+                        <tr><td>और</td><td>Au</td></tr>
+                        <tr><td>Fast</td><td>F2</td><td></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>NERNST EQUATION & GIBBS FREE ENERGY</h2>
+            <p>The Nernst Equation enables the determination of cell potential under non-standard condition. It relates the measured cell potential to the reaction quotient and allows accurate determination of equilibrium constants (including solubility constants).</p>
+            
+            <p>The Nernst Equation is derived from the standard changes in the Gibbs free energy under standard conditions.</p>
+            <div class="formula-display">
+                $$E^{\circ} = E_{reduction} - E_{oxidation} \quad ---(1)$$
+            </div>
+            
+            <p>$\Delta G$ is also related to E under general conditions (standard or not) via</p>
+            <div class="formula-display">
+                $$\Delta G = -nFE \quad ---(2)$$
+            </div>
+            
+            <p>with n is the number of electrons transferred. F is the Faraday constant (96,500 C/mol). E is potential difference.</p>
+            
+            <p>Under standard conditions, Equation 2 is then</p>
+            <div class="formula-display">
+                $$\Delta G^{\circ} = -nFE^{\circ} \quad ---(3)$$
+            </div>
+
+            <p>From thermodynamics the Gibbs energy change under non-standard conditions can be related to the Gibbs energy change under standard conditions via Equation</p>
+            <div class="formula-display">
+                $$\Delta G = \Delta G^{\circ} + RT \ln Q$$
+            </div>
+            <div class="formula-display">
+                $$-nFE = -nFE^{\circ} + RT \ln Q$$
+            </div>
+
+            <p>Divided by nF on both side</p>
+            <div class="formula-display">
+                $$\frac{-nFE}{nF} = \frac{-nFE^{\circ}}{nF} + \frac{RT}{nF} \ln Q$$
+            </div>
+            <div class="formula-display">
+                $$-E = -E^{\circ} + \frac{RT}{nF} \ln Q$$
+            </div>
+
+            <p>Multiply by (-) on both side</p>
+            <div class="formula-display">
+                $$E = E^{\circ} - \frac{RT}{nF} \ln Q$$
+            </div>
+            <div class="formula-display">
+                $$E = E^{\circ} - \frac{2.303 RT}{nF} \log_{10} Q \quad ---(4)$$
+            </div>
+            <p><em>$[\ln x = 2.303 \log_{10} x]$</em></p>
+
+            <p>At standard temperature $T = 298~K$, $R = 8.314$ and $F = 96,500$, the term $\frac{2.303 RT}{F}$ equals $0.0592~V$ and Equation can be written as</p>
+            <div class="formula-display">
+                $$E = E^{\circ} - \frac{0.0592~V}{n} \log_{10} Q$$
+            </div>
+            <div class="formula-display">
+                $$E = E^{\circ} - \frac{0.0592}{n} \log_{10} \frac{[Product]}{[Reacted]}$$
+            </div>
+
+            <div class="qa-box">
+                <p class="question">Q. Represent the cell in which the following reaction takes place:<br>$Mg(s) + 2Ag^{+}(0.0001M) \rightarrow Mg^{2+}(0.130M) + 2Ag(s)$<br>Calculate its Ecell, if $E^{\circ}_{cell} = 3.17v$</p>
+                <p><strong>Sol.</strong> Given,</p>
+                <p>$E^{\circ} = 3.17~V$</p>
+                <p>Molar concentration of $[Ag^{+}] = 0.0001~M$</p>
+                <p>Molar concentration of $[Mg^{2+}] = 0.130~M$</p>
+                <p><strong>Cell Representation :-</strong></p>
+                <p>$$Mg/Mg^{2+} \parallel Ag^{+}/Ag$$</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Value of Log</h2>
+            <div class="table-wrapper">
+                <table>
+                    <tbody>
+                        <tr><td>log (1) = 0</td><td>log (6) = 0.77</td></tr>
+                        <tr><td>log (2) = 0.30</td><td>log (7) = 0.84</td></tr>
+                        <tr><td>log (3) = 0.47</td><td>log (8) = 0.90</td></tr>
+                        <tr><td>log (4) = 0.60</td><td>log (9) = 0.95</td></tr>
+                        <tr><td>log (5) = 0.69</td><td>log (10) = 1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+           </div>   
+        <h3>Relation Between $E^\circ_{cell}$ and $K_{eq}$-</h3>    
+            <div class="formula-display">
+    $$\Delta G^\circ = -nFE^\circ_{cell}$$
+
+    $$\Delta G^\circ = -RT \ln K_{eq}$$
+
+
+<p>Comparing both equations:</p>
+
+<div class="formula-display">
+    $$nFE^\circ_{cell} = RT \ln K_{eq}$$
+</div>
+
+
+</div>
+
+<div class="formula-display">
+    $$nFE^\circ_{cell} = 2.303RT \log K_{eq}$$
+</div>
+
+<p>At 298 K,</p>
+
+<div class="formula-display">
+    $$E^\circ_{cell} = \frac{0.0591}{n}\log K_{eq}$$
+</div>
+<hr>
+
+
+
+
+            <h2>Conductivity of Electrolytic Solution :-</h2>
+             <h3>Resistance:-</h3>
+            <p>It is the  obstruction to flow of electric current through the conductor.</p>
+            <p>OR</p>
+            <p>It is directly proportional to its length and inversely proportional to the area of cross section.</p>
+            <div class="formula-display">
+                $$R \propto l$$
+                $$R \propto \frac{1}{A}$$
+                $$R = \rho \frac{l}{A}$$
+            </div>
+            <p>where, $l$ = length, $A$ = Area of cross section, $\rho$ = specific resistivity.</p>
+
+            <h3>Specific resistivity:-</h3>
+            <p>Resistivity of a material is its resistance when it is 1 cm long and its area of cross section is 1 cm².</p>
+            <div class="formula-display">
+                $$\rho = R \cdot \frac{A}{l}$$
+            </div>
+            <p>Unit of Resistance $R$ = ohm ($\Omega$)</p>
+            <p>Unit of Resistivity $\rho$ = ohm meter ($\Omega~m$)</p>
+
+            <h3>Conductance :-</h3>
+            <p>The inverse of resistance.</p>
+            <div class="formula-display">
+                $$G = \frac{1}{R}$$
+            </div>
+            <div class="formula-display">
+                $$G = \frac{1}{\rho} \times \frac{A}{l}$$
+            </div>
+            <div class="formula-display">
+                $$G = \frac{KA}{l}$$
+            </div>
+            <p>where, $K$ = Kappa.</p>
+            <p>Unit of Conductance = $\Omega^{-1}$ (Sieohm, mho)</p>
+        </div>
+
+        <div class="card">
+            <h2>Conductivity :-</h2>
+            <p>It is the inverse of resistivity.</p>
+            <div class="formula-display">
+                $$K = G \frac{l}{A} \quad \left[ K = \frac{1}{\rho} \right]$$
+            </div>
+            <p>Conductivity of a material is it conductance when it is one cm long and its Area of cross section is 1 cm².</p>
+            <p>$[A = 1cm^{2}, l = 1cm]$</p>
+            <p>$G = K$</p>
+            <p>Unit of conductivity = $\Omega^{-1} cm^{-1}$, $S~m^{-1}$</p>
+
+            <h2>MOLAR CONDUCTIVITY</h2>
+            <p>It is the conductivity produce by dissolving 1 gm mol of the all the ions of electrolyte in solution. It is denoted by $\Lambda_{m}$.</p>
+            <div class="formula-display">
+                $$\Lambda_{m} = K \times V$$
+            </div>
+            <p>Unit = $ohm^{-1} cm^{2} mol^{-1}$ or $S~cm^{2} mol^{-1}$</p>
+            <div class="formula-display">
+                $$\Lambda_{m} = \frac{K \times 1000}{C (molarity)}$$
+            </div>
+            
+            <p>Conductivity decreases with dilution, while molar conductivity increases with dilution.</p>
+            
+            <div class="image-placeholder">
+                <p><em>[Graph: $\Lambda_{m}$ vs $\sqrt{c}$ showing strong electrolyte (linear) and weak electrolyte (curve)]</em></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>KOHLRAUSCH LAW</h2>
+            <p>Limiting molar conductivity of an electrolyte is some of individual contribution of anion and cation of electrolyte.</p>
+            <div class="formula-display">
+                $$\Lambda^{\circ}_{m}AB = \Lambda^{\circ}_{m}A^{+} + \Lambda^{\circ}_{m}B^{-}$$
+            </div>
+
+            <h3>Application of Kohlrausch</h3>
+            <ul>
+                <li>Calculation of limiting molar conductivity of weak electrolyte.</li>
+                <li>Calculation of degree of dissociation ($\alpha$)</li>
+            </ul>
+            <div class="formula-display">
+                $$\alpha = \frac{\Lambda_{m}^{c}}{\Lambda^{\circ}_{m}}$$
+            </div>
+            <ul>
+                <li>Calculation of dissociation constant of weak electrolyte</li>
+            </ul>
+            <div class="formula-display">
+                $$Kc = \frac{C\alpha^{2}}{1-\alpha}$$
+            </div>
+
+            <div class="qa-box">
+                <p class="question">Q. The conductivity of 0.20 M solution of KCl at 298 k is 0.0248 S cm⁻¹. Calculate its molar conductivity.</p>
+                <p><strong>Sol.</strong> Given,</p>
+                <p>molarity = 0.20 M</p>
+                <p>$K = 0.0248~S~cm^{-1}$</p>
+                <p>$\Lambda_{m} = ?$</p>
+                <p>$$\Lambda_{m} = \frac{K \times 1000}{molarity}$$</p>
+                <p>$$\Lambda_{m} = \frac{0.0248 \times 1000}{0.20} = 124~S~cm^{2} mol^{-1}$$</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Faraday Constant</h2>
+            <p>Charge of 1 mole $e^{-} = 6.023 \times 10^{23} \times 1.6 \times 10^{-19} C = 96500~C$</p>
+
+            <h2>FARADAY'S LAW OF ELECTROLYSIS</h2>
+            <h3>1st law :-</h3>
+            <p>The mass of any substance deposits or liberated at the electrode during electrolysis is directly proportional to amount of charged passed.</p>
+            <div class="formula-display">
+                $$W \propto Q$$
+                $$W \propto I \cdot T$$
+                $$W = Z \cdot I \cdot T$$
+            </div>
+            <p>where, $Z$ = electrochemical equivalent, $I$ = current, $T$ = Time</p>
+            <div class="formula-display">
+                $$Z = \frac{E}{96500}$$
+            </div>
+            <p>where, $E$ = equivalent weight</p>
+            <div class="formula-display">
+                $$E = \frac{\text{Molar mass}}{n \text{ factor}}$$
+            </div>
+
+            <h3>2nd laws :-</h3>
+            <p>When same amount of electricity pass to two different electrolyte connect in series then the mass of substance deposit at electrode is directly proportional to there equivalent weight.</p>
+            
+            <div class="image-placeholder">
+                <p><em>[Diagram: AgNO3 and CuSO4 cells connected in series]</em></p>
+            </div>
+
+            <div class="qa-box">
+                <p class="question">Q. A solution of CuSO4 is electrolysed for 10 min with a current of 1.5 Ampere. What is the mass of copper deposit at cathode.</p>
+                <p><strong>Sol.</strong> Given,</p>
+                <p>Time ($T$) = 10 min = $10 \times 60 = 600~sec$</p>
+                <p>Current ($I$) = 1.5 A</p>
+                <p>$W = ?$</p>
+                <p>electrochemical equivalent ($Z$) = $\frac{M}{n \times 96500}$</p>
+                <p>$CuSO_{4} = Cu^{+2} + SO_{4}^{-2}$</p>
+                <p>$M = 63.5, n = 2$</p>
+                <p>$$W = Z \cdot I \cdot T$$</p>
+                <p>$$W = \frac{63.5 \times 1.5 \times 600}{2 \times 96500} = \frac{57150}{193000} \approx 0.29~g$$</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>BATTERIES</h2>
+            <p>Batteries are two types:-</p>
+            <ol>
+                <li>Primary Cell</li>
+                <li>Secondary Cell</li>
+            </ol>
+
+            <h3>1.) Primary Cell :-</h3>
+            <p>Cell in which reaction occur only once and then after use over a period of time it become died. Ex:- Dry cell, mercury cell.</p>
+
+            <h3>2.) Secondary Cell :-</h3>
+            <p>Cell which can be recharged by passing current through it in opposite direction, it can be use again. Ex:- lead storage battery, Ni-Cd cell.</p>
+
+            <h3>3.) Fuel Cell :-</h3>
+            <p>Those cells in which electric energy is produced by the combustion of fuels like hydrogen (H2), CH4, CH3OH, etc. Ex:- H2-O2 fuel cell.</p>
+
+            <h2>Dry Cell :-</h2>
+            <p>Also known as Leclanche Cell after its discoverer. Most familier cell mostly use in radio, remote, toy, etc. This cell gives a potential of 1.25 - 1.50 V.</p>
+            <p>This cell consist of zinc vessels at act as anode at which oxidation take place. Graphite rod is placed in middle of cell which is filled with a paste of NH4Cl + ZnCl2.</p>
+            <p>Graphite rod act as cathode at which reduction take place, which surrounded by powder MnO2.</p>
+
+            <h3>Electrode Reaction :-</h3>
+            <p>At Anode :</p>
+            <div class="formula-display">
+                $$-Zn \rightarrow Zn^{+2} + 2e^{-}$$
+            </div>
+            <p>At Cathode :</p>
+            <div class="formula-display">
+                $$2MnO_{2} + 2NH_{4}^{+} + 2e^{-} \rightarrow Mn_{2}O_{3} + 2NH_{3} + H_{2}O$$
+            </div>
+            <p>Net:</p>
+            <div class="formula-display">
+                $$Zn + 2MnO_{2} + 2NH_{4}^{+} \rightarrow Zn^{+2} + Mn_{2}O_{3} + 2NH_{3} + H_{2}O$$
+            </div>
+
+            <div class="image-placeholder">
+                <p><em>[Diagram: Dry cell construction showing (+) Terminal metal cap, Zinc Container (anode), Porous paper lining, Graphite (cathode), Paste of NH4Cl + ZnCl2, MnO2 + C]</em></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Mercury Cell :-</h2>
+            <p>Smaller form of dry cell. This cell is mainly used in low current device like hearing aids, watches. This cell give a voltage 1.35 V.</p>
+            <p>This cell consist of a Zn container act as anode at which oxidation takes place. Graphite Rod placed in the middle of cell act as cathode at which reduction takes place.</p>
+            <p>vessel is filled with a paste of HgO + KOH.</p>
+
+            <ul>
+                <li>Anode = $Zn(s) + 2OH^{-} \rightarrow ZnO(s) + H_{2}O + 2e^{-}$</li>
+                <li>Cathode = $HgO + H_{2}O + 2e^{-} \rightarrow Hg(l) + 2OH^{-}$</li>
+            </ul>
+            <div class="formula-display">
+                $$Zn(s) + HgO(s) \rightarrow ZnO(s) + Hg(l)$$
+            </div>
+
+            <div class="image-placeholder">
+                <p><em>[Diagram: Mercury cell with (-) Pole, Paste of HgO+KOH, Graphite Rod acting as Cathode, Zn vessel acting as anode]</em></p>
+            </div>
+
+            <h2>Lead Storage Battery :-</h2>
+            <p>It is a Secondary cell used in automobiles and inverters.</p>
+            <p>This cell consist of six voltaic cell placed alternately. This cell give a voltage of 12 V in which three cell give 2V. So separated by thin fibre glass sheet.</p>
+            
+            <ul>
+                <li>Anode:- Pb plates and act as anode.</li>
+                <li>Cathode:- PbO2 and act as cathode.</li>
+            </ul>
+            <p>38% dil. H2SO4 by mass is used as electrolyte.</p>
+
+            <ul>
+                <li>Anode:</li>
+            </ul>
+            <div class="formula-display">
+                $$Pb(s) + SO_{4}^{2-}(aq) \rightarrow PbSO_{4}(s) + 2e^{-}$$
+            </div>
+            <ul>
+                <li>Cathode:</li>
+            </ul>
+            <div class="formula-display">
+                $$PbO_{2} + SO_{4}^{2-}(aq) + 4H^{+}(aq) + 2e^{-} \rightarrow PbSO_{4}(s) + 2H_{2}O$$
+            </div>
+            <ul>
+                <li>Net:</li>
+            </ul>
+            <div class="formula-display">
+                $$Pb(s) + PbO_{2}(s) + 4H^{+}(aq) + 2SO_{4}^{2-}(aq) \rightarrow 2PbSO_{4}(s) + 2H_{2}O$$
+            </div>
+
+            <div class="image-placeholder">
+                <p><em>[Diagram: Lead Storage Battery showing Terminal Anode (-), Terminal Cathode (+), Pb, PbO2, and H2SO4 Solution]</em></p>
+            </div>
+        </div>
+
     </div>
 
-    <div class="mt-4 md:mt-0 flex items-center space-x-3">
-      <!-- future buttons -->
-    </div>
+    <button id="backToTop" onclick="scrollToTop()">↑</button>
 
-  </header>
+    <script>
+        // Dark Mode Toggle Logic
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.getElementById('themeToggle');
+            if(document.body.classList.contains('dark-mode')) {
+                btn.innerHTML = 'Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                btn.innerHTML = 'Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
 
-  <!-- GRADIENT -->
-  <div class="accent-gradient"></div>
+        // Check for saved theme
+        window.onload = () => {
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').innerHTML = 'Light Mode';
+            }
+        }
 
-  <!-- MAIN CONTENT -->
-  <main class="iframe-container w-full overflow-hidden flex-grow bg-slate-800">
-    <iframe
-      src="https://online.pubhtml5.com/nxmey/vzez/"
-      class="w-full h-full border-none shadow-inner"
-      loading="lazy"
-      allowfullscreen>
-    </iframe>
-  </main>
+        // Back to Top Button Logic
+        const backToTopBtn = document.getElementById("backToTop");
+        
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                backToTopBtn.classList.add("show");
+            } else {
+                backToTopBtn.classList.remove("show");
+            }
+        };
 
-  <!-- FOOTER -->
-  <footer class="bg-slate-900 px-6 py-2 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-500 uppercase tracking-widest">
-    <span>© 2026 Chemistry Digital Library</span>
-    <span class="flex items-center italic">
-      <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-      THP
-    </span>
-  </footer>
-
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
