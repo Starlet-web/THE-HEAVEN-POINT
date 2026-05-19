@@ -3,15 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>THP • Naukari Paye Bade Aasan Se | Premium Batch</title>
-  <!-- Firebase SDK (compat version for easy integration) -->
+  <title>THP • Naukari Paye Bade Aasan Se | Premium Batch Admission 2025</title>
+  
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
   <style>
+    :root {
+      --pw-blue: #2563eb;
+      --pw-dark: #1e3a8a;
+      --pw-yellow: #f59e0b;
+      --pw-green: #10b981;
+      --pw-red: #ef4444;
+      --pw-gray: #f1f5f9;
+      --pw-border: #e2e8f0;
+      --pw-text: #1e293b;
+      --pw-subtle: #64748b;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -19,161 +38,351 @@
     }
 
     body {
-      background: #f5f7ff;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 30%, #f1f5f9 100%);
       font-family: 'Inter', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 1.2rem;
-      background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.03) 0%, transparent 35%);
+      padding: 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background decorative elements like PW */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -30%;
+      left: -15%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .main-container {
+      max-width: 620px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Top floating trust badge */
+    .trust-badge {
+      background: white;
+      border: 1px solid var(--pw-border);
+      border-radius: 50px;
+      padding: 0.4rem 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--pw-text);
+      margin-bottom: 0.8rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .trust-badge i {
+      color: var(--pw-green);
+      font-size: 0.9rem;
     }
 
     .pw-card {
-      max-width: 600px;
-      width: 100%;
       background: #ffffff;
-      border-radius: 24px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.03);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
       overflow: hidden;
-      transition: all 0.2s ease;
     }
 
-    .top-accent {
-      background: linear-gradient(105deg, #1e3a8a 0%, #2563eb 100%);
-      padding: 1.8rem 1.8rem 1.6rem;
+    /* Header Section */
+    .card-header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #1d4ed8 100%);
+      padding: 1.5rem 1.8rem 1.2rem;
       color: white;
       position: relative;
+      overflow: hidden;
     }
 
-    .top-accent::after {
-      content: "";
+    .card-header::before {
+      content: '';
       position: absolute;
-      bottom: -18px;
-      left: 0;
-      right: 0;
-      height: 36px;
-      background: #ffffff;
-      border-radius: 24px 24px 0 0;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
     }
 
-    .brand-row {
+    .card-header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -20px;
+      width: 100px;
+      height: 100px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-section {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1.1rem;
+      gap: 0.6rem;
     }
 
-    .brand-icon {
-      background: #facc15;
-      color: #0f172a;
-      font-weight: 800;
-      font-size: 1.4rem;
-      padding: 0.3rem 0.9rem;
-      border-radius: 40px;
-      letter-spacing: -0.3px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-    }
-
-    .exam-tags {
+    .logo-icon {
+      background: #fbbf24;
+      color: #1e3a8a;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-top: 0.6rem;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
-    .exam-tag {
-      background: rgba(255,255,255,0.18);
-      backdrop-filter: blur(6px);
-      padding: 0.3rem 0.9rem;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+    .live-badge {
+      background: #ef4444;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      animation: pulse 2s infinite;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
-    h1 {
-      font-size: 2rem;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      background: white;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .header-title {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-title h1 {
+      font-size: 1.8rem;
       font-weight: 800;
-      line-height: 1.2;
-      margin: 0.5rem 0 0.2rem;
+      line-height: 1.3;
+      margin-bottom: 0.3rem;
     }
 
-    .sub-gradient {
-      background: linear-gradient(to right, #fde047, #fbbf24);
+    .header-title .highlight {
+      background: linear-gradient(to right, #fde047, #fbbf24, #f59e0b);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .content-body {
-      padding: 0.5rem 1.8rem 1.8rem;
+    .exam-chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.8rem;
       position: relative;
-      z-index: 2;
-      background: #ffffff;
+      z-index: 1;
     }
 
-    .highlight-strip {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 18px;
+    .exam-chip {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    /* Content Body */
+    .card-body {
+      padding: 1.5rem 1.8rem 1.8rem;
+    }
+
+    /* Mentor Card */
+    .mentor-card {
+      background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%);
+      border: 1px solid #fde68a;
+      border-radius: 16px;
       padding: 1rem 1.2rem;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      margin: 1.2rem 0 1.5rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 0.8rem;
     }
 
-    .mentor-badge {
+    .mentor-info {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .price-tag {
-      background: #dcfce7;
-      color: #15803d;
-      font-weight: 800;
-      padding: 0.4rem 1rem;
-      border-radius: 30px;
-      font-size: 0.9rem;
-    }
-
-    .batch-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 0.8rem;
-      background: #f1f5f9;
-      border-radius: 18px;
-      padding: 1rem;
-      margin-bottom: 1.8rem;
-      font-weight: 500;
+    }
+
+    .mentor-avatar {
+      background: #2563eb;
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .mentor-details h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
       color: #1e293b;
     }
 
-    .batch-grid i {
-      color: #2563eb;
-      width: 20px;
+    .mentor-details span {
+      font-size: 0.7rem;
+      color: #64748b;
+      font-weight: 500;
     }
 
+    .price-badge {
+      background: #059669;
+      color: white;
+      font-weight: 700;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    /* Batch Quick Info */
+    .batch-quick-info {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.7rem 0.5rem;
+      text-align: center;
+      transition: 0.2s;
+    }
+
+    .info-item:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .info-item i {
+      color: #2563eb;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+
+    .info-item span {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #475569;
+      display: block;
+    }
+
+    .info-item strong {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* Divider */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-divider .line {
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+
+    .section-divider span {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Form Styles */
     form {
       display: flex;
       flex-direction: column;
-      gap: 1.3rem;
+      gap: 1rem;
     }
 
-    .input-field {
+    .form-row {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .form-group {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.3rem;
+      flex: 1;
     }
 
-    .input-field label {
+    .form-group label {
+      font-size: 0.75rem;
       font-weight: 700;
-      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.4px;
       color: #475569;
@@ -182,243 +391,497 @@
       gap: 0.3rem;
     }
 
-    .input-field label i {
-      color: #2563eb;
-      font-size: 0.9rem;
+    .form-group label .required-star {
+      color: #ef4444;
     }
 
-    input, select {
-      background: #ffffff;
+    .form-group label i {
+      color: #2563eb;
+      font-size: 0.85rem;
+      width: 16px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 0.75rem 1rem;
       border: 1.5px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 0.85rem 1.2rem;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #0f172a;
-      outline: none;
-      transition: 0.2s;
+      border-radius: 10px;
+      font-size: 0.9rem;
       font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      color: #1e293b;
+      background: #f8fafc;
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #2563eb;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    input::placeholder {
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    /* Radio & Checkbox */
+    .option-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .option-pill {
+      position: relative;
+    }
+
+    .option-pill input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .option-pill label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f8fafc;
+      color: #475569;
+    }
+
+    .option-pill input:checked + label {
+      background: #eff6ff;
+      border-color: #2563eb;
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    .option-pill label:hover {
+      border-color: #93c5fd;
       background: #f8fafc;
     }
 
-    input:focus, select:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
-      background: #ffffff;
+    .checkbox-pill {
+      position: relative;
     }
 
-    .radio-group, .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.2rem;
-      align-items: center;
-      margin-top: 0.2rem;
+    .checkbox-pill input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
     }
 
-    .radio-option, .check-option {
-      display: flex;
+    .checkbox-pill label {
+      display: inline-flex;
       align-items: center;
       gap: 0.4rem;
+      padding: 0.55rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 25px;
+      font-size: 0.85rem;
       font-weight: 500;
-      background: #f1f5f9;
-      padding: 0.5rem 1.2rem;
-      border-radius: 30px;
-      border: 1px solid #e2e8f0;
       cursor: pointer;
-      transition: 0.2s;
+      transition: all 0.2s;
+      background: #f8fafc;
+      color: #475569;
     }
 
-    .radio-option:hover, .check-option:hover {
-      background: #eef2ff;
+    .checkbox-pill input:checked + label {
+      background: #eff6ff;
+      border-color: #2563eb;
+      color: #2563eb;
+      font-weight: 600;
     }
 
-    .check-option input[type="checkbox"], .radio-option input[type="radio"] {
-      accent-color: #2563eb;
-      width: 1rem;
-      height: 1rem;
-      margin-right: 0.2rem;
+    .checkbox-pill label i {
+      font-size: 0.8rem;
     }
 
+    .checkbox-pill input:checked + label i::before {
+      content: '\f14a';
+      color: #2563eb;
+    }
+
+    .helper-text {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-top: -0.2rem;
+    }
+
+    /* Submit Button */
     .submit-btn {
-      background: #2563eb;
-      border: none;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
       color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
+      border: none;
       padding: 1rem;
-      border-radius: 40px;
-      margin-top: 0.7rem;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
-      transition: 0.2s;
-      box-shadow: 0 10px 20px -8px #2563eb80;
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
       letter-spacing: 0.3px;
+      margin-top: 0.5rem;
     }
 
     .submit-btn:hover {
-      background: #1d4ed8;
-      box-shadow: 0 14px 24px -8px #1e3a8a;
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
+      transform: translateY(-1px);
     }
 
     .submit-btn:disabled {
       background: #94a3b8;
       box-shadow: none;
       cursor: not-allowed;
+      transform: none;
     }
 
-    .contact-footer {
-      text-align: center;
-      margin-top: 1.5rem;
-      color: #334155;
-      font-weight: 500;
-      font-size: 0.9rem;
-      background: #f8fafc;
-      padding: 0.8rem;
-      border-radius: 16px;
+    .submit-btn:disabled:hover {
+      transform: none;
     }
 
-    .alert-msg {
-      padding: 0.7rem 1rem;
-      border-radius: 14px;
+    /* Success/Error Messages */
+    .message-box {
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
       font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      display: none;
+      animation: slideDown 0.3s ease;
     }
 
-    .alert-success {
-      background: #dcfce7;
-      color: #166534;
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .alert-error {
+    .message-box.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      display: block;
+    }
+
+    .message-box.error {
       background: #fee2e2;
       color: #991b1b;
+      border: 1px solid #fecaca;
+      display: block;
     }
 
-    hr {
-      border: 0.5px solid #e2e8f0;
-      margin: 1rem 0;
+    /* Footer */
+    .card-footer {
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      padding: 1rem 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #475569;
+    }
+
+    .contact-item i {
+      color: #2563eb;
+    }
+
+    .footer-note {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      text-align: center;
+      padding: 0.5rem 1.8rem 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 500px) {
+      .form-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .batch-quick-info {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .card-header {
+        padding: 1.2rem 1.2rem 1rem;
+      }
+      
+      .card-body {
+        padding: 1.2rem;
+      }
+      
+      .header-title h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Loading spinner */
+    .fa-spinner {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <div class="pw-card">
-    <div class="top-accent">
-      <div class="brand-row">
-        <span class="brand-icon">THP</span>
-        <span style="font-weight: 700; font-size: 0.9rem;">TEAM THP</span>
-      </div>
-      <h1>Naukari Paye <span class="sub-gradient">Bade Aasan Se</span></h1>
-      <div class="exam-tags">
-        <span class="exam-tag">SSC</span>
-        <span class="exam-tag">Bank</span>
-        <span class="exam-tag">Railway</span>
-        <span class="exam-tag">State Exams</span>
-      </div>
+  <div class="main-container">
+    <!-- Trust Badge -->
+    <div class="trust-badge">
+      <i class="fas fa-shield-alt"></i> Trusted by 50,000+ Aspirants
     </div>
 
-    <div class="content-body">
-      <div class="highlight-strip">
-        <div class="mentor-badge">
-          <i class="fas fa-user-graduate" style="color:#2563eb;"></i> Shivam Sir
-          <span style="font-weight:400; color:#475569; font-size:0.8rem;">(SSC CGL Qualified)</span>
+    <!-- Main Card -->
+    <div class="pw-card">
+      <!-- Header -->
+      <div class="card-header">
+        <div class="header-top">
+          <div class="logo-section">
+            <div class="logo-icon">THP</div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.85rem;">TEAM THP</div>
+              <div style="font-size: 0.65rem; opacity: 0.8;">The Heaven Point</div>
+            </div>
+          </div>
+          <div class="live-badge">
+            <span class="live-dot"></span> Admissions Open
+          </div>
         </div>
-        <div class="price-tag">
-          <i class="fas fa-indian-rupee-sign"></i> 500/month
+        <div class="header-title">
+          <h1>Naukari Paye <span class="highlight">Bade Aasan Se</span></h1>
+          <p style="font-size: 0.85rem; opacity: 0.9; font-weight: 500;">India's Most Affordable High-Quality Offline Coaching</p>
+        </div>
+        <div class="exam-chips">
+          <span class="exam-chip">🎯 SSC</span>
+          <span class="exam-chip">🏦 Bank</span>
+          <span class="exam-chip">🚂 Railway</span>
+          <span class="exam-chip">🏛️ State Exams</span>
         </div>
       </div>
 
-      <div class="batch-grid">
-        <div><i class="far fa-calendar-alt"></i> Starts 1st June</div>
-        <div><i class="far fa-clock"></i> 6-9 Months</div>
-        <div><i class="fas fa-map-marker-alt"></i> Offline Premium</div>
-        <div><i class="fas fa-book-open"></i> Per Subject</div>
+      <!-- Body -->
+      <div class="card-body">
+        <!-- Mentor Card -->
+        <div class="mentor-card">
+          <div class="mentor-info">
+            <div class="mentor-avatar">S</div>
+            <div class="mentor-details">
+              <h4>👨‍🏫 Shivam Sir</h4>
+              <span>SSC CGL & Multi-Exam Qualified</span>
+            </div>
+          </div>
+          <div class="price-badge">
+            ₹500/<small>month/subject</small>
+          </div>
+        </div>
+
+        <!-- Batch Quick Info -->
+        <div class="batch-quick-info">
+          <div class="info-item">
+            <i class="far fa-calendar-check"></i>
+            <span>Starts</span>
+            <strong>1st June</strong>
+          </div>
+          <div class="info-item">
+            <i class="far fa-clock"></i>
+            <span>Duration</span>
+            <strong>6-9 Months</strong>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Mode</span>
+            <strong>Offline</strong>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-users"></i>
+            <span>Batch Size</span>
+            <strong>Limited</strong>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="section-divider">
+          <div class="line"></div>
+          <span>📝 Admission Form</span>
+          <div class="line"></div>
+        </div>
+
+        <!-- Message Box -->
+        <div id="messageBox" class="message-box"></div>
+
+        <!-- Form -->
+        <form id="admissionForm">
+          <!-- Full Name -->
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Full Name <span class="required-star">*</span></label>
+            <input type="text" id="fullName" placeholder="Enter your full name" required autocomplete="name">
+          </div>
+
+          <!-- Father & Mother Name -->
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fas fa-male"></i> Father's Name <span class="required-star">*</span></label>
+              <input type="text" id="fatherName" placeholder="Father's name" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-female"></i> Mother's Name <span class="required-star">*</span></label>
+              <input type="text" id="motherName" placeholder="Mother's name" required>
+            </div>
+          </div>
+
+          <!-- Email & Phone -->
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fas fa-envelope"></i> Email Address <span class="required-star">*</span></label>
+              <input type="email" id="email" placeholder="your@email.com" required autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-phone"></i> Phone Number <span class="required-star">*</span></label>
+              <input type="tel" id="phone" placeholder="+91 9876543210" required autocomplete="tel" pattern="[0-9+\s\-]{10,15}">
+            </div>
+          </div>
+
+          <!-- Gender -->
+          <div class="form-group">
+            <label><i class="fas fa-venus-mars"></i> Gender <span class="required-star">*</span></label>
+            <div class="option-group" id="genderGroup">
+              <div class="option-pill">
+                <input type="radio" name="gender" id="genderMale" value="Male" required>
+                <label for="genderMale"><i class="fas fa-male"></i> Male</label>
+              </div>
+              <div class="option-pill">
+                <input type="radio" name="gender" id="genderFemale" value="Female" required>
+                <label for="genderFemale"><i class="fas fa-female"></i> Female</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label><i class="fas fa-layer-group"></i> Category <span class="required-star">*</span></label>
+            <select id="category" required>
+              <option value="" disabled selected>— Select Category —</option>
+              <option value="General">General</option>
+              <option value="OBC">OBC</option>
+              <option value="SC">SC</option>
+              <option value="ST">ST</option>
+              <option value="EWS">EWS</option>
+            </select>
+          </div>
+
+          <!-- Highest Qualification -->
+          <div class="form-group">
+            <label><i class="fas fa-graduation-cap"></i> Highest Qualification <span class="required-star">*</span></label>
+            <input type="text" id="qualification" placeholder="e.g. B.Sc, B.Tech, 12th Pass" required>
+          </div>
+
+          <!-- Want to Join -->
+          <div class="form-group">
+            <label><i class="fas fa-question-circle"></i> Do you want to join this batch? <span class="required-star">*</span></label>
+            <div class="option-group">
+              <div class="option-pill">
+                <input type="radio" name="wantToJoin" id="joinYes" value="Yes" required>
+                <label for="joinYes"><i class="fas fa-check-circle"></i> Yes, I'm Ready!</label>
+              </div>
+              <div class="option-pill">
+                <input type="radio" name="wantToJoin" id="joinNo" value="No" required>
+                <label for="joinNo"><i class="fas fa-times-circle"></i> Not Now</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subjects -->
+          <div class="form-group">
+            <label><i class="fas fa-book-open"></i> Select Subjects <span class="required-star">*</span></label>
+            <div class="option-group" id="subjectsGroup">
+              <div class="checkbox-pill">
+                <input type="checkbox" name="subjects" id="subMaths" value="Maths">
+                <label for="subMaths"><i class="far fa-square"></i> 📐 Maths</label>
+              </div>
+              <div class="checkbox-pill">
+                <input type="checkbox" name="subjects" id="subReasoning" value="Reasoning">
+                <label for="subReasoning"><i class="far fa-square"></i> 🧠 Reasoning</label>
+              </div>
+              <div class="checkbox-pill">
+                <input type="checkbox" name="subjects" id="subEnglish" value="English">
+                <label for="subEnglish"><i class="far fa-square"></i> 📖 English</label>
+              </div>
+              <div class="checkbox-pill">
+                <input type="checkbox" name="subjects" id="subGS" value="GS">
+                <label for="subGS"><i class="far fa-square"></i> 🌍 GS</label>
+              </div>
+            </div>
+            <span class="helper-text">Select at least one subject</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <i class="fas fa-rocket"></i> Secure Your Selection Now
+          </button>
+        </form>
       </div>
 
-      <div id="liveMessage"></div>
-
-      <form id="thpAdmissionForm">
-        <div class="input-field">
-          <label><i class="far fa-user"></i> Full Name *</label>
-          <input type="text" id="name" placeholder="Enter your name" required>
+      <!-- Footer -->
+      <div class="card-footer">
+        <div class="contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <span><strong>9044034585</strong></span>
         </div>
-
-        <div style="display: flex; gap: 1rem;">
-          <div class="input-field" style="flex:1;">
-            <label><i class="fas fa-male"></i> Father's Name *</label>
-            <input type="text" id="father" placeholder="Father's name" required>
-          </div>
-          <div class="input-field" style="flex:1;">
-            <label><i class="fas fa-female"></i> Mother's Name *</label>
-            <input type="text" id="mother" placeholder="Mother's name" required>
-          </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>theheavenpoint@gmail.com</span>
         </div>
-
-        <div class="input-field">
-          <label><i class="fas fa-venus-mars"></i> Gender *</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="gender" value="Male" required> Male</label>
-            <label class="radio-option"><input type="radio" name="gender" value="Female" required> Female</label>
-          </div>
-        </div>
-
-        <div class="input-field">
-          <label><i class="fas fa-tag"></i> Category *</label>
-          <select id="category" required>
-            <option value="" disabled selected>Select category</option>
-            <option value="General">General</option>
-            <option value="OBC">OBC</option>
-            <option value="SC">SC</option>
-            <option value="ST">ST</option>
-            <option value="EWS">EWS</option>
-          </select>
-        </div>
-
-        <div class="input-field">
-          <label><i class="fas fa-graduation-cap"></i> Highest Qualification *</label>
-          <input type="text" id="qualification" placeholder="e.g. Graduation, 12th" required>
-        </div>
-
-        <div class="input-field">
-          <label><i class="fas fa-check-circle"></i> Want to join this batch? *</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="join" value="Yes" required> Yes</label>
-            <label class="radio-option"><input type="radio" name="join" value="No" required> No</label>
-          </div>
-        </div>
-
-        <div class="input-field">
-          <label><i class="fas fa-chalkboard-teacher"></i> Subjects with Experts *</label>
-          <div class="checkbox-group" id="subjectCheckboxes">
-            <label class="check-option"><input type="checkbox" name="subjects" value="Maths"> Maths</label>
-            <label class="check-option"><input type="checkbox" name="subjects" value="Reasoning"> Reasoning</label>
-            <label class="check-option"><input type="checkbox" name="subjects" value="English"> English</label>
-            <label class="check-option"><input type="checkbox" name="subjects" value="GS"> GS</label>
-          </div>
-          <span style="font-size:0.7rem; color:#64748b;">Select at least one</span>
-        </div>
-
-        <button type="submit" id="submitButton" class="submit-btn">
-          <i class="fas fa-lock"></i> Secure Your Selection Now
-        </button>
-      </form>
-
-      <hr>
-      <div class="contact-footer">
-        <i class="fas fa-phone-alt"></i> <strong>9044034585</strong>  •  <i class="far fa-envelope"></i> theheavenpoint@gmail.com
       </div>
-      <div style="font-size:0.7rem; color:#94a3b8; text-align:center; margin-top:0.5rem;">
-        Switch account • Not shared • *Required
+      <div class="footer-note">
+        🔒 Your data is secure • Not shared with anyone
       </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // ✅ YOUR FIREBASE CONFIGURATION
+      // ============ CONFIGURATION ============
+      
+      // Firebase Configuration
       const firebaseConfig = {
         apiKey: "AIzaSyDP2kkEtqYMAqWQZ8J9mBOIauZuhCerFfM",
         authDomain: "thpssc-91a53.firebaseapp.com",
@@ -428,100 +891,222 @@
         appId: "1:441503456686:web:ed2f4855b21e5dabc2fc3f"
       };
 
+      // EmailJS Configuration
+      // ⚠️ IMPORTANT: Sign up at https://www.emailjs.com/ (free tier: 200 emails/month)
+      // Create an Email Service (e.g., Gmail), an Email Template, and get your credentials.
+      const EMAILJS_PUBLIC_KEY = "YOUR_EMAILJS_PUBLIC_KEY"; // Replace with your Public Key
+      const EMAILJS_SERVICE_ID = "YOUR_EMAILJS_SERVICE_ID"; // Replace with your Service ID
+      const EMAILJS_TEMPLATE_ID = "YOUR_EMAILJS_TEMPLATE_ID"; // Replace with your Template ID
+      
+      // ============ INITIALIZATION ============
+      
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
       
       // Enable offline persistence
       db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
-        if (err.code === 'failed-precondition') {
-          console.warn('Persistence failed: multiple tabs open');
-        } else if (err.code === 'unimplemented') {
-          console.warn('Browser does not support persistence');
-        }
+        console.warn('Firebase persistence:', err.code);
       });
 
-      const form = document.getElementById('thpAdmissionForm');
-      const submitBtn = document.getElementById('submitButton');
-      const msgDiv = document.getElementById('liveMessage');
-
-      function showMessage(text, isError = false) {
-        msgDiv.innerHTML = `<div class="alert-msg ${isError ? 'alert-error' : 'alert-success'}">${text}</div>`;
-        if (!isError) {
-          setTimeout(() => { 
-            if (msgDiv.querySelector('.alert-success')) msgDiv.innerHTML = ''; 
-          }, 6000);
+      // Initialize EmailJS
+      (function() {
+        if (EMAILJS_PUBLIC_KEY !== "YOUR_EMAILJS_PUBLIC_KEY") {
+          emailjs.init(EMAILJS_PUBLIC_KEY);
+        } else {
+          console.warn('⚠️ EmailJS not configured. Please add your EmailJS credentials.');
         }
+      })();
+
+      // ============ DOM ELEMENTS ============
+      const form = document.getElementById('admissionForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const messageBox = document.getElementById('messageBox');
+
+      // ============ HELPER FUNCTIONS ============
+      
+      function showMessage(text, type = 'success') {
+        messageBox.textContent = text;
+        messageBox.className = `message-box ${type}`;
+        messageBox.style.display = 'block';
+        
+        if (type === 'success') {
+          setTimeout(() => {
+            messageBox.style.display = 'none';
+          }, 8000);
+        }
+      }
+
+      function hideMessage() {
+        messageBox.style.display = 'none';
       }
 
       function getSelectedSubjects() {
-        return Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(cb => cb.value);
+        return Array.from(document.querySelectorAll('input[name="subjects"]:checked'))
+          .map(cb => cb.value);
       }
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const subjects = getSelectedSubjects();
-        if (subjects.length === 0) {
-          showMessage('Please select at least one subject (Maths, Reasoning, English, GS).', true);
-          return;
+      // ============ SEND COURSE DETAILS EMAIL ============
+      
+      async function sendCourseDetailsEmail(studentEmail, studentName, selectedSubjects) {
+        // If EmailJS is not configured, skip email sending
+        if (EMAILJS_PUBLIC_KEY === "YOUR_EMAILJS_PUBLIC_KEY") {
+          console.log('📧 EmailJS not configured. Skipping email.');
+          return false;
         }
 
-        const name = document.getElementById('name').value.trim();
-        const father = document.getElementById('father').value.trim();
-        const mother = document.getElementById('mother').value.trim();
-        const genderEl = document.querySelector('input[name="gender"]:checked');
-        const category = document.getElementById('category').value;
-        const qualification = document.getElementById('qualification').value.trim();
-        const joinEl = document.querySelector('input[name="join"]:checked');
-
-        if (!name || !father || !mother || !genderEl || !category || !qualification || !joinEl) {
-          showMessage('All fields are required. Please complete the form.', true);
-          return;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Submitting...';
-
-        const admissionData = {
-          name,
-          fatherName: father,
-          motherName: mother,
-          gender: genderEl.value,
-          category,
-          highestQualification: qualification,
-          wantToJoin: joinEl.value,
-          subjects,
-          submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          contactPhone: "9044034585",
-          contactEmail: "theheavenpoint@gmail.com"
+        const templateParams = {
+          to_email: studentEmail,
+          to_name: studentName,
+          student_name: studentName,
+          student_email: studentEmail,
+          subjects: selectedSubjects.join(', ') || 'All Subjects',
+          course_name: 'THP Competitive Exams Batch',
+          course_duration: '6-9 Months',
+          batch_start: '1st June 2025',
+          course_fee: '₹500 per month per subject',
+          mentor_name: 'Shivam Sir',
+          contact_phone: '9044034585',
+          contact_email: 'theheavenpoint@gmail.com',
+          message: `Dear ${studentName},\n\nThank you for enrolling in Team THP's Premium Competitive Exams Batch!\n\nHere are your course details:\n📚 Subjects: ${selectedSubjects.join(', ')}\n📅 Batch Starts: 1st June 2025\n⏳ Duration: 6-9 Months\n💰 Fee: ₹500/month/subject\n👨‍🏫 Mentor: Shivam Sir (SSC CGL Qualified)\n\n📞 Contact: 9044034585\n📧 Email: theheavenpoint@gmail.com\n\nWe're excited to help you achieve your career goals!\n\nBest Regards,\nTeam THP`
         };
 
         try {
-          // Store in "admissions" collection (Firestore will create it automatically)
-          await db.collection("admissions").add(admissionData);
-          showMessage('✅ Admission secured! Team THP will contact you soon.', false);
-          form.reset();
-          // Clear visual selections
-          document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-          document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
-          document.getElementById('category').selectedIndex = 0;
+          const response = await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            templateParams
+          );
+          console.log('✅ Email sent successfully!', response.status, response.text);
+          return true;
         } catch (error) {
-          console.error("Firestore error:", error);
-          showMessage('❌ Submission failed. Please try again.', true);
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="fas fa-lock"></i> Secure Your Selection Now';
+          console.error('❌ Email sending failed:', error);
+          return false;
         }
+      }
+
+      // ============ FORM SUBMISSION ============
+      
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideMessage();
+
+        // Validate subjects
+        const subjects = getSelectedSubjects();
+        if (subjects.length === 0) {
+          showMessage('⚠️ Please select at least one subject.', 'error');
+          return;
+        }
+
+        // Collect form data
+        const fullName = document.getElementById('fullName').value.trim();
+        const fatherName = document.getElementById('fatherName').value.trim();
+        const motherName = document.getElementById('motherName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const genderEl = document.querySelector('input[name="gender"]:checked');
+        const category = document.getElementById('category').value;
+        const qualification = document.getElementById('qualification').value.trim();
+        const wantToJoinEl = document.querySelector('input[name="wantToJoin"]:checked');
+
+        // Validate all required fields
+        if (!fullName || !fatherName || !motherName || !email || !phone || !genderEl || !category || !qualification || !wantToJoinEl) {
+          showMessage('⚠️ Please fill all required fields correctly.', 'error');
+          return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showMessage('⚠️ Please enter a valid email address.', 'error');
+          return;
+        }
+
+        // Validate phone format (basic)
+        const phoneRegex = /^[0-9+\s\-]{10,15}$/;
+        if (!phoneRegex.test(phone)) {
+          showMessage('⚠️ Please enter a valid phone number.', 'error');
+          return;
+        }
+
+        // Disable button and show loading
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+        // Prepare data for Firestore
+        const admissionData = {
+          fullName,
+          fatherName,
+          motherName,
+          email,
+          phone,
+          gender: genderEl.value,
+          category,
+          highestQualification: qualification,
+          wantToJoin: wantToJoinEl.value,
+          subjects,
+          submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          source: 'THP Admission Form',
+          contactPhone: '9044034585',
+          contactEmail: 'theheavenpoint@gmail.com'
+        };
+
+        try {
+          // 1. Save to Firebase Firestore
+          const docRef = await db.collection("admissions").add(admissionData);
+          console.log('✅ Firestore document written with ID:', docRef.id);
+
+          // 2. Send course details email to student
+          const emailSent = await sendCourseDetailsEmail(email, fullName, subjects);
+
+          // 3. Show success message
+          let successMsg = '🎉 Congratulations! Your admission has been secured successfully.';
+          if (emailSent) {
+            successMsg += ' 📧 Course details have been sent to your email.';
+          } else if (EMAILJS_PUBLIC_KEY === "YOUR_EMAILJS_PUBLIC_KEY") {
+            successMsg += ' (Email notification not configured)';
+          }
+          successMsg += ' Our team will contact you soon!';
+          
+          showMessage(successMsg, 'success');
+
+          // 4. Reset form
+          form.reset();
+          
+          // Scroll to top of card to see message
+          document.querySelector('.pw-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        } catch (error) {
+          console.error('❌ Submission error:', error);
+          showMessage('❌ Submission failed. Please try again or contact us at 9044034585.', 'error');
+        } finally {
+          // Re-enable button
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-rocket"></i> Secure Your Selection Now';
+        }
+      });
+
+      // ============ REAL-TIME VALIDATION ============
+      
+      // Phone number formatting
+      document.getElementById('phone').addEventListener('input', function(e) {
+        let value = this.value.replace(/[^\d+\s\-]/g, '');
+        if (value.length > 15) value = value.slice(0, 15);
+        this.value = value;
       });
 
       // Warn before leaving with unsaved data
       window.addEventListener('beforeunload', (e) => {
-        if (document.getElementById('name').value.trim() !== '') {
+        const nameField = document.getElementById('fullName');
+        if (nameField && nameField.value.trim() !== '') {
           e.preventDefault();
-          e.returnValue = 'You have unsaved changes.';
+          e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
         }
       });
+
+      console.log('✅ THP Admission Form Ready');
+      console.log('📋 Firebase Project:', firebaseConfig.projectId);
+      console.log('📧 EmailJS Status:', EMAILJS_PUBLIC_KEY !== "YOUR_EMAILJS_PUBLIC_KEY" ? 'Configured' : 'Not Configured - Set up at emailjs.com');
     })();
   </script>
 </body>
