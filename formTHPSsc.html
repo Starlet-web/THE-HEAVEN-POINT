@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>THP • Naukari Paye Bade Aasan Se | Premium Batch</title>
+  <!-- Firebase SDK (compat version for easy integration) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5f7ff;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1.2rem;
+      background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.03) 0%, transparent 35%);
+    }
+
+    .pw-card {
+      max-width: 600px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.03);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .top-accent {
+      background: linear-gradient(105deg, #1e3a8a 0%, #2563eb 100%);
+      padding: 1.8rem 1.8rem 1.6rem;
+      color: white;
+      position: relative;
+    }
+
+    .top-accent::after {
+      content: "";
+      position: absolute;
+      bottom: -18px;
+      left: 0;
+      right: 0;
+      height: 36px;
+      background: #ffffff;
+      border-radius: 24px 24px 0 0;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .brand-icon {
+      background: #facc15;
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 1.4rem;
+      padding: 0.3rem 0.9rem;
+      border-radius: 40px;
+      letter-spacing: -0.3px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    }
+
+    .exam-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.6rem;
+    }
+
+    .exam-tag {
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      padding: 0.3rem 0.9rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    .sub-gradient {
+      background: linear-gradient(to right, #fde047, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .content-body {
+      padding: 0.5rem 1.8rem 1.8rem;
+      position: relative;
+      z-index: 2;
+      background: #ffffff;
+    }
+
+    .highlight-strip {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1.2rem 0 1.5rem;
+    }
+
+    .mentor-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .price-tag {
+      background: #dcfce7;
+      color: #15803d;
+      font-weight: 800;
+      padding: 0.4rem 1rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+    }
+
+    .batch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      background: #f1f5f9;
+      border-radius: 18px;
+      padding: 1rem;
+      margin-bottom: 1.8rem;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .batch-grid i {
+      color: #2563eb;
+      width: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+    }
+
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .input-field label {
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .input-field label i {
+      color: #2563eb;
+      font-size: 0.9rem;
+    }
+
+    input, select {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 0.85rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #0f172a;
+      outline: none;
+      transition: 0.2s;
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+    }
+
+    input:focus, select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+      background: #ffffff;
+    }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      align-items: center;
+      margin-top: 0.2rem;
+    }
+
+    .radio-option, .check-option {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+      background: #f1f5f9;
+      padding: 0.5rem 1.2rem;
+      border-radius: 30px;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .radio-option:hover, .check-option:hover {
+      background: #eef2ff;
+    }
+
+    .check-option input[type="checkbox"], .radio-option input[type="radio"] {
+      accent-color: #2563eb;
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.2rem;
+    }
+
+    .submit-btn {
+      background: #2563eb;
+      border: none;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 1rem;
+      border-radius: 40px;
+      margin-top: 0.7rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: 0.2s;
+      box-shadow: 0 10px 20px -8px #2563eb80;
+      letter-spacing: 0.3px;
+    }
+
+    .submit-btn:hover {
+      background: #1d4ed8;
+      box-shadow: 0 14px 24px -8px #1e3a8a;
+    }
+
+    .submit-btn:disabled {
+      background: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .contact-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #334155;
+      font-weight: 500;
+      font-size: 0.9rem;
+      background: #f8fafc;
+      padding: 0.8rem;
+      border-radius: 16px;
+    }
+
+    .alert-msg {
+      padding: 0.7rem 1rem;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .alert-success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .alert-error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    hr {
+      border: 0.5px solid #e2e8f0;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="pw-card">
+    <div class="top-accent">
+      <div class="brand-row">
+        <span class="brand-icon">THP</span>
+        <span style="font-weight: 700; font-size: 0.9rem;">TEAM THP</span>
+      </div>
+      <h1>Naukari Paye <span class="sub-gradient">Bade Aasan Se</span></h1>
+      <div class="exam-tags">
+        <span class="exam-tag">SSC</span>
+        <span class="exam-tag">Bank</span>
+        <span class="exam-tag">Railway</span>
+        <span class="exam-tag">State Exams</span>
+      </div>
+    </div>
+
+    <div class="content-body">
+      <div class="highlight-strip">
+        <div class="mentor-badge">
+          <i class="fas fa-user-graduate" style="color:#2563eb;"></i> Shivam Sir
+          <span style="font-weight:400; color:#475569; font-size:0.8rem;">(SSC CGL Qualified)</span>
+        </div>
+        <div class="price-tag">
+          <i class="fas fa-indian-rupee-sign"></i> 500/month
+        </div>
+      </div>
+
+      <div class="batch-grid">
+        <div><i class="far fa-calendar-alt"></i> Starts 1st June</div>
+        <div><i class="far fa-clock"></i> 6-9 Months</div>
+        <div><i class="fas fa-map-marker-alt"></i> Offline Premium</div>
+        <div><i class="fas fa-book-open"></i> Per Subject</div>
+      </div>
+
+      <div id="liveMessage"></div>
+
+      <form id="thpAdmissionForm">
+        <div class="input-field">
+          <label><i class="far fa-user"></i> Full Name *</label>
+          <input type="text" id="name" placeholder="Enter your name" required>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <div class="input-field" style="flex:1;">
+            <label><i class="fas fa-male"></i> Father's Name *</label>
+            <input type="text" id="father" placeholder="Father's name" required>
+          </div>
+          <div class="input-field" style="flex:1;">
+            <label><i class="fas fa-female"></i> Mother's Name *</label>
+            <input type="text" id="mother" placeholder="Mother's name" required>
+          </div>
+        </div>
+
+        <div class="input-field">
+          <label><i class="fas fa-venus-mars"></i> Gender *</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="gender" value="Male" required> Male</label>
+            <label class="radio-option"><input type="radio" name="gender" value="Female" required> Female</label>
+          </div>
+        </div>
+
+        <div class="input-field">
+          <label><i class="fas fa-tag"></i> Category *</label>
+          <select id="category" required>
+            <option value="" disabled selected>Select category</option>
+            <option value="General">General</option>
+            <option value="OBC">OBC</option>
+            <option value="SC">SC</option>
+            <option value="ST">ST</option>
+            <option value="EWS">EWS</option>
+          </select>
+        </div>
+
+        <div class="input-field">
+          <label><i class="fas fa-graduation-cap"></i> Highest Qualification *</label>
+          <input type="text" id="qualification" placeholder="e.g. Graduation, 12th" required>
+        </div>
+
+        <div class="input-field">
+          <label><i class="fas fa-check-circle"></i> Want to join this batch? *</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="join" value="Yes" required> Yes</label>
+            <label class="radio-option"><input type="radio" name="join" value="No" required> No</label>
+          </div>
+        </div>
+
+        <div class="input-field">
+          <label><i class="fas fa-chalkboard-teacher"></i> Subjects with Experts *</label>
+          <div class="checkbox-group" id="subjectCheckboxes">
+            <label class="check-option"><input type="checkbox" name="subjects" value="Maths"> Maths</label>
+            <label class="check-option"><input type="checkbox" name="subjects" value="Reasoning"> Reasoning</label>
+            <label class="check-option"><input type="checkbox" name="subjects" value="English"> English</label>
+            <label class="check-option"><input type="checkbox" name="subjects" value="GS"> GS</label>
+          </div>
+          <span style="font-size:0.7rem; color:#64748b;">Select at least one</span>
+        </div>
+
+        <button type="submit" id="submitButton" class="submit-btn">
+          <i class="fas fa-lock"></i> Secure Your Selection Now
+        </button>
+      </form>
+
+      <hr>
+      <div class="contact-footer">
+        <i class="fas fa-phone-alt"></i> <strong>9044034585</strong>  •  <i class="far fa-envelope"></i> theheavenpoint@gmail.com
+      </div>
+      <div style="font-size:0.7rem; color:#94a3b8; text-align:center; margin-top:0.5rem;">
+        Switch account • Not shared • *Required
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ✅ YOUR FIREBASE CONFIGURATION
+      const firebaseConfig = {
+        apiKey: "AIzaSyDP2kkEtqYMAqWQZ8J9mBOIauZuhCerFfM",
+        authDomain: "thpssc-91a53.firebaseapp.com",
+        projectId: "thpssc-91a53",
+        storageBucket: "thpssc-91a53.firebasestorage.app",
+        messagingSenderId: "441503456686",
+        appId: "1:441503456686:web:ed2f4855b21e5dabc2fc3f"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      
+      // Enable offline persistence
+      db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+        if (err.code === 'failed-precondition') {
+          console.warn('Persistence failed: multiple tabs open');
+        } else if (err.code === 'unimplemented') {
+          console.warn('Browser does not support persistence');
+        }
+      });
+
+      const form = document.getElementById('thpAdmissionForm');
+      const submitBtn = document.getElementById('submitButton');
+      const msgDiv = document.getElementById('liveMessage');
+
+      function showMessage(text, isError = false) {
+        msgDiv.innerHTML = `<div class="alert-msg ${isError ? 'alert-error' : 'alert-success'}">${text}</div>`;
+        if (!isError) {
+          setTimeout(() => { 
+            if (msgDiv.querySelector('.alert-success')) msgDiv.innerHTML = ''; 
+          }, 6000);
+        }
+      }
+
+      function getSelectedSubjects() {
+        return Array.from(document.querySelectorAll('input[name="subjects"]:checked')).map(cb => cb.value);
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const subjects = getSelectedSubjects();
+        if (subjects.length === 0) {
+          showMessage('Please select at least one subject (Maths, Reasoning, English, GS).', true);
+          return;
+        }
+
+        const name = document.getElementById('name').value.trim();
+        const father = document.getElementById('father').value.trim();
+        const mother = document.getElementById('mother').value.trim();
+        const genderEl = document.querySelector('input[name="gender"]:checked');
+        const category = document.getElementById('category').value;
+        const qualification = document.getElementById('qualification').value.trim();
+        const joinEl = document.querySelector('input[name="join"]:checked');
+
+        if (!name || !father || !mother || !genderEl || !category || !qualification || !joinEl) {
+          showMessage('All fields are required. Please complete the form.', true);
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Submitting...';
+
+        const admissionData = {
+          name,
+          fatherName: father,
+          motherName: mother,
+          gender: genderEl.value,
+          category,
+          highestQualification: qualification,
+          wantToJoin: joinEl.value,
+          subjects,
+          submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          contactPhone: "9044034585",
+          contactEmail: "theheavenpoint@gmail.com"
+        };
+
+        try {
+          // Store in "admissions" collection (Firestore will create it automatically)
+          await db.collection("admissions").add(admissionData);
+          showMessage('✅ Admission secured! Team THP will contact you soon.', false);
+          form.reset();
+          // Clear visual selections
+          document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+          document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+          document.getElementById('category').selectedIndex = 0;
+        } catch (error) {
+          console.error("Firestore error:", error);
+          showMessage('❌ Submission failed. Please try again.', true);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-lock"></i> Secure Your Selection Now';
+        }
+      });
+
+      // Warn before leaving with unsaved data
+      window.addEventListener('beforeunload', (e) => {
+        if (document.getElementById('name').value.trim() !== '') {
+          e.preventDefault();
+          e.returnValue = 'You have unsaved changes.';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
