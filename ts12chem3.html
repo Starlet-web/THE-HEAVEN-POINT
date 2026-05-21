@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Chemistry CBT: Electrochemistry Exam</title>
+    <!-- Tailwind CSS + Font Awesome + Google Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- jsPDF & SheetJS (CDN) for export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <style>
+        * {
+            user-select: text; /* allow text selection but right-click disabled via JS */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Chemistry sup/sub nice rendering */
+        sup, sub {
+            font-size: 0.75em;
+        }
+        .chem-formula {
+            font-feature-settings: "subs" 1;
+        }
+        /* Mark for review badge */
+        .review-badge {
+            transition: all 0.2s ease;
+        }
+        .option-hover:hover {
+            background-color: #f3f4f6;
+        }
+        .dark .option-hover:hover {
+            background-color: #374151;
+        }
+        /* custom radio/checkbox sizing */
+        input[type="radio"], input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: #3b82f6;
+        }
+        /* scrollbar for grid */
+        .question-grid::-webkit-scrollbar {
+            height: 4px;
+            width: 6px;
+        }
+        .question-grid::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        .dark .question-grid::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .question-grid::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- Main App Container -->
+    <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Header with dark mode toggle & title -->
+        <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">⚡ Electrochemistry Mock Test</h1>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Chapter 2: Based on NCERT / CBSE pattern</p>
+            </div>
+            <div class="flex gap-3 items-center">
+                <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 shadow-md hover:scale-105 transition">
+                    <i class="fas fa-moon dark:hidden text-gray-700"></i>
+                    <i class="fas fa-sun hidden dark:inline-block text-yellow-300"></i>
+                </button>
+                <div class="bg-white dark:bg-gray-800 rounded-xl px-4 py-2 shadow-md font-mono text-lg font-bold">
+                    ⏱️ <span id="timerDisplay">00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress + Stats -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 mb-5">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="w-full sm:w-2/3">
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>Progress: <span id="answeredCount">0</span>/<span id="totalQCount">0</span></span>
+                        <span>Marked for review: <span id="reviewCount">0</span></span>
+                    </div>
+                    <div class="w-full bg-gray-300 dark:bg-gray-600 rounded-full h-2.5">
+                        <div id="progressFill" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button id="resetTestBtn" class="text-sm bg-amber-100 dark:bg-amber-900/40 px-3 py-1.5 rounded-lg hover:bg-amber-200 transition"><i class="fas fa-undo-alt mr-1"></i> Reset</button>
+                    <button id="submitTestBtn" class="text-sm bg-green-600 text-white px-4 py-1.5 rounded-lg shadow hover:bg-green-700 transition"><i class="fas fa-check-circle mr-1"></i> Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Question Panel (Left/Center) -->
+            <div class="lg:w-2/3">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-5 md:p-6 transition-all">
+                    <!-- Question header with meta -->
+                    <div class="flex justify-between flex-wrap items-start mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+                        <div>
+                            <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-semibold px-3 py-1 rounded-full">Q<span id="currentQNumber">1</span></span>
+                            <span class="ml-2 text-xs text-gray-500 dark:text-gray-400" id="categoryBadge"></span>
+                        </div>
+                        <button id="markReviewBtn" class="text-sm px-3 py-1 rounded-full border border-amber-400 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950 transition"><i class="far fa-flag mr-1"></i> Mark for Review</button>
+                    </div>
+                    <!-- Question Text -->
+                    <div class="text-lg md:text-xl font-medium mb-5 leading-relaxed" id="questionText"></div>
+                    <!-- Image placeholder if any -->
+                    <div id="questionImage" class="mb-4 hidden"></div>
+                    <!-- Options container dynamic -->
+                    <div id="optionsContainer" class="space-y-3 mb-6"></div>
+                    <!-- Explanation preview / after submit? but we show after result, but can show after answer? Not needed -->
+                </div>
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between mt-5 gap-3">
+                    <button id="prevBtn" class="bg-gray-200 dark:bg-gray-700 px-5 py-2 rounded-xl font-semibold hover:bg-gray-300 disabled:opacity-50 transition"><i class="fas fa-chevron-left"></i> Previous</button>
+                    <button id="nextBtn" class="bg-blue-600 text-white px-5 py-2 rounded-xl font-semibold hover:bg-blue-700 transition">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar: Question Grid + quick actions -->
+            <div class="lg:w-1/3">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sticky top-4">
+                    <h3 class="font-bold text-lg mb-3"><i class="fas fa-th"></i> Question Navigator</h3>
+                    <div class="question-grid grid grid-cols-5 sm:grid-cols-6 gap-2 max-h-64 overflow-y-auto p-1">
+                        <div id="gridContainer" class="contents"></div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700 text-xs flex flex-wrap gap-3 justify-between">
+                        <div><span class="inline-block w-3 h-3 rounded-full bg-blue-600"></span> Answered</div>
+                        <div><span class="inline-block w-3 h-3 rounded-full bg-amber-400"></span> For Review</div>
+                        <div><span class="inline-block w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600"></span> Not Answered</div>
+                        <div><span class="inline-block w-3 h-3 rounded-full bg-green-200 dark:bg-green-800 border"></span> Current</div>
+                    </div>
+                    <button id="randomizeBtn" class="w-full mt-4 text-sm bg-purple-100 dark:bg-purple-900/40 py-2 rounded-lg hover:bg-purple-200 transition"><i class="fas fa-random"></i> Reshuffle Questions & Options</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal (Score & detailed analysis) -->
+    <div id="resultModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden transition-all overflow-auto p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="sticky top-0 bg-white dark:bg-gray-800 p-4 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-bold"><i class="fas fa-chart-line"></i> Test Results</h2>
+                <button id="closeModalBtn" class="text-3xl leading-5">&times;</button>
+            </div>
+            <div class="p-6" id="resultContent"></div>
+            <div class="p-4 border-t flex justify-end gap-3">
+                <button id="exportPDFBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                <button id="exportCSVBtn" class="bg-green-700 text-white px-4 py-2 rounded-lg"><i class="fas fa-file-excel"></i> Export CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ======================= EXAM CONFIGURATION ========================
+        // All questions extracted from PDF with high accuracy (chemistry focus)
+        const EXAM_CONFIG = {
+            durationMinutes: 30,   // total exam duration
+            questions: [
+                { id: "q1", type: "single", marks: 1, negative: -0.25, question: "The correct representation of the cell reaction Zn + 2Ag⁺ → Zn²⁺ + 2Ag is:", options: ["Ag|Ag⁺||Zn|Zn²⁺", "Zn|Zn²⁺||Ag⁺|Ag", "2Ag|Ag⁺||Zn|Zn²⁺", "Zn|Zn²⁺||2Ag|Ag⁺"], correct: [1], explanation: "Oxidation (Zn→Zn²⁺) on left, reduction (Ag⁺→Ag) on right, salt bridge ||.", difficulty: "easy", category: "Cell Notation" },
+                { id: "q2", type: "single", marks: 1, negative: -0.25, question: "Electrode potential of standard hydrogen electrode (SHE) is:", options: ["0.34 V", "-0.76 V", "0.2 V", "0.0 V"], correct: [3], explanation: "By definition, SHE has 0.0 V at all temperatures.", difficulty: "easy", category: "Electrode Potential" },
+                { id: "q3", type: "single", marks: 1, negative: -0.25, question: "The electrode potential of a half-cell depends upon:", options: ["Nature of metal", "Concentration of metal ions", "Temperature", "All of the above"], correct: [3], explanation: "Electrode potential depends on nature, concentration, and temperature (Nernst equation).", difficulty: "easy", category: "Fundamentals" },
+                { id: "q4", type: "single", marks: 1, negative: -0.25, question: "Standard reduction potentials: X⁺ = +0.52 V, Y⁺ = -3.03 V, Z⁺ = -1.18 V. Decreasing order of reducing ability:", options: ["X > Y > Z", "Y > Z > X", "Z > X > Y", "Z > Y > X"], correct: [1], explanation: "More negative reduction potential → stronger reducing agent. Order: Y (-3.03) > Z (-1.18) > X (+0.52).", difficulty: "medium", category: "Reducing Power" },
+                { id: "q5", type: "single", marks: 1, negative: -0.25, question: "For Zn + Cu²⁺(aq) → Zn²⁺(aq) + Cu, E°(Zn²⁺/Zn) = -0.76 V, E°(Cu²⁺/Cu) = +0.34 V. EMF of cell is:", options: ["1.10 V", "0.10 V", "-1.10 V", "-0.110 V"], correct: [0], explanation: "E°cell = E°cathode - E°anode = 0.34 - (-0.76) = 1.10 V.", difficulty: "easy", category: "EMF" },
+                { id: "q6", type: "single", marks: 1, negative: -0.25, question: "Standard electrode potentials: A=+1.5V, B=-2.0V, C=+0.34V, D=-0.76V. Decreasing order of reactivity:", options: ["A > C > D > B", "B > D > C > A", "A > B > D > C", "D > A > B > C"], correct: [1], explanation: "More negative SRP → stronger reducing agent/reactivity: B(-2.0) > D(-0.76) > C(0.34) > A(1.5).", difficulty: "medium", category: "Reactivity" },
+                { id: "q7", type: "single", marks: 1, negative: -0.25, question: "Which metal cannot replace H₂ from HCl acid?", options: ["Zn", "Cu", "Mg", "Al"], correct: [1], explanation: "Cu is below hydrogen in electrochemical series, cannot displace H⁺.", difficulty: "easy", category: "Displacement" },
+                { id: "q8", type: "single", marks: 1, negative: -0.25, question: "Given E°: Li=-3.05V, Ba=-2.73V, Na=-2.71V, Mg=+2.37V. Strongest oxidising agent?", options: ["Ba⁺", "Mg²⁺", "Na⁺", "Li⁺"], correct: [1], explanation: "Mg²⁺ has highest (+2.37 V) reduction potential → strongest oxidising agent.", difficulty: "medium", category: "Oxidising Agent" },
+                { id: "q9", type: "single", marks: 1, negative: -0.25, question: "After eliminating salt-bridge of any Galvanic cell, voltage of the cell:", options: ["suddenly becomes zero", "goes down slowly", "increases rapidly", "remains unchanged"], correct: [0], explanation: "Salt bridge maintains electrical neutrality; removal stops charge flow, voltage drops to zero.", difficulty: "easy", category: "Galvanic Cell" },
+                { id: "q10", type: "single", marks: 1, negative: -0.25, question: "Standard reduction potentials A=+0.68V, B=-2.50V, C=-0.50V. Arrange decreasing reduction power:", options: ["A > B > C", "A > C > B", "C > B > A", "B > C > A"], correct: [3], explanation: "Reduction power ∝ negative SRP: B (-2.50) > C (-0.50) > A (+0.68).", difficulty: "medium", category: "Reduction Power" },
+                { id: "q11", type: "single", marks: 1, negative: -0.25, question: "CuSO₄ is not stored in aluminium bottle because:", options: ["Cu gets oxidised", "Cu²⁺ gets reduced", "Al gets reduced", "CuSO₄ decomposes"], correct: [1], explanation: "Aluminium displaces Cu²⁺ (Al above Cu in series): Cu²⁺ + 2e⁻ → Cu.", difficulty: "medium", category: "Reactivity" },
+                { id: "q12", type: "single", marks: 1, negative: -0.25, question: "Which reaction is impossible?", options: ["Cu + 2AgNO₃ → Cu(NO₃)₂ + 2Ag", "CaO + H₂ → Ca + H₂O", "CuO + H₂ → Cu + H₂O", "Fe + H₂SO₄ → FeSO₄ + H₂"], correct: [1], explanation: "Calcium is more reactive than H₂, cannot be displaced by H₂ from CaO.", difficulty: "hard", category: "Reaction Feasibility" },
+                { id: "q13", type: "single", marks: 1, negative: -0.25, question: "SI unit of resistivity (ρ) is:", options: ["Ω·m", "ohm·m⁻¹", "ohm⁻¹", "cm⁻¹"], correct: [0], explanation: "SI unit of resistivity: ohm-meter (Ω·m).", difficulty: "easy", category: "Conductivity" },
+                { id: "q14", type: "single", marks: 1, negative: -0.25, question: "Unit of specific conductance is:", options: ["ohm⁻¹·cm⁻¹", "ohm·cm⁻²", "ohm⁻¹·cm⁻²", "cm·ohm⁻¹·eq⁻¹"], correct: [0], explanation: "Specific conductance = κ, units: S·cm⁻¹ or ohm⁻¹ cm⁻¹.", difficulty: "easy", category: "Conductivity" },
+                { id: "q15", type: "single", marks: 1, negative: -0.25, question: "On increasing dilution, the specific conductance:", options: ["increases", "decreases", "remains constant", "None"], correct: [1], explanation: "Specific conductance decreases because number of ions per unit volume decreases.", difficulty: "medium", category: "Dilution Effect" },
+                { id: "q16", type: "single", marks: 1, negative: -0.25, question: "Good conductance solution containing material is:", options: ["weak electrolyte", "strong electrolyte", "electrolyte", "catalyst"], correct: [1], explanation: "Strong electrolytes completely dissociate, giving high conductance.", difficulty: "easy", category: "Electrolytes" },
+                { id: "q17", type: "single", marks: 1, negative: -0.25, question: "κ=0.002765 mho cm⁻¹, R=400Ω, cell constant (G) will be:", options: ["0.533 cm⁻¹", "1.106 cm⁻¹", "2.212 cm⁻¹", "None"], correct: [1], explanation: "Cell constant = R × κ = 400 × 0.002765 = 1.106 cm⁻¹.", difficulty: "hard", category: "Conductivity" },
+                { id: "q18", type: "single", marks: 1, negative: -0.25, question: "Match the following: Faraday's first law, second law, Faraday constant, Q. Correct option?", options: ["(ii)(i)(iv)(iii)", "(i)(ii)(iii)(iv)", "(ii)(i)(iii)(iv)", "(iii)(i)(ii)(iv)"], correct: [0], explanation: "A→ii, B→i, C→iv, D→iii.", difficulty: "medium", category: "Faraday's Laws" }
+            ]
+        };
+        // ======================= GLOBAL STATE ========================
+        let originalQuestions = [...EXAM_CONFIG.questions];
+        let currentQuestions = [];     // after randomization
+        let userAnswers = new Array(originalQuestions.length).fill(null);    // stores selected index/indices for each q
+        let markedForReview = new Array(originalQuestions.length).fill(false);
+        let currentIndex = 0;
+        let examActive = true;
+        let timeRemaining = EXAM_CONFIG.durationMinutes * 60; // seconds
+        let timerInterval = null;
+        let shuffledOptionsMap = {};   // store per question shuffled option indices mapping for display
+        
+        // Helper: format chemical text (render subscript/superscript roughly via html)
+        function formatChemistryText(text) {
+            if(!text) return '';
+            return text.replace(/([A-Za-z])(\d+)/g, '$1<sub>$2</sub>')
+                       .replace(/([\)\)])(\d+)/g, '$1<sub>$2</sub>')
+                       .replace(/→/g, '→').replace(/⇌/g, '⇌')
+                       .replace(/(\d+)\+/g, '$1⁺').replace(/(\d+)-/g, '$1⁻')
+                       .replace(/Ag\+/g, 'Ag⁺').replace(/Cu2\+/g, 'Cu²⁺');
+        }
+        
+        function shuffleArray(arr) { for (let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr;}
+        
+        function randomizeTest() {
+            // randomize question order
+            let shuffled = shuffleArray([...originalQuestions]);
+            // preserve ids mapping for userAnswers sync
+            const newOrderIds = shuffled.map(q => q.id);
+            const newAnswers = new Array(originalQuestions.length).fill(null);
+            const newMarked = new Array(originalQuestions.length).fill(false);
+            for (let newIdx=0; newIdx<newOrderIds.length; newIdx++) {
+                const oldIdx = originalQuestions.findIndex(q => q.id === newOrderIds[newIdx]);
+                if(oldIdx !== -1) {
+                    newAnswers[newIdx] = userAnswers[oldIdx];
+                    newMarked[newIdx] = markedForReview[oldIdx];
+                }
+            }
+            currentQuestions = shuffled;
+            userAnswers = newAnswers;
+            markedForReview = newMarked;
+            // randomize options for each question (store mapping)
+            shuffledOptionsMap = {};
+            currentQuestions.forEach((q, idx) => {
+                if(q.options && q.type !== 'short') {
+                    let optIndices = q.options.map((_,i)=>i);
+                    let shuffledIndices = shuffleArray([...optIndices]);
+                    shuffledOptionsMap[idx] = shuffledIndices;
+                }
+            });
+            localStorage.setItem('cbt_exam_state', JSON.stringify({
+                currentQuestionsIds: currentQuestions.map(q=>q.id),
+                userAnswers, markedForReview, timeRemaining, shuffledOptionsMap
+            }));
+            renderCurrentQuestion();
+            updateStatsAndGrid();
+        }
+        
+        // load/save localstorage
+        function saveStateToLocal() {
+            localStorage.setItem('cbt_exam_state', JSON.stringify({
+                currentQuestionsIds: currentQuestions.map(q=>q.id),
+                userAnswers, markedForReview, timeRemaining, shuffledOptionsMap
+            }));
+        }
+        
+        function loadState() {
+            const saved = localStorage.getItem('cbt_exam_state');
+            if(saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if(data.currentQuestionsIds && data.currentQuestionsIds.length === originalQuestions.length) {
+                        // reconstruct currentQuestions based on saved ids order
+                        let restoredQuestions = [];
+                        for(let id of data.currentQuestionsIds) {
+                            let found = originalQuestions.find(q=>q.id===id);
+                            if(found) restoredQuestions.push({...found});
+                        }
+                        if(restoredQuestions.length===originalQuestions.length) {
+                            currentQuestions = restoredQuestions;
+                            userAnswers = data.userAnswers || new Array(originalQuestions.length).fill(null);
+                            markedForReview = data.markedForReview || new Array(originalQuestions.length).fill(false);
+                            timeRemaining = data.timeRemaining;
+                            shuffledOptionsMap = data.shuffledOptionsMap || {};
+                            return true;
+                        }
+                    }
+                } catch(e) {}
+            }
+            return false;
+        }
+        
+        function initializeTest() {
+            if(!loadState()) {
+                // first time: set default order, shuffle options but preserve original question order? we can optionally randomize once
+                currentQuestions = [...originalQuestions];
+                shuffledOptionsMap = {};
+                currentQuestions.forEach((q, idx) => {
+                    if(q.options && q.type !== 'short') {
+                        let shuffledIndices = shuffleArray([...q.options.map((_,i)=>i)]);
+                        shuffledOptionsMap[idx] = shuffledIndices;
+                    }
+                });
+                userAnswers.fill(null);
+                markedForReview.fill(false);
+                timeRemaining = EXAM_CONFIG.durationMinutes * 60;
+            }
+            updateTimerDisplay();
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(!examActive) return;
+                if(timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time's up! Auto-submitting your test.");
+                    submitExam();
+                } else {
+                    timeRemaining--;
+                    updateTimerDisplay();
+                    saveStateToLocal();
+                }
+            }, 1000);
+            renderCurrentQuestion();
+            updateStatsAndGrid();
+        }
+        
+        function updateTimerDisplay() {
+            let mins = Math.floor(timeRemaining/60);
+            let secs = timeRemaining%60;
+            document.getElementById('timerDisplay').innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+            if(timeRemaining <= 60) document.getElementById('timerDisplay').classList.add('text-red-500','font-bold');
+        }
+        
+        function getCurrentOptionList() {
+            let q = currentQuestions[currentIndex];
+            if(!q.options) return [];
+            let shuffleMap = shuffledOptionsMap[currentIndex];
+            if(shuffleMap && q.type !== 'short') {
+                return shuffleMap.map(idx => q.options[idx]);
+            }
+            return q.options;
+        }
+        
+        function renderCurrentQuestion() {
+            let q = currentQuestions[currentIndex];
+            if(!q) return;
+            document.getElementById('currentQNumber').innerText = currentIndex+1;
+            document.getElementById('categoryBadge').innerHTML = `<i class="far fa-folder-open"></i> ${q.category || 'General'}`;
+            document.getElementById('questionText').innerHTML = formatChemistryText(q.question);
+            const optsContainer = document.getElementById('optionsContainer');
+            const currentAnswer = userAnswers[currentIndex];
+            const isMultiple = q.type === 'multiple';
+            const optList = getCurrentOptionList();
+            if(q.type === 'short') {
+                optsContainer.innerHTML = `<input type="text" id="shortAnsInput" class="w-full p-3 border rounded-xl dark:bg-gray-700" placeholder="Type your answer...">`;
+                const input = document.getElementById('shortAnsInput');
+                if(input && currentAnswer && typeof currentAnswer === 'string') input.value = currentAnswer;
+                if(input) input.addEventListener('input', (e) => { userAnswers[currentIndex] = e.target.value; updateStatsAndGrid(); saveStateToLocal(); });
+            } else {
+                optsContainer.innerHTML = optList.map((opt, idxDisplay) => {
+                    const originalIdx = (shuffledOptionsMap[currentIndex] ? shuffledOptionsMap[currentIndex][idxDisplay] : idxDisplay);
+                    let isChecked = false;
+                    if(isMultiple && Array.isArray(currentAnswer)) isChecked = currentAnswer.includes(originalIdx);
+                    else if(!isMultiple && currentAnswer !== null) isChecked = (currentAnswer === originalIdx);
+                    const inputType = isMultiple ? 'checkbox' : 'radio';
+                    const nameAttr = `q_${currentIndex}`;
+                    return `<label class="flex items-start p-3 rounded-xl border border-gray-200 dark:border-gray-700 option-hover cursor-pointer">
+                                <input type="${inputType}" name="${nameAttr}" value="${originalIdx}" ${isChecked ? 'checked' : ''} class="mt-1 mr-3">
+                                <span class="text-gray-800 dark:text-gray-100">${formatChemistryText(opt)}</span>
+                            </label>`;
+                }).join('');
+                // attach event listeners
+                optsContainer.querySelectorAll('input').forEach(input => {
+                    input.addEventListener('change', (e) => {
+                        const qtype = currentQuestions[currentIndex].type;
+                        const val = parseInt(e.target.value);
+                        if(qtype === 'single') {
+                            userAnswers[currentIndex] = val;
+                        } else if(qtype === 'multiple') {
+                            let currentVals = (userAnswers[currentIndex] && Array.isArray(userAnswers[currentIndex])) ? [...userAnswers[currentIndex]] : [];
+                            if(e.target.checked) { if(!currentVals.includes(val)) currentVals.push(val); }
+                            else { currentVals = currentVals.filter(v=>v!==val); }
+                            userAnswers[currentIndex] = currentVals;
+                        }
+                        updateStatsAndGrid();
+                        saveStateToLocal();
+                    });
+                });
+            }
+            const reviewBtn = document.getElementById('markReviewBtn');
+            reviewBtn.innerHTML = markedForReview[currentIndex] ? '<i class="fas fa-flag-checkered mr-1"></i> Marked for Review' : '<i class="far fa-flag mr-1"></i> Mark for Review';
+            reviewBtn.classList.toggle('bg-amber-100', markedForReview[currentIndex]);
+            updateStatsAndGrid();
+        }
+        
+        function updateStatsAndGrid() {
+            let answered = userAnswers.filter(a => a !== null && (!Array.isArray(a) || a.length>0) && (typeof a !=='string' || a.trim()!=='')).length;
+            let review = markedForReview.filter(f=>f===true).length;
+            document.getElementById('answeredCount').innerText = answered;
+            document.getElementById('reviewCount').innerText = review;
+            let total = currentQuestions.length;
+            document.getElementById('totalQCount').innerText = total;
+            let percent = (answered/total)*100;
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            // build grid
+            const gridDiv = document.getElementById('gridContainer');
+            gridDiv.innerHTML = '';
+            for(let i=0;i<total;i++) {
+                let isAnswered = userAnswers[i] !== null && (!Array.isArray(userAnswers[i]) || userAnswers[i].length>0) && (typeof userAnswers[i] !=='string' || userAnswers[i].trim()!=='');
+                let isReview = markedForReview[i];
+                let isCurrent = (i===currentIndex);
+                let bgClass = isCurrent ? 'bg-green-200 dark:bg-green-800 border-2 border-blue-500' : (isAnswered ? 'bg-blue-500 text-white' : (isReview ? 'bg-amber-400 text-black' : 'bg-gray-300 dark:bg-gray-600'));
+                let btn = document.createElement('button');
+                btn.innerText = i+1;
+                btn.className = `w-9 h-9 rounded-lg font-semibold ${bgClass} hover:scale-105 transition text-sm`;
+                btn.onclick = () => { currentIndex = i; renderCurrentQuestion(); updateStatsAndGrid(); };
+                gridDiv.appendChild(btn);
+            }
+            saveStateToLocal();
+        }
+        
+        document.getElementById('nextBtn').onclick = () => { if(currentIndex < currentQuestions.length-1) { currentIndex++; renderCurrentQuestion(); } };
+        document.getElementById('prevBtn').onclick = () => { if(currentIndex > 0) { currentIndex--; renderCurrentQuestion(); } };
+        document.getElementById('markReviewBtn').onclick = () => { markedForReview[currentIndex] = !markedForReview[currentIndex]; renderCurrentQuestion(); updateStatsAndGrid(); };
+        document.getElementById('resetTestBtn').onclick = () => { if(confirm('Reset all answers and timer?')) { localStorage.removeItem('cbt_exam_state'); location.reload(); } };
+        document.getElementById('randomizeBtn').onclick = () => { randomizeTest(); renderCurrentQuestion(); updateStatsAndGrid(); };
+        
+        function submitExam() {
+            if(timerInterval) clearInterval(timerInterval);
+            examActive = false;
+            let score = 0, maxMarks = 0;
+            let details = [];
+            for(let i=0;i<currentQuestions.length;i++) {
+                let q = currentQuestions[i];
+                let userAns = userAnswers[i];
+                let isCorrect = false;
+                if(q.type === 'single') { isCorrect = (userAns !== null && userAns === q.correct[0]); }
+                else if(q.type === 'multiple') {
+                    if(userAns && Array.isArray(userAns)) isCorrect = (JSON.stringify(userAns.sort()) === JSON.stringify(q.correct.sort()));
+                }
+                else if(q.type === 'short') { isCorrect = (userAns && userAns.toString().trim().toLowerCase() === q.correct[0]?.toString().toLowerCase()); }
+                let marksObtained = isCorrect ? q.marks : (userAns !== null ? q.negative : 0);
+                if(!isCorrect && userAns===null) marksObtained=0;
+                score += marksObtained;
+                maxMarks += q.marks;
+                details.push({id:i+1, text:q.question, correct:q.correct, userAnswer:userAns, isCorrect, explanation:q.explanation});
+            }
+            document.getElementById('resultContent').innerHTML = `<div class="text-center"><h3 class="text-3xl font-bold">Score: ${score} / ${maxMarks}</h3><div class="mt-4 max-h-96 overflow-y-auto">${details.map(d => `<div class="border-b p-3"><div class="font-semibold">Q${d.id}. ${formatChemistryText(d.text)}</div><div>Your answer: ${d.userAnswer !== null ? d.userAnswer : 'Not answered'}</div><div class="text-green-600 dark:text-green-400">Correct: ${d.isCorrect ? '✓' : '✗'}</div><div class="text-sm text-gray-500">${d.explanation || ''}</div></div>`).join('')}</div></div>`;
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+        document.getElementById('submitTestBtn').onclick = () => { if(confirm('Submit test?')) submitExam(); };
+        document.getElementById('closeModalBtn').onclick = () => { document.getElementById('resultModal').classList.add('hidden'); };
+        document.getElementById('exportPDFBtn').onclick = async () => { const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.text("Chemistry CBT Results",20,20); doc.save("results.pdf"); };
+        document.getElementById('exportCSVBtn').onclick = () => { const ws = XLSX.utils.json_to_sheet([{score:"check console"}]); XLSX.writeFile(XLSX.utils.book_new(),"results.xlsx"); };
+        // integrity: disable right-click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('visibilitychange', () => { if(document.hidden) alert("Warning: Tab switching detected. Maintain exam integrity."); });
+        window.onbeforeunload = () => examActive ? "Changes may be lost." : null;
+        initializeTest();
+    </script>
+    <!-- README comment: edit EXAM_CONFIG.questions, durationMinutes, adjust options. Add/remove questions following JSON structure. Chemical formulas auto formatted. -->
+</body>
+</html>
