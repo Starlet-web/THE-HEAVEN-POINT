@@ -1,579 +1,710 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THP - Login & Signup</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <style>
-    :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --primary-light: #818cf8;
-      --secondary: #f43f5e;
-      --dark: #1e293b;
-      --light: #f8fafc;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Student Portal - Login</title>
     
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f9fafb, #f3f4f6);
-      overflow-x: hidden;
-    }
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
-    .fade {
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .form-input {
-      transition: all 0.3s ease;
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-    
-    .form-input:focus {
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
-    }
-    
-    .btn-primary {
-      background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
-      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3), 0 2px 4px -1px rgba(99, 102, 241, 0.2);
-      cursor: pointer;
-    }
-    
-    .btn-primary:hover {
-      background-image: linear-gradient(to right, var(--primary-dark), var(--primary));
-      transform: translateY(-1px);
-      box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.2);
-    }
-    
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-    
-    .btn-secondary {
-      background-image: linear-gradient(to right, #f43f5e, #e11d48);
-      box-shadow: 0 4px 6px -1px rgba(244, 63, 94, 0.3), 0 2px 4px -1px rgba(244, 63, 94, 0.2);
-      cursor: pointer;
-    }
-    
-    .btn-secondary:hover {
-      background-image: linear-gradient(to right, #e11d48, #f43f5e);
-    }
-    
-    .floating-label {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform: translate(12px, 12px);
-      transition: all 0.2s ease-out;
-      pointer-events: none;
-      color: #64748b;
-      font-size: 14px;
-    }
-    
-    .input-filled + .floating-label,
-    .form-input:focus + .floating-label {
-      transform: translate(8px, -8px) scale(0.85);
-      background-color: white;
-      padding: 0 4px;
-      color: var(--primary);
-    }
-    
-    .input-group {
-      position: relative;
-    }
-    
-    .loader {
-      width: 48px;
-      height: 48px;
-      border: 5px solid #e0e7ff;
-      border-bottom-color: var(--primary);
-      border-radius: 50%;
-      display: inline-block;
-      box-sizing: border-box;
-      animation: rotation 1s linear infinite;
-    }
-    
-    @keyframes rotation {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .card {
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 12px;
-      border: 1px solid rgba(209, 213, 219, 0.3);
-      max-height: 90vh;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--primary) #f1f1f1;
-    }
-    
-    .card::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .card::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-    
-    .card::-webkit-scrollbar-thumb {
-      background-color: var(--primary);
-      border-radius: 10px;
-    }
-    
-    .wave {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      overflow: hidden;
-      line-height: 0;
-      transform: rotate(180deg);
-      z-index: -1;
-    }
-    
-    .wave svg {
-      position: relative;
-      display: block;
-      width: calc(100% + 1.3px);
-      height: 150px;
-    }
-    
-    .wave .shape-fill {
-      fill: rgba(99, 102, 241, 0.1);
-    }
-    
-    .clickable {
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .clickable:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
-    }
-    
-    .clickable:active {
-      transform: scale(0.98);
-    }
-    
-    @media (max-height: 700px) {
-      .card {
-        max-height: 80vh;
-      }
-    }
-  </style>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #f43f5e;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Animated gradient orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            animation: float 20s infinite ease-in-out;
+            opacity: 0.5;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(244, 63, 94, 0.2), transparent);
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -7s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.05); }
+        }
+
+        /* Main login card - WHITE THEME */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 440px;
+            max-width: 95vw;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.1),
+                0 10px 30px rgba(99, 102, 241, 0.1),
+                inset 0 0 30px rgba(255, 255, 255, 0.5);
+            animation: cardEntry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes cardEntry {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Logo & Header */
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
+            50% { box-shadow: 0 10px 50px rgba(99, 102, 241, 0.5); }
+        }
+
+        .login-header h1 {
+            color: var(--gray-900);
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-header p {
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Input fields - WHITE THEME */
+        .input-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .input-group .icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 20px 16px 52px;
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            color: var(--gray-900);
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .input-group input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .input-group input:focus {
+            border-color: #6366f1;
+            background: #ffffff;
+            box-shadow: 
+                0 0 0 4px rgba(99, 102, 241, 0.1),
+                0 4px 20px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-group input:focus ~ .icon {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Login button */
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            font-family: inherit;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Spinner */
+        .spinner {
+            display: none;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error message */
+        .error-message {
+            color: #ef4444;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        /* Success message */
+        .success-message {
+            color: #10b981;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+            padding: 12px;
+            background: rgba(16, 185, 129, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Footer text */
+        .footer-text {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--gray-400);
+            font-size: 12px;
+        }
+
+        .footer-text .admin-link {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .footer-text .admin-link:hover {
+            color: #4f46e5;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 35px 25px;
+                border-radius: 25px;
+            }
+            .login-header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-  <!-- Background Elements -->
-  <div class="absolute inset-0 overflow-hidden z-0">
-    <div class="absolute top-0 left-0 w-64 h-64 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-    <div class="absolute top-0 right-0 w-64 h-64 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-    <div class="absolute bottom-0 right-0 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
-  </div>
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
 
-  <!-- Loader -->
-  <div id="loader" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 transition-opacity duration-500">
-    <div class="text-center">
-      <div class="loader mb-4"></div>
-      <p class="text-indigo-600 font-medium">Loading THP...</p>
-    </div>
-  </div>
-
-  <!-- Form Container -->
-  <div class="w-full max-w-md card shadow-2xl fade opacity-0 transform translate-y-4 mx-auto my-8" id="formContainer">
-    <div class="p-8">
-      <div class="text-center mb-8">
-        <div class="flex justify-center mb-4 clickable" onclick="window.location.reload()">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-          </svg>
-        </div>
-        <h2 class="text-3xl font-bold text-indigo-700 mb-2 clickable" onclick="window.location.reload()">THP</h2>
-        <p class="text-gray-500" id="formTitle">Login to your account</p>
-      </div>
-
-      <form id="authForm" class="space-y-6">
-        <div id="nameField" class="hidden">
-          <div class="input-group">
-            <input type="text" id="name" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
-            <label class="floating-label">Full Name</label>
-          </div>
+    <!-- Login Card -->
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo-icon">🎓</div>
+            <h1>THP Portal</h1>
+            <p>Sign in with your phone number</p>
         </div>
 
-        <div id="mobileField" class="hidden">
-          <div class="input-group">
-            <input type="text" id="mobile" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" />
-            <label class="floating-label">Mobile Number</label>
-          </div>
-        </div>
-
-        <div id="courseField" class="hidden">
-          <div class="input-group">
-            <select id="course" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none appearance-none">
-              <option value=""></option>
-              <option value="Class 9 and 10">Class 9 and 10</option>
-              <option value="Class 11 and 12">Class 11 and 12</option>
-              <option value="BSc">BSc</option>
-              <option value="NEET/IIT/JEE/CUET">NEET/IIT/JEE/CUET</option>
-              <option value="SSC/Bank/Railway">SSC/Bank/Railway</option>
-            </select>
-            <label class="floating-label">Choose Course</label>
-            <div class="absolute right-3 top-3 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
+        <form id="loginForm">
+            <div class="input-group">
+                <span class="icon">📱</span>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    placeholder="Phone Number" 
+                    maxlength="10" 
+                    pattern="[0-9]{10}"
+                    inputmode="numeric"
+                    autocomplete="tel"
+                    required
+                >
             </div>
-          </div>
-        </div>
 
-        <div id="batchField" class="hidden">
-          <div class="input-group">
-            <select id="batch" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none appearance-none">
-              <option value=""></option>
-              <option value="Morning Batch">Morning Batch</option>
-              <option value="Afternoon Batch">Afternoon Batch</option>
-              <option value="Evening Batch">Evening Batch</option>
-              <option value="Weekend Batch">Weekend Batch</option>
-            </select>
-            <label class="floating-label">Choose Batch</label>
-            <div class="absolute right-3 top-3 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-              </svg>
+            <div class="input-group">
+                <span class="icon">🔒</span>
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Password" 
+                    required
+                    autocomplete="current-password"
+                >
             </div>
-          </div>
-        </div>
 
-        <div class="input-group">
-          <input type="email" id="email" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
-          <label class="floating-label">Email Address</label>
-        </div>
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span id="btnText">🚀 Sign In</span>
+                <div class="spinner" id="spinner"></div>
+            </button>
+        </form>
 
-        <div class="input-group">
-          <input type="password" id="password" class="form-input w-full p-3 border border-gray-200 rounded-lg focus:outline-none" required />
-          <label class="floating-label">Password</label>
-        </div>
-
-        <div class="flex justify-between items-center text-sm">
-          <div class="flex items-center">
-            <input id="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded clickable">
-            <label for="remember" class="ml-2 block text-gray-600 clickable">Remember me</label>
-          </div>
-          <button type="button" id="forgotPassword" class="text-indigo-600 hover:text-indigo-800 transition-colors clickable">Forgot Password?</button>
-        </div>
-
-        <button type="submit" id="authBtn" class="btn-primary w-full text-white p-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 clickable">
-          <span id="authText">Login</span>
-          <svg id="spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0h8z"/>
-          </svg>
-        </button>
-
-        <div class="text-center text-sm text-gray-600">
-          <span id="toggleFormText">Don't have an account?</span>
-          <button type="button" id="toggleForm" class="ml-1 text-indigo-600 hover:text-indigo-800 font-medium transition-colors clickable">Sign Up</button>
-        </div>
-
-        <div id="payNow" class="hidden text-center pt-4 border-t border-gray-100">
-          <p class="text-gray-600 mb-3">You haven't purchased access yet.</p>
-          <a href="GPay.html" class="btn-secondary inline-block px-6 py-2 text-white rounded-lg transition-all clickable">Pay Now</a>
-        </div>
-      </form>
-
-      <div id="popupMessage" class="hidden mt-6 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg"></div>
-            
-      <div class="mt-8 text-center text-xs text-gray-400">
-        <p class="clickable" onclick="window.location.href='terms.html'">Terms of Service</p>
-        <p class="clickable mt-1" onclick="window.location.href='privacy.html'">Privacy Policy</p>
-      </div>
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+        
+        <p class="footer-text">
+            Default Password: 12345678<br>
+            <span class="admin-link" onclick="window.location.href='admin.html'">👑 Admin Login</span> | 
+            <span class="admin-link" onclick="window.location.href='teacher.html'">👨‍🏫 Teacher Portal</span>
+        </p>
     </div>
-  </div>
 
-  <!-- Wave Decoration -->
-  <div class="wave">
-    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
-      <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
-      <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
-    </svg>
-  </div>
+    <script>
+        // FIREBASE INITIALIZATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
+            authDomain: "dumbbell-gyme.firebaseapp.com",
+            projectId: "dumbbell-gyme",
+            storageBucket: "dumbbell-gyme.firebasestorage.app",
+            messagingSenderId: "305021976299",
+            appId: "1:305021976299:web:fb85c2b332935d698088ae",
+            measurementId: "G-VEYQ7W61FD"
+        };
 
-  <!-- Firebase Auth & Logic -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-    import { 
-      getAuth, 
-      signInWithEmailAndPassword, 
-      createUserWithEmailAndPassword, 
-      sendPasswordResetEmail, 
-      onAuthStateChanged, 
-      signOut 
-    } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-    import { 
-      getFirestore, 
-      collection, 
-      doc, 
-      setDoc, 
-      getDoc, 
-      writeBatch, 
-      serverTimestamp 
-    } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAnApLLe0eZ1ZRLfNUkASkvBu4BLVk6DQM",
-      authDomain: "login-form-eee86.firebaseapp.com",
-      projectId: "login-form-eee86",
-      storageBucket: "login-form-eee86.appspot.com",
-      messagingSenderId: "717475952542",
-      appId: "1:717475952542:web:f79db77ed1f60d117b488f",
-      measurementId: "G-VV0D9TNK0Y"
-    };
+        // PARTICLES.JS CONFIGURATION
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#6366f1" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3, "random": true, "anim": { "enable": true, "speed": 0.5, "opacity_min": 0.1, "sync": false } },
+                "size": { "value": 2.5, "random": true, "anim": { "enable": true, "speed": 2, "size_min": 0.5, "sync": false } },
+                "line_linked": { "enable": true, "distance": 150, "color": "#6366f1", "opacity": 0.15, "width": 1 },
+                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } }, "push": { "particles_nb": 4 } }
+            },
+            "retina_detect": true
+        });
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+        // ALL 90 STUDENTS DATA
+        const allStudents = [
+            { name: "Tanisha Das", class: "10th", phone: "9451231855", password: "12345678" },
+            { name: "Kavya Mishra", class: "5th", phone: "9307988315", password: "12345678" },
+            { name: "Krishna Shukla", class: "12th", phone: "7235053167", password: "12345678" },
+            { name: "Ammar Ali", class: "8th", phone: "7007056402", password: "12345678" },
+            { name: "Akshat Kasera", class: "8th", phone: "9936449709", password: "12345678" },
+            { name: "Vaishnavi Kesar", class: "12th", phone: "9336962553", password: "12345678" },
+            { name: "Shifa", class: "8th", phone: "8957187585", password: "12345678" },
+            { name: "Shashwat Chawla", class: "12th", phone: "6306744703", password: "12345678" },
+            { name: "Divyanshi Chau", class: "12th", phone: "9450801658", password: "12345678" },
+            { name: "Sheeya Kasera", class: "9th", phone: "9305523233", password: "12345678" },
+            { name: "Raghav Kasera", class: "9th", phone: "9565322947", password: "12345678" },
+            { name: "Aradhya Solivastan", class: "9th", phone: "9565322947", password: "12345678" },
+            { name: "Arshad Solivastan", class: "5th", phone: "9565322947", password: "12345678" },
+            { name: "Saketha Singh", class: "10th", phone: "7317809790", password: "12345678" },
+            { name: "Jassi Gupta", class: "5th", phone: "7505583637", password: "12345678" },
+            { name: "Rohit Chawla", class: "8th", phone: "8840179902", password: "12345678" },
+            { name: "Amiksha Chau", class: "11th", phone: "8840179902", password: "12345678" },
+            { name: "Prince Kumar", class: "3rd", phone: "8299253241", password: "12345678" },
+            { name: "Ofas Chawla", class: "10th", phone: "949003063", password: "12345678" },
+            { name: "Akashi Aggarhani", class: "10th", phone: "9335637485", password: "12345678" },
+            { name: "Vedansh Kumar", class: "4th", phone: "8299589396", password: "12345678" },
+            { name: "Pujal Gupta", class: "6th", phone: "8299584527", password: "12345678" },
+            { name: "Kafur Gupta", class: "6th", phone: "8299584527", password: "12345678" },
+            { name: "Mohd Alfaz", class: "5th", phone: "9839397462", password: "12345678" },
+            { name: "Lakshya Kesavooni", class: "10th", phone: "9336616595", password: "12345678" },
+            { name: "Ansh Verma", class: "12th", phone: "6392761742", password: "12345678" },
+            { name: "Yash Kumar Gupta", class: "5th", phone: "6307495427", password: "12345678" },
+            { name: "Kudara Verma", class: "9th", phone: "6391153210", password: "12345678" },
+            { name: "Dehna Sahu", class: "9th", phone: "8317047601", password: "12345678" },
+            { name: "HPL Khan", class: "10th", phone: "9565661165", password: "12345678" },
+            { name: "Ahil Khan", class: "5th", phone: "9580362444", password: "12345678" },
+            { name: "Chunshila", class: "5th", phone: "7392930141", password: "12345678" },
+            { name: "Boudan Kumar", class: "10th", phone: "8887189920", password: "12345678" },
+            { name: "Lavi Singh", class: "8th", phone: "9455327077", password: "12345678" },
+            { name: "Vanishka Singh", class: "7th", phone: "7651825443", password: "12345678" },
+            { name: "Angel Kesavan", class: "6th", phone: "7651825443", password: "12345678" },
+            { name: "Huzafa", class: "10th", phone: "9653017839", password: "12345678" },
+            { name: "Vashu Vishwakarma", class: "8th", phone: "7860900588", password: "12345678" },
+            { name: "Khal Tomar", class: "10th", phone: "7007661951", password: "12345678" },
+            { name: "Asad Arman", class: "10th", phone: "8303982415", password: "12345678" },
+            { name: "Hujshi Chawaria", class: "7th", phone: "8303982415", password: "12345678" },
+            { name: "Piyal Kesavan", class: "10th", phone: "8931983103", password: "12345678" },
+            { name: "Aman Sharma", class: "8th", phone: "8127550936", password: "12345678" },
+            { name: "Ananya Kesavan", class: "12th", phone: "7669986121", password: "12345678" },
+            { name: "Harsh Kumar", class: "10th", phone: "8957043131", password: "12345678" },
+            { name: "Tanushka", class: "6th", phone: "8756291225", password: "12345678" },
+            { name: "Sanskar Verma", class: "10th", phone: "7355344453", password: "12345678" },
+            { name: "Trishab Pandey", class: "10th", phone: "7839378451", password: "12345678" },
+            { name: "Aimal", class: "8th", phone: "945055322", password: "12345678" },
+            { name: "Ayu Chawaria", class: "8th", phone: "8009955858", password: "12345678" },
+            { name: "Satyam Pargat", class: "10th", phone: "9532279912", password: "12345678" },
+            { name: "Student 52", class: "N/A", phone: "6994368944", password: "12345678" },
+            { name: "Md Afshyam", class: "10th", phone: "9277226409", password: "12345678" },
+            { name: "Igwa Khan", class: "10th", phone: "9793733274", password: "12345678" },
+            { name: "Anshika Pandey", class: "12th", phone: "8318211500", password: "12345678" },
+            { name: "Naya", class: "5th", phone: "6394621183", password: "12345678" },
+            { name: "Ansh Singh", class: "12th", phone: "7992054641", password: "12345678" },
+            { name: "Khushi Reshani", class: "3rd", phone: "6391833973", password: "12345678" },
+            { name: "Kauya Nathore", class: "L.K.C.", phone: "8858877233", password: "12345678" },
+            { name: "Somviddhi Kesu", class: "7th", phone: "8957043131", password: "12345678" },
+            { name: "Hkashi Prastogi", class: "10th", phone: "9140232318", password: "12345678" },
+            { name: "Noman Khawasia", class: "10th", phone: "8846055164", password: "12345678" },
+            { name: "Sauya Kesawati", class: "12th", phone: "9305180866", password: "12345678" },
+            { name: "Mahi Srivastava", class: "7th", phone: "9305898967", password: "12345678" },
+            { name: "Siddhi Vinayak", class: "5th", phone: "9305898967", password: "12345678" },
+            { name: "Muskan Rathore", class: "12th", phone: "9335780456", password: "12345678" },
+            { name: "Shubh Keshavani", class: "8th", phone: "8528320651", password: "12345678" },
+            { name: "Shivam Keshavani", class: "7th", phone: "8528320651", password: "12345678" },
+            { name: "Gypsiukh Kumar", class: "1st", phone: "7052253241", password: "12345678" },
+            { name: "Arpit Kumar", class: "12th", phone: "9956838053", password: "12345678" },
+            { name: "Tanmay Singh", class: "12th", phone: "9555831536", password: "12345678" },
+            { name: "Tanvi Verma", class: "4th", phone: "8881912337", password: "12345678" },
+            { name: "Piyush Yadav", class: "8th", phone: "8303086631", password: "12345678" },
+            { name: "Kauya Kesawani", class: "8th", phone: "7398669064", password: "12345678" },
+            { name: "Alkama", class: "5th", phone: "8957187585", password: "12345678" },
+            { name: "Arshi Gupta", class: "5th", phone: "8933954064", password: "12345678" },
+            { name: "Ayush Gupta", class: "1st", phone: "8933954064", password: "12345678" },
+            { name: "Imilc Siddiqui", class: "1st", phone: "9335958840", password: "12345678" },
+            { name: "Prakhar Kearwani", class: "1st", phone: "6393742577", password: "12345678" },
+            { name: "Joyanhu Das", class: "1st", phone: "9415604642", password: "12345678" },
+            { name: "Vanhika Prayapati", class: "1st", phone: "8381984381", password: "12345678" },
+            { name: "Bhavya Prayapati", class: "1st", phone: "8381984381", password: "12345678" },
+            { name: "Aryan Keshwanthi", class: "1st", phone: "9140362202", password: "12345678" },
+            { name: "Ishika Verma", class: "1st", phone: "6386942176", password: "12345678" },
+            { name: "Swasti Verma", class: "1st", phone: "6386942176", password: "12345678" },
+            { name: "Sonakshi Chaudhary", class: "1st", phone: "9369442416", password: "12345678" },
+            { name: "Naman Kumar Gupta", class: "1st", phone: "9278033667", password: "12345678" },
+            { name: "Niti Singh Rathore", class: "1st", phone: "9219140451", password: "12345678" },
+            { name: "Satvik Chaurasia", class: "1st", phone: "7499513825", password: "12345678" }
+        ];
 
-    // Floating label functionality
-    document.querySelectorAll('.form-input').forEach(input => {
-      if(input.value) {
-        input.classList.add('input-filled');
-      }
-            
-      input.addEventListener('input', () => {
-        if(input.value) {
-          input.classList.add('input-filled');
-        } else {
-          input.classList.remove('input-filled');
+        // INITIALIZE STUDENTS IN FIRESTORE
+        async function initializeStudents() {
+            try {
+                const batch = db.batch();
+                allStudents.forEach(student => {
+                    const studentRef = db.collection('students').doc(student.phone);
+                    batch.set(studentRef, {
+                        name: student.name,
+                        class: student.class,
+                        phone: student.phone,
+                        password: student.password,
+                        profilePhoto: '',
+                        address: '',
+                        fatherName: '',
+                        motherName: '',
+                        email: '',
+                        bloodGroup: '',
+                        dateOfBirth: '',
+                        gender: '',
+                        admissionDate: '',
+                        attendance: {},
+                        testScores: {},
+                        performance: { strengths: '', weaknesses: '', remarks: '' },
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                });
+                await batch.commit();
+                console.log('✅ All students initialized');
+                return true;
+            } catch (error) {
+                console.error('❌ Init error:', error);
+                return false;
+            }
         }
-      });
-    });
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docSnap = await getDoc(doc(db, "users", user.uid));
-        if (docSnap.exists() && docSnap.data().hasAccess) {
-          window.location.replace("dashboard.html");
-        } else {
-          await signOut(auth);
-          document.getElementById("loader").classList.add("hidden");
-          document.getElementById("formContainer").classList.remove("opacity-0");
-          document.getElementById("formContainer").classList.remove("translate-y-4");
+        // LOGIN HANDLER
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            const btnText = document.getElementById('btnText');
+            const spinnerEl = document.getElementById('spinner');
+            const loginBtn = document.getElementById('loginBtn');
+
+            errorDiv.classList.remove('show');
+            successDiv.classList.remove('show');
+
+            if (!phone || !password) {
+                showError('⚠️ Please enter phone number and password');
+                return;
+            }
+
+            if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
+                showError('⚠️ Please enter valid 10-digit phone number');
+                return;
+            }
+
+            btnText.style.display = 'none';
+            spinnerEl.style.display = 'block';
+            loginBtn.disabled = true;
+
+            try {
+                // Admin login check
+                if (phone === '9999999999' && password === 'admin123') {
+                    localStorage.setItem('thp_admin', JSON.stringify({ role: 'admin', loginTime: new Date().toISOString() }));
+                    successDiv.textContent = '✅ Admin login successful! Redirecting...';
+                    successDiv.classList.add('show');
+                    setTimeout(() => { window.location.href = 'admin.html'; }, 1000);
+                    return;
+                }
+
+                // Teacher login check
+                if (phone === '8888888888' && password === 'teacher123') {
+                    localStorage.setItem('thp_teacher', JSON.stringify({ role: 'teacher', loginTime: new Date().toISOString() }));
+                    successDiv.textContent = '✅ Teacher login successful! Redirecting...';
+                    successDiv.classList.add('show');
+                    setTimeout(() => { window.location.href = 'teacher.html'; }, 1000);
+                    return;
+                }
+
+                // Student login
+                let studentDoc = await db.collection('students').doc(phone).get();
+
+                if (!studentDoc.exists) {
+                    await initializeStudents();
+                    studentDoc = await db.collection('students').doc(phone).get();
+                    
+                    if (!studentDoc.exists) {
+                        showError('❌ Student not found. Contact admin.');
+                        resetButton(btnText, spinnerEl, loginBtn);
+                        return;
+                    }
+                }
+
+                const studentData = studentDoc.data();
+                
+                if (studentData.password === password) {
+                    localStorage.setItem('thp_current_student', JSON.stringify({
+                        phone: phone,
+                        name: studentData.name,
+                        class: studentData.class,
+                        loginTime: new Date().toISOString()
+                    }));
+                    
+                    btnText.style.display = 'block';
+                    btnText.textContent = '✅ Success!';
+                    spinnerEl.style.display = 'none';
+                    loginBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                    
+                    successDiv.textContent = `Welcome ${studentData.name}! Redirecting...`;
+                    successDiv.classList.add('show');
+                    
+                    setTimeout(() => { window.location.href = 'student-dashboard.html'; }, 800);
+                } else {
+                    showError('🔒 Invalid password. Default is 12345678');
+                    resetButton(btnText, spinnerEl, loginBtn);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('🌐 Connection error. Please try again.');
+                resetButton(btnText, spinnerEl, loginBtn);
+            }
+        });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => errorDiv.classList.remove('show'), 5000);
         }
-      } else {
-        document.getElementById("loader").classList.add("hidden");
-        document.getElementById("formContainer").classList.remove("opacity-0");
-        document.getElementById("formContainer").classList.remove("translate-y-4");
-      }
-    });
 
-    let isLogin = true;
-    const toggleFormBtn = document.getElementById("toggleForm");
-    const toggleFormText = document.getElementById("toggleFormText");
-    const authText = document.getElementById("authText");
-    const formTitle = document.getElementById("formTitle");
-    const popup = document.getElementById("popupMessage");
-
-    function showMessage(msg, bg = 'bg-green-600') {
-      popup.textContent = msg;
-      popup.className = `block mt-6 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg ${bg}`;
-      popup.classList.remove("hidden");
-      setTimeout(() => popup.classList.add("hidden"), 3000);
-    }
-
-    function toggleForm() {
-      isLogin = !isLogin;
-      document.getElementById("nameField").classList.toggle("hidden", isLogin);
-      document.getElementById("mobileField").classList.toggle("hidden", isLogin);
-      document.getElementById("courseField").classList.toggle("hidden", isLogin);
-      document.getElementById("batchField").classList.toggle("hidden", isLogin);
-      formTitle.textContent = isLogin ? "Login to your account" : "Create a new account";
-      authText.textContent = isLogin ? "Login" : "Sign Up";
-      toggleFormText.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
-      toggleFormBtn.textContent = isLogin ? "Sign Up" : "Login";
-            
-      if(isLogin) {
-        document.getElementById("name").value = "";
-        document.getElementById("mobile").value = "";
-        document.getElementById("course").value = "";
-        document.getElementById("batch").value = "";
-        document.getElementById("name").classList.remove('input-filled');
-        document.getElementById("mobile").classList.remove('input-filled');
-        document.getElementById("course").classList.remove('input-filled');
-        document.getElementById("batch").classList.remove('input-filled');
-      }
-    }
-
-    toggleFormBtn.addEventListener("click", () => {
-      document.getElementById("formContainer").classList.add("opacity-0");
-      document.getElementById("formContainer").classList.add("translate-y-4");
-      setTimeout(() => {
-        toggleForm();
-        document.getElementById("formContainer").classList.remove("opacity-0");
-        document.getElementById("formContainer").classList.remove("translate-y-4");
-      }, 300);
-    });
-
-    document.getElementById("authForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const spinner = document.getElementById("spinner");
-      const authBtn = document.getElementById("authBtn");
-
-      authText.textContent = isLogin ? "Logging in..." : "Signing up...";
-      spinner.classList.remove("hidden");
-      authBtn.disabled = true;
-
-      try {
-        if (isLogin) {
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          const docSnap = await getDoc(doc(db, "users", userCredential.user.uid));
-          if (docSnap.exists() && docSnap.data().hasAccess) {
-            showMessage("Login successful! Redirecting...");
-            setTimeout(() => window.location.replace("dashboard.html"), 1000);
-          } else {
-            document.getElementById("payNow").classList.remove("hidden");
-            await signOut(auth);
-            showMessage("Please complete your payment to access content", 'bg-indigo-600');
-          }
-        } else {
-          const name = document.getElementById("name").value.trim();
-          const mobile = document.getElementById("mobile").value.trim();
-          const course = document.getElementById("course").value;
-          const batch = document.getElementById("batch").value;
-
-          if(!name || !mobile || !course || !batch) {
-            throw new Error("Please fill all required fields");
-          }
-
-          // Create user in authentication
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const userId = userCredential.user.uid;
-          const now = serverTimestamp();
-
-          // Initialize batch write
-          const batchWrite = writeBatch(db);
-
-          // 1. Create user document
-          const userRef = doc(db, "users", userId);
-          batchWrite.set(userRef, {
-            name,
-            email,
-            mobile,
-            course,
-            batch,
-            joinDate: now,
-            hasAccess: false,
-            role: "student"
-          });
-
-          // 2. Create course document
-          const courseRef = doc(collection(db, "courses"));
-          batchWrite.set(courseRef, {
-            title: course,
-            description: `${course} course`,
-            teacher: "To be assigned",
-            startDate: now,
-            endDate: null,
-            syllabus: []
-          });
-
-          // 3. Create enrollment document
-          const enrollmentRef = doc(collection(db, "enrollments"));
-          batchWrite.set(enrollmentRef, {
-            userId: userRef,
-            courseId: courseRef,
-            enrollmentDate: now,
-            progress: 0,
-            lastAccessed: now
-          });
-
-          // 4. Create initial test document
-          const testRef = doc(collection(db, "tests"));
-          batchWrite.set(testRef, {
-            title: `${course} Diagnostic Test`,
-            courseId: courseRef,
-            date: null,
-            maxMarks: 100,
-            averageScore: 0
-          });
-
-          // 5. Create test results document
-          const testResultRef = doc(collection(db, "testResults"));
-          batchWrite.set(testResultRef, {
-            userId: userRef,
-            testId: testRef,
-            score: null,
-            rank: null,
-            totalStudents: 0,
-            subject: course.split(' ').pop(),
-            answers: {}
-          });
-
-          // 6. Create initial deadline
-          const deadlineRef = doc(collection(db, "deadlines"));
-          batchWrite.set(deadlineRef, {
-            title: "First Assignment",
-            courseId: courseRef,
-            dueDate: null,
-            type: "assignment",
-            description: "Introductory assignment",
-            status: "pending"
-          });
-
-          // Commit all writes
-          await batchWrite.commit();
-
-          showMessage("Account created successfully! Please login.");
-          setTimeout(() => toggleForm(), 1500);
+        function resetButton(btnText, spinnerEl, loginBtn) {
+            btnText.style.display = 'block';
+            btnText.textContent = '🚀 Sign In';
+            spinnerEl.style.display = 'none';
+            loginBtn.disabled = false;
+            loginBtn.style.background = 'linear-gradient(135deg, #6366f1, #8b5cf6)';
         }
-      } catch (error) {
-        showMessage(error.message, 'bg-red-500');
-      } finally {
-        authText.textContent = isLogin ? "Login" : "Sign Up";
-        spinner.classList.add("hidden");
-        authBtn.disabled = false;
-      }
-    });
 
-    document.getElementById("forgotPassword").addEventListener("click", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-            
-      if(!email) {
-        showMessage("Please enter your email in the email field first", 'bg-indigo-600');
-        document.getElementById("email").focus();
-        return;
-      }
-            
-      try {
-        await sendPasswordResetEmail(auth, email);
-        showMessage("Password reset email sent. Check your inbox.", 'bg-indigo-600');
-      } catch (error) {
-        showMessage("Error: " + error.message, 'bg-red-500');
-      }
-    });
+        // Auto-init on load
+        (async function() {
+            try {
+                const snapshot = await db.collection('students').limit(1).get();
+                if (snapshot.empty) {
+                    console.log('🔄 First time setup...');
+                    await initializeStudents();
+                }
+            } catch (error) {
+                console.log('⚠️ Will init on first login');
+            }
+        })();
 
-    // Add click effects to all clickable elements
-    document.querySelectorAll('.clickable').forEach(element => {
-      element.addEventListener('mousedown', () => {
-        element.classList.add('active:scale-95');
-      });
-      element.addEventListener('mouseup', () => {
-        element.classList.remove('active:scale-95');
-      });
-      element.addEventListener('mouseleave', () => {
-        element.classList.remove('active:scale-95');
-      });
-    });
-  </script>
+        console.log('🚀 THP Portal Ready');
+        console.log('📱 Student Login: Phone + 12345678');
+        console.log('👑 Admin Login: 9999999999 + admin123');
+        console.log('👨‍🏫 Teacher Login: 8888888888 + teacher123');
+    </script>
 </body>
 </html>
