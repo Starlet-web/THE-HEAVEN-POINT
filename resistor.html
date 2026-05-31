@@ -31,11 +31,11 @@
         
         .fade { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        .form-input {
+        .form-input, .form-select {
             transition: all 0.3s ease;
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
-        .form-input:focus { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); }
+        .form-input:focus, .form-select:focus { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); }
         
         .btn-primary {
             background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
@@ -64,25 +64,24 @@
         .input-group { position: relative; }
         
         .form-select {
-            transition: all 0.3s ease;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            appearance: none;
-            -webkit-appearance: none;
-            cursor: pointer;
+            appearance: none; -webkit-appearance: none; cursor: pointer;
         }
-        .form-select:focus { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); }
+        
+        .select-arrow {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%); color: #94a3b8;
+            pointer-events: none; font-size: 14px; transition: all 0.3s ease;
+        }
+        .input-group:focus-within .select-arrow { color: var(--primary); }
         
         .loader {
             width: 48px; height: 48px;
             border: 5px solid #e0e7ff;
             border-bottom-color: var(--primary);
-            border-radius: 50%;
-            display: inline-block;
+            border-radius: 50%; display: inline-block;
             animation: rotation 1s linear infinite;
         }
-        @keyframes rotation {
-            0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }
-        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         .card {
             backdrop-filter: blur(16px) saturate(180%);
@@ -93,9 +92,6 @@
             max-height: 90vh; overflow-y: auto;
             scrollbar-width: thin; scrollbar-color: var(--primary) #f1f1f1;
         }
-        .card::-webkit-scrollbar { width: 6px; }
-        .card::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        .card::-webkit-scrollbar-thumb { background-color: var(--primary); border-radius: 10px; }
         
         .wave {
             position: fixed; bottom: 0; left: 0; width: 100%;
@@ -106,21 +102,6 @@
         
         .clickable { cursor: pointer; transition: all 0.2s ease; }
         .clickable:hover { opacity: 0.9; transform: scale(1.02); }
-        .clickable:active { transform: scale(0.98); }
-        
-        .select-arrow {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            pointer-events: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        .input-group:focus-within .select-arrow {
-            color: var(--primary);
-        }
         
         @keyframes blob {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -136,36 +117,26 @@
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-    <!-- Background Elements -->
+    <!-- Background -->
     <div class="absolute inset-0 overflow-hidden z-0">
         <div class="absolute top-0 left-0 w-64 h-64 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
         <div class="absolute top-0 right-0 w-64 h-64 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
         <div class="absolute bottom-0 right-0 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
     </div>
 
-    <!-- Loader -->
-    <div id="loader" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 transition-opacity duration-500" style="display:none;">
-        <div class="text-center">
-            <div class="loader mb-4"></div>
-            <p class="text-indigo-600 font-medium">Loading THP...</p>
-        </div>
-    </div>
-
     <!-- Form Container -->
     <div class="w-full max-w-md card shadow-2xl fade mx-auto my-8" id="formContainer" style="opacity:0;transform:translateY(16px);">
         <div class="p-8">
-            <div class="text-center mb-8">
+            <div class="text-center mb-6">
                 <div class="flex justify-center mb-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl shadow-lg" style="box-shadow:0 8px 25px rgba(99,102,241,0.35);">
-                        🎓
-                    </div>
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl shadow-lg" style="box-shadow:0 8px 25px rgba(99,102,241,0.35);">🎓</div>
                 </div>
                 <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-2">THP Portal</h2>
-                <p class="text-gray-500">Login with your details</p>
+                <p class="text-gray-500">Enter all details to login</p>
             </div>
 
-            <form id="loginForm" class="space-y-5">
-                <!-- Phone Number -->
+            <form id="loginForm" class="space-y-4">
+                <!-- Phone -->
                 <div class="input-group">
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><i class="fas fa-mobile-alt"></i></span>
@@ -174,29 +145,31 @@
                     </div>
                 </div>
 
-                <!-- Class Selection -->
+                <!-- Class -->
                 <div class="input-group">
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><i class="fas fa-graduation-cap"></i></span>
                         <select id="studentClass" class="form-select form-input w-full p-3 pl-10 pr-10 border border-gray-200 rounded-lg focus:outline-none bg-white" required>
                             <option value=""></option>
-                            <option value="1">Class 1</option>
-                            <option value="2">Class 2</option>
-                            <option value="3">Class 3</option>
-                            <option value="4">Class 4</option>
-                            <option value="5">Class 5</option>
-                            <option value="6">Class 6</option>
-                            <option value="7">Class 7</option>
-                            <option value="8">Class 8</option>
-                            <option value="9">Class 9</option>
-                            <option value="10">Class 10</option>
-                            <option value="11">Class 11</option>
-                            <option value="12">Class 12</option>
+                            <option value="1">Class 1</option><option value="2">Class 2</option>
+                            <option value="3">Class 3</option><option value="4">Class 4</option>
+                            <option value="5">Class 5</option><option value="6">Class 6</option>
+                            <option value="7">Class 7</option><option value="8">Class 8</option>
+                            <option value="9">Class 9</option><option value="10">Class 10</option>
+                            <option value="11">Class 11</option><option value="12">Class 12</option>
                             <option value="L.K.C.">L.K.C.</option>
-                            <option value="N/A">N/A</option>
                         </select>
                         <label class="floating-label left-10">Select Class</label>
                         <span class="select-arrow"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+
+                <!-- Roll Number -->
+                <div class="input-group">
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10"><i class="fas fa-hashtag"></i></span>
+                        <input type="number" id="rollNo" class="form-input w-full p-3 pl-10 border border-gray-200 rounded-lg focus:outline-none" min="1" max="100" autocomplete="off" required />
+                        <label class="floating-label left-10">Roll Number</label>
                     </div>
                 </div>
 
@@ -209,7 +182,7 @@
                     </div>
                 </div>
 
-                <button type="submit" id="loginBtn" class="btn-primary w-full text-white p-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2">
+                <button type="submit" id="loginBtn" class="btn-primary w-full text-white p-3 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 mt-6">
                     <span id="btnText">Sign In</span>
                     <svg id="spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
@@ -233,7 +206,7 @@
 
     <!-- Wave -->
     <div class="wave">
-        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
             <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
             <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
             <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
@@ -241,55 +214,38 @@
     </div>
 
     <script>
-        // ============================================
-        // FIREBASE INIT
-        // ============================================
+        // Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
             authDomain: "dumbbell-gyme.firebaseapp.com",
             projectId: "dumbbell-gyme",
             storageBucket: "dumbbell-gyme.firebasestorage.app",
             messagingSenderId: "305021976299",
-            appId: "1:305021976299:web:fb85c2b332935d698088ae",
-            measurementId: "G-VEYQ7W61FD"
+            appId: "1:305021976299:web:fb85c2b332935d698088ae"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // ============================================
-        // ⚡ AUTO-REDIRECT
-        // ============================================
+        // Auto-redirect
         (function() {
             const admin = localStorage.getItem('thp_admin');
             const teacher = localStorage.getItem('thp_teacher');
             const student = localStorage.getItem('thp_current_student');
-
             if (admin) { try { if(JSON.parse(admin).role==='admin'){window.location.replace('admin.html');return;} } catch(e){localStorage.removeItem('thp_admin');} }
             if (teacher) { try { if(JSON.parse(teacher).role==='teacher'){window.location.replace('teacher.html');return;} } catch(e){localStorage.removeItem('thp_teacher');} }
             if (student) { try { if(JSON.parse(student).rollNo){window.location.replace('student-dashboard.html');return;} } catch(e){localStorage.removeItem('thp_current_student');} }
-
             document.getElementById('formContainer').style.opacity = '1';
             document.getElementById('formContainer').style.transform = 'translateY(0)';
         })();
 
-        // ============================================
-        // FLOATING LABELS
-        // ============================================
+        // Floating labels
         document.querySelectorAll('.form-input, .form-select').forEach(input => {
             if (input.value) input.classList.add('input-filled');
-            input.addEventListener('input', () => {
-                if (input.value) input.classList.add('input-filled');
-                else input.classList.remove('input-filled');
-            });
-            input.addEventListener('change', () => {
-                if (input.value) input.classList.add('input-filled');
-                else input.classList.remove('input-filled');
-            });
+            input.addEventListener('input', () => { if (input.value) input.classList.add('input-filled'); else input.classList.remove('input-filled'); });
+            input.addEventListener('change', () => { if (input.value) input.classList.add('input-filled'); else input.classList.remove('input-filled'); });
         });
 
-        // ============================================
-        // ALL 90 STUDENTS DATA
-        // ============================================
+        // 90 Students
         const allStudents = [
             { rollNo: 1, name: "Tanisha Das", class: "10", phone: "9451231855", password: "12345678" },
             { rollNo: 2, name: "Kavya Mishra", class: "5", phone: "9307988315", password: "12345678" },
@@ -383,15 +339,12 @@
             { rollNo: 90, name: "Satvik Chaurasia", class: "1", phone: "7499513825", password: "12345678" }
         ];
 
-        // ============================================
-        // INIT STUDENTS (Document ID = Roll Number)
-        // ============================================
+        // Init Firestore
         async function initializeStudents() {
             try {
                 const batch = db.batch();
                 allStudents.forEach(s => {
-                    const docId = String(s.rollNo);
-                    batch.set(db.collection('students').doc(docId), {
+                    batch.set(db.collection('students').doc(String(s.rollNo)), {
                         rollNo: s.rollNo, name: s.name, class: s.class,
                         phone: s.phone, password: s.password,
                         profilePhoto: '', email: '', address: '',
@@ -404,17 +357,16 @@
                     }, { merge: true });
                 });
                 await batch.commit();
-                console.log('✅ 90 students initialized');
                 return true;
-            } catch (e) { console.error(e); return false; }
+            } catch (e) { return false; }
         }
 
         function showMessage(msg, bg = 'bg-green-600') {
-            const popup = document.getElementById('popupMessage');
-            popup.textContent = msg;
-            popup.className = `block mt-4 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg ${bg}`;
-            popup.classList.remove('hidden');
-            setTimeout(() => popup.classList.add('hidden'), 3000);
+            const p = document.getElementById('popupMessage');
+            p.textContent = msg;
+            p.className = `block mt-4 text-center text-white px-4 py-3 rounded-lg transition-all duration-300 shadow-lg ${bg}`;
+            p.classList.remove('hidden');
+            setTimeout(() => p.classList.add('hidden'), 3000);
         }
 
         function resetButton() {
@@ -423,26 +375,24 @@
             document.getElementById('loginBtn').disabled = false;
         }
 
-        // ============================================
-        // LOGIN HANDLER (Phone + Class + Password)
-        // ============================================
+        // LOGIN - Phone + Class + Roll No. + Password
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const phone = document.getElementById('phone').value.trim();
             const studentClass = document.getElementById('studentClass').value;
+            const rollNo = document.getElementById('rollNo').value.trim();
             const password = document.getElementById('password').value.trim();
             const spinner = document.getElementById('spinner');
             const loginBtn = document.getElementById('loginBtn');
             const btnText = document.getElementById('btnText');
 
-            // Validation
-            if (!phone || !studentClass || !password) {
-                showMessage('Please fill all fields: Phone, Class, and Password', 'bg-red-500');
+            if (!phone || !studentClass || !rollNo || !password) {
+                showMessage('Fill all 4 fields: Phone, Class, Roll No., Password', 'bg-red-500');
                 return;
             }
             if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
-                showMessage('Enter valid 10-digit phone number', 'bg-red-500');
+                showMessage('Enter valid 10-digit phone', 'bg-red-500');
                 return;
             }
 
@@ -451,91 +401,66 @@
             loginBtn.disabled = true;
 
             try {
-                // Admin check
+                // Admin
                 if (phone === '9999999999' && password === 'admin123') {
                     localStorage.setItem('thp_admin', JSON.stringify({ role: 'admin', loginTime: new Date().toISOString() }));
-                    showMessage('✅ Admin access granted!');
-                    setTimeout(() => window.location.replace('admin.html'), 600);
-                    return;
+                    showMessage('✅ Admin!'); setTimeout(() => window.location.replace('admin.html'), 500); return;
                 }
-                // Teacher check
+                // Teacher
                 if (phone === '8888888888' && password === 'teacher123') {
                     localStorage.setItem('thp_teacher', JSON.stringify({ role: 'teacher', loginTime: new Date().toISOString() }));
-                    showMessage('✅ Teacher access granted!');
-                    setTimeout(() => window.location.replace('teacher.html'), 600);
-                    return;
+                    showMessage('✅ Teacher!'); setTimeout(() => window.location.replace('teacher.html'), 500); return;
                 }
 
                 // Check DB
                 const checkSnap = await db.collection('students').limit(1).get();
-                if (checkSnap.empty) {
-                    await initializeStudents();
-                }
+                if (checkSnap.empty) await initializeStudents();
 
-                // Find student by PHONE + CLASS
-                const querySnap = await db.collection('students')
-                    .where('phone', '==', phone)
-                    .where('class', '==', studentClass)
-                    .get();
+                // DIRECT FETCH by Roll Number (unique ID)
+                const doc = await db.collection('students').doc(String(rollNo)).get();
 
-                if (querySnap.empty) {
-                    showMessage('No student found with this Phone and Class combination', 'bg-red-500');
+                if (!doc.exists) {
+                    showMessage('Student not found. Check Roll Number.', 'bg-red-500');
                     resetButton(); return;
                 }
 
-                // Get first matching student (should be unique with phone+class)
-                let matchedStudent = null;
-                querySnap.forEach(doc => {
-                    const data = doc.data();
-                    if (data.password === password) {
-                        matchedStudent = data;
-                    }
-                });
+                const data = doc.data();
 
-                if (!matchedStudent) {
-                    // Check if any student matched but wrong password
-                    let anyMatch = false;
-                    querySnap.forEach(doc => { anyMatch = true; });
-                    if (anyMatch) {
-                        showMessage('Wrong password. Default is 12345678', 'bg-red-500');
-                    } else {
-                        showMessage('Student not found', 'bg-red-500');
-                    }
+                // Verify ALL 4 fields match
+                if (data.phone !== phone) {
+                    showMessage('Phone number does not match this Roll No.', 'bg-red-500');
+                    resetButton(); return;
+                }
+                if (data.class !== studentClass) {
+                    showMessage('Class does not match this Roll No.', 'bg-red-500');
+                    resetButton(); return;
+                }
+                if (data.password !== password) {
+                    showMessage('Wrong password. Default: 12345678', 'bg-red-500');
                     resetButton(); return;
                 }
 
-                // ✅ Login successful!
+                // ✅ SUCCESS!
                 localStorage.setItem('thp_current_student', JSON.stringify({
-                    rollNo: matchedStudent.rollNo,
-                    phone: matchedStudent.phone,
-                    name: matchedStudent.name,
-                    class: matchedStudent.class,
+                    rollNo: data.rollNo, phone: data.phone,
+                    name: data.name, class: data.class,
                     loginTime: new Date().toISOString()
                 }));
 
-                showMessage(`✅ Welcome ${matchedStudent.name}!`);
+                showMessage(`✅ Welcome ${data.name}!`);
                 btnText.textContent = '✓ Signed In';
                 spinner.classList.add('hidden');
                 setTimeout(() => window.location.replace('student-dashboard.html'), 500);
 
             } catch (err) {
-                console.error(err);
-                showMessage('Connection error. Check internet.', 'bg-red-500');
+                showMessage('Connection error', 'bg-red-500');
                 resetButton();
             }
         });
 
-        // ============================================
-        // PRE-FLIGHT DB CHECK
-        // ============================================
+        // Pre-flight
         (async () => {
-            try {
-                const snap = await db.collection('students').limit(1).get();
-                if (snap.empty) {
-                    console.log('🔄 First run — initializing…');
-                    await initializeStudents();
-                }
-            } catch (_) {}
+            try { const snap = await db.collection('students').limit(1).get(); if (snap.empty) await initializeStudents(); } catch (_) {}
         })();
     </script>
 </body>
