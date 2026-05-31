@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - THP Coaching Classes</title>
     
+    <!-- CDN Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -64,7 +65,7 @@
             color: var(--text-main);
         }
 
-        /* Custom Scrollbar - Cyberpunk styling */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
         ::-webkit-scrollbar-thumb { 
@@ -88,7 +89,7 @@
             padding: 24px;
         }
 
-        /* Cinematic Top Bar */
+        /* Top Bar */
         .topbar {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -102,12 +103,6 @@
             flex-wrap: wrap;
             gap: 16px;
             box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--glass-border);
-            animation: slideDown 0.6s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .topbar-brand {
@@ -126,12 +121,6 @@
             justify-content: center;
             font-size: 24px;
             box-shadow: var(--shadow-glow);
-            animation: pulseGlow 3s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
-            100% { box-shadow: 0 0 35px rgba(236, 72, 153, 0.7); }
         }
 
         .topbar-title {
@@ -150,7 +139,7 @@
             flex-wrap: wrap;
         }
 
-        /* Upgraded Buttons */
+        /* Buttons */
         .btn {
             padding: 10px 20px;
             border-radius: var(--radius);
@@ -163,33 +152,20 @@
             align-items: center;
             gap: 8px;
             font-family: inherit;
-            white-space: nowrap;
-            position: relative;
-            overflow: hidden;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before { left: 100%; }
         .btn:hover { transform: translateY(-2px); }
 
         .btn-primary { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; box-shadow: var(--shadow-glow); }
         .btn-success { background: linear-gradient(135deg, var(--success), #059669); color: white; box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
-        .btn-warning { background: linear-gradient(135deg, var(--warning), #d97706); color: white; }
         .btn-danger { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
         .btn-outline { background: rgba(255,255,255,0.03); color: var(--text-main); border-color: var(--glass-border); }
         .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); }
         .btn-sm { padding: 8px 14px; font-size: 12px; }
 
-        /* Cinematic Stats Grid */
+        /* Stats Grid */
         .stats-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -203,27 +179,10 @@
             border-radius: var(--radius-xl);
             padding: 24px;
             box-shadow: var(--shadow-md), inset 0 0 0 1px var(--glass-border);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 3px;
-        }
-
-        .stat-card.total::after { background: var(--primary); }
-        .stat-card.present::after { background: var(--success); }
-        .stat-card.absent::after { background: var(--danger); }
-        .stat-card.average::after { background: var(--warning); }
-        .stat-card.teachers::after { background: var(--secondary); }
-
-        .stat-card:hover { transform: translateY(-5px); background: rgba(30, 30, 45, 0.8); }
 
         .stat-info { display: flex; flex-direction: column; gap: 4px; }
         .stat-value { font-size: 36px; font-weight: 900; color: #fff; line-height: 1; }
@@ -239,8 +198,7 @@
         .stat-card.total .stat-icon { background: rgba(99,102,241,0.1); color: var(--primary-neon); }
         .stat-card.present .stat-icon { background: rgba(16,185,129,0.1); color: var(--success-neon); }
         .stat-card.absent .stat-icon { background: rgba(239,68,68,0.1); color: var(--danger-neon); }
-        .stat-card.average .stat-icon { background: rgba(245,158,11,0.1); color: var(--warning); }
-        .stat-card.teachers .stat-icon { background: rgba(236,72,153,0.1); color: var(--secondary); }
+        .stat-card.average .stat-icon { background: rgba(245,158,11,0.1); color: #fbbf24; }
 
         /* Cards & Containers */
         .card {
@@ -250,12 +208,6 @@
             padding: 24px;
             box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--glass-border);
             margin-bottom: 24px;
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .card-header {
@@ -282,7 +234,6 @@
             font-size: 14px;
             color: var(--text-main);
             font-family: inherit;
-            transition: var(--transition);
         }
 
         .search-input { flex: 1; min-width: 250px; }
@@ -292,16 +243,25 @@
         }
         .filter-select option { background: var(--bg-base); color: #fff; }
 
-        /* Data Tables */
+        /* Data Tables - Updated for Infinite Scrolling */
         .table-container {
             overflow-x: auto;
+            overflow-y: auto;
+            max-height: 600px; /* Forces vertical scrolling for large lists */
             border-radius: var(--radius);
             border: 1px solid var(--glass-border);
         }
 
         table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+        
+        table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
         table th {
-            background: rgba(0,0,0,0.4);
+            background: #151522; /* Solid dark background so rows don't show through header */
             color: var(--text-muted);
             padding: 16px; text-align: left;
             font-size: 12px; font-weight: 700;
@@ -316,9 +276,7 @@
             color: var(--text-dark);
         }
 
-        table tbody tr { transition: var(--transition); }
         table tbody tr:hover { background: rgba(99,102,241,0.05); }
-        table tbody tr.selected { background: rgba(99,102,241,0.1); }
 
         .badge {
             padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800;
@@ -350,26 +308,27 @@
 
         .modal-overlay.active .modal { transform: scale(1) translateY(0); }
 
+        .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
         .modal-header h2 { color: #fff; font-weight: 800; display: flex; align-items: center; gap: 10px; }
         .modal-close {
             background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
             color: #fff; width: 36px; height: 36px; border-radius: 50%;
-            cursor: pointer; transition: var(--transition);
+            cursor: pointer; transition: var(--transition); display:flex; align-items:center; justify-content:center;
         }
         .modal-close:hover { background: var(--danger); box-shadow: var(--shadow-glow-accent); }
 
-        .form-group label { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; }
-        .form-group input, .form-group select, .form-group textarea {
+        .form-group label { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; display: block;}
+        .form-group input, .form-group select {
             background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--glass-border);
             padding: 14px; border-radius: var(--radius); width: 100%; margin-top: 6px;
         }
-        .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(99,102,241,0.2); outline: none; }
 
-        /* Loader */
-        .loading-overlay {
-            background: var(--bg-base);
-            z-index: 3000;
+        /* Chart Grid Layout */
+        .chart-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;
         }
+        .chart-box { height: 320px; position: relative; }
+        
         .spinner-large {
             width: 60px; height: 60px;
             border: 4px solid rgba(255,255,255,0.1);
@@ -378,18 +337,13 @@
             border-radius: 50%;
             animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
-
-        /* Chart Grid Layout */
-        .chart-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;
-        }
-        .chart-box { height: 320px; position: relative; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
 
-    <div class="loading-overlay" id="loadingOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+    <div class="loading-overlay" id="loadingOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-base);z-index:3000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
         <div class="spinner-large"></div>
         <p style="font-weight:700;color:var(--text-main);letter-spacing:2px;text-transform:uppercase;font-size:14px;">Initializing Framework...</p>
     </div>
@@ -397,6 +351,7 @@
     <div class="toast-container" id="toastContainer" style="position:fixed;top:24px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:12px;"></div>
 
     <div class="main-container">
+        <!-- Topbar -->
         <div class="topbar">
             <div class="topbar-brand">
                 <div class="topbar-logo"><i class="fas fa-atom"></i></div>
@@ -412,65 +367,51 @@
             </div>
         </div>
 
+        <!-- Global Stats -->
         <div class="stats-row" id="statsRow">
             <div class="stat-card total">
-                <div class="stat-info">
-                    <span class="stat-value" id="totalStudents">0</span>
-                    <span class="stat-label">Total Scholars</span>
-                </div>
+                <div class="stat-info"><span class="stat-value" id="totalStudents">0</span><span class="stat-label">Total Scholars</span></div>
                 <div class="stat-icon"><i class="fas fa-users"></i></div>
             </div>
             <div class="stat-card present">
-                <div class="stat-info">
-                    <span class="stat-value" id="todayPresent">0</span>
-                    <span class="stat-label">Present Today</span>
-                </div>
+                <div class="stat-info"><span class="stat-value" id="todayPresent">0</span><span class="stat-label">Present Today</span></div>
                 <div class="stat-icon"><i class="fas fa-check-double"></i></div>
             </div>
             <div class="stat-card absent">
-                <div class="stat-info">
-                    <span class="stat-value" id="todayAbsent">0</span>
-                    <span class="stat-label">Absent Today</span>
-                </div>
+                <div class="stat-info"><span class="stat-value" id="todayAbsent">0</span><span class="stat-label">Absent Today</span></div>
                 <div class="stat-icon"><i class="fas fa-xmark"></i></div>
             </div>
             <div class="stat-card average">
-                <div class="stat-info">
-                    <span class="stat-value" id="avgAttendance">0%</span>
-                    <span class="stat-label">Avg Attendance</span>
-                </div>
+                <div class="stat-info"><span class="stat-value" id="avgAttendance">0%</span><span class="stat-label">Avg Attendance</span></div>
                 <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
             </div>
         </div>
 
+        <!-- Dashboard Tab -->
         <div id="tab-dashboard" class="tab-content">
             <div class="chart-grid">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-chart-column"></i> Stream & Class Demographics</h3>
-                    </div>
+                    <div class="card-header"><h3 class="card-title"><i class="fas fa-chart-column"></i> Stream Demographics</h3></div>
                     <div class="chart-box"><canvas id="classChart"></canvas></div>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-chart-pie"></i> Daily Metrics</h3>
-                    </div>
+                    <div class="card-header"><h3 class="card-title"><i class="fas fa-chart-pie"></i> Daily Metrics</h3></div>
                     <div class="chart-box"><canvas id="attendancePieChart"></canvas></div>
                 </div>
             </div>
         </div>
 
+        <!-- Students Tab (All Students Mode) -->
         <div id="tab-students" class="tab-content" style="display:none;">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-users"></i> Database Records</h3>
+                    <h3 class="card-title"><i class="fas fa-users"></i> Master Student Register</h3>
                     <div style="display:flex;gap:10px;">
-                        <button class="btn btn-primary btn-sm" onclick="openBulkAddModal()"><i class="fas fa-file-csv"></i> Bulk CSV</button>
                         <button class="btn btn-warning btn-sm" onclick="exportAllData()"><i class="fas fa-download"></i> Export Data</button>
                     </div>
                 </div>
                 <div class="filter-bar">
-                    <input type="text" class="search-input" id="studentSearch" placeholder="Search parameters (Name, Phone, ID)..." oninput="filterStudents()">
+                    <input type="text" class="search-input" id="studentSearch" placeholder="Search by Name or Phone..." oninput="filterStudents()">
                     <select class="filter-select" id="classFilter" onchange="filterStudents()">
                         <option value="">All Streams & Classes</option>
                         <option>Class 11 (PCB)</option>
@@ -484,44 +425,58 @@
                         <option>CUET Crash Course</option>
                     </select>
                 </div>
+                <!-- Scrollable Table -->
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>S.No</th>
                                 <th>Name</th>
                                 <th>Stream / Class</th>
                                 <th>Contact</th>
                                 <th>Attendance Score</th>
-                                <th>Avg Marks</th>
-                                <th>Terminal Actions</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="studentsTableBody">
-                            <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">Awaiting Database Connection...</td></tr>
+                            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Loading Database...</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <div id="pagination" style="margin-top: 16px; display:flex; justify-content:center; gap:8px;"></div>
             </div>
         </div>
 
+        <!-- Attendance Tab (Class-Wise System) -->
         <div id="tab-attendance" class="tab-content" style="display:none;">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-clipboard-user"></i> Master Attendance Register</h3>
-                    <div style="display:flex;gap:12px;">
+                    <h3 class="card-title"><i class="fas fa-clipboard-user"></i> Class-Wise Attendance Matrix</h3>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
                         <input type="date" class="filter-select" id="attendanceDate" onchange="loadAttendanceMatrix()">
-                        <button class="btn btn-success btn-sm" onclick="markAllPresent()"><i class="fas fa-check-double"></i> Batch Present</button>
+                        <!-- ADDED: Class Filter specifically for Attendance -->
+                        <select class="filter-select" id="attendanceClassFilter" onchange="loadAttendanceMatrix()">
+                            <option value="">Select Class / Stream to Mark</option>
+                            <option>Class 11 (PCB)</option>
+                            <option>Class 11 (PCM)</option>
+                            <option>Class 11 (Commerce)</option>
+                            <option>Class 12 (PCB)</option>
+                            <option>Class 12 (PCM)</option>
+                            <option>Class 12 (Commerce)</option>
+                            <option>9th Foundation</option>
+                            <option>10th Foundation</option>
+                            <option>CUET Crash Course</option>
+                        </select>
+                        <button class="btn btn-success btn-sm" onclick="markFilteredPresent()"><i class="fas fa-check-double"></i> Mark Displayed as Present</button>
                     </div>
                 </div>
                 <div class="table-container" id="attendanceMatrix">
-                    <p style="text-align:center;padding:40px;color:var(--text-muted);">Select Date to initialize register</p>
+                    <p style="text-align:center;padding:40px;color:var(--text-muted);">Please select a date and class to initialize the register.</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Add Student Modal -->
     <div class="modal-overlay" id="addStudentModal">
         <div class="modal">
             <div class="modal-header">
@@ -544,6 +499,8 @@
                             <option>Class 12 (PCB)</option>
                             <option>Class 12 (PCM)</option>
                             <option>Class 12 (Commerce)</option>
+                            <option>9th Foundation</option>
+                            <option>10th Foundation</option>
                             <option>CUET Crash Course</option>
                         </select>
                     </div>
@@ -561,8 +518,8 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script>
-        // Set Cinematic Particles for Neuro/Science Aesthetic
         particlesJS('particles-js', {
             particles: {
                 number: { value: 60, density: { enable: true, value_area: 1200 } },
@@ -572,15 +529,9 @@
                 size: { value: 3, random: true },
                 line_linked: { enable: true, distance: 150, color: '#6366f1', opacity: 0.2, width: 1.5 },
                 move: { enable: true, speed: 1.5, direction: 'none', random: true, out_mode: 'out' }
-            },
-            interactivity: {
-                events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' } },
-                modes: { grab: { distance: 180, line_linked: { opacity: 0.6 } } }
-            },
-            retina_detect: true
+            }
         });
 
-        // Setup Firebase (Using your existing config)
         const firebaseConfig = {
             apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
             authDomain: "dumbbell-gyme.firebaseapp.com",
@@ -593,16 +544,12 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Core State
         let allStudents = [];
         let classChart, attendancePieChart;
-        const ITEMS_PER_PAGE = 15;
-        let currentPage = 1;
 
         Chart.defaults.color = '#cbd5e1';
         Chart.defaults.font.family = 'Outfit';
 
-        // Toast Engine
         function showToast(msg, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -613,10 +560,10 @@
             setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100%)'; toast.style.transition = 'all 0.3s'; setTimeout(() => toast.remove(), 300); }, 3500);
         }
 
-        // Modals & Navigation
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openAddStudentModal() { document.getElementById('addStudentForm').reset(); openModal('addStudentModal'); }
+        
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
             document.getElementById(`tab-${tab}`).style.display = 'block';
@@ -625,7 +572,6 @@
             if(tab === 'attendance') loadAttendanceMatrix();
         }
 
-        // Database Logic
         async function loadStudents() {
             try {
                 const snapshot = await db.collection('students').get();
@@ -656,6 +602,9 @@
             document.getElementById('avgAttendance').innerText = ttlAtt ? Math.round((attCount/ttlAtt)*100)+'%' : '0%';
         }
 
+        // =====================================
+        // STUDENTS MODULE (Shows all in list)
+        // =====================================
         function filterStudents() {
             const query = document.getElementById('studentSearch')?.value.toLowerCase() || '';
             const cls = document.getElementById('classFilter')?.value || '';
@@ -663,28 +612,27 @@
                 (s.name || '').toLowerCase().includes(query) || (s.phone || '').includes(query)
             );
             if(cls) filtered = filtered.filter(s => s.class === cls);
+            
+            // Replaced pagination with full array mapping for infinite scroll
             renderTable(filtered);
         }
 
         function renderTable(data) {
             const tbody = document.getElementById('studentsTableBody');
-            if(!data.length) return tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;">No records found.</td></tr>`;
+            if(!data.length) return tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;">No records found.</td></tr>`;
             
-            const start = (currentPage - 1) * ITEMS_PER_PAGE;
-            const pageData = data.slice(start, start + ITEMS_PER_PAGE);
-
-            tbody.innerHTML = pageData.map((s, i) => {
+            // Maps ALL students found directly into the scrollable table
+            tbody.innerHTML = data.map((s, i) => {
                 const ac = s.attendance ? Object.values(s.attendance).filter(v=>v==='present').length : 0;
                 const tot = s.attendance ? Object.keys(s.attendance).length : 0;
                 const perc = tot ? Math.round((ac/tot)*100) : 0;
                 
                 return `<tr>
-                    <td><span style="color:var(--text-muted)">#${start+i+1}</span></td>
+                    <td><span style="color:var(--text-muted)">${i+1}</span></td>
                     <td><strong>${s.name}</strong></td>
                     <td><span class="badge badge-purple">${s.class || 'N/A'}</span></td>
                     <td>${s.phone}</td>
                     <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:100px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;"><div style="width:${perc}%;height:100%;background:${perc>75?'var(--success)':perc>50?'var(--warning)':'var(--danger)'}"></div></div> <span style="font-size:12px">${perc}%</span></div></td>
-                    <td>--</td>
                     <td>
                         <button class="btn btn-sm btn-outline" onclick="deleteStudent('${s.id}')" style="color:var(--danger);border-color:rgba(239,68,68,0.3)"><i class="fas fa-trash"></i></button>
                     </td>
@@ -717,17 +665,34 @@
             loadStudents();
         }
 
-        // Attendance Module
+        // =====================================
+        // ATTENDANCE MODULE (Class Wise Filter)
+        // =====================================
         async function loadAttendanceMatrix() {
             const date = document.getElementById('attendanceDate').value || new Date().toISOString().split('T')[0];
+            const cls = document.getElementById('attendanceClassFilter').value;
+            
             document.getElementById('attendanceDate').value = date;
             
+            let filtered = allStudents;
+            // Only show students matching the specific class if one is selected
+            if (cls) {
+                filtered = allStudents.filter(s => s.class === cls);
+            }
+
             const matrix = document.getElementById('attendanceMatrix');
+            
+            if(filtered.length === 0) {
+                matrix.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted);">No scholars found in this stream/class.</p>';
+                return;
+            }
+
             matrix.innerHTML = `<table>
-                <thead><tr><th>Name</th><th>Stream</th><th>Status</th><th>Override</th></tr></thead>
-                <tbody>${allStudents.map(s => {
+                <thead><tr><th>S.No</th><th>Name</th><th>Stream</th><th>Status</th><th>Override</th></tr></thead>
+                <tbody>${filtered.map((s, i) => {
                     const st = s.attendance?.[date] || 'unmarked';
                     return `<tr>
+                        <td><span style="color:var(--text-muted)">${i+1}</span></td>
                         <td><strong>${s.name}</strong></td>
                         <td><span class="badge badge-purple">${s.class}</span></td>
                         <td><span class="badge ${st==='present'?'badge-success':st==='absent'?'badge-danger':'badge-warning'}">${st.toUpperCase()}</span></td>
@@ -748,13 +713,49 @@
             loadAttendanceMatrix(); updateGlobalStats(); renderCharts();
         }
 
-        // High-End Charting
+        // Marks ONLY the students currently filtered by the dropdown
+        async function markFilteredPresent() {
+            const date = document.getElementById('attendanceDate').value;
+            const cls = document.getElementById('attendanceClassFilter').value;
+            
+            let filtered = allStudents;
+            if (cls) filtered = allStudents.filter(s => s.class === cls);
+            
+            if (filtered.length === 0) {
+                return showToast('No students available in this selection.', 'warning');
+            }
+
+            if(!confirm(`Mark all ${filtered.length} currently displayed scholars as PRESENT for ${date}?`)) return;
+
+            try {
+                const batch = db.batch();
+                filtered.forEach(s => {
+                    const ref = db.collection('students').doc(s.id);
+                    batch.update(ref, { [`attendance.${date}`]: 'present' });
+                });
+                await batch.commit();
+                
+                // Update Local UI instantly
+                filtered.forEach(s => {
+                    s.attendance = s.attendance || {};
+                    s.attendance[date] = 'present';
+                });
+                
+                showToast(`Batch marked present successfully.`, 'success');
+                loadAttendanceMatrix();
+                updateGlobalStats();
+                renderCharts();
+            } catch(e) {
+                showToast('Failed to update batch.', 'error');
+            }
+        }
+
+        // Charts Module
         function renderCharts() {
             const ctx1 = document.getElementById('classChart');
             const ctx2 = document.getElementById('attendancePieChart');
             if(!ctx1 || !ctx2) return;
 
-            // Class Distribution
             const counts = {};
             allStudents.forEach(s => { counts[s.class||'N/A'] = (counts[s.class||'N/A']||0)+1; });
             
@@ -766,8 +767,7 @@
                     datasets: [{
                         label: 'Scholars', data: Object.values(counts),
                         backgroundColor: '#818cf8', borderRadius: 6,
-                        borderWidth: 1, borderColor: '#6366f1',
-                        barPercentage: 0.6
+                        borderWidth: 1, borderColor: '#6366f1', barPercentage: 0.6
                     }]
                 },
                 options: {
@@ -777,7 +777,6 @@
                 }
             });
 
-            // Attendance Doughnut
             const today = new Date().toISOString().split('T')[0];
             let p=0, a=0, u=0;
             allStudents.forEach(s => { const st = s.attendance?.[today]||'unmarked'; st==='present'?p++:st==='absent'?a++:u++; });
@@ -787,19 +786,13 @@
                 type: 'doughnut',
                 data: {
                     labels: ['Present', 'Absent', 'Pending'],
-                    datasets: [{
-                        data: [p, a, u],
-                        backgroundColor: ['#34d399', '#f87171', '#475569'],
-                        borderWidth: 0, hoverOffset: 4
-                    }]
+                    datasets: [{ data: [p, a, u], backgroundColor: ['#34d399', '#f87171', '#475569'], borderWidth: 0, hoverOffset: 4 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1', padding: 20 } } } }
             });
         }
 
-        // Lifecycle
         window.onload = () => {
-            if(!localStorage.getItem('thp_admin')) { /* Optional: Add redirect to login if auth is strictly needed here */ }
             loadStudents();
             document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
         };
