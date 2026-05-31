@@ -419,7 +419,9 @@
     </div>
 
     <script>
+        // ============================================
         // FIREBASE INITIALIZATION
+        // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
             authDomain: "dumbbell-gyme.firebaseapp.com",
@@ -433,7 +435,9 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // ============================================
         // PARTICLES.JS CONFIGURATION
+        // ============================================
         particlesJS('particles-js', {
             "particles": {
                 "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
@@ -452,106 +456,114 @@
             "retina_detect": true
         });
 
-        // ALL 90 STUDENTS DATA
+        // ============================================
+        // ALL 90 STUDENTS WITH ROLL NUMBERS & CLASS 1-12
+        // ============================================
         const allStudents = [
-            { name: "Tanisha Das", class: "10th", phone: "9451231855", password: "12345678" },
-            { name: "Kavya Mishra", class: "5th", phone: "9307988315", password: "12345678" },
-            { name: "Krishna Shukla", class: "12th", phone: "7235053167", password: "12345678" },
-            { name: "Ammar Ali", class: "8th", phone: "7007056402", password: "12345678" },
-            { name: "Akshat Kasera", class: "8th", phone: "9936449709", password: "12345678" },
-            { name: "Vaishnavi Kesar", class: "12th", phone: "9336962553", password: "12345678" },
-            { name: "Shifa", class: "8th", phone: "8957187585", password: "12345678" },
-            { name: "Shashwat Chawla", class: "12th", phone: "6306744703", password: "12345678" },
-            { name: "Divyanshi Chau", class: "12th", phone: "9450801658", password: "12345678" },
-            { name: "Sheeya Kasera", class: "9th", phone: "9305523233", password: "12345678" },
-            { name: "Raghav Kasera", class: "9th", phone: "9565322947", password: "12345678" },
-            { name: "Aradhya Solivastan", class: "9th", phone: "9565322947", password: "12345678" },
-            { name: "Arshad Solivastan", class: "5th", phone: "9565322947", password: "12345678" },
-            { name: "Saketha Singh", class: "10th", phone: "7317809790", password: "12345678" },
-            { name: "Jassi Gupta", class: "5th", phone: "7505583637", password: "12345678" },
-            { name: "Rohit Chawla", class: "8th", phone: "8840179902", password: "12345678" },
-            { name: "Amiksha Chau", class: "11th", phone: "8840179902", password: "12345678" },
-            { name: "Prince Kumar", class: "3rd", phone: "8299253241", password: "12345678" },
-            { name: "Ofas Chawla", class: "10th", phone: "949003063", password: "12345678" },
-            { name: "Akashi Aggarhani", class: "10th", phone: "9335637485", password: "12345678" },
-            { name: "Vedansh Kumar", class: "4th", phone: "8299589396", password: "12345678" },
-            { name: "Pujal Gupta", class: "6th", phone: "8299584527", password: "12345678" },
-            { name: "Kafur Gupta", class: "6th", phone: "8299584527", password: "12345678" },
-            { name: "Mohd Alfaz", class: "5th", phone: "9839397462", password: "12345678" },
-            { name: "Lakshya Kesavooni", class: "10th", phone: "9336616595", password: "12345678" },
-            { name: "Ansh Verma", class: "12th", phone: "6392761742", password: "12345678" },
-            { name: "Yash Kumar Gupta", class: "5th", phone: "6307495427", password: "12345678" },
-            { name: "Kudara Verma", class: "9th", phone: "6391153210", password: "12345678" },
-            { name: "Dehna Sahu", class: "9th", phone: "8317047601", password: "12345678" },
-            { name: "HPL Khan", class: "10th", phone: "9565661165", password: "12345678" },
-            { name: "Ahil Khan", class: "5th", phone: "9580362444", password: "12345678" },
-            { name: "Chunshila", class: "5th", phone: "7392930141", password: "12345678" },
-            { name: "Boudan Kumar", class: "10th", phone: "8887189920", password: "12345678" },
-            { name: "Lavi Singh", class: "8th", phone: "9455327077", password: "12345678" },
-            { name: "Vanishka Singh", class: "7th", phone: "7651825443", password: "12345678" },
-            { name: "Angel Kesavan", class: "6th", phone: "7651825443", password: "12345678" },
-            { name: "Huzafa", class: "10th", phone: "9653017839", password: "12345678" },
-            { name: "Vashu Vishwakarma", class: "8th", phone: "7860900588", password: "12345678" },
-            { name: "Khal Tomar", class: "10th", phone: "7007661951", password: "12345678" },
-            { name: "Asad Arman", class: "10th", phone: "8303982415", password: "12345678" },
-            { name: "Hujshi Chawaria", class: "7th", phone: "8303982415", password: "12345678" },
-            { name: "Piyal Kesavan", class: "10th", phone: "8931983103", password: "12345678" },
-            { name: "Aman Sharma", class: "8th", phone: "8127550936", password: "12345678" },
-            { name: "Ananya Kesavan", class: "12th", phone: "7669986121", password: "12345678" },
-            { name: "Harsh Kumar", class: "10th", phone: "8957043131", password: "12345678" },
-            { name: "Tanushka", class: "6th", phone: "8756291225", password: "12345678" },
-            { name: "Sanskar Verma", class: "10th", phone: "7355344453", password: "12345678" },
-            { name: "Trishab Pandey", class: "10th", phone: "7839378451", password: "12345678" },
-            { name: "Aimal", class: "8th", phone: "945055322", password: "12345678" },
-            { name: "Ayu Chawaria", class: "8th", phone: "8009955858", password: "12345678" },
-            { name: "Satyam Pargat", class: "10th", phone: "9532279912", password: "12345678" },
-            { name: "Student 52", class: "N/A", phone: "6994368944", password: "12345678" },
-            { name: "Md Afshyam", class: "10th", phone: "9277226409", password: "12345678" },
-            { name: "Igwa Khan", class: "10th", phone: "9793733274", password: "12345678" },
-            { name: "Anshika Pandey", class: "12th", phone: "8318211500", password: "12345678" },
-            { name: "Naya", class: "5th", phone: "6394621183", password: "12345678" },
-            { name: "Ansh Singh", class: "12th", phone: "7992054641", password: "12345678" },
-            { name: "Khushi Reshani", class: "3rd", phone: "6391833973", password: "12345678" },
-            { name: "Kauya Nathore", class: "L.K.C.", phone: "8858877233", password: "12345678" },
-            { name: "Somviddhi Kesu", class: "7th", phone: "8957043131", password: "12345678" },
-            { name: "Hkashi Prastogi", class: "10th", phone: "9140232318", password: "12345678" },
-            { name: "Noman Khawasia", class: "10th", phone: "8846055164", password: "12345678" },
-            { name: "Sauya Kesawati", class: "12th", phone: "9305180866", password: "12345678" },
-            { name: "Mahi Srivastava", class: "7th", phone: "9305898967", password: "12345678" },
-            { name: "Siddhi Vinayak", class: "5th", phone: "9305898967", password: "12345678" },
-            { name: "Muskan Rathore", class: "12th", phone: "9335780456", password: "12345678" },
-            { name: "Shubh Keshavani", class: "8th", phone: "8528320651", password: "12345678" },
-            { name: "Shivam Keshavani", class: "7th", phone: "8528320651", password: "12345678" },
-            { name: "Gypsiukh Kumar", class: "1st", phone: "7052253241", password: "12345678" },
-            { name: "Arpit Kumar", class: "12th", phone: "9956838053", password: "12345678" },
-            { name: "Tanmay Singh", class: "12th", phone: "9555831536", password: "12345678" },
-            { name: "Tanvi Verma", class: "4th", phone: "8881912337", password: "12345678" },
-            { name: "Piyush Yadav", class: "8th", phone: "8303086631", password: "12345678" },
-            { name: "Kauya Kesawani", class: "8th", phone: "7398669064", password: "12345678" },
-            { name: "Alkama", class: "5th", phone: "8957187585", password: "12345678" },
-            { name: "Arshi Gupta", class: "5th", phone: "8933954064", password: "12345678" },
-            { name: "Ayush Gupta", class: "1st", phone: "8933954064", password: "12345678" },
-            { name: "Imilc Siddiqui", class: "1st", phone: "9335958840", password: "12345678" },
-            { name: "Prakhar Kearwani", class: "1st", phone: "6393742577", password: "12345678" },
-            { name: "Joyanhu Das", class: "1st", phone: "9415604642", password: "12345678" },
-            { name: "Vanhika Prayapati", class: "1st", phone: "8381984381", password: "12345678" },
-            { name: "Bhavya Prayapati", class: "1st", phone: "8381984381", password: "12345678" },
-            { name: "Aryan Keshwanthi", class: "1st", phone: "9140362202", password: "12345678" },
-            { name: "Ishika Verma", class: "1st", phone: "6386942176", password: "12345678" },
-            { name: "Swasti Verma", class: "1st", phone: "6386942176", password: "12345678" },
-            { name: "Sonakshi Chaudhary", class: "1st", phone: "9369442416", password: "12345678" },
-            { name: "Naman Kumar Gupta", class: "1st", phone: "9278033667", password: "12345678" },
-            { name: "Niti Singh Rathore", class: "1st", phone: "9219140451", password: "12345678" },
-            { name: "Satvik Chaurasia", class: "1st", phone: "7499513825", password: "12345678" }
+            { rollNo: 1, name: "Tanisha Das", class: "10", phone: "9451231855", password: "12345678" },
+            { rollNo: 2, name: "Kavya Mishra", class: "5", phone: "9307988315", password: "12345678" },
+            { rollNo: 3, name: "Krishna Shukla", class: "12", phone: "7235053167", password: "12345678" },
+            { rollNo: 4, name: "Ammar Ali", class: "8", phone: "7007056402", password: "12345678" },
+            { rollNo: 5, name: "Akshat Kasera", class: "8", phone: "9936449709", password: "12345678" },
+            { rollNo: 6, name: "Vaishnavi Kesar", class: "12", phone: "9336962553", password: "12345678" },
+            { rollNo: 7, name: "Shifa", class: "8", phone: "8957187585", password: "12345678" },
+            { rollNo: 8, name: "Shashwat Chawla", class: "12", phone: "6306744703", password: "12345678" },
+            { rollNo: 9, name: "Divyanshi Chau", class: "12", phone: "9450801658", password: "12345678" },
+            { rollNo: 10, name: "Sheeya Kasera", class: "9", phone: "9305523233", password: "12345678" },
+            { rollNo: 11, name: "Raghav Kasera", class: "9", phone: "9565322947", password: "12345678" },
+            { rollNo: 12, name: "Aradhya Solivastan", class: "9", phone: "9565322947", password: "12345678" },
+            { rollNo: 13, name: "Arshad Solivastan", class: "5", phone: "9565322947", password: "12345678" },
+            { rollNo: 14, name: "Saketha Singh", class: "10", phone: "7317809790", password: "12345678" },
+            { rollNo: 15, name: "Jassi Gupta", class: "5", phone: "7505583637", password: "12345678" },
+            { rollNo: 16, name: "Rohit Chawla", class: "8", phone: "8840179902", password: "12345678" },
+            { rollNo: 17, name: "Amiksha Chau", class: "11", phone: "8840179902", password: "12345678" },
+            { rollNo: 18, name: "Prince Kumar", class: "3", phone: "8299253241", password: "12345678" },
+            { rollNo: 19, name: "Ofas Chawla", class: "10", phone: "949003063", password: "12345678" },
+            { rollNo: 20, name: "Akashi Aggarhani", class: "10", phone: "9335637485", password: "12345678" },
+            { rollNo: 21, name: "Vedansh Kumar", class: "4", phone: "8299589396", password: "12345678" },
+            { rollNo: 22, name: "Pujal Gupta", class: "6", phone: "8299584527", password: "12345678" },
+            { rollNo: 23, name: "Kafur Gupta", class: "6", phone: "8299584527", password: "12345678" },
+            { rollNo: 24, name: "Mohd Alfaz", class: "5", phone: "9839397462", password: "12345678" },
+            { rollNo: 25, name: "Lakshya Kesavooni", class: "10", phone: "9336616595", password: "12345678" },
+            { rollNo: 26, name: "Ansh Verma", class: "12", phone: "6392761742", password: "12345678" },
+            { rollNo: 27, name: "Yash Kumar Gupta", class: "5", phone: "6307495427", password: "12345678" },
+            { rollNo: 28, name: "Kudara Verma", class: "9", phone: "6391153210", password: "12345678" },
+            { rollNo: 29, name: "Dehna Sahu", class: "9", phone: "8317047601", password: "12345678" },
+            { rollNo: 30, name: "HPL Khan", class: "10", phone: "9565661165", password: "12345678" },
+            { rollNo: 31, name: "Ahil Khan", class: "5", phone: "9580362444", password: "12345678" },
+            { rollNo: 32, name: "Chunshila", class: "5", phone: "7392930141", password: "12345678" },
+            { rollNo: 33, name: "Boudan Kumar", class: "10", phone: "8887189920", password: "12345678" },
+            { rollNo: 34, name: "Lavi Singh", class: "8", phone: "9455327077", password: "12345678" },
+            { rollNo: 35, name: "Vanishka Singh", class: "7", phone: "7651825443", password: "12345678" },
+            { rollNo: 36, name: "Angel Kesavan", class: "6", phone: "7651825443", password: "12345678" },
+            { rollNo: 37, name: "Huzafa", class: "10", phone: "9653017839", password: "12345678" },
+            { rollNo: 38, name: "Vashu Vishwakarma", class: "8", phone: "7860900588", password: "12345678" },
+            { rollNo: 39, name: "Khal Tomar", class: "10", phone: "7007661951", password: "12345678" },
+            { rollNo: 40, name: "Asad Arman", class: "10", phone: "8303982415", password: "12345678" },
+            { rollNo: 41, name: "Hujshi Chawaria", class: "7", phone: "8303982415", password: "12345678" },
+            { rollNo: 42, name: "Piyal Kesavan", class: "10", phone: "8931983103", password: "12345678" },
+            { rollNo: 43, name: "Aman Sharma", class: "8", phone: "8127550936", password: "12345678" },
+            { rollNo: 44, name: "Ananya Kesavan", class: "12", phone: "7669986121", password: "12345678" },
+            { rollNo: 45, name: "Harsh Kumar", class: "10", phone: "8957043131", password: "12345678" },
+            { rollNo: 46, name: "Tanushka", class: "6", phone: "8756291225", password: "12345678" },
+            { rollNo: 47, name: "Sanskar Verma", class: "10", phone: "7355344453", password: "12345678" },
+            { rollNo: 48, name: "Trishab Pandey", class: "10", phone: "7839378451", password: "12345678" },
+            { rollNo: 49, name: "Aimal", class: "8", phone: "945055322", password: "12345678" },
+            { rollNo: 50, name: "Ayu Chawaria", class: "8", phone: "8009955858", password: "12345678" },
+            { rollNo: 51, name: "Satyam Pargat", class: "10", phone: "9532279912", password: "12345678" },
+            { rollNo: 52, name: "Student 52", class: "N/A", phone: "6994368944", password: "12345678" },
+            { rollNo: 53, name: "Md Afshyam", class: "10", phone: "9277226409", password: "12345678" },
+            { rollNo: 54, name: "Igwa Khan", class: "10", phone: "9793733274", password: "12345678" },
+            { rollNo: 55, name: "Student 55", class: "N/A", phone: "5500000000", password: "12345678" },
+            { rollNo: 56, name: "Anshika Pandey", class: "12", phone: "8318211500", password: "12345678" },
+            { rollNo: 57, name: "Naya", class: "5", phone: "6394621183", password: "12345678" },
+            { rollNo: 58, name: "Ansh Singh", class: "12", phone: "7992054641", password: "12345678" },
+            { rollNo: 59, name: "Khushi Reshani", class: "3", phone: "6391833973", password: "12345678" },
+            { rollNo: 60, name: "Kauya Nathore", class: "L.K.C.", phone: "8858877233", password: "12345678" },
+            { rollNo: 61, name: "Somviddhi Kesu", class: "7", phone: "8957043131", password: "12345678" },
+            { rollNo: 62, name: "Hkashi Prastogi", class: "10", phone: "9140232318", password: "12345678" },
+            { rollNo: 63, name: "Noman Khawasia", class: "10", phone: "8846055164", password: "12345678" },
+            { rollNo: 64, name: "Sauya Kesawati", class: "12", phone: "9305180866", password: "12345678" },
+            { rollNo: 65, name: "Mahi Srivastava", class: "7", phone: "9305898967", password: "12345678" },
+            { rollNo: 66, name: "Siddhi Vinayak", class: "5", phone: "9305898967", password: "12345678" },
+            { rollNo: 67, name: "Muskan Rathore", class: "12", phone: "9335780456", password: "12345678" },
+            { rollNo: 68, name: "Shubh Keshavani", class: "8", phone: "8528320651", password: "12345678" },
+            { rollNo: 69, name: "Shivam Keshavani", class: "7", phone: "8528320651", password: "12345678" },
+            { rollNo: 70, name: "Gypsiukh Kumar", class: "1", phone: "7052253241", password: "12345678" },
+            { rollNo: 71, name: "Arpit Kumar", class: "12", phone: "9956838053", password: "12345678" },
+            { rollNo: 72, name: "Tanmay Singh", class: "12", phone: "9555831536", password: "12345678" },
+            { rollNo: 73, name: "Tanvi Verma", class: "4", phone: "8881912337", password: "12345678" },
+            { rollNo: 74, name: "Piyush Yadav", class: "8", phone: "8303086631", password: "12345678" },
+            { rollNo: 75, name: "Kauya Kesawani", class: "8", phone: "7398669064", password: "12345678" },
+            { rollNo: 76, name: "Alkama", class: "5", phone: "8957187585", password: "12345678" },
+            { rollNo: 77, name: "Arshi Gupta", class: "5", phone: "8933954064", password: "12345678" },
+            { rollNo: 78, name: "Ayush Gupta", class: "1", phone: "8933954064", password: "12345678" },
+            { rollNo: 79, name: "Imilc Siddiqui", class: "1", phone: "9335958840", password: "12345678" },
+            { rollNo: 80, name: "Prakhar Kearwani", class: "1", phone: "6393742577", password: "12345678" },
+            { rollNo: 81, name: "Joyanhu Das", class: "1", phone: "9415604642", password: "12345678" },
+            { rollNo: 82, name: "Vanhika Prayapati", class: "1", phone: "8381984381", password: "12345678" },
+            { rollNo: 83, name: "Bhavya Prayapati", class: "1", phone: "8381984381", password: "12345678" },
+            { rollNo: 84, name: "Aryan Keshwanthi", class: "1", phone: "9140362202", password: "12345678" },
+            { rollNo: 85, name: "Ishika Verma", class: "1", phone: "6386942176", password: "12345678" },
+            { rollNo: 86, name: "Swasti Verma", class: "1", phone: "6386942176", password: "12345678" },
+            { rollNo: 87, name: "Sonakshi Chaudhary", class: "1", phone: "9369442416", password: "12345678" },
+            { rollNo: 88, name: "Naman Kumar Gupta", class: "1", phone: "9278033667", password: "12345678" },
+            { rollNo: 89, name: "Niti Singh Rathore", class: "1", phone: "9219140451", password: "12345678" },
+            { rollNo: 90, name: "Satvik Chaurasia", class: "1", phone: "7499513825", password: "12345678" }
         ];
 
-        // INITIALIZE STUDENTS IN FIRESTORE
+        // ============================================
+        // INITIALIZE ALL STUDENTS IN FIRESTORE
+        // ============================================
         async function initializeStudents() {
             try {
                 const batch = db.batch();
+                let count = 0;
+
                 allStudents.forEach(student => {
                     const studentRef = db.collection('students').doc(student.phone);
                     batch.set(studentRef, {
+                        rollNo: student.rollNo,
                         name: student.name,
                         class: student.class,
                         phone: student.phone,
@@ -567,21 +579,29 @@
                         admissionDate: '',
                         attendance: {},
                         testScores: {},
-                        performance: { strengths: '', weaknesses: '', remarks: '' },
+                        performance: {
+                            strengths: '',
+                            weaknesses: '',
+                            remarks: ''
+                        },
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
+                    count++;
                 });
+
                 await batch.commit();
-                console.log('✅ All students initialized');
+                console.log('✅ ' + count + ' students initialized with Roll Numbers');
                 return true;
             } catch (error) {
-                console.error('❌ Init error:', error);
+                console.error('❌ Initialization error:', error);
                 return false;
             }
         }
 
-        // LOGIN HANDLER
+        // ============================================
+        // LOGIN FORM HANDLER
+        // ============================================
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -593,19 +613,22 @@
             const spinnerEl = document.getElementById('spinner');
             const loginBtn = document.getElementById('loginBtn');
 
+            // Hide previous messages
             errorDiv.classList.remove('show');
             successDiv.classList.remove('show');
 
+            // Validation
             if (!phone || !password) {
                 showError('⚠️ Please enter phone number and password');
                 return;
             }
 
             if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
-                showError('⚠️ Please enter valid 10-digit phone number');
+                showError('⚠️ Please enter a valid 10-digit phone number');
                 return;
             }
 
+            // Show loading state
             btnText.style.display = 'none';
             spinnerEl.style.display = 'block';
             loginBtn.disabled = true;
@@ -613,7 +636,10 @@
             try {
                 // Admin login check
                 if (phone === '9999999999' && password === 'admin123') {
-                    localStorage.setItem('thp_admin', JSON.stringify({ role: 'admin', loginTime: new Date().toISOString() }));
+                    localStorage.setItem('thp_admin', JSON.stringify({
+                        role: 'admin',
+                        loginTime: new Date().toISOString()
+                    }));
                     successDiv.textContent = '✅ Admin login successful! Redirecting...';
                     successDiv.classList.add('show');
                     setTimeout(() => { window.location.href = 'admin.html'; }, 1000);
@@ -622,62 +648,89 @@
 
                 // Teacher login check
                 if (phone === '8888888888' && password === 'teacher123') {
-                    localStorage.setItem('thp_teacher', JSON.stringify({ role: 'teacher', loginTime: new Date().toISOString() }));
+                    localStorage.setItem('thp_teacher', JSON.stringify({
+                        role: 'teacher',
+                        loginTime: new Date().toISOString()
+                    }));
                     successDiv.textContent = '✅ Teacher login successful! Redirecting...';
                     successDiv.classList.add('show');
                     setTimeout(() => { window.location.href = 'teacher.html'; }, 1000);
                     return;
                 }
 
-                // Student login
+                // Student login - Check Firestore
                 let studentDoc = await db.collection('students').doc(phone).get();
 
+                // If student doesn't exist, initialize all students first
                 if (!studentDoc.exists) {
+                    console.log('🔄 Database empty. Initializing all 90 students...');
                     await initializeStudents();
+                    
+                    // Try again after initialization
                     studentDoc = await db.collection('students').doc(phone).get();
                     
                     if (!studentDoc.exists) {
-                        showError('❌ Student not found. Contact admin.');
+                        showError('❌ Student not found in database. Contact admin.');
                         resetButton(btnText, spinnerEl, loginBtn);
                         return;
                     }
                 }
 
+                // Verify password
                 const studentData = studentDoc.data();
                 
                 if (studentData.password === password) {
-                    localStorage.setItem('thp_current_student', JSON.stringify({
+                    // ✅ Login successful!
+                    console.log('✅ Login successful: Roll No.' + studentData.rollNo + ' - ' + studentData.name);
+                    
+                    // Store session with roll number
+                    const sessionData = {
                         phone: phone,
+                        rollNo: studentData.rollNo,
                         name: studentData.name,
                         class: studentData.class,
                         loginTime: new Date().toISOString()
-                    }));
+                    };
+                    localStorage.setItem('thp_current_student', JSON.stringify(sessionData));
                     
+                    // Success UI
                     btnText.style.display = 'block';
-                    btnText.textContent = '✅ Success!';
+                    btnText.textContent = '✅ Welcome!';
                     spinnerEl.style.display = 'none';
                     loginBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                     
-                    successDiv.textContent = `Welcome ${studentData.name}! Redirecting...`;
+                    successDiv.textContent = 'Welcome ' + studentData.name + ' (Roll No. ' + studentData.rollNo + ')! Redirecting...';
                     successDiv.classList.add('show');
                     
-                    setTimeout(() => { window.location.href = 'student-dashboard.html'; }, 800);
+                    // Redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = 'student-dashboard.html';
+                    }, 1000);
+                    
                 } else {
-                    showError('🔒 Invalid password. Default is 12345678');
+                    showError('🔒 Invalid password. Default password is 12345678');
                     resetButton(btnText, spinnerEl, loginBtn);
                 }
+                
             } catch (error) {
                 console.error('Login error:', error);
-                showError('🌐 Connection error. Please try again.');
+                showError('🌐 Connection error. Please check your internet and try again.');
                 resetButton(btnText, spinnerEl, loginBtn);
             }
         });
 
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
             errorDiv.classList.add('show');
-            setTimeout(() => errorDiv.classList.remove('show'), 5000);
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
         }
 
         function resetButton(btnText, spinnerEl, loginBtn) {
@@ -688,23 +741,30 @@
             loginBtn.style.background = 'linear-gradient(135deg, #6366f1, #8b5cf6)';
         }
 
-        // Auto-init on load
-        (async function() {
+        // ============================================
+        // AUTO-INITIALIZE ON FIRST LOAD
+        // ============================================
+        (async function autoInit() {
             try {
+                // Check if students collection has data
                 const snapshot = await db.collection('students').limit(1).get();
                 if (snapshot.empty) {
-                    console.log('🔄 First time setup...');
+                    console.log('🔄 First time setup: Initializing 90 students with Roll Numbers...');
                     await initializeStudents();
+                    console.log('✅ Database ready!');
+                } else {
+                    console.log('✅ Database already initialized');
                 }
             } catch (error) {
-                console.log('⚠️ Will init on first login');
+                console.log('⚠️ Will initialize on first login attempt');
             }
         })();
 
-        console.log('🚀 THP Portal Ready');
-        console.log('📱 Student Login: Phone + 12345678');
+        console.log('🚀 THP Student Portal Ready');
+        console.log('📱 Student Login: Phone Number + Password (Default: 12345678)');
         console.log('👑 Admin Login: 9999999999 + admin123');
         console.log('👨‍🏫 Teacher Login: 8888888888 + teacher123');
+        console.log('📋 90 Students with Roll Numbers 1-90 | Class 1-12');
     </script>
 </body>
 </html>
