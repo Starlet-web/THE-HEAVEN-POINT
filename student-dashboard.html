@@ -178,8 +178,6 @@
         .month-avg-row td { font-weight: 600; }
         .overall-row { background: linear-gradient(135deg, #6366f1, #8b5cf6) !important; }
         .overall-row td { color: white !important; font-weight: 700; padding: 14px; }
-        .sheet-thumb { width: 28px; height: 28px; border-radius: 5px; object-fit: cover; cursor: pointer; border: 2px solid var(--g200); margin-left: 6px; vertical-align: middle; }
-        .sheet-thumb:hover { border-color: var(--primary); transform: scale(1.15); }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .modal-overlay.active { opacity: 1; visibility: visible; }
@@ -205,6 +203,10 @@
         .toast.error { background: var(--danger); }
         .toast.info { background: var(--info); }
 
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); z-index: 3000; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+        .loading-spinner-large { width: 60px; height: 60px; border: 5px solid var(--gray-200); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         @media (max-width: 768px) {
             .dashboard-grid { grid-template-columns: 1fr; }
             .profile-header { flex-direction: column; text-align: center; }
@@ -227,180 +229,530 @@
     </div>
     <div id="particles-js"></div>
 
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner-large"></div>
+        <p style="font-weight:600;color:var(--gray-700);">Loading your dashboard...</p>
+    </div>
+
     <div class="main-container">
+        <!-- Navbar -->
         <nav class="navbar">
-            <div class="nav-brand"><div class="nav-logo">🎓</div><span class="nav-title">THP Dashboard</span></div>
+            <div class="nav-brand">
+                <div class="nav-logo">🎓</div>
+                <span class="nav-title">THP Dashboard</span>
+            </div>
             <div class="nav-actions">
-                <button class="btn btn-outline btn-sm" onclick="openEdit()"><i class="fas fa-edit"></i> Edit</button>
-                <button class="btn btn-outline btn-sm" onclick="openPass()"><i class="fas fa-key"></i> Password</button>
+                <button class="btn btn-outline btn-sm" onclick="openEditProfileModal()"><i class="fas fa-edit"></i> Edit Profile</button>
+                <button class="btn btn-outline btn-sm" onclick="openChangePasswordModal()"><i class="fas fa-key"></i> Change Password</button>
                 <button class="btn btn-primary btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
                 <button class="btn btn-danger btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
         </nav>
 
+        <!-- Profile Header -->
         <div class="profile-header">
             <div class="profile-avatar-container">
-                <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('photoUpload').click()"><span id="avatarInitial">?</span><div class="avatar-upload-overlay">📷 Change</div></div>
+                <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('photoUpload').click()">
+                    <span id="avatarInitial">S</span>
+                    <div class="avatar-upload-overlay">📷 Change Photo</div>
+                </div>
                 <div class="online-indicator"></div>
-                <input type="file" id="photoUpload" accept="image/*" style="display:none" onchange="uploadPhoto()">
+                <input type="file" id="photoUpload" accept="image/*" style="display:none" onchange="uploadProfilePhoto(event)">
             </div>
             <div class="profile-info">
-                <h1 class="profile-name" id="studentName">---</h1>
-                <div><span class="profile-roll-badge" id="studentRoll">Roll --</span><span class="profile-class-badge" id="studentClass">Class --</span></div>
+                <h1 class="profile-name" id="studentName">Loading...</h1>
+                <div>
+                    <span class="profile-roll-badge" id="studentRoll">Roll No. --</span>
+                    <span class="profile-class-badge" id="studentClass">Class --</span>
+                </div>
                 <div class="profile-meta">
-                    <span class="meta-item locked"><i class="fas fa-phone"></i> <span id="studentPhone">--</span> <span class="locked-badge">🔒</span></span>
+                    <span class="meta-item locked"><i class="fas fa-phone"></i> <span id="studentPhone">--</span> <span class="locked-badge">🔒 Locked</span></span>
                     <span class="meta-item"><i class="fas fa-envelope"></i> <span id="studentEmail">--</span></span>
                     <span class="meta-item"><i class="fas fa-map-marker-alt"></i> <span id="studentAddress">--</span></span>
+                    <span class="meta-item"><i class="fas fa-calendar"></i> <span id="studentDOB">--</span></span>
                 </div>
-                <div style="margin-top:8px;font-size:11px;color:var(--gray-400);"><i class="fas fa-info-circle"></i> Contact admin to change locked details</div>
+                <div style="margin-top:8px;font-size:11px;color:var(--gray-400);">
+                    <i class="fas fa-info-circle"></i> Contact admin to change Name, Roll No., Class, or Phone
+                </div>
             </div>
         </div>
 
+        <!-- Stats Grid -->
         <div class="stats-grid">
-            <div class="stat-card present"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-value" id="presentDays">0</div><div class="stat-label">Days Present</div></div>
-            <div class="stat-card absent"><div class="stat-icon"><i class="fas fa-times-circle"></i></div><div class="stat-value" id="absentDays">0</div><div class="stat-label">Days Absent</div></div>
-            <div class="stat-card average"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-value" id="averageScore">-</div><div class="stat-label">Overall Average</div></div>
-            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-value" id="bestScore">-</div><div class="stat-label">Best Score</div></div>
+            <div class="stat-card present">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-value" id="presentDays">0</div>
+                <div class="stat-label">Days Present</div>
+                <div class="stat-change up" id="presentRate">--</div>
+            </div>
+            <div class="stat-card absent">
+                <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                <div class="stat-value" id="absentDays">0</div>
+                <div class="stat-label">Days Absent</div>
+                <div class="stat-change down" id="absentRate">--</div>
+            </div>
+            <div class="stat-card average">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-value" id="averageScore">0%</div>
+                <div class="stat-label">Overall Average</div>
+                <div class="stat-change up">All Exams</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                <div class="stat-value" id="bestScore">0%</div>
+                <div class="stat-label">Best Score</div>
+                <div class="stat-change up">Keep it up!</div>
+            </div>
         </div>
 
+        <!-- Charts Grid -->
         <div class="dashboard-grid">
-            <div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-calendar-check"></i> Attendance</h3><span class="card-badge badge-info" id="currentMonth"></span></div><div class="calendar-grid" id="calendarGrid"></div></div>
-            <div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-chart-bar"></i> Monthly Scores</h3></div><div class="chart-container large"><canvas id="scoresChart"></canvas></div></div>
-            <div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-chart-line"></i> Attendance Trend</h3></div><div class="chart-container"><canvas id="attendanceChart"></canvas></div></div>
-            <div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-compass"></i> Performance</h3></div><div class="chart-container"><canvas id="radarChart"></canvas></div></div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-calendar-check"></i> Attendance Calendar</h3>
+                    <span class="card-badge badge-info" id="currentMonth">Loading...</span>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+                <div style="display:flex;gap:16px;margin-top:12px;justify-content:center;">
+                    <span style="display:flex;align-items:center;gap:6px;font-size:12px;"><span style="width:12px;height:12px;border-radius:4px;background:#10b981;"></span> Present</span>
+                    <span style="display:flex;align-items:center;gap:6px;font-size:12px;"><span style="width:12px;height:12px;border-radius:4px;background:#ef4444;"></span> Absent</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-chart-bar"></i> Monthly Test Scores</h3>
+                    <span class="card-badge badge-warning">Average per Month</span>
+                </div>
+                <div class="chart-container large"><canvas id="scoresChart"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-chart-line"></i> Attendance Trend</h3>
+                    <span class="card-badge badge-success">Last 12 Months</span>
+                </div>
+                <div class="chart-container"><canvas id="attendanceChart"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-compass"></i> Performance Analysis</h3>
+                    <span class="card-badge badge-info">Radar View</span>
+                </div>
+                <div class="chart-container"><canvas id="radarChart"></canvas></div>
+            </div>
         </div>
 
-        <div class="card" style="margin-bottom:24px;"><div class="card-header"><h3 class="card-title"><i class="fas fa-table"></i> Detailed Scores</h3></div>
-            <div style="overflow-x:auto"><table class="scores-table"><thead><tr><th>Month/Exam</th><th>Score</th><th>Grade</th><th>Performance</th></tr></thead><tbody id="scoreBody"><tr><td colspan="4" style="text-align:center">Loading...</td></tr></tbody></table></div>
+        <!-- Scores Table -->
+        <div class="card" style="margin-bottom:24px;">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-table"></i> Detailed Test Scores</h3>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="scores-table">
+                    <thead><tr><th>Month / Exam</th><th>Score (%)</th><th>Grade</th><th>Performance</th><th>Details</th></tr></thead>
+                    <tbody id="scoresTableBody"><tr><td colspan="5" style="text-align:center;padding:20px;">Loading scores...</td></tr></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal-overlay" id="editModal"><div class="modal"><div class="modal-header"><h2>✏️ Edit Profile</h2><button class="modal-close" onclick="closeMod('editModal')">✕</button></div><p style="font-size:12px;color:var(--gray-500);margin-bottom:16px;background:var(--gray-50);padding:10px;border-radius:8px;">🔒 Name, Roll, Class, Phone locked.</p><form id="editForm">
-                <div class="form-row"><div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Roll</label><input type="text" id="dRoll" class="locked-field" disabled></div><div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Name</label><input type="text" id="dName" class="locked-field" disabled></div></div>
-                <div class="form-row"><div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Class</label><input type="text" id="dClass" class="locked-field" disabled></div><div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Phone</label><input type="text" id="dPhone" class="locked-field" disabled></div></div>
-                <hr style="margin:16px 0"><p style="font-weight:700;color:var(--success);margin-bottom:12px">✅ Editable:</p>
-                <div class="form-row"><div class="form-group"><label>📧 Email</label><input type="email" id="eEmail"></div><div class="form-group"><label>🎂 DOB</label><input type="date" id="eDOB"></div></div>
-                <div class="form-group"><label>📍 Address</label><input type="text" id="eAddress"></div>
-                <div class="form-row"><div class="form-group"><label>👨 Father</label><input type="text" id="eFather"></div><div class="form-group"><label>👩 Mother</label><input type="text" id="eMother"></div></div>
-                <div class="form-row"><div class="form-group"><label>🩸 Blood</label><select id="eBlood"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div><div class="form-group"><label>⚧ Gender</label><select id="eGender"><option value="">Select</option><option>Male</option><option>Female</option></select></div></div>
-                <button type="submit" class="btn btn-primary" style="width:100%"><i class="fas fa-save"></i> Save</button></form></div></div>
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="modal">
+            <div class="modal-header"><h2>✏️ Edit Profile</h2><button class="modal-close" onclick="closeModal('editProfileModal')">✕</button></div>
+            <p style="font-size:12px;color:var(--gray-500);margin-bottom:16px;background:var(--gray-50);padding:10px;border-radius:8px;">🔒 <strong>Name, Roll Number, Class, and Phone Number are locked.</strong> Contact admin to change these details.</p>
+            <form id="editProfileForm">
+                <div class="form-row">
+                    <div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Roll Number (Locked)</label><input type="text" id="displayRollNo" class="locked-field" disabled></div>
+                    <div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Full Name (Locked)</label><input type="text" id="displayName" class="locked-field" disabled></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Class (Locked)</label><input type="text" id="displayClass" class="locked-field" disabled></div>
+                    <div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Phone Number (Locked)</label><input type="text" id="displayPhone" class="locked-field" disabled><p class="field-note">Phone number is your unique ID</p></div>
+                </div>
+                <hr style="border:1px solid var(--gray-200);margin:16px 0;">
+                <p style="font-weight:700;color:var(--success);margin-bottom:12px;font-size:14px;">✅ You can edit the following details:</p>
+                <div class="form-row">
+                    <div class="form-group"><label>📧 Email Address</label><input type="email" id="editEmail" placeholder="Enter your email"></div>
+                    <div class="form-group"><label>🎂 Date of Birth</label><input type="date" id="editDOB"></div>
+                </div>
+                <div class="form-group"><label>📍 Address</label><textarea id="editAddress" rows="2" placeholder="Enter your address"></textarea></div>
+                <div class="form-row">
+                    <div class="form-group"><label>👨 Father's Name</label><input type="text" id="editFather" placeholder="Father's name"></div>
+                    <div class="form-group"><label>👩 Mother's Name</label><input type="text" id="editMother" placeholder="Mother's name"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>🩸 Blood Group</label><select id="editBloodGroup"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+                    <div class="form-group"><label>⚧ Gender</label><select id="editGender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-save"></i> Save Changes</button>
+            </form>
+        </div>
+    </div>
 
-    <!-- Password Modal -->
-    <div class="modal-overlay" id="passModal"><div class="modal"><div class="modal-header"><h2>🔒 Password</h2><button class="modal-close" onclick="closeMod('passModal')">✕</button></div><form id="passForm"><div class="form-group"><label>Current</label><input type="password" id="curPass" required></div><div class="form-group"><label>New (min 8)</label><input type="password" id="newPass" required minlength="8"></div><div class="form-group"><label>Confirm</label><input type="password" id="confPass" required minlength="8"></div><button type="submit" class="btn btn-primary" style="width:100%">Update</button></form></div></div>
-
-    <!-- Image Modal -->
-    <div class="modal-overlay" id="imgModal"><div class="modal" style="max-width:700px;text-align:center"><div class="modal-header"><h2>📷 Answer Sheet</h2><button class="modal-close" onclick="closeMod('imgModal')">✕</button></div><img id="imgPreview" src="" style="max-width:100%;max-height:65vh;border-radius:12px"></div></div>
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="changePasswordModal">
+        <div class="modal">
+            <div class="modal-header"><h2>🔒 Change Password</h2><button class="modal-close" onclick="closeModal('changePasswordModal')">✕</button></div>
+            <form id="changePasswordForm">
+                <div class="form-group"><label>Current Password</label><input type="password" id="currentPassword" required placeholder="Enter current password"></div>
+                <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required minlength="8" placeholder="Min 8 characters"></div>
+                <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirmPassword" required minlength="8" placeholder="Re-enter new password"></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-lock"></i> Update Password</button>
+            </form>
+        </div>
+    </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
         // ═══════════════════════════════════════
-        // FIREBASE
+        // FIREBASE INIT
         // ═══════════════════════════════════════
-        firebase.initializeApp({apiKey:"AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",authDomain:"dumbbell-gyme.firebaseapp.com",projectId:"dumbbell-gyme",storageBucket:"dumbbell-gyme.firebasestorage.app",messagingSenderId:"305021976299",appId:"1:305021976299:web:fb85c2b332935d698088ae"});
-        const db=firebase.firestore();
-        const IK='53fb01955a45c5462724b8f7d238500a';
-        let cur=null,scC=null,acC=null,rcC=null;
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
+            authDomain: "dumbbell-gyme.firebaseapp.com",
+            projectId: "dumbbell-gyme",
+            storageBucket: "dumbbell-gyme.firebasestorage.app",
+            messagingSenderId: "305021976299",
+            appId: "1:305021976299:web:fb85c2b332935d698088ae",
+            measurementId: "G-VEYQ7W61FD"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const IMGBB_API_KEY = '53fb01955a45c5462724b8f7d238500a';
 
-        particlesJS('particles-js',{particles:{number:{value:35},color:{value:'#6366f1'},opacity:{value:0.12},size:{value:2},line_linked:{enable:true,distance:130,color:'#6366f1',opacity:0.06},move:{enable:true,speed:1}},interactivity:{events:{onhover:{enable:true,mode:'grab'}}},retina_detect:true});
+        let currentStudent = null;
+        let scoresChart = null, attendanceChart = null, radarChart = null;
 
-        function toast(m,t='success'){const el=document.getElementById('toast');el.textContent=(t==='success'?'✅ ':'❌ ')+m;el.className=`toast ${t} show`;setTimeout(()=>el.classList.remove('show'),2500)}
-        function openMod(id){document.getElementById(id).classList.add('active')}
-        function closeMod(id){document.getElementById(id).classList.remove('active')}
-        function openEdit(){openMod('editModal')}
-        function openPass(){document.getElementById('passForm').reset();openMod('passModal')}
-        function logout(){localStorage.removeItem('thp_current_student');location.href='index.html'}
-        document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')}));
-
-        // Helper
-        function getPct(ex){if(!ex)return NaN;if(typeof ex==='object'&&ex.percentage!==undefined)return Number(ex.percentage);if(typeof ex==='number')return ex;return NaN}
-        function getMks(ex){if(!ex)return'';if(typeof ex==='object'){const m=ex.marks||'-',t=ex.total||'-';return`${m}/${t}`}return''}
-        function getSht(ex){if(typeof ex==='object'&&ex.answerSheet)return ex.answerSheet;return''}
+        // Particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 1000 } },
+                color: { value: '#6366f1' }, shape: { type: 'circle' },
+                opacity: { value: 0.2, random: true }, size: { value: 2, random: true },
+                line_linked: { enable: true, distance: 150, color: '#6366f1', opacity: 0.1, width: 1 },
+                move: { enable: true, speed: 1, direction: 'none', random: true, out_mode: 'out' }
+            },
+            interactivity: {
+                events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' } },
+                modes: { grab: { distance: 140, line_linked: { opacity: 0.4 } }, push: { particles_nb: 3 } }
+            },
+            retina_detect: true
+        });
 
         // ═══════════════════════════════════════
-        // 🔥 MAIN INIT - NO LOADING OVERLAY
+        // INIT DASHBOARD
         // ═══════════════════════════════════════
-        async function init(){
-            const sd=localStorage.getItem('thp_current_student');
-            if(!sd){location.href='index.html';return}
-            cur=JSON.parse(sd);
-            console.log('🔍 Roll:',cur.rollNo);
+        async function initDashboard() {
+            const studentData = localStorage.getItem('thp_current_student');
+            if (!studentData) { window.location.href = 'index.html'; return; }
+            currentStudent = JSON.parse(studentData);
 
-            try{
-                const doc=await db.collection('students').doc(String(cur.rollNo)).get();
-                if(!doc.exists){toast('Not found!','error');return}
-                const d=doc.data();
-                console.log('✅',d.name);
+            console.log('🔍 Loading dashboard for Roll No:', currentStudent.rollNo);
+
+            try {
+                const doc = await db.collection('students').doc(String(currentStudent.rollNo)).get();
+                if (!doc.exists) {
+                    showToast('Student data not found! Contact admin.', 'error');
+                    setTimeout(() => { localStorage.removeItem('thp_current_student'); window.location.href = 'index.html'; }, 2000);
+                    return;
+                }
+
+                const data = doc.data();
+                console.log('✅ Student loaded:', data.name);
                 
-                // Profile
-                document.getElementById('studentName').textContent=d.name||'---';
-                document.getElementById('studentRoll').textContent='Roll No. '+(d.rollNo||'--');
-                document.getElementById('studentClass').textContent='Class '+(d.class||'--');
-                document.getElementById('studentPhone').textContent=d.phone||'--';
-                document.getElementById('studentEmail').textContent=d.email||'--';
-                document.getElementById('studentAddress').textContent=d.address||'--';
-                const av=document.getElementById('profileAvatar');
-                if(d.profilePhoto){av.innerHTML=`<img src="${d.profilePhoto}"><div class="avatar-upload-overlay">📷 Change</div>`}
-                else{document.getElementById('avatarInitial').textContent=(d.name||'?').charAt(0).toUpperCase()}
-
-                // Stats
-                const att=d.attendance||{};let p=0,a=0;Object.values(att).forEach(v=>{if(v==='present')p++;else a++});
-                document.getElementById('presentDays').textContent=p;document.getElementById('absentDays').textContent=a;
-                const ts=d.testScores||{};let all=[];Object.values(ts).forEach(md=>{if(typeof md==='object')Object.values(md).forEach(ex=>{const pct=getPct(ex);if(!isNaN(pct))all.push(pct)})});
-                if(all.length){document.getElementById('averageScore').textContent=Math.round(all.reduce((x,y)=>x+y,0)/all.length)+'%';document.getElementById('bestScore').textContent=Math.max(...all)+'%'}
-
-                // Calendar
-                renderCal(att);
-                // Charts
-                renderCharts(d);
-                // Scores
-                renderScores(d);
-                // Edit form
-                document.getElementById('dRoll').value=d.rollNo||'';document.getElementById('dName').value=d.name||'';
-                document.getElementById('dClass').value=d.class||'';document.getElementById('dPhone').value=d.phone||'';
-                document.getElementById('eEmail').value=d.email||'';document.getElementById('eDOB').value=d.dateOfBirth||'';
-                document.getElementById('eAddress').value=d.address||'';document.getElementById('eFather').value=d.fatherName||'';
-                document.getElementById('eMother').value=d.motherName||'';document.getElementById('eBlood').value=d.bloodGroup||'';
-                document.getElementById('eGender').value=d.gender||'';
-            }catch(e){console.error(e);toast('Error','error')}
+                populateProfile(data);
+                calculateStats(data);
+                renderCalendar(data);
+                renderCharts(data);
+                renderScoresTable(data);
+                prefillEditForm(data);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            } catch(e) {
+                console.error('Dashboard error:', e);
+                showToast('Failed to load dashboard', 'error');
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
         }
 
-        function renderCal(att){
-            const mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const now=new Date();const m=now.getMonth(),y=now.getFullYear();const dim=new Date(y,m+1,0).getDate();const fd=new Date(y,m,1).getDay();
-            document.getElementById('currentMonth').textContent=mn[m]+' '+y;
-            let h='';['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>h+=`<div class="calendar-day-header">${d}</div>`);
-            for(let i=0;i<fd;i++)h+='<div class="calendar-day empty"></div>';
-            for(let d=1;d<=dim;d++){const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const s=att[ds];let c='calendar-day';if(s==='present')c+=' present';else if(s==='absent')c+=' absent';if(d===now.getDate())c+=' today';h+=`<div class="${c}">${d}</div>`}
-            document.getElementById('calendarGrid').innerHTML=h;
+        function populateProfile(data) {
+            document.getElementById('studentName').textContent = data.name || 'Student';
+            document.getElementById('studentRoll').textContent = 'Roll No. ' + (data.rollNo || '--');
+            document.getElementById('studentClass').textContent = 'Class ' + (data.class || '--');
+            document.getElementById('studentPhone').textContent = data.phone || '--';
+            document.getElementById('studentEmail').textContent = data.email || 'Not set';
+            document.getElementById('studentAddress').textContent = data.address || 'Not set';
+            document.getElementById('studentDOB').textContent = data.dateOfBirth || 'Not set';
+
+            const avatar = document.getElementById('profileAvatar');
+            if (data.profilePhoto) {
+                avatar.innerHTML = `<img src="${data.profilePhoto}" alt="Profile"><div class="avatar-upload-overlay">📷 Change Photo</div>`;
+            } else {
+                document.getElementById('avatarInitial').textContent = (data.name||'S').charAt(0).toUpperCase();
+            }
         }
 
-        function renderCharts(d){
-            const ctx1=document.getElementById('scoresChart').getContext('2d');const ml=['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];const fmo=['March','April','May','June','July','August','September','October','November','December','January','February'];const ts=d.testScores||{};
-            const sd=fmo.map(m=>{const md=ts[m];if(md&&typeof md==='object'){const v=Object.values(md).map(getPct).filter(x=>!isNaN(x));if(v.length)return Math.round(v.reduce((a,b)=>a+b,0)/v.length)}return null});
-            if(scC)scC.destroy();scC=new Chart(ctx1,{type:'line',data:{labels:ml,datasets:[{label:'Avg %',data:sd,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',borderWidth:3,fill:true,tension:0.4,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100}}});
-            const ctx2=document.getElementById('attendanceChart').getContext('2d');const pd=ml.map(()=>Math.floor(Math.random()*10)+15);const ad=ml.map(()=>Math.floor(Math.random()*5));if(acC)acC.destroy();acC=new Chart(ctx2,{type:'bar',data:{labels:ml,datasets:[{label:'P',data:pd,backgroundColor:'#10b981',borderRadius:8},{label:'A',data:ad,backgroundColor:'#ef4444',borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true},y:{stacked:true}}});
-            const ctx3=document.getElementById('radarChart').getContext('2d');if(rcC)rcC.destroy();rcC=new Chart(ctx3,{type:'radar',data:{labels:['Att','Scores','Disc','Part','HW','Overall'],datasets:[{data:[85,72,90,78,88,82],backgroundColor:'rgba(99,102,241,0.2)',borderColor:'#6366f1',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100}},plugins:{legend:{display:false}}});
+        function prefillEditForm(data) {
+            document.getElementById('displayRollNo').value = data.rollNo || '';
+            document.getElementById('displayName').value = data.name || '';
+            document.getElementById('displayClass').value = data.class || '';
+            document.getElementById('displayPhone').value = data.phone || '';
+            document.getElementById('editEmail').value = data.email || '';
+            document.getElementById('editDOB').value = data.dateOfBirth || '';
+            document.getElementById('editAddress').value = data.address || '';
+            document.getElementById('editFather').value = data.fatherName || '';
+            document.getElementById('editMother').value = data.motherName || '';
+            document.getElementById('editBloodGroup').value = data.bloodGroup || '';
+            document.getElementById('editGender').value = data.gender || '';
         }
 
-        function renderScores(d){
-            const months=['March','April','May','June','July','August','September','October','November','December','January','February'];const ts=d.testScores||{};const tb=document.getElementById('scoreBody');
-            let html='',tsum=0,tcnt=0;
-            months.forEach(m=>{const md=ts[m];if(md&&typeof md==='object'&&Object.keys(md).length>0){let ms=0,mc=0;html+=`<tr class="month-header"><td colspan="4">📅 ${m}</td></tr>`;Object.entries(md).forEach(([en,ex])=>{const pct=getPct(ex);const mks=getMks(ex);const sht=getSht(ex);let gc='score-high',g='A',pf='Excellent';if(pct<40){gc='score-low';g='F';pf='Needs Improvement'}else if(pct<60){gc='score-medium';g='C';pf='Average'}else if(pct<75){gc='score-medium';g='B';pf='Good'}ms+=pct;mc++;html+=`<tr><td style="padding-left:20px">📝 ${en}</td><td><span class="score-badge ${gc}">${pct}%</span>${mks?` <small style="color:var(--gray-400)">(${mks})</small>`:''}${sht?` <img src="${sht}" class="sheet-thumb" onclick="viewImg('${sht}')">`:''}</td><td><strong>${g}</strong></td><td>${pf}</td></tr>`});if(mc>0){tsum+=ms;tcnt+=mc;html+=`<tr class="month-avg-row"><td style="padding-left:20px">📊 ${m} Avg</td><td><strong>${Math.round(ms/mc)}%</strong></td><td colspan="2">${mc} exams</td></tr>`}}});
-            if(tcnt>0)html=`<tr class="overall-row"><td><strong>🏆 OVERALL</strong></td><td><strong>${Math.round(tsum/tcnt)}%</strong></td><td colspan="2">${tcnt} exams</td></tr>`+html;
-            tb.innerHTML=html||'<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--gray-400)">No scores yet</td></tr>';
+        function calculateStats(data) {
+            const att = data.attendance || {};
+            const entries = Object.entries(att);
+            let p=0, a=0;
+            entries.forEach(([d,s])=>{ if(s==='present')p++; else a++; });
+            const t=p+a;
+            document.getElementById('presentDays').textContent = p;
+            document.getElementById('absentDays').textContent = a;
+            document.getElementById('presentRate').textContent = t>0?`${((p/t)*100).toFixed(1)}% rate`:'--';
+            document.getElementById('absentRate').textContent = t>0?`${((a/t)*100).toFixed(1)}% rate`:'--';
+
+            // 🔥 FIXED: Calculate from nested testScores
+            const testScores = data.testScores || {};
+            let allScores = [];
+            Object.values(testScores).forEach(monthData => {
+                if (typeof monthData === 'object') {
+                    Object.values(monthData).forEach(score => {
+                        const sc = Number(score);
+                        if (!isNaN(sc)) allScores.push(sc);
+                    });
+                }
+            });
+            
+            if (allScores.length > 0) {
+                document.getElementById('averageScore').textContent = Math.round(allScores.reduce((x,y)=>x+y,0)/allScores.length)+'%';
+                document.getElementById('bestScore').textContent = Math.max(...allScores)+'%';
+            }
         }
 
-        function viewImg(url){document.getElementById('imgPreview').src=url;openMod('imgModal')}
+        function renderCalendar(data) {
+            const att = data.attendance || {};
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            const now = new Date();
+            const m=now.getMonth(), y=now.getFullYear();
+            const dim = new Date(y,m+1,0).getDate();
+            const fd = new Date(y,m,1).getDay();
+            document.getElementById('currentMonth').textContent = `${months[m]} ${y}`;
+            let html='';
+            ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>html+=`<div class="calendar-day-header">${d}</div>`);
+            for(let i=0;i<fd;i++) html+='<div class="calendar-day empty"></div>';
+            for(let d=1;d<=dim;d++){
+                const ds = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                const s = att[ds];
+                let cls='calendar-day';
+                if(s==='present')cls+=' present';
+                else if(s==='absent')cls+=' absent';
+                if(d===now.getDate())cls+=' today';
+                html+=`<div class="${cls}" title="${ds}: ${s||'No record'}">${d}</div>`;
+            }
+            document.getElementById('calendarGrid').innerHTML = html;
+        }
 
-        async function uploadPhoto(){const f=document.getElementById('photoUpload').files[0];if(!f)return;toast('Uploading...','success');try{const fd=new FormData();fd.append('image',f);const r=await fetch(`https://api.imgbb.com/1/upload?key=${IK}`,{method:'POST',body:fd});const j=await r.json();if(j.success){await db.collection('students').doc(String(cur.rollNo)).update({profilePhoto:j.data.url});toast('Done!','success');init()}}catch(e){toast('Failed','error')}}
+        function renderCharts(data) {
+            // Scores Chart - Monthly Average
+            const ctx1 = document.getElementById('scoresChart').getContext('2d');
+            const monthLabels = ['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
+            const fullMonths = ['March','April','May','June','July','August','September','October','November','December','January','February'];
+            const testScores = data.testScores || {};
+            
+            const scoreData = fullMonths.map(month => {
+                const monthData = testScores[month];
+                if (monthData && typeof monthData === 'object') {
+                    const vals = Object.values(monthData).map(Number).filter(v => !isNaN(v));
+                    if (vals.length > 0) return Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+                }
+                return null;
+            });
 
-        document.getElementById('editForm').addEventListener('submit',async e=>{e.preventDefault();const u={email:document.getElementById('eEmail').value.trim(),dateOfBirth:document.getElementById('eDOB').value,address:document.getElementById('eAddress').value.trim(),fatherName:document.getElementById('eFather').value.trim(),motherName:document.getElementById('eMother').value.trim(),bloodGroup:document.getElementById('eBlood').value,gender:document.getElementById('eGender').value};try{await db.collection('students').doc(String(cur.rollNo)).update(u);toast('Updated!','success');closeMod('editModal');init()}catch(e){toast('Failed','error')}});
+            if(scoresChart)scoresChart.destroy();
+            scoresChart = new Chart(ctx1,{
+                type:'line',
+                data:{labels:monthLabels,datasets:[{label:'Avg Score (%)',data:scoreData,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',borderWidth:3,fill:true,tension:0.4,pointRadius:6,pointBackgroundColor:'#6366f1',pointBorderColor:'white',pointBorderWidth:3}]},
+                options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}
+            });
 
-        document.getElementById('passForm').addEventListener('submit',async e=>{e.preventDefault();const cp=document.getElementById('curPass').value,np=document.getElementById('newPass').value,xp=document.getElementById('confPass').value;if(np!==xp){toast('Not match!','error');return}try{const d=await db.collection('students').doc(String(cur.rollNo)).get();if(d.data().password!==cp){toast('Wrong!','error');return}await db.collection('students').doc(String(cur.rollNo)).update({password:np});toast('Changed!','success');closeMod('passModal')}catch(e){toast('Failed','error')}});
+            // Attendance Chart
+            const ctx2 = document.getElementById('attendanceChart').getContext('2d');
+            const pd=monthLabels.map(()=>Math.floor(Math.random()*10)+15);
+            const ad=monthLabels.map(()=>Math.floor(Math.random()*5));
+            if(attendanceChart)attendanceChart.destroy();
+            attendanceChart = new Chart(ctx2,{
+                type:'bar',
+                data:{labels:monthLabels,datasets:[{label:'Present',data:pd,backgroundColor:'#10b981',borderRadius:8},{label:'Absent',data:ad,backgroundColor:'#ef4444',borderRadius:8}]},
+                options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true},y:{stacked:true}}}
+            });
 
-        // ⚡ START IMMEDIATELY
-        init();
+            // Radar Chart
+            const ctx3 = document.getElementById('radarChart').getContext('2d');
+            if(radarChart)radarChart.destroy();
+            radarChart = new Chart(ctx3,{
+                type:'radar',
+                data:{labels:['Attendance','Test Scores','Discipline','Participation','Homework','Overall'],datasets:[{label:'Performance',data:[85,72,90,78,88,82],backgroundColor:'rgba(99,102,241,0.2)',borderColor:'#6366f1',borderWidth:3,pointBackgroundColor:'#6366f1'}]},
+                options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20}}},plugins:{legend:{display:false}}}
+            });
+        }
+
+        // 🔥 NEW: Fixed scores table with exam names
+        function renderScoresTable(data) {
+            const months = ['March','April','May','June','July','August','September','October','November','December','January','February'];
+            const testScores = data.testScores || {};
+            const tbody = document.getElementById('scoresTableBody');
+            
+            let html = '';
+            let totalSum = 0;
+            let totalCount = 0;
+            let hasAnyScore = false;
+
+            months.forEach(month => {
+                const monthData = testScores[month];
+                
+                if (monthData && typeof monthData === 'object' && Object.keys(monthData).length > 0) {
+                    hasAnyScore = true;
+                    let monthSum = 0;
+                    let monthCount = 0;
+                    
+                    // Month header
+                    html += `<tr class="month-header"><td colspan="5">📅 <strong>${month}</strong></td></tr>`;
+                    
+                    // Each exam
+                    Object.entries(monthData).forEach(([examName, score]) => {
+                        const sc = Number(score);
+                        let gc = 'score-high', g = 'A', perf = 'Excellent';
+                        if (sc < 40) { gc = 'score-low'; g = 'F'; perf = 'Needs Improvement'; }
+                        else if (sc < 60) { gc = 'score-medium'; g = 'C'; perf = 'Average'; }
+                        else if (sc < 75) { gc = 'score-medium'; g = 'B'; perf = 'Good'; }
+                        
+                        monthSum += sc;
+                        monthCount++;
+                        
+                        html += `<tr>
+                            <td style="padding-left:24px;">📝 ${examName}</td>
+                            <td><span class="score-badge ${gc}">${sc}%</span></td>
+                            <td><strong>${g}</strong></td>
+                            <td>${perf}</td>
+                            <td style="font-size:10px;color:var(--gray-400)">${month}</td>
+                        </tr>`;
+                    });
+                    
+                    // Month average
+                    if (monthCount > 0) {
+                        const monthAvg = Math.round(monthSum / monthCount);
+                        let avgGc = 'score-high';
+                        if (monthAvg < 40) avgGc = 'score-low';
+                        else if (monthAvg < 60) avgGc = 'score-medium';
+                        else if (monthAvg < 75) avgGc = 'score-medium';
+                        
+                        totalSum += monthSum;
+                        totalCount += monthCount;
+                        
+                        html += `<tr class="month-avg-row">
+                            <td style="padding-left:24px;">📊 <strong>${month} Average</strong></td>
+                            <td><span class="score-badge ${avgGc}"><strong>${monthAvg}%</strong></span></td>
+                            <td colspan="3"><span style="font-size:11px;color:#7c2d12;">${monthCount} exam(s)</span></td>
+                        </tr>`;
+                    }
+                }
+            });
+            
+            // Overall average
+            if (totalCount > 0) {
+                const overallAvg = Math.round(totalSum / totalCount);
+                html = `<tr class="overall-row">
+                    <td><strong>🏆 OVERALL AVERAGE</strong></td>
+                    <td><span style="font-size:16px;font-weight:800;">${overallAvg}%</span></td>
+                    <td colspan="3"><span style="font-size:11px;">Total ${totalCount} exams across all months</span></td>
+                </tr>` + html;
+            }
+            
+            tbody.innerHTML = html || '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gray-400);">No test scores available yet</td></tr>';
+        }
+
+        // ═══════════════════════════════════════
+        // PROFILE PHOTO UPLOAD
+        // ═══════════════════════════════════════
+        async function uploadProfilePhoto(event) {
+            const file = event.target.files[0];
+            if(!file)return;
+            if(file.size>5*1024*1024){showToast('File too large! Max 5MB.','error');return;}
+            showToast('Uploading...','info');
+            try{
+                const fd=new FormData(); fd.append('image',file);
+                const res=await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,{method:'POST',body:fd});
+                const result=await res.json();
+                if(result.success){
+                    await db.collection('students').doc(String(currentStudent.rollNo)).update({profilePhoto:result.data.url,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+                    document.getElementById('profileAvatar').innerHTML=`<img src="${result.data.url}" alt="Profile"><div class="avatar-upload-overlay">📷 Change Photo</div>`;
+                    showToast('Photo updated!','success');
+                }else{throw new Error('Upload failed');}
+            }catch(e){showToast('Upload failed','error');}
+        }
+
+        // ═══════════════════════════════════════
+        // EDIT PROFILE
+        // ═══════════════════════════════════════
+        function openEditProfileModal() { openModal('editProfileModal'); }
+        document.getElementById('editProfileForm').addEventListener('submit',async(e)=>{
+            e.preventDefault();
+            const updates={
+                email:document.getElementById('editEmail').value.trim(),
+                dateOfBirth:document.getElementById('editDOB').value,
+                address:document.getElementById('editAddress').value.trim(),
+                fatherName:document.getElementById('editFather').value.trim(),
+                motherName:document.getElementById('editMother').value.trim(),
+                bloodGroup:document.getElementById('editBloodGroup').value,
+                gender:document.getElementById('editGender').value,
+                updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+            };
+            try{
+                await db.collection('students').doc(String(currentStudent.rollNo)).update(updates);
+                showToast('Profile updated!','success');
+                closeModal('editProfileModal');
+                initDashboard();
+            }catch(e){showToast('Update failed','error');}
+        });
+
+        // ═══════════════════════════════════════
+        // CHANGE PASSWORD
+        // ═══════════════════════════════════════
+        function openChangePasswordModal(){document.getElementById('changePasswordForm').reset();openModal('changePasswordModal');}
+        document.getElementById('changePasswordForm').addEventListener('submit',async(e)=>{
+            e.preventDefault();
+            const cur=document.getElementById('currentPassword').value;
+            const np=document.getElementById('newPassword').value;
+            const cp=document.getElementById('confirmPassword').value;
+            if(np!==cp){showToast('Passwords do not match!','error');return;}
+            if(np.length<8){showToast('Min 8 characters','error');return;}
+            try{
+                const doc=await db.collection('students').doc(String(currentStudent.rollNo)).get();
+                if(doc.data().password!==cur){showToast('Current password incorrect!','error');return;}
+                await db.collection('students').doc(String(currentStudent.rollNo)).update({password:np,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+                showToast('Password changed!','success');
+                closeModal('changePasswordModal');
+            }catch(e){showToast('Failed','error');}
+        });
+
+        // ═══════════════════════════════════════
+        // UTILITIES
+        // ═══════════════════════════════════════
+        function openModal(id){document.getElementById(id).classList.add('active');}
+        function closeModal(id){document.getElementById(id).classList.remove('active');}
+        function showToast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3000);}
+        function logout(){localStorage.removeItem('thp_current_student');window.location.href='index.html';}
+        document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active');});});
+        document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>m.classList.remove('active'));});
+        window.addEventListener('DOMContentLoaded',initDashboard);
+        console.log('✅ Dashboard Ready - Multi-Exam Scores | Auto Average');
     </script>
 </body>
 </html>
+
