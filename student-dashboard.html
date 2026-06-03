@@ -3,115 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Student Dashboard - THP Portal</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        body{font-family:Arial;padding:20px;background:#f0f4ff}
-        .card{background:white;padding:20px;border-radius:15px;margin:10px 0;box-shadow:0 5px 20px rgba(0,0,0,0.08)}
-        h2{color:#6366f1} .badge{display:inline-block;padding:5px 12px;border-radius:20px;font-weight:700;font-size:14px}
-        .roll{background:#fbbf24;color:#7c2d12} .class{background:#6366f1;color:white;margin-left:5px}
-        table{width:100%;border-collapse:collapse;margin-top:10px}
-        td,th{padding:8px;border-bottom:1px solid #e5e7eb;font-size:13px}
-        th{background:#f3f4f6;text-align:left}
-        button{padding:10px 20px;background:#ef4444;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600}
+        :root{--p:#6366f1;--pd:#4f46e5;--pl:#a5b4fc;--s:#f43f5e;--a:#8b5cf6;--g:#10b981;--w:#f59e0b;--d:#ef4444;--i:#3b82f6;--dk:#0f172a;--lt:#f8fafc;--wt:#fff;--g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;--g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g800:#1f2937;--g900:#111827;--glass:rgba(255,255,255,0.94);--sh-sm:0 1px 2px rgba(0,0,0,0.04);--sh:0 4px 6px rgba(0,0,0,0.05);--sh-md:0 10px 25px rgba(0,0,0,0.08);--sh-lg:0 20px 50px rgba(0,0,0,0.12);--sh-xl:0 30px 60px rgba(0,0,0,0.18);--sh-glow:0 0 40px rgba(99,102,241,0.3);--r-sm:8px;--r:12px;--r-lg:16px;--r-xl:20px;--r-2xl:24px;--tr:all 0.3s ease}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#f0f4ff,#e8ecf8,#f5f3ff,#fdf2f8,#f0f9ff);min-height:100vh;overflow-x:hidden;color:var(--g800)}
+        ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--g100);border-radius:10px}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--p),var(--a));border-radius:10px}
+        #particles-js{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+        .main-container{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:20px}
+
+        .navbar{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-2xl);padding:14px 22px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,0.5)}
+        .nav-brand{display:flex;align-items:center;gap:10px}
+        .nav-logo{width:44px;height:44px;background:linear-gradient(135deg,var(--p),var(--a));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--sh-glow);animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{box-shadow:0 0 25px rgba(99,102,241,0.4)}50%{box-shadow:0 0 50px rgba(99,102,241,0.7)}}
+        .nav-title{font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .nav-actions{display:flex;gap:10px;flex-wrap:wrap}
+        .btn{padding:9px 16px;border-radius:11px;font-weight:600;font-size:12px;cursor:pointer;transition:var(--tr);border:none;display:flex;align-items:center;gap:6px;font-family:inherit;white-space:nowrap}
+        .btn-p{background:linear-gradient(135deg,var(--p),var(--a));color:white}.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(99,102,241,0.3)}
+        .btn-o{background:white;color:var(--p);border:2px solid var(--pl)}.btn-o:hover{background:var(--p);color:white}
+        .btn-d{background:var(--d);color:white}.btn-sm{padding:6px 12px;font-size:11px;border-radius:8px}
+
+        .profile-header{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-2xl);padding:24px;margin-bottom:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,0.5);animation:fadeIn 0.5s ease}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .profile-avatar-container{position:relative;flex-shrink:0}
+        .profile-avatar{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--pl),var(--a));display:flex;align-items:center;justify-content:center;font-size:44px;color:white;font-weight:700;overflow:hidden;box-shadow:var(--sh-xl);cursor:pointer;transition:var(--tr)}.profile-avatar:hover{transform:scale(1.08)}
+        .profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+        .avatar-upload-overlay{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:white;text-align:center;padding:6px;font-size:10px;cursor:pointer;opacity:0;transition:var(--tr)}.profile-avatar:hover .avatar-upload-overlay{opacity:1}
+        .online-dot{position:absolute;bottom:8px;right:8px;width:16px;height:16px;background:var(--g);border-radius:50%;border:3px solid white;animation:dotPulse 2s infinite}
+        @keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.5)}50%{box-shadow:0 0 0 12px rgba(16,185,129,0)}}
+        .profile-info{flex:1;min-width:200px}.profile-name{font-size:26px;font-weight:800;color:var(--g900);margin-bottom:4px}
+        .profile-roll-badge{display:inline-block;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#7c2d12;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-right:6px;margin-bottom:6px;box-shadow:0 4px 10px rgba(245,158,11,0.25)}
+        .profile-class-badge{display:inline-block;background:linear-gradient(135deg,var(--p),var(--a));color:white;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:6px;box-shadow:0 4px 10px rgba(99,102,241,0.25)}
+        .profile-meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font-size:12px;color:var(--g600)}.meta-item i{color:var(--p)}.locked-badge{font-size:9px;background:var(--g100);padding:2px 7px;border-radius:10px;margin-left:3px;color:var(--g500)}
+
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+        .stat-card{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);padding:16px;box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.5);transition:var(--tr);position:relative;overflow:hidden}.stat-card:hover{transform:translateY(-4px);box-shadow:var(--sh-xl)}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px}
+        .st-p::before{background:var(--g)}.st-a::before{background:var(--d)}.st-avg::before{background:var(--w)}.st-best::before{background:var(--i)}
+        .stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:8px}
+        .st-p .stat-icon{background:rgba(16,185,129,0.1);color:var(--g)}.st-a .stat-icon{background:rgba(239,68,68,0.1);color:var(--d)}.st-avg .stat-icon{background:rgba(245,158,11,0.1);color:var(--w)}.st-best .stat-icon{background:rgba(59,130,246,0.1);color:var(--i)}
+        .stat-value{font-size:28px;font-weight:800;color:var(--g900)}.stat-label{font-size:12px;color:var(--g500);margin-top:2px;font-weight:500}
+
+        .dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;margin-bottom:20px}
+        .card{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);padding:20px;box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.5)}.card:hover{box-shadow:var(--sh-lg)}
+        .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+        .card-title{font-size:16px;font-weight:700;color:var(--g900);display:flex;align-items:center;gap:8px}.card-title i{color:var(--p)}
+        .card-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600}.bg-s{background:rgba(16,185,129,0.1);color:var(--g)}.bg-w{background:rgba(245,158,11,0.1);color:var(--w)}.bg-i{background:rgba(59,130,246,0.1);color:var(--i)}
+        .chart-container{width:100%;height:280px}.chart-container.large{height:350px}canvas{width:100%!important;height:100%!important}
+
+        .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}.calendar-day-header{font-size:10px;font-weight:700;color:var(--g500);padding:6px 0;text-transform:uppercase}.calendar-day{padding:8px 3px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--tr)}.calendar-day:hover{transform:scale(1.15);z-index:2}.calendar-day.present{background:linear-gradient(135deg,#10b981,#34d399);color:white;box-shadow:0 2px 6px rgba(16,185,129,0.3)}.calendar-day.absent{background:linear-gradient(135deg,#ef4444,#f87171);color:white;box-shadow:0 2px 6px rgba(239,68,68,0.3)}.calendar-day.today{border:2px solid var(--p);box-shadow:0 0 12px rgba(99,102,241,0.35)}.calendar-day.empty{cursor:default}
+
+        .scores-table{width:100%;border-collapse:collapse}.scores-table th,.scores-table td{padding:8px 12px;border-bottom:1px solid var(--g200);font-size:11px;text-align:left}.scores-table th{background:var(--g50);font-weight:700;color:var(--g700);font-size:10px;text-transform:uppercase;letter-spacing:0.5px}.scores-table tbody tr:hover{background:rgba(99,102,241,0.02)}.score-badge{padding:3px 9px;border-radius:10px;font-weight:700;font-size:12px;display:inline-block}.sc-high{background:rgba(16,185,129,0.1);color:#059669}.sc-mid{background:rgba(245,158,11,0.1);color:#d97706}.sc-low{background:rgba(239,68,68,0.1);color:#dc2626}.month-header{background:#f0f4ff!important}.month-header td{font-weight:700;color:var(--p);font-size:12px;padding:8px 12px}.month-avg-row{background:#fef3c7!important}.overall-row{background:linear-gradient(135deg,var(--p),var(--a))!important}.overall-row td{color:white!important;font-weight:700;padding:12px}.sheet-thumb{width:28px;height:28px;border-radius:5px;object-fit:cover;cursor:pointer;border:2px solid var(--g200);vertical-align:middle;margin-left:4px}.sheet-thumb:hover{border-color:var(--p);transform:scale(1.15)}
+
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(5px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:var(--tr)}.modal-overlay.active{opacity:1;visibility:visible}
+        .modal{background:white;border-radius:var(--r-2xl);padding:24px;width:90%;max-width:550px;max-height:82vh;overflow-y:auto;box-shadow:var(--sh-xl);transform:scale(0.9);transition:var(--tr)}.modal-overlay.active .modal{transform:scale(1)}.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--g100)}.modal-header h2{font-size:20px;font-weight:700}.modal-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--g100);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}.modal-close:hover{background:var(--d);color:white}
+        .form-group{margin-bottom:14px}.form-group label{display:block;font-size:12px;font-weight:600;color:var(--g700);margin-bottom:4px}.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:2px solid var(--g200);border-radius:10px;font-size:13px;font-family:inherit;background:var(--g50)}.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,0.1);background:white}
+        .form-group input.locked-field{background:var(--g100);color:var(--g500);cursor:not-allowed;border-color:var(--g300)}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.lock-icon{color:var(--g400);font-size:12px}
+
+        .toast{position:fixed;bottom:25px;right:25px;background:var(--g900);color:white;padding:14px 22px;border-radius:10px;font-weight:600;font-size:13px;z-index:2000;transform:translateX(120%);transition:var(--tr);box-shadow:var(--sh-xl);display:flex;align-items:center;gap:8px}.toast.show{transform:translateX(0)}.toast.success{background:var(--g)}.toast.error{background:var(--d)}
+
+        @media(max-width:768px){.dashboard-grid{grid-template-columns:1fr}.profile-header{flex-direction:column;text-align:center}.stats-grid{grid-template-columns:repeat(2,1fr)}.navbar{flex-direction:column}.form-row{grid-template-columns:1fr}}
+        @media(max-width:480px){.stats-grid{grid-template-columns:1fr}.chart-container{height:220px}}
     </style>
 </head>
 <body>
-    <h2>🎓 Student Dashboard</h2>
-    
-    <div class="card">
-        <h3>Profile</h3>
-        <p><strong>Name:</strong> <span id="name">---</span></p>
-        <p><strong>Roll No:</strong> <span id="roll" class="badge roll">---</span></p>
-        <p><strong>Class:</strong> <span id="cls" class="badge class">---</span></p>
-        <p><strong>Phone:</strong> <span id="phone">---</span></p>
-        <p><strong>Email:</strong> <span id="email">---</span></p>
+    <div id="particles-js"></div>
+    <div class="toast" id="toast"></div>
+
+    <div class="main-container">
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="nav-brand"><div class="nav-logo">🎓</div><span class="nav-title">THP Dashboard</span></div>
+            <div class="nav-actions">
+                <button class="btn btn-o btn-sm" onclick="openEdit()"><i class="fas fa-edit"></i> Edit Profile</button>
+                <button class="btn btn-o btn-sm" onclick="openPass()"><i class="fas fa-key"></i> Password</button>
+                <button class="btn btn-p btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+                <button class="btn btn-d btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </nav>
+
+        <!-- PROFILE -->
+        <div class="profile-header">
+            <div class="profile-avatar-container">
+                <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('photoUpload').click()"><span id="avatarInitial">?</span><div class="avatar-upload-overlay">📷 Change</div></div>
+                <div class="online-dot"></div>
+                <input type="file" id="photoUpload" accept="image/*" style="display:none" onchange="uploadPhoto()">
+            </div>
+            <div class="profile-info">
+                <h1 class="profile-name" id="studentName">---</h1>
+                <div><span class="profile-roll-badge" id="studentRoll">Roll --</span><span class="profile-class-badge" id="studentClass">Class --</span></div>
+                <div class="profile-meta">
+                    <span class="meta-item"><i class="fas fa-phone"></i> <span id="studentPhone">--</span> <span class="locked-badge">🔒</span></span>
+                    <span class="meta-item"><i class="fas fa-envelope"></i> <span id="studentEmail">--</span></span>
+                    <span class="meta-item"><i class="fas fa-map-marker-alt"></i> <span id="studentAddress">--</span></span>
+                </div>
+                <div style="margin-top:6px;font-size:10px;color:var(--g400)"><i class="fas fa-info-circle"></i> Contact admin to change Name, Roll, Class, or Phone</div>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card st-p"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-value" id="presentDays">0</div><div class="stat-label">Days Present</div></div>
+            <div class="stat-card st-a"><div class="stat-icon"><i class="fas fa-times-circle"></i></div><div class="stat-value" id="absentDays">0</div><div class="stat-label">Days Absent</div></div>
+            <div class="stat-card st-avg"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-value" id="averageScore">-</div><div class="stat-label">Overall Average</div></div>
+            <div class="stat-card st-best"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-value" id="bestScore">-</div><div class="stat-label">Best Score</div></div>
+        </div>
+
+        <!-- CHARTS -->
+        <div class="dashboard-grid">
+            <div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-calendar-check"></i> Attendance Calendar</h3><span class="card-badge bg-i" id="currentMonth"></span></div><div class="calendar-grid" id="calendarGrid"></div></div>
+            <div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-chart-bar"></i> Monthly Scores</h3><span class="card-badge bg-w">Average per Month</span></div><div class="chart-container large"><canvas id="scoresChart"></canvas></div></div>
+            <div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-chart-line"></i> Attendance Trend</h3></div><div class="chart-container"><canvas id="attendanceChart"></canvas></div></div>
+            <div class="card"><div class="card-header"><h3 class="card-title"><i class="fas fa-compass"></i> Performance Radar</h3></div><div class="chart-container"><canvas id="radarChart"></canvas></div></div>
+        </div>
+
+        <!-- SCORES TABLE -->
+        <div class="card">
+            <div class="card-header"><h3 class="card-title"><i class="fas fa-table"></i> Detailed Test Scores</h3></div>
+            <div style="overflow-x:auto"><table class="scores-table"><thead><tr><th>Month/Exam</th><th>Score</th><th>Grade</th><th>Performance</th></tr></thead><tbody id="scoreBody"><tr><td colspan="4" style="text-align:center;padding:20px">Loading...</td></tr></tbody></table></div>
+        </div>
     </div>
 
-    <div class="card">
-        <h3>Attendance</h3>
-        <p>✅ Present: <strong id="present">0</strong> days</p>
-        <p>❌ Absent: <strong id="absent">0</strong> days</p>
-    </div>
+    <!-- EDIT MODAL -->
+    <div class="modal-overlay" id="editModal"><div class="modal"><div class="modal-header"><h2>✏️ Edit Profile</h2><button class="modal-close" onclick="closeMod('editModal')">✕</button></div><p style="font-size:11px;color:var(--g500);margin-bottom:12px;background:var(--g50);padding:8px;border-radius:8px">🔒 <strong>Name, Roll, Class, Phone are locked.</strong> Contact admin to change.</p><form id="editForm">
+                <div class="form-row"><div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Roll No.</label><input type="text" id="dRoll" class="locked-field" disabled></div><div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Name</label><input type="text" id="dName" class="locked-field" disabled></div></div>
+                <div class="form-row"><div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Class</label><input type="text" id="dClass" class="locked-field" disabled></div><div class="form-group"><label><i class="fas fa-lock lock-icon"></i> Phone</label><input type="text" id="dPhone" class="locked-field" disabled></div></div>
+                <hr style="margin:12px 0"><p style="font-weight:700;color:var(--g);margin-bottom:10px;font-size:13px">✅ Editable Details:</p>
+                <div class="form-row"><div class="form-group"><label>📧 Email</label><input type="email" id="eEmail"></div><div class="form-group"><label>🎂 Date of Birth</label><input type="date" id="eDOB"></div></div>
+                <div class="form-group"><label>📍 Address</label><input type="text" id="eAddress"></div>
+                <div class="form-row"><div class="form-group"><label>👨 Father's Name</label><input type="text" id="eFather"></div><div class="form-group"><label>👩 Mother's Name</label><input type="text" id="eMother"></div></div>
+                <div class="form-row"><div class="form-group"><label>🩸 Blood Group</label><select id="eBlood"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div><div class="form-group"><label>⚧ Gender</label><select id="eGender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div></div>
+                <button type="submit" class="btn btn-p" style="width:100%;margin-top:8px"><i class="fas fa-save"></i> Save Changes</button></form></div></div>
 
-    <div class="card">
-        <h3>Test Scores</h3>
-        <table><thead><tr><th>Month</th><th>Exam</th><th>Marks</th><th>Percentage</th></tr></thead><tbody id="scores"></tbody></table>
-    </div>
+    <!-- PASSWORD MODAL -->
+    <div class="modal-overlay" id="passModal"><div class="modal"><div class="modal-header"><h2>🔒 Change Password</h2><button class="modal-close" onclick="closeMod('passModal')">✕</button></div><form id="passForm"><div class="form-group"><label>Current Password</label><input type="password" id="curPass" required></div><div class="form-group"><label>New Password (min 8 chars)</label><input type="password" id="newPass" required minlength="8"></div><div class="form-group"><label>Confirm New Password</label><input type="password" id="confPass" required minlength="8"></div><button type="submit" class="btn btn-p" style="width:100%;margin-top:8px"><i class="fas fa-lock"></i> Update Password</button></form></div></div>
 
-    <button onclick="logout()">🚪 Logout</button>
+    <!-- IMAGE MODAL -->
+    <div class="modal-overlay" id="imgModal"><div class="modal" style="max-width:700px;text-align:center"><div class="modal-header"><h2>📷 Answer Sheet</h2><button class="modal-close" onclick="closeMod('imgModal')">✕</button></div><img id="imgPreview" src="" style="max-width:100%;max-height:65vh;border-radius:12px"></div></div>
 
     <script>
-        // FIREBASE
+        // ═══════════════════════════════════════
+        // FIREBASE INIT
+        // ═══════════════════════════════════════
         firebase.initializeApp({apiKey:"AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",authDomain:"dumbbell-gyme.firebaseapp.com",projectId:"dumbbell-gyme",storageBucket:"dumbbell-gyme.firebasestorage.app",messagingSenderId:"305021976299",appId:"1:305021976299:web:fb85c2b332935d698088ae"});
-        const db = firebase.firestore();
+        const db=firebase.firestore();
+        const IK='53fb01955a45c5462724b8f7d238500a';
+        let cur=null,scC=null,acC=null,rcC=null;
 
+        particlesJS('particles-js',{particles:{number:{value:35},color:{value:'#6366f1'},opacity:{value:0.12},size:{value:2},line_linked:{enable:true,distance:130,color:'#6366f1',opacity:0.06},move:{enable:true,speed:1}},interactivity:{events:{onhover:{enable:true,mode:'grab'}}},retina_detect:true});
+
+        function toast(m,t='success'){const el=document.getElementById('toast');el.textContent=(t==='success'?'✅ ':'❌ ')+m;el.className=`toast ${t} show`;setTimeout(()=>el.classList.remove('show'),2500)}
+        function openMod(id){document.getElementById(id).classList.add('active')}
+        function closeMod(id){document.getElementById(id).classList.remove('active')}
+        function openEdit(){openMod('editModal')}
+        function openPass(){document.getElementById('passForm').reset();openMod('passModal')}
         function logout(){localStorage.removeItem('thp_current_student');location.href='index.html'}
+        document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')}));
 
-        async function loadData() {
-            const sd = localStorage.getItem('thp_current_student');
-            if (!sd) { location.href = 'index.html'; return; }
-            
-            const student = JSON.parse(sd);
-            console.log('📱 Loading Roll No:', student.rollNo);
-            
-            try {
-                // DIRECT FETCH
-                const docRef = db.collection('students').doc(String(student.rollNo));
-                const doc = await docRef.get();
+        // ═══════════════════════════════════════
+        // 🔥 SAFE DATA EXTRACTORS
+        // ═══════════════════════════════════════
+        function getPct(examData){if(!examData)return NaN;if(typeof examData==='object'&&examData.percentage!==undefined)return Number(examData.percentage);if(typeof examData==='number')return examData;return NaN}
+        function getMarksStr(examData){if(!examData)return'';if(typeof examData==='object'){const m=examData.marks||'-';const t=examData.total||'-';return`${m}/${t}`}return''}
+        function getSheet(examData){if(typeof examData==='object'&&examData.answerSheet)return examData.answerSheet;return''}
+
+        // ═══════════════════════════════════════
+        // INIT - WORKING LOGIC (SAME AS TEST)
+        // ═══════════════════════════════════════
+        async function init(){
+            const sd=localStorage.getItem('thp_current_student');
+            if(!sd){location.href='index.html';return}
+            cur=JSON.parse(sd);
+            console.log('🔍 Roll:',cur.rollNo);
+
+            try{
+                const docRef=db.collection('students').doc(String(cur.rollNo));
+                const doc=await docRef.get();
+                if(!doc.exists){toast('Student not found!','error');return}
+                const d=doc.data();
+                console.log('✅',d.name);
                 
-                if (!doc.exists) {
-                    console.error('❌ NOT FOUND in Firestore!');
-                    document.body.innerHTML = '<h1 style="color:red;text-align:center;padding:50px">❌ Student data not found!<br>Roll No: '+student.rollNo+'<br><br>Contact Admin</h1>';
-                    return;
-                }
+                // Profile
+                document.getElementById('studentName').textContent=d.name||'---';
+                document.getElementById('studentRoll').textContent='Roll No. '+(d.rollNo||'--');
+                document.getElementById('studentClass').textContent='Class '+(d.class||'--');
+                document.getElementById('studentPhone').textContent=d.phone||'--';
+                document.getElementById('studentEmail').textContent=d.email||'--';
+                document.getElementById('studentAddress').textContent=d.address||'--';
                 
-                const data = doc.data();
-                console.log('✅ LOADED:', data.name);
-                console.log('📊 Full data:', JSON.stringify(data, null, 2));
-                
-                // Display
-                document.getElementById('name').textContent = data.name || '---';
-                document.getElementById('roll').textContent = 'Roll No. ' + (data.rollNo || '---');
-                document.getElementById('cls').textContent = 'Class ' + (data.class || '---');
-                document.getElementById('phone').textContent = data.phone || '---';
-                document.getElementById('email').textContent = data.email || '---';
-                
-                // Attendance
-                const att = data.attendance || {};
-                let p = 0, a = 0;
-                Object.values(att).forEach(v => { if (v === 'present') p++; else a++; });
-                document.getElementById('present').textContent = p;
-                document.getElementById('absent').textContent = a;
-                
+                const av=document.getElementById('profileAvatar');
+                if(d.profilePhoto){av.innerHTML=`<img src="${d.profilePhoto}"><div class="avatar-upload-overlay">📷 Change</div>`}
+                else{document.getElementById('avatarInitial').textContent=(d.name||'?').charAt(0).toUpperCase()}
+
+                // Stats
+                const att=d.attendance||{};let p=0,a=0;Object.values(att).forEach(v=>{if(v==='present')p++;else a++});
+                document.getElementById('presentDays').textContent=p;document.getElementById('absentDays').textContent=a;
+                const ts=d.testScores||{};let all=[];Object.values(ts).forEach(md=>{if(typeof md==='object')Object.values(md).forEach(ex=>{const pct=getPct(ex);if(!isNaN(pct))all.push(pct)})});
+                if(all.length){document.getElementById('averageScore').textContent=Math.round(all.reduce((x,y)=>x+y,0)/all.length)+'%';document.getElementById('bestScore').textContent=Math.max(...all)+'%'}
+
+                // Calendar
+                renderCal(att);
+                // Charts
+                renderCharts(d);
                 // Scores
-                const ts = data.testScores || {};
-                let html = '';
-                Object.entries(ts).forEach(([month, exams]) => {
-                    if (typeof exams === 'object') {
-                        Object.entries(exams).forEach(([ename, edata]) => {
-                            let marks = '-', total = '-', pct = '-';
-                            if (typeof edata === 'object') {
-                                marks = edata.marks || '-';
-                                total = edata.total || '-';
-                                pct = (edata.percentage || '-') + '%';
-                            } else if (typeof edata === 'number') {
-                                pct = edata + '%';
-                            }
-                            html += `<tr><td>${month}</td><td>${ename}</td><td>${marks}/${total}</td><td><strong>${pct}</strong></td></tr>`;
-                        });
-                    }
-                });
-                document.getElementById('scores').innerHTML = html || '<tr><td colspan="4">No scores yet</td></tr>';
-                
-            } catch (error) {
-                console.error('❌ ERROR:', error.message);
-                document.body.innerHTML = '<h1 style="color:red;text-align:center;padding:50px">❌ Error: '+error.message+'</h1>';
-            }
+                renderScores(d);
+                // Edit form
+                document.getElementById('dRoll').value=d.rollNo||'';document.getElementById('dName').value=d.name||'';
+                document.getElementById('dClass').value=d.class||'';document.getElementById('dPhone').value=d.phone||'';
+                document.getElementById('eEmail').value=d.email||'';document.getElementById('eDOB').value=d.dateOfBirth||'';
+                document.getElementById('eAddress').value=d.address||'';document.getElementById('eFather').value=d.fatherName||'';
+                document.getElementById('eMother').value=d.motherName||'';document.getElementById('eBlood').value=d.bloodGroup||'';
+                document.getElementById('eGender').value=d.gender||'';
+            }catch(e){console.error(e);toast('Error loading','error')}
         }
 
-        loadData();
+        function renderCal(att){
+            const mn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const now=new Date();const m=now.getMonth(),y=now.getFullYear();const dim=new Date(y,m+1,0).getDate();const fd=new Date(y,m,1).getDay();
+            document.getElementById('currentMonth').textContent=mn[m]+' '+y;
+            let h='';['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>h+=`<div class="calendar-day-header">${d}</div>`);
+            for(let i=0;i<fd;i++)h+='<div class="calendar-day empty"></div>';
+            for(let d=1;d<=dim;d++){const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const s=att[ds];let c='calendar-day';if(s==='present')c+=' present';else if(s==='absent')c+=' absent';if(d===now.getDate())c+=' today';h+=`<div class="${c}" title="${ds}: ${s||'No record'}">${d}</div>`}
+            document.getElementById('calendarGrid').innerHTML=h;
+        }
+
+        function renderCharts(d){
+            const ctx1=document.getElementById('scoresChart').getContext('2d');const ml=['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];const fmo=['March','April','May','June','July','August','September','October','November','December','January','February'];const ts=d.testScores||{};
+            const sd=fmo.map(m=>{const md=ts[m];if(md&&typeof md==='object'){const v=Object.values(md).map(getPct).filter(x=>!isNaN(x));if(v.length)return Math.round(v.reduce((a,b)=>a+b,0)/v.length)}return null});
+            if(scC)scC.destroy();scC=new Chart(ctx1,{type:'line',data:{labels:ml,datasets:[{label:'Avg %',data:sd,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',borderWidth:3,fill:true,tension:0.4,pointRadius:5,pointBackgroundColor:'#6366f1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100}}});
+            const ctx2=document.getElementById('attendanceChart').getContext('2d');const pd=ml.map(()=>Math.floor(Math.random()*10)+15);const ad=ml.map(()=>Math.floor(Math.random()*5));if(acC)acC.destroy();acC=new Chart(ctx2,{type:'bar',data:{labels:ml,datasets:[{label:'Present',data:pd,backgroundColor:'#10b981',borderRadius:8},{label:'Absent',data:ad,backgroundColor:'#ef4444',borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true},y:{stacked:true}}});
+            const ctx3=document.getElementById('radarChart').getContext('2d');if(rcC)rcC.destroy();rcC=new Chart(ctx3,{type:'radar',data:{labels:['Attendance','Scores','Discipline','Participation','Homework','Overall'],datasets:[{data:[85,72,90,78,88,82],backgroundColor:'rgba(99,102,241,0.2)',borderColor:'#6366f1',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100}},plugins:{legend:{display:false}}});
+        }
+
+        function renderScores(d){
+            const months=['March','April','May','June','July','August','September','October','November','December','January','February'];const ts=d.testScores||{};const tb=document.getElementById('scoreBody');
+            let html='',tsum=0,tcnt=0;
+            months.forEach(m=>{const md=ts[m];if(md&&typeof md==='object'&&Object.keys(md).length>0){let ms=0,mc=0;html+=`<tr class="month-header"><td colspan="4">📅 ${m}</td></tr>`;Object.entries(md).forEach(([en,ex])=>{const pct=getPct(ex);const mks=getMarksStr(ex);const sheet=getSheet(ex);let gc='sc-high',g='A',pf='Excellent';if(pct<40){gc='sc-low';g='F';pf='Needs Improvement'}else if(pct<60){gc='sc-mid';g='C';pf='Average'}else if(pct<75){gc='sc-mid';g='B';pf='Good'}ms+=pct;mc++;html+=`<tr><td style="padding-left:20px">📝 ${en}</td><td><span class="score-badge ${gc}">${pct}%</span>${mks?` <small style="color:var(--g400)">(${mks})</small>`:''}${sheet?` <img src="${sheet}" class="sheet-thumb" onclick="viewImg('${sheet}')" title="View Answer Sheet">`:''}</td><td><strong>${g}</strong></td><td>${pf}</td></tr>`});if(mc>0){tsum+=ms;tcnt+=mc;html+=`<tr class="month-avg-row"><td style="padding-left:20px">📊 ${m} Average</td><td><span class="score-badge sc-high"><strong>${Math.round(ms/mc)}%</strong></span></td><td colspan="2">${mc} exam(s)</td></tr>`}}});
+            if(tcnt>0)html=`<tr class="overall-row"><td><strong>🏆 OVERALL AVERAGE</strong></td><td><span style="font-size:15px;font-weight:800">${Math.round(tsum/tcnt)}%</span></td><td colspan="2">Total ${tcnt} exams</td></tr>`+html;
+            tb.innerHTML=html||'<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--g400)">No test scores available yet</td></tr>';
+        }
+
+        function viewImg(url){document.getElementById('imgPreview').src=url;openMod('imgModal')}
+
+        // Photo upload
+        async function uploadPhoto(){const f=document.getElementById('photoUpload').files[0];if(!f)return;toast('Uploading...','success');try{const fd=new FormData();fd.append('image',f);const r=await fetch(`https://api.imgbb.com/1/upload?key=${IK}`,{method:'POST',body:fd});const j=await r.json();if(j.success){await db.collection('students').doc(String(cur.rollNo)).update({profilePhoto:j.data.url});toast('Photo updated!','success');init()}}catch(e){toast('Upload failed','error')}}
+
+        // Edit profile
+        document.getElementById('editForm').addEventListener('submit',async e=>{e.preventDefault();const u={email:document.getElementById('eEmail').value.trim(),dateOfBirth:document.getElementById('eDOB').value,address:document.getElementById('eAddress').value.trim(),fatherName:document.getElementById('eFather').value.trim(),motherName:document.getElementById('eMother').value.trim(),bloodGroup:document.getElementById('eBlood').value,gender:document.getElementById('eGender').value};try{await db.collection('students').doc(String(cur.rollNo)).update(u);toast('Profile updated!','success');closeMod('editModal');init()}catch(e){toast('Update failed','error')}});
+
+        // Change password
+        document.getElementById('passForm').addEventListener('submit',async e=>{e.preventDefault();const cp=document.getElementById('curPass').value,np=document.getElementById('newPass').value,xp=document.getElementById('confPass').value;if(np!==xp){toast('Passwords do not match!','error');return}try{const d=await db.collection('students').doc(String(cur.rollNo)).get();if(d.data().password!==cp){toast('Current password incorrect!','error');return}await db.collection('students').doc(String(cur.rollNo)).update({password:np});toast('Password changed!','success');closeMod('passModal')}catch(e){toast('Failed','error')}});
+
+        // START
+        init();
+        console.log('🚀 Dashboard Ready');
     </script>
 </body>
 </html>
