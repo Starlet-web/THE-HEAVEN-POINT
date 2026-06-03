@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Portal — THP Management</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --p: #6366f1; --pd: #4f46e5; --pl: #a5b4fc;
+            --s: #f43f5e; --a: #8b5cf6; --g: #10b981;
+            --w: #f59e0b; --d: #ef4444; --i: #3b82f6;
+            --dk: #0f172a; --lt: #f8fafc; --wt: #ffffff;
+            --g50: #f9fafb; --g100: #f3f4f6; --g200: #e5e7eb;
+            --g300: #d1d5db; --g400: #9ca3af; --g500: #6b7280;
+            --g600: #4b5563; --g700: #374151; --g800: #1f2937; --g900: #111827;
+            --glass: rgba(255,255,255,0.94);
+            --sh-sm: 0 1px 2px rgba(0,0,0,0.04); --sh: 0 4px 6px rgba(0,0,0,0.05);
+            --sh-md: 0 10px 25px rgba(0,0,0,0.08); --sh-lg: 0 20px 50px rgba(0,0,0,0.12);
+            --sh-xl: 0 30px 60px rgba(0,0,0,0.18);
+            --r-sm: 8px; --r: 12px; --r-lg: 16px; --r-xl: 20px; --r-2xl: 24px;
+            --tr: all 0.25s cubic-bezier(0.4,0,0.2,1);
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Poppins',sans-serif;
+            background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 25%,#f0fdfa 50%,#ecfeff 75%,#f0f9ff 100%);
+            min-height:100vh;overflow-x:hidden;color:var(--g800);
+        }
+        ::-webkit-scrollbar{width:5px;height:5px}
+        ::-webkit-scrollbar-track{background:var(--g100);border-radius:10px}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#10b981,#059669);border-radius:10px}
+        #particles-js{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+        .main{position:relative;z-index:1;max-width:1500px;margin:0 auto;padding:14px}
+
+        .topbar{
+            background:var(--glass);backdrop-filter:blur(20px);
+            border-radius:var(--r-2xl);padding:14px 22px;margin-bottom:14px;
+            display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+            box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,0.5);
+        }
+        .tb-brand{display:flex;align-items:center;gap:10px}
+        .tb-logo{width:42px;height:42px;background:linear-gradient(135deg,#10b981,#059669);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 25px rgba(16,185,129,0.35)}
+        .tb-title{font-size:19px;font-weight:800;background:linear-gradient(135deg,#10b981,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .tb-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+        .btn{padding:9px 16px;border-radius:11px;font-weight:600;font-size:12px;cursor:pointer;transition:var(--tr);border:none;display:flex;align-items:center;gap:6px;font-family:inherit;white-space:nowrap}
+        .btn-p{background:linear-gradient(135deg,#10b981,#059669);color:white;box-shadow:0 4px 15px rgba(16,185,129,0.3)}
+        .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(16,185,129,0.4)}
+        .btn-o{background:white;color:#059669;border:2px solid:#6ee7b7}
+        .btn-o:hover{background:#10b981;color:white}
+        .btn-d{background:linear-gradient(135deg,var(--d),#f87171);color:white}
+        .btn-w{background:linear-gradient(135deg,var(--w),#fbbf24);color:white}
+        .btn-i{background:linear-gradient(135deg,var(--i),#60a5fa);color:white}
+        .btn-xs{padding:4px 8px;font-size:10px;border-radius:7px}
+        .btn-sm{padding:6px 11px;font-size:11px;border-radius:9px}
+
+        .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:14px}
+        .stat-card{
+            background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);padding:15px;
+            box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.5);transition:var(--tr);cursor:pointer
+        }
+        .stat-card:hover{transform:translateY(-3px);box-shadow:var(--sh-xl)}
+        .stat-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:7px}
+        .st-total .stat-ico{background:rgba(16,185,129,0.1);color:#10b981}
+        .st-scores .stat-ico{background:rgba(99,102,241,0.1);color:var(--p)}
+        .st-avg .stat-ico{background:rgba(245,158,11,0.1);color:var(--w)}
+        .st-exams .stat-ico{background:rgba(59,130,246,0.1);color:var(--i)}
+        .stat-val{font-size:25px;font-weight:800;color:var(--g900);line-height:1}
+        .stat-lbl{font-size:10px;color:var(--g500);margin-top:2px;font-weight:500}
+
+        .card{
+            background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);
+            padding:18px;box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.5);margin-bottom:14px
+        }
+        .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+        .card-title{font-size:16px;font-weight:700;color:var(--g900)}
+
+        .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+        .search-inp{flex:1;min-width:170px;padding:9px 14px;border:2px solid var(--g200);border-radius:11px;font-size:12px;font-family:inherit;background:white}
+        .search-inp:focus{outline:none;border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,0.1)}
+        .filter-sel{padding:9px 14px;border:2px solid var(--g200);border-radius:11px;font-size:12px;font-family:inherit;background:white;cursor:pointer;min-width:120px}
+        .filter-sel:focus{outline:none;border-color:#10b981}
+        .inp-sm{padding:7px 10px;border:2px solid var(--g200);border-radius:8px;font-size:11px;font-family:inherit;width:70px;text-align:center;font-weight:600}
+        .inp-sm:focus{outline:none;border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,0.1)}
+
+        .table-wrap{overflow-x:auto;max-height:430px;overflow-y:auto;border-radius:var(--r)}
+        table{width:100%;border-collapse:collapse;min-width:800px}
+        thead{position:sticky;top:0;z-index:10}
+        th{background:linear-gradient(135deg,#10b981,#059669);color:white;padding:9px 7px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+        td{padding:7px;border-bottom:1px solid var(--g100);font-size:11px;white-space:nowrap}
+        tbody tr:hover{background:rgba(16,185,129,0.02)}
+        .badge{padding:3px 8px;border-radius:9px;font-size:10px;font-weight:700;display:inline-block}
+        .bg-g{background:rgba(16,185,129,0.1);color:#059669}
+        .bg-d{background:rgba(239,68,68,0.1);color:#dc2626}
+        .bg-w{background:rgba(245,158,11,0.1);color:#d97706}
+        .bg-p{background:rgba(139,92,246,0.1);color:#7c3aed}
+        .bg-r{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#7c2d12;font-weight:800}
+        .bg-i{background:rgba(59,130,246,0.1);color:#2563eb}
+
+        .modal-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(5px);
+            z-index:1000;display:flex;align-items:center;justify-content:center;
+            opacity:0;visibility:hidden;transition:var(--tr)
+        }
+        .modal-overlay.active{opacity:1;visibility:visible}
+        .modal{
+            background:white;border-radius:var(--r-2xl);padding:24px;
+            width:90%;max-width:700px;max-height:82vh;overflow-y:auto;
+            box-shadow:var(--sh-xl);transform:scale(0.9);transition:var(--tr)
+        }
+        .modal-overlay.active .modal{transform:scale(1)}
+        .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--g100)}
+        .modal-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--g100);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+        .modal-close:hover{background:var(--d);color:white}
+        .form-group{margin-bottom:11px}
+        .form-group label{display:block;font-size:10px;font-weight:700;color:var(--g700);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.3px}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 13px;border:2px solid var(--g200);border-radius:9px;font-size:12px;font-family:inherit;background:var(--g50)}
+        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,0.08);background:white}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+        .toast-ctr{position:fixed;top:18px;right:18px;z-index:2000;display:flex;flex-direction:column;gap:6px}
+        .toast{background:var(--g900);color:white;padding:11px 16px;border-radius:9px;font-weight:600;font-size:11px;box-shadow:var(--sh-xl);animation:slideIn 0.3s ease-out;display:flex;align-items:center;gap:7px;max-width:330px}
+        .toast.s{background:linear-gradient(135deg,#059669,#10b981)}
+        .toast.e{background:linear-gradient(135deg,#dc2626,#ef4444)}
+        @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+        .load-overlay{
+            position:fixed;inset:0;background:rgba(255,255,255,0.7);backdrop-filter:blur(3px);
+            z-index:3000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px
+        }
+        .spinner{width:42px;height:42px;border:4px solid var(--g200);border-top-color:#10b981;border-radius:50%;animation:spin 0.7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        .exam-tag{
+            display:inline-flex;align-items:center;gap:4px;
+            background:var(--g100);padding:3px 10px;border-radius:15px;
+            font-size:10px;font-weight:600;margin:2px;
+            cursor:pointer;transition:var(--tr)
+        }
+        .exam-tag:hover{background:var(--g200)}
+        .exam-tag.active{background:#10b981;color:white}
+        .exam-tag .delete-exam{font-size:14px;cursor:pointer;opacity:0.5;margin-left:2px}
+        .exam-tag .delete-exam:hover{opacity:1;color:var(--d)}
+
+        .avg-highlight{
+            background:linear-gradient(135deg,#fef3c7,#fde68a);
+            padding:3px 8px;border-radius:6px;font-weight:800;color:#7c2d12
+        }
+
+        @media(max-width:768px){
+            .stat-row{grid-template-columns:repeat(2,1fr)}
+            .topbar{flex-direction:column}
+            .form-row{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="load-overlay" id="loadOverlay"><div class="spinner"></div><p style="font-weight:700;color:var(--g700);">Loading Teacher Portal...</p></div>
+    <div class="toast-ctr" id="toastCtr"></div>
+
+    <div class="main">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="tb-brand"><div class="tb-logo">👨‍🏫</div><span class="tb-title">Teacher Portal</span></div>
+            <div class="tb-actions">
+                <button class="btn btn-i btn-sm" onclick="addNewExam()"><i class="fas fa-plus"></i> Add Exam</button>
+                <button class="btn btn-p btn-sm" onclick="saveAllScores()"><i class="fas fa-save"></i> Save All</button>
+                <button class="btn btn-w btn-sm" onclick="openBulkModal()"><i class="fas fa-upload"></i> Bulk Upload</button>
+                <button class="btn btn-o btn-sm" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> Analytics</button>
+                <button class="btn btn-d btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stat-row">
+            <div class="stat-card st-total"><div class="stat-ico"><i class="fas fa-users"></i></div><div class="stat-val" id="totStu">0</div><div class="stat-lbl">Total Students</div></div>
+            <div class="stat-card st-exams"><div class="stat-ico"><i class="fas fa-file-alt"></i></div><div class="stat-val" id="totExams">0</div><div class="stat-lbl">Exams This Month</div></div>
+            <div class="stat-card st-scores"><div class="stat-ico"><i class="fas fa-star"></i></div><div class="stat-val" id="totScores">0</div><div class="stat-lbl">Scores Entered</div></div>
+            <div class="stat-card st-avg"><div class="stat-ico"><i class="fas fa-chart-bar"></i></div><div class="stat-val" id="avgAll">0%</div><div class="stat-lbl">Overall Average</div></div>
+        </div>
+
+        <!-- SCORES TAB -->
+        <div id="tab-scores" class="tab-content">
+            <div class="card">
+                <div class="card-head">
+                    <h3 class="card-title"><i class="fas fa-edit" style="color:#10b981"></i> Score Entry</h3>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                        <select class="filter-sel" id="monthSel" onchange="onMonthChange()">
+                            <option value="">Select Month</option>
+                            <option value="March">March</option><option value="April">April</option>
+                            <option value="May">May</option><option value="June">June</option>
+                            <option value="July">July</option><option value="August">August</option>
+                            <option value="September">September</option><option value="October">October</option>
+                            <option value="November">November</option><option value="December">December</option>
+                            <option value="January">January</option><option value="February">February</option>
+                        </select>
+                        <select class="filter-sel" id="scoreClass" onchange="loadScoreTable()"><option value="">All Classes</option></select>
+                        <button class="btn btn-i btn-sm" onclick="addNewExam()"><i class="fas fa-plus"></i> New Exam</button>
+                    </div>
+                </div>
+                
+                <!-- Exam Tags -->
+                <div id="examTags" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;align-items:center">
+                    <span style="font-size:10px;color:var(--g500);font-weight:600">Exams:</span>
+                    <span id="noExamMsg" style="font-size:10px;color:var(--g400)">Add exams to start</span>
+                </div>
+                
+                <!-- Active Exam Name -->
+                <div style="margin-bottom:12px;padding:8px 14px;background:#ecfdf5;border-radius:10px;display:flex;align-items:center;gap:8px">
+                    <i class="fas fa-pen" style="color:#10b981"></i>
+                    <span style="font-weight:700;font-size:13px">Current Exam:</span>
+                    <span id="activeExamName" style="color:#059669;font-weight:600">--</span>
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" class="search-inp" id="scoreSearch" placeholder="🔍 Roll No / Name..." oninput="loadScoreTable()">
+                </div>
+                <div class="table-wrap">
+                    <table><thead><tr><th>Roll</th><th>Name</th><th>Class</th><th>Score (%)</th><th>Grade</th><th>All Exams Avg</th></tr></thead>
+                    <tbody id="scoreBody"><tr><td colspan="6" style="text-align:center;padding:30px">Select month & add exams</td></tr></tbody></table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANALYTICS TAB -->
+        <div id="tab-analytics" class="tab-content" style="display:none">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px">
+                <div class="card">
+                    <div class="card-head"><h3 class="card-title"><i class="fas fa-chart-bar" style="color:#10b981"></i> Exam-wise Comparison</h3><select class="filter-sel" id="analyticMonth" onchange="renderAnalytics()"><option value="all">All Months</option></select></div>
+                    <div style="height:280px"><canvas id="examCompChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3 class="card-title"><i class="fas fa-chart-line" style="color:#10b981"></i> Monthly Average Trend</h3><select class="filter-sel" id="trendClass" onchange="renderAnalytics()"><option value="all">All Classes</option></select></div>
+                    <div style="height:280px"><canvas id="trendChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3 class="card-title"><i class="fas fa-trophy" style="color:#f59e0b"></i> Top Performers</h3></div>
+                    <div id="topPerformers" style="max-height:250px;overflow-y:auto"></div>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h3 class="card-title"><i class="fas fa-exclamation-triangle" style="color:#ef4444"></i> Needs Attention</h3></div>
+                    <div id="needsAttention" style="max-height:250px;overflow-y:auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD EXAM MODAL -->
+    <div class="modal-overlay" id="examModal">
+        <div class="modal" style="max-width:450px">
+            <div class="modal-head"><h2>📝 Add New Exam</h2><button class="modal-close" onclick="closeMod('examModal')">✕</button></div>
+            <form id="examForm">
+                <div class="form-group"><label>Exam Name*</label><input type="text" id="examName" placeholder="e.g., UT-1, Half-Yearly, Final" required></div>
+                <div class="form-group"><label>Month*</label><select id="examMonth" required></select></div>
+                <div class="form-group"><label>Max Marks</label><input type="number" id="examMaxMarks" value="100" min="1"></div>
+                <button type="submit" class="btn btn-p" style="width:100%">Add Exam</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- BULK UPLOAD MODAL -->
+    <div class="modal-overlay" id="bulkModal">
+        <div class="modal">
+            <div class="modal-head"><h2>📋 Bulk Upload Scores</h2><button class="modal-close" onclick="closeMod('bulkModal')">✕</button></div>
+            <div class="form-group"><label>Month*</label><select id="bulkMonth"><option value="">Select</option></select></div>
+            <div class="form-group"><label>Exam Name*</label><input type="text" id="bulkExamName" placeholder="e.g., UT-1"></div>
+            <div class="form-group"><label>Paste CSV (rollNo,score)</label><textarea id="bulkCsv" rows="8" placeholder="1,85&#10;2,72&#10;3,90"></textarea></div>
+            <button class="btn btn-p" style="width:100%" onclick="bulkUpload()"><i class="fas fa-upload"></i> Upload</button>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════
+        // FIREBASE
+        // ═══════════════════════════════════════
+        const fc = {apiKey:"AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",authDomain:"dumbbell-gyme.firebaseapp.com",projectId:"dumbbell-gyme",storageBucket:"dumbbell-gyme.firebasestorage.app",messagingSenderId:"305021976299",appId:"1:305021976299:web:fb85c2b332935d698088ae"};
+        firebase.initializeApp(fc);
+        const db = firebase.firestore();
+
+        let allStu = [], curTab = 'scores', curMonth = '', activeExam = '', examList = {};
+        let examCompCtx, trendCtx;
+        const months = ['March','April','May','June','July','August','September','October','November','December','January','February'];
+
+        particlesJS('particles-js',{particles:{number:{value:35},color:{value:'#10b981'},opacity:{value:0.12},size:{value:2},line_linked:{enable:true,distance:140,color:'#10b981',opacity:0.06},move:{enable:true,speed:1}},interactivity:{events:{onhover:{enable:true,mode:'grab'}}},retina_detect:true});
+
+        function chkAuth(){if(!localStorage.getItem('thp_teacher')){location.href='index.html';return false}return true}
+        function toast(m,t='s'){const c=document.getElementById('toastCtr'),d=document.createElement('div');d.className=`toast ${t}`;d.innerHTML=`<span>${t==='s'?'✅':t==='e'?'❌':'ℹ️'}</span> ${m}`;c.appendChild(d);setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(120%)';setTimeout(()=>d.remove(),300)},2800)}
+        function openMod(id){document.getElementById(id).classList.add('active')}
+        function closeMod(id){document.getElementById(id).classList.remove('active')}
+        document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')}));
+        document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>m.classList.remove('active'))});
+
+        function switchTab(t){
+            curTab=t;
+            document.querySelectorAll('.tab-content').forEach(x=>x.style.display='none');
+            document.getElementById('tab-'+t).style.display='block';
+            if(t==='analytics')renderAnalytics();
+            if(t==='scores')loadScoreTable();
+        }
+
+        // ═══════════════════════════════════════
+        // LOAD
+        // ═══════════════════════════════════════
+        async function loadAll(){
+            try{
+                const snap=await db.collection('students').orderBy('rollNo','asc').get();
+                allStu=[];snap.forEach(d=>allStu.push({id:d.id,...d.data()}));
+                updateStats();populateFilters();
+                document.getElementById('loadOverlay').style.display='none';
+            }catch(e){toast('Failed','e');document.getElementById('loadOverlay').style.display='none'}
+        }
+
+        function populateFilters(){
+            const cls=[...new Set(allStu.map(s=>s.class))].filter(c=>c!=='N/A').sort((a,b)=>parseInt(a)-parseInt(b));
+            if(allStu.some(s=>s.class==='L.K.C.'))cls.push('L.K.C.');
+            const opts=cls.map(c=>`<option value="${c}">Class ${c}</option>`).join('');
+            ['scoreClass','trendClass'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<option value="">All</option>'+opts});
+            const mopts=months.map(m=>`<option value="${m}">${m}</option>`).join('');
+            ['bulkMonth','examMonth','analyticMonth'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<option value="">Select</option>'+mopts});
+            const am=document.getElementById('analyticMonth');
+            if(am)am.innerHTML='<option value="all">All Months</option>'+mopts;
+        }
+
+        function updateStats(){
+            document.getElementById('totStu').textContent=allStu.length;
+            let totalScores=0,sumScores=0;
+            allStu.forEach(s=>{
+                if(s.testScores){
+                    Object.values(s.testScores).forEach(monthData=>{
+                        if(typeof monthData==='object'){
+                            Object.values(monthData).forEach(sc=>{totalScores++;sumScores+=Number(sc)});
+                        }
+                    });
+                }
+            });
+            document.getElementById('totScores').textContent=totalScores;
+            document.getElementById('avgAll').textContent=totalScores>0?Math.round(sumScores/totalScores)+'%':'0%';
+        }
+
+        // ═══════════════════════════════════════
+        // EXAM MANAGEMENT
+        // ═══════════════════════════════════════
+        function onMonthChange(){
+            curMonth=document.getElementById('monthSel').value;
+            if(!curMonth){resetExamUI();return}
+            loadExamsForMonth();
+        }
+
+        function loadExamsForMonth(){
+            if(!curMonth)return;
+            // Collect all exam names from all students for this month
+            examList={};
+            allStu.forEach(s=>{
+                if(s.testScores&&s.testScores[curMonth]&&typeof s.testScores[curMonth]==='object'){
+                    Object.keys(s.testScores[curMonth]).forEach(examName=>{
+                        examList[examName]=true;
+                    });
+                }
+            });
+            renderExamTags();
+            if(Object.keys(examList).length>0){
+                activeExam=Object.keys(examList)[0];
+            }else{
+                activeExam='';
+            }
+            document.getElementById('activeExamName').textContent=activeExam||'No exams yet';
+            document.getElementById('totExams').textContent=Object.keys(examList).length;
+            loadScoreTable();
+        }
+
+        function renderExamTags(){
+            const container=document.getElementById('examTags');
+            const exams=Object.keys(examList);
+            document.getElementById('noExamMsg').style.display=exams.length?'none':'inline';
+            
+            container.innerHTML='<span style="font-size:10px;color:var(--g500);font-weight:600">Exams:</span>'+
+            '<span id="noExamMsg" style="font-size:10px;color:var(--g400);display:'+(exams.length?'none':'inline')+'">Add exams to start</span>'+
+            exams.map(e=>`
+                <span class="exam-tag ${e===activeExam?'active':''}" onclick="switchExam('${e}')">
+                    📝 ${e}
+                    <span class="delete-exam" onclick="event.stopPropagation();deleteExam('${e}')">×</span>
+                </span>
+            `).join('');
+        }
+
+        function switchExam(examName){
+            activeExam=examName;
+            document.getElementById('activeExamName').textContent=examName;
+            renderExamTags();
+            loadScoreTable();
+        }
+
+        function deleteExam(examName){
+            if(!confirm(`Delete all scores for "${examName}" in ${curMonth}?`))return;
+            const batch=db.batch();
+            allStu.forEach(s=>{
+                if(s.testScores&&s.testScores[curMonth]&&s.testScores[curMonth][examName]!==undefined){
+                    batch.update(db.collection('students').doc(s.id),{
+                        [`testScores.${curMonth}.${examName}`]:firebase.firestore.FieldValue.delete(),
+                        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+            });
+            batch.commit().then(()=>{
+                delete examList[examName];
+                if(activeExam===examName)activeExam=Object.keys(examList)[0]||'';
+                document.getElementById('activeExamName').textContent=activeExam||'No exams yet';
+                document.getElementById('totExams').textContent=Object.keys(examList).length;
+                toast(`Exam "${examName}" deleted`,'s');
+                loadAll();
+                setTimeout(()=>{onMonthChange();},500);
+            }).catch(e=>toast('Failed','e'));
+        }
+
+        function resetExamUI(){
+            examList={};activeExam='';
+            document.getElementById('activeExamName').textContent='--';
+            document.getElementById('totExams').textContent='0';
+            renderExamTags();
+            document.getElementById('scoreBody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px">Select month & add exams</td></tr>';
+        }
+
+        function addNewExam(){
+            if(!curMonth){toast('Select month first!','e');return}
+            document.getElementById('examMonth').value=curMonth;
+            document.getElementById('examName').value='';
+            openMod('examModal');
+        }
+
+        document.getElementById('examForm').addEventListener('submit',function(e){
+            e.preventDefault();
+            const name=document.getElementById('examName').value.trim();
+            const month=document.getElementById('examMonth').value;
+            if(!name||!month){toast('Fill all fields','e');return}
+            if(examList[name]){toast('Exam already exists this month!','e');return}
+            
+            examList[name]=true;
+            if(!activeExam)activeExam=name;
+            document.getElementById('activeExamName').textContent=activeExam;
+            document.getElementById('totExams').textContent=Object.keys(examList).length;
+            renderExamTags();
+            closeMod('examModal');
+            loadScoreTable();
+            toast(`Exam "${name}" added!`,'s');
+        });
+
+        // ═══════════════════════════════════════
+        // SCORE TABLE
+        // ═══════════════════════════════════════
+        function loadScoreTable(){
+            if(!curMonth||!activeExam){
+                document.getElementById('scoreBody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px">Select month & add exams</td></tr>';
+                return;
+            }
+            const search=(document.getElementById('scoreSearch')?.value||'').toLowerCase();
+            const cf=document.getElementById('scoreClass')?.value||'';
+            let f=[...allStu];
+            if(search)f=f.filter(s=>String(s.rollNo||'').includes(search)||(s.name||'').toLowerCase().includes(search));
+            if(cf)f=f.filter(s=>s.class===cf);
+            f.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0));
+
+            document.getElementById('scoreBody').innerHTML=f.map(s=>{
+                const score=(s.testScores&&s.testScores[curMonth]&&s.testScores[curMonth][activeExam]!==undefined)?s.testScores[curMonth][activeExam]:'';
+                const saved=score!=='';
+                let grade='-',gc='';
+                if(saved){
+                    const sc=Number(score);
+                    if(sc>=90){grade='A+';gc='bg-g'}else if(sc>=75){grade='A';gc='bg-g'}else if(sc>=60){grade='B';gc='bg-p'}else if(sc>=40){grade='C';gc='bg-w'}else{grade='F';gc='bg-d'}
+                }
+                // Calculate average of ALL exams this month
+                let avg='-';
+                if(s.testScores&&s.testScores[curMonth]&&typeof s.testScores[curMonth]==='object'){
+                    const vals=Object.values(s.testScores[curMonth]).map(Number).filter(v=>!isNaN(v));
+                    if(vals.length>0)avg=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length)+'%';
+                }
+                return`<tr>
+                    <td><span class="badge bg-r">${s.rollNo}</span></td>
+                    <td><strong>${s.name}</strong></td>
+                    <td><span class="badge bg-p">Class ${s.class}</span></td>
+                    <td><input type="number" class="inp-sm" id="sc_${s.id}" value="${score}" min="0" max="100" placeholder="0-100" onchange="markChanged('${s.id}')" onfocus="this.select()"></td>
+                    <td><span class="badge ${gc}">${grade}</span></td>
+                    <td><span class="avg-highlight">${avg}</span></td>
+                </tr>`;
+            }).join('');
+        }
+
+        function markChanged(id){
+            const inp=document.getElementById('sc_'+id);
+            if(inp){inp.style.borderColor='#f59e0b';inp.style.background='#fffbeb'}
+        }
+
+        async function saveAllScores(){
+            if(!curMonth){toast('Select month!','e');return}
+            if(!activeExam){toast('Add an exam first!','e');return}
+            
+            const batch=db.batch();let count=0;
+            document.querySelectorAll('.inp-sm').forEach(inp=>{
+                const id=inp.id.replace('sc_','');
+                const val=inp.value.trim();
+                if(val!==''){
+                    const score=Math.max(0,Math.min(100,parseInt(val)||0));
+                    batch.update(db.collection('students').doc(id),{
+                        [`testScores.${curMonth}.${activeExam}`]:score,
+                        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    inp.style.borderColor='#6ee7b7';inp.style.background='#d1fae5';
+                    count++;
+                }
+            });
+            
+            if(count===0){toast('No scores entered','e');return}
+            try{
+                await batch.commit();
+                toast(`${count} scores saved for ${activeExam}!`,'s');
+                updateStats();
+                setTimeout(()=>{loadAll().then(()=>onMonthChange())},500);
+            }catch(e){toast('Failed: '+e.message,'e')}
+        }
+
+        // ═══════════════════════════════════════
+        // BULK UPLOAD
+        // ═══════════════════════════════════════
+        function openBulkModal(){openMod('bulkModal')}
+
+        async function bulkUpload(){
+            const month=document.getElementById('bulkMonth').value;
+            const examName=document.getElementById('bulkExamName').value.trim();
+            const csv=document.getElementById('bulkCsv').value.trim();
+            if(!month||!examName){toast('Select month & enter exam name','e');return}
+            if(!csv){toast('Paste CSV','e');return}
+
+            const lines=csv.split('\n').filter(l=>l.trim());
+            const batch=db.batch();let count=0;
+            for(const line of lines){
+                const parts=line.split(',');
+                if(parts.length>=2){
+                    const rn=parts[0].trim();
+                    const sc=Math.max(0,Math.min(100,parseInt(parts[1])||0));
+                    const st=allStu.find(s=>String(s.rollNo)===rn);
+                    if(st){
+                        batch.update(db.collection('students').doc(st.id),{
+                            [`testScores.${month}.${examName}`]:sc,
+                            updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        if(!st.testScores)st.testScores={};
+                        if(!st.testScores[month])st.testScores[month]={};
+                        st.testScores[month][examName]=sc;
+                        count++;
+                    }
+                }
+            }
+            if(!count){toast('No matches','e');return}
+            try{
+                await batch.commit();
+                toast(`${count} uploaded for ${examName}!`,'s');
+                closeMod('bulkModal');
+                document.getElementById('bulkCsv').value='';
+                document.getElementById('bulkExamName').value='';
+                updateStats();
+                if(curMonth===month){examList[examName]=true;onMonthChange()}
+                else{loadAll()}
+            }catch(e){toast('Failed','e')}
+        }
+
+        // ═══════════════════════════════════════
+        // ANALYTICS
+        // ═══════════════════════════════════════
+        function renderAnalytics(){
+            renderExamCompChart();
+            renderTrendChart();
+            renderTopPerformers();
+            renderNeedsAttention();
+        }
+
+        function renderExamCompChart(){
+            const ctx=document.getElementById('examCompChart')?.getContext('2d');
+            if(!ctx)return;
+            const sm=document.getElementById('analyticMonth')?.value||'all';
+            
+            // Collect all exam names & average
+            const examAvgs={},examCounts={};
+            allStu.forEach(s=>{
+                if(s.testScores){
+                    Object.entries(s.testScores).forEach(([month,exams])=>{
+                        if(sm==='all'||month===sm){
+                            if(typeof exams==='object'){
+                                Object.entries(exams).forEach(([ename,sc])=>{
+                                    if(!examAvgs[ename]){examAvgs[ename]=0;examCounts[ename]=0}
+                                    examAvgs[ename]+=Number(sc);examCounts[ename]++;
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            
+            const labels=Object.keys(examAvgs);
+            const data=labels.map(l=>examCounts[l]?Math.round(examAvgs[l]/examCounts[l]):0);
+            
+            if(examCompCtx)examCompCtx.destroy();
+            examCompCtx=new Chart(ctx,{
+                type:'bar',
+                data:{labels,datasets:[{label:'Avg (%)',data,backgroundColor:labels.map((_,i)=>`hsl(${i*40+140},65%,50%)`),borderRadius:9}]},
+                options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}}}}
+            });
+        }
+
+        function renderTrendChart(){
+            const ctx=document.getElementById('trendChart')?.getContext('2d');
+            if(!ctx)return;
+            const cf=document.getElementById('trendClass')?.value||'all';
+            
+            const md={};months.forEach(m=>{md[m]={sum:0,count:0}});
+            allStu.forEach(s=>{
+                if(cf==='all'||s.class===cf){
+                    if(s.testScores){
+                        Object.entries(s.testScores).forEach(([m,exams])=>{
+                            if(md[m]&&typeof exams==='object'){
+                                Object.values(exams).forEach(sc=>{md[m].sum+=Number(sc);md[m].count++});
+                            }
+                        });
+                    }
+                }
+            });
+            
+            const data=months.map(m=>md[m].count?Math.round(md[m].sum/md[m].count):null);
+            if(trendCtx)trendCtx.destroy();
+            trendCtx=new Chart(ctx,{
+                type:'line',
+                data:{labels:months,datasets:[{label:'Avg',data,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4,borderWidth:3,pointRadius:5}]},
+                options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}}}}
+            });
+        }
+
+        function renderTopPerformers(){
+            const c=document.getElementById('topPerformers');
+            const ranked=[];
+            allStu.forEach(s=>{
+                if(s.testScores){
+                    const vals=[];
+                    Object.values(s.testScores).forEach(exams=>{
+                        if(typeof exams==='object')Object.values(exams).forEach(sc=>vals.push(Number(sc)));
+                    });
+                    if(vals.length)ranked.push({name:s.name,rn:s.rollNo,cl:s.class,avg:Math.round(vals.reduce((a,b)=>a+b,0)/vals.length),cnt:vals.length});
+                }
+            });
+            ranked.sort((a,b)=>b.avg-a.avg);
+            c.innerHTML=ranked.slice(0,15).map((s,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--g100)">
+                <span style="font-size:16px;font-weight:800;color:${i<3?'#f59e0b':'var(--g400)'};width:24px">#${i+1}</span>
+                <div style="flex:1"><strong>${s.name}</strong><small style="color:var(--g400)"> R${s.rn} | C${s.cl}</small></div>
+                <span class="badge bg-g">${s.avg}%</span>
+                <div style="width:50px;height:5px;background:var(--g200);border-radius:10px;overflow:hidden"><div style="width:${s.avg}%;height:100%;background:#10b981;border-radius:10px"></div></div>
+            </div>`).join('')||'<p style="text-align:center;padding:20px;color:var(--g400)">No data</p>';
+        }
+
+        function renderNeedsAttention(){
+            const c=document.getElementById('needsAttention');
+            const weak=[];
+            allStu.forEach(s=>{
+                if(s.testScores){
+                    Object.entries(s.testScores).forEach(([m,exams])=>{
+                        if(typeof exams==='object'){
+                            Object.entries(exams).forEach(([en,sc])=>{
+                                if(Number(sc)<40)weak.push({name:s.name,rn:s.rollNo,cl:s.class,month:m,exam:en,score:Number(sc)});
+                            });
+                        }
+                    });
+                }
+            });
+            weak.sort((a,b)=>a.score-b.score);
+            c.innerHTML=weak.length===0?'<p style="text-align:center;padding:20px;color:var(--g)">✅ All above 40%!</p>':
+            weak.slice(0,15).map(s=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--g100)">
+                <span>⚠️</span><div style="flex:1"><strong>${s.name}</strong><small style="color:var(--g400)"> R${s.rn} | ${s.month}-${s.exam}</small></div>
+                <span class="badge bg-d">${s.score}%</span>
+            </div>`).join('');
+        }
+
+        function logout(){localStorage.removeItem('thp_teacher');location.href='index.html'}
+
+        async function init(){
+            if(!chkAuth())return;
+            await loadAll();
+            switchTab('scores');
+        }
+        window.addEventListener('DOMContentLoaded',init);
+        console.log('👨‍🏫 TEACHER PANEL - Multi-Exam Ready');
+    </script>
+</body>
+</html>
