@@ -13,7 +13,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        :root{--p:#6366f1;--pd:#4f46e5;--pl:#a5b4fc;--s:#f43f5e;--a:#8b5cf6;--g:#10b981;--w:#f59e0b;--d:#ef4444;--i:#3b82f6;--dk:#0f172a;--lt:#f8fafc;--wt:#fff;--g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;--g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g800:#1f2937;--g900:#111827;--glass:rgba(255,255,255,0.94);--sh-sm:0 1px 2px rgba(0,0,0,0.04);--sh:0 4px 6px rgba(0,0,0,0.05);--sh-md:0 10px 25px rgba(0,0,0,0.08);--sh-lg:0 20px 50px rgba(0,0,0,0.12);--sh-xl:0 30px 60px rgba(0,0,0,0.18);--r-sm:8px;--r:12px;--r-lg:16px;--r-xl:20px;--r-2xl:24px;--tr:all 0.25s cubic-bezier(0.4,0,0.2,1)}
+        :root{--p:#6366f1;--pd:#4f46e5;--g:#10b981;--w:#f59e0b;--d:#ef4444;--i:#3b82f6;--a:#8b5cf6;
+            --dk:#0f172a;--lt:#f8fafc;--wt:#fff;--g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;
+            --g300:#d1d5db;--g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g800:#1f2937;--g900:#111827;
+            --glass:rgba(255,255,255,0.94);--sh-md:0 10px 25px rgba(0,0,0,0.08);--sh-lg:0 20px 50px rgba(0,0,0,0.12);
+            --sh-xl:0 30px 60px rgba(0,0,0,0.18);--r:12px;--r-lg:16px;--r-xl:20px;--r-2xl:24px;--tr:all 0.25s ease}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 25%,#f0fdfa 50%,#ecfeff 75%,#f0f9ff 100%);min-height:100vh;overflow-x:hidden;color:var(--g800)}
         ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--g100);border-radius:10px}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#10b981,#059669);border-radius:10px}
@@ -27,19 +31,12 @@
         .tb-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
         .btn{padding:9px 16px;border-radius:11px;font-weight:600;font-size:12px;cursor:pointer;transition:var(--tr);border:none;display:flex;align-items:center;gap:6px;font-family:inherit;white-space:nowrap}
-        .btn-p{background:linear-gradient(135deg,#10b981,#059669);color:white;box-shadow:0 4px 15px rgba(16,185,129,0.3)}.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(16,185,129,0.4)}
-        .btn-o{background:white;color:#059669;border:2px solid #6ee7b7}.btn-o:hover{background:#10b981;color:white}
+        .btn-p{background:linear-gradient(135deg,#10b981,#059669);color:white;box-shadow:0 4px 15px rgba(16,185,129,0.3)}.btn-p:hover{transform:translateY(-2px)}
+        .btn-o{background:white;color:#059669;border:2px solid#6ee7b7}.btn-o:hover{background:#10b981;color:white}
         .btn-d{background:linear-gradient(135deg,var(--d),#f87171);color:white}
         .btn-w{background:linear-gradient(135deg,var(--w),#fbbf24);color:white}
         .btn-i{background:linear-gradient(135deg,var(--i),#60a5fa);color:white}
-        .btn-xs{padding:4px 8px;font-size:10px;border-radius:7px}
-        .btn-sm{padding:6px 11px;font-size:11px;border-radius:9px}
-
-        .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:14px}
-        .stat-card{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);padding:15px;box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.5);transition:var(--tr);cursor:pointer}.stat-card:hover{transform:translateY(-3px);box-shadow:var(--sh-xl)}
-        .stat-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:7px}
-        .st-total .stat-ico{background:rgba(16,185,129,0.1);color:#10b981}.st-exams .stat-ico{background:rgba(59,130,246,0.1);color:var(--i)}.st-scores .stat-ico{background:rgba(99,102,241,0.1);color:var(--p)}.st-avg .stat-ico{background:rgba(245,158,11,0.1);color:var(--w)}
-        .stat-val{font-size:25px;font-weight:800;color:var(--g900);line-height:1}.stat-lbl{font-size:10px;color:var(--g500);margin-top:2px;font-weight:500}
+        .btn-xs{padding:4px 8px;font-size:10px;border-radius:7px}.btn-sm{padding:6px 11px;font-size:11px;border-radius:9px}
 
         .card{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);padding:18px;box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.5);margin-bottom:14px}
         .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
@@ -49,31 +46,32 @@
         .search-inp{flex:1;min-width:170px;padding:9px 14px;border:2px solid var(--g200);border-radius:11px;font-size:12px;font-family:inherit;background:white}.search-inp:focus{outline:none;border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,0.1)}
         .filter-sel{padding:9px 14px;border:2px solid var(--g200);border-radius:11px;font-size:12px;font-family:inherit;background:white;cursor:pointer;min-width:120px}.filter-sel:focus{outline:none;border-color:#10b981}
         
-        .marks-input{width:60px;padding:6px 8px;border:2px solid var(--g200);border-radius:7px;font-size:12px;text-align:center;font-family:inherit;font-weight:600;background:white}.marks-input:focus{outline:none;border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,0.1)}
+        .marks-input{width:55px;padding:6px 8px;border:2px solid var(--g200);border-radius:7px;font-size:12px;text-align:center;font-family:inherit;font-weight:600;background:white}.marks-input:focus{outline:none;border-color:#10b981}
         .marks-input.saved{background:#d1fae5;border-color:#6ee7b7;color:#065f46}
-        .total-marks-display{font-size:11px;color:var(--g500);font-weight:500}
-        .percent-badge{padding:3px 8px;border-radius:9px;font-size:11px;font-weight:700;display:inline-block}
-        .pct-high{background:rgba(16,185,129,0.1);color:#059669}.pct-mid{background:rgba(245,158,11,0.1);color:#d97706}.pct-low{background:rgba(239,68,68,0.1);color:#dc2626}
 
         .table-wrap{overflow-x:auto;max-height:430px;overflow-y:auto;border-radius:var(--r)}
-        table{width:100%;border-collapse:collapse;min-width:900px}
+        table{width:100%;border-collapse:collapse;min-width:950px}
         thead{position:sticky;top:0;z-index:10}
         th{background:linear-gradient(135deg,#10b981,#059669);color:white;padding:9px 7px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;white-space:nowrap}
         td{padding:7px;border-bottom:1px solid var(--g100);font-size:11px;white-space:nowrap}
         tbody tr:hover{background:rgba(16,185,129,0.02)}
         
         .badge{padding:3px 8px;border-radius:9px;font-size:10px;font-weight:700;display:inline-block}
-        .bg-g{background:rgba(16,185,129,0.1);color:#059669}.bg-d{background:rgba(239,68,68,0.1);color:#dc2626}.bg-w{background:rgba(245,158,11,0.1);color:#d97706}.bg-p{background:rgba(139,92,246,0.1);color:#7c3aed}.bg-r{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#7c2d12;font-weight:800}
+        .bg-g{background:rgba(16,185,129,0.1);color:#059669}.bg-d{background:rgba(239,68,68,0.1);color:#dc2626}
+        .bg-w{background:rgba(245,158,11,0.1);color:#d97706}.bg-p{background:rgba(139,92,246,0.1);color:#7c3aed}
+        .bg-r{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#7c2d12;font-weight:800}
 
         .exam-tag{display:inline-flex;align-items:center;gap:4px;background:var(--g100);padding:3px 10px;border-radius:15px;font-size:10px;font-weight:600;margin:2px;cursor:pointer;transition:var(--tr)}.exam-tag:hover{background:var(--g200)}.exam-tag.active{background:#10b981;color:white}
-        .exam-tag .del-exam{font-size:14px;cursor:pointer;opacity:0.5;margin-left:2px}.exam-tag .del-exam:hover{opacity:1;color:var(--d)}
+
+        .sheet-upload-btn{display:inline-flex;align-items:center;gap:3px;padding:4px 8px;background:#e0e7ff;color:#4f46e5;border-radius:6px;font-size:9px;font-weight:600;cursor:pointer;transition:var(--tr)}.sheet-upload-btn:hover{background:#c7d2fe}
+        .sheet-preview{width:28px;height:28px;border-radius:5px;object-fit:cover;cursor:pointer;border:2px solid var(--g200)}.sheet-preview:hover{border-color:var(--p);transform:scale(1.1)}
 
         .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(5px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:var(--tr)}.modal-overlay.active{opacity:1;visibility:visible}
         .modal{background:white;border-radius:var(--r-2xl);padding:24px;width:90%;max-width:650px;max-height:82vh;overflow-y:auto;box-shadow:var(--sh-xl);transform:scale(0.9);transition:var(--tr)}.modal-overlay.active .modal{transform:scale(1)}
         .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--g100)}
         .modal-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--g100);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}.modal-close:hover{background:var(--d);color:white}
         .form-group{margin-bottom:11px}.form-group label{display:block;font-size:10px;font-weight:700;color:var(--g700);margin-bottom:3px;text-transform:uppercase}
-        .form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 13px;border:2px solid var(--g200);border-radius:9px;font-size:12px;font-family:inherit;background:var(--g50)}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,0.08);background:white}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 13px;border:2px solid var(--g200);border-radius:9px;font-size:12px;font-family:inherit;background:var(--g50)}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#10b981}
         .form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 
         .toast-ctr{position:fixed;top:18px;right:18px;z-index:2000;display:flex;flex-direction:column;gap:6px}
@@ -81,11 +79,13 @@
         .toast.s{background:linear-gradient(135deg,#059669,#10b981)}.toast.e{background:linear-gradient(135deg,#dc2626,#ef4444)}
         @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
 
-        .load-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.7);backdrop-filter:blur(3px);z-index:3000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+        .load-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.8);backdrop-filter:blur(4px);z-index:3000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
         .spinner{width:42px;height:42px;border:4px solid var(--g200);border-top-color:#10b981;border-radius:50%;animation:spin 0.7s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
 
-        @media(max-width:768px){.stat-row{grid-template-columns:repeat(2,1fr)}.topbar{flex-direction:column}.form-row{grid-template-columns:1fr}}
+        .image-modal-content{text-align:center}.image-modal-content img{max-width:100%;max-height:70vh;border-radius:12px;box-shadow:var(--sh-xl)}
+
+        @media(max-width:768px){.topbar{flex-direction:column}.form-row{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
@@ -99,17 +99,10 @@
             <div class="tb-actions">
                 <button class="btn btn-i btn-sm" onclick="addNewExam()"><i class="fas fa-plus"></i> Add Exam</button>
                 <button class="btn btn-p btn-sm" onclick="saveAllScores()"><i class="fas fa-save"></i> Save All</button>
-                <button class="btn btn-w btn-sm" onclick="openBulkModal()"><i class="fas fa-upload"></i> Bulk Upload</button>
+                <button class="btn btn-w btn-sm" onclick="openBulkModal()"><i class="fas fa-upload"></i> Bulk</button>
                 <button class="btn btn-o btn-sm" onclick="switchTab('analytics')"><i class="fas fa-chart-line"></i> Analytics</button>
                 <button class="btn btn-d btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
             </div>
-        </div>
-
-        <div class="stat-row">
-            <div class="stat-card st-total"><div class="stat-ico"><i class="fas fa-users"></i></div><div class="stat-val" id="totStu">0</div><div class="stat-lbl">Total Students</div></div>
-            <div class="stat-card st-exams"><div class="stat-ico"><i class="fas fa-file-alt"></i></div><div class="stat-val" id="totExams">0</div><div class="stat-lbl">Exams This Month</div></div>
-            <div class="stat-card st-scores"><div class="stat-ico"><i class="fas fa-star"></i></div><div class="stat-val" id="totScores">0</div><div class="stat-lbl">Scores Entered</div></div>
-            <div class="stat-card st-avg"><div class="stat-ico"><i class="fas fa-chart-bar"></i></div><div class="stat-val" id="avgAll">0%</div><div class="stat-lbl">Overall Average</div></div>
         </div>
 
         <div id="tab-scores" class="tab-content">
@@ -124,56 +117,76 @@
                 </div>
                 <div id="examTags" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;align-items:center"><span style="font-size:10px;color:var(--g500)">Exams:</span><span id="noExamMsg" style="font-size:10px;color:var(--g400)">Add exams to start</span></div>
                 <div style="margin-bottom:12px;padding:10px 14px;background:#ecfdf5;border-radius:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-                    <i class="fas fa-pen" style="color:#10b981"></i>
-                    <span style="font-weight:700;font-size:12px">Current Exam:</span>
-                    <span id="activeExamName" style="color:#059669;font-weight:600">--</span>
-                    <span style="color:var(--g400);font-size:11px">|</span>
-                    <span style="font-size:11px;color:var(--g600)">Total Marks:</span>
-                    <input type="number" id="examTotalMarks" value="100" min="1" max="500" class="marks-input" style="width:70px" onchange="updateTotalMarks()" title="Set total marks for this exam">
+                    <span style="font-weight:700;font-size:12px">📝 Active Exam:</span><span id="activeExamName" style="color:#059669;font-weight:600">--</span>
+                    <span style="color:var(--g400)">|</span><span style="font-size:11px">Total Marks:</span>
+                    <input type="number" id="examTotalMarks" value="100" min="1" max="500" style="width:65px;padding:5px 8px;border:2px solid var(--g200);border-radius:7px;font-size:12px;text-align:center;font-weight:600" onchange="updateTotalMarks()">
                 </div>
                 <div class="filter-bar"><input type="text" class="search-inp" id="scoreSearch" placeholder="🔍 Roll No / Name..." oninput="loadScoreTable()"></div>
                 <div class="table-wrap">
-                    <table><thead><tr><th>Roll</th><th>Name</th><th>Class</th><th>Marks Obtained</th><th>Total</th><th>Percentage</th><th>Grade</th></tr></thead>
-                    <tbody id="scoreBody"><tr><td colspan="7" style="text-align:center;padding:30px">Select month & add exams</td></tr></tbody></table>
+                    <table><thead><tr><th>Roll</th><th>Name</th><th>Class</th><th>Marks</th><th>Total</th><th>%</th><th>Grade</th><th>Sheet</th></tr></thead>
+                    <tbody id="scoreBody"><tr><td colspan="8" style="text-align:center;padding:30px">Select month & add exams</td></tr></tbody></table>
                 </div>
             </div>
         </div>
 
         <div id="tab-analytics" class="tab-content" style="display:none">
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px">
-                <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-bar" style="color:#10b981"></i> Exam-wise Comparison</h3><select class="filter-sel" id="analyticMonth" onchange="renderAnalytics()"><option value="all">All Months</option></select></div><div style="height:280px"><canvas id="examCompChart"></canvas></div></div>
-                <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-line" style="color:#10b981"></i> Monthly Trend</h3><select class="filter-sel" id="trendClass" onchange="renderAnalytics()"><option value="all">All Classes</option></select></div><div style="height:280px"><canvas id="trendChart"></canvas></div></div>
-                <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-trophy" style="color:#f59e0b"></i> Top Performers</h3></div><div id="topPerformers" style="max-height:250px;overflow-y:auto"></div></div>
+                <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-bar" style="color:#10b981"></i> Exam Comparison</h3><select class="filter-sel" id="analyticMonth" onchange="renderAnalytics()"><option value="all">All</option></select></div><div style="height:280px"><canvas id="examCompChart"></canvas></div></div>
+                <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-line" style="color:#10b981"></i> Monthly Trend</h3><select class="filter-sel" id="trendClass" onchange="renderAnalytics()"><option value="all">All</option></select></div><div style="height:280px"><canvas id="trendChart"></canvas></div></div>
+                <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-trophy"></i> Top Performers</h3></div><div id="topPerformers" style="max-height:250px;overflow-y:auto"></div></div>
                 <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-exclamation-triangle" style="color:#ef4444"></i> Needs Attention</h3></div><div id="needsAttention" style="max-height:250px;overflow-y:auto"></div></div>
             </div>
         </div>
     </div>
 
     <!-- Add Exam Modal -->
-    <div class="modal-overlay" id="examModal"><div class="modal" style="max-width:450px"><div class="modal-head"><h2>📝 Add New Exam</h2><button class="modal-close" onclick="closeMod('examModal')">✕</button></div><form id="examForm"><div class="form-group"><label>Exam Name*</label><input type="text" id="examName" placeholder="e.g., UT-1, Half-Yearly" required></div><div class="form-group"><label>Month*</label><select id="examMonth" required></select></div><div class="form-group"><label>Total Marks*</label><input type="number" id="examMaxMarks" value="100" min="1" max="500" required></div><button type="submit" class="btn btn-p" style="width:100%">Add Exam</button></form></div></div>
+    <div class="modal-overlay" id="examModal"><div class="modal" style="max-width:450px"><div class="modal-head"><h2>📝 Add Exam</h2><button class="modal-close" onclick="closeMod('examModal')">✕</button></div><form id="examForm"><div class="form-group"><label>Exam Name*</label><input type="text" id="examName" placeholder="UT-1, Half-Yearly" required></div><div class="form-group"><label>Month*</label><select id="examMonth" required></select></div><div class="form-group"><label>Total Marks*</label><input type="number" id="examMaxMarks" value="100" min="1" required></div><button type="submit" class="btn btn-p" style="width:100%">Add Exam</button></form></div></div>
 
-    <!-- Bulk Upload Modal -->
-    <div class="modal-overlay" id="bulkModal"><div class="modal"><div class="modal-head"><h2>📋 Bulk Upload Scores</h2><button class="modal-close" onclick="closeMod('bulkModal')">✕</button></div><div class="form-group"><label>Month*</label><select id="bulkMonth"><option value="">Select</option></select></div><div class="form-group"><label>Exam Name*</label><input type="text" id="bulkExamName" placeholder="e.g., UT-1"></div><div class="form-group"><label>Total Marks*</label><input type="number" id="bulkTotalMarks" value="100" min="1" max="500"></div><div class="form-group"><label>Paste CSV (rollNo,marksObtained)</label><textarea id="bulkCsv" rows="8" placeholder="1,85&#10;2,72&#10;3,90"></textarea></div><button class="btn btn-p" style="width:100%" onclick="bulkUpload()"><i class="fas fa-upload"></i> Upload</button></div></div>
+    <!-- Bulk Modal -->
+    <div class="modal-overlay" id="bulkModal"><div class="modal"><div class="modal-head"><h2>📋 Bulk Upload</h2><button class="modal-close" onclick="closeMod('bulkModal')">✕</button></div><div class="form-group"><label>Month*</label><select id="bulkMonth"><option value="">Select</option></select></div><div class="form-group"><label>Exam Name*</label><input type="text" id="bulkExamName" placeholder="UT-1"></div><div class="form-group"><label>Total Marks*</label><input type="number" id="bulkTotalMarks" value="100"></div><div class="form-group"><label>CSV (rollNo,marksObtained)</label><textarea id="bulkCsv" rows="6" placeholder="1,85&#10;2,72"></textarea></div><button class="btn btn-p" style="width:100%" onclick="bulkUpload()">Upload</button></div></div>
+
+    <!-- Image Preview Modal -->
+    <div class="modal-overlay" id="imageModal"><div class="modal image-modal-content"><div class="modal-head"><h2>📷 Answer Sheet</h2><button class="modal-close" onclick="closeMod('imageModal')">✕</button></div><img id="imagePreview" src="" alt="Answer Sheet"></div></div>
 
     <script>
+        // ═══════════════════════════════════════
+        // FIREBASE INIT
+        // ═══════════════════════════════════════
         const fc={apiKey:"AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",authDomain:"dumbbell-gyme.firebaseapp.com",projectId:"dumbbell-gyme",storageBucket:"dumbbell-gyme.firebasestorage.app",messagingSenderId:"305021976299",appId:"1:305021976299:web:fb85c2b332935d698088ae"};
         firebase.initializeApp(fc);const db=firebase.firestore();
+        const IMGBB_KEY='53fb01955a45c5462724b8f7d238500a';
+        
         let allStu=[],curTab='scores',curMonth='',activeExam='',examList={},examTotalMarks={},curTotalMarks=100;
         let examCompCtx,trendCtx;
         const months=['March','April','May','June','July','August','September','October','November','December','January','February'];
 
-        particlesJS('particles-js',{particles:{number:{value:35},color:{value:'#10b981'},opacity:{value:0.12},size:{value:2},line_linked:{enable:true,distance:140,color:'#10b981',opacity:0.06},move:{enable:true,speed:1}},interactivity:{events:{onhover:{enable:true,mode:'grab'}}},retina_detect:true});
+        // Particles
+        particlesJS('particles-js',{particles:{number:{value:30},color:{value:'#10b981'},opacity:{value:0.1},size:{value:2},line_linked:{enable:true,distance:130,color:'#10b981',opacity:0.05},move:{enable:true,speed:1}},interactivity:{events:{onhover:{enable:true,mode:'grab'}}},retina_detect:true});
 
+        // ═══════════════════════════════════════
+        // HELPERS
+        // ═══════════════════════════════════════
         function chkAuth(){if(!localStorage.getItem('thp_teacher')){location.href='index.html';return false}return true}
-        function toast(m,t='s'){const c=document.getElementById('toastCtr'),d=document.createElement('div');d.className=`toast ${t}`;d.innerHTML=`<span>${t==='s'?'✅':t==='e'?'❌':'ℹ️'}</span> ${m}`;c.appendChild(d);setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(120%)';setTimeout(()=>d.remove(),300)},2800)}
+        function toast(m,t='s'){const c=document.getElementById('toastCtr'),d=document.createElement('div');d.className=`toast ${t}`;d.innerHTML=`<span>${t==='s'?'✅':'❌'}</span> ${m}`;c.appendChild(d);setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(120%)';setTimeout(()=>d.remove(),300)},2500)}
         function openMod(id){document.getElementById(id).classList.add('active')}
         function closeMod(id){document.getElementById(id).classList.remove('active')}
         document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')}));
         document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>m.classList.remove('active'))});
-
         function switchTab(t){curTab=t;document.querySelectorAll('.tab-content').forEach(x=>x.style.display='none');document.getElementById('tab-'+t).style.display='block';if(t==='analytics')renderAnalytics();if(t==='scores')loadScoreTable();}
 
-        async function loadAll(){try{const snap=await db.collection('students').orderBy('rollNo','asc').get();allStu=[];snap.forEach(d=>allStu.push({id:d.id,...d.data()}));updateStats();populateFilters();document.getElementById('loadOverlay').style.display='none';}catch(e){toast('Failed','e');document.getElementById('loadOverlay').style.display='none'}}
+        // ═══════════════════════════════════════
+        // LOAD STUDENTS
+        // ═══════════════════════════════════════
+        async function loadAll(){
+            const overlay=document.getElementById('loadOverlay');
+            try{
+                const snap=await db.collection('students').orderBy('rollNo','asc').get();
+                allStu=[];snap.forEach(d=>allStu.push({id:d.id,...d.data()}));
+                console.log('✅ Loaded',allStu.length,'students');
+                updateStats();populateFilters();
+                if(overlay)overlay.style.display='none';
+            }catch(e){console.error(e);toast('Failed to load','e');if(overlay)overlay.style.display='none';}
+        }
 
         function populateFilters(){
             const cls=[...new Set(allStu.map(s=>s.class))].filter(c=>c!=='N/A').sort((a,b)=>parseInt(a)-parseInt(b));
@@ -182,101 +195,156 @@
             ['scoreClass','trendClass'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<option value="">All</option>'+opts});
             const mopts=months.map(m=>`<option value="${m}">${m}</option>`).join('');
             ['monthSel','bulkMonth','examMonth','analyticMonth'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<option value="">Select</option>'+mopts});
-            const am=document.getElementById('analyticMonth');if(am)am.innerHTML='<option value="all">All Months</option>'+mopts;
+            const am=document.getElementById('analyticMonth');if(am)am.innerHTML='<option value="all">All</option>'+mopts;
         }
 
         function updateStats(){
             document.getElementById('totStu').textContent=allStu.length;
-            let ts=0,sum=0;allStu.forEach(s=>{if(s.testScores){Object.values(s.testScores).forEach(md=>{if(typeof md==='object'){Object.values(md).forEach(sc=>{if(typeof sc==='object'){ts++;sum+=Number(sc.percentage||0)}else{ts++;sum+=Number(sc)}}})}}});
+            let ts=0,sum=0;allStu.forEach(s=>{if(s.testScores){Object.values(s.testScores).forEach(md=>{if(typeof md==='object'){Object.values(md).forEach(sc=>{const pct=typeof sc==='object'?Number(sc.percentage||0):Number(sc);ts++;sum+=pct})}}})});
             document.getElementById('totScores').textContent=ts;document.getElementById('avgAll').textContent=ts>0?Math.round(sum/ts)+'%':'0%';
         }
 
-        function onMonthChange(){curMonth=document.getElementById('monthSel').value;if(!curMonth){resetExamUI();return}loadExamsForMonth();}
+        // ═══════════════════════════════════════
+        // EXAM MANAGEMENT
+        // ═══════════════════════════════════════
+        function onMonthChange(){curMonth=document.getElementById('monthSel').value;if(!curMonth){resetUI();return}loadExams();}
         function updateTotalMarks(){curTotalMarks=parseInt(document.getElementById('examTotalMarks').value)||100;if(activeExam)examTotalMarks[activeExam]=curTotalMarks;}
 
-        function loadExamsForMonth(){
+        function loadExams(){
             if(!curMonth)return;examList={};examTotalMarks={};
-            allStu.forEach(s=>{if(s.testScores&&s.testScores[curMonth]&&typeof s.testScores[curMonth]==='object'){Object.entries(s.testScores[curMonth]).forEach(([en,data])=>{examList[en]=true;if(typeof data==='object'&&data.total)examTotalMarks[en]=data.total;else examTotalMarks[en]=100})}});
-            renderExamTags();
-            const keys=Object.keys(examList);
-            if(keys.length>0){activeExam=keys[0];curTotalMarks=examTotalMarks[activeExam]||100;document.getElementById('examTotalMarks').value=curTotalMarks}else{activeExam='';curTotalMarks=100;document.getElementById('examTotalMarks').value=100}
-            document.getElementById('activeExamName').textContent=activeExam||'No exams yet';
+            allStu.forEach(s=>{if(s.testScores&&s.testScores[curMonth]&&typeof s.testScores[curMonth]==='object'){Object.entries(s.testScores[curMonth]).forEach(([en,data])=>{examList[en]=true;examTotalMarks[en]=typeof data==='object'?data.total||100:100})}});
+            renderTags();const keys=Object.keys(examList);
+            if(keys.length>0){activeExam=keys[0];curTotalMarks=examTotalMarks[activeExam]||100}else{activeExam='';curTotalMarks=100}
+            document.getElementById('examTotalMarks').value=curTotalMarks;document.getElementById('activeExamName').textContent=activeExam||'No exams';
             document.getElementById('totExams').textContent=keys.length;loadScoreTable();
         }
 
-        function renderExamTags(){
-            const container=document.getElementById('examTags'),exams=Object.keys(examList);
+        function renderTags(){
+            const c=document.getElementById('examTags'),exams=Object.keys(examList);
             document.getElementById('noExamMsg').style.display=exams.length?'none':'inline';
-            container.innerHTML='<span style="font-size:10px;color:var(--g500)">Exams:</span><span id="noExamMsg" style="font-size:10px;color:var(--g400);display:'+(exams.length?'none':'inline')+'">Add exams to start</span>'+exams.map(e=>`<span class="exam-tag ${e===activeExam?'active':''}" onclick="switchExam('${e}')">📝 ${e}<span class="del-exam" onclick="event.stopPropagation();deleteExam('${e}')">×</span></span>`).join('');
+            c.innerHTML='<span style="font-size:10px;color:var(--g500)">Exams:</span><span id="noExamMsg" style="font-size:10px;color:var(--g400);display:'+(exams.length?'none':'inline')+'">Add exams</span>'+exams.map(e=>`<span class="exam-tag ${e===activeExam?'active':''}" onclick="switchExam('${e}')">📝 ${e}<span style="font-size:14px;cursor:pointer;opacity:0.5;margin-left:2px" onclick="event.stopPropagation();deleteExam('${e}')">×</span></span>`).join('');
         }
 
-        function switchExam(en){activeExam=en;curTotalMarks=examTotalMarks[en]||100;document.getElementById('examTotalMarks').value=curTotalMarks;document.getElementById('activeExamName').textContent=en;renderExamTags();loadScoreTable();}
+        function switchExam(en){activeExam=en;curTotalMarks=examTotalMarks[en]||100;document.getElementById('examTotalMarks').value=curTotalMarks;document.getElementById('activeExamName').textContent=en;renderTags();loadScoreTable();}
 
-        function deleteExam(en){if(!confirm(`Delete all scores for "${en}" in ${curMonth}?`))return;const b=db.batch();allStu.forEach(s=>{if(s.testScores&&s.testScores[curMonth]&&s.testScores[curMonth][en]!==undefined){b.update(db.collection('students').doc(s.id),{[`testScores.${curMonth}.${en}`]:firebase.firestore.FieldValue.delete(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()})}});b.commit().then(()=>{delete examList[en];delete examTotalMarks[en];if(activeExam===en)activeExam=Object.keys(examList)[0]||'';document.getElementById('activeExamName').textContent=activeExam||'No exams yet';document.getElementById('totExams').textContent=Object.keys(examList).length;curTotalMarks=examTotalMarks[activeExam]||100;document.getElementById('examTotalMarks').value=curTotalMarks;toast(`Deleted`,'s');loadAll();setTimeout(()=>onMonthChange(),500)}).catch(e=>toast('Failed','e'));}
+        function deleteExam(en){if(!confirm(`Delete "${en}"?`))return;const b=db.batch();allStu.forEach(s=>{if(s.testScores&&s.testScores[curMonth]&&s.testScores[curMonth][en]!==undefined)b.update(db.collection('students').doc(s.id),{[`testScores.${curMonth}.${en}`]:firebase.firestore.FieldValue.delete()})});b.commit().then(()=>{delete examList[en];delete examTotalMarks[en];if(activeExam===en)activeExam=Object.keys(examList)[0]||'';document.getElementById('activeExamName').textContent=activeExam||'No exams';curTotalMarks=examTotalMarks[activeExam]||100;document.getElementById('examTotalMarks').value=curTotalMarks;toast('Deleted','s');loadAll().then(()=>onMonthChange())})}
 
-        function resetExamUI(){examList={};examTotalMarks={};activeExam='';curTotalMarks=100;document.getElementById('activeExamName').textContent='--';document.getElementById('totExams').textContent='0';document.getElementById('examTotalMarks').value=100;renderExamTags();document.getElementById('scoreBody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px">Select month & add exams</td></tr>';}
+        function resetUI(){examList={};examTotalMarks={};activeExam='';curTotalMarks=100;document.getElementById('activeExamName').textContent='--';document.getElementById('totExams').textContent='0';document.getElementById('examTotalMarks').value=100;renderTags();document.getElementById('scoreBody').innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px">Select month & add exams</td></tr>';}
 
-        function addNewExam(){if(!curMonth){toast('Select month first!','e');return}document.getElementById('examMonth').value=curMonth;document.getElementById('examName').value='';document.getElementById('examMaxMarks').value=100;openMod('examModal');}
-        document.getElementById('examForm').addEventListener('submit',function(e){e.preventDefault();const name=document.getElementById('examName').value.trim(),month=document.getElementById('examMonth').value,tm=parseInt(document.getElementById('examMaxMarks').value)||100;if(!name||!month){toast('Fill all','e');return}examList[name]=true;examTotalMarks[name]=tm;if(!activeExam)activeExam=name;curTotalMarks=tm;document.getElementById('examTotalMarks').value=tm;document.getElementById('activeExamName').textContent=activeExam;document.getElementById('totExams').textContent=Object.keys(examList).length;renderExamTags();closeMod('examModal');loadScoreTable();toast(`Exam "${name}" added!`,'s');});
+        function addNewExam(){if(!curMonth){toast('Select month!','e');return}document.getElementById('examMonth').value=curMonth;document.getElementById('examName').value='';document.getElementById('examMaxMarks').value=100;openMod('examModal');}
+        document.getElementById('examForm').addEventListener('submit',function(e){e.preventDefault();const nm=document.getElementById('examName').value.trim(),mo=document.getElementById('examMonth').value,tm=parseInt(document.getElementById('examMaxMarks').value)||100;if(!nm||!mo)return;examList[nm]=true;examTotalMarks[nm]=tm;if(!activeExam)activeExam=nm;curTotalMarks=tm;document.getElementById('examTotalMarks').value=tm;document.getElementById('activeExamName').textContent=activeExam;document.getElementById('totExams').textContent=Object.keys(examList).length;renderTags();closeMod('examModal');loadScoreTable();toast(`"${nm}" added!`,'s')});
 
+        // ═══════════════════════════════════════
+        // SCORE TABLE WITH IMAGE UPLOAD
+        // ═══════════════════════════════════════
         function loadScoreTable(){
-            if(!curMonth||!activeExam){document.getElementById('scoreBody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px">Select month & add exams</td></tr>';return}
-            const search=(document.getElementById('scoreSearch')?.value||'').toLowerCase(),cf=document.getElementById('scoreClass')?.value||'';
-            let f=[...allStu];if(search)f=f.filter(s=>String(s.rollNo||'').includes(search)||(s.name||'').toLowerCase().includes(search));if(cf)f=f.filter(s=>s.class===cf);
+            if(!curMonth||!activeExam){document.getElementById('scoreBody').innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px">Select month & add exams</td></tr>';return}
+            const s=(document.getElementById('scoreSearch')?.value||'').toLowerCase(),cf=document.getElementById('scoreClass')?.value||'';
+            let f=[...allStu];if(s)f=f.filter(x=>String(x.rollNo||'').includes(s)||(x.name||'').toLowerCase().includes(s));if(cf)f=f.filter(x=>x.class===cf);
             f.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0));
             const tm=curTotalMarks;
-            document.getElementById('scoreBody').innerHTML=f.map(s=>{
-                const examData=(s.testScores&&s.testScores[curMonth]&&s.testScores[curMonth][activeExam])?s.testScores[curMonth][activeExam]:null;
-                let marksObtained='',totalMarks=tm,percentage='',grade='-',gc='',saved=false;
-                if(examData&&typeof examData==='object'){marksObtained=examData.marks||'';totalMarks=examData.total||tm;percentage=examData.percentage||'';saved=marksObtained!=='';if(saved){const pct=Number(percentage);if(pct>=90){grade='A+';gc='pct-high'}else if(pct>=75){grade='A';gc='pct-high'}else if(pct>=60){grade='B';gc='pct-mid'}else if(pct>=40){grade='C';gc='pct-mid'}else{grade='F';gc='pct-low'}}}
-                return`<tr><td><span class="badge bg-r">${s.rollNo}</span></td><td><strong>${s.name}</strong></td><td><span class="badge bg-p">Class ${s.class}</span></td>
-                <td><input type="number" class="marks-input ${saved?'saved':''}" id="mk_${s.id}" value="${marksObtained}" min="0" max="${tm}" placeholder="Marks" onchange="markChanged('${s.id}')" onfocus="this.select()"></td>
-                <td><span class="total-marks-display">/${tm}</span></td>
-                <td><span class="percent-badge ${gc}" id="pct_${s.id}">${percentage?percentage+'%':'-'}</span></td>
-                <td><span class="badge ${gc.replace('pct','bg')}">${grade}</span></td></tr>`;
+            document.getElementById('scoreBody').innerHTML=f.map(stu=>{
+                const ed=(stu.testScores&&stu.testScores[curMonth]&&stu.testScores[curMonth][activeExam])?stu.testScores[curMonth][activeExam]:null;
+                let marks='',pct='',gd='-',gc='',imgUrl='',saved=false;
+                if(ed&&typeof ed==='object'){marks=ed.marks||'';pct=ed.percentage||'';imgUrl=ed.answerSheet||'';saved=marks!=='';if(saved){const p=Number(pct);if(p>=90){gd='A+';gc='bg-g'}else if(p>=75){gd='A';gc='bg-g'}else if(p>=60){gd='B';gc='bg-p'}else if(p>=40){gd='C';gc='bg-w'}else{gd='F';gc='bg-d'}}}
+                return`<tr>
+                    <td><span class="badge bg-r">${stu.rollNo}</span></td>
+                    <td><strong>${stu.name}</strong></td>
+                    <td><span class="badge bg-p">C${stu.class}</span></td>
+                    <td><input type="number" class="marks-input ${saved?'saved':''}" id="mk_${stu.id}" value="${marks}" min="0" max="${tm}" placeholder="-" onchange="markChanged('${stu.id}')" onfocus="this.select()"></td>
+                    <td><span style="font-size:10px;color:var(--g500)">/${tm}</span></td>
+                    <td><span class="badge ${gc}" id="pct_${stu.id}">${pct?pct+'%':'-'}</span></td>
+                    <td><span class="badge ${gc}">${gd}</span></td>
+                    <td>
+                        <input type="file" id="img_${stu.id}" accept="image/*" style="display:none" onchange="uploadSheet('${stu.id}')">
+                        ${imgUrl?`<img src="${imgUrl}" class="sheet-preview" onclick="viewImage('${imgUrl}')" title="View Sheet">`:`<button class="sheet-upload-btn" onclick="document.getElementById('img_${stu.id}').click()">📎 Upload</button>`}
+                    </td></tr>`;
             }).join('');
         }
 
-        function markChanged(id){const inp=document.getElementById('mk_'+id);if(inp){inp.style.borderColor='#f59e0b';inp.style.background='#fffbeb';const marks=parseInt(inp.value)||0;const pct=curTotalMarks>0?Math.round((marks/curTotalMarks)*100):0;const pctEl=document.getElementById('pct_'+id);if(pctEl){pctEl.textContent=pct+'%';pctEl.className='percent-badge '+(pct>=75?'pct-high':pct>=40?'pct-mid':'pct-low')}}}
+        function markChanged(id){const inp=document.getElementById('mk_'+id);if(inp){inp.style.borderColor='#f59e0b';inp.style.background='#fffbeb';const m=parseInt(inp.value)||0;const p=curTotalMarks>0?Math.round((m/curTotalMarks)*100):0;const pe=document.getElementById('pct_'+id);if(pe){pe.textContent=p+'%';pe.className='badge '+(p>=75?'bg-g':p>=40?'bg-w':'bg-d')}}}
 
-        async function saveAllScores(){
-            if(!curMonth){toast('Select month!','e');return}if(!activeExam){toast('Add exam first!','e');return}
-            const b=db.batch();let count=0;const tm=curTotalMarks;
-            document.querySelectorAll('.marks-input').forEach(inp=>{const id=inp.id.replace('mk_',''),marks=parseInt(inp.value);if(!isNaN(marks)&&inp.value.trim()!==''){const pct=Math.round((marks/tm)*100);b.update(db.collection('students').doc(id),{[`testScores.${curMonth}.${activeExam}`]:{marks:marks,total:tm,percentage:pct},updatedAt:firebase.firestore.FieldValue.serverTimestamp()});inp.classList.add('saved');inp.style.borderColor='#6ee7b7';inp.style.background='#d1fae5';const pctEl=document.getElementById('pct_'+id);if(pctEl){pctEl.textContent=pct+'%';pctEl.className='percent-badge '+(pct>=75?'pct-high':pct>=40?'pct-mid':'pct-low')}count++}});
-            if(!count){toast('No marks entered','e');return}
-            try{await b.commit();examTotalMarks[activeExam]=tm;toast(`${count} scores saved!`,'s');updateStats();setTimeout(()=>{loadAll().then(()=>onMonthChange())},500)}catch(e){toast('Failed: '+e.message,'e')}
+        async function uploadSheet(stuId){
+            const file=document.getElementById('img_'+stuId).files[0];if(!file)return;
+            if(file.size>5*1024*1024){toast('Max 5MB!','e');return}
+            toast('Uploading sheet...','s');
+            try{
+                const fd=new FormData();fd.append('image',file);
+                const res=await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`,{method:'POST',body:fd});
+                const result=await res.json();
+                if(result.success){
+                    const url=result.data.url;
+                    // Save to Firestore
+                    const stu=allStu.find(x=>x.id===stuId);
+                    const currentData=(stu?.testScores&&stu?.testScores[curMonth]&&stu?.testScores[curMonth][activeExam])||{};
+                    await db.collection('students').doc(stuId).update({[`testScores.${curMonth}.${activeExam}`]:{...currentData,answerSheet:url},updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+                    toast('Sheet uploaded!','s');loadScoreTable();
+                }
+            }catch(e){toast('Upload failed','e')}
         }
 
+        function viewImage(url){document.getElementById('imagePreview').src=url;openMod('imageModal');}
+
+        // ═══════════════════════════════════════
+        // SAVE ALL
+        // ═══════════════════════════════════════
+        async function saveAllScores(){
+            if(!curMonth||!activeExam){toast('Select month & exam!','e');return}
+            const b=db.batch();let c=0;const tm=curTotalMarks;
+            document.querySelectorAll('.marks-input').forEach(inp=>{
+                const id=inp.id.replace('mk_',''),m=parseInt(inp.value);
+                if(!isNaN(m)&&inp.value.trim()!==''){
+                    const pct=Math.round((m/tm)*100);
+                    const stu=allStu.find(x=>x.id===id);
+                    const existingImg=(stu?.testScores&&stu?.testScores[curMonth]&&stu?.testScores[curMonth][activeExam]&&stu.testScores[curMonth][activeExam].answerSheet)||'';
+                    b.update(db.collection('students').doc(id),{[`testScores.${curMonth}.${activeExam}`]:{marks:m,total:tm,percentage:pct,answerSheet:existingImg},updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+                    inp.classList.add('saved');inp.style.borderColor='#6ee7b7';inp.style.background='#d1fae5';
+                    const pe=document.getElementById('pct_'+id);if(pe){pe.textContent=pct+'%';pe.className='badge '+(pct>=75?'bg-g':pct>=40?'bg-w':'bg-d')}
+                    c++;
+                }
+            });
+            if(!c){toast('No marks','e');return}
+            try{await b.commit();examTotalMarks[activeExam]=tm;toast(`${c} saved!`,'s');setTimeout(()=>loadAll().then(()=>onMonthChange()),500)}catch(e){toast('Failed','e')}
+        }
+
+        // ═══════════════════════════════════════
+        // BULK
+        // ═══════════════════════════════════════
         function openBulkModal(){openMod('bulkModal')}
         async function bulkUpload(){
-            const month=document.getElementById('bulkMonth').value,en=document.getElementById('bulkExamName').value.trim(),tm=parseInt(document.getElementById('bulkTotalMarks').value)||100,csv=document.getElementById('bulkCsv').value.trim();
-            if(!month||!en){toast('Select month & exam name','e');return}if(!csv){toast('Paste CSV','e');return}
-            const lines=csv.split('\n').filter(l=>l.trim()),b=db.batch();let count=0;
-            for(const line of lines){const parts=line.split(',');if(parts.length>=2){const rn=parts[0].trim(),marks=parseInt(parts[1])||0;const st=allStu.find(s=>String(s.rollNo)===rn);if(st){const pct=Math.round((marks/tm)*100);b.update(db.collection('students').doc(st.id),{[`testScores.${month}.${en}`]:{marks,total:tm,percentage:pct},updatedAt:firebase.firestore.FieldValue.serverTimestamp()});if(!st.testScores)st.testScores={};if(!st.testScores[month])st.testScores[month]={};st.testScores[month][en]={marks,total:tm,percentage:pct};count++}}}
-            if(!count){toast('No matches','e');return}
-            try{await b.commit();toast(`${count} uploaded!`,'s');closeMod('bulkModal');document.getElementById('bulkCsv').value='';document.getElementById('bulkExamName').value='';updateStats();if(curMonth===month){examList[en]=true;examTotalMarks[en]=tm;onMonthChange()}else loadAll()}catch(e){toast('Failed','e')}
+            const mo=document.getElementById('bulkMonth').value,en=document.getElementById('bulkExamName').value.trim(),tm=parseInt(document.getElementById('bulkTotalMarks').value)||100,csv=document.getElementById('bulkCsv').value.trim();
+            if(!mo||!en||!csv){toast('Fill all','e');return}
+            const lines=csv.split('\n').filter(l=>l.trim()),b=db.batch();let c=0;
+            for(const l of lines){const p=l.split(',');if(p.length>=2){const rn=p[0].trim(),m=parseInt(p[1])||0;const st=allStu.find(x=>String(x.rollNo)===rn);if(st){const pct=Math.round((m/tm)*100);b.update(db.collection('students').doc(st.id),{[`testScores.${mo}.${en}`]:{marks:m,total:tm,percentage:pct,answerSheet:''},updatedAt:firebase.firestore.FieldValue.serverTimestamp()});c++}}}
+            if(!c){toast('No matches','e');return}
+            try{await b.commit();toast(`${c} uploaded!`,'s');closeMod('bulkModal');document.getElementById('bulkCsv').value='';document.getElementById('bulkExamName').value='';if(curMonth===mo){examList[en]=true;examTotalMarks[en]=tm;onMonthChange()}else loadAll()}catch(e){toast('Failed','e')}
         }
 
-        function renderAnalytics(){renderExamCompChart();renderTrendChart();renderTopPerformers();renderNeedsAttention();}
-        function renderExamCompChart(){
-            const ctx=document.getElementById('examCompChart')?.getContext('2d');if(!ctx)return;const sm=document.getElementById('analyticMonth')?.value||'all';
-            const ea={},ec={};allStu.forEach(s=>{if(s.testScores){Object.entries(s.testScores).forEach(([month,exams])=>{if(sm==='all'||month===sm){if(typeof exams==='object'){Object.entries(exams).forEach(([en,data])=>{if(!ea[en]){ea[en]=0;ec[en]=0}const pct=typeof data==='object'?Number(data.percentage||0):Number(data);ea[en]+=pct;ec[en]++})}}})}});
-            const labels=Object.keys(ea),data=labels.map(l=>ec[l]?Math.round(ea[l]/ec[l]):0);
-            if(examCompCtx)examCompCtx.destroy();examCompCtx=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Avg %',data,backgroundColor:labels.map((_,i)=>`hsl(${i*40+140},65%,50%)`),borderRadius:9}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}}}}});
+        // ═══════════════════════════════════════
+        // ANALYTICS
+        // ═══════════════════════════════════════
+        function renderAnalytics(){renderExamComp();renderTrend();renderTop();renderWeak();}
+        function renderExamComp(){
+            const ctx=document.getElementById('examCompChart')?.getContext('2d');if(!ctx)return;
+            const sm=document.getElementById('analyticMonth')?.value||'all';const ea={},ec={};
+            allStu.forEach(s=>{if(s.testScores){Object.entries(s.testScores).forEach(([mo,exs])=>{if(sm==='all'||mo===sm){if(typeof exs==='object'){Object.entries(exs).forEach(([en,d])=>{if(!ea[en]){ea[en]=0;ec[en]=0}ea[en]+=typeof d==='object'?Number(d.percentage||0):Number(d);ec[en]++})}})}}});
+            const lb=Object.keys(ea),dt=lb.map(l=>ec[l]?Math.round(ea[l]/ec[l]):0);
+            if(examCompCtx)examCompCtx.destroy();examCompCtx=new Chart(ctx,{type:'bar',data:{labels:lb,datasets:[{label:'Avg %',data:dt,backgroundColor:lb.map((_,i)=>`hsl(${i*40+140},65%,50%)`),borderRadius:9}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100}}}});
         }
-        function renderTrendChart(){
-            const ctx=document.getElementById('trendChart')?.getContext('2d');if(!ctx)return;const cf=document.getElementById('trendClass')?.value||'all';
-            const md={};months.forEach(m=>{md[m]={sum:0,count:0}});allStu.forEach(s=>{if(cf==='all'||s.class===cf){if(s.testScores){Object.entries(s.testScores).forEach(([m,exams])=>{if(md[m]&&typeof exams==='object'){Object.values(exams).forEach(data=>{const pct=typeof data==='object'?Number(data.percentage||0):Number(data);md[m].sum+=pct;md[m].count++})}})}}});
-            const data=months.map(m=>md[m].count?Math.round(md[m].sum/md[m].count):null);
-            if(trendCtx)trendCtx.destroy();trendCtx=new Chart(ctx,{type:'line',data:{labels:months,datasets:[{label:'Avg %',data,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4,borderWidth:3,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}}}}});
+        function renderTrend(){
+            const ctx=document.getElementById('trendChart')?.getContext('2d');if(!ctx)return;
+            const cf=document.getElementById('trendClass')?.value||'all';const md={};months.forEach(m=>{md[m]={s:0,c:0}});
+            allStu.forEach(s=>{if(cf==='all'||s.class===cf){if(s.testScores){Object.entries(s.testScores).forEach(([m,exs])=>{if(md[m]&&typeof exs==='object'){Object.values(exs).forEach(d=>{md[m].s+=typeof d==='object'?Number(d.percentage||0):Number(d);md[m].c++})}})}}});
+            const dt=months.map(m=>md[m].c?Math.round(md[m].s/md[m].c):null);
+            if(trendCtx)trendCtx.destroy();trendCtx=new Chart(ctx,{type:'line',data:{labels:months,datasets:[{label:'Avg %',data:dt,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4,borderWidth:3,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100}}}});
         }
-        function renderTopPerformers(){
-            const c=document.getElementById('topPerformers'),ranked=[];allStu.forEach(s=>{if(s.testScores){const vals=[];Object.values(s.testScores).forEach(exams=>{if(typeof exams==='object')Object.values(exams).forEach(data=>vals.push(Number(typeof data==='object'?data.percentage:data)))});if(vals.length)ranked.push({name:s.name,rn:s.rollNo,cl:s.class,avg:Math.round(vals.reduce((a,b)=>a+b,0)/vals.length),cnt:vals.length})}});
-            ranked.sort((a,b)=>b.avg-a.avg);c.innerHTML=ranked.slice(0,15).map((s,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--g100)"><span style="font-size:16px;font-weight:800;color:${i<3?'#f59e0b':'var(--g400)'};width:24px">#${i+1}</span><div style="flex:1"><strong>${s.name}</strong><small style="color:var(--g400)"> R${s.rn} | C${s.cl}</small></div><span class="badge bg-g">${s.avg}%</span><div style="width:50px;height:5px;background:var(--g200);border-radius:10px;overflow:hidden"><div style="width:${s.avg}%;height:100%;background:#10b981;border-radius:10px"></div></div></div>`).join('')||'<p style="text-align:center;padding:20px;color:var(--g400)">No data</p>';
+        function renderTop(){
+            const c=document.getElementById('topPerformers'),rk=[];allStu.forEach(s=>{if(s.testScores){const v=[];Object.values(s.testScores).forEach(exs=>{if(typeof exs==='object')Object.values(exs).forEach(d=>v.push(Number(typeof d==='object'?d.percentage:d)))});if(v.length)rk.push({n:s.name,rn:s.rollNo,cl:s.class,avg:Math.round(v.reduce((a,b)=>a+b,0)/v.length)})}});
+            rk.sort((a,b)=>b.avg-a.avg);c.innerHTML=rk.slice(0,15).map((x,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--g100)"><span style="font-weight:800;color:${i<3?'#f59e0b':'var(--g400)'};width:22px">#${i+1}</span><div style="flex:1"><strong>${x.n}</strong><small style="color:var(--g400)"> R${x.rn}</small></div><span class="badge bg-g">${x.avg}%</span></div>`).join('')||'<p style="text-align:center;padding:20px;color:var(--g400)">No data</p>';
         }
-        function renderNeedsAttention(){
-            const c=document.getElementById('needsAttention'),weak=[];allStu.forEach(s=>{if(s.testScores){Object.entries(s.testScores).forEach(([m,exams])=>{if(typeof exams==='object'){Object.entries(exams).forEach(([en,data])=>{const pct=typeof data==='object'?Number(data.percentage):Number(data);if(pct<40)weak.push({name:s.name,rn:s.rollNo,cl:s.class,month:m,exam:en,pct})})}})}});
-            weak.sort((a,b)=>a.pct-b.pct);c.innerHTML=weak.length===0?'<p style="text-align:center;padding:20px;color:var(--g)">✅ All above 40%!</p>':weak.slice(0,15).map(s=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--g100)"><span>⚠️</span><div style="flex:1"><strong>${s.name}</strong><small style="color:var(--g400)"> R${s.rn} | ${s.month}-${s.exam}</small></div><span class="badge bg-d">${s.pct}%</span></div>`).join('');
+        function renderWeak(){
+            const c=document.getElementById('needsAttention'),wk=[];allStu.forEach(s=>{if(s.testScores){Object.entries(s.testScores).forEach(([m,exs])=>{if(typeof exs==='object'){Object.entries(exs).forEach(([en,d])=>{const pct=typeof d==='object'?Number(d.percentage):Number(d);if(pct<40)wk.push({n:s.name,rn:s.rollNo,m,en,pct})})}})}});
+            wk.sort((a,b)=>a.pct-b.pct);c.innerHTML=wk.length===0?'<p style="text-align:center;padding:20px;color:var(--g)">✅ All above 40%!</p>':wk.slice(0,15).map(x=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--g100)"><span>⚠️</span><div style="flex:1"><strong>${x.n}</strong><small style="color:var(--g400)"> ${x.m}-${x.en}</small></div><span class="badge bg-d">${x.pct}%</span></div>`).join('');
         }
 
         function logout(){localStorage.removeItem('thp_teacher');location.href='index.html'}
