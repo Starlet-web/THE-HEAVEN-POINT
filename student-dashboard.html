@@ -107,9 +107,6 @@
 
         .toast{position:fixed;bottom:30px;right:30px;background:var(--g900);color:white;padding:16px 24px;border-radius:12px;font-weight:600;z-index:2000;transform:translateX(120%);transition:var(--tr);box-shadow:var(--sh-xl);display:flex;align-items:center;gap:10px}.toast.show{transform:translateX(0)}.toast.success{background:var(--g)}.toast.error{background:var(--d)}.toast.info{background:var(--i)}
 
-        .load-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);backdrop-filter:blur(4px);z-index:3000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
-        .spinner-lg{width:60px;height:60px;border:5px solid var(--g200);border-top-color:var(--p);border-radius:50%;animation:spin 0.8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-
         .image-modal-content{text-align:center}.image-modal-content img{max-width:100%;max-height:70vh;border-radius:12px}
 
         @media(max-width:768px){.dashboard-grid{grid-template-columns:1fr}.profile-header{flex-direction:column;text-align:center}.profile-meta{justify-content:center}.stats-grid{grid-template-columns:repeat(2,1fr)}.navbar{flex-direction:column}.form-row{grid-template-columns:1fr}}
@@ -120,14 +117,12 @@
     <div class="bg-orbs"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div></div>
     <div id="particles-js"></div>
 
-    <div class="load-overlay" id="loadOverlay"><div class="spinner-lg"></div><p style="font-weight:600;color:var(--g700);">Loading dashboard...</p></div>
-
-    <div class="main-container">
+    <div class="main-container" id="mainContent" style="display:none">
         <nav class="navbar">
             <div class="nav-brand"><div class="nav-logo">🎓</div><span class="nav-title">THP Dashboard</span></div>
             <div class="nav-actions">
-                <button class="btn btn-outline btn-sm" onclick="openEditProfileModal()"><i class="fas fa-edit"></i> Edit</button>
-                <button class="btn btn-outline btn-sm" onclick="openChangePasswordModal()"><i class="fas fa-key"></i> Password</button>
+                <button class="btn btn-outline btn-sm" onclick="openMod('editProfileModal')"><i class="fas fa-edit"></i> Edit</button>
+                <button class="btn btn-outline btn-sm" onclick="openMod('changePasswordModal')"><i class="fas fa-key"></i> Password</button>
                 <button class="btn btn-primary btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
                 <button class="btn btn-danger btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
@@ -171,6 +166,12 @@
         </div>
     </div>
 
+    <div id="loadingMsg" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:9999">
+        <div style="width:50px;height:50px;border:5px solid #e5e7eb;border-top-color:#6366f1;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px"></div>
+        <p style="font-weight:600;color:#374151;font-family:Poppins,sans-serif">Loading your dashboard...</p>
+    </div>
+    @keyframes spin{to{transform:rotate(360deg)}}
+
     <!-- Edit Profile Modal -->
     <div class="modal-overlay" id="editProfileModal"><div class="modal"><div class="modal-header"><h2>✏️ Edit Profile</h2><button class="modal-close" onclick="closeMod('editProfileModal')">✕</button></div>
     <p style="font-size:12px;color:var(--g500);margin-bottom:16px;background:var(--g50);padding:10px;border-radius:8px">🔒 Name, Roll, Class, Phone are locked. Contact admin to change.</p>
@@ -207,18 +208,19 @@
         function logout(){localStorage.removeItem('thp_current_student');location.href='index.html'}
         document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')}));
 
-        // ═══════════════════════ INIT ═══════════════════════
+        function hideLoader(){const lm=document.getElementById('loadingMsg');if(lm)lm.style.display='none';const mc=document.getElementById('mainContent');if(mc)mc.style.display='block'}
+
         async function initDashboard(){
             const sd=localStorage.getItem('thp_current_student');
-            if(!sd){location.href='index.html';return}
+            if(!sd){hideLoader();location.href='index.html';return}
             currentStudent=JSON.parse(sd);
             try{
                 const doc=await db.collection('students').doc(String(currentStudent.rollNo)).get();
                 if(!doc.exists){toast('Student not found!','error');setTimeout(()=>{localStorage.removeItem('thp_current_student');location.href='index.html'},2000);return}
                 const data=doc.data();
                 populateProfile(data);calculateStats(data);renderCalendar(data);renderCharts(data);renderScoresTable(data);prefillEditForm(data);
-                document.getElementById('loadOverlay').style.display='none';
-            }catch(e){console.error(e);toast('Error loading','error');document.getElementById('loadOverlay').style.display='none'}
+                hideLoader();
+            }catch(e){hideLoader();toast('Error loading','error')}
         }
 
         function populateProfile(d){
@@ -250,8 +252,6 @@
             document.getElementById('presentDays').textContent=p;document.getElementById('absentDays').textContent=a;
             document.getElementById('presentRate').textContent=t>0?`${((p/t)*100).toFixed(1)}% rate`:'--';
             document.getElementById('absentRate').textContent=t>0?`${((a/t)*100).toFixed(1)}% rate`:'--';
-
-            // Calculate from nested testScores
             const ts=d.testScores||{};let all=[];
             Object.values(ts).forEach(md=>{if(typeof md==='object')Object.values(md).forEach(sc=>{const pct=typeof sc==='object'?Number(sc.percentage||0):Number(sc);if(!isNaN(pct))all.push(pct)})});
             if(all.length>0){document.getElementById('averageScore').textContent=Math.round(all.reduce((x,y)=>x+y,0)/all.length)+'%';document.getElementById('bestScore').textContent=Math.max(...all)+'%'}
@@ -273,11 +273,9 @@
             const sd=fmo.map(m=>{const md=ts[m];if(md&&typeof md==='object'){const v=Object.values(md).map(sc=>typeof sc==='object'?Number(sc.percentage||0):Number(sc)).filter(v=>!isNaN(v));if(v.length)return Math.round(v.reduce((a,b)=>a+b,0)/v.length)}return null});
             const c1=document.getElementById('scoresChart').getContext('2d');if(scoresChart)scoresChart.destroy();
             scoresChart=new Chart(c1,{type:'line',data:{labels:ml,datasets:[{label:'Avg %',data:sd,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.1)',borderWidth:3,fill:true,tension:0.4,pointRadius:6,pointBackgroundColor:'#6366f1',pointBorderColor:'white',pointBorderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}});
-
             const c2=document.getElementById('attendanceChart').getContext('2d'),pd=ml.map(()=>Math.floor(Math.random()*10)+15),ad=ml.map(()=>Math.floor(Math.random()*5));
             if(attendanceChart)attendanceChart.destroy();
             attendanceChart=new Chart(c2,{type:'bar',data:{labels:ml,datasets:[{label:'Present',data:pd,backgroundColor:'#10b981',borderRadius:8},{label:'Absent',data:ad,backgroundColor:'#ef4444',borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true},y:{stacked:true}}});
-
             const c3=document.getElementById('radarChart').getContext('2d');if(radarChart)radarChart.destroy();
             radarChart=new Chart(c3,{type:'radar',data:{labels:['Attendance','Scores','Discipline','Participation','Homework','Overall'],datasets:[{label:'Performance',data:[85,72,90,78,88,82],backgroundColor:'rgba(99,102,241,0.2)',borderColor:'#6366f1',borderWidth:3,pointBackgroundColor:'#6366f1'}]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20}}},plugins:{legend:{display:false}}});
         }
