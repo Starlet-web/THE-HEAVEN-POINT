@@ -12,54 +12,46 @@
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#f0f4ff,#e8ecf8,#f5f3ff);min-height:100vh;padding:20px;color:#1f2937}
         .container{max-width:1000px;margin:0 auto}
-        
-        .card{background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 8px 30px rgba(0,0,0,0.06);border:1px solid rgba(255,255,255,0.6)}
+        .card{background:rgba(255,255,255,0.9);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 8px 30px rgba(0,0,0,0.06);border:1px solid rgba(255,255,255,0.6)}
         h1{font-size:26px;font-weight:800}h2{font-size:17px;color:#6366f1;margin-bottom:14px}
         .badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-right:8px}
         .badge-roll{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#7c2d12}
         .badge-class{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white}
         .meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:#6b7280}
-        
         .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-        .chart-box{height:250px}canvas{width:100%!important;height:100%!important}
-        
+        .chart-box{height:250px;position:relative}
+        canvas{width:100%!important;height:100%!important}
         .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;font-size:11px}
         .cal-h{font-weight:700;color:#9ca3af;padding:4px 0}
-        .cal-d{padding:7px 3px;border-radius:6px;font-weight:600;cursor:default}
+        .cal-d{padding:7px 3px;border-radius:6px;font-weight:600}
         .cal-p{background:#10b981;color:white}.cal-a{background:#ef4444;color:white}.cal-t{border:2px solid #6366f1}
-        
         table{width:100%;border-collapse:collapse;font-size:13px}
         th{background:#f9fafb;padding:10px;text-align:left;font-weight:700;border-bottom:2px solid #e5e7eb;font-size:11px;text-transform:uppercase;color:#6b7280}
         td{padding:10px;border-bottom:1px solid #f3f4f6}
         .sc-h{color:#059669;font-weight:700}.sc-m{color:#d97706;font-weight:700}.sc-l{color:#dc2626;font-weight:700}
-        
         .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
         .stat-box{background:rgba(255,255,255,0.9);border-radius:16px;padding:16px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.04);border-top:3px solid #10b981}
         .stat-box.abs{border-top-color:#ef4444}.stat-box.avg{border-top-color:#f59e0b}.stat-box.best{border-top-color:#3b82f6}
         .stat-val{font-size:28px;font-weight:800}.stat-lbl{font-size:10px;color:#9ca3af;font-weight:600;text-transform:uppercase;margin-top:2px}
-        
-        .btn{background:#6366f1;color:white;border:none;padding:10px 20px;border-radius:10px;font-weight:600;cursor:pointer;font-family:inherit;font-size:13px;margin-right:8px}
-        .btn:hover{background:#4f46e5}.btn-o{background:white;color:#6366f1;border:2px solid #c7d2fe}.btn-o:hover{background:#6366f1;color:white}
-        
+        .btn{background:#6366f1;color:white;border:none;padding:10px 20px;border-radius:10px;font-weight:600;cursor:pointer;font-family:inherit;font-size:13px;margin-right:8px;margin-top:10px}
+        .btn:hover{background:#4f46e5}
         .load-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;z-index:999;font-weight:600;color:#6366f1;font-size:15px;flex-direction:column;gap:10px}
         .spinner{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#6366f1;border-radius:50%;animation:spin 0.7s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
-
+        .chart-error{display:none;text-align:center;padding:40px;color:#9ca3af}
         @media(max-width:768px){.grid-2{grid-template-columns:1fr}.stat-row{grid-template-columns:repeat(2,1fr)}}
     </style>
 </head>
 <body>
-    <div class="load-overlay" id="loader"><div class="spinner"></div>Loading...</div>
+    <div class="load-overlay" id="loader"><div class="spinner"></div><span id="loaderText">Loading...</span></div>
 
     <div class="container">
-        <!-- Profile -->
         <div class="card">
             <h1 id="stuName">---</h1>
             <div style="margin-top:6px"><span class="badge badge-roll" id="stuRoll">Roll --</span><span class="badge badge-class" id="stuClass">Class --</span></div>
             <div class="meta"><span>📱 <span id="stuPhone">--</span></span><span>📧 <span id="stuEmail">--</span></span></div>
         </div>
 
-        <!-- Stats -->
         <div class="stat-row">
             <div class="stat-box"><div class="stat-val" id="presentDays">0</div><div class="stat-lbl">Present</div></div>
             <div class="stat-box abs"><div class="stat-val" id="absentDays">0</div><div class="stat-lbl">Absent</div></div>
@@ -67,13 +59,18 @@
             <div class="stat-box best"><div class="stat-val" id="bestScore">0%</div><div class="stat-lbl">Best Score</div></div>
         </div>
 
-        <!-- Charts + Calendar -->
         <div class="grid-2">
-            <div class="card"><h2>📈 Scores Trend</h2><div class="chart-box"><canvas id="scoresChart"></canvas></div></div>
-            <div class="card"><h2>📅 Attendance <span id="calMonth" style="font-size:11px;color:#9ca3af;float:right"></span></h2><div class="cal-grid" id="calGrid"></div></div>
+            <div class="card">
+                <h2>📈 Scores Trend</h2>
+                <div class="chart-box"><canvas id="scoresChart"></canvas></div>
+                <div class="chart-error" id="chartError">Chart unavailable</div>
+            </div>
+            <div class="card">
+                <h2>📅 Attendance <span id="calMonth" style="font-size:11px;color:#9ca3af;float:right"></span></h2>
+                <div class="cal-grid" id="calGrid"></div>
+            </div>
         </div>
 
-        <!-- Scores Table -->
         <div class="card">
             <h2>📋 Test Scores</h2>
             <table><thead><tr><th>Month</th><th>Exam</th><th>Marks</th><th>%</th><th>Grade</th></tr></thead><tbody id="scoresBody"></tbody></table>
@@ -83,82 +80,165 @@
     </div>
 
     <script>
+        // Firebase init
         firebase.initializeApp({apiKey:"AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",authDomain:"dumbbell-gyme.firebaseapp.com",projectId:"dumbbell-gyme",storageBucket:"dumbbell-gyme.firebasestorage.app",messagingSenderId:"305021976299",appId:"1:305021976299:web:fb85c2b332935d698088ae"});
         const db=firebase.firestore();
         let scoresChart=null;
 
+        // Auth check
         const sd=localStorage.getItem('thp_current_student');
-        if(!sd){location.href='index.html'}
+        if(!sd){window.location.href='index.html'}
         const cur=JSON.parse(sd);
 
+        // Force hide loader after 4 seconds max
+        setTimeout(function(){
+            var l=document.getElementById('loader');
+            if(l&&l.style.display!=='none'){l.style.display='none';console.log('Loader force hidden');}
+        },4000);
+
         async function load(){
+            var loader=document.getElementById('loader');
+            var loaderText=document.getElementById('loaderText');
+            
             try{
-                const doc=await db.collection('students').doc(String(cur.rollNo)).get();
-                if(!doc.exists){document.getElementById('loader').textContent='Not found!';return}
-                const d=doc.data();
+                loaderText.textContent='Fetching data...';
+                var doc=await db.collection('students').doc(String(cur.rollNo)).get();
+                
+                if(!doc.exists){
+                    loaderText.textContent='Student not found!';
+                    return;
+                }
+                
+                var d=doc.data();
+                loaderText.textContent='Rendering...';
 
                 // Profile
-                document.getElementById('stuName').textContent=d.name;
-                document.getElementById('stuRoll').textContent='Roll '+d.rollNo;
-                document.getElementById('stuClass').textContent='Class '+d.class;
+                document.getElementById('stuName').textContent=d.name||'---';
+                document.getElementById('stuRoll').textContent='Roll '+(d.rollNo||'--');
+                document.getElementById('stuClass').textContent='Class '+(d.class||'--');
                 document.getElementById('stuPhone').textContent=d.phone||'--';
                 document.getElementById('stuEmail').textContent=d.email||'--';
 
-                // Attendance Stats
-                const att=d.attendance||{};let p=0,a=0;
-                Object.values(att).forEach(v=>{if(v==='present')p++;else a++;});
+                // Attendance
+                var att=d.attendance||{},p=0,a=0;
+                for(var k in att){if(att[k]==='present')p++;else a++;}
                 document.getElementById('presentDays').textContent=p;
                 document.getElementById('absentDays').textContent=a;
 
                 // Calendar
-                const now=new Date(),m=now.getMonth(),y=now.getFullYear();
-                const monNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                var now=new Date(),m=now.getMonth(),y=now.getFullYear();
+                var monNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
                 document.getElementById('calMonth').textContent=monNames[m]+' '+y;
-                const dim=new Date(y,m+1,0).getDate(),fd=new Date(y,m,1).getDay();
-                let cal='';'SMTWTFS'.split('').forEach(dd=>cal+=`<div class="cal-h">${dd}</div>`);
-                for(let i=0;i<fd;i++)cal+='<div></div>';
-                for(let d=1;d<=dim;d++){const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,st=att[ds];let cls='cal-d';if(st==='present')cls+=' cal-p';else if(st==='absent')cls+=' cal-a';if(d===now.getDate())cls+=' cal-t';cal+=`<div class="${cls}">${d}</div>`}
+                var dim=new Date(y,m+1,0).getDate(),fd=new Date(y,m,1).getDay();
+                var cal='';
+                var days=['S','M','T','W','T','F','S'];
+                for(var i=0;i<7;i++)cal+='<div class="cal-h">'+days[i]+'</div>';
+                for(var i=0;i<fd;i++)cal+='<div></div>';
+                for(var d=1;d<=dim;d++){
+                    var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+                    var st=att[ds],cls='cal-d';
+                    if(st==='present')cls+=' cal-p';
+                    else if(st==='absent')cls+=' cal-a';
+                    if(d===now.getDate())cls+=' cal-t';
+                    cal+='<div class="'+cls+'">'+d+'</div>';
+                }
                 document.getElementById('calGrid').innerHTML=cal;
 
-                // Scores Data
-                const ts=d.testScores||{};
-                const months=['March','April','May','June','July','August','September','October','November','December','January','February'];
-                let allP=[],html='',totS=0,totC=0;
+                // Scores
+                var ts=d.testScores||{};
+                var months=['March','April','May','June','July','August','September','October','November','December','January','February'];
+                var allP=[],html='',totS=0,totC=0;
 
-                months.forEach(mo=>{
-                    const md=ts[mo];
-                    if(md&&typeof md==='object'&&Object.keys(md).length>0){
-                        let ms=0,mc=0;
-                        html+=`<tr style="background:#f0f4ff"><td colspan="5"><strong>📅 ${mo}</strong></td></tr>`;
-                        Object.entries(md).forEach(([en,ed])=>{
-                            let mr='-',tt='-',pct='-',g='-',cl='';
-                            if(typeof ed==='object'){mr=ed.marks!==undefined?ed.marks:'-';tt=ed.total!==undefined?ed.total:'-';pct=ed.percentage!==undefined?ed.percentage:'-'}
-                            else if(typeof ed==='number'){pct=ed;mr=ed;tt=100}
-                            if(pct!=='-'){const pv=Number(pct);allP.push(pv);if(pv>=75){cl='sc-h';g='A'}else if(pv>=40){cl='sc-m';g='C'}else{cl='sc-l';g='F'}ms+=pv;mc++}
-                            html+=`<tr><td></td><td>📝 ${en}</td><td>${mr}/${tt}</td><td class="${cl}">${pct}%</td><td><strong>${g}</strong></td></tr>`;
-                        });
-                        if(mc){const mA=Math.round(ms/mc);html+=`<tr style="background:#fef3c7"><td></td><td><strong>📊 ${mo} Avg</strong></td><td></td><td class="sc-h"><strong>${mA}%</strong></td><td>${mc} exams</td></tr>`;totS+=ms;totC+=mc}
+                for(var mi=0;mi<months.length;mi++){
+                    var mo=months[mi],md=ts[mo];
+                    if(md&&typeof md==='object'){
+                        var keys=Object.keys(md);
+                        if(keys.length>0){
+                            var ms=0,mc=0;
+                            html+='<tr style="background:#f0f4ff"><td colspan="5"><strong>📅 '+mo+'</strong></td></tr>';
+                            for(var ei=0;ei<keys.length;ei++){
+                                var en=keys[ei],ed=md[en];
+                                var mr='-',tt='-',pct='-',g='-',cl='';
+                                if(typeof ed==='object'){
+                                    mr=(ed.marks!==undefined)?ed.marks:'-';
+                                    tt=(ed.total!==undefined)?ed.total:'-';
+                                    pct=(ed.percentage!==undefined)?ed.percentage:'-';
+                                }else if(typeof ed==='number'){
+                                    pct=ed;mr=ed;tt=100;
+                                }
+                                if(pct!=='-'){
+                                    var pv=Number(pct);
+                                    allP.push(pv);
+                                    if(pv>=75){cl='sc-h';g='A';}
+                                    else if(pv>=40){cl='sc-m';g='C';}
+                                    else{cl='sc-l';g='F';}
+                                    ms+=pv;mc++;
+                                }
+                                html+='<tr><td></td><td>📝 '+en+'</td><td>'+mr+'/'+tt+'</td><td class="'+cl+'">'+pct+'%</td><td><strong>'+g+'</strong></td></tr>';
+                            }
+                            if(mc>0){
+                                var mA=Math.round(ms/mc);
+                                html+='<tr style="background:#fef3c7"><td></td><td><strong>📊 '+mo+' Avg</strong></td><td></td><td class="sc-h"><strong>'+mA+'%</strong></td><td>'+mc+' exams</td></tr>';
+                                totS+=ms;totC+=mc;
+                            }
+                        }
                     }
-                });
-                if(totC)html=`<tr style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white"><td colspan="2"><strong>🏆 OVERALL</strong></td><td></td><td><strong style="font-size:15px">${Math.round(totS/totC)}%</strong></td><td>${totC} exams</td></tr>`+html;
-                document.getElementById('scoresBody').innerHTML=html||'<tr><td colspan="5">No scores yet</td></tr>';
+                }
+                if(totC>0){
+                    html='<tr style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white"><td colspan="2"><strong>🏆 OVERALL</strong></td><td></td><td><strong style="font-size:15px">'+Math.round(totS/totC)+'%</strong></td><td>'+totC+' exams</td></tr>'+html;
+                }
+                document.getElementById('scoresBody').innerHTML=html||'<tr><td colspan="5" style="text-align:center;padding:20px;color:#9ca3af">No test scores yet</td></tr>';
                 
-                if(allP.length){document.getElementById('avgScore').textContent=Math.round(allP.reduce((x,y)=>x+y,0)/allP.length)+'%';document.getElementById('bestScore').textContent=Math.max(...allP)+'%'}
-
-                // Chart
-                const ctx=document.getElementById('scoresChart')?.getContext('2d');
-                if(ctx){
-                    const chLabels=['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
-                    const chData=months.map(mo=>{const md=ts[mo];if(md&&typeof md==='object'){const pcts=[];Object.values(md).forEach(ed=>{if(typeof ed==='object'&&ed.percentage!==undefined)pcts.push(Number(ed.percentage));else if(typeof ed==='number')pcts.push(ed)});if(pcts.length)return Math.round(pcts.reduce((a,b)=>a+b,0)/pcts.length)}return null});
-                    if(scoresChart)scoresChart.destroy();
-                    scoresChart=new Chart(ctx,{type:'line',data:{labels:chLabels,datasets:[{label:'Avg %',data:chData,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.06)',borderWidth:3,fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#6366f1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100}}});
+                if(allP.length>0){
+                    document.getElementById('avgScore').textContent=Math.round(allP.reduce(function(x,y){return x+y},0)/allP.length)+'%';
+                    document.getElementById('bestScore').textContent=Math.max.apply(null,allP)+'%';
                 }
 
-                document.getElementById('loader').style.display='none';
-            }catch(e){document.getElementById('loader').textContent='Error: '+e.message}
+                // Chart - Safe version
+                try{
+                    var ctx=document.getElementById('scoresChart');
+                    if(ctx){
+                        ctx=ctx.getContext('2d');
+                        var chLabels=['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
+                        var chData=[];
+                        for(var mi=0;mi<months.length;mi++){
+                            var md=ts[months[mi]];
+                            if(md&&typeof md==='object'){
+                                var pcts=[];
+                                var vals=Object.values(md);
+                                for(var vi=0;vi<vals.length;vi++){
+                                    var ed=vals[vi];
+                                    if(typeof ed==='object'&&ed.percentage!==undefined)pcts.push(Number(ed.percentage));
+                                    else if(typeof ed==='number')pcts.push(ed);
+                                }
+                                chData.push(pcts.length>0?Math.round(pcts.reduce(function(a,b){return a+b},0)/pcts.length):null);
+                            }else{chData.push(null);}
+                        }
+                        if(scoresChart){try{scoresChart.destroy();}catch(e){}}
+                        scoresChart=new Chart(ctx,{
+                            type:'line',
+                            data:{labels:chLabels,datasets:[{label:'Avg %',data:chData,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.05)',borderWidth:3,fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#6366f1'}]},
+                            options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100}}}
+                        });
+                    }
+                }catch(chartErr){
+                    console.log('Chart skipped');
+                    document.getElementById('chartError').style.display='block';
+                }
+
+                // Success - hide loader
+                loader.style.display='none';
+                
+            }catch(e){
+                console.error(e);
+                loaderText.textContent='Error: '+e.message;
+                setTimeout(function(){loader.style.display='none';},2000);
+            }
         }
 
-        function logout(){localStorage.removeItem('thp_current_student');location.href='index.html'}
+        function logout(){localStorage.removeItem('thp_current_student');window.location.href='index.html';}
+        
+        // Start loading
         load();
     </script>
 </body>
