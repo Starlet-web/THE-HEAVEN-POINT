@@ -3,292 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard - THP Portal</title>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
-    </script><script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js">
-    </script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js">
-    </script><script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js">
-    </script><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+    <title>Student Dashboard - THP</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root{--p:#6366f1;--pd:#4f46e5;--pl:#a5b4fc;--s:#f43f5e;--a:#8b5cf6;--g:#10b981;--w:#f59e0b;--d:#ef4444;--i:#3b82f6;--dk:#0f172a;--lt:#f8fafc;--wt:#fff;--g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;--g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g800:#1f2937;--g900:#111827;--glass:rgba(255,255,255,0.94);--sh-sm:0 1px 2px rgba(0,0,0,0.04);--sh:0 4px 6px rgba(0,0,0,0.05);--sh-md:0 10px 25px rgba(0,0,0,0.08);--sh-lg:0 20px 50px rgba(0,0,0,0.12);--sh-xl:0 30px 60px rgba(0,0,0,0.18);--sh-glow:0 0 40px rgba(99,102,241,0.3);--r-sm:8px;--r:12px;--r-lg:16px;--r-xl:20px;--r-2xl:24px;--tr:all 0.3s ease}
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#f0f4ff 0%,#e8ecf8 25%,#f5f3ff 50%,#fdf2f8 75%,#f0f9ff 100%);background-attachment:fixed;min-height:100vh;overflow-x:hidden;color:var(--g800)}
-        ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:var(--g100);border-radius:10px}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--p),var(--a));border-radius:10px}
-        #particles-js{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-        .bg-orbs{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-        .bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.3;animation:orbFloat 25s infinite ease-in-out}
-        .bg-orb-1{width:500px;height:500px;background:radial-gradient(circle,rgba(99,102,241,0.4),transparent);top:-10%;right:-5%}
-        .bg-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,0.3),transparent);bottom:-10%;left:-5%;animation-delay:-8s}
-        .bg-orb-3{width:350px;height:350px;background:radial-gradient(circle,rgba(244,63,94,0.2),transparent);top:40%;right:30%;animation-delay:-16s}
-        @keyframes orbFloat{0%,100%{transform:translate(0,0)scale(1)rotate(0deg)}25%{transform:translate(80px,-60px)scale(1.2)rotate(90deg)}50%{transform:translate(-40px,80px)scale(0.8)rotate(180deg)}75%{transform:translate(-80px,-40px)scale(1.1)rotate(270deg)}}
-        .main-container{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:20px}
-
-        .navbar{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-2xl);padding:16px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,0.6);animation:slideDown 0.6s ease-out}
-        @keyframes slideDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
-        .nav-brand{display:flex;align-items:center;gap:12px}
-        .nav-logo{width:48px;height:48px;background:linear-gradient(135deg,var(--p),var(--a));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:var(--sh-glow);animation:logoPulse 3s infinite}
-        @keyframes logoPulse{0%,100%{box-shadow:0 0 30px rgba(99,102,241,0.4)}50%{box-shadow:0 0 60px rgba(99,102,241,0.8)}}
-        .nav-title{font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .nav-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-
-        .btn{padding:10px 20px;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;transition:var(--tr);border:none;display:flex;align-items:center;gap:8px;font-family:inherit;white-space:nowrap}
-        .btn-p{background:linear-gradient(135deg,var(--p),var(--a));color:white;box-shadow:0 4px 15px rgba(99,102,241,0.3)}.btn-p:hover{transform:translateY(-2px)}
-        .btn-o{background:white;color:var(--p);border:2px solid var(--pl)}.btn-o:hover{background:var(--p);color:white;transform:translateY(-2px)}
-        .btn-d{background:linear-gradient(135deg,var(--d),#dc2626);color:white}.btn-sm{padding:6px 14px;font-size:12px;border-radius:8px}
-
-        .profile-header{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-2xl);padding:30px;margin-bottom:24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,0.6);animation:fadeInUp 0.8s ease-out}
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        .profile-avatar-container{position:relative;flex-shrink:0}
-        .profile-avatar{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,var(--pl),var(--a));display:flex;align-items:center;justify-content:center;font-size:52px;color:white;font-weight:700;overflow:hidden;box-shadow:var(--sh-xl);cursor:pointer;transition:var(--tr)}
-        .profile-avatar:hover{transform:scale(1.05)}.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-        .avatar-upload-overlay{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:white;text-align:center;padding:8px;font-size:11px;cursor:pointer;transition:var(--tr);opacity:0}.profile-avatar:hover .avatar-upload-overlay{opacity:1}
-        .online-indicator{position:absolute;bottom:10px;right:10px;width:22px;height:22px;background:var(--g);border-radius:50%;border:3px solid white;animation:onlinePulse 2s infinite}
-        @keyframes onlinePulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.6)}50%{box-shadow:0 0 0 18px rgba(16,185,129,0)}}
-        .profile-info{flex:1;min-width:200px}.profile-name{font-size:28px;font-weight:800;color:var(--g900);margin-bottom:4px}
-        .profile-roll-badge{display:inline-block;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#7c2d12;padding:6px 16px;border-radius:20px;font-size:14px;font-weight:700;margin-right:8px;margin-bottom:8px;box-shadow:0 4px 12px rgba(245,158,11,0.3)}
-        .profile-class-badge{display:inline-block;background:linear-gradient(135deg,var(--p),var(--a));color:white;padding:6px 16px;border-radius:20px;font-size:14px;font-weight:600;margin-bottom:8px;box-shadow:0 4px 12px rgba(99,102,241,0.3)}
-        .profile-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}.meta-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--g600)}.meta-item i{color:var(--p);font-size:14px}
-        .meta-item.locked{color:var(--g400)}.meta-item.locked i{color:var(--g400)}
-        .locked-badge{display:inline-block;background:var(--g100);color:var(--g500);padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;margin-left:4px;border:1px solid var(--g300)}
-
-        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
-        .stat-card{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);padding:18px;box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.6);transition:var(--tr);position:relative;overflow:hidden}
-        .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;border-radius:4px 4px 0 0}
-        .st-present::before{background:var(--g)}.st-absent::before{background:var(--d)}.st-average::before{background:var(--w)}.st-total::before{background:var(--i)}
-        .stat-card:hover{transform:translateY(-4px);box-shadow:var(--sh-xl)}
-        .stat-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px}
-        .st-present .stat-ico{background:rgba(16,185,129,0.1);color:var(--g)}.st-absent .stat-ico{background:rgba(239,68,68,0.1);color:var(--d)}
-        .st-average .stat-ico{background:rgba(245,158,11,0.1);color:var(--w)}.st-total .stat-ico{background:rgba(59,130,246,0.1);color:var(--i)}
-        .stat-val{font-size:28px;font-weight:800;color:var(--g900);line-height:1}.stat-lbl{font-size:12px;color:var(--g500);margin-top:2px;font-weight:500}
-
-        .dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:18px;margin-bottom:24px}
-        .card{background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);padding:20px;box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.6)}.card:hover{box-shadow:var(--sh-lg)}
-        .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
-        .card-title{font-size:16px;font-weight:700;color:var(--g900)}.card-title i{color:var(--p)}
-        .chart-box{position:relative;width:100%;height:280px}canvas{width:100%!important;height:100%!important}
-
-        .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
-        .cal-day-h{font-size:10px;font-weight:700;color:var(--g500);padding:6px 0;text-transform:uppercase}
-        .cal-day{padding:8px 3px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer}.cal-day:hover{transform:scale(1.1)}
-        .cal-p{background:linear-gradient(135deg,#10b981,#34d399);color:white}.cal-a{background:linear-gradient(135deg,#ef4444,#f87171);color:white}
-        .cal-today{border:2px solid var(--p)}.cal-empty{cursor:default}
-
-        .scores-table{width:100%;border-collapse:collapse}
-        .scores-table th,.scores-table td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--g200);font-size:11px}
-        .scores-table th{background:var(--g50);font-weight:700;color:var(--g700);font-size:10px;text-transform:uppercase}
-        .score-badge{padding:3px 9px;border-radius:10px;font-weight:700;font-size:12px;display:inline-block}
-        .sc-high{background:rgba(16,185,129,0.1);color:#059669}.sc-mid{background:rgba(245,158,11,0.1);color:#d97706}.sc-low{background:rgba(239,68,68,0.1);color:#dc2626}
-
-        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:var(--tr)}.modal-overlay.active{opacity:1;visibility:visible}
-        .modal{background:white;border-radius:var(--r-2xl);padding:26px;width:90%;max-width:580px;max-height:82vh;overflow-y:auto;box-shadow:var(--sh-xl);transform:scale(0.9);transition:var(--tr)}.modal-overlay.active .modal{transform:scale(1)}
-        .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--g100)}
-        .modal-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--g100);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}.modal-close:hover{background:var(--d);color:white}
-        .form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:700;color:var(--g700);margin-bottom:4px}
-        .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:2px solid var(--g200);border-radius:10px;font-size:13px;font-family:inherit;background:var(--g50)}.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--p)}
-        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .locked-field{background:var(--g100)!important;color:var(--g500)!important;cursor:not-allowed!important}
-
-        .toast{position:fixed;bottom:24px;right:24px;background:var(--g900);color:white;padding:14px 20px;border-radius:10px;font-weight:600;z-index:2000;transform:translateX(120%);transition:var(--tr);box-shadow:var(--sh-xl);display:flex;align-items:center;gap:8px;font-size:13px}.toast.show{transform:translateX(0)}.toast.s{background:var(--g)}.toast.e{background:var(--d)}
-
-        .load-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.85);backdrop-filter:blur(4px);z-index:3000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
-        .load-spinner{width:50px;height:50px;border:5px solid var(--g200);border-top-color:var(--p);border-radius:50%;animation:spin 0.7s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-
-        @media(max-width:768px){.dashboard-grid{grid-template-columns:1fr}.profile-header{flex-direction:column;text-align:center}.navbar{flex-direction:column}.form-row{grid-template-columns:1fr}}
+        body{font-family:'Poppins',sans-serif;background:#f0f4ff;padding:20px}
+        .card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,0.06)}
+        h1{font-size:24px;color:#1f2937}h2{font-size:16px;color:#6366f1;margin-bottom:12px}
+        .badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;margin-right:8px}
+        .badge-roll{background:#fef3c7;color:#92400e}.badge-class{background:#e0e7ff;color:#4338ca}
+        table{width:100%;border-collapse:collapse;font-size:13px}
+        th{background:#f9fafb;padding:10px;text-align:left;font-weight:700;border-bottom:2px solid #e5e7eb}
+        td{padding:10px;border-bottom:1px solid #f3f4f6}
+        .sc-high{color:#059669;font-weight:700}.sc-mid{color:#d97706;font-weight:700}.sc-low{color:#dc2626;font-weight:700}
+        button{background:#6366f1;color:white;border:none;padding:10px 20px;border-radius:10px;font-weight:600;cursor:pointer;font-family:inherit;font-size:14px}
+        button:hover{background:#4f46e5}
+        .load-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;z-index:999;font-weight:600;color:#6366f1;font-size:16px}
     </style>
 </head>
 <body>
-    <div class="bg-orbs"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div></div>
-    <div id="particles-js"></div>
+    <div class="load-overlay" id="loader">⏳ Loading...</div>
 
-    <div class="load-overlay" id="loadOverlay">
-        <div class="load-spinner"></div>
-        <p style="font-weight:600;color:var(--g700);" id="loadMsg">Loading dashboard...</p>
+    <div class="card">
+        <h1 id="stuName">---</h1>
+        <div style="margin-top:8px">
+            <span class="badge badge-roll" id="stuRoll">Roll --</span>
+            <span class="badge badge-class" id="stuClass">Class --</span>
+        </div>
+        <p style="margin-top:8px;color:#6b7280">📱 <span id="stuPhone">--</span> | 📧 <span id="stuEmail">--</span></p>
     </div>
 
-    <div class="main-container">
-        <nav class="navbar">
-            <div class="nav-brand"><div class="nav-logo">🎓</div><span class="nav-title">THP Dashboard</span></div>
-            <div class="nav-actions">
-                <button class="btn btn-o btn-sm" onclick="openEditProfileModal()"><i class="fas fa-edit"></i> Edit</button>
-                <button class="btn btn-o btn-sm" onclick="openChangePasswordModal()"><i class="fas fa-key"></i> Password</button>
-                <button class="btn btn-d btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-            </div>
-        </nav>
-
-        <div class="profile-header">
-            <div class="profile-avatar-container">
-                <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('photoUpload').click()">
-                    <span id="avatarInitial">S</span>
-                    <div class="avatar-upload-overlay">📷 Change</div>
-                </div>
-                <div class="online-indicator"></div>
-                <input type="file" id="photoUpload" accept="image/*" style="display:none" onchange="uploadProfilePhoto(event)">
-            </div>
-            <div class="profile-info">
-                <h1 class="profile-name" id="studentName">---</h1>
-                <div><span class="profile-roll-badge" id="studentRoll">Roll --</span><span class="profile-class-badge" id="studentClass">Class --</span></div>
-                <div class="profile-meta">
-                    <span class="meta-item locked"><i class="fas fa-phone"></i> <span id="studentPhone">--</span><span class="locked-badge">Locked</span></span>
-                    <span class="meta-item"><i class="fas fa-envelope"></i> <span id="studentEmail">--</span></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card st-present"><div class="stat-ico"><i class="fas fa-check-circle"></i></div><div class="stat-val" id="presentDays">0</div><div class="stat-lbl">Days Present</div></div>
-            <div class="stat-card st-absent"><div class="stat-ico"><i class="fas fa-times-circle"></i></div><div class="stat-val" id="absentDays">0</div><div class="stat-lbl">Days Absent</div></div>
-            <div class="stat-card st-average"><div class="stat-ico"><i class="fas fa-chart-line"></i></div><div class="stat-val" id="averageScore">0%</div><div class="stat-lbl">Avg Score</div></div>
-            <div class="stat-card st-total"><div class="stat-ico"><i class="fas fa-trophy"></i></div><div class="stat-val" id="bestScore">0%</div><div class="stat-lbl">Best Score</div></div>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-calendar-check"></i> Attendance</h3><span id="currentMonth" style="font-size:12px;color:var(--g500)"></span></div><div class="cal-grid" id="calendarGrid"></div></div>
-            <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-bar"></i> Scores</h3></div><div class="chart-box"><canvas id="scoresChart"></canvas></div></div>
-        </div>
-
-        <div class="card">
-            <div class="card-head"><h3 class="card-title"><i class="fas fa-table"></i> Test Scores</h3></div>
-            <div style="overflow-x:auto"><table class="scores-table"><thead><tr><th>Month/Exam</th><th>Score</th><th>Grade</th><th>Performance</th></tr></thead><tbody id="scoresTableBody"></tbody></table></div>
-        </div>
+    <div class="card">
+        <h2>📊 Test Scores</h2>
+        <table>
+            <thead><tr><th>Month</th><th>Exam</th><th>Marks</th><th>%</th><th>Grade</th></tr></thead>
+            <tbody id="scoresBody"><tr><td colspan="5">Loading...</td></tr></tbody>
+        </table>
     </div>
 
-    <!-- Edit Profile Modal -->
-    <div class="modal-overlay" id="editProfileModal"><div class="modal"><div class="modal-head"><h2>✏️ Edit Profile</h2><button class="modal-close" onclick="closeMod('editProfileModal')">✕</button></div><p style="font-size:11px;color:var(--g500);margin-bottom:14px;background:var(--g50);padding:8px 12px;border-radius:8px">🔒 Name, Roll, Class, Phone are locked.</p><form id="editProfileForm"><div class="form-row"><div class="form-group"><label>Roll No</label><input type="text" id="displayRollNo" class="locked-field" disabled></div><div class="form-group"><label>Name</label><input type="text" id="displayName" class="locked-field" disabled></div></div><div class="form-row"><div class="form-group"><label>Class</label><input type="text" id="displayClass" class="locked-field" disabled></div><div class="form-group"><label>Phone</label><input type="text" id="displayPhone" class="locked-field" disabled></div></div><hr style="margin:12px 0"><div class="form-row"><div class="form-group"><label>📧 Email</label><input type="email" id="editEmail"></div><div class="form-group"><label>🎂 DOB</label><input type="date" id="editDOB"></div></div><div class="form-group"><label>📍 Address</label><textarea id="editAddress" rows="2"></textarea></div><div class="form-row"><div class="form-group"><label>👨 Father</label><input type="text" id="editFather"></div><div class="form-group"><label>👩 Mother</label><input type="text" id="editMother"></div></div><button type="submit" class="btn btn-p" style="width:100%">Save</button></form></div></div>
+    <div class="card">
+        <h2>📅 Attendance</h2>
+        <p>✅ Present: <strong id="presentDays">0</strong> days</p>
+        <p>❌ Absent: <strong id="absentDays">0</strong> days</p>
+    </div>
 
-    <!-- Password Modal -->
-    <div class="modal-overlay" id="changePasswordModal"><div class="modal"><div class="modal-head"><h2>🔒 Password</h2><button class="modal-close" onclick="closeMod('changePasswordModal')">✕</button></div><form id="changePasswordForm"><div class="form-group"><label>Current</label><input type="password" id="currentPassword" required></div><div class="form-group"><label>New</label><input type="password" id="newPassword" required minlength="8"></div><div class="form-group"><label>Confirm</label><input type="password" id="confirmPassword" required></div><button type="submit" class="btn btn-p" style="width:100%">Update</button></form></div></div>
-
-    <div class="toast" id="toast"></div>
+    <button onclick="logout()">🚪 Logout</button>
 
     <script>
-        // ═══════════════════════════════════════
-        // FIREBASE
-        // ═══════════════════════════════════════
         firebase.initializeApp({apiKey:"AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",authDomain:"dumbbell-gyme.firebaseapp.com",projectId:"dumbbell-gyme",storageBucket:"dumbbell-gyme.firebasestorage.app",messagingSenderId:"305021976299",appId:"1:305021976299:web:fb85c2b332935d698088ae"});
-        const db=firebase.firestore(),IMGBB_KEY='53fb01955a45c5462724b8f7d238500a';
-        let curStu=null,scoresChart=null;
+        const db=firebase.firestore();
 
-        particlesJS('particles-js',{particles:{number:{value:40},color:{value:'#6366f1'},opacity:{value:0.15},size:{value:2},line_linked:{enable:true,distance:140,color:'#6366f1',opacity:0.08},move:{enable:true,speed:1}},interactivity:{events:{onhover:{enable:true,mode:'grab'}}},retina_detect:true});
+        const sd=localStorage.getItem('thp_current_student');
+        if(!sd){location.href='index.html'}
+        const cur=JSON.parse(sd);
 
-        // ═══════════════════════════════════════
-        // HELPERS
-        // ═══════════════════════════════════════
-        function toast(m,t='s'){const el=document.getElementById('toast');el.textContent=m;el.className=`toast ${t} show`;setTimeout(()=>el.classList.remove('show'),2500)}
-        function openMod(id){document.getElementById(id).classList.add('active')}
-        function closeMod(id){document.getElementById(id).classList.remove('active')}
-        document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')}));
-        function logout(){localStorage.removeItem('thp_current_student');location.href='index.html'}
-
-        // ═══════════════════════════════════════
-        // MAIN INIT - FIXED
-        // ═══════════════════════════════════════
-        async function initDash(){
-            const sd=localStorage.getItem('thp_current_student');
-            if(!sd){location.href='index.html';return}
-            curStu=JSON.parse(sd);
-            
-            // Force hide loading after 4 sec
-            const overlay=document.getElementById('loadOverlay');
-            setTimeout(()=>{if(overlay)overlay.style.display='none'},4000);
-
+        async function load(){
             try{
-                document.getElementById('loadMsg').textContent='Fetching data...';
-                const doc=await db.collection('students').doc(String(curStu.rollNo)).get();
-                
-                if(!doc.exists){
-                    document.getElementById('loadMsg').textContent='Student not found!';
-                    toast('Student not found!','e');
-                    overlay.style.display='none';
-                    setTimeout(()=>location.href='index.html',2000);
-                    return;
-                }
-
+                const doc=await db.collection('students').doc(String(cur.rollNo)).get();
+                if(!doc.exists){document.getElementById('loader').textContent='Student not found!';return}
                 const d=doc.data();
-                console.log('✅ Loaded:',d.name);
-                
-                // Populate
-                document.getElementById('studentName').textContent=d.name||'---';
-                document.getElementById('studentRoll').textContent='Roll '+d.rollNo;
-                document.getElementById('studentClass').textContent='Class '+d.class;
-                document.getElementById('studentPhone').textContent=d.phone||'--';
-                document.getElementById('studentEmail').textContent=d.email||'--';
-                
-                const av=document.getElementById('profileAvatar');
-                if(d.profilePhoto)av.innerHTML=`<img src="${d.profilePhoto}"><div class="avatar-upload-overlay">📷 Change</div>`;
-                else document.getElementById('avatarInitial').textContent=(d.name||'S')[0].toUpperCase();
 
-                // Prefill edit form
-                document.getElementById('displayRollNo').value=d.rollNo||'';
-                document.getElementById('displayName').value=d.name||'';
-                document.getElementById('displayClass').value=d.class||'';
-                document.getElementById('displayPhone').value=d.phone||'';
-                document.getElementById('editEmail').value=d.email||'';
-                document.getElementById('editDOB').value=d.dateOfBirth||'';
-                document.getElementById('editAddress').value=d.address||'';
-                document.getElementById('editFather').value=d.fatherName||'';
-                document.getElementById('editMother').value=d.motherName||'';
+                document.getElementById('stuName').textContent=d.name;
+                document.getElementById('stuRoll').textContent='Roll '+d.rollNo;
+                document.getElementById('stuClass').textContent='Class '+d.class;
+                document.getElementById('stuPhone').textContent=d.phone||'--';
+                document.getElementById('stuEmail').textContent=d.email||'--';
 
-                // Stats
+                // Attendance
                 const att=d.attendance||{};let p=0,a=0;
                 Object.values(att).forEach(v=>{if(v==='present')p++;else a++;});
                 document.getElementById('presentDays').textContent=p;
                 document.getElementById('absentDays').textContent=a;
+
+                // Scores
+                const ts=d.testScores||{};
+                const months=['March','April','May','June','July','August','September','October','November','December','January','February'];
+                let html='';
                 
-                const ts=d.testScores||{};let allP=[];
-                Object.values(ts).forEach(md=>{if(typeof md==='object')Object.values(md).forEach(ed=>{if(typeof ed==='object'&&ed.percentage!==undefined)allP.push(Number(ed.percentage));else if(typeof ed==='number')allP.push(ed)})});
-                if(allP.length){document.getElementById('averageScore').textContent=Math.round(allP.reduce((x,y)=>x+y,0)/allP.length)+'%';document.getElementById('bestScore').textContent=Math.max(...allP)+'%'}
-
-                // Calendar
-                const now=new Date(),m=now.getMonth(),y=now.getFullYear();
-                document.getElementById('currentMonth').textContent=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m]+' '+y;
-                const dim=new Date(y,m+1,0).getDate(),fd=new Date(y,m,1).getDay();
-                let cal='';['S','M','T','W','T','F','S'].forEach(dd=>cal+=`<div class="cal-day-h">${dd}</div>`);
-                for(let i=0;i<fd;i++)cal+='<div class="cal-empty"></div>';
-                for(let d=1;d<=dim;d++){const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,st=att[ds];let cls='cal-day';if(st==='present')cls+=' cal-p';else if(st==='absent')cls+=' cal-a';if(d===now.getDate())cls+=' cal-today';cal+=`<div class="${cls}">${d}</div>`}
-                document.getElementById('calendarGrid').innerHTML=cal;
-
-                // Scores Chart
-                const ctx=document.getElementById('scoresChart')?.getContext('2d');
-                if(ctx){
-                    const months=['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
-                    const fm=['March','April','May','June','July','August','September','October','November','December','January','February'];
-                    const sd2=fm.map(mo=>{const md=ts[mo];if(md&&typeof md==='object'){const pcts=[];Object.values(md).forEach(ed=>{if(typeof ed==='object'&&ed.percentage!==undefined)pcts.push(Number(ed.percentage));else if(typeof ed==='number')pcts.push(ed)});if(pcts.length)return Math.round(pcts.reduce((a,b)=>a+b,0)/pcts.length)}return null});
-                    if(scoresChart)scoresChart.destroy();
-                    scoresChart=new Chart(ctx,{type:'line',data:{labels:months,datasets:[{label:'Avg %',data:sd2,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.08)',borderWidth:3,fill:true,tension:0.4,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100}}}});
-                }
-
-                // Scores Table
-                const tb=document.getElementById('scoresTableBody');let html='',totS=0,totC=0;
-                fm.forEach(mo=>{const md=ts[mo];if(md&&typeof md==='object'&&Object.keys(md).length){let ms=0,mc=0;html+=`<tr style="background:#f0f4ff"><td colspan="4"><strong>📅 ${mo}</strong></td></tr>`;Object.entries(md).forEach(([en,ed])=>{let mr='-',tt='-',pct='-',g='-',gc='',pf='-',sh='';if(typeof ed==='object'){mr=ed.marks!==undefined?ed.marks:'-';tt=ed.total!==undefined?ed.total:'-';pct=ed.percentage!==undefined?ed.percentage:'-';if(ed.answerSheet)sh=` <a href="${ed.answerSheet}" target="_blank" style="font-size:10px;color:#6366f1">📷</a>`}else if(typeof ed==='number'){pct=ed;mr=ed;tt=100}if(pct!=='-'){const pv=Number(pct);if(pv>=90){gc='sc-high';g='A+';pf='Excellent'}else if(pv>=75){gc='sc-high';g='A';pf='V.Good'}else if(pv>=60){gc='sc-mid';g='B';pf='Good'}else if(pv>=40){gc='sc-mid';g='C';pf='Avg'}else{gc='sc-low';g='F';pf='Weak'}ms+=pv;mc++}html+=`<tr><td style="padding-left:20px">📝 ${en}${sh}</td><td><span class="score-badge ${gc}">${mr}/${tt} (${pct}%)</span></td><td><strong>${g}</strong></td><td>${pf}</td></tr>`});if(mc){const mA=Math.round(ms/mc);html+=`<tr style="background:#fef3c7"><td style="padding-left:20px"><strong>📊 ${mo} Avg</strong></td><td><span class="score-badge sc-high"><strong>${mA}%</strong></span></td><td colspan="2">${mc} exam(s)</td></tr>`;totS+=ms;totC+=mc}}});
-                if(totC){html=`<tr style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white"><td><strong>🏆 OVERALL</strong></td><td><span style="font-size:16px;font-weight:800">${Math.round(totS/totC)}%</span></td><td colspan="2">${totC} exams</td></tr>`+html}
-                tb.innerHTML=html||'<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--g400)">No scores yet</td></tr>';
-
-                overlay.style.display='none';
-                console.log('✅ Dashboard ready');
+                months.forEach(mo=>{
+                    const md=ts[mo];
+                    if(md&&typeof md==='object'){
+                        Object.entries(md).forEach(([en,ed])=>{
+                            let marks='-',total='-',pct='-',grade='-',cls='';
+                            if(typeof ed==='object'){
+                                marks=ed.marks!==undefined?ed.marks:'-';
+                                total=ed.total!==undefined?ed.total:'-';
+                                pct=ed.percentage!==undefined?ed.percentage:'-';
+                            }else if(typeof ed==='number'){pct=ed;marks=ed;total=100}
+                            if(pct!=='-'){
+                                const pv=Number(pct);
+                                if(pv>=75){cls='sc-high';grade='A'}else if(pv>=40){cls='sc-mid';grade='C'}else{cls='sc-low';grade='F'}
+                            }
+                            html+=`<tr><td>${mo}</td><td>${en}</td><td>${marks}/${total}</td><td class="${cls}">${pct}%</td><td><strong>${grade}</strong></td></tr>`;
+                        });
+                    }
+                });
+                
+                document.getElementById('scoresBody').innerHTML=html||'<tr><td colspan="5">No scores yet</td></tr>';
+                document.getElementById('loader').style.display='none';
             }catch(e){
-                console.error(e);
-                document.getElementById('loadMsg').textContent='Error: '+e.message;
-                overlay.style.display='none';
-                toast('Error loading','e');
+                document.getElementById('loader').textContent='Error: '+e.message;
             }
         }
 
-        // Photo upload
-        async function uploadProfilePhoto(ev){const f=ev.target.files[0];if(!f)return;if(f.size>5e6){toast('Max 5MB','e');return}toast('Uploading...','s');try{const fd=new FormData();fd.append('image',f);const r=await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`,{method:'POST',body:fd});const j=await r.json();if(j.success){await db.collection('students').doc(String(curStu.rollNo)).update({profilePhoto:j.data.url});document.getElementById('profileAvatar').innerHTML=`<img src="${j.data.url}"><div class="avatar-upload-overlay">📷 Change</div>`;toast('Done!','s')}}catch(e){toast('Failed','e')}}
-
-        // Edit Profile
-        function openEditProfileModal(){openMod('editProfileModal')}
-        document.getElementById('editProfileForm').addEventListener('submit',async(e)=>{e.preventDefault();const u={email:document.getElementById('editEmail').value.trim(),dateOfBirth:document.getElementById('editDOB').value,address:document.getElementById('editAddress').value.trim(),fatherName:document.getElementById('editFather').value.trim(),motherName:document.getElementById('editMother').value.trim(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()};try{await db.collection('students').doc(String(curStu.rollNo)).update(u);toast('Updated!','s');closeMod('editProfileModal');initDash()}catch(er){toast('Failed','e')}});
-
-        // Password
-        function openChangePasswordModal(){document.getElementById('changePasswordForm').reset();openMod('changePasswordModal')}
-        document.getElementById('changePasswordForm').addEventListener('submit',async(e)=>{e.preventDefault();const c=document.getElementById('currentPassword').value,n=document.getElementById('newPassword').value,cf=document.getElementById('confirmPassword').value;if(n!==cf){toast('Not match','e');return}if(n.length<8){toast('Min 8 chars','e');return}try{const d=await db.collection('students').doc(String(curStu.rollNo)).get();if(d.data().password!==c){toast('Wrong!','e');return}await db.collection('students').doc(String(curStu.rollNo)).update({password:n});toast('Changed!','s');closeMod('changePasswordModal')}catch(er){toast('Failed','e')}});
-
-        initDash();
+        function logout(){localStorage.removeItem('thp_current_student');location.href='index.html'}
+        load();
     </script>
 </body>
 </html>
