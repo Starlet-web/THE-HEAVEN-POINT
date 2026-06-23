@@ -5,24 +5,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Closed</title>
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #ffffff;
-      font-family: system-ui, -apple-system, sans-serif;
+      background: #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      position: relative;
+      overflow: hidden;
     }
+
+    /* background pattern */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(#e2e8f0 1px, transparent 1px),
+        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .closed-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
     .closed {
-      font-size: 5rem;
-      font-weight: 700;
-      color: #1e293b;
-      letter-spacing: 2px;
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+      animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* decorative ring behind text */
+    .closed-wrapper::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 120px;
+      height: 120px;
+      border: 3px solid #cbd5e1;
+      border-radius: 2rem;
+      opacity: 0.5;
+      z-index: 0;
+      animation: rotateRing 20s linear infinite;
+    }
+
+    @keyframes rotateRing {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* underline accent */
+    .closed::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 4px;
+      background: #94a3b8;
+      border-radius: 10px;
+      animation: widthPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes widthPulse {
+      0%, 100% { width: 50%; }
+      50% { width: 80%; }
+    }
+
+    /* subtle dot indicators */
+    .dots {
+      display: flex;
+      gap: 0.6rem;
+      animation: fadeInUp 0.8s 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      opacity: 0;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #94a3b8;
+      animation: dotBounce 1.4s infinite ease-in-out;
+    }
+
+    .dot:nth-child(1) { animation-delay: 0s; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dotBounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1.4); opacity: 1; background: #475569; }
+    }
+
+    /* subtle shadow text duplicate for depth */
+    .shadow-text {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 1px #e2e8f0;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      z-index: 1;
+      user-select: none;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <div class="closed">closed</div>
+  <div class="container">
+    <div class="closed-wrapper">
+      <span class="shadow-text" aria-hidden="true">closed</span>
+      <div class="closed">closed</div>
+    </div>
+    <div class="dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
 </body>
 </html>
