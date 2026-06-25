@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
@@ -10,101 +10,178 @@
     </script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js">
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
-    </script>
     <style>
         :root {
-            --bg: #f0f4ff;
-            --bg2: #e8ecfc;
-            --bg3: #f5f3ff;
-            --card: rgba(255, 255, 255, 0.85);
-            --card-border: rgba(255, 255, 255, 0.7);
-            --text: #1f2937;
-            --text2: #4b5563;
-            --text3: #6b7280;
-            --primary: #6366f1;
-            --primary2: #4f46e5;
-            --accent: #8b5cf6;
-            --success: #10b981;
+            --bg: #0a0a1a;
+            --bg2: #0f0f2a;
+            --bg3: #151530;
+            --surface: rgba(20, 20, 50, 0.7);
+            --surface2: rgba(30, 30, 60, 0.6);
+            --card: rgba(25, 25, 55, 0.6);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-hover: rgba(35, 35, 70, 0.8);
+            --text: #e8e8f0;
+            --text2: #b0b0c8;
+            --text3: #8888a8;
+            --primary: #7c5cfc;
+            --primary-glow: rgba(124, 92, 252, 0.4);
+            --primary2: #9b7eff;
+            --accent: #00d4aa;
+            --accent-glow: rgba(0, 212, 170, 0.35);
+            --success: #22c55e;
             --danger: #ef4444;
             --warning: #f59e0b;
             --info: #3b82f6;
-            --shadow: 0 15px 40px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(99, 102, 241, 0.08);
-            --shadow-lg: 0 25px 60px rgba(0, 0, 0, 0.1);
-            --glass: rgba(255, 255, 255, 0.6);
-            --badge-bg: #f1f5f9;
-            --input-bg: #fff;
-            --input-border: #e5e7eb;
-            --toggle-bg: #f1f5f9;
-            --table-hover: #f9fafb;
-            --skeleton: #e5e7eb;
-            --skeleton-shine: #f3f4f6;
+            --pink: #ec4899;
+            --cyan: #06b6d4;
+            --shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --glass: rgba(255, 255, 255, 0.03);
+            --badge-bg: rgba(255, 255, 255, 0.06);
+            --input-bg: rgba(20, 20, 50, 0.8);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --toggle-bg: rgba(255, 255, 255, 0.05);
+            --skeleton: rgba(255, 255, 255, 0.06);
+            --skeleton-shine: rgba(255, 255, 255, 0.1);
+            --glow-1: rgba(124, 92, 252, 0.15);
+            --glow-2: rgba(0, 212, 170, 0.1);
+            --glow-3: rgba(236, 72, 153, 0.08);
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --radius-sm: 12px;
+            --radius: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 36px;
         }
-        [data-theme="dark"] {
-            --bg: #0f172a;
-            --bg2: #1e293b;
-            --bg3: #1a1f2e;
-            --card: rgba(30, 41, 59, 0.9);
-            --card-border: rgba(51, 65, 85, 0.6);
-            --text: #f1f5f9;
-            --text2: #cbd5e1;
-            --text3: #94a3b8;
-            --primary: #818cf8;
-            --primary2: #6366f1;
-            --accent: #a78bfa;
-            --shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(129, 140, 248, 0.15);
-            --shadow-lg: 0 25px 60px rgba(0, 0, 0, 0.4);
-            --glass: rgba(30, 41, 59, 0.6);
-            --badge-bg: #334155;
-            --input-bg: #1e293b;
-            --input-border: #475569;
-            --toggle-bg: #334155;
-            --table-hover: #1e293b;
-            --skeleton: #334155;
-            --skeleton-shine: #475569;
+
+        [data-theme="light"] {
+            --bg: #f5f3ff;
+            --bg2: #ede9fe;
+            --bg3: #faf5ff;
+            --surface: rgba(255, 255, 255, 0.6);
+            --surface2: rgba(255, 255, 255, 0.5);
+            --card: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(0, 0, 0, 0.06);
+            --card-hover: rgba(255, 255, 255, 0.9);
+            --text: #1a1a2e;
+            --text2: #4a4a6a;
+            --text3: #7a7a9a;
+            --primary: #6d28d9;
+            --primary-glow: rgba(109, 40, 217, 0.25);
+            --primary2: #7c3aed;
+            --accent: #059669;
+            --accent-glow: rgba(5, 150, 105, 0.2);
+            --badge-bg: rgba(0, 0, 0, 0.04);
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --input-border: rgba(0, 0, 0, 0.08);
+            --toggle-bg: rgba(0, 0, 0, 0.04);
+            --skeleton: rgba(0, 0, 0, 0.06);
+            --skeleton-shine: rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 15px 50px rgba(0, 0, 0, 0.1);
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--bg), var(--bg2), var(--bg3));
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding: 1.2rem;
-            color: var(--text);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+        html {
             scroll-behavior: smooth;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
         }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 1rem;
+            color: var(--text);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Animated background orbs */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -30%;
+            left: -20%;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, var(--glow-1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -25%;
+            right: -15%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, var(--glow-2) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatOrb 25s ease-in-out infinite reverse;
+        }
+        @keyframes floatOrb {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(8%, -5%) scale(1.1);
+            }
+            50% {
+                transform: translate(-3%, 8%) scale(0.95);
+            }
+            75% {
+                transform: translate(-6%, -3%) scale(1.05);
+            }
+        }
+
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-            opacity: 0;
-            animation: fadeInUp 0.6s ease forwards;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
         }
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        @keyframes pulse {
+        @keyframes pulse-glow {
             0%,
             100% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+                box-shadow: 0 0 20px var(--primary-glow);
             }
             50% {
-                box-shadow: 0 0 0 18px rgba(99, 102, 241, 0);
+                box-shadow: 0 0 45px var(--primary-glow), 0 0 80px rgba(124, 92, 252, 0.2);
+            }
+        }
+        @keyframes border-glow {
+            0%,
+            100% {
+                border-color: rgba(124, 92, 252, 0.3);
+            }
+            50% {
+                border-color: rgba(0, 212, 170, 0.5);
             }
         }
         @keyframes shimmer {
@@ -115,179 +192,183 @@
                 background-position: 200% 0;
             }
         }
-        @keyframes countUp {
-            from {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        @keyframes badgePop {
-            0% {
-                transform: scale(0) rotate(-180deg);
-            }
-            60% {
-                transform: scale(1.2) rotate(10deg);
-            }
+        @keyframes float {
+            0%,
             100% {
-                transform: scale(1) rotate(0deg);
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
             }
         }
-        @keyframes slideInRight {
+        @keyframes scaleIn {
             from {
-                transform: translateX(100%);
+                transform: scale(0.8);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: scale(1);
                 opacity: 1;
             }
         }
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
+
+        /* Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto;
+            gap: 1rem;
+            grid-template-areas:
+                "profile profile stats stats"
+                "profile profile calendar trend"
+                "scores scores radar radar"
+                "scores scores radar radar";
+        }
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-areas:
+                    "profile profile"
+                    "stats stats"
+                    "calendar trend"
+                    "radar radar"
+                    "scores scores";
             }
         }
-        .ripple-effect {
-            position: relative;
-            overflow: hidden;
+        @media (max-width: 640px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "profile"
+                    "stats"
+                    "calendar"
+                    "trend"
+                    "radar"
+                    "scores";
+            }
+            body {
+                padding: 0.5rem;
+            }
         }
-        .ripple-effect::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 10.01%);
-            background-repeat: no-repeat;
-            background-position: 50%;
-            transform: scale(10, 10);
-            opacity: 0;
-            transition: transform 0.5s, opacity 1s;
-        }
-        .ripple-effect:active::after {
-            transform: scale(0, 0);
-            opacity: 0.3;
-            transition: 0s;
-        }
-        .card {
+
+        .bento-card {
             background: var(--card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 1.8rem;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1.5px solid var(--card-border);
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
-            margin-bottom: 1.3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--card-border);
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            box-shadow: var(--shadow);
+            animation: scaleIn 0.5s ease forwards;
         }
-        .card:hover {
-            transform: translateY(-3px);
+        .bento-card:hover {
+            transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
+            border-color: rgba(124, 92, 252, 0.3);
+            background: var(--card-hover);
         }
-        .card::before {
+        .bento-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent), var(--info));
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.5s;
         }
-        .card:hover::before {
+        .bento-card:hover::before {
             opacity: 1;
         }
-        h1 {
-            font-size: 1.9rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .bento-card.profile-area {
+            grid-area: profile;
+            animation-delay: 0.05s;
         }
-        h2 {
-            font-size: 1.05rem;
+        .bento-card.stats-area {
+            grid-area: stats;
+            animation-delay: 0.1s;
+        }
+        .bento-card.calendar-area {
+            grid-area: calendar;
+            animation-delay: 0.15s;
+        }
+        .bento-card.trend-area {
+            grid-area: trend;
+            animation-delay: 0.2s;
+        }
+        .bento-card.radar-area {
+            grid-area: radar;
+            animation-delay: 0.25s;
+        }
+        .bento-card.scores-area {
+            grid-area: scores;
+            animation-delay: 0.3s;
+        }
+
+        /* Section labels */
+        .section-label {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text3);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-label i {
+            font-size: 0.9rem;
             color: var(--primary);
-            margin-bottom: 1rem;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--card-border);
+        }
+
+        /* Profile */
+        .profile-layout {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1.2rem;
+            height: 100%;
+            justify-content: center;
         }
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 0.35rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            margin-right: 6px;
-            transition: all 0.3s;
-        }
-        .badge:hover {
-            transform: scale(1.05);
-        }
-        .badge-roll {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: #7c2d12;
-        }
-        .badge-class {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
-        }
-        .meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 0.4rem;
-            font-size: 0.82rem;
-            color: var(--text2);
-        }
-        .meta i {
-            color: var(--primary);
-            width: 16px;
-        }
-        .profile-row {
-            display: flex;
-            align-items: center;
-            gap: 1.6rem;
-            flex-wrap: wrap;
+        .profile-photo-wrapper {
+            position: relative;
+            cursor: pointer;
         }
         .profile-photo {
-            width: 105px;
-            height: 105px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #a5b4fc, #8b5cf6);
+            background: linear-gradient(135deg, #7c5cfc, #a78bfa, #00d4aa);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             color: white;
             font-weight: 700;
-            cursor: pointer;
+            font-family: var(--font-heading);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.4);
-            flex-shrink: 0;
-            transition: all 0.3s;
-            animation: pulse 2.5s infinite;
+            box-shadow: 0 0 40px var(--primary-glow);
+            animation: pulse-glow 3s infinite;
+            transition: all 0.4s;
+            border: 4px solid rgba(255, 255, 255, 0.2);
         }
         .profile-photo:hover {
-            animation: none;
             transform: scale(1.05);
+            border-color: var(--accent);
+            box-shadow: 0 0 60px var(--accent-glow);
         }
         .profile-photo img {
             width: 100%;
@@ -295,246 +376,398 @@
             object-fit: cover;
             border-radius: 50%;
         }
-        .photo-overlay {
+        .photo-ring {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.75);
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            animation: spin 20s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .photo-overlay-new {
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            text-align: center;
-            padding: 5px;
-            font-size: 0.65rem;
-            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 600;
             opacity: 0;
             transition: 0.3s;
-            backdrop-filter: blur(4px);
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
         }
-        .profile-photo:hover .photo-overlay {
+        .profile-photo-wrapper:hover .photo-overlay-new {
             opacity: 1;
+            bottom: 10px;
         }
-        .profile-info {
-            flex: 1;
-            min-width: 220px;
+        .profile-name {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text), var(--primary2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
         }
-        .grid-2 {
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .badge-new {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s;
+        }
+        .badge-new:hover {
+            transform: translateY(-2px);
+        }
+        .badge-roll-new {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+        .badge-class-new {
+            background: rgba(124, 92, 252, 0.2);
+            color: #a78bfa;
+            border-color: rgba(124, 92, 252, 0.4);
+        }
+        .meta-new {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            font-size: 0.75rem;
+            color: var(--text2);
+            justify-content: center;
+        }
+        .meta-new span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--glass);
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+        }
+        .meta-new i {
+            color: var(--primary);
+            font-size: 0.7rem;
+        }
+        .achievement-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 4px;
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.15));
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            animation: scaleIn 0.5s ease;
+        }
+
+        /* Stats mini cards */
+        .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.7rem;
+            height: 100%;
         }
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
-        .chart-box {
-            height: 250px;
+        .stat-mini {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .stat-mini:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 25px var(--primary-glow);
+            transform: translateY(-3px);
+        }
+        .stat-mini .stat-icon-new {
+            font-size: 1.4rem;
+            margin-bottom: 2px;
+        }
+        .stat-mini .stat-value {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text), var(--primary2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-mini .stat-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text3);
+        }
+        .stat-mini.abs .stat-icon-new {
+            filter: hue-rotate(140deg);
+        }
+        .stat-mini.avg .stat-icon-new {
+            filter: hue-rotate(200deg);
+        }
+        .stat-mini.best .stat-icon-new {
+            filter: hue-rotate(250deg);
+        }
+
+        /* Chart boxes */
+        .chart-container {
+            height: 220px;
             position: relative;
         }
-        .chart-box canvas {
+        .chart-container canvas {
             width: 100% !important;
             height: 100% !important;
         }
-        .chart-actions {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            display: flex;
-            gap: 4px;
-            z-index: 5;
-        }
-        .cal-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-            text-align: center;
-            font-size: 0.7rem;
-        }
-        .cal-h {
-            font-weight: 700;
-            color: var(--text3);
-            padding: 5px 0;
-            font-size: 0.65rem;
-        }
-        .cal-d {
-            padding: 0.45rem 0.15rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-        .cal-d:hover {
-            transform: scale(1.2);
-            z-index: 2;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        .cal-p {
-            background: var(--success);
-            color: white;
-        }
-        .cal-a {
-            background: var(--danger);
-            color: white;
-        }
-        .cal-t {
-            border: 2.5px solid var(--primary);
-            font-weight: 800;
-            animation: pulse 2s infinite;
-        }
-        .cal-nav {
+
+        /* Calendar */
+        .cal-nav-new {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
-        .cal-nav button {
-            background: var(--badge-bg);
-            border: none;
-            width: 28px;
-            height: 28px;
+        .cal-nav-new button {
+            background: var(--glass);
+            border: 1px solid var(--card-border);
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
             color: var(--text);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .cal-nav button:hover {
+        .cal-nav-new button:hover {
             background: var(--primary);
             color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .cal-nav-new .cal-month-label {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.85rem;
+            min-width: 130px;
+            text-align: center;
+            color: var(--text);
+        }
+        .cal-grid-new {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+            font-size: 0.68rem;
+        }
+        .cal-h-new {
+            font-weight: 700;
+            color: var(--text3);
+            padding: 4px 0;
+            font-size: 0.6rem;
+            letter-spacing: 0.5px;
+        }
+        .cal-d-new {
+            padding: 7px 2px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+            font-size: 0.7rem;
+        }
+        .cal-d-new:hover {
+            transform: scale(1.25);
+            z-index: 3;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .cal-p-new {
+            background: var(--success);
+            color: white;
+            box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3);
+        }
+        .cal-a-new {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+        }
+        .cal-t-new {
+            border: 2.5px solid var(--primary);
+            font-weight: 800;
+            animation: border-glow 2s infinite;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Toggle buttons */
+        .toggle-wrap {
+            display: flex;
+            gap: 5px;
+            background: var(--toggle-bg);
+            padding: 4px;
+            border-radius: 30px;
+            flex-wrap: wrap;
+            border: 1px solid var(--card-border);
+        }
+        .toggle-btn-new {
+            padding: 7px 14px;
+            border-radius: 25px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text2);
+            white-space: nowrap;
+            font-family: var(--font-body);
+        }
+        .toggle-btn-new.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+        .toggle-btn-new:hover:not(.active) {
+            color: var(--text);
+            background: var(--glass);
+        }
+
+        /* Table */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
         }
         th {
-            background: var(--badge-bg);
+            background: var(--glass);
             padding: 0.7rem;
             text-align: left;
             font-weight: 700;
-            border-bottom: 2px solid var(--input-border);
-            font-size: 0.68rem;
+            border-bottom: 2px solid var(--card-border);
+            font-size: 0.65rem;
             text-transform: uppercase;
+            letter-spacing: 1px;
             color: var(--text3);
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
+            font-family: var(--font-heading);
         }
         th:hover {
             color: var(--primary);
         }
         td {
-            padding: 0.65rem;
-            border-bottom: 1px solid var(--input-border);
+            padding: 0.7rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             transition: 0.2s;
         }
         tr:hover td {
-            background: var(--table-hover);
+            background: var(--glass);
         }
-        .sc-h {
+        .grade-high {
             color: var(--success);
             font-weight: 700;
         }
-        .sc-m {
+        .grade-mid {
             color: var(--warning);
             font-weight: 700;
         }
-        .sc-l {
+        .grade-low {
             color: var(--danger);
             font-weight: 700;
         }
-        .stat-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.9rem;
-            margin-bottom: 1.3rem;
-        }
-        .stat-box {
-            background: var(--card);
-            backdrop-filter: blur(15px);
-            border-radius: 1.3rem;
-            padding: 1.1rem;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border-top: 4px solid var(--success);
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        .stat-box:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-        .stat-box.abs {
-            border-top-color: var(--danger);
-        }
-        .stat-box.avg {
-            border-top-color: var(--warning);
-        }
-        .stat-box.best {
-            border-top-color: var(--info);
-        }
-        .stat-val {
-            font-size: 2rem;
-            font-weight: 800;
-            animation: countUp 0.6s ease;
-        }
-        .stat-lbl {
-            font-size: 0.68rem;
-            color: var(--text3);
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-top: 3px;
-        }
-        .stat-icon {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            font-size: 1.2rem;
-            opacity: 0.3;
-        }
-        .btn {
+
+        /* Buttons */
+        .btn-new {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 0.5rem 1.1rem;
-            border-radius: 1rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
             font-weight: 600;
             cursor: pointer;
-            font-family: inherit;
-            font-size: 0.78rem;
-            transition: all 0.25s;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
-            position: relative;
-            overflow: hidden;
+            gap: 6px;
+            border: 1px solid transparent;
+            letter-spacing: 0.3px;
         }
-        .btn:hover {
+        .btn-new:hover {
             background: var(--primary2);
+            box-shadow: 0 8px 30px var(--primary-glow);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
         }
-        .btn:active {
-            transform: scale(0.95);
+        .btn-new:active {
+            transform: scale(0.94);
         }
-        .btn-o {
+        .btn-outline {
             background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
+            border: 1.5px solid var(--card-border);
+            color: var(--text);
         }
-        .btn-o:hover {
-            background: var(--primary);
-            color: white;
+        .btn-outline:hover {
+            border-color: var(--primary);
+            background: rgba(124, 92, 252, 0.1);
+            color: var(--primary);
         }
         .btn-sm {
             padding: 0.35rem 0.8rem;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
         }
         .btn-icon {
             width: 34px;
@@ -545,140 +778,124 @@
             align-items: center;
             justify-content: center;
         }
-        .toggle-group {
+
+        /* Search */
+        .search-box-new {
             display: flex;
-            gap: 0.4rem;
-            background: var(--toggle-bg);
-            padding: 0.25rem;
-            border-radius: 2rem;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 30px;
+            padding: 0.4rem 0.9rem;
+            transition: 0.3s;
         }
-        .toggle-btn {
-            padding: 0.35rem 0.9rem;
-            border-radius: 2rem;
+        .search-box-new:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .search-box-new input {
             border: none;
             background: transparent;
-            font-weight: 600;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.3s;
-            color: var(--text2);
-            white-space: nowrap;
+            padding: 0.3rem;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text);
+            outline: none;
+            width: 120px;
         }
-        .toggle-btn.active {
-            background: var(--card);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            color: var(--primary);
+        .search-box-new input::placeholder {
+            color: var(--text3);
         }
+
+        /* Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: 0.35s;
+            transition: 0.4s;
         }
         .modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
-        .modal {
+        .modal-new {
             background: var(--card);
-            border-radius: 2rem;
-            padding: 1.6rem;
+            border-radius: var(--radius-xl);
+            padding: 1.8rem;
             width: 92%;
             max-width: 500px;
             max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--card-border);
-            animation: slideInRight 0.3s ease;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+            border: 1.5px solid var(--card-border);
+            animation: scaleIn 0.3s ease;
+            backdrop-filter: blur(40px);
         }
-        .modal-close {
+        .modal-close-btn {
             cursor: pointer;
-            font-size: 1.1rem;
-            width: 32px;
-            height: 32px;
+            font-size: 1rem;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            border: none;
-            background: var(--badge-bg);
+            border: 1.5px solid var(--card-border);
+            background: var(--glass);
             color: var(--text);
             transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .modal-close:hover {
+        .modal-close-btn:hover {
             background: var(--danger);
             color: white;
+            border-color: var(--danger);
         }
-        .form-group {
+        .form-group-new {
             margin-bottom: 0.7rem;
         }
-        .form-group label {
-            font-size: 0.68rem;
+        .form-group-new label {
+            font-size: 0.65rem;
             font-weight: 700;
             color: var(--text2);
             display: block;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-family: var(--font-heading);
         }
-        .form-group input,
-        .form-group textarea {
+        .form-group-new input {
             width: 100%;
-            padding: 0.55rem 0.7rem;
-            border: 2px solid var(--input-border);
-            border-radius: 0.7rem;
-            font-family: inherit;
-            font-size: 0.82rem;
+            padding: 0.6rem 0.8rem;
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
             background: var(--input-bg);
             color: var(--text);
             transition: 0.3s;
         }
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group-new input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 15px var(--primary-glow);
         }
-        .locked {
+        .input-locked {
             background: var(--badge-bg);
             color: var(--text3);
             cursor: not-allowed;
+            opacity: 0.7;
         }
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            flex-direction: column;
-            gap: 14px;
-            transition: opacity 0.4s;
-        }
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .spinner {
-            width: 44px;
-            height: 44px;
-            border: 4px solid var(--skeleton);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .toast-container {
+
+        /* Toast */
+        .toast-area {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -687,330 +904,330 @@
             flex-direction: column;
             gap: 8px;
         }
-        .toast {
+        .toast-new {
             background: var(--card);
             color: var(--text);
-            padding: 0.7rem 1.2rem;
-            border-radius: 1rem;
+            padding: 0.7rem 1.3rem;
+            border-radius: 30px;
             font-weight: 600;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             box-shadow: var(--shadow-lg);
-            border-left: 4px solid var(--primary);
-            animation: slideInRight 0.3s ease;
+            border: 1.5px solid var(--card-border);
+            animation: slideIn 0.35s ease;
             transition: 0.3s;
             display: flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(30px);
         }
-        .toast.s {
-            border-left-color: var(--success);
+        .toast-new.success {
+            border-left: 3px solid var(--success);
         }
-        .toast.e {
-            border-left-color: var(--danger);
+        .toast-new.error {
+            border-left: 3px solid var(--danger);
         }
-        .toast.w {
-            border-left-color: var(--warning);
+        .toast-new.warning {
+            border-left: 3px solid var(--warning);
         }
-        .badge-achievement {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            border-radius: 1rem;
-            font-size: 0.65rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: #7c2d12;
-            animation: badgePop 0.5s ease;
-            margin: 2px;
+        @keyframes slideIn {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
-        .achievement-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 8px;
-        }
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--input-bg);
-            border: 2px solid var(--input-border);
-            border-radius: 1.5rem;
-            padding: 0.35rem 0.8rem;
-            transition: 0.3s;
-        }
-        .search-box:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-        .search-box input {
-            border: none;
-            background: transparent;
-            padding: 0.3rem;
-            font-family: inherit;
-            font-size: 0.78rem;
-            color: var(--text);
-            outline: none;
-            width: 140px;
-        }
-        .skeleton {
-            background: linear-gradient(90deg, var(--skeleton) 25%, var(--skeleton-shine) 50%, var(--skeleton) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 0.5rem;
-        }
-        .theme-toggle {
+
+        /* Theme toggle */
+        .theme-float {
             position: fixed;
             top: 16px;
             right: 16px;
             z-index: 100;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: var(--card);
-            border: 1px solid var(--card-border);
+            border: 1.5px solid var(--card-border);
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: var(--shadow);
-            transition: all 0.3s;
+            transition: all 0.4s;
             color: var(--text);
+            backdrop-filter: blur(20px);
         }
-        .theme-toggle:hover {
-            transform: rotate(30deg) scale(1.1);
+        .theme-float:hover {
+            transform: rotate(45deg) scale(1.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px var(--primary-glow);
         }
-        .connection-dot {
-            width: 8px;
-            height: 8px;
+
+        /* Loader */
+        .loader-full {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 16px;
+            transition: opacity 0.5s;
+        }
+        .loader-full.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loader-spin {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--card-border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        .loader-text {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Connection dot */
+        .conn-dot {
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
             display: inline-block;
-            margin-right: 6px;
+            margin-left: 8px;
+            vertical-align: middle;
         }
-        .connection-dot.online {
+        .conn-dot.on {
             background: var(--success);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 12px var(--success);
+            animation: pulse-glow 2s infinite;
         }
-        .connection-dot.offline {
+        .conn-dot.off {
             background: var(--danger);
         }
-        @media (max-width: 768px) {
-            .grid-2,
-            .grid-3 {
-                grid-template-columns: 1fr;
-            }
-            .stat-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .profile-row {
-                flex-direction: column;
-                text-align: center;
-            }
-            .meta {
-                justify-content: center;
-            }
-            .theme-toggle {
-                top: 8px;
-                right: 8px;
-                width: 34px;
-                height: 34px;
-                font-size: 1rem;
-            }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
         }
-        @media print {
-            .theme-toggle,
-            .btn,
-            .modal-overlay,
-            .toast-container,
-            .loader {
-                display: none !important;
-            }
-            body {
-                background: white !important;
-                color: black !important;
-            }
-            .card {
-                box-shadow: none !important;
-                border: 1px solid #ddd !important;
-            }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+        .mt-3 {
+            margin-top: 0.8rem;
+        }
+        .gap-2 {
+            gap: 0.5rem;
         }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" id="themeToggle" title="Toggle Theme (Ctrl+D)" aria-label="Toggle theme">
+    <button class="theme-float" id="themeToggle" title="Toggle Theme (Ctrl+D)">
         <i class="fas fa-moon"></i>
     </button>
-    <div class="loader" id="loader">
-        <div class="spinner"></div>
-        <span style="font-weight:700;color:var(--text)">Loading your command center...</span>
+    <div class="loader-full" id="loader">
+        <div class="loader-spin"></div>
+        <span class="loader-text">Loading Command Center...</span>
     </div>
-    <div class="toast-container" id="toastContainer"></div>
+    <div class="toast-area" id="toastArea"></div>
 
     <div class="container" id="mainContainer">
-        <!-- Profile Card -->
-        <div class="card" id="profileCard">
-            <div class="profile-row">
-                <div class="profile-photo" id="profilePhoto" onclick="document.getElementById('photoInput').click()" title="Click to change photo">
-                    <span id="photoInitial">S</span>
-                    <div class="photo-overlay">📷 Change</div>
-                </div>
-                <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="uploadPhoto(event)">
-                <div class="profile-info">
-                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                        <h1 id="stuName">———</h1>
-                        <span class="connection-dot online" id="connectionDot" title="Real-time connection"></span>
+        <div class="bento-grid">
+            <!-- Profile Card -->
+            <div class="bento-card profile-area">
+                <div class="section-label"><i class="fas fa-user-astronaut"></i> Student Profile</div>
+                <div class="profile-layout">
+                    <div class="profile-photo-wrapper" onclick="document.getElementById('photoInput').click()">
+                        <div class="profile-photo" id="profilePhoto">
+                            <span id="photoInitial">S</span>
+                            <div class="photo-ring"></div>
+                        </div>
+                        <div class="photo-overlay-new">📷 Change Photo</div>
                     </div>
-                    <div style="margin:0.3rem 0 0.5rem">
-                        <span class="badge badge-roll" id="stuRoll">Roll —</span>
-                        <span class="badge badge-class" id="stuClass">Class —</span>
-                        <span id="streakBadge" style="display:none;" class="badge-achievement">🔥 Streak: <span id="streakCount">0</span> days</span>
+                    <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="uploadPhoto(event)">
+                    <div class="profile-name" id="stuName">———</div>
+                    <div class="badge-row">
+                        <span class="badge-new badge-roll-new" id="stuRoll">Roll —</span>
+                        <span class="badge-new badge-class-new" id="stuClass">Class —</span>
+                        <span id="streakBadge" style="display:none;" class="chip">🔥 <span id="streakCount">0</span>d streak</span>
                     </div>
-                    <div class="meta">
+                    <div class="meta-new">
                         <span><i class="fas fa-phone"></i> <span id="stuPhone">—</span></span>
                         <span><i class="fas fa-envelope"></i> <span id="stuEmail">—</span></span>
                     </div>
-                    <div class="meta" style="margin-top:0.3rem;gap:0.8rem;font-size:0.75rem;">
+                    <div class="meta-new" style="font-size:0.7rem;">
                         <span><i class="fas fa-map-marker-alt"></i> <span id="stuAddr">—</span></span>
                         <span><i class="fas fa-calendar"></i> <span id="stuDOB">—</span></span>
                         <span><i class="fas fa-user"></i> <span id="stuFather">—</span></span>
                         <span><i class="fas fa-user"></i> <span id="stuMother">—</span></span>
                     </div>
-                    <div class="achievement-section" id="achievementSection"></div>
-                    <button class="btn btn-o btn-sm ripple-effect" style="margin-top:0.6rem" onclick="openEdit()"><i class="fas fa-edit"></i> Edit Profile</button>
+                    <div class="achievement-chips" id="achievementSection"></div>
+                    <button class="btn-new btn-outline btn-sm mt-2" onclick="openEdit()"><i class="fas fa-edit"></i> Edit Profile</button>
                 </div>
             </div>
-        </div>
 
-        <!-- Stats Row -->
-        <div class="stat-row" id="statsRow">
-            <div class="stat-box" title="Total Present Days">
-                <span class="stat-icon">✅</span>
-                <div class="stat-val" id="presentDays">0</div>
-                <div class="stat-lbl">Present</div>
-            </div>
-            <div class="stat-box abs" title="Total Absent Days">
-                <span class="stat-icon">❌</span>
-                <div class="stat-val" id="absentDays">0</div>
-                <div class="stat-lbl">Absent</div>
-            </div>
-            <div class="stat-box avg" title="Overall Average Score">
-                <span class="stat-icon">📊</span>
-                <div class="stat-val" id="avgScore">0%</div>
-                <div class="stat-lbl">Avg Score</div>
-            </div>
-            <div class="stat-box best" title="Best Performance">
-                <span class="stat-icon">🏆</span>
-                <div class="stat-val" id="bestScore">0%</div>
-                <div class="stat-lbl">Best Score</div>
-            </div>
-        </div>
-
-        <!-- Charts Grid -->
-        <div class="grid-2">
-            <div class="card" id="trendCard">
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                    <h2 style="margin-bottom:0;"><i class="fas fa-chart-line"></i> Monthly Trend</h2>
-                    <button class="btn btn-sm btn-o" onclick="downloadChart('scoresChart','monthly-trend')" title="Download Chart"><i class="fas fa-download"></i></button>
-                </div>
-                <div class="chart-box"><canvas id="scoresChart"></canvas></div>
-            </div>
-            <div class="card" id="radarCard">
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                    <h2 style="margin-bottom:0;"><i class="fas fa-compass"></i> Subject Radar</h2>
-                    <button class="btn btn-sm btn-o" onclick="downloadChart('radarChart','subject-radar')" title="Download Chart"><i class="fas fa-download"></i></button>
-                </div>
-                <div class="chart-box"><canvas id="radarChart"></canvas></div>
-            </div>
-        </div>
-
-        <!-- Calendar Card -->
-        <div class="card" id="calendarCard">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-                <h2 style="margin-bottom:0;"><i class="fas fa-calendar-check"></i> Attendance Heatmap</h2>
-                <div class="cal-nav">
-                    <button onclick="navigateCalendar(-1)" title="Previous Month"><i class="fas fa-chevron-left"></i></button>
-                    <span id="calMonth" style="font-weight:700;font-size:0.85rem;min-width:120px;text-align:center;"></span>
-                    <button onclick="navigateCalendar(1)" title="Next Month"><i class="fas fa-chevron-right"></i></button>
-                    <button class="btn btn-sm btn-o" onclick="resetCalendarToToday()" title="Today"><i class="fas fa-calendar-day"></i></button>
-                </div>
-            </div>
-            <div class="cal-grid" id="calGrid"></div>
-            <div style="display:flex;gap:12px;margin-top:8px;font-size:0.65rem;color:var(--text3);">
-                <span><span style="background:var(--success);display:inline-block;width:10px;height:10px;border-radius:2px;"></span> Present</span>
-                <span><span style="background:var(--danger);display:inline-block;width:10px;height:10px;border-radius:2px;"></span> Absent</span>
-                <span><span style="border:2px solid var(--primary);display:inline-block;width:10px;height:10px;border-radius:2px;"></span> Today</span>
-            </div>
-        </div>
-
-        <!-- Scores Table Card -->
-        <div class="card" id="scoresCard">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:0.8rem;">
-                <h2 style="margin-bottom:0;"><i class="fas fa-star"></i> Exam Performance</h2>
-                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                    <div class="search-box">
-                        <i class="fas fa-search" style="color:var(--text3);font-size:0.7rem;"></i>
-                        <input type="text" id="searchExams" placeholder="Search exams..." oninput="filterExams()">
+            <!-- Stats Card -->
+            <div class="bento-card stats-area">
+                <div class="section-label"><i class="fas fa-chart-simple"></i> Quick Stats</div>
+                <div class="stats-grid">
+                    <div class="stat-mini">
+                        <span class="stat-icon-new">✅</span>
+                        <span class="stat-value" id="presentDays">0</span>
+                        <span class="stat-label">Present</span>
                     </div>
-                    <button class="btn btn-sm btn-o" onclick="exportToCSV()" title="Export CSV"><i class="fas fa-file-csv"></i> CSV</button>
-                    <button class="btn btn-sm btn-o" onclick="printReport()" title="Print Report"><i class="fas fa-print"></i> Print</button>
+                    <div class="stat-mini abs">
+                        <span class="stat-icon-new">❌</span>
+                        <span class="stat-value" id="absentDays">0</span>
+                        <span class="stat-label">Absent</span>
+                    </div>
+                    <div class="stat-mini avg">
+                        <span class="stat-icon-new">📊</span>
+                        <span class="stat-value" id="avgScore">0%</span>
+                        <span class="stat-label">Avg Score</span>
+                    </div>
+                    <div class="stat-mini best">
+                        <span class="stat-icon-new">🏆</span>
+                        <span class="stat-value" id="bestScore">0%</span>
+                        <span class="stat-label">Best</span>
+                    </div>
                 </div>
             </div>
-            <div class="toggle-group" id="monthToggleContainer" style="margin-bottom:0.8rem;"></div>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th onclick="sortTable('exam')">Exam <i class="fas fa-sort"></i></th>
-                            <th onclick="sortTable('marks')">Marks <i class="fas fa-sort"></i></th>
-                            <th onclick="sortTable('percentage')">% <i class="fas fa-sort"></i></th>
-                            <th onclick="sortTable('grade')">Grade <i class="fas fa-sort"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody id="scoresBody"></tbody>
-                </table>
+
+            <!-- Calendar Card -->
+            <div class="bento-card calendar-area">
+                <div class="section-label"><i class="fas fa-calendar-check"></i> Attendance Heatmap</div>
+                <div class="cal-nav-new">
+                    <button onclick="navigateCalendar(-1)"><i class="fas fa-chevron-left"></i></button>
+                    <span class="cal-month-label" id="calMonth">January 2026</span>
+                    <button onclick="navigateCalendar(1)"><i class="fas fa-chevron-right"></i></button>
+                    <button class="btn-new btn-outline btn-sm" onclick="resetCalendar()"><i class="fas fa-calendar-day"></i></button>
+                </div>
+                <div class="cal-grid-new" id="calGrid"></div>
+                <div style="display:flex;gap:14px;margin-top:8px;font-size:0.6rem;color:var(--text3);justify-content:center;">
+                    <span><span style="background:var(--success);display:inline-block;width:8px;height:8px;border-radius:2px;"></span> Present</span>
+                    <span><span style="background:var(--danger);display:inline-block;width:8px;height:8px;border-radius:2px;"></span> Absent</span>
+                </div>
             </div>
-            <div id="noResults" style="display:none;text-align:center;padding:20px;color:var(--text3);">No matching exams found</div>
+
+            <!-- Trend Chart -->
+            <div class="bento-card trend-area">
+                <div class="flex-between">
+                    <div class="section-label" style="margin-bottom:0;"><i class="fas fa-chart-line"></i> Yearly Trend</div>
+                    <button class="btn-new btn-outline btn-sm" onclick="downloadChart('scoresChart','trend')"><i class="fas fa-download"></i></button>
+                </div>
+                <div class="chart-container"><canvas id="scoresChart"></canvas></div>
+            </div>
+
+            <!-- Radar Chart -->
+            <div class="bento-card radar-area">
+                <div class="flex-between">
+                    <div class="section-label" style="margin-bottom:0;"><i class="fas fa-compass"></i> Subject Radar</div>
+                    <button class="btn-new btn-outline btn-sm" onclick="downloadChart('radarChart','radar')"><i class="fas fa-download"></i></button>
+                </div>
+                <div class="chart-container"><canvas id="radarChart"></canvas></div>
+            </div>
+
+            <!-- Scores Table -->
+            <div class="bento-card scores-area">
+                <div class="section-label"><i class="fas fa-trophy"></i> Exam Performance</div>
+                <div class="flex-between" style="margin-bottom:0.8rem;">
+                    <div class="toggle-wrap" id="monthToggleContainer"></div>
+                    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                        <div class="search-box-new">
+                            <i class="fas fa-search" style="color:var(--text3);font-size:0.65rem;"></i>
+                            <input type="text" id="searchExams" placeholder="Filter exams..." oninput="filterExams()">
+                        </div>
+                        <button class="btn-new btn-outline btn-sm" onclick="exportCSV()"><i class="fas fa-file-csv"></i></button>
+                        <button class="btn-new btn-outline btn-sm" onclick="window.print()"><i class="fas fa-print"></i></button>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('exam')">Exam <i class="fas fa-sort"></i></th>
+                                <th onclick="sortTable('marks')">Marks <i class="fas fa-sort"></i></th>
+                                <th onclick="sortTable('percentage')">% <i class="fas fa-sort"></i></th>
+                                <th onclick="sortTable('grade')">Grade <i class="fas fa-sort"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody id="scoresBody"></tbody>
+                    </table>
+                </div>
+                <div id="noResults" style="display:none;text-align:center;padding:20px;color:var(--text3);">No matching exams</div>
+            </div>
         </div>
 
-        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:0.5rem;">
-            <button class="btn ripple-effect" onclick="refreshData()"><i class="fas fa-sync-alt"></i> Refresh (Ctrl+R)</button>
-            <button class="btn ripple-effect" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:1.5rem;">
+            <button class="btn-new" onclick="refreshData()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            <span class="conn-dot on" id="connectionDot" title="Real-time"></span>
+            <button class="btn-new btn-outline" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
     </div>
 
     <!-- Edit Modal -->
     <div class="modal-overlay" id="editModal">
-        <div class="modal">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-                <h2>✏️ Edit Profile</h2>
-                <button class="modal-close" onclick="closeMod('editModal')">✕</button>
+        <div class="modal-new">
+            <div class="flex-between" style="margin-bottom:1rem;">
+                <h2 style="font-family:var(--font-heading);font-size:1.2rem;">✏️ Edit Profile</h2>
+                <button class="modal-close-btn" onclick="closeMod('editModal')">✕</button>
             </div>
             <form id="editForm">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;">
-                    <div class="form-group"><label>Roll (locked)</label><input class="locked" id="eRoll" disabled></div>
-                    <div class="form-group"><label>Name (locked)</label><input class="locked" id="eName" disabled></div>
-                    <div class="form-group"><label>Class (locked)</label><input class="locked" id="eClass" disabled></div>
-                    <div class="form-group"><label>Phone (locked)</label><input class="locked" id="ePhone" disabled></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+                    <div class="form-group-new"><label>Roll</label><input class="input-locked" id="eRoll" disabled></div>
+                    <div class="form-group-new"><label>Name</label><input class="input-locked" id="eName" disabled></div>
+                    <div class="form-group-new"><label>Class</label><input class="input-locked" id="eClass" disabled></div>
+                    <div class="form-group-new"><label>Phone</label><input class="input-locked" id="ePhone" disabled></div>
                 </div>
-                <hr style="margin:0.8rem 0;border-color:var(--input-border);">
-                <div class="form-group"><label>📧 Email</label><input type="email" id="eEmail"></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;">
-                    <div class="form-group"><label>🎂 Date of Birth</label><input type="date" id="eDOB"></div>
-                    <div class="form-group"><label>📍 Address</label><input id="eAddr"></div>
-                    <div class="form-group"><label>👨 Father</label><input id="eFather"></div>
-                    <div class="form-group"><label>👩 Mother</label><input id="eMother"></div>
+                <hr style="margin:0.8rem 0;border-color:var(--card-border);">
+                <div class="form-group-new"><label>📧 Email</label><input type="email" id="eEmail"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+                    <div class="form-group-new"><label>🎂 Date of Birth</label><input type="date" id="eDOB"></div>
+                    <div class="form-group-new"><label>📍 Address</label><input id="eAddr"></div>
+                    <div class="form-group-new"><label>👨 Father</label><input id="eFather"></div>
+                    <div class="form-group-new"><label>👩 Mother</label><input id="eMother"></div>
                 </div>
-                <button type="submit" class="btn ripple-effect" style="width:100%;margin-top:0.7rem;"><i class="fas fa-save"></i> Save Changes</button>
+                <button type="submit" class="btn-new" style="width:100%;margin-top:0.6rem;"><i class="fas fa-save"></i> Save Changes</button>
             </form>
         </div>
     </div>
 
     <script>
         (function() {
-            // Firebase init
             firebase.initializeApp({
                 apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
                 authDomain: "dumbbell-gyme.firebaseapp.com",
@@ -1021,44 +1238,39 @@
             });
             const db = firebase.firestore();
             const IK = '53fb01955a45c5462724b8f7d238500a';
-
-            // State
-            let scoresChart = null;
-            let radarChart = null;
-            let currentStudentData = null;
-            let allTestScores = {};
-            let allAttendance = {};
-            let calendarMonth = new Date().getMonth();
-            let calendarYear = new Date().getFullYear();
+            let scoresChart = null,
+                radarChart = null;
+            let currentStudentData = null,
+                allTestScores = {},
+                allAttendance = {};
+            let calendarMonth = new Date().getMonth(),
+                calendarYear = new Date().getFullYear();
             let currentMonthFilter = new Date().toLocaleString('default', { month: 'long' });
-            let sortDirection = {};
-            let achievements = [];
-            let unsubscribe = null;
-            let isOnline = true;
-
+            let sortDir = {},
+                currentExamData = [],
+                achievements = [],
+                unsubscribe = null;
             const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
                 'October', 'November', 'December'
             ];
             const sd = localStorage.getItem('thp_current_student');
-            if (!sd) { location.href = 'index.html'; }
+            if (!sd) location.href = 'index.html';
             const cur = JSON.parse(sd);
 
-            // Toast system
-            function toast(msg, type = 's', icon = 'check-circle') {
-                const container = document.getElementById('toastContainer');
+            function toast(msg, type = 'success') {
+                const area = document.getElementById('toastArea');
                 const t = document.createElement('div');
-                t.className = `toast ${type}`;
-                t.innerHTML =
-                    `<i class="fas fa-${icon}" style="font-size:0.9rem;"></i> ${msg}`;
-                container.appendChild(t);
+                t.className = `toast-new ${type}`;
+                const icons = { success: 'check-circle', error: 'times-circle', warning: 'exclamation-triangle' };
+                t.innerHTML = `<i class="fas fa-${icons[type]||'info-circle'}"></i> ${msg}`;
+                area.appendChild(t);
                 setTimeout(() => { t.style.opacity = '0';
-                    t.style.transform = 'translateX(100%)';
+                    t.style.transform = 'translateX(120%)';
                     setTimeout(() => t.remove(), 300); }, 3000);
             }
 
-            // Theme toggle
             function initTheme() {
-                const saved = localStorage.getItem('thp_theme') || 'light';
+                const saved = localStorage.getItem('thp_theme') || 'dark';
                 document.documentElement.setAttribute('data-theme', saved);
                 updateThemeIcon(saved);
             }
@@ -1074,20 +1286,16 @@
                 document.documentElement.setAttribute('data-theme', next);
                 localStorage.setItem('thp_theme', next);
                 updateThemeIcon(next);
-                toast(`Theme: ${next === 'dark' ? 'Dark Mode 🌙' : 'Light Mode ☀️'}`, 's', 'palette');
-                // Update chart colors
-                updateChartColors();
+                toast(`Switched to ${next} mode`, 'success');
+                if (currentStudentData) renderCharts(currentStudentData.testScores || {});
             });
 
-            // Modal helpers
             function openMod(id) { document.getElementById(id).classList.add('active'); }
 
             function closeMod(id) { document.getElementById(id).classList.remove('active'); }
             document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', function(e) {
                 if (e.target === this) this.classList.remove('active');
             }));
-
-            // Keyboard shortcuts
             document.addEventListener('keydown', function(e) {
                 if (e.ctrlKey && e.key === 'd') { e.preventDefault();
                     document.getElementById('themeToggle').click(); }
@@ -1095,32 +1303,27 @@
                     openEdit(); }
                 if (e.ctrlKey && e.key === 'r') { e.preventDefault();
                     refreshData(); }
-                if (e.key === 'Escape') { closeMod('editModal'); }
+                if (e.key === 'Escape') closeMod('editModal');
                 if (e.ctrlKey && e.key === 'k') { e.preventDefault();
                     document.getElementById('searchExams')?.focus(); }
             });
+            window.addEventListener('online', () => updateConnStatus(true));
+            window.addEventListener('offline', () => updateConnStatus(false));
 
-            // Connection status
-            function updateConnectionStatus(online) {
-                isOnline = online;
+            function updateConnStatus(online) {
                 const dot = document.getElementById('connectionDot');
-                if (dot) {
-                    dot.className = 'connection-dot ' + (online ? 'online' : 'offline');
-                    dot.title = online ? 'Real-time connected' : 'Offline - reconnecting...';
-                }
-                if (!online) toast('Connection lost. Reconnecting...', 'w', 'wifi');
+                if (dot) { dot.className = 'conn-dot ' + (online ? 'on' : 'off');
+                    dot.title = online ? 'Live' : 'Offline'; }
+                if (!online) toast('Connection lost', 'warning');
             }
-            window.addEventListener('online', () => updateConnectionStatus(true));
-            window.addEventListener('offline', () => updateConnectionStatus(false));
 
-            // Animate number
             function animateNumber(el, target) {
                 const start = parseInt(el.textContent) || 0;
-                const duration = 800;
+                const duration = 700;
                 const startTime = performance.now();
 
-                function update(currentTime) {
-                    const elapsed = currentTime - startTime;
+                function update(ct) {
+                    const elapsed = ct - startTime;
                     const progress = Math.min(elapsed / duration, 1);
                     const eased = 1 - Math.pow(1 - progress, 3);
                     el.textContent = Math.round(start + (target - start) * eased) + (el.id.includes('Score') ? '%' :
@@ -1130,96 +1333,67 @@
                 requestAnimationFrame(update);
             }
 
-            // Achievements
-            function calculateAchievements(data) {
-                const ach = [];
+            function calcAchievements(data) {
                 const att = data.attendance || {};
                 const scores = data.testScores || {};
-                let presentStreak = 0;
-                let maxStreak = 0;
-                let totalPresent = 0;
-                let totalDays = 0;
-                let allPcts = [];
-
-                // Calculate streak
+                let streak = 0,
+                    allP = [];
                 const today = new Date();
                 for (let i = 0; i < 60; i++) {
                     const d = new Date(today);
                     d.setDate(d.getDate() - i);
                     const ds = d.toISOString().split('T')[0];
-                    const status = att[ds];
-                    if (status === 'present') { presentStreak++;
-                        totalPresent++; } else if (status === 'absent') { presentStreak = 0;
-                        totalPresent++; } else { if (i === 0) continue;
-                        else break; }
-                    if (status) totalDays++;
+                    if (att[ds] === 'present') streak++;
+                    else break;
                 }
-                maxStreak = presentStreak;
-                if (maxStreak >= 7) ach.push({ icon: '🔥', name: '7-Day Streak', desc: `${maxStreak} consecutive present days` });
-                if (maxStreak >= 30) ach.push({ icon: '👑', name: 'Perfect Month', desc: '30+ day attendance streak' });
-
-                // Score achievements
-                Object.values(scores).forEach(monthData => {
-                    if (typeof monthData === 'object') {
-                        Object.values(monthData).forEach(exam => {
-                            let pct = null;
-                            if (typeof exam === 'object') pct = exam.percentage || exam.percent;
-                            else if (typeof exam === 'number') pct = exam;
-                            if (pct && !isNaN(Number(pct))) allPcts.push(Number(pct));
-                        });
-                    }
+                Object.values(scores).forEach(m => {
+                    if (typeof m === 'object') Object.values(m).forEach(e => {
+                        let p = null;
+                        if (typeof e === 'object') p = e.percentage || e.percent;
+                        else if (typeof e === 'number') p = e;
+                        if (p && !isNaN(Number(p))) allP.push(Number(p));
+                    });
                 });
-                if (allPcts.some(p => p >= 90)) ach.push({ icon: '🌟', name: 'Score Master',
-                    desc: 'Scored 90%+ in an exam' });
-                if (allPcts.length >= 3 && allPcts.slice(-3).every(p => p >= 75)) ach.push({ icon: '💪',
-                    name: 'Consistent Star', desc: '3 consecutive exams above 75%' });
-                if (allPcts.length >= 2 && allPcts[allPcts.length - 1] - allPcts[allPcts.length - 2] >= 10) ach.push({ icon: '🚀',
-                    name: 'Rising Star', desc: 'Improved by 10%+ from last exam' });
-
+                const ach = [];
+                if (streak >= 7) ach.push({ icon: '🔥', name: `${streak}d Streak` });
+                if (allP.some(p => p >= 90)) ach.push({ icon: '🌟', name: '90%+ Master' });
+                if (allP.length >= 3 && allP.slice(-3).every(p => p >= 75)) ach.push({ icon: '💪',
+                    name: 'Consistent' });
                 achievements = ach;
-                return { ach, streak: maxStreak, present: totalPresent, total: totalDays };
+                return { ach, streak, allP };
             }
 
-            function renderAchievements(achList, streak) {
-                const section = document.getElementById('achievementSection');
-                section.innerHTML = achList.map(a =>
-                    `<span class="badge-achievement" title="${a.desc}">${a.icon} ${a.name}</span>`
-                ).join('');
-                const streakEl = document.getElementById('streakBadge');
-                if (streak >= 3) {
-                    streakEl.style.display = 'inline-flex';
-                    document.getElementById('streakCount').textContent = streak;
-                } else {
-                    streakEl.style.display = 'none';
-                }
+            function renderAchievements(ach, streak) {
+                document.getElementById('achievementSection').innerHTML = ach.map(a =>
+                    `<span class="chip">${a.icon} ${a.name}</span>`).join('');
+                const sb = document.getElementById('streakBadge');
+                if (streak >= 3) { sb.style.display = 'inline-flex';
+                    document.getElementById('streakCount').textContent = streak; } else sb.style.display = 'none';
             }
 
-            // Calendar
-            function renderCalendar(attendance, month, year) {
+            function renderCalendar(att, month, year) {
                 document.getElementById('calMonth').textContent = `${MONTHS[month]} ${year}`;
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-                const firstDay = new Date(year, month, 1).getDay();
-                let html = '';
-                ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(d => html +=
-                `<div class="cal-h">${d}</div>`);
-                for (let i = 0; i < firstDay; i++) html += '<div></div>';
+                const dim = new Date(year, month + 1, 0).getDate();
+                const fd = new Date(year, month, 1).getDay();
+                let h = '';
+                ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(d => h +=
+                `<div class="cal-h-new">${d}</div>`);
+                for (let i = 0; i < fd; i++) h += '<div></div>';
                 const today = new Date();
-                for (let d = 1; d <= daysInMonth; d++) {
-                    const dateStr =
+                for (let d = 1; d <= dim; d++) {
+                    const ds =
                         `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-                    const status = attendance?.[dateStr];
-                    let cls = 'cal-d';
-                    if (status === 'present') cls += ' cal-p';
-                    else if (status === 'absent') cls += ' cal-a';
+                    const st = att?.[ds];
+                    let cls = 'cal-d-new';
+                    if (st === 'present') cls += ' cal-p-new';
+                    else if (st === 'absent') cls += ' cal-a-new';
                     if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) cls +=
-                        ' cal-t';
-                    const title = status ? `${dateStr}: ${status}` : dateStr;
-                    html +=
-                    `<div class="${cls}" title="${title}" onclick="showDateDetail('${dateStr}','${status||'no record'}')">${d}</div>`;
+                        ' cal-t-new';
+                    h +=
+                    `<div class="${cls}" onclick="showDateDetail('${ds}','${st||'none'}')" title="${ds}: ${st||'no record'}">${d}</div>`;
                 }
-                document.getElementById('calGrid').innerHTML = html;
+                document.getElementById('calGrid').innerHTML = h;
             }
-
             window.navigateCalendar = function(dir) {
                 calendarMonth += dir;
                 if (calendarMonth < 0) { calendarMonth = 11;
@@ -1228,50 +1402,44 @@
                     calendarYear++; }
                 renderCalendar(allAttendance, calendarMonth, calendarYear);
             };
-            window.resetCalendarToToday = function() {
+            window.resetCalendar = function() {
                 const now = new Date();
                 calendarMonth = now.getMonth();
                 calendarYear = now.getFullYear();
                 renderCalendar(allAttendance, calendarMonth, calendarYear);
             };
-            window.showDateDetail = function(date, status) {
-                const msg = status && status !== 'null' ? `📅 ${date}: ${status.toUpperCase()}` :
-                    `📅 ${date}: No record`;
-                toast(msg, status === 'present' ? 's' : status === 'absent' ? 'e' : '', 'calendar-check');
+            window.showDateDetail = function(d, s) {
+                toast(`📅 ${d}: ${s==='present'?'Present ✅':s==='absent'?'Absent ❌':'No record'}`, s ===
+                    'present' ? 'success' : s === 'absent' ? 'error' : 'warning');
             };
 
-            // Month toggle & scores
-            function renderMonthToggle(testScores) {
+            function renderMonthToggle(scores) {
                 const container = document.getElementById('monthToggleContainer');
-                const availableMonths = MONTHS.filter(m => testScores?.[m] && Object.keys(testScores[m]).length >
-                    0);
-                if (availableMonths.length === 0) availableMonths.push(MONTHS[new Date().getMonth()]);
-                if (!availableMonths.includes(currentMonthFilter)) currentMonthFilter = availableMonths[0];
-                container.innerHTML = availableMonths.map(m => {
-                    const activeClass = (m === currentMonthFilter) ? 'active' : '';
-                    return `<button class="toggle-btn ${activeClass}" data-month="${m}">${m.substring(0,3)}</button>`;
-                }).join('');
+                const avail = MONTHS.filter(m => scores?.[m] && Object.keys(scores[m]).length > 0);
+                if (avail.length === 0) avail.push(MONTHS[new Date().getMonth()]);
+                if (!avail.includes(currentMonthFilter)) currentMonthFilter = avail[0];
+                container.innerHTML = avail.map(m =>
+                    `<button class="toggle-btn-new ${m===currentMonthFilter?'active':''}" data-month="${m}">${m.substring(0,3)}</button>`
+                    ).join('');
                 container.onclick = (e) => {
-                    if (e.target.classList.contains('toggle-btn')) {
+                    if (e.target.classList.contains('toggle-btn-new')) {
                         currentMonthFilter = e.target.dataset.month;
-                        renderMonthToggle(testScores);
-                        updateScoresTable(testScores, currentMonthFilter);
+                        renderMonthToggle(scores);
+                        updateScoresTable(scores, currentMonthFilter);
                     }
                 };
-                updateScoresTable(testScores, currentMonthFilter);
+                updateScoresTable(scores, currentMonthFilter);
             }
 
-            let currentExamData = [];
-
-            function updateScoresTable(testScores, monthName) {
-                const exams = testScores?.[monthName] || {};
+            function updateScoresTable(scores, month) {
+                const exams = scores?.[month] || {};
                 currentExamData = [];
                 let html = '';
                 if (Object.keys(exams).length === 0) {
                     html =
-                        '<tr><td colspan="4" style="text-align:center;padding:25px;color:var(--text3);">📭 No exams recorded for this month</td></tr>';
+                        '<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--text3);">📭 No exams this month</td></tr>';
                 } else {
-                    Object.entries(exams).forEach(([examName, data]) => {
+                    Object.entries(exams).forEach(([name, data]) => {
                         let marks = '-',
                             total = '-',
                             pct = '-',
@@ -1289,83 +1457,68 @@
                         if (pct !== '-') {
                             const pv = Number(pct);
                             if (!isNaN(pv)) {
-                                if (pv >= 90) { cls = 'sc-h';
-                                    grade = 'A+'; } else if (pv >= 75) { cls = 'sc-h';
-                                    grade = 'A'; } else if (pv >= 60) { cls = 'sc-m';
-                                    grade = 'B'; } else if (pv >= 40) { cls = 'sc-m';
-                                    grade = 'C'; } else { cls = 'sc-l';
+                                if (pv >= 90) { cls = 'grade-high';
+                                    grade = 'A+'; } else if (pv >= 75) { cls = 'grade-high';
+                                    grade = 'A'; } else if (pv >= 60) { cls = 'grade-mid';
+                                    grade = 'B'; } else if (pv >= 40) { cls = 'grade-mid';
+                                    grade = 'C'; } else { cls = 'grade-low';
                                     grade = 'F'; }
                             }
                         }
-                        currentExamData.push({ exam: examName, marks, total, pct, grade, cls });
+                        currentExamData.push({ exam: name, marks, total, pct, grade, cls });
                         html +=
-                            `<tr data-exam="${examName.toLowerCase()}">
-                <td><strong>📝 ${examName}</strong></td>
-                <td>${marks}/${total}</td>
-                <td class="${cls}">${pct}%</td>
-                <td><span class="${cls}">${grade}</span></td>
-              </tr>`;
+                            `<tr data-exam="${name.toLowerCase()}"><td><strong>📝 ${name}</strong></td><td>${marks}/${total}</td><td class="${cls}">${pct}%</td><td><span class="${cls}">${grade}</span></td></tr>`;
                     });
                 }
                 document.getElementById('scoresBody').innerHTML = html;
                 document.getElementById('noResults').style.display = 'none';
             }
-
             window.filterExams = function() {
-                const query = document.getElementById('searchExams').value.toLowerCase();
+                const q = document.getElementById('searchExams').value.toLowerCase();
                 const rows = document.querySelectorAll('#scoresBody tr');
-                let visible = 0;
-                rows.forEach(row => {
-                    const examName = row.dataset.exam || '';
-                    if (examName.includes(query)) { row.style.display = '';
-                        visible++; } else { row.style.display = 'none'; }
+                let v = 0;
+                rows.forEach(r => {
+                    const name = r.dataset.exam || '';
+                    if (name.includes(q)) { r.style.display = '';
+                        v++; } else r.style.display = 'none';
                 });
-                document.getElementById('noResults').style.display = visible === 0 && rows.length > 0 ?
-                    'block' : 'none';
+                document.getElementById('noResults').style.display = v === 0 && rows.length > 0 ? 'block' :
+                'none';
             };
-
             window.sortTable = function(col) {
-                sortDirection[col] = !sortDirection[col];
-                const dir = sortDirection[col] ? 1 : -1;
+                sortDir[col] = !sortDir[col];
+                const dir = sortDir[col] ? 1 : -1;
                 currentExamData.sort((a, b) => {
-                    let valA = a[col],
-                        valB = b[col];
-                    if (col === 'percentage') { valA = parseFloat(valA) || 0;
-                        valB = parseFloat(valB) || 0; }
-                    if (col === 'marks') { valA = parseFloat(valA) || 0;
-                        valB = parseFloat(valB) || 0; }
-                    if (typeof valA === 'string') valA = valA.toLowerCase();
-                    if (typeof valB === 'string') valB = valB.toLowerCase();
-                    if (valA < valB) return -1 * dir;
-                    if (valA > valB) return 1 * dir;
-                    return 0;
+                    let va = a[col],
+                        vb = b[col];
+                    if (col === 'percentage') { va = parseFloat(va) || 0;
+                        vb = parseFloat(vb) || 0; }
+                    if (col === 'marks') { va = parseFloat(va) || 0;
+                        vb = parseFloat(vb) || 0; }
+                    if (typeof va === 'string') va = va.toLowerCase();
+                    if (typeof vb === 'string') vb = vb.toLowerCase();
+                    return va < vb ? -dir : va > vb ? dir : 0;
                 });
-                // Rebuild table
-                let html = '';
-                currentExamData.forEach(d => {
-                    html += `<tr data-exam="${d.exam.toLowerCase()}">
-                <td><strong>📝 ${d.exam}</strong></td><td>${d.marks}/${d.total}</td>
-                <td class="${d.cls}">${d.pct}%</td><td><span class="${d.cls}">${d.grade}</span></td></tr>`;
-                });
-                document.getElementById('scoresBody').innerHTML = html;
-                toast(`Sorted by ${col} ${dir===1?'↑':'↓'}`, 's', 'sort');
+                let h = '';
+                currentExamData.forEach(d => { h +=
+                        `<tr data-exam="${d.exam.toLowerCase()}"><td><strong>📝 ${d.exam}</strong></td><td>${d.marks}/${d.total}</td><td class="${d.cls}">${d.pct}%</td><td><span class="${d.cls}">${d.grade}</span></td></tr>`
+                        ; });
+                document.getElementById('scoresBody').innerHTML = h;
+                toast(`Sorted by ${col}`, 'success');
             };
 
-            // Charts
-            function renderCharts(testScores) {
-                const trendCtx = document.getElementById('scoresChart')?.getContext('2d');
-                const radarCtx = document.getElementById('radarChart')?.getContext('2d');
-                if (!trendCtx || !radarCtx) return;
+            function renderCharts(scores) {
+                const tCtx = document.getElementById('scoresChart')?.getContext('2d');
+                const rCtx = document.getElementById('radarChart')?.getContext('2d');
+                if (!tCtx || !rCtx) return;
                 const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                const gridColor = isDark ? 'rgba(148,163,184,0.2)' : 'rgba(0,0,0,0.06)';
-                const textColor = isDark ? '#94a3b8' : '#6b7280';
-
-                // Trend chart
+                const gc = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+                const tc = isDark ? '#b0b0c8' : '#4a4a6a';
                 if (scoresChart) scoresChart.destroy();
-                const monthlyAvgs = MONTHS.map(m => {
-                    const exams = testScores?.[m] || {};
+                const avgs = MONTHS.map(m => {
+                    const ex = scores?.[m] || {};
                     const pcts = [];
-                    Object.values(exams).forEach(e => {
+                    Object.values(ex).forEach(e => {
                         let p = null;
                         if (typeof e === 'object') p = e.percentage || e.percent;
                         else if (typeof e === 'number') p = e;
@@ -1373,10 +1526,10 @@
                     });
                     return pcts.length ? Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length) : null;
                 });
-                const gradient = trendCtx.createLinearGradient(0, 0, 0, 250);
-                gradient.addColorStop(0, 'rgba(99,102,241,0.25)');
-                gradient.addColorStop(1, 'rgba(99,102,241,0)');
-                scoresChart = new Chart(trendCtx, {
+                const grad = tCtx.createLinearGradient(0, 0, 0, 220);
+                grad.addColorStop(0, 'rgba(124,92,252,0.3)');
+                grad.addColorStop(1, 'rgba(0,212,170,0.02)');
+                scoresChart = new Chart(tCtx, {
                     type: 'line',
                     data: {
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
@@ -1384,17 +1537,17 @@
                         ],
                         datasets: [{
                             label: 'Avg %',
-                            data: monthlyAvgs,
-                            borderColor: '#6366f1',
-                            backgroundColor: gradient,
+                            data: avgs,
+                            borderColor: '#7c5cfc',
+                            backgroundColor: grad,
                             borderWidth: 3,
                             fill: true,
-                            tension: 0.45,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#6366f1',
+                            tension: 0.5,
+                            pointRadius: 6,
+                            pointBackgroundColor: '#00d4aa',
                             pointBorderColor: '#fff',
                             pointBorderWidth: 2,
-                            pointHoverRadius: 8,
+                            pointHoverRadius: 10,
                         }]
                     },
                     options: {
@@ -1402,102 +1555,76 @@
                         maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
                         scales: {
-                            y: { min: 0, max: 100, grid: { color: gridColor }, ticks: { color: textColor } },
-                            x: { grid: { color: gridColor }, ticks: { color: textColor } }
+                            y: { min: 0, max: 100, grid: { color: gc }, ticks: { color: tc } },
+                            x: { grid: { color: gc }, ticks: { color: tc } }
                         }
                     }
                 });
-
-                // Radar chart - subject wise from current month
                 if (radarChart) radarChart.destroy();
-                const currentMonth = new Date().toLocaleString('default', { month: 'long' });
-                const currentExams = testScores?.[currentMonth] || {};
-                const radarLabels = [];
-                const radarData = [];
-                Object.entries(currentExams).forEach(([name, val]) => {
-                    let pct = null;
-                    if (typeof val === 'object') pct = val.percentage || val.percent;
-                    else if (typeof val === 'number') pct = val;
-                    if (pct && !isNaN(Number(pct))) {
-                        radarLabels.push(name.length > 10 ? name.substring(0, 10) + '…' : name);
-                        radarData.push(Number(pct));
-                    }
+                const cm = MONTHS[new Date().getMonth()];
+                const cex = scores?.[cm] || {};
+                const rl = [],
+                    rd = [];
+                Object.entries(cex).forEach(([n, v]) => {
+                    let p = null;
+                    if (typeof v === 'object') p = v.percentage || v.percent;
+                    else if (typeof v === 'number') p = v;
+                    if (p && !isNaN(Number(p))) { rl.push(n.length > 10 ? n.substring(0, 10) + '…' : n);
+                        rd.push(Number(p)); }
                 });
-                if (radarLabels.length === 0) { radarLabels.push('No Data');
-                    radarData.push(0); }
-                radarChart = new Chart(radarCtx, {
+                if (rl.length === 0) { rl.push('No Data');
+                    rd.push(0); }
+                radarChart = new Chart(rCtx, {
                     type: 'radar',
                     data: {
-                        labels: radarLabels,
+                        labels: rl,
                         datasets: [{
                             label: 'Score %',
-                            data: radarData,
-                            borderColor: '#8b5cf6',
-                            backgroundColor: 'rgba(139,92,246,0.2)',
+                            data: rd,
+                            borderColor: '#00d4aa',
+                            backgroundColor: 'rgba(0,212,170,0.15)',
                             borderWidth: 2,
-                            pointBackgroundColor: '#8b5cf6',
+                            pointBackgroundColor: '#00d4aa',
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
-                        scales: {
-                            r: {
-                                min: 0,
-                                max: 100,
-                                grid: { color: gridColor },
-                                ticks: { color: textColor, backdropColor: 'transparent',
-                                    font: { size: 9 } },
-                                pointLabels: { color: textColor, font: { size: 10 } }
-                            }
-                        }
+                        scales: { r: { min: 0, max: 100, grid: { color: gc }, ticks: { color: tc,
+                                    backdropColor: 'transparent', font: { size: 9 } },
+                                pointLabels: { color: tc, font: { size: 10 } } } }
                     }
                 });
             }
-
-            function updateChartColors() {
-                if (currentStudentData) renderCharts(currentStudentData.testScores || {});
-            }
-
-            window.downloadChart = function(canvasId, filename) {
-                const canvas = document.getElementById(canvasId);
-                if (!canvas) return;
-                const link = document.createElement('a');
-                link.download = `${filename}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                toast('Chart downloaded! 📥', 's', 'download');
+            window.downloadChart = function(canvasId, name) {
+                const c = document.getElementById(canvasId);
+                if (!c) return;
+                const a = document.createElement('a');
+                a.download = `${name}.png`;
+                a.href = c.toDataURL('image/png');
+                a.click();
+                toast('Chart downloaded!', 'success');
             };
-
-            // Export CSV
-            window.exportToCSV = function() {
-                if (currentExamData.length === 0) { toast('No data to export', 'w', 'exclamation-triangle'); return; }
+            window.exportCSV = function() {
+                if (currentExamData.length === 0) { toast('No data', 'warning'); return; }
                 let csv = 'Exam,Marks,Percentage,Grade\n';
-                currentExamData.forEach(d => {
-                    csv +=
-                        `"${d.exam}","${d.marks}/${d.total}","${d.pct}%","${d.grade}"\n`;
-                });
-                const blob = new Blob([csv], { type: 'text/csv' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `exam-scores-${currentMonthFilter}.csv`;
-                link.click();
-                URL.revokeObjectURL(url);
-                toast('CSV exported! 📄', 's', 'file-csv');
+                currentExamData.forEach(d => { csv +=
+                        `"${d.exam}","${d.marks}/${d.total}","${d.pct}%","${d.grade}"\n`; });
+                const b = new Blob([csv], { type: 'text/csv' });
+                const u = URL.createObjectURL(b);
+                const a = document.createElement('a');
+                a.href = u;
+                a.download = `scores-${currentMonthFilter}.csv`;
+                a.click();
+                URL.revokeObjectURL(u);
+                toast('CSV exported!', 'success');
             };
-
-            window.printReport = function() {
-                window.print();
-            };
-
-            // Upload photo
             window.uploadPhoto = async function(ev) {
                 const f = ev.target.files[0];
                 if (!f) return;
-                if (f.size > 5e6) { toast('Max 5MB allowed', 'e', 'exclamation-circle'); return; }
-                toast('Uploading photo...', 's', 'cloud-upload-alt');
+                if (f.size > 5e6) { toast('Max 5MB', 'error'); return; }
+                toast('Uploading...', 'success');
                 try {
                     const fd = new FormData();
                     fd.append('image', f);
@@ -1508,17 +1635,15 @@
                         await db.collection('students').doc(String(cur.rollNo)).update({ profilePhoto: j.data
                                 .url });
                         document.getElementById('profilePhoto').innerHTML =
-                            `<img src="${j.data.url}" alt="Profile"><div class="photo-overlay">📷 Change</div>`;
-                        toast('Photo updated! ✨', 's', 'check-circle');
+                            `<img src="${j.data.url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="photo-ring"></div>`;
+                        toast('Photo updated!', 'success');
                     }
-                } catch (e) { toast('Upload failed', 'e', 'times-circle'); }
+                } catch (e) { toast('Upload failed', 'error'); }
             };
-
-            // Edit profile
             window.openEdit = function() { openMod('editModal'); };
             document.getElementById('editForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
-                const update = {
+                const up = {
                     email: document.getElementById('eEmail').value.trim(),
                     dateOfBirth: document.getElementById('eDOB').value,
                     address: document.getElementById('eAddr').value.trim(),
@@ -1526,42 +1651,30 @@
                     motherName: document.getElementById('eMother').value.trim()
                 };
                 try {
-                    await db.collection('students').doc(String(cur.rollNo)).update(update);
-                    toast('Profile saved! ✅', 's', 'save');
+                    await db.collection('students').doc(String(cur.rollNo)).update(up);
+                    toast('Saved!', 'success');
                     closeMod('editModal');
-                    loadStudentData();
-                } catch (er) { toast('Save failed', 'e', 'times-circle'); }
+                    loadData();
+                } catch (er) { toast('Failed', 'error'); }
             });
-
-            // Refresh
-            window.refreshData = function() {
-                toast('Refreshing...', 's', 'sync-alt');
-                loadStudentData();
-            };
-
-            // Logout
+            window.refreshData = function() { toast('Refreshing...', 'success');
+                loadData(); };
             window.logout = function() {
                 if (unsubscribe) unsubscribe();
                 localStorage.removeItem('thp_current_student');
-                toast('Logged out successfully', 's', 'sign-out-alt');
-                setTimeout(() => { location.href = 'index.html'; }, 600);
+                toast('Logged out', 'success');
+                setTimeout(() => location.href = 'index.html', 500);
             };
 
-            // Main loader
-            async function loadStudentData() {
+            async function loadData() {
                 try {
                     const doc = await db.collection('students').doc(String(cur.rollNo)).get();
-                    if (!doc.exists) {
-                        document.getElementById('loader').innerHTML =
-                            '<span style="color:var(--danger);">❌ Student record not found</span>';
-                        return;
-                    }
+                    if (!doc.exists) { document.getElementById('loader').innerHTML =
+                            '<span style="color:var(--danger);">Not found</span>'; return; }
                     const d = doc.data();
                     currentStudentData = d;
                     allTestScores = d.testScores || {};
                     allAttendance = d.attendance || {};
-
-                    // Profile
                     document.getElementById('stuName').textContent = d.name || '———';
                     document.getElementById('stuRoll').textContent = 'Roll ' + d.rollNo;
                     document.getElementById('stuClass').textContent = 'Class ' + d.class;
@@ -1573,18 +1686,11 @@
                         .fatherName : '—';
                     document.getElementById('stuMother').textContent = d.motherName ? 'Mother: ' + d
                         .motherName : '—';
-
-                    // Photo
                     const ph = document.getElementById('profilePhoto');
-                    if (d.profilePhoto) {
-                        ph.innerHTML =
-                            `<img src="${d.profilePhoto}" alt="Profile"><div class="photo-overlay">📷 Change</div>`;
-                    } else {
-                        ph.innerHTML =
-                            `<span id="photoInitial">${(d.name||'S')[0].toUpperCase()}</span><div class="photo-overlay">📷 Change</div>`;
-                    }
-
-                    // Edit form
+                    if (d.profilePhoto) ph.innerHTML =
+                        `<img src="${d.profilePhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="photo-ring"></div>`;
+                    else ph.innerHTML =
+                        `<span id="photoInitial">${(d.name||'S')[0].toUpperCase()}</span><div class="photo-ring"></div>`;
                     document.getElementById('eRoll').value = d.rollNo || '';
                     document.getElementById('eName').value = d.name || '';
                     document.getElementById('eClass').value = d.class || '';
@@ -1594,94 +1700,51 @@
                     document.getElementById('eAddr').value = d.address || '';
                     document.getElementById('eFather').value = d.fatherName || '';
                     document.getElementById('eMother').value = d.motherName || '';
-
-                    // Stats
-                    let present = 0,
-                        absent = 0;
-                    Object.values(allAttendance).forEach(v => { if (v === 'present') present++;
-                        else if (v === 'absent') absent++; });
-                    animateNumber(document.getElementById('presentDays'), present);
-                    animateNumber(document.getElementById('absentDays'), absent);
-
-                    // All percentages
-                    let allPcts = [];
-                    Object.values(allTestScores).forEach(monthData => {
-                        if (typeof monthData === 'object') {
-                            Object.values(monthData).forEach(exam => {
-                                let pct = null;
-                                if (typeof exam === 'object') pct = exam.percentage || exam
-                                    .percent;
-                                else if (typeof exam === 'number') pct = exam;
-                                if (pct && !isNaN(Number(pct))) allPcts.push(Number(pct));
-                            });
-                        }
-                    });
-                    const avg = allPcts.length ? Math.round(allPcts.reduce((a, b) => a + b, 0) / allPcts
-                        .length) : 0;
-                    const best = allPcts.length ? Math.max(...allPcts) : 0;
+                    let p = 0,
+                        a = 0;
+                    Object.values(allAttendance).forEach(v => { if (v === 'present') p++;
+                        else if (v === 'absent') a++; });
+                    animateNumber(document.getElementById('presentDays'), p);
+                    animateNumber(document.getElementById('absentDays'), a);
+                    const { ach, streak, allP } = calcAchievements(d);
+                    renderAchievements(ach, streak);
+                    const avg = allP.length ? Math.round(allP.reduce((x, y) => x + y, 0) / allP.length) : 0;
+                    const best = allP.length ? Math.max(...allP) : 0;
                     animateNumber(document.getElementById('avgScore'), avg);
                     animateNumber(document.getElementById('bestScore'), best);
-
-                    // Achievements
-                    const { ach, streak } = calculateAchievements(d);
-                    renderAchievements(ach, streak);
-
-                    // Calendar
                     renderCalendar(allAttendance, calendarMonth, calendarYear);
-
-                    // Scores table
                     renderMonthToggle(allTestScores);
-
-                    // Charts
                     renderCharts(allTestScores);
-
-                    // Hide loader
-                    setTimeout(() => {
-                        document.getElementById('loader').classList.add('hidden');
-                    }, 500);
-
+                    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 400);
                 } catch (e) {
                     document.getElementById('loader').innerHTML =
-                        `<span style="color:var(--danger);">⚠️ Error: ${e.message}</span>`;
-                    toast('Failed to load data', 'e', 'exclamation-circle');
+                        `<span style="color:var(--danger);">Error: ${e.message}</span>`;
                 }
             }
 
-            // Real-time listener
-            function setupRealtimeListener() {
+            function setupRealtime() {
                 if (unsubscribe) unsubscribe();
-                unsubscribe = db.collection('students').doc(String(cur.rollNo))
-                    .onSnapshot((doc) => {
-                        if (doc.exists && isOnline) {
-                            const newData = doc.data();
-                            if (JSON.stringify(newData) !== JSON.stringify(currentStudentData)) {
-                                toast('🔄 Data updated in real-time!', 's', 'bolt');
-                                currentStudentData = newData;
-                                allTestScores = newData.testScores || {};
-                                allAttendance = newData.attendance || {};
-                                renderCalendar(allAttendance, calendarMonth, calendarYear);
-                                renderMonthToggle(allTestScores);
-                                renderCharts(allTestScores);
-                                const { ach, streak } = calculateAchievements(newData);
-                                renderAchievements(ach, streak);
-                            }
+                unsubscribe = db.collection('students').doc(String(cur.rollNo)).onSnapshot((doc) => {
+                    if (doc.exists && navigator.onLine) {
+                        const nd = doc.data();
+                        if (JSON.stringify(nd) !== JSON.stringify(currentStudentData)) {
+                            toast('🔄 Data updated live!', 'success');
+                            currentStudentData = nd;
+                            allTestScores = nd.testScores || {};
+                            allAttendance = nd.attendance || {};
+                            renderCalendar(allAttendance, calendarMonth, calendarYear);
+                            renderMonthToggle(allTestScores);
+                            renderCharts(allTestScores);
+                            const { ach, streak } = calcAchievements(nd);
+                            renderAchievements(ach, streak);
                         }
-                    }, (error) => {
-                        console.error('Realtime error:', error);
-                        updateConnectionStatus(false);
-                    });
-                updateConnectionStatus(true);
+                    }
+                });
+                updateConnStatus(navigator.onLine);
             }
-
-            // Init
-            function init() {
-                initTheme();
-                loadStudentData();
-                setupRealtimeListener();
-                updateConnectionStatus(navigator.onLine);
-            }
-
-            init();
+            initTheme();
+            loadData();
+            setupRealtime();
         })();
     </script>
 </body>
