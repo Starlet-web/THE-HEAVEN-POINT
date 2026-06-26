@@ -1,1090 +1,579 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>THP • Naukari Paye Bade Aasan Se | Premium Batch Admission 2025</title>
-  
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
-  <style>
-    :root {
-      --pw-blue: #2563eb;
-      --pw-dark: #1e3a8a;
-      --pw-yellow: #f59e0b;
-      --pw-green: #10b981;
-      --pw-red: #ef4444;
-      --pw-gray: #f1f5f9;
-      --pw-border: #e2e8f0;
-      --pw-text: #1e293b;
-      --pw-subtle: #64748b;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 30%, #f1f5f9 100%);
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 1rem;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%;
-      right: -20%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      bottom: -30%;
-      left: -15%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .main-container {
-      max-width: 620px;
-      width: 100%;
-      position: relative;
-      z-index: 1;
-    }
-
-    .trust-badge {
-      background: white;
-      border: 1px solid var(--pw-border);
-      border-radius: 50px;
-      padding: 0.4rem 1.2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--pw-text);
-      margin-bottom: 0.8rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .trust-badge i {
-      color: var(--pw-green);
-      font-size: 0.9rem;
-    }
-
-    .pw-card {
-      background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
-      overflow: hidden;
-    }
-
-    .card-header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #1d4ed8 100%);
-      padding: 1.5rem 1.8rem 1.2rem;
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card-header::before {
-      content: '';
-      position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 120px;
-      height: 120px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-    }
-
-    .card-header::after {
-      content: '';
-      position: absolute;
-      bottom: -40px;
-      left: -20px;
-      width: 100px;
-      height: 100px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 50%;
-    }
-
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.8rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .logo-icon {
-      background: #fbbf24;
-      color: #1e3a8a;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .live-badge {
-      background: #ef4444;
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.25rem 0.7rem;
-      border-radius: 20px;
-      animation: pulse 2s infinite;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    .live-dot {
-      width: 7px;
-      height: 7px;
-      background: white;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .header-title {
-      position: relative;
-      z-index: 1;
-    }
-
-    .header-title h1 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      line-height: 1.3;
-      margin-bottom: 0.3rem;
-    }
-
-    .header-title .highlight {
-      background: linear-gradient(to right, #fde047, #fbbf24, #f59e0b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .exam-chips {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-top: 0.8rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .exam-chip {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-
-    .card-body {
-      padding: 1.5rem 1.8rem 1.8rem;
-    }
-
-    .mentor-card {
-      background: linear-gradient(135deg, #fef3c7 0%, #fef9e7 100%);
-      border: 1px solid #fde68a;
-      border-radius: 16px;
-      padding: 1rem 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.2rem;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-    }
-
-    .mentor-info {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .mentor-avatar {
-      background: #2563eb;
-      color: white;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 1.2rem;
-    }
-
-    .mentor-details h4 {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    .mentor-details span {
-      font-size: 0.7rem;
-      color: #64748b;
-      font-weight: 500;
-    }
-
-    .price-badge {
-      background: #059669;
-      color: white;
-      font-weight: 700;
-      padding: 0.5rem 1rem;
-      border-radius: 25px;
-      font-size: 0.85rem;
-      white-space: nowrap;
-    }
-
-    .batch-quick-info {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.6rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .info-item {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 0.7rem 0.5rem;
-      text-align: center;
-      transition: 0.2s;
-    }
-
-    .info-item:hover {
-      border-color: #93c5fd;
-      background: #eff6ff;
-    }
-
-    .info-item i {
-      color: #2563eb;
-      font-size: 1.1rem;
-      margin-bottom: 0.3rem;
-      display: block;
-    }
-
-    .info-item span {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: #475569;
-      display: block;
-    }
-
-    .info-item strong {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    .section-divider {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .section-divider .line {
-      flex: 1;
-      height: 1px;
-      background: #e2e8f0;
-    }
-
-    .section-divider span {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .form-row {
-      display: flex;
-      gap: 0.8rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      flex: 1;
-    }
-
-    .form-group label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: #475569;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .form-group label .required-star {
-      color: #ef4444;
-    }
-
-    .form-group label i {
-      color: #2563eb;
-      font-size: 0.85rem;
-      width: 16px;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    select {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-      color: #1e293b;
-      background: #f8fafc;
-      transition: all 0.2s;
-      outline: none;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: #2563eb;
-      background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-
-    input::placeholder {
-      color: #94a3b8;
-      font-weight: 400;
-    }
-
-    select {
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      padding-right: 2.5rem;
-    }
-
-    .option-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
-
-    .option-pill {
-      position: relative;
-    }
-
-    .option-pill input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-    }
-
-    .option-pill label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.55rem 1rem;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 25px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: #f8fafc;
-      color: #475569;
-    }
-
-    .option-pill input:checked + label {
-      background: #eff6ff;
-      border-color: #2563eb;
-      color: #2563eb;
-      font-weight: 600;
-    }
-
-    .option-pill label:hover {
-      border-color: #93c5fd;
-      background: #f8fafc;
-    }
-
-    .checkbox-pill {
-      position: relative;
-    }
-
-    .checkbox-pill input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-    }
-
-    .checkbox-pill label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.55rem 1rem;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 25px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: #f8fafc;
-      color: #475569;
-    }
-
-    .checkbox-pill input:checked + label {
-      background: #eff6ff;
-      border-color: #2563eb;
-      color: #2563eb;
-      font-weight: 600;
-    }
-
-    .checkbox-pill label i {
-      font-size: 0.8rem;
-    }
-
-    .checkbox-pill input:checked + label i::before {
-      content: '\f14a';
-      color: #2563eb;
-    }
-
-    .helper-text {
-      font-size: 0.7rem;
-      color: #94a3b8;
-      margin-top: -0.2rem;
-    }
-
-    .submit-btn {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      color: white;
-      border: none;
-      padding: 1rem;
-      border-radius: 12px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
-      letter-spacing: 0.3px;
-      margin-top: 0.5rem;
-    }
-
-    .submit-btn:hover {
-      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
-      transform: translateY(-1px);
-    }
-
-    .submit-btn:disabled {
-      background: #94a3b8;
-      box-shadow: none;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .submit-btn:disabled:hover {
-      transform: none;
-    }
-
-    .message-box {
-      padding: 0.8rem 1rem;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      display: none;
-      animation: slideDown 0.3s ease;
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .message-box.success {
-      background: #d1fae5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
-      display: block;
-    }
-
-    .message-box.error {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-      display: block;
-    }
-
-    .card-footer {
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-      padding: 1rem 1.8rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #475569;
-    }
-
-    .contact-item i {
-      color: #2563eb;
-    }
-
-    .footer-note {
-      font-size: 0.7rem;
-      color: #94a3b8;
-      text-align: center;
-      padding: 0.5rem 1.8rem 1rem;
-    }
-
-    @media (max-width: 500px) {
-      .form-row {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .batch-quick-info {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .card-header {
-        padding: 1.2rem 1.2rem 1rem;
-      }
-      
-      .card-body {
-        padding: 1.2rem;
-      }
-      
-      .header-title h1 {
-        font-size: 1.5rem;
-      }
-    }
-
-    .fa-spinner {
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-  </style>
-</head>
-<body>
-  <div class="main-container">
-    <div class="trust-badge">
-      <i class="fas fa-shield-alt"></i> Trusted by 50,000+ Aspirants
-    </div>
-
-    <div class="pw-card">
-      <div class="card-header">
-        <div class="header-top">
-          <div class="logo-section">
-            <div class="logo-icon">THP</div>
-            <div>
-              <div style="font-weight: 700; font-size: 0.85rem;">TEAM THP</div>
-              <div style="font-size: 0.65rem; opacity: 0.8;">The Heaven Point</div>
-            </div>
-          </div>
-          <div class="live-badge">
-            <span class="live-dot"></span> Admissions Open
-          </div>
-        </div>
-        <div class="header-title">
-          <h1>Naukari Paye <span class="highlight">Bade Aasan Se</span></h1>
-          <p style="font-size: 0.85rem; opacity: 0.9; font-weight: 500;">India's Most Affordable High-Quality Offline Coaching</p>
-        </div>
-        <div class="exam-chips">
-          <span class="exam-chip">🎯 SSC</span>
-          <span class="exam-chip">🏦 Bank</span>
-          <span class="exam-chip">🚂 Railway</span>
-          <span class="exam-chip">🏛️ State Exams</span>
-        </div>
-      </div>
-
-      <div class="card-body">
-        <div class="mentor-card">
-          <div class="mentor-info">
-            <div class="mentor-avatar">S</div>
-            <div class="mentor-details">
-              <h4>👨‍🏫 Shivam Sir</h4>
-              <span>SSC CGL & Multi-Exam Qualified</span>
-            </div>
-          </div>
-          <div class="price-badge">
-            ₹500/<small>month/subject</small>
-          </div>
-        </div>
-
-        <div class="batch-quick-info">
-          <div class="info-item">
-            <i class="far fa-calendar-check"></i>
-            <span>Starts</span>
-            <strong>1st June</strong>
-          </div>
-          <div class="info-item">
-            <i class="far fa-clock"></i>
-            <span>Duration</span>
-            <strong>6-9 Months</strong>
-          </div>
-          <div class="info-item">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Mode</span>
-            <strong>Offline</strong>
-          </div>
-          <div class="info-item">
-            <i class="fas fa-users"></i>
-            <span>Batch Size</span>
-            <strong>Limited</strong>
-          </div>
-        </div>
-
-        <div class="section-divider">
-          <div class="line"></div>
-          <span>📝 Admission Form</span>
-          <div class="line"></div>
-        </div>
-
-        <div id="messageBox" class="message-box"></div>
-
-        <form id="admissionForm">
-          <div class="form-group">
-            <label><i class="fas fa-user"></i> Full Name <span class="required-star">*</span></label>
-            <input type="text" id="fullName" placeholder="Enter your full name" required autocomplete="name">
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label><i class="fas fa-male"></i> Father's Name <span class="required-star">*</span></label>
-              <input type="text" id="fatherName" placeholder="Father's name" required>
-            </div>
-            <div class="form-group">
-              <label><i class="fas fa-female"></i> Mother's Name <span class="required-star">*</span></label>
-              <input type="text" id="motherName" placeholder="Mother's name" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label><i class="fas fa-envelope"></i> Email Address <span class="required-star">*</span></label>
-              <input type="email" id="email" placeholder="your@email.com" required autocomplete="email">
-            </div>
-            <div class="form-group">
-              <label><i class="fas fa-phone"></i> Phone Number <span class="required-star">*</span></label>
-              <input type="tel" id="phone" placeholder="+91 9876543210" required autocomplete="tel" pattern="[0-9+\s\-]{10,15}">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-venus-mars"></i> Gender <span class="required-star">*</span></label>
-            <div class="option-group" id="genderGroup">
-              <div class="option-pill">
-                <input type="radio" name="gender" id="genderMale" value="Male" required>
-                <label for="genderMale"><i class="fas fa-male"></i> Male</label>
-              </div>
-              <div class="option-pill">
-                <input type="radio" name="gender" id="genderFemale" value="Female" required>
-                <label for="genderFemale"><i class="fas fa-female"></i> Female</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-layer-group"></i> Category <span class="required-star">*</span></label>
-            <select id="category" required>
-              <option value="" disabled selected>— Select Category —</option>
-              <option value="General">General</option>
-              <option value="OBC">OBC</option>
-              <option value="SC">SC</option>
-              <option value="ST">ST</option>
-              <option value="EWS">EWS</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-graduation-cap"></i> Highest Qualification <span class="required-star">*</span></label>
-            <input type="text" id="qualification" placeholder="e.g. B.Sc, B.Tech, 12th Pass" required>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-question-circle"></i> Do you want to join this batch? <span class="required-star">*</span></label>
-            <div class="option-group">
-              <div class="option-pill">
-                <input type="radio" name="wantToJoin" id="joinYes" value="Yes" required>
-                <label for="joinYes"><i class="fas fa-check-circle"></i> Yes, I'm Ready!</label>
-              </div>
-              <div class="option-pill">
-                <input type="radio" name="wantToJoin" id="joinNo" value="No" required>
-                <label for="joinNo"><i class="fas fa-times-circle"></i> Not Now</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label><i class="fas fa-book-open"></i> Select Subjects <span class="required-star">*</span></label>
-            <div class="option-group" id="subjectsGroup">
-              <div class="checkbox-pill">
-                <input type="checkbox" name="subjects" id="subMaths" value="Maths">
-                <label for="subMaths"><i class="far fa-square"></i> 📐 Maths</label>
-              </div>
-              <div class="checkbox-pill">
-                <input type="checkbox" name="subjects" id="subReasoning" value="Reasoning">
-                <label for="subReasoning"><i class="far fa-square"></i> 🧠 Reasoning</label>
-              </div>
-              <div class="checkbox-pill">
-                <input type="checkbox" name="subjects" id="subEnglish" value="English">
-                <label for="subEnglish"><i class="far fa-square"></i> 📖 English</label>
-              </div>
-              <div class="checkbox-pill">
-                <input type="checkbox" name="subjects" id="subGS" value="GS">
-                <label for="subGS"><i class="far fa-square"></i> 🌍 GS</label>
-              </div>
-            </div>
-            <span class="helper-text">Select at least one subject</span>
-          </div>
-
-          <button type="submit" class="submit-btn" id="submitBtn">
-            <i class="fas fa-rocket"></i> Secure Your Selection Now
-          </button>
-        </form>
-      </div>
-
-      <div class="card-footer">
-        <div class="contact-item">
-          <i class="fas fa-phone-alt"></i>
-          <span><strong>9044034585</strong></span>
-        </div>
-        <div class="contact-item">
-          <i class="fas fa-envelope"></i>
-          <span>theheavenpoint@gmail.com</span>
-        </div>
-      </div>
-      <div class="footer-note">
-        🔒 Your data is secure • Not shared with anyone
-      </div>
-    </div>
-  </div>
-
-  <script>
-    (function() {
-      // ============ FIREBASE CONFIGURATION ============
-      const firebaseConfig = {
-        apiKey: "AIzaSyDP2kkEtqYMAqWQZ8J9mBOIauZuhCerFfM",
-        authDomain: "thpssc-91a53.firebaseapp.com",
-        projectId: "thpssc-91a53",
-        storageBucket: "thpssc-91a53.firebasestorage.app",
-        messagingSenderId: "441503456686",
-        appId: "1:441503456686:web:ed2f4855b21e5dabc2fc3f"
-      };
-
-      // ============ EMAILJS CONFIGURATION ============
-      const EMAILJS_PUBLIC_KEY = "OVdNZjUUuCh-b1SZu";
-      const EMAILJS_SERVICE_ID = "service_lrjrkgm";
-      const EMAILJS_TEMPLATE_ID = "template_ngnjt8h";
-
-      // ============ INITIALIZATION ============
-      
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-      
-      // Enable offline persistence
-      db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
-        console.warn('Firebase persistence:', err.code);
-      });
-
-      // Initialize EmailJS
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-      console.log('✅ EmailJS initialized successfully');
-      console.log('📨 Using Template:', EMAILJS_TEMPLATE_ID);
-
-      // ============ DOM ELEMENTS ============
-      const form = document.getElementById('admissionForm');
-      const submitBtn = document.getElementById('submitBtn');
-      const messageBox = document.getElementById('messageBox');
-
-      // ============ HELPER FUNCTIONS ============
-      
-      function showMessage(text, type = 'success') {
-        messageBox.textContent = text;
-        messageBox.className = `message-box ${type}`;
-        messageBox.style.display = 'block';
-        
-        if (type === 'success') {
-          setTimeout(() => {
-            messageBox.style.display = 'none';
-          }, 10000);
-        }
-      }
-
-      function hideMessage() {
-        messageBox.style.display = 'none';
-      }
-
-      function getSelectedSubjects() {
-        return Array.from(document.querySelectorAll('input[name="subjects"]:checked'))
-          .map(cb => cb.value);
-      }
-
-      // ============ SEND COURSE DETAILS EMAIL ============
-      
-      async function sendCourseDetailsEmail(studentEmail, studentName, selectedSubjects, phone) {
-        try {
-          const templateParams = {
-            to_email: studentEmail,
-            to_name: studentName,
-            student_name: studentName,
-            student_email: studentEmail,
-            student_phone: phone,
-            subjects: selectedSubjects.join(', ') || 'All Subjects',
-            course_name: 'THP Competitive Exams Batch 2025',
-            course_duration: '6-9 Months',
-            batch_start: '1st June 2025',
-            course_fee: '₹500 per month per subject',
-            mentor_name: 'Shivam Sir (SSC CGL Qualified)',
-            contact_phone: '9044034585',
-            contact_email: 'theheavenpoint@gmail.com',
-            reply_to: 'theheavenpoint@gmail.com',
-            message: `Dear ${studentName},\n\nCongratulations! Your admission for Team THP's Premium Competitive Exams Batch has been confirmed.\n\n📋 COURSE DETAILS:\n━━━━━━━━━━━━━━━━\n📚 Selected Subjects: ${selectedSubjects.join(', ')}\n📅 Batch Start Date: 1st June 2025\n⏳ Course Duration: 6-9 Months\n💰 Fee Structure: ₹500 per month per subject\n👨‍🏫 Mentor: Shivam Sir (SSC CGL & Multi-Exam Qualified)\n📍 Mode: Offline Premium Coaching\n\n📞 CONTACT US:\nPhone: 9044034585\nEmail: theheavenpoint@gmail.com\n\n🚀 Get ready to achieve your career goals with India's most affordable high-quality coaching!\n\nBest Regards,\nTeam THP - The Heaven Point`
-          };
-
-          const response = await emailjs.send(
-            EMAILJS_SERVICE_ID,
-            EMAILJS_TEMPLATE_ID,
-            templateParams
-          );
-          
-          console.log('✅ Email sent successfully!', response.status, response.text);
-          return true;
-        } catch (error) {
-          console.error('❌ Email sending failed:', error);
-          return false;
-        }
-      }
-
-      // ============ FORM SUBMISSION ============
-      
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        hideMessage();
-
-        // Validate subjects
-        const subjects = getSelectedSubjects();
-        if (subjects.length === 0) {
-          showMessage('⚠️ Please select at least one subject.', 'error');
-          document.querySelector('.card-body').scrollIntoView({ behavior: 'smooth' });
-          return;
-        }
-
-        // Collect form data
-        const fullName = document.getElementById('fullName').value.trim();
-        const fatherName = document.getElementById('fatherName').value.trim();
-        const motherName = document.getElementById('motherName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const genderEl = document.querySelector('input[name="gender"]:checked');
-        const category = document.getElementById('category').value;
-        const qualification = document.getElementById('qualification').value.trim();
-        const wantToJoinEl = document.querySelector('input[name="wantToJoin"]:checked');
-
-        // Validate all required fields
-        if (!fullName || !fatherName || !motherName || !email || !phone || !genderEl || !category || !qualification || !wantToJoinEl) {
-          showMessage('⚠️ Please fill all required fields correctly.', 'error');
-          document.querySelector('.card-body').scrollIntoView({ behavior: 'smooth' });
-          return;
-        }
-
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          showMessage('⚠️ Please enter a valid email address.', 'error');
-          return;
-        }
-
-        // Validate phone format
-        const phoneRegex = /^[0-9+\s\-]{10,15}$/;
-        if (!phoneRegex.test(phone)) {
-          showMessage('⚠️ Please enter a valid phone number (10-15 digits).', 'error');
-          return;
-        }
-
-        // Disable button and show loading
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your admission...';
-
-        // Prepare data for Firestore
-        const admissionData = {
-          fullName,
-          fatherName,
-          motherName,
-          email,
-          phone,
-          gender: genderEl.value,
-          category,
-          highestQualification: qualification,
-          wantToJoin: wantToJoinEl.value,
-          subjects,
-          submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          source: 'THP Website Admission Form',
-          contactPhone: '9044034585',
-          contactEmail: 'theheavenpoint@gmail.com'
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>THP CBT · SSC/Banking/Railway Maths</title>
+    <!-- Tailwind via CDN + custom blue/white govt theme -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for formulas -->
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' }
         };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <style>
+        * { user-select: none; -webkit-user-select: none; }
+        body { font-family: 'Segoe UI', Roboto, system-ui, sans-serif; background: #f0f4ff; }
+        .cbt-card { background: white; border-radius: 1.2rem; box-shadow: 0 8px 30px rgba(0,20,80,0.08); }
+        .palette-btn { width: 2.6rem; height: 2.6rem; border-radius: 50%; font-weight: 600; font-size: 0.9rem; transition: all 0.1s; border: 1px solid #d0d9e8; background: white; }
+        .palette-btn.answered { background: #1a56db; color: white; border-color: #1a56db; }
+        .palette-btn.marked { background: #f59e0b; color: white; border-color: #f59e0b; }
+        .palette-btn.not-answered { background: white; color: #1e293b; }
+        .palette-btn.current { outline: 3px solid #2563eb; outline-offset: 2px; }
+        .tab-warning { background: #fee2e2; border-left: 5px solid #b91c1c; }
+        .option-label { display: block; padding: 0.6rem 1rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; margin-bottom: 0.4rem; cursor: pointer; transition: 0.1s; background: #fafcff; }
+        .option-label:hover { background: #eef2ff; border-color: #94a3b8; }
+        input[type="radio"]:checked + .option-label { background: #dbeafe; border-color: #2563eb; }
+        .disabled-click { pointer-events: none; opacity: 0.7; }
+        .dark-mode { background: #0b1120; color: #e2e8f0; }
+        .dark-mode .cbt-card { background: #1e293b; color: #e2e8f0; border-color: #334155; }
+        .dark-mode .option-label { background: #1e293b; border-color: #475569; color: #e2e8f0; }
+        .dark-mode input[type="radio"]:checked + .option-label { background: #1e3a5f; border-color: #3b82f6; }
+        .dark-mode .palette-btn { background: #1e293b; color: #cbd5e1; border-color: #475569; }
+        .dark-mode .palette-btn.answered { background: #2563eb; color: white; }
+        .dark-mode .palette-btn.marked { background: #d97706; color: white; }
+        .dark-mode .palette-btn.current { outline-color: #60a5fa; }
+        .bg-govt-blue { background: #0a2a66; }
+        .text-govt-gold { color: #f5b342; }
+        .border-govt { border-color: #1e3a8a; }
+    </style>
+</head>
+<body id="appBody" class="min-h-screen flex flex-col antialiased">
 
-        try {
-          // 1. Save to Firebase Firestore
-          const docRef = await db.collection("admissions").add(admissionData);
-          console.log('✅ Firestore document saved with ID:', docRef.id);
+<!-- ========== LOGIN PAGE ========== -->
+<div id="loginPage" class="flex-1 flex items-center justify-center p-4">
+    <div class="cbt-card w-full max-w-lg p-8 text-center">
+        <div class="flex justify-center items-center gap-2 mb-2">
+            <span class="text-3xl font-bold text-govt-gold">THP</span>
+            <span class="text-2xl font-light text-gray-700">Coaching</span>
+        </div>
+        <div class="h-1 w-24 bg-govt-gold mx-auto mb-6"></div>
+        <h2 class="text-2xl font-semibold text-gray-800">SSC · Banking · Railway</h2>
+        <p class="text-sm text-gray-500 mb-6">Mathematics Practice CBT</p>
+        <div class="flex flex-col gap-4">
+            <input id="candidateName" type="text" placeholder="Enter your name" class="border border-gray-300 rounded-xl px-4 py-3 w-full text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="flex flex-wrap gap-2 justify-center">
+                <button onclick="startExam()" class="bg-blue-700 hover:bg-blue-800 text-white px-10 py-3 rounded-xl font-semibold text-lg transition">Start Exam</button>
+                <button onclick="toggleLang()" class="bg-gray-200 hover:bg-gray-300 px-6 py-3 rounded-xl font-medium text-gray-700 transition">🇮🇳 हिंदी/English</button>
+                <button onclick="toggleTheme()" class="bg-gray-200 hover:bg-gray-300 px-6 py-3 rounded-xl font-medium text-gray-700 transition">🌓 Theme</button>
+            </div>
+        </div>
+        <div class="mt-6 text-xs text-gray-400">© THP Coaching · Govt Exam CBT Portal</div>
+    </div>
+</div>
 
-          // 2. Send course details email to student
-          const emailSent = await sendCourseDetailsEmail(email, fullName, subjects, phone);
+<!-- ========== INSTRUCTIONS PAGE ========== -->
+<div id="instructionsPage" class="hidden flex-1 flex-col items-center justify-center p-4">
+    <div class="cbt-card w-full max-w-3xl p-6 md:p-8">
+        <h2 class="text-2xl font-bold text-blue-800">📋 Instructions</h2>
+        <ul class="list-disc pl-6 mt-3 space-y-2 text-gray-700 text-sm md:text-base">
+            <li>Total duration: <strong>60 minutes</strong> · Auto-submit at timeout.</li>
+            <li>Total questions: <span id="totalQDisplay">50</span> · Each carries 1 mark.</li>
+            <li>Negative marking: <strong>−0.25</strong> for each wrong answer.</li>
+            <li>Use <strong>Save & Next</strong> to record answer and move forward.</li>
+            <li><strong>Mark for Review</strong> – flag question for later.</li>
+            <li>You can navigate using the <strong>Question Palette</strong>.</li>
+            <li>Tab switching or refresh may trigger warning; answers are auto-saved.</li>
+        </ul>
+        <div class="flex justify-end mt-6 gap-4">
+            <button onclick="goToLogin()" class="px-6 py-2 border border-gray-300 rounded-xl">Back</button>
+            <button onclick="beginExam()" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-2 rounded-xl font-semibold">Start Exam</button>
+        </div>
+    </div>
+</div>
 
-          // 3. Show success message
-          let successMsg = '🎉 Congratulations ' + fullName.split(' ')[0] + '! Your admission has been secured successfully.';
-          
-          if (emailSent) {
-            successMsg += ' 📧 Complete course details have been sent to your email at ' + email + '. Please check your inbox (and spam folder).';
-          } else {
-            successMsg += ' (Note: Email delivery is being processed. You will receive course details shortly.)';
-          }
-          
-          successMsg += ' 📞 Our team will contact you soon at ' + phone + '.';
-          
-          showMessage(successMsg, 'success');
+<!-- ========== EXAM PAGE ========== -->
+<div id="examPage" class="hidden flex-1 flex-col">
+    <!-- top bar -->
+    <div class="bg-white shadow-sm border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-3 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+            <span class="font-bold text-blue-700 dark:text-blue-400">THP</span>
+            <span class="text-sm bg-blue-100 dark:bg-blue-900 px-3 py-1 rounded-full">SSC Maths</span>
+        </div>
+        <div class="flex items-center gap-4 text-sm font-medium">
+            <span id="timerDisplay" class="bg-red-100 dark:bg-red-900 px-4 py-1.5 rounded-full text-red-700 dark:text-red-300">⏳ 60:00</span>
+            <span class="hidden md:inline">👤 <span id="candidateNameDisplay">—</span></span>
+            <button onclick="toggleTheme()" class="text-xl leading-none">🌓</button>
+        </div>
+    </div>
+    <!-- main exam area -->
+    <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+        <!-- question panel -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 bg-[#f8faff] dark:bg-[#0f172a]">
+            <div id="questionContainer" class="cbt-card p-5 md:p-7 max-w-3xl mx-auto">
+                <div class="flex justify-between text-sm text-gray-500 mb-2">
+                    <span>Q<span id="qNumDisplay">1</span>/<span id="totalQDisplay2">50</span></span>
+                    <span id="qStatusBadge" class="bg-gray-200 px-3 py-0.5 rounded-full">Not answered</span>
+                </div>
+                <div id="questionText" class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4"></div>
+                <div id="optionsContainer" class="space-y-2"></div>
+                <div class="flex flex-wrap gap-3 mt-6">
+                    <button onclick="saveAndNext()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl text-sm font-medium">Save & Next</button>
+                    <button onclick="markForReview()" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-xl text-sm font-medium">Mark for Review</button>
+                    <button onclick="clearResponse()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded-xl text-sm font-medium">Clear</button>
+                    <button onclick="previousQuestion()" class="border border-gray-400 hover:bg-gray-200 px-5 py-2 rounded-xl text-sm font-medium">Prev</button>
+                    <button onclick="nextQuestion()" class="border border-gray-400 hover:bg-gray-200 px-5 py-2 rounded-xl text-sm font-medium">Next</button>
+                </div>
+            </div>
+        </div>
+        <!-- palette + progress -->
+        <div class="w-full md:w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 p-4 overflow-y-auto flex flex-col">
+            <div class="flex justify-between items-center mb-3">
+                <span class="font-semibold text-gray-700 dark:text-gray-200">Question Palette</span>
+                <span class="text-xs bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full"><span id="answeredCount">0</span>/<span id="totalQDisplay3">50</span></span>
+            </div>
+            <div id="paletteGrid" class="grid grid-cols-5 gap-2 mb-4"></div>
+            <div class="text-xs space-y-1 text-gray-600 dark:text-gray-400">
+                <div><span class="inline-block w-4 h-4 rounded-full bg-blue-600 mr-1"></span> Answered</div>
+                <div><span class="inline-block w-4 h-4 rounded-full bg-amber-500 mr-1"></span> Marked</div>
+                <div><span class="inline-block w-4 h-4 rounded-full bg-white border border-gray-300 mr-1"></span> Not answered</div>
+            </div>
+            <div class="mt-3 bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
+                <div id="progressBar" class="bg-blue-600 h-full transition-all" style="width:0%"></div>
+            </div>
+            <button onclick="submitExam()" class="mt-4 bg-red-600 hover:bg-red-700 text-white py-2 rounded-xl font-medium text-sm">Submit Exam</button>
+        </div>
+    </div>
+</div>
 
-          // 4. Reset form
-          form.reset();
-          
-          // 5. Scroll to top of card to see message
-          document.querySelector('.pw-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+<!-- ========== RESULT PAGE ========== -->
+<div id="resultPage" class="hidden flex-1 flex-col items-center justify-center p-4 bg-[#f0f4ff] dark:bg-[#0b1120]">
+    <div class="cbt-card w-full max-w-4xl p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+        <h2 class="text-3xl font-bold text-blue-800 dark:text-blue-300">📊 Result</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 text-center">
+            <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-xl"><span class="block text-2xl font-bold" id="resScore">0</span>Score</div>
+            <div class="bg-green-50 dark:bg-green-900/30 p-3 rounded-xl"><span class="block text-2xl font-bold" id="resCorrect">0</span>Correct</div>
+            <div class="bg-red-50 dark:bg-red-900/30 p-3 rounded-xl"><span class="block text-2xl font-bold" id="resWrong">0</span>Wrong</div>
+            <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-xl"><span class="block text-2xl font-bold" id="resSkipped">0</span>Skipped</div>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-3 justify-center">
+            <button onclick="exportPDF()" class="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm">📄 PDF</button>
+            <button onclick="exportExcel()" class="bg-green-600 text-white px-6 py-2 rounded-xl text-sm">📊 Excel</button>
+            <button onclick="exportCSV()" class="bg-gray-700 text-white px-6 py-2 rounded-xl text-sm">📋 CSV</button>
+            <button onclick="goToLogin()" class="border border-gray-400 px-6 py-2 rounded-xl text-sm">🏠 Home</button>
+        </div>
+        <div id="resultReview" class="mt-5 max-h-80 overflow-y-auto border-t border-gray-200 pt-4"></div>
+    </div>
+</div>
 
-        } catch (error) {
-          console.error('❌ Submission error:', error);
-          showMessage('❌ Submission failed: ' + error.message + '. Please try again or contact us at 9044034585.', 'error');
-        } finally {
-          // Re-enable button
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="fas fa-rocket"></i> Secure Your Selection Now';
+<script>
+// ======================== EXAM CONFIG ========================
+const EXAM_CONFIG = {
+    "questions": [
+        { "id":1,"q":"If a 9-digit number 389x6378y is divisible by 72, what is the value of \\(\\sqrt{(6x + 7y)}\\) ?","options":["6","8","4","9"],"ans":2 },
+        { "id":2,"q":"Using the digital sum method, find the digital sum of the product \\(4536 \\times 8192\\) .","options":["5","7","9","2"],"ans":3 },
+        { "id":3,"q":"If the number 738A6A is completely divisible by 11, find the value of A.","options":["7","8","9","6"],"ans":3 },
+        { "id":4,"q":"By applying the digital sum concept, solve for the missing value: \\(34\\%\\) of \\(450 + 26\\%\\) of \\(250 = ?\\)","options":["218","214","222","216"],"ans":0 },
+        { "id":5,"q":"Which of the following numbers is completely divisible by 99? (options not provided, skip)","options":["N/A","N/A","N/A","N/A"],"ans":-1 },
+        { "id":6,"q":"What is the digital sum of the number 123456789?","options":["0","3","6","9"],"ans":3 },
+        { "id":7,"q":"If the number 653xy is divisible by 80, find the value of \\(x + y\\) .","options":["4","6","8","10"],"ans":1 },
+        { "id":8,"q":"What is the least number that must be added to 1056 so that the sum is completely divisible by 23?","options":["2","3","4","5"],"ans":0 },
+        { "id":9,"q":"Use the digital sum method to find the correct option for: \\(12.5 \\times 14.4 + 32.2 \\times 18.5 = ?\\)","options":["775.7","776.7","774.7","773.7"],"ans":1 },
+        { "id":10,"q":"If the number 42573* is exactly divisible by 72, which single digit should replace the asterisk (*)?","options":["4","5","6","7"],"ans":2 },
+        { "id":11,"q":"Evaluate: \\(24^{2} + 15^{2} - 12^{3}\\) .","options":["-917","-927","-827","-937"],"ans":1 },
+        { "id":12,"q":"Find the value of: \\(\\sqrt{729} + \\sqrt{576} - \\sqrt{196}\\) .","options":["27","29","31","33"],"ans":2 },
+        { "id":13,"q":"If \\(x^{3} = 9261\\) , what is the value of \\(x^{2}\\) ?","options":["400","441","484","529"],"ans":1 },
+        { "id":14,"q":"Calculate: \\((28^{2} + 14) + 19^{2}\\) .","options":["417","427","407","437"],"ans":2 },
+        { "id":15,"q":"Solve: \\(17^{3} - 15^{3}\\) .","options":["1528","1538","1548","1558"],"ans":1 },
+        { "id":16,"q":"Find the exact value of \\(29^{2} - 21^{2}\\) .","options":["400","380","420","440"],"ans":0 },
+        { "id":17,"q":"Simplify: \\((3\\sqrt{3375} \\times \\sqrt{225}) + 18^{2}\\) .","options":["529","539","549","559"],"ans":2 },
+        { "id":18,"q":"What is the sum of the squares of the first 5 prime numbers?","options":["206","208","210","212"],"ans":2 },
+        { "id":19,"q":"Find the unit digit of the expression: \\(16^{3} + 14^{2}\\) .","options":["2","4","6","8"],"ans":1 },
+        { "id":20,"q":"Solve for \\(x: x^{2} = 23^{2} + 11^{2} + 50\\) .","options":["\\(10\\sqrt{7}\\)","20","30","70"],"ans":0 },
+        { "id":21,"q":"What is \\(12.5\\%\\) of 6400?","options":["600","800","1000","1200"],"ans":1 },
+        { "id":22,"q":"If \\(40\\%\\) of a number is 240, what is \\(150\\%\\) of that same number?","options":["800","900","1000","1200"],"ans":1 },
+        { "id":23,"q":"Two numbers are respectively \\(20\\%\\) and \\(50\\%\\) more than a third number. What percentage is the first number of the second?","options":["75%","80%","85%","90%"],"ans":1 },
+        { "id":24,"q":"A man spends \\(75\\%\\) of his income. If his income increases by \\(20\\%\\) and his expenditure increases by \\(10\\%\\) , find the percentage increase in his savings.","options":["40%","45%","50%","55%"],"ans":2 },
+        { "id":25,"q":"Rahul's salary is \\(20\\%\\) more than Priya's salary. By what percentage is Priya's salary less than Rahul's?","options":["15%","16.66%","20%","25%"],"ans":1 },
+        { "id":26,"q":"The price of sugar is increased by \\(25\\%\\) . By how much percent must a family reduce its consumption of sugar so that the expenditure remains the same?","options":["15%","20%","25%","30%"],"ans":1 },
+        { "id":27,"q":"If the price of petrol decreases by \\(10\\%\\) , how much more petrol can a person buy for Rs. 4500 if they originally bought 50 liters?","options":["4.5 L","5 L","5.55 L","6 L"],"ans":2 },
+        { "id":28,"q":"The population of a town is 10,000. It increases by \\(10\\%\\) during the first year and by \\(20\\%\\) during the second year. What is the population after 2 years?","options":["12,000","13,000","13,200","14,200"],"ans":2 },
+        { "id":29,"q":"A machine depreciates in value by \\(15\\%\\) every year. If its present value is Rs. 34,000, what was its value one year ago?","options":["Rs. 38,000","Rs. 40,000","Rs. 42,000","Rs. 45,000"],"ans":1 },
+        { "id":30,"q":"A student needs \\(40\\%\\) marks to pass an exam. He gets 178 marks and fails by 22 marks. Find the maximum marks for the exam.","options":["400","450","500","600"],"ans":2 },
+        { "id":31,"q":"In an examination, a student scores \\(30\\%\\) marks and fails by 15 marks. Another student scores \\(40\\%\\) marks and gets 25 marks more than the minimum passing marks. Find the passing percentage.","options":["30%","33.75%","35%","40%"],"ans":1 },
+        { "id":32,"q":"If the numerator of a fraction is increased by \\(20\\%\\) and the denominator is decreased by \\(10\\%\\) , the value of the fraction becomes \\(16 / 21\\) . Find the original fraction.","options":["3/7","4/7","5/7","6/7"],"ans":1 },
+        { "id":33,"q":"A number is first increased by \\(20\\%\\) and then decreased by \\(20\\%\\) . What is the net percentage change in the number?","options":["2% Inc","4% Dec","4% Inc","No Change"],"ans":1 },
+        { "id":34,"q":"The length of a rectangle is increased by \\(30\\%\\) and its breadth is decreased by \\(20\\%\\) . Find the percentage change in its area.","options":["4% Inc","4% Dec","10% Inc","10% Dec"],"ans":0 },
+        { "id":35,"q":"40 liters of a mixture of milk and water contains \\(10\\%\\) water. How much water must be added to make it \\(20\\%\\) water in the new mixture?","options":["4 L","5 L","6 L","8 L"],"ans":1 },
+        { "id":36,"q":"An article is bought for Rs. 600 and sold for Rs. 750. Find the profit percentage.","options":["20%","25%","30%","35%"],"ans":1 },
+        { "id":37,"q":"By selling a watch for Rs. 1440, a man loses \\(10\\%\\) . At what price should he sell it to gain \\(10\\%\\) ?","options":["Rs. 1600","Rs. 1760","Rs. 1800","Rs. 1860"],"ans":1 },
+        { "id":38,"q":"The cost price of 15 articles is equal to the selling price of 12 articles. Find the profit percentage.","options":["20%","25%","30%","33.33%"],"ans":1 },
+        { "id":39,"q":"A man sells an article at a loss of \\(10\\%\\) . Had he sold it for Rs. 45 more, he would have gained \\(5\\%\\) . Find the cost price.","options":["Rs. 250","Rs. 300","Rs. 350","Rs. 400"],"ans":1 },
+        { "id":40,"q":"An item was sold at a \\(12\\%\\) profit. Had it been sold for Rs. 18 more, the profit would have been \\(18\\%\\) . What is the cost price?","options":["Rs. 200","Rs. 250","Rs. 300","Rs. 350"],"ans":2 },
+        { "id":41,"q":"A tradesman sold an article at a profit of \\(15\\%\\) . If he had bought it for \\(10\\%\\) less and sold it for Rs. 4 less, he would have gained \\(25\\%\\) . Find the cost price.","options":["Rs. 120","Rs. 140","Rs. 160","Rs. 180"],"ans":0 },
+        { "id":42,"q":"A sells an item to B at a profit of \\(20\\%\\) , B sells it to C at a profit of \\(10\\%\\) , and C sells it to D at a loss of \\(15\\%\\) . If D pays Rs. 1122, what did A pay for it?","options":["Rs. 800","Rs. 900","Rs. 1000","Rs. 1100"],"ans":2 },
+        { "id":43,"q":"A manufacturer makes a profit of \\(15\\%\\) , the wholesale dealer makes \\(10\\%\\) , and the retailer makes \\(20\\%\\) . If the retail price is Rs. 1518, find the original manufacturing cost.","options":["Rs. 1000","Rs. 1200","Rs. 1250","Rs. 1500"],"ans":0 },
+        { "id":44,"q":"Find the single equivalent discount for two successive discounts of \\(20\\%\\) and \\(15\\%\\) .","options":["30%","32%","35%","38%"],"ans":1 },
+        { "id":45,"q":"A shopkeeper marks his goods \\(40\\%\\) above the cost price and allows a discount of \\(25\\%\\) . What is his gain or loss percentage?","options":["5% Gain","5% Loss","10% Gain","15% Gain"],"ans":0 },
+        { "id":46,"q":"An article is marked at Rs. 800. A customer buys it for Rs. 576 after getting two successive discounts. If the first discount is \\(10\\%\\) , find the second discount.","options":["15%","18%","20%","25%"],"ans":2 },
+        { "id":47,"q":"After allowing a discount of \\(15\\%\\) on the marked price, a shopkeeper earns a profit of \\(19\\%\\) . Find the ratio of the cost price to the marked price.","options":["3:5","4:7","5:7","6:7"],"ans":2 },
+        { "id":48,"q":"A fruit vendor buys apples at the rate of 5 for Rs. 4 and sells them at the rate of 4 for Rs. 5. Find his profit percentage.","options":["45%","50%","56.25%","60%"],"ans":2 },
+        { "id":49,"q":"Oranges are bought at 11 for Rs. 10 and an equal number at 9 for Rs. 10. The whole lot is sold at 10 for Rs. 10. Find the overall profit or loss percentage.","options":["1% Gain","1% Loss","2% Gain","2% Loss"],"ans":1 },
+        { "id":50,"q":"A dishonest dealer professes to sell his goods at cost price but uses a false weight of 900 grams for a kilogram. Find his true gain percentage.","options":["10%","11.11%","12.5%","15%"],"ans":1 }
+    ],
+    "negativeMarks": 0.25,
+    "totalTime": 3600,
+    "totalQuestions": 50
+};
+
+// ======================== APP STATE ========================
+let state = {
+    current: 0,
+    answers: {},    // qId -> selected option index
+    marked: new Set(),
+    review: new Set(),
+    visited: new Set(),
+    submitted: false,
+    timer: EXAM_CONFIG.totalTime,
+    lang: 'en',
+    dark: false,
+    candidate: '',
+    shuffledIndices: []
+};
+
+// Helper to shuffle
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+// Load from localStorage
+function loadState() {
+    try {
+        const saved = localStorage.getItem('thp_cbt_state');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            Object.assign(state, parsed);
+            // ensure sets
+            state.marked = new Set(parsed.marked || []);
+            state.review = new Set(parsed.review || []);
+            state.visited = new Set(parsed.visited || []);
+            state.answers = parsed.answers || {};
+            if (!state.shuffledIndices || state.shuffledIndices.length !== EXAM_CONFIG.totalQuestions) {
+                state.shuffledIndices = shuffleArray([...Array(EXAM_CONFIG.totalQuestions).keys()]);
+            }
+            return true;
         }
-      });
+    } catch(e) {}
+    return false;
+}
 
-      // ============ REAL-TIME VALIDATION ============
-      
-      // Phone number formatting
-      document.getElementById('phone').addEventListener('input', function(e) {
-        let value = this.value.replace(/[^\d+\s\-]/g, '');
-        if (value.length > 15) value = value.slice(0, 15);
-        this.value = value;
-      });
+function saveState() {
+    const toStore = {
+        current: state.current,
+        answers: state.answers,
+        marked: [...state.marked],
+        review: [...state.review],
+        visited: [...state.visited],
+        timer: state.timer,
+        candidate: state.candidate,
+        shuffledIndices: state.shuffledIndices,
+        lang: state.lang,
+        dark: state.dark
+    };
+    localStorage.setItem('thp_cbt_state', JSON.stringify(toStore));
+}
 
-      // Email validation on blur
-      document.getElementById('email').addEventListener('blur', function(e) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (this.value && !emailRegex.test(this.value)) {
-          this.style.borderColor = '#ef4444';
-        } else {
-          this.style.borderColor = '#e2e8f0';
+// get shuffled question list
+function getQuestion(index) {
+    const idx = state.shuffledIndices[index];
+    return EXAM_CONFIG.questions[idx];
+}
+
+function getQuestionById(qId) {
+    return EXAM_CONFIG.questions.find(q => q.id === qId);
+}
+
+// ======================== UI RENDER ========================
+function renderQuestion() {
+    const q = getQuestion(state.current);
+    if (!q) return;
+    document.getElementById('qNumDisplay').textContent = state.current+1;
+    document.getElementById('totalQDisplay2').textContent = EXAM_CONFIG.totalQuestions;
+    document.getElementById('questionText').innerHTML = q.q;
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+    const selected = state.answers[q.id] !== undefined ? state.answers[q.id] : -1;
+    q.options.forEach((opt, idx) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-start gap-2';
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'questionOption';
+        radio.value = idx;
+        radio.id = `opt_${idx}`;
+        if (selected === idx) radio.checked = true;
+        radio.onchange = () => {
+            state.answers[q.id] = idx;
+            state.visited.add(q.id);
+            saveState();
+            updatePalette();
+            updateProgress();
+            updateStats();
+        };
+        const label = document.createElement('label');
+        label.htmlFor = `opt_${idx}`;
+        label.className = 'option-label flex-1 text-sm md:text-base';
+        label.innerHTML = opt;
+        div.appendChild(radio);
+        div.appendChild(label);
+        container.appendChild(div);
+    });
+    // status badge
+    const badge = document.getElementById('qStatusBadge');
+    if (state.marked.has(q.id)) badge.textContent = '🔖 Marked';
+    else if (state.answers[q.id] !== undefined) badge.textContent = '✔ Answered';
+    else badge.textContent = 'Not answered';
+    // update palette highlight
+    document.querySelectorAll('.palette-btn').forEach(btn => btn.classList.remove('current'));
+    const currBtn = document.querySelector(`.palette-btn[data-index="${state.current}"]`);
+    if (currBtn) currBtn.classList.add('current');
+    MathJax.typesetPromise().catch(()=>{});
+}
+
+function buildPalette() {
+    const grid = document.getElementById('paletteGrid');
+    grid.innerHTML = '';
+    for (let i = 0; i < EXAM_CONFIG.totalQuestions; i++) {
+        const q = getQuestion(i);
+        const btn = document.createElement('button');
+        btn.className = 'palette-btn not-answered';
+        btn.dataset.index = i;
+        btn.textContent = i+1;
+        btn.onclick = () => { state.current = i; renderQuestion(); saveState(); };
+        grid.appendChild(btn);
+    }
+    updatePalette();
+}
+
+function updatePalette() {
+    const btns = document.querySelectorAll('.palette-btn');
+    btns.forEach((btn, idx) => {
+        const q = getQuestion(idx);
+        btn.classList.remove('answered', 'marked', 'not-answered');
+        if (state.marked.has(q.id)) btn.classList.add('marked');
+        else if (state.answers[q.id] !== undefined) btn.classList.add('answered');
+        else btn.classList.add('not-answered');
+    });
+    document.querySelectorAll('.palette-btn').forEach(b => b.classList.remove('current'));
+    const curr = document.querySelector(`.palette-btn[data-index="${state.current}"]`);
+    if (curr) curr.classList.add('current');
+}
+
+function updateProgress() {
+    const total = EXAM_CONFIG.totalQuestions;
+    const done = Object.keys(state.answers).filter(id => state.answers[id] !== undefined).length;
+    const pct = (done / total) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('answeredCount').textContent = done;
+}
+
+function updateStats() {
+    updateProgress();
+}
+
+// ======================== EXAM ACTIONS ========================
+function saveAndNext() {
+    const q = getQuestion(state.current);
+    const radios = document.querySelectorAll('input[name="questionOption"]');
+    let selected = -1;
+    radios.forEach(r => { if (r.checked) selected = parseInt(r.value); });
+    if (selected !== -1) {
+        state.answers[q.id] = selected;
+        state.visited.add(q.id);
+        saveState();
+    }
+    nextQuestion();
+}
+
+function markForReview() {
+    const q = getQuestion(state.current);
+    if (state.marked.has(q.id)) state.marked.delete(q.id);
+    else state.marked.add(q.id);
+    saveState();
+    renderQuestion();
+    updatePalette();
+}
+
+function clearResponse() {
+    const q = getQuestion(state.current);
+    delete state.answers[q.id];
+    saveState();
+    renderQuestion();
+    updatePalette();
+    updateProgress();
+}
+
+function previousQuestion() {
+    if (state.current > 0) { state.current--; renderQuestion(); saveState(); }
+}
+
+function nextQuestion() {
+    if (state.current < EXAM_CONFIG.totalQuestions - 1) { state.current++; renderQuestion(); saveState(); }
+}
+
+// ======================== TIMER ========================
+let timerInterval = null;
+function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        state.timer--;
+        if (state.timer <= 0) {
+            clearInterval(timerInterval);
+            submitExam();
         }
-      });
+        updateTimerDisplay();
+        saveState();
+    }, 1000);
+}
 
-      document.getElementById('email').addEventListener('focus', function(e) {
-        this.style.borderColor = '#2563eb';
-      });
+function updateTimerDisplay() {
+    const mins = Math.floor(state.timer / 60);
+    const secs = state.timer % 60;
+    document.getElementById('timerDisplay').textContent = `⏳ ${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+}
 
-      // Warn before leaving with unsaved data
-      window.addEventListener('beforeunload', (e) => {
-        const nameField = document.getElementById('fullName');
-        const emailField = document.getElementById('email');
-        if ((nameField && nameField.value.trim() !== '') || (emailField && emailField.value.trim() !== '')) {
-          e.preventDefault();
-          e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+// ======================== SUBMIT ========================
+function submitExam() {
+    if (state.submitted) return;
+    if (!confirm('Submit the exam? Answers will be final.')) return;
+    state.submitted = true;
+    clearInterval(timerInterval);
+    document.getElementById('examPage').classList.add('hidden');
+    document.getElementById('resultPage').classList.remove('hidden');
+    showResult();
+    saveState();
+}
+
+// ======================== RESULT ========================
+function showResult() {
+    let correct = 0, wrong = 0, skipped = 0;
+    const details = [];
+    EXAM_CONFIG.questions.forEach((q, idx) => {
+        const userAns = state.answers[q.id];
+        const correctAns = q.ans;
+        let status = '';
+        if (userAns === undefined) { skipped++; status = 'Skipped'; }
+        else if (userAns === correctAns) { correct++; status = 'Correct'; }
+        else { wrong++; status = 'Wrong'; }
+        details.push({ id: q.id, question: q.q, user: userAns!==undefined?q.options[userAns]:'—', correct: correctAns!==-1?q.options[correctAns]:'N/A', status });
+    });
+    const score = correct - (wrong * 0.25);
+    document.getElementById('resScore').textContent = score.toFixed(2);
+    document.getElementById('resCorrect').textContent = correct;
+    document.getElementById('resWrong').textContent = wrong;
+    document.getElementById('resSkipped').textContent = skipped;
+    const reviewDiv = document.getElementById('resultReview');
+    reviewDiv.innerHTML = details.map(d => 
+        `<div class="border-b border-gray-200 py-2 text-sm flex flex-wrap gap-2"><span class="font-medium">Q${d.id}</span> <span class="text-gray-600">${d.question.substring(0,80)}...</span> <span class="ml-auto ${d.status==='Correct'?'text-green-600':d.status==='Wrong'?'text-red-600':'text-gray-400'}">${d.status} (Your: ${d.user})</span></div>`
+    ).join('');
+}
+
+// ======================== EXPORT ========================
+function exportPDF() { alert('PDF export (simulated) – use browser print or library.'); }
+function exportExcel() { alert('Excel export (simulated) – CSV available instead.'); }
+function exportCSV() {
+    let csv = "QID,Question,Your Answer,Correct,Status\n";
+    EXAM_CONFIG.questions.forEach(q => {
+        const u = state.answers[q.id]!==undefined?q.options[state.answers[q.id]]:'—';
+        const c = q.ans!==-1?q.options[q.ans]:'N/A';
+        const s = state.answers[q.id]===undefined?'Skipped':(state.answers[q.id]===q.ans?'Correct':'Wrong');
+        csv += `${q.id},"${q.q.replace(/,/g,'')}",${u},${c},${s}\n`;
+    });
+    const blob = new Blob([csv], {type:'text/csv'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'THP_Result.csv';
+    link.click();
+}
+
+// ======================== NAVIGATION ========================
+function startExam() {
+    const name = document.getElementById('candidateName').value.trim() || 'Candidate';
+    state.candidate = name;
+    document.getElementById('candidateNameDisplay').textContent = name;
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('instructionsPage').classList.remove('hidden');
+    document.getElementById('totalQDisplay').textContent = EXAM_CONFIG.totalQuestions;
+    document.getElementById('totalQDisplay3').textContent = EXAM_CONFIG.totalQuestions;
+}
+
+function beginExam() {
+    document.getElementById('instructionsPage').classList.add('hidden');
+    document.getElementById('examPage').classList.remove('hidden');
+    // init shuffled if not
+    if (!state.shuffledIndices || state.shuffledIndices.length !== EXAM_CONFIG.totalQuestions) {
+        state.shuffledIndices = shuffleArray([...Array(EXAM_CONFIG.totalQuestions).keys()]);
+    }
+    buildPalette();
+    renderQuestion();
+    updateProgress();
+    updateTimerDisplay();
+    startTimer();
+    saveState();
+    // block right click etc
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('paste', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+    // tab warning
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && !state.submitted) {
+            alert('⚠️ Tab switch detected. Stay on exam page.');
         }
-      });
+    });
+}
 
-      console.log('✅ THP Admission Form Ready');
-      console.log('📋 Firebase Project:', firebaseConfig.projectId);
-      console.log('📧 EmailJS Service:', EMAILJS_SERVICE_ID);
-      console.log('📨 EmailJS Template:', EMAILJS_TEMPLATE_ID);
-      console.log('🎯 All systems ready - Email notifications active!');
-    })();
-  </script>
+function goToLogin() {
+    if (!state.submitted && confirm('Going back will lose progress?')) {
+        localStorage.removeItem('thp_cbt_state');
+        location.reload();
+    } else if (state.submitted) {
+        location.reload();
+    }
+}
+
+function toggleLang() {
+    state.lang = state.lang === 'en' ? 'hi' : 'en';
+    alert('Language toggle: ' + (state.lang==='en'?'English':'हिंदी') + ' (UI placeholder)');
+}
+
+function toggleTheme() {
+    state.dark = !state.dark;
+    document.getElementById('appBody').classList.toggle('dark-mode', state.dark);
+    saveState();
+}
+
+// ======================== INIT ========================
+(function init() {
+    const loaded = loadState();
+    if (loaded && state.candidate && !state.submitted) {
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('examPage').classList.remove('hidden');
+        document.getElementById('candidateNameDisplay').textContent = state.candidate;
+        buildPalette();
+        renderQuestion();
+        updateProgress();
+        updateTimerDisplay();
+        startTimer();
+        document.getElementById('appBody').classList.toggle('dark-mode', state.dark);
+    } else if (loaded && state.submitted) {
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('resultPage').classList.remove('hidden');
+        showResult();
+    } else {
+        // fresh
+        state.shuffledIndices = shuffleArray([...Array(EXAM_CONFIG.totalQuestions).keys()]);
+        saveState();
+    }
+})();
+
+</script>
 </body>
 </html>
