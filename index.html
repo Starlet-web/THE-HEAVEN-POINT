@@ -2,170 +2,413 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Closed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>The Heaven Point • Shine Brighter</title>
+  <meta property="og:title" content="The Heaven Point">
+  <meta property="og:description" content="Premium coaching for CUET, NEET, IIT-JEE, School courses (3rd–12th) and more. Expert faculty, proven results.">
+  <meta property="og:image" content="channels4_profile.jpg">
+  <meta property="og:image:alt" content="The Heaven Point">
+  <meta property="og:url" content="https://starlet-web.github.io/THE-HEAVEN-POINT/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="google-site-verification" content="mA9aIn22KO_fawtHBnRUcy2Xj29t8lT1LdbtQx34-P4">
+  <link rel="icon" href="channels4_profile.jpg" type="image/png">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Tailwind via CDN + custom config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            },
+            accent: {
+              500: '#10b981',
+              600: '#059669',
+            },
+            surface: '#f9fafb',
+            dark: '#0f172a',
+          },
+          animation: {
+            'float': 'float 7s ease-in-out infinite',
+            'pulse-soft': 'pulseSoft 4s ease-in-out infinite',
+            'wave': 'wave 2.2s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-18px) rotate(1deg)' },
+            },
+            pulseSoft: {
+              '0%, 100%': { opacity: '0.5', transform: 'scale(0.95)' },
+              '50%': { opacity: '0.25', transform: 'scale(1.05)' },
+            },
+            wave: {
+              '0%, 100%': { transform: 'rotate(0deg)' },
+              '20%': { transform: 'rotate(16deg)' },
+              '40%': { transform: 'rotate(-10deg)' },
+              '60%': { transform: 'rotate(12deg)' },
+              '80%': { transform: 'rotate(-6deg)' },
+            },
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: #f8fafc;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      position: relative;
-      overflow: hidden;
+      font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+      scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
     }
-
-    /* background pattern */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image: 
-        linear-gradient(#e2e8f0 1px, transparent 1px),
-        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
-      background-size: 50px 50px;
-      opacity: 0.3;
-      pointer-events: none;
-      z-index: 0;
+    /* Modern glass & depth */
+    .glass-header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
     }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-    }
-
-    .closed-wrapper {
-      position: relative;
-      display: inline-block;
-    }
-
-    .closed {
-      font-size: clamp(4rem, 12vw, 8rem);
-      font-weight: 800;
-      color: #0f172a;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      position: relative;
-      z-index: 2;
-      animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-      opacity: 0;
-    }
-
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* decorative ring behind text */
-    .closed-wrapper::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotate(45deg);
-      width: 120px;
-      height: 120px;
-      border: 3px solid #cbd5e1;
+    .card-premium {
+      background: white;
       border-radius: 2rem;
-      opacity: 0.5;
-      z-index: 0;
-      animation: rotateRing 20s linear infinite;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.02);
     }
-
-    @keyframes rotateRing {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    .card-premium:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 35px 60px -15px rgba(99,102,241,0.2);
+      border-color: rgba(99,102,241,0.2);
     }
-
-    /* underline accent */
-    .closed::after {
-      content: "";
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60%;
-      height: 4px;
-      background: #94a3b8;
-      border-radius: 10px;
-      animation: widthPulse 3s ease-in-out infinite;
+    .hero-gradient {
+      background: radial-gradient(circle at 70% 30%, #e0e7ff, #c7d2fe 80%);
     }
-
-    @keyframes widthPulse {
-      0%, 100% { width: 50%; }
-      50% { width: 80%; }
-    }
-
-    /* subtle dot indicators */
-    .dots {
-      display: flex;
-      gap: 0.6rem;
-      animation: fadeInUp 0.8s 0.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-      opacity: 0;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #94a3b8;
-      animation: dotBounce 1.4s infinite ease-in-out;
-    }
-
-    .dot:nth-child(1) { animation-delay: 0s; }
-    .dot:nth-child(2) { animation-delay: 0.2s; }
-    .dot:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes dotBounce {
-      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-      40% { transform: scale(1.4); opacity: 1; background: #475569; }
-    }
-
-    /* subtle shadow text duplicate for depth */
-    .shadow-text {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      font-size: clamp(4rem, 12vw, 8rem);
-      font-weight: 800;
+    .text-gradient {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
       color: transparent;
-      -webkit-text-stroke: 1px #e2e8f0;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      z-index: 1;
-      user-select: none;
+    }
+    .nav-dot.active {
+      background: #4f46e5;
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.3);
+    }
+    .mobile-menu {
+      transition: opacity 0.35s ease, visibility 0.35s;
+    }
+    .mobile-menu.hidden {
+      opacity: 0;
+      visibility: hidden;
       pointer-events: none;
+    }
+    /* smooth appearance */
+    @media (prefers-reduced-motion: no-preference) {
+      .animate-in {
+        animation: fadeUp 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      @keyframes fadeUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <div class="closed-wrapper">
-      <span class="shadow-text" aria-hidden="true">closed</span>
-      <div class="closed">closed</div>
+<body class="font-sans text-gray-800 antialiased">
+
+<!-- Main App Container -->
+<div class="max-w-7xl mx-auto relative bg-white/60 min-h-screen shadow-2xl">
+
+  <!-- Header -->
+  <header class="glass-header sticky top-0 z-50 flex items-center justify-between px-5 md:px-10 py-4">
+    <div class="flex items-center gap-3">
+      <img src="channels4_profile.jpg" alt="THP Logo" class="w-11 h-11 rounded-2xl shadow-md border-2 border-white">
+      <div>
+        <h1 class="text-xl md:text-2xl font-display font-bold tracking-tight text-gray-900">The Heaven Point</h1>
+        <span class="text-xs text-brand-600 font-medium tracking-wide">Shine Brighter</span>
+      </div>
     </div>
-    <div class="dots">
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
+
+    <div class="flex items-center gap-3 md:gap-5">
+      
+      <button id="notifBtn" class="text-gray-600 hover:text-brand-600 relative p-2" aria-label="Notifications">
+        <i class="far fa-bell text-xl"></i>
+        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
+      </button>
+      <button id="mobileMenuBtn" class="md:hidden text-gray-700 hover:text-brand-700 p-2">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
     </div>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/95 backdrop-blur-xl hidden">
+    <button id="closeMobileMenu" class="absolute top-6 right-6 text-gray-600 hover:text-brand-700">
+      <i class="fas fa-times text-3xl"></i>
+    </button>
+    <nav class="flex flex-col items-center gap-8 text-2xl font-display font-semibold text-gray-800">
+      <a href="#" class="hover:text-brand-600 transition">Home</a>
+      <a href="#batches" class="hover:text-brand-600">Courses</a>
+      <a href="#" onclick="openNotes()" class="hover:text-brand-600">Notes</a>
+      <a href="#" onclick="openLecture()" class="hover:text-brand-600">Lectures</a>
+      <a href="thp-faculty.html" class="hover:text-brand-600">Faculty</a>
+      <a href="#contact" class="hover:text-brand-600">Contact</a>
+      <div class="flex gap-5 mt-6">
+        <a href="https://api.whatsapp.com/send?text=Check%20The%20Heaven%20Point:%20https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view" target="_blank" class="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg flex items-center gap-2"><i class="fab fa-whatsapp"></i> Share</a>
+        <a href="https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view" target="_blank" class="bg-brand-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg">Download App</a>
+      </div>
+    </nav>
   </div>
+
+  <!-- Main Content -->
+  <main class="px-4 md:px-8 pt-8 pb-28 space-y-14">
+
+    <!-- Hero Section -->
+    <section class="relative rounded-[2.5rem] overflow-hidden p-6 md:p-12 flex items-center min-h-[340px] md:min-h-[420px] hero-gradient shadow-lg">
+      <div class="relative z-10 max-w-xl animate-in">
+        <span class="bg-white/70 text-brand-700 text-sm font-semibold px-4 py-1.5 rounded-full inline-block mb-4 backdrop-blur-sm">🎓 New batch starts soon</span>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-gray-900 leading-tight">
+          Choose to <span class="text-gradient">shine</span>
+        </h2>
+        <p class="text-gray-700 text-lg md:text-xl mt-4 max-w-md">Expert coaching for CUET, NEET, IIT-JEE & School (3rd–12th). Your future starts here.</p>
+        <div class="flex flex-wrap gap-4 mt-8">
+          <a href="#batches" class="bg-gray-900 text-white px-7 py-3.5 rounded-full font-semibold hover:bg-gray-800 transition shadow-xl">Explore Courses</a>
+          <a href="tel:9648837922" class="bg-white/80 backdrop-blur-md text-gray-900 px-7 py-3.5 rounded-full font-semibold hover:bg-white transition shadow-md flex items-center gap-2"><i class="fas fa-phone-alt"></i> Call Now</a>
+        </div>
+      </div>
+      <div class="absolute right-0 top-0 w-1/2 h-full opacity-20 md:opacity-30">
+        <div class="absolute -right-10 top-10 w-72 h-72 bg-brand-500 rounded-full blur-3xl animate-pulse-soft"></div>
+        <div class="absolute right-20 bottom-10 w-56 h-56 bg-purple-400 rounded-full blur-3xl animate-float"></div>
+      </div>
+    </section>
+
+    <!-- Quick Actions Grid -->
+    <div class="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-5">
+      <a href="#batches" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2">
+        <div class="w-11 h-11 bg-indigo-100 rounded-2xl flex items-center justify-center text-brand-600"><i class="fas fa-book-open text-xl"></i></div>
+        <span class="text-xs font-semibold">Courses</span>
+      </a>
+      <a href="#" onclick="openNotes()" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2">
+        <div class="w-11 h-11 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600"><i class="fas fa-file-alt text-xl"></i></div>
+        <span class="text-xs font-semibold">Notes</span>
+      </a>
+      <a href="#" onclick="openLecture()" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2">
+        <div class="w-11 h-11 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600"><i class="fas fa-video text-xl"></i></div>
+        <span class="text-xs font-semibold">Lectures</span>
+      </a>
+      <a href="thp-faculty.html" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2">
+        <div class="w-11 h-11 bg-teal-100 rounded-2xl flex items-center justify-center text-teal-600"><i class="fas fa-chalkboard-teacher text-xl"></i></div>
+        <span class="text-xs font-semibold">Faculty</span>
+      </a>
+      <a href="#admission" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2 hidden md:flex">
+        <div class="w-11 h-11 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600"><i class="fas fa-user-graduate text-xl"></i></div>
+        <span class="text-xs font-semibold">Admission</span>
+      </a>
+      <a href="#gallery" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2 hidden md:flex">
+        <div class="w-11 h-11 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600"><i class="fas fa-images text-xl"></i></div>
+        <span class="text-xs font-semibold">Gallery</span>
+      </a>
+      <a href="#about-us" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2 hidden md:flex">
+        <div class="w-11 h-11 bg-rose-100 rounded-2xl flex items-center justify-center text-rose-600"><i class="fas fa-info-circle text-xl"></i></div>
+        <span class="text-xs font-semibold">About</span>
+      </a>
+      <a href="#contact" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2 hidden md:flex">
+        <div class="w-11 h-11 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-600"><i class="fas fa-envelope text-xl"></i></div>
+        <span class="text-xs font-semibold">Contact</span>
+      </a>
+    </div>
+
+    <!-- Featured Course Section -->
+    <section>
+      <div class="flex justify-between items-end mb-6">
+        <h3 class="text-2xl md:text-3xl font-display font-bold text-gray-900">⭐ Featured Course</h3>
+        <a href="#batches" class="text-brand-600 font-semibold text-sm hover:underline">View all →</a>
+      </div>
+      <div class="card-premium p-5 md:p-7 flex flex-col md:flex-row gap-6 items-center bg-gradient-to-br from-indigo-50 to-white">
+        <img src="https://i.ibb.co/4wrtJTbw/file-00000000156061f5b89e4f5e05b6f71f.png" alt="SSC Course" class="w-36 h-36 rounded-2xl object-cover shadow-lg">
+        <div class="flex-1">
+          <span class="bg-brand-100 text-brand-700 text-xs font-bold px-3 py-1 rounded-full">POPULAR</span>
+          <h4 class="text-2xl font-bold mt-2">SSC, Bank, Railway</h4>
+          <p class="text-gray-600 mt-1">Complete competitive prep with mock tests & daily practice.</p>
+          <div class="flex items-center gap-4 mt-4 flex-wrap">
+            <span class="text-2xl font-extrabold text-gray-900">₹1,500<span class="text-sm font-medium text-gray-500">/mo</span></span>
+            <span class="text-sm line-through text-gray-400">₹2,000</span>
+            <span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full">33% off</span>
+            <a href="formTHPSsc.html" class="ml-auto bg-brand-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-brand-700 transition">Enroll Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Lecture -->
+    <section>
+      <h3 class="text-2xl md:text-3xl font-display font-bold text-gray-900 mb-5">🎬 </h3>
+      <div class="rounded-3xl overflow-hidden shadow-2xl relative" style="padding-bottom: 56.25%;">
+        <iframe src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&controls=0&rel=0&autoplay=1&mute=1" class="absolute inset-0 w-full h-full" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <p class="text-center text-gray-600 mt-4">Shivam Sir · Math Expert (7+ years)</p>
+      <div class="flex justify-center mt-3">
+        <a href="#" onclick="openLecture()" class="bg-brand-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-brand-700 transition">More Lectures</a>
+      </div>
+    </section>
+
+    <!-- Premium Batches Grid -->
+    <section id="batches">
+      <h3 class="text-2xl md:text-3xl font-display font-bold text-gray-900 mb-7">📚 Premium Batches</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+        <!-- CUET -->
+        <div class="card-premium p-4 flex flex-col">
+          <img src="https://i.ibb.co/4wXc33T0/828aed35-38f7-4097-9751-0ef7957f76e9-thumbnail.webp" class="w-full h-36 object-cover rounded-2xl mb-4">
+          <h4 class="font-bold text-lg">CUET</h4>
+          <p class="text-sm text-gray-500 flex-1">University entrance expert guidance.</p>
+          <span class="font-bold text-brand-600">₹2,000/m</span>
+          <a href="fromTHP.html" class="mt-3 bg-gray-100 hover:bg-brand-100 text-center py-2 rounded-xl font-medium text-sm transition">Enroll</a>
+        </div>
+        <!-- NEET -->
+        <div class="card-premium p-4 flex flex-col">
+          <img src="https://i.ibb.co/1JL6h6NC/5f89c41f-0897-4c04-99cd-3a66bbe89b26.png" class="w-full h-36 object-cover rounded-2xl mb-4">
+          <h4 class="font-bold text-lg">NEET</h4>
+          <p class="text-sm text-gray-500 flex-1">Medical prep with top faculty.</p>
+          <span class="font-bold text-brand-600">₹2,000/m</span>
+          <a href="fromTHP.html" class="mt-3 bg-gray-100 hover:bg-brand-100 text-center py-2 rounded-xl font-medium text-sm transition">Enroll</a>
+        </div>
+        <!-- IIT-JEE -->
+        <div class="card-premium p-4 flex flex-col">
+          <img src="https://i.ibb.co/7NyBDHSM/2f91edf2-41ad-4f3d-b079-4e452f2d2fee-3.png" class="w-full h-36 object-cover rounded-2xl mb-4">
+          <h4 class="font-bold text-lg">IIT-JEE</h4>
+          <p class="text-sm text-gray-500 flex-1">Engineering dream launchpad.</p>
+          <span class="font-bold text-brand-600">₹2,000/m</span>
+          <a href="fromTHP.html" class="mt-3 bg-gray-100 hover:bg-brand-100 text-center py-2 rounded-xl font-medium text-sm transition">Enroll</a>
+        </div>
+        <!-- Class 3-12 -->
+        <div class="card-premium p-4 flex flex-col">
+          <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" class="w-full h-36 object-cover rounded-2xl mb-4">
+          <h4 class="font-bold text-lg">Class 3-12</h4>
+          <p class="text-sm text-gray-500 flex-1">All boards, all subjects.</p>
+          <span class="font-bold text-brand-600">₹1,000-2,500</span>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="mt-3 bg-gray-100 hover:bg-brand-100 text-center py-2 rounded-xl font-medium text-sm transition">Enroll</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Us + Gallery compact -->
+    <section id="about-us" class="grid md:grid-cols-2 gap-8">
+      <div class="card-premium p-6">
+        <h3 class="text-2xl font-display font-bold mb-4">🌟 About THP</h3>
+        <div class="flex items-start gap-4">
+          <img src="channels4_profile.jpg" class="w-20 h-20 rounded-full border-4 border-indigo-100">
+          <p class="text-gray-700 text-sm leading-relaxed">We offer Commerce, Maths, Physics, Chemistry, Biology, English & more. Specialized courses for CUET, NEET, IIT-JEE with regular tests and study materials.</p>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="bg-indigo-50 text-indigo-700 text-xs px-3 py-1 rounded-full">Expert Faculty</span>
+          <span class="bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full">Small Batches</span>
+          <span class="bg-emerald-50 text-emerald-700 text-xs px-3 py-1 rounded-full">Affordable Fees</span>
+        </div>
+      </div>
+    <div id="gallery" class="card-premium p-5">
+  <h3 class="text-2xl font-display font-bold mb-3">🖼️ Gallery</h3>
+  <div class="grid grid-cols-2 gap-3">
+    <img src="gallarymini1.jpg" class="rounded-xl h-28 object-cover hover:scale-105 transition">
+    <img src="gallarymini2.jpg" class="rounded-xl h-28 object-cover hover:scale-105 transition">
+    <img src="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" class="rounded-xl h-28 object-cover hover:scale-105 transition">
+    <img src="cuet.jpg" class="rounded-xl h-28 object-cover hover:scale-105 transition">
+    <img src="https://i.ibb.co/WN8Cz7Tm/IMG20260502163511.avif" class="rounded-xl h-28 object-cover hover:scale-105 transition">
+    <img src="https://i.ibb.co/Hpk0cNc5/IMG20260502160220.avif" class="rounded-xl h-28 object-cover hover:scale-105 transition">
+  </div>
+</div>
+    </section>
+
+    <!-- Admission + Contact hybrid -->
+    <section id="admission" class="card-premium p-6 md:p-8">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-2xl font-display font-bold mb-5">📝 Join Us</h3>
+          <ol class="space-y-4">
+            <li class="flex gap-3"><span class="bg-brand-100 text-brand-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm">1</span> Fill online form</li>
+            <li class="flex gap-3"><span class="bg-brand-100 text-brand-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm">2</span> Upload documents</li>
+            <li class="flex gap-3"><span class="bg-brand-100 text-brand-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm">3</span> Entrance test (if any)</li>
+            <li class="flex gap-3"><span class="bg-brand-100 text-brand-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm">4</span> Pay fee & confirm seat</li>
+          </ol>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="inline-block mt-6 bg-brand-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-brand-700">Start Application</a>
+        </div>
+        <div id="contact">
+          <h3 class="text-2xl font-display font-bold mb-5">📞 Contact</h3>
+          <div class="space-y-3 text-sm">
+            <p><i class="fas fa-envelope text-brand-500 w-5"></i> theheavenpoint@gmail.com</p>
+            <p><i class="fas fa-phone-alt text-brand-500"></i> 9648837922</p>
+            <p><i class="fas fa-map-marker-alt text-brand-500"></i> Heaven Point Coaching</p>
+            <div class="flex gap-4 mt-4 text-xl">
+              <a href="https://t.me/heavenpoint" class="text-indigo-500"><i class="fab fa-telegram"></i></a>
+              <a href="https://www.instagram.com/theheavenpoint/" class="text-pink-500"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" class="text-red-500"><i class="fab fa-youtube"></i></a>
+              <a href="#" id="whatsappBtn2" class="text-green-500"><i class="fab fa-whatsapp"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t flex justify-around py-3 z-40">
+    <a href="#" class="flex flex-col items-center text-brand-600"><i class="fas fa-home text-xl"></i><span class="text-xs">Home</span></a>
+    <a href="#batches" class="flex flex-col items-center text-gray-500"><i class="fas fa-book"></i><span class="text-xs">Courses</span></a>
+    <a href="#" onclick="openNotes()" class="flex flex-col items-center text-gray-500"><i class="fas fa-file-alt"></i><span class="text-xs">Notes</span></a>
+    <a href="resistor.html" class="flex flex-col items-center text-gray-500"><i class="fas fa-user"></i><span class="text-xs">Profile</span></a>
+  </nav>
+
+  <!-- Floating WhatsApp -->
+  <button id="whatsappBtn" class="fixed bottom-24 right-5 w-14 h-14 bg-emerald-500 rounded-full shadow-2xl flex items-center justify-center text-white text-2xl z-30 hover:scale-110 transition">
+    <i class="fab fa-whatsapp"></i>
+  </button>
+</div>
+
+<script>
+  function openNotes(){ window.open('thp-special-notes.html', '_blank'); }
+  function openLecture(){ window.open('thp-online-lecture.html', '_blank'); }
+
+  const whatsappMsg = encodeURIComponent("Hello, I'm interested in The Heaven Point Coaching.");
+  document.getElementById("whatsappBtn").onclick = () => window.open(`https://wa.me/919648837922?text=${whatsappMsg}`, '_blank');
+  document.getElementById("whatsappBtn2").onclick = () => window.open(`https://wa.me/919648837922?text=${whatsappMsg}`, '_blank');
+
+  // Mobile menu
+  const menu = document.getElementById("mobileMenu");
+  document.getElementById("mobileMenuBtn").onclick = () => menu.classList.remove("hidden");
+  document.getElementById("closeMobileMenu").onclick = () => menu.classList.add("hidden");
+  menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => menu.classList.add('hidden')));
+
+  document.getElementById('notifBtn').addEventListener('click', ()=> window.location.href='notification.html');
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if(href === "#") return;
+      const target = document.querySelector(href);
+      if(target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+    });
+  });
+</script>
 </body>
 </html>
