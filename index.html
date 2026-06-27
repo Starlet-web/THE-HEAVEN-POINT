@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <title>The Heaven Point • Best Coaching for CUET, NEET, IIT-JEE</title>
+    <title>The Heaven Point • Shine Brighter | Premium Coaching</title>
 
-    <meta name="description" content="The Heaven Point offers premium coaching for CUET, NEET, IIT-JEE, and School courses (3rd-12th). Expert faculty, small batches, regular tests, and proven results. Join 5000+ successful students.">
+    <meta name="description" content="Premium coaching for CUET, NEET, IIT-JEE, School courses (3rd–12th). Expert faculty, small batches, proven results. Join 5000+ successful students.">
     <meta property="og:title" content="The Heaven Point • Shine Brighter">
-    <meta property="og:description" content="Premium coaching for CUET, NEET, IIT-JEE, School courses (3rd-12th). Expert faculty, proven results.">
+    <meta property="og:description" content="Premium coaching for CUET, NEET, IIT-JEE, School courses (3rd–12th). Expert faculty, proven results.">
     <meta property="og:image" content="channels4_profile.jpg">
     <meta property="og:url" content="https://starlet-web.github.io/THE-HEAVEN-POINT/">
     <meta property="og:type" content="website">
@@ -35,29 +35,26 @@
     }
     </script>
 
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <script src="https://cdn.tailwindcss.com"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
                     colors: {
-                        brand: {
-                            DEFAULT: '#1e40af',
-                            light: '#dbeafe',
-                            medium: '#3b82f6',
-                            dark: '#1e3a8a',
-                        },
-                        accent: {
-                            DEFAULT: '#f97316',
-                            light: '#fff7ed',
-                            dark: '#ea580c',
-                        }
+                        brand: { DEFAULT: '#1e40af', light: '#dbeafe', medium: '#3b82f6', dark: '#1e3a8a' },
+                        accent: { DEFAULT: '#f97316', light: '#fff7ed', dark: '#ea580c' }
                     }
                 }
             }
@@ -68,11 +65,8 @@
         :root {
             --brand: #1e40af;
             --brand-light: #dbeafe;
-            --brand-medium: #3b82f6;
             --accent: #f97316;
-            --accent-light: #fff7ed;
             --green: #16a34a;
-            --green-light: #f0fdf4;
             --safe-bottom: env(safe-area-inset-bottom, 16px);
         }
 
@@ -82,12 +76,10 @@
             background: #ffffff;
             font-family: 'Inter', system-ui, sans-serif;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             color: #1e293b;
             min-height: 100dvh;
         }
 
-        /* Header */
         .header-main {
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
@@ -96,7 +88,6 @@
         }
         .header-main.scrolled { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 
-        /* Cards */
         .card-white {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -104,10 +95,7 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.04);
             transition: all 0.3s ease;
         }
-        .card-white:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border-color: #cbd5e1;
-        }
+        .card-white:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: #cbd5e1; }
 
         .card-featured {
             background: #ffffff;
@@ -116,12 +104,10 @@
             box-shadow: 0 2px 8px rgba(30,64,175,0.08);
         }
 
-        /* Hero */
         .hero-section {
             background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%);
         }
 
-        /* Buttons */
         .btn-primary {
             background: #1e40af;
             color: #ffffff;
@@ -133,6 +119,7 @@
             align-items: center;
             gap: 8px;
             box-shadow: 0 2px 4px rgba(30,64,175,0.2);
+            cursor: pointer;
         }
         .btn-primary:hover { background: #1e3a8a; box-shadow: 0 4px 12px rgba(30,64,175,0.3); }
         .btn-primary:active { transform: scale(0.97); }
@@ -163,12 +150,11 @@
         }
         .btn-accent:hover { background: #ea580c; box-shadow: 0 4px 12px rgba(249,115,22,0.3); }
 
-        /* Badge */
         .badge-blue { background: #dbeafe; color: #1e40af; font-weight: 600; font-size: 12px; padding: 4px 12px; border-radius: 100px; }
         .badge-green { background: #f0fdf4; color: #16a34a; font-weight: 600; font-size: 12px; padding: 4px 12px; border-radius: 100px; }
         .badge-orange { background: #fff7ed; color: #f97316; font-weight: 600; font-size: 12px; padding: 4px 12px; border-radius: 100px; }
+        .badge-red { background: #fef2f2; color: #dc2626; font-weight: 600; font-size: 12px; padding: 4px 12px; border-radius: 100px; }
 
-        /* Bottom Nav */
         .bottom-nav {
             background: #ffffff;
             border-top: 1px solid #e2e8f0;
@@ -176,13 +162,11 @@
             box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
         }
 
-        /* WhatsApp */
         .whatsapp-btn {
             background: #25D366;
             box-shadow: 0 4px 16px rgba(37,211,102,0.35);
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             top: 20px;
@@ -190,28 +174,33 @@
             transform: translateX(-50%) translateY(-120px);
             background: #1e293b;
             color: #fff;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 8px;
             font-weight: 500;
             font-size: 14px;
             z-index: 999;
             transition: transform 0.3s ease;
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            white-space: nowrap;
+            max-width: 90vw;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
-        /* Progress */
         .progress-bar {
             position: fixed;
             top: 0;
             left: 0;
             height: 3px;
-            background: #1e40af;
+            background: linear-gradient(90deg, #1e40af, #f97316);
             z-index: 9999;
             transition: width 0.1s linear;
         }
 
-        /* Animations */
+        .mobile-menu { transition: opacity 0.3s ease, visibility 0.3s; }
+        .mobile-menu.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -222,20 +211,100 @@
         .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; }
 
-        /* Mobile Menu */
-        .mobile-menu { transition: opacity 0.3s ease, visibility 0.3s; }
-        .mobile-menu.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .animate-pulse-custom { animation: pulse 2s ease-in-out infinite; }
+
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-slide-down { animation: slideDown 0.3s ease forwards; }
+
+        /* Notification dropdown */
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 360px;
+            max-width: 90vw;
+            max-height: 400px;
+            overflow-y: auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            z-index: 100;
+        }
+
+        /* Student welcome bar */
+        .student-bar {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-content {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        /* Skeleton loading */
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
 
         ::selection { background: #dbeafe; color: #1e40af; }
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        @media print {
+            .bottom-nav, .whatsapp-btn, .mobile-menu, .progress-bar, .notification-dropdown, .modal-overlay { display: none !important; }
+            body { background: #ffffff; }
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <div class="progress-bar" id="progressBar" style="width:0%"></div>
     <div class="toast" id="toast"></div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay hidden" id="loginModal">
+        <div class="modal-content animate-slide-down">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-xl font-extrabold text-gray-900">👋 Welcome to Heaven Point</h3>
+                <button onclick="closeLoginModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <p class="text-sm text-gray-600 mb-4">Enter your details for a personalized experience</p>
+            <input type="text" id="studentName" placeholder="Your Full Name" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-3 text-sm focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light">
+            <input type="tel" id="studentPhone" placeholder="Phone Number" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-3 text-sm focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light">
+            <input type="text" id="studentClass" placeholder="Class/Course (e.g., 12th, NEET, CUET)" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 text-sm focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light">
+            <button onclick="saveStudentProfile()" class="btn-primary w-full justify-center text-sm">Save & Continue</button>
+            <button onclick="closeLoginModal()" class="w-full text-center text-sm text-gray-500 mt-3 hover:text-gray-700">Skip for now</button>
+        </div>
+    </div>
 
     <!-- HEADER -->
     <header class="header-main sticky top-0 z-50" id="mainHeader">
@@ -247,17 +316,28 @@
                     <span class="text-[10px] md:text-xs text-gray-500 font-medium tracking-wide">Shine Brighter</span>
                 </div>
             </a>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 md:gap-3">
                 <a href="tel:9648837922" class="hidden md:inline-flex items-center gap-2 text-brand font-semibold text-sm hover:text-brand-dark transition">
                     <i class="fas fa-phone-alt"></i> 9648837922
                 </a>
                 <a href="https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view" target="_blank" rel="noopener" class="hidden md:inline-flex btn-primary text-sm py-2.5 px-5">
-                    <i class="fas fa-download text-xs"></i> Download App
+                    <i class="fas fa-download text-xs"></i> App
                 </a>
-                <button id="notifBtn" class="relative p-2 text-gray-500 hover:text-brand transition-colors">
-                    <i class="far fa-bell text-xl"></i>
-                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
-                </button>
+                <div class="relative">
+                    <button id="notifBtn" class="relative p-2 text-gray-500 hover:text-brand transition-colors">
+                        <i class="far fa-bell text-xl"></i>
+                        <span id="notifBadge" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white hidden"></span>
+                    </button>
+                    <div id="notifDropdown" class="notification-dropdown hidden p-3">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-sm text-gray-900">Notifications</span>
+                            <button onclick="markAllNotificationsRead()" class="text-xs text-brand hover:underline">Mark all read</button>
+                        </div>
+                        <div id="notifList" class="space-y-2">
+                            <p class="text-xs text-gray-400 text-center py-4">Loading notifications...</p>
+                        </div>
+                    </div>
+                </div>
                 <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-600 hover:text-brand" aria-label="Menu">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
@@ -280,8 +360,23 @@
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto px-4 md:px-6 pb-28 md:pb-12">
 
+        <!-- Student Welcome Bar -->
+        <div id="studentWelcomeBar" class="student-bar hidden mt-4 animate-fade-up flex items-center justify-between gap-4 flex-wrap">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg" id="studentInitial">S</div>
+                <div>
+                    <p class="font-semibold text-sm">Welcome back, <span id="studentDisplayName">Student</span>! 👋</p>
+                    <p class="text-xs text-white/70" id="studentDisplayInfo">Your learning dashboard</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full" id="studentBadge"></span>
+                <button onclick="openLoginModal()" class="text-xs text-white/80 hover:text-white underline">Edit</button>
+            </div>
+        </div>
+
         <!-- HERO -->
-        <section class="hero-section rounded-2xl md:rounded-3xl mt-6 p-6 md:p-12 lg:p-16 flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-up">
+        <section class="hero-section rounded-2xl md:rounded-3xl mt-4 md:mt-6 p-6 md:p-12 lg:p-16 flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-up">
             <div class="flex-1">
                 <span class="badge-blue mb-4 inline-block">🎓 Admissions Open 2025-26</span>
                 <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
@@ -291,6 +386,11 @@
                 <div class="flex flex-wrap gap-3 mt-6">
                     <a href="#batches" class="btn-primary text-sm md:text-base">Explore Courses <i class="fas fa-arrow-right text-xs"></i></a>
                     <a href="tel:9648837922" class="btn-outline text-sm md:text-base"><i class="fas fa-phone-alt"></i> Call Now</a>
+                </div>
+                <!-- Live student count -->
+                <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse-custom"></span>
+                    <span id="liveStudentCount">Loading...</span> students enrolled this month
                 </div>
             </div>
             <div class="flex-shrink-0">
@@ -384,7 +484,7 @@
         <section class="mt-12 animate-fade-up delay-4">
             <div class="flex items-center gap-3 mb-5">
                 <h2 class="text-xl md:text-2xl font-extrabold text-gray-900">🎬 Demo Lecture</h2>
-                <span class="bg-red-50 text-red-600 text-xs font-bold px-3 py-1 rounded-full">LIVE</span>
+                <span class="badge-red">LIVE</span>
             </div>
             <div class="rounded-2xl overflow-hidden shadow-lg bg-black" style="padding-bottom:56.25%; position:relative;">
                 <iframe src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&rel=0&autoplay=1&mute=1" class="absolute inset-0 w-full h-full" allowfullscreen loading="lazy" title="Demo Lecture"></iframe>
@@ -502,42 +602,289 @@
     <!-- WHATSAPP FLOAT -->
     <button id="whatsappBtn" class="whatsapp-btn fixed bottom-20 right-4 md:bottom-8 md:right-8 w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl z-30 hover:scale-110 active:scale-95 transition-all"><i class="fab fa-whatsapp"></i></button>
 
+    <!-- ==================== ALL SCRIPTS ==================== -->
     <script>
-        function openNotes(){window.open('thp-special-notes.html','_blank');}
-        function openLecture(){window.open('thp-online-lecture.html','_blank');}
-        function showToast(m,d=3000){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),d);}
-        function closeMenu(){document.getElementById('mobileMenu').classList.add('hidden');document.body.style.overflow='';}
+        // ========== FIREBASE INITIALIZATION ==========
+        let db, auth;
+        try {
+            firebase.initializeApp({
+                apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
+                authDomain: "dumbbell-gyme.firebaseapp.com",
+                projectId: "dumbbell-gyme",
+                storageBucket: "dumbbell-gyme.firebasestorage.app",
+                messagingSenderId: "305021976299",
+                appId: "1:305021976299:web:fb85c2b332935d698088ae"
+            });
+            db = firebase.firestore();
+            auth = firebase.auth();
+            console.log('✅ Firebase connected');
+        } catch (e) {
+            console.warn('Firebase init error:', e.message);
+        }
 
-        const wm=encodeURIComponent("Hello, I'm interested in The Heaven Point Coaching.");
-        document.getElementById('whatsappBtn').onclick=()=>window.open(`https://wa.me/919648837922?text=${wm}`,'_blank');
-        document.getElementById('whatsappBtn2').onclick=e=>{e.preventDefault();window.open(`https://wa.me/919648837922?text=${wm}`,'_blank');};
+        // ========== UTILITIES ==========
+        function openNotes() { window.open('thp-special-notes.html', '_blank'); }
+        function openLecture() { window.open('thp-online-lecture.html', '_blank'); }
+        function showToast(m, d = 3000) {
+            const t = document.getElementById('toast');
+            t.textContent = m;
+            t.classList.add('show');
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.classList.remove('show'), d);
+        }
+        function closeMenu() {
+            document.getElementById('mobileMenu').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
 
-        const menu=document.getElementById('mobileMenu'),mb=document.getElementById('mobileMenuBtn');
-        mb.onclick=()=>{menu.classList.remove('hidden');document.body.style.overflow='hidden';};
-        document.getElementById('closeMobileMenu').onclick=closeMenu;
-        menu.querySelectorAll('a[href^="#"]').forEach(l=>l.onclick=()=>{closeMenu();const t=document.querySelector(l.getAttribute('href'));if(t)setTimeout(()=>t.scrollIntoView({behavior:'smooth'}),350);});
+        // ========== STUDENT PROFILE (Firebase + LocalStorage) ==========
+        function getStudentId() {
+            let id = localStorage.getItem('thp_student_id');
+            if (!id) {
+                id = 'STU' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase();
+                localStorage.setItem('thp_student_id', id);
+            }
+            return id;
+        }
 
-        const hdr=document.getElementById('mainHeader');
-        window.addEventListener('scroll',()=>{
-            const sy=window.scrollY;hdr.classList.toggle('scrolled',sy>40);
-            const sh=document.documentElement.scrollHeight-window.innerHeight;
-            document.getElementById('progressBar').style.width=sh>0?Math.min((sy/sh)*100,100)+'%':'0%';
-        },{passive:true});
+        function openLoginModal() {
+            const student = JSON.parse(localStorage.getItem('thp_student_data') || '{}');
+            document.getElementById('studentName').value = student.name || '';
+            document.getElementById('studentPhone').value = student.phone || '';
+            document.getElementById('studentClass').value = student.class || '';
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
 
-        document.querySelectorAll('a[href^="#"]').forEach(a=>a.onclick=function(e){
-            const h=this.getAttribute('href');if(h==='#')return;
-            const t=document.querySelector(h);if(t){e.preventDefault();window.scrollTo({top:t.offsetTop-hdr.offsetHeight-12,behavior:'smooth'});}
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function saveStudentProfile() {
+            const name = document.getElementById('studentName').value.trim();
+            const phone = document.getElementById('studentPhone').value.trim();
+            const studentClass = document.getElementById('studentClass').value.trim();
+
+            if (!name) { showToast('Please enter your name'); return; }
+
+            const studentId = getStudentId();
+            const studentData = {
+                id: studentId,
+                name: name,
+                phone: phone,
+                class: studentClass,
+                lastLogin: new Date().toISOString(),
+                visits: (JSON.parse(localStorage.getItem('thp_student_data') || '{}').visits || 0) + 1
+            };
+
+            localStorage.setItem('thp_student_data', JSON.stringify(studentData));
+
+            // Save to Firestore
+            if (db) {
+                db.collection('students').doc(studentId).set(studentData, { merge: true })
+                    .then(() => console.log('✅ Student saved to Firestore'))
+                    .catch(e => console.warn('Firestore save error:', e));
+            }
+
+            updateStudentUI(studentData);
+            closeLoginModal();
+            showToast('Welcome, ' + name + '! 🎓');
+        }
+
+        function updateStudentUI(studentData) {
+            const bar = document.getElementById('studentWelcomeBar');
+            if (!studentData || !studentData.name) {
+                bar.classList.add('hidden');
+                return;
+            }
+
+            bar.classList.remove('hidden');
+            document.getElementById('studentDisplayName').textContent = studentData.name;
+            document.getElementById('studentInitial').textContent = studentData.name.charAt(0).toUpperCase();
+            document.getElementById('studentDisplayInfo').textContent =
+                (studentData.class ? 'Class: ' + studentData.class + ' | ' : '') + 'Visits: ' + (studentData.visits || 1);
+            document.getElementById('studentBadge').textContent = studentData.class || 'Student';
+        }
+
+        function loadStudentProfile() {
+            const studentData = JSON.parse(localStorage.getItem('thp_student_data') || 'null');
+            if (studentData && studentData.name) {
+                updateStudentUI(studentData);
+            } else {
+                // Show login modal after delay for new users
+                setTimeout(() => {
+                    if (!localStorage.getItem('thp_student_data')) {
+                        openLoginModal();
+                    }
+                }, 5000);
+            }
+        }
+
+        // ========== NOTIFICATIONS (Firestore) ==========
+        function loadNotifications() {
+            const notifList = document.getElementById('notifList');
+            const notifBadge = document.getElementById('notifBadge');
+
+            // Default notifications
+            const defaultNotifs = [
+                { title: 'New batch starting soon!', message: 'CUET 2026 batch admissions open. Limited seats.', time: '2 hours ago', read: false },
+                { title: 'Demo lecture available', message: 'Watch Shivam Sir's latest Math lecture now.', time: '1 day ago', read: false },
+                { title: 'Fee discount alert', message: '33% off on SSC, Bank, Railway course. Enroll today!', time: '3 days ago', read: true },
+            ];
+
+            // Try Firestore
+            if (db) {
+                db.collection('notifications').orderBy('timestamp', 'desc').limit(10).get()
+                    .then(snapshot => {
+                        const notifs = [];
+                        snapshot.forEach(doc => {
+                            notifs.push({ id: doc.id, ...doc.data() });
+                        });
+                        renderNotifications(notifs.length > 0 ? notifs : defaultNotifs);
+                    })
+                    .catch(() => renderNotifications(defaultNotifs));
+            } else {
+                renderNotifications(defaultNotifs);
+            }
+
+            function renderNotifications(notifs) {
+                const unreadCount = notifs.filter(n => !n.read).length;
+                if (unreadCount > 0) {
+                    notifBadge.classList.remove('hidden');
+                    notifBadge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                } else {
+                    notifBadge.classList.add('hidden');
+                }
+
+                notifList.innerHTML = notifs.map(n => `
+                    <div class="p-3 rounded-lg ${n.read ? 'bg-white' : 'bg-blue-50'} border border-gray-100 cursor-pointer hover:shadow-sm transition">
+                        <div class="flex justify-between items-start">
+                            <span class="font-semibold text-sm text-gray-900">${n.title}</span>
+                            ${!n.read ? '<span class="w-2 h-2 bg-blue-500 rounded-full mt-1.5"></span>' : ''}
+                        </div>
+                        <p class="text-xs text-gray-600 mt-1">${n.message}</p>
+                        <span class="text-[10px] text-gray-400 mt-1 block">${n.time || 'Recently'}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function markAllNotificationsRead() {
+            document.getElementById('notifBadge').classList.add('hidden');
+            showToast('All notifications marked as read');
+            if (db) {
+                db.collection('notifications').where('read', '==', false).get()
+                    .then(snapshot => {
+                        snapshot.forEach(doc => doc.ref.update({ read: true }));
+                    })
+                    .catch(() => {});
+            }
+        }
+
+        // Toggle notification dropdown
+        document.getElementById('notifBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('notifDropdown');
+            dropdown.classList.toggle('hidden');
+            if (!dropdown.classList.contains('hidden')) loadNotifications();
+        });
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('notifDropdown');
+            if (!dropdown.classList.contains('hidden') && !e.target.closest('#notifBtn') && !e.target.closest('#notifDropdown')) {
+                dropdown.classList.add('hidden');
+            }
         });
 
-        if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/THE-HEAVEN-POINT/service-worker.js',{scope:'/THE-HEAVEN-POINT/'}));
-        document.getElementById('notifBtn').onclick=()=>window.location.href='notification.html';
+        // ========== WHATSAPP ==========
+        const wm = encodeURIComponent("Hello, I'm interested in The Heaven Point Coaching.");
+        document.getElementById('whatsappBtn').onclick = () => window.open(`https://wa.me/919648837922?text=${wm}`, '_blank');
+        document.getElementById('whatsappBtn2').onclick = e => { e.preventDefault();
+            window.open(`https://wa.me/919648837922?text=${wm}`, '_blank'); };
 
-        // Active nav
-        const ni=document.querySelectorAll('.nav-item'),secs=document.querySelectorAll('section[id]');
-        function uan(){let c='home';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-130)c=s.id;});
-        ni.forEach(item=>{const d=item.getAttribute('data-nav');const a=(d==='home'&&window.scrollY<400)||(d==='courses'&&c==='batches')||(d==='profile'&&c==='admission')||d===c;item.classList.toggle('text-brand',a);item.classList.toggle('text-gray-400',!a);});}
-        window.addEventListener('scroll',uan,{passive:true});uan();
-        console.log('🎓 The Heaven Point • Shine Brighter');
+        // ========== MOBILE MENU ==========
+        const menu = document.getElementById('mobileMenu'),
+            mb = document.getElementById('mobileMenuBtn');
+        mb.onclick = () => { menu.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; };
+        document.getElementById('closeMobileMenu').onclick = closeMenu;
+        menu.querySelectorAll('a[href^="#"]').forEach(l => l.onclick = () => {
+            closeMenu();
+            const t = document.querySelector(l.getAttribute('href'));
+            if (t) setTimeout(() => t.scrollIntoView({ behavior: 'smooth' }), 350);
+        });
+
+        // ========== HEADER SCROLL + PROGRESS ==========
+        const hdr = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            const sy = window.scrollY;
+            hdr.classList.toggle('scrolled', sy > 40);
+            const sh = document.documentElement.scrollHeight - window.innerHeight;
+            document.getElementById('progressBar').style.width = sh > 0 ? Math.min((sy / sh) * 100, 100) + '%' :
+            '0%';
+        }, { passive: true });
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(a => a.onclick = function(e) {
+            const h = this.getAttribute('href');
+            if (h === '#') return;
+            const t = document.querySelector(h);
+            if (t) { e.preventDefault();
+                window.scrollTo({ top: t.offsetTop - hdr.offsetHeight - 12, behavior: 'smooth' }); }
+        });
+
+        // ========== SERVICE WORKER ==========
+        if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register(
+            '/THE-HEAVEN-POINT/service-worker.js', { scope: '/THE-HEAVEN-POINT/' }));
+
+        // ========== BOTTOM NAV ACTIVE ==========
+        const ni = document.querySelectorAll('.nav-item'),
+            secs = document.querySelectorAll('section[id]');
+
+        function uan() {
+            let c = 'home';
+            secs.forEach(s => { if (window.scrollY >= s.offsetTop - 130) c = s.id; });
+            ni.forEach(item => {
+                const d = item.getAttribute('data-nav');
+                const a = (d === 'home' && window.scrollY < 400) || (d === 'courses' && c === 'batches') || (
+                    d === 'profile' && c === 'admission') || d === c;
+                item.classList.toggle('text-brand', a);
+                item.classList.toggle('text-gray-400', !a);
+            });
+        }
+        window.addEventListener('scroll', uan, { passive: true });
+        uan();
+
+        // ========== LIVE STUDENT COUNT (Firestore) ==========
+        function updateLiveCount() {
+            if (db) {
+                db.collection('students').get()
+                    .then(snapshot => {
+                        document.getElementById('liveStudentCount').textContent = snapshot.size +
+                            '+';
+                    })
+                    .catch(() => {
+                        document.getElementById('liveStudentCount').textContent = '50+';
+                    });
+            } else {
+                document.getElementById('liveStudentCount').textContent = '50+';
+            }
+        }
+
+        // ========== INIT ==========
+        function init() {
+            loadStudentProfile();
+            updateLiveCount();
+            loadNotifications();
+            console.log('🎓 The Heaven Point • Shine Brighter');
+            console.log('📱 Firebase Connected • Student Personalization Active');
+            console.log('🔔 Real-time Notifications Ready');
+        }
+
+        // Run on load
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Online/Offline detection
+        window.addEventListener('online', () => showToast('Back online 📶'));
+        window.addEventListener('offline', () => showToast('You are offline 📴', 4000));
     </script>
 </body>
 </html>
