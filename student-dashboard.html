@@ -1,1132 +1,612 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>THP • Student Command Center</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <title>The Heaven Point • Shine Brighter | Premium Coaching</title>
+
+    <meta name="description" content="Premium coaching for CUET, NEET, IIT-JEE, School courses (3rd–12th). Expert faculty, small batches, proven results. Join 5000+ successful students.">
+    <meta property="og:title" content="The Heaven Point • Shine Brighter">
+    <meta property="og:description" content="Premium coaching for CUET, NEET, IIT-JEE, School courses (3rd–12th). Expert faculty, proven results.">
+    <meta property="og:image" content="channels4_profile.jpg">
+    <meta property="og:url" content="https://starlet-web.github.io/THE-HEAVEN-POINT/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Heaven Point">
+    <link rel="apple-touch-icon" href="channels4_profile.jpg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="channels4_profile.jpg">
+    <meta name="google-site-verification" content="mA9aIn22KO_fawtHBnRUcy2Xj29t8lT1LdbtQx34-P4">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "The Heaven Point",
+      "url": "https://starlet-web.github.io/THE-HEAVEN-POINT/",
+      "logo": "channels4_profile.jpg",
+      "description": "Premium coaching for CUET, NEET, IIT-JEE and School courses.",
+      "telephone": "+919648837922",
+      "email": "theheavenpoint@gmail.com",
+      "areaServed": "India"
+    }
     </script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        brand: { DEFAULT: '#1e40af', light: '#dbeafe', medium: '#3b82f6', dark: '#1e3a8a' },
+                        accent: { DEFAULT: '#f97316', light: '#fff7ed', dark: '#ea580c' }
+                    }
+                }
+            }
+        }
     </script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js">
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         :root {
-            --bg-primary: #09090b;
-            --bg-secondary: #0f0f13;
-            --bg-tertiary: #18181b;
-            --bg-card: rgba(24, 24, 27, 0.7);
-            --bg-card-hover: rgba(30, 30, 35, 0.8);
-            --bg-glass: rgba(255, 255, 255, 0.03);
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --border-default: rgba(255, 255, 255, 0.1);
-            --border-strong: rgba(255, 255, 255, 0.15);
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --text-disabled: #52525b;
-            --brand-primary: #6366f1;
-            --brand-primary-hover: #818cf8;
-            --brand-primary-glow: rgba(99, 102, 241, 0.4);
-            --brand-secondary: #22c55e;
-            --brand-secondary-glow: rgba(34, 197, 94, 0.4);
-            --accent-amber: #f59e0b;
-            --accent-rose: #f43f5e;
-            --accent-cyan: #06b6d4;
-            --accent-violet: #8b5cf6;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
-            --shadow-glow-brand: 0 0 30px var(--brand-primary-glow);
-            --shadow-glow-green: 0 0 30px var(--brand-secondary-glow);
-            --radius-xs: 6px;
-            --radius-sm: 10px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --radius-xl: 32px;
-            --radius-full: 9999px;
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        [data-theme="light"] {
-            --bg-primary: #fafafa;
-            --bg-secondary: #f4f4f5;
-            --bg-tertiary: #e4e4e7;
-            --bg-card: rgba(255, 255, 255, 0.8);
-            --bg-card-hover: rgba(255, 255, 255, 0.95);
-            --bg-glass: rgba(0, 0, 0, 0.02);
-            --border-subtle: rgba(0, 0, 0, 0.04);
-            --border-default: rgba(0, 0, 0, 0.08);
-            --border-strong: rgba(0, 0, 0, 0.12);
-            --text-primary: #18181b;
-            --text-secondary: #52525b;
-            --text-tertiary: #a1a1aa;
-            --text-disabled: #d4d4d8;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-            --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.1);
+            --brand: #1e40af;
+            --brand-light: #dbeafe;
+            --accent: #f97316;
+            --green: #16a34a;
+            --safe-bottom: env(safe-area-inset-bottom, 16px);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        * { -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         body {
-            font-family: var(--font-sans);
-            background: var(--bg-primary);
-            min-height: 100vh;
-            color: var(--text-primary);
-            transition: background var(--transition-slow), color var(--transition-slow);
-            line-height: 1.6;
-            position: relative;
-            overflow-x: hidden;
-            letter-spacing: -0.01em;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 80% 60% at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 80% at 80% 70%, rgba(34, 197, 94, 0.06) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .app-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem;
-            position: relative;
-            z-index: 1;
-            animation: fadeSlideIn 0.6s var(--transition-slow) forwards;
-        }
-        @keyframes fadeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            background: #ffffff;
+            font-family: 'Inter', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            color: #1e293b;
+            min-height: 100dvh;
         }
 
-        /* Top Navigation Bar */
-        .top-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 1.25rem;
-            background: var(--bg-card);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow-sm);
-            gap: 1rem;
-            flex-wrap: wrap;
-            position: sticky;
-            top: 0.5rem;
-            z-index: 50;
+        .header-main {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: box-shadow 0.3s ease;
         }
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
+        .header-main.scrolled { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+        .card-white {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
         }
-        .nav-brand .logo-icon {
-            width: 34px;
-            height: 34px;
-            background: linear-gradient(135deg, var(--brand-primary), var(--accent-violet));
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-            box-shadow: var(--shadow-glow-brand);
-        }
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .nav-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-full);
-            border: 1px solid var(--border-default);
-            background: var(--bg-glass);
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all var(--transition-fast);
-            position: relative;
-        }
-        .nav-btn:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-strong);
-            color: var(--text-primary);
-        }
-        .nav-btn.notification-bell::after {
-            content: attr(data-count);
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: var(--accent-rose);
-            color: white;
-            font-size: 0.55rem;
-            font-weight: 700;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: scale(0);
-            transition: all var(--transition-fast);
-        }
-        .nav-btn.notification-bell.has-notifications::after {
-            opacity: 1;
-            transform: scale(1);
+        .card-white:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+
+        .card-featured {
+            background: #ffffff;
+            border: 2px solid #dbeafe;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(30,64,175,0.08);
         }
 
-        /* Bento Grid Layout */
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 0.75rem;
-            grid-auto-rows: auto;
-        }
-        @media (max-width: 1200px) {
-            .bento-grid {
-                grid-template-columns: repeat(8, 1fr);
-            }
-        }
-        @media (max-width: 768px) {
-            .bento-grid {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-            .app-container {
-                padding: 0.5rem;
-            }
-            .top-nav {
-                padding: 0.5rem 0.75rem;
-                border-radius: var(--radius-md);
-            }
-        }
-        .bento-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
-            padding: 1.25rem;
-            transition: all var(--transition-base);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            animation: cardReveal 0.5s var(--transition-slow) forwards;
-            opacity: 0;
-        }
-        .bento-card:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-default);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-1px);
-        }
-        @keyframes cardReveal {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .bento-card.col-span-12 {
-            grid-column: span 12;
-            animation-delay: 0.05s;
-        }
-        .bento-card.col-span-8 {
-            grid-column: span 8;
-            animation-delay: 0.1s;
-        }
-        .bento-card.col-span-6 {
-            grid-column: span 6;
-            animation-delay: 0.15s;
-        }
-        .bento-card.col-span-4 {
-            grid-column: span 4;
-            animation-delay: 0.2s;
-        }
-        .bento-card.col-span-3 {
-            grid-column: span 3;
-            animation-delay: 0.25s;
-        }
-        @media (max-width: 1200px) {
-            .bento-card.col-span-8,
-            .bento-card.col-span-6,
-            .bento-card.col-span-4,
-            .bento-card.col-span-3 {
-                grid-column: span 4;
-            }
-        }
-        @media (max-width: 768px) {
-            .bento-card.col-span-8,
-            .bento-card.col-span-6,
-            .bento-card.col-span-4,
-            .bento-card.col-span-3,
-            .bento-card.col-span-12 {
-                grid-column: span 1;
-            }
+        .hero-section {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%);
         }
 
-        /* Card Header */
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .card-title {
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-tertiary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .card-title .title-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--brand-primary);
-            box-shadow: 0 0 8px var(--brand-primary-glow);
-        }
-
-        /* Profile Section */
-        .profile-content {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .avatar-wrapper {
-            position: relative;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            font-weight: 800;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-glow-brand);
-            transition: all var(--transition-base);
-            border: 3px solid rgba(255, 255, 255, 0.2);
-        }
-        .avatar:hover {
-            transform: scale(1.04);
-            box-shadow: var(--shadow-xl), var(--shadow-glow-brand);
-        }
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .avatar-status {
-            position: absolute;
-            bottom: 4px;
-            right: 4px;
-            width: 16px;
-            height: 16px;
-            background: var(--brand-secondary);
-            border: 3px solid var(--bg-primary);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--brand-secondary-glow);
-        }
-        .profile-info-area {
-            flex: 1;
-            min-width: 200px;
-        }
-        .profile-name-lg {
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: var(--text-primary);
-        }
-        .profile-meta-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 6px;
-        }
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 12px;
-            border-radius: var(--radius-full);
-            font-size: 0.7rem;
-            font-weight: 600;
-            border: 1px solid var(--border-default);
-            background: var(--bg-glass);
-            color: var(--text-secondary);
-            transition: all var(--transition-fast);
-        }
-        .tag.primary {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: rgba(99, 102, 241, 0.3);
-            color: var(--brand-primary-hover);
-        }
-        .tag.success {
-            background: rgba(34, 197, 94, 0.15);
-            border-color: rgba(34, 197, 94, 0.3);
-            color: var(--brand-secondary);
-        }
-        .profile-detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 8px;
-            margin-top: 0.8rem;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        .profile-detail-grid span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--bg-glass);
-            padding: 6px 10px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-subtle);
-        }
-        .profile-detail-grid i {
-            color: var(--brand-primary);
-            font-size: 0.7rem;
-            width: 16px;
-            text-align: center;
-        }
-
-        /* Stat Cards */
-        .stat-row-new {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.6rem;
-        }
-        @media (max-width: 768px) {
-            .stat-row-new {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .stat-tile {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-        }
-        .stat-tile:hover {
-            border-color: var(--brand-primary);
-            box-shadow: var(--shadow-glow-brand);
-            transform: translateY(-2px);
-        }
-        .stat-tile .stat-icon-sm {
-            font-size: 1.3rem;
-            margin-bottom: 4px;
-        }
-        .stat-tile .stat-number {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-        }
-        .stat-tile .stat-label-sm {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-tertiary);
-        }
-        .stat-tile.absent {
-            border-left: 3px solid var(--accent-rose);
-        }
-        .stat-tile.average {
-            border-left: 3px solid var(--accent-amber);
-        }
-        .stat-tile.best-score {
-            border-left: 3px solid var(--accent-cyan);
-        }
-
-        /* Charts */
-        .chart-wrap {
-            height: 240px;
-            position: relative;
-        }
-        .chart-wrap canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        /* Calendar */
-        .cal-controls {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .cal-controls button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 1px solid var(--border-default);
-            background: var(--bg-glass);
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 0.7rem;
-            transition: all var(--transition-fast);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .cal-controls button:hover {
-            background: var(--brand-primary);
-            color: white;
-            border-color: var(--brand-primary);
-        }
-        .cal-month-text {
-            font-weight: 700;
-            font-size: 0.8rem;
-            min-width: 130px;
-            text-align: center;
-            color: var(--text-primary);
-        }
-        .cal-grid-pro {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-            text-align: center;
-            font-size: 0.65rem;
-        }
-        .cal-day-header {
-            font-weight: 700;
-            color: var(--text-disabled);
-            padding: 4px 0;
-            font-size: 0.6rem;
-            letter-spacing: 0.04em;
-        }
-        .cal-day {
-            padding: 7px 2px;
-            border-radius: var(--radius-xs);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            font-size: 0.68rem;
-        }
-        .cal-day:hover {
-            transform: scale(1.3);
-            z-index: 5;
-            box-shadow: var(--shadow-md);
-        }
-        .cal-day.present {
-            background: var(--brand-secondary);
-            color: white;
-            box-shadow: 0 2px 8px var(--brand-secondary-glow);
-        }
-        .cal-day.absent {
-            background: var(--accent-rose);
-            color: white;
-            box-shadow: 0 2px 8px rgba(244, 63, 94, 0.3);
-        }
-        .cal-day.today {
-            border: 2px solid var(--brand-primary);
-            font-weight: 800;
-            box-shadow: var(--shadow-glow-brand);
-        }
-
-        /* Table */
-        .table-container {
-            overflow-x: auto;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-subtle);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.75rem;
-        }
-        th {
-            background: var(--bg-glass);
-            padding: 0.65rem 0.8rem;
-            text-align: left;
-            font-weight: 700;
-            border-bottom: 2px solid var(--border-default);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            transition: var(--transition-fast);
-            white-space: nowrap;
-        }
-        th:hover {
-            color: var(--brand-primary);
-        }
-        td {
-            padding: 0.65rem 0.8rem;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-        tr:hover td {
-            background: var(--bg-glass);
-        }
-        .grade-excellent {
-            color: var(--brand-secondary);
-            font-weight: 700;
-        }
-        .grade-good {
-            color: var(--accent-amber);
-            font-weight: 700;
-        }
-        .grade-poor {
-            color: var(--accent-rose);
-            font-weight: 700;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-full);
-            font-weight: 600;
-            cursor: pointer;
-            font-family: var(--font-sans);
-            font-size: 0.75rem;
-            transition: all var(--transition-fast);
-            border: 1px solid transparent;
-            letter-spacing: 0.01em;
-            white-space: nowrap;
-        }
         .btn-primary {
-            background: var(--brand-primary);
-            color: white;
-            box-shadow: 0 2px 8px var(--brand-primary-glow);
-        }
-        .btn-primary:hover {
-            background: var(--brand-primary-hover);
-            box-shadow: var(--shadow-glow-brand);
-            transform: translateY(-1px);
-        }
-        .btn-ghost {
-            background: transparent;
-            border-color: var(--border-default);
-            color: var(--text-secondary);
-        }
-        .btn-ghost:hover {
-            background: var(--bg-glass);
-            border-color: var(--border-strong);
-            color: var(--text-primary);
-        }
-        .btn-sm {
-            padding: 0.35rem 0.7rem;
-            font-size: 0.65rem;
-        }
-        .btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Toggle pills */
-        .pill-group {
-            display: flex;
-            gap: 4px;
-            background: var(--bg-glass);
-            padding: 3px;
-            border-radius: var(--radius-full);
-            border: 1px solid var(--border-subtle);
-            flex-wrap: wrap;
-        }
-        .pill {
-            padding: 6px 14px;
-            border-radius: var(--radius-full);
-            border: none;
-            background: transparent;
+            background: #1e40af;
+            color: #ffffff;
             font-weight: 600;
-            font-size: 0.68rem;
+            border-radius: 8px;
+            padding: 12px 24px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(30,64,175,0.2);
             cursor: pointer;
-            transition: all var(--transition-fast);
-            color: var(--text-secondary);
-            white-space: nowrap;
-            font-family: var(--font-sans);
         }
-        .pill.active {
-            background: var(--brand-primary);
-            color: white;
-            box-shadow: 0 2px 10px var(--brand-primary-glow);
+        .btn-primary:hover { background: #1e3a8a; box-shadow: 0 4px 12px rgba(30,64,175,0.3); }
+        .btn-primary:active { transform: scale(0.97); }
+
+        .btn-outline {
+            background: #ffffff;
+            color: #1e40af;
+            font-weight: 600;
+            border: 2px solid #1e40af;
+            border-radius: 8px;
+            padding: 12px 24px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .pill:hover:not(.active) {
-            color: var(--text-primary);
-            background: var(--bg-card-hover);
+        .btn-outline:hover { background: #eff6ff; }
+        .btn-outline:active { transform: scale(0.97); }
+
+        .btn-accent {
+            background: #f97316;
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 10px 20px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(249,115,22,0.2);
+        }
+        .btn-accent:hover { background: #ea580c; box-shadow: 0 4px 12px rgba(249,115,22,0.3); }
+
+        .badge-blue { background: #dbeafe; color: #1e40af; font-weight: 600; font-size: 12px; padding: 4px 12px; border-radius: 100px; }
+        .badge-green { background: #f0fdf4; color: #16a34a; font-weight: 600; font-size: 12px; padding: 4px 12px; border-radius: 100px; }
+        .badge-orange { background: #fff7ed; color: #f97316; font-weight: 600; font-size: 12px; padding: 4px 12px; border-radius: 100px; }
+        .badge-red { background: #fef2f2; color: #dc2626; font-weight: 600; font-size: 12px; padding: 4px 12px; border-radius: 100px; }
+
+        .bottom-nav {
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding-bottom: var(--safe-bottom);
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
         }
 
-        /* Search */
-        .input-search {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--bg-glass);
-            border: 1px solid var(--border-default);
-            border-radius: var(--radius-full);
-            padding: 0.35rem 0.8rem;
-            transition: all var(--transition-fast);
+        .whatsapp-btn {
+            background: #25D366;
+            box-shadow: 0 4px 16px rgba(37,211,102,0.35);
         }
-        .input-search:focus-within {
-            border-color: var(--brand-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: #1e293b;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            z-index: 999;
+            transition: transform 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            white-space: nowrap;
+            max-width: 90vw;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .input-search input {
-            border: none;
-            background: transparent;
-            padding: 0.25rem;
-            font-family: var(--font-sans);
-            font-size: 0.72rem;
-            color: var(--text-primary);
-            outline: none;
-            width: 110px;
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1e40af, #f97316);
+            z-index: 9999;
+            transition: width 0.1s linear;
         }
-        .input-search input::placeholder {
-            color: var(--text-disabled);
+
+        .mobile-menu { transition: opacity 0.3s ease, visibility 0.3s; }
+        .mobile-menu.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeUp 0.6s ease forwards; opacity: 0; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .animate-pulse-custom { animation: pulse 2s ease-in-out infinite; }
+
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-slide-down { animation: slideDown 0.3s ease forwards; }
+
+        /* Notification dropdown */
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 360px;
+            max-width: 90vw;
+            max-height: 400px;
+            overflow-y: auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            z-index: 100;
+        }
+
+        /* Student welcome bar */
+        .student-bar {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
         }
 
         /* Modal */
-        .modal-backdrop {
+        .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--transition-base);
+            padding: 16px;
         }
-        .modal-backdrop.open {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-panel {
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-xl);
-            padding: 1.5rem;
-            width: 92%;
-            max-width: 480px;
-            max-height: 85vh;
-            overflow-y: auto;
-            border: 1px solid var(--border-default);
-            box-shadow: var(--shadow-xl);
-            animation: modalIn 0.3s var(--transition-slow) forwards;
-        }
-        @keyframes modalIn {
-            from {
-                transform: scale(0.9) translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
-        }
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid var(--border-default);
-            background: var(--bg-glass);
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: var(--transition-fast);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-close:hover {
-            background: var(--accent-rose);
-            color: white;
-            border-color: var(--accent-rose);
-        }
-        .form-group {
-            margin-bottom: 0.65rem;
-        }
-        .form-group label {
-            font-size: 0.62rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-tertiary);
-            display: block;
-            margin-bottom: 3px;
-        }
-        .form-group input {
+        .modal-content {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 420px;
             width: 100%;
-            padding: 0.55rem 0.7rem;
-            border: 1px solid var(--border-default);
-            border-radius: var(--radius-sm);
-            font-family: var(--font-sans);
-            font-size: 0.78rem;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            transition: var(--transition-fast);
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--brand-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-        .form-group input.locked {
-            background: var(--bg-glass);
-            color: var(--text-disabled);
-            cursor: not-allowed;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         }
 
-        /* Toast */
-        .toast-stack {
-            position: fixed;
-            bottom: 16px;
-            right: 16px;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        /* Skeleton loading */
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
         }
-        .toast-item {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            padding: 0.6rem 1rem;
-            border-radius: var(--radius-full);
-            font-weight: 600;
-            font-size: 0.7rem;
-            border: 1px solid var(--border-default);
-            box-shadow: var(--shadow-lg);
-            animation: toastIn 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        @keyframes toastIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        .toast-item.success {
-            border-left: 3px solid var(--brand-secondary);
-        }
-        .toast-item.error {
-            border-left: 3px solid var(--accent-rose);
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
-        /* Loader */
-        .full-loader {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            flex-direction: column;
-            gap: 12px;
-            transition: opacity 0.4s;
-        }
-        .full-loader.hide {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .loader-ring {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border-default);
-            border-top-color: var(--brand-primary);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        ::selection { background: #dbeafe; color: #1e40af; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-default);
-            border-radius: 10px;
-        }
-
-        .flex-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .space-between {
-            justify-content: space-between;
-        }
-        .mt-1 {
-            margin-top: 0.5rem;
-        }
-        .mt-2 {
-            margin-top: 0.8rem;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .text-muted {
-            color: var(--text-tertiary);
-            font-size: 0.7rem;
-        }
-        .achievement-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 6px;
-        }
-        .ach-pill {
-            padding: 4px 10px;
-            border-radius: var(--radius-full);
-            font-size: 0.62rem;
-            font-weight: 700;
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--accent-amber);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            animation: popIn 0.4s ease;
-        }
-        @keyframes popIn {
-            from {
-                transform: scale(0);
-            }
-            to {
-                transform: scale(1);
-            }
+        @media print {
+            .bottom-nav, .whatsapp-btn, .mobile-menu, .progress-bar, .notification-dropdown, .modal-overlay { display: none !important; }
+            body { background: #ffffff; }
         }
     </style>
 </head>
-<body>
-    <button class="nav-btn" id="themeFAB" style="position:fixed;top:16px;right:16px;z-index:100;width:40px;height:40px;border-radius:50%;" title="Theme (Ctrl+D)">
-        <i class="fas fa-moon"></i>
-    </button>
-    <div class="full-loader" id="appLoader">
-        <div class="loader-ring"></div>
-        <span style="font-weight:600;color:var(--text-secondary);font-size:0.8rem;">Loading Command Center</span>
-    </div>
-    <div class="toast-stack" id="toastStack"></div>
+<body class="antialiased">
 
-    <div class="app-container" id="appRoot">
-        <!-- Top Nav -->
-        <nav class="top-nav">
-            <div class="nav-brand">
-                <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
-                <span>THP Command</span>
-                <span class="tag success" style="margin-left:6px;font-size:0.6rem;">LIVE</span>
-            </div>
-            <div class="nav-actions">
-                <button class="nav-btn notification-bell" id="notifBell" data-count="0" title="Notifications"><i class="fas fa-bell"></i></button>
-                <button class="nav-btn" onclick="refreshData()" title="Refresh (Ctrl+R)"><i class="fas fa-sync-alt"></i></button>
-                <button class="btn btn-ghost btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-            </div>
-        </nav>
+    <div class="progress-bar" id="progressBar" style="width:0%"></div>
+    <div class="toast" id="toast"></div>
 
-        <!-- Bento Grid -->
-        <div class="bento-grid">
-            <!-- Profile Card -->
-            <div class="bento-card col-span-12" id="profileCard">
-                <div class="card-header">
-                    <div class="card-title"><span class="title-dot"></span> Student Profile</div>
-                    <button class="btn btn-ghost btn-sm" onclick="openEdit()"><i class="fas fa-edit"></i> Edit</button>
-                </div>
-                <div class="profile-content">
-                    <div class="avatar-wrapper" onclick="document.getElementById('photoInput').click()">
-                        <div class="avatar" id="profileAvatar"><span id="avatarInitial">S</span></div>
-                        <div class="avatar-status"></div>
-                    </div>
-                    <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="uploadPhoto(event)">
-                    <div class="profile-info-area">
-                        <div class="profile-name-lg" id="stuName">———</div>
-                        <div class="profile-meta-row">
-                            <span class="tag primary" id="stuRoll">Roll —</span>
-                            <span class="tag" id="stuClass">Class —</span>
-                            <span class="tag success" id="streakTag" style="display:none;">🔥 <span id="streakNum">0</span>d</span>
-                        </div>
-                        <div class="profile-detail-grid">
-                            <span><i class="fas fa-phone"></i> <span id="stuPhone">—</span></span>
-                            <span><i class="fas fa-envelope"></i> <span id="stuEmail">—</span></span>
-                            <span><i class="fas fa-map-marker-alt"></i> <span id="stuAddr">—</span></span>
-                            <span><i class="fas fa-calendar"></i> <span id="stuDOB">—</span></span>
-                            <span><i class="fas fa-user"></i> <span id="stuFather">—</span></span>
-                            <span><i class="fas fa-user"></i> <span id="stuMother">—</span></span>
-                        </div>
-                        <div class="achievement-pills" id="achPills"></div>
-                    </div>
-                </div>
+    <!-- Login Modal -->
+    <div class="modal-overlay hidden" id="loginModal">
+        <div class="modal-content animate-slide-down">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-xl font-extrabold text-gray-900">👋 Welcome to Heaven Point</h3>
+                <button onclick="closeLoginModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
             </div>
-
-            <!-- Stats Row -->
-            <div class="bento-card col-span-12" id="statsCard">
-                <div class="card-header">
-                    <div class="card-title"><span class="title-dot"></span> Performance Overview</div>
-                </div>
-                <div class="stat-row-new">
-                    <div class="stat-tile" id="presentTile"><div class="stat-icon-sm">✅</div><div class="stat-number" id="presentDays">0</div><div class="stat-label-sm">Present</div></div>
-                    <div class="stat-tile absent" id="absentTile"><div class="stat-icon-sm">❌</div><div class="stat-number" id="absentDays">0</div><div class="stat-label-sm">Absent</div></div>
-                    <div class="stat-tile average" id="avgTile"><div class="stat-icon-sm">📊</div><div class="stat-number" id="avgScore">0%</div><div class="stat-label-sm">Average</div></div>
-                    <div class="stat-tile best-score" id="bestTile"><div class="stat-icon-sm">🏆</div><div class="stat-number" id="bestScore">0%</div><div class="stat-label-sm">Best</div></div>
-                </div>
-            </div>
-
-            <!-- Calendar -->
-            <div class="bento-card col-span-4" id="calendarCard">
-                <div class="card-header">
-                    <div class="card-title"><span class="title-dot"></span> Attendance</div>
-                </div>
-                <div class="cal-controls">
-                    <button onclick="navCal(-1)"><i class="fas fa-chevron-left"></i></button>
-                    <span class="cal-month-text" id="calMonthLabel">January 2026</span>
-                    <button onclick="navCal(1)"><i class="fas fa-chevron-right"></i></button>
-                    <button class="btn btn-ghost btn-sm" onclick="resetCal()">Today</button>
-                </div>
-                <div class="cal-grid-pro" id="calGrid"></div>
-            </div>
-
-            <!-- Trend Chart -->
-            <div class="bento-card col-span-4" id="trendCard">
-                <div class="card-header">
-                    <div class="card-title"><span class="title-dot"></span> Yearly Trend</div>
-                    <button class="btn btn-ghost btn-sm" onclick="downloadChart('trendChart','trend')"><i class="fas fa-download"></i></button>
-                </div>
-                <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
-            </div>
-
-            <!-- Radar Chart -->
-            <div class="bento-card col-span-4" id="radarCard">
-                <div class="card-header">
-                    <div class="card-title"><span class="title-dot"></span> Subject Breakdown</div>
-                    <button class="btn btn-ghost btn-sm" onclick="downloadChart('radarChart','radar')"><i class="fas fa-download"></i></button>
-                </div>
-                <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
-            </div>
-
-            <!-- Scores Table -->
-            <div class="bento-card col-span-12" id="scoresCard">
-                <div class="card-header">
-                    <div class="card-title"><span class="title-dot"></span> Exam Results</div>
-                    <div class="flex-row">
-                        <div class="pill-group" id="monthPills"></div>
-                        <div class="input-search">
-                            <i class="fas fa-search" style="color:var(--text-disabled);font-size:0.6rem;"></i>
-                            <input type="text" id="examSearch" placeholder="Filter..." oninput="filterExams()">
-                        </div>
-                        <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><i class="fas fa-file-csv"></i></button>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead><tr>
-                                <th onclick="sortTable('exam')">Exam</th>
-                                <th onclick="sortTable('marks')">Marks</th>
-                                <th onclick="sortTable('percentage')">%</th>
-                                <th onclick="sortTable('grade')">Grade</th>
-                        </tr></thead>
-                        <tbody id="scoresBody"></tbody>
-                    </table>
-                </div>
-                <div id="emptyState" style="display:none;text-align:center;padding:30px;color:var(--text-tertiary);">No matching exams</div>
-            </div>
+            <p class="text-sm text-gray-600 mb-4">Enter your details for a personalized experience</p>
+            <input type="text" id="studentName" placeholder="Your Full Name" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-3 text-sm focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light">
+            <input type="tel" id="studentPhone" placeholder="Phone Number" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-3 text-sm focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light">
+            <input type="text" id="studentClass" placeholder="Class/Course (e.g., 12th, NEET, CUET)" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 text-sm focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand-light">
+            <button onclick="saveStudentProfile()" class="btn-primary w-full justify-center text-sm">Save & Continue</button>
+            <button onclick="closeLoginModal()" class="w-full text-center text-sm text-gray-500 mt-3 hover:text-gray-700">Skip for now</button>
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal-backdrop" id="editModal">
-        <div class="modal-panel">
-            <div class="flex-row space-between" style="margin-bottom:1rem;">
-                <h3 style="font-weight:700;font-size:1rem;">Edit Profile</h3>
-                <button class="modal-close" onclick="closeModal('editModal')">✕</button>
+    <!-- HEADER -->
+    <header class="header-main sticky top-0 z-50" id="mainHeader">
+        <div class="max-w-6xl mx-auto flex items-center justify-between px-4 md:px-6 py-3">
+            <a href="#" class="flex items-center gap-3 no-underline">
+                <img src="channels4_profile.jpg" alt="THP Logo" class="w-10 h-10 md:w-11 md:h-11 rounded-lg shadow-sm border border-gray-200 object-cover" width="44" height="44" loading="eager">
+                <div>
+                    <span class="text-lg md:text-xl font-extrabold text-brand block leading-tight">The Heaven Point</span>
+                    <span class="text-[10px] md:text-xs text-gray-500 font-medium tracking-wide">Shine Brighter</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-2 md:gap-3">
+                <a href="tel:9648837922" class="hidden md:inline-flex items-center gap-2 text-brand font-semibold text-sm hover:text-brand-dark transition">
+                    <i class="fas fa-phone-alt"></i> 9648837922
+                </a>
+                <a href="https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view" target="_blank" rel="noopener" class="hidden md:inline-flex btn-primary text-sm py-2.5 px-5">
+                    <i class="fas fa-download text-xs"></i> App
+                </a>
+                <div class="relative">
+                    <button id="notifBtn" class="relative p-2 text-gray-500 hover:text-brand transition-colors">
+                        <i class="far fa-bell text-xl"></i>
+                        <span id="notifBadge" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white hidden"></span>
+                    </button>
+                    <div id="notifDropdown" class="notification-dropdown hidden p-3">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-sm text-gray-900">Notifications</span>
+                            <button onclick="markAllNotificationsRead()" class="text-xs text-brand hover:underline">Mark all read</button>
+                        </div>
+                        <div id="notifList" class="space-y-2">
+                            <p class="text-xs text-gray-400 text-center py-4">Loading notifications...</p>
+                        </div>
+                    </div>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-600 hover:text-brand" aria-label="Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
             </div>
-            <form id="editForm">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
-                    <div class="form-group"><label>Roll</label><input class="locked" id="eRoll" disabled></div>
-                    <div class="form-group"><label>Name</label><input class="locked" id="eName" disabled></div>
-                    <div class="form-group"><label>Class</label><input class="locked" id="eClass" disabled></div>
-                    <div class="form-group"><label>Phone</label><input class="locked" id="ePhone" disabled></div>
-                </div>
-                <hr style="border-color:var(--border-subtle);margin:0.7rem 0;">
-                <div class="form-group"><label>Email</label><input type="email" id="eEmail"></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
-                    <div class="form-group"><label>Date of Birth</label><input type="date" id="eDOB"></div>
-                    <div class="form-group"><label>Address</label><input id="eAddr"></div>
-                    <div class="form-group"><label>Father</label><input id="eFather"></div>
-                    <div class="form-group"><label>Mother</label><input id="eMother"></div>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;margin-top:0.5rem;"><i class="fas fa-save"></i> Save</button>
-            </form>
         </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] bg-white hidden flex flex-col items-center justify-center gap-6">
+        <button id="closeMobileMenu" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-2"><i class="fas fa-times text-2xl"></i></button>
+        <a href="#" class="text-xl font-bold text-brand">Home</a>
+        <a href="#batches" class="text-xl font-semibold text-gray-700">Courses</a>
+        <a href="#" onclick="openNotes();closeMenu();" class="text-xl font-semibold text-gray-700">Notes</a>
+        <a href="#" onclick="openLecture();closeMenu();" class="text-xl font-semibold text-gray-700">Lectures</a>
+        <a href="thp-faculty.html" class="text-xl font-semibold text-gray-700">Faculty</a>
+        <a href="#contact" class="text-xl font-semibold text-gray-700">Contact</a>
+        <a href="tel:9648837922" class="btn-primary text-lg">📞 Call Now</a>
     </div>
 
+    <!-- MAIN CONTENT -->
+    <main class="max-w-6xl mx-auto px-4 md:px-6 pb-28 md:pb-12">
+
+        <!-- Student Welcome Bar -->
+        <div id="studentWelcomeBar" class="student-bar hidden mt-4 animate-fade-up flex items-center justify-between gap-4 flex-wrap">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg" id="studentInitial">S</div>
+                <div>
+                    <p class="font-semibold text-sm">Welcome back, <span id="studentDisplayName">Student</span>! 👋</p>
+                    <p class="text-xs text-white/70" id="studentDisplayInfo">Your learning dashboard</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full" id="studentBadge"></span>
+                <button onclick="openLoginModal()" class="text-xs text-white/80 hover:text-white underline">Edit</button>
+            </div>
+        </div>
+
+        <!-- HERO -->
+        <section class="hero-section rounded-2xl md:rounded-3xl mt-4 md:mt-6 p-6 md:p-12 lg:p-16 flex flex-col md:flex-row items-center gap-8 md:gap-12 animate-fade-up">
+            <div class="flex-1">
+                <span class="badge-blue mb-4 inline-block">🎓 Admissions Open 2025-26</span>
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+                    Choose to <span class="text-brand">shine</span>
+                </h1>
+                <p class="text-gray-600 text-base md:text-lg mt-4 max-w-lg">Expert coaching for CUET, NEET, IIT-JEE & School (3rd–12th). 5000+ students have trusted us.</p>
+                <div class="flex flex-wrap gap-3 mt-6">
+                    <a href="#batches" class="btn-primary text-sm md:text-base">Explore Courses <i class="fas fa-arrow-right text-xs"></i></a>
+                    <a href="tel:9648837922" class="btn-outline text-sm md:text-base"><i class="fas fa-phone-alt"></i> Call Now</a>
+                </div>
+                <!-- Live student count -->
+                <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse-custom"></span>
+                    <span id="liveStudentCount">Loading...</span> students enrolled this month
+                </div>
+            </div>
+            <div class="flex-shrink-0">
+                <img src="channels4_profile.jpg" alt="The Heaven Point" class="w-40 h-40 md:w-56 md:h-56 rounded-3xl shadow-xl border-4 border-white object-cover" loading="eager" width="224" height="224">
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 animate-fade-up delay-1">
+            <div class="card-white p-5 text-center">
+                <span class="block text-3xl font-extrabold text-brand">5000+</span>
+                <span class="text-sm text-gray-500 font-medium">Students Enrolled</span>
+            </div>
+            <div class="card-white p-5 text-center">
+                <span class="block text-3xl font-extrabold text-brand">7+ Yrs</span>
+                <span class="text-sm text-gray-500 font-medium">Experience</span>
+            </div>
+            <div class="card-white p-5 text-center">
+                <span class="block text-3xl font-extrabold text-green-600">95%</span>
+                <span class="text-sm text-gray-500 font-medium">Success Rate</span>
+            </div>
+            <div class="card-white p-5 text-center">
+                <span class="block text-3xl font-extrabold text-accent">1:15</span>
+                <span class="text-sm text-gray-500 font-medium">Batch Size</span>
+            </div>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <div class="grid grid-cols-4 md:grid-cols-8 gap-3 mt-8 animate-fade-up delay-2">
+            <a href="#batches" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-gray-50 transition text-center">
+                <div class="w-11 h-11 bg-brand-light rounded-xl flex items-center justify-center text-brand"><i class="fas fa-book-open text-lg"></i></div>
+                <span class="text-xs font-semibold text-gray-700">Courses</span>
+            </a>
+            <a href="#" onclick="openNotes()" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-gray-50 transition text-center">
+                <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600"><i class="fas fa-file-alt text-lg"></i></div>
+                <span class="text-xs font-semibold text-gray-700">Notes</span>
+            </a>
+            <a href="#" onclick="openLecture()" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-gray-50 transition text-center relative">
+                <div class="w-11 h-11 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600"><i class="fas fa-video text-lg"></i></div>
+                <span class="text-xs font-semibold text-gray-700">Lectures</span>
+                <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+            </a>
+            <a href="thp-faculty.html" class="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-gray-50 transition text-center">
+                <div class="w-11 h-11 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600"><i class="fas fa-chalkboard-teacher text-lg"></i></div>
+                <span class="text-xs font-semibold text-gray-700">Faculty</span>
+            </a>
+            <a href="#admission" class="hidden md:flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-gray-50 transition text-center">
+                <div class="w-11 h-11 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600"><i class="fas fa-user-graduate text-lg"></i></div>
+                <span class="text-xs font-semibold text-gray-700">Admission</span>
+            </a>
+            <a href="#gallery" class="hidden md:flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-gray-50 transition text-center">
+                <div class="w-11 h-11 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600"><i class="fas fa-images text-lg"></i></div>
+                <span class="text-xs font-semibold text-gray-700">Gallery</span>
+            </a>
+            <a href="#about-us" class="hidden md:flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-gray-50 transition text-center">
+                <div class="w-11 h-11 bg-rose-50 rounded-xl flex items-center justify-center text-rose-600"><i class="fas fa-info-circle text-lg"></i></div>
+                <span class="text-xs font-semibold text-gray-700">About</span>
+            </a>
+            <a href="#contact" class="hidden md:flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-gray-50 transition text-center">
+                <div class="w-11 h-11 bg-pink-50 rounded-xl flex items-center justify-center text-pink-600"><i class="fas fa-envelope text-lg"></i></div>
+                <span class="text-xs font-semibold text-gray-700">Contact</span>
+            </a>
+        </div>
+
+        <!-- FEATURED COURSE -->
+        <section class="mt-12 animate-fade-up delay-3">
+            <div class="flex justify-between items-end mb-5">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-extrabold text-gray-900">⭐ Featured Course</h2>
+                    <p class="text-sm text-gray-500 mt-1">Most enrolled by students</p>
+                </div>
+                <a href="#batches" class="text-brand font-semibold text-sm hover:underline hidden md:inline">View all →</a>
+            </div>
+            <div class="card-featured p-5 md:p-7 flex flex-col md:flex-row gap-5 items-center">
+                <img src="https://i.ibb.co/4wrtJTbw/file-00000000156061f5b89e4f5e05b6f71f.png" alt="SSC Course" class="w-28 h-28 md:w-36 md:h-36 rounded-xl object-cover shadow-md" loading="lazy" width="144" height="144">
+                <div class="flex-1 text-center md:text-left">
+                    <span class="badge-orange">MOST POPULAR</span>
+                    <h3 class="text-xl font-bold mt-2 text-gray-900">SSC, Bank, Railway</h3>
+                    <p class="text-gray-600 text-sm mt-1">Complete competitive exam prep with mock tests, daily practice sets & personal mentorship.</p>
+                    <div class="flex items-center justify-center md:justify-start gap-3 mt-4 flex-wrap">
+                        <span class="text-2xl font-extrabold text-gray-900">₹1,500<span class="text-sm font-medium text-gray-400">/mo</span></span>
+                        <span class="text-sm line-through text-gray-400">₹2,000</span>
+                        <span class="badge-green">33% off</span>
+                        <a href="formTHPSsc.html" class="btn-accent">Enroll Now →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEMO LECTURE -->
+        <section class="mt-12 animate-fade-up delay-4">
+            <div class="flex items-center gap-3 mb-5">
+                <h2 class="text-xl md:text-2xl font-extrabold text-gray-900">🎬 Demo Lecture</h2>
+                <span class="badge-red">LIVE</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-lg bg-black" style="padding-bottom:56.25%; position:relative;">
+                <iframe src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&rel=0&autoplay=1&mute=1" class="absolute inset-0 w-full h-full" allowfullscreen loading="lazy" title="Demo Lecture"></iframe>
+            </div>
+            <p class="text-center text-gray-600 mt-3 text-sm font-medium">Shivam Sir · Math Expert (7+ years)</p>
+            <div class="flex justify-center mt-3">
+                <a href="#" onclick="openLecture()" class="btn-primary">More Lectures <i class="fas fa-arrow-right text-xs"></i></a>
+            </div>
+        </section>
+
+        <!-- PREMIUM BATCHES -->
+        <section id="batches" class="mt-12">
+            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-5">📚 Premium Batches</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="card-white p-4 flex flex-col">
+                    <img src="https://i.ibb.co/4wXc33T0/828aed35-38f7-4097-9751-0ef7957f76e9-thumbnail.webp" alt="CUET" class="w-full h-32 object-cover rounded-lg mb-3" loading="lazy">
+                    <h3 class="font-bold text-gray-900">CUET</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">University entrance prep.</p>
+                    <span class="font-bold text-brand mt-2">₹2,000/m</span>
+                    <a href="fromTHP.html" class="mt-2.5 text-center py-2.5 bg-gray-100 hover:bg-brand hover:text-white rounded-lg font-semibold text-xs transition">Enroll</a>
+                </div>
+                <div class="card-white p-4 flex flex-col">
+                    <img src="https://i.ibb.co/1JL6h6NC/5f89c41f-0897-4c04-99cd-3a66bbe89b26.png" alt="NEET" class="w-full h-32 object-cover rounded-lg mb-3" loading="lazy">
+                    <h3 class="font-bold text-gray-900">NEET</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Medical entrance prep.</p>
+                    <span class="font-bold text-brand mt-2">₹2,000/m</span>
+                    <a href="fromTHP.html" class="mt-2.5 text-center py-2.5 bg-gray-100 hover:bg-brand hover:text-white rounded-lg font-semibold text-xs transition">Enroll</a>
+                </div>
+                <div class="card-white p-4 flex flex-col">
+                    <img src="https://i.ibb.co/7NyBDHSM/2f91edf2-41ad-4f3d-b079-4e452f2d2fee-3.png" alt="IIT-JEE" class="w-full h-32 object-cover rounded-lg mb-3" loading="lazy">
+                    <h3 class="font-bold text-gray-900">IIT-JEE</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Engineering entrance.</p>
+                    <span class="font-bold text-brand mt-2">₹2,000/m</span>
+                    <a href="fromTHP.html" class="mt-2.5 text-center py-2.5 bg-gray-100 hover:bg-brand hover:text-white rounded-lg font-semibold text-xs transition">Enroll</a>
+                </div>
+                <div class="card-white p-4 flex flex-col">
+                    <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="Class 3-12" class="w-full h-32 object-cover rounded-lg mb-3" loading="lazy">
+                    <h3 class="font-bold text-gray-900">Class 3-12</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">All subjects, all boards.</p>
+                    <span class="font-bold text-brand mt-2">₹1,000-2,500</span>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="mt-2.5 text-center py-2.5 bg-gray-100 hover:bg-brand hover:text-white rounded-lg font-semibold text-xs transition">Enroll</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT + GALLERY -->
+        <section class="grid md:grid-cols-2 gap-5 mt-12">
+            <div id="about-us" class="card-white p-5 md:p-6">
+                <h2 class="text-xl font-extrabold text-gray-900 mb-3">🌟 About THP</h2>
+                <div class="flex items-start gap-3">
+                    <img src="channels4_profile.jpg" alt="THP" class="w-14 h-14 rounded-full border-2 border-brand-light shadow-sm flex-shrink-0" loading="lazy" width="56" height="56">
+                    <p class="text-gray-600 text-sm leading-relaxed">We offer Commerce, Maths, Physics, Chemistry, Biology, English & more. Specialized courses for CUET, NEET, IIT-JEE with regular tests, study materials & personal mentorship.</p>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <span class="badge-blue">Expert Faculty</span>
+                    <span class="bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">Small Batches</span>
+                    <span class="badge-green">Affordable Fees</span>
+                    <span class="bg-purple-50 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">Regular Tests</span>
+                </div>
+            </div>
+            <div id="gallery" class="card-white p-5 md:p-6">
+                <h2 class="text-xl font-extrabold text-gray-900 mb-3">🖼️ Gallery</h2>
+                <div class="grid grid-cols-3 gap-2">
+                    <img src="gallarymini1.jpg" alt="Classroom" class="rounded-lg h-20 md:h-24 object-cover hover:scale-105 transition cursor-pointer" loading="lazy">
+                    <img src="gallarymini2.jpg" alt="Students" class="rounded-lg h-20 md:h-24 object-cover hover:scale-105 transition cursor-pointer" loading="lazy">
+                    <img src="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" alt="Session" class="rounded-lg h-20 md:h-24 object-cover hover:scale-105 transition cursor-pointer" loading="lazy">
+                    <img src="cuet.jpg" alt="CUET Batch" class="rounded-lg h-20 md:h-24 object-cover hover:scale-105 transition cursor-pointer" loading="lazy">
+                    <img src="https://i.ibb.co/WN8Cz7Tm/IMG20260502163511.avif" alt="Activity" class="rounded-lg h-20 md:h-24 object-cover hover:scale-105 transition cursor-pointer" loading="lazy">
+                    <img src="https://i.ibb.co/Hpk0cNc5/IMG20260502160220.avif" alt="Workshop" class="rounded-lg h-20 md:h-24 object-cover hover:scale-105 transition cursor-pointer" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMISSION + CONTACT -->
+        <section id="admission" class="card-white p-5 md:p-7 mt-8">
+            <div class="grid md:grid-cols-2 gap-7">
+                <div>
+                    <h2 class="text-xl font-extrabold text-gray-900 mb-4">📝 Join The Heaven Point</h2>
+                    <ol class="space-y-3">
+                        <li class="flex gap-3 items-center"><span class="bg-brand-light text-brand w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">1</span><span class="text-sm text-gray-700">Fill online application form</span></li>
+                        <li class="flex gap-3 items-center"><span class="bg-brand-light text-brand w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">2</span><span class="text-sm text-gray-700">Upload required documents</span></li>
+                        <li class="flex gap-3 items-center"><span class="bg-brand-light text-brand w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">3</span><span class="text-sm text-gray-700">Entrance test (if applicable)</span></li>
+                        <li class="flex gap-3 items-center"><span class="bg-brand-light text-brand w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">4</span><span class="text-sm text-gray-700">Pay fee & confirm seat</span></li>
+                    </ol>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" rel="noopener" class="btn-primary mt-5 text-sm">Start Application <i class="fas fa-arrow-right text-xs"></i></a>
+                </div>
+                <div id="contact">
+                    <h2 class="text-xl font-extrabold text-gray-900 mb-4">📞 Contact Us</h2>
+                    <div class="space-y-3 text-sm">
+                        <p class="flex items-center gap-3"><i class="fas fa-envelope text-brand w-5"></i><a href="mailto:theheavenpoint@gmail.com" class="text-gray-700 hover:text-brand">theheavenpoint@gmail.com</a></p>
+                        <p class="flex items-center gap-3"><i class="fas fa-phone-alt text-brand w-5"></i><a href="tel:9648837922" class="text-gray-700 hover:text-brand font-mono font-semibold">9648837922</a></p>
+                        <p class="flex items-center gap-3"><i class="fas fa-map-marker-alt text-brand w-5"></i><span class="text-gray-700">Heaven Point Coaching</span></p>
+                        <div class="flex gap-3 mt-4 text-lg">
+                            <a href="https://t.me/heavenpoint" target="_blank" class="w-9 h-9 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center hover:bg-blue-500 hover:text-white transition"><i class="fab fa-telegram"></i></a>
+                            <a href="https://www.instagram.com/theheavenpoint/" target="_blank" class="w-9 h-9 bg-pink-50 text-pink-500 rounded-lg flex items-center justify-center hover:bg-pink-500 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" class="w-9 h-9 bg-red-50 text-red-500 rounded-lg flex items-center justify-center hover:bg-red-500 hover:text-white transition"><i class="fab fa-youtube"></i></a>
+                            <a href="#" id="whatsappBtn2" class="w-9 h-9 bg-green-50 text-green-500 rounded-lg flex items-center justify-center hover:bg-green-500 hover:text-white transition"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- BOTTOM NAV (Mobile) -->
+    <nav class="md:hidden bottom-nav fixed bottom-0 left-0 right-0 flex justify-around items-center py-2 z-40">
+        <a href="#" class="flex flex-col items-center text-brand gap-0.5 nav-item" data-nav="home"><i class="fas fa-home text-lg"></i><span class="text-[10px] font-semibold">Home</span></a>
+        <a href="#batches" class="flex flex-col items-center text-gray-400 gap-0.5 nav-item" data-nav="courses"><i class="fas fa-book text-lg"></i><span class="text-[10px] font-semibold">Courses</span></a>
+        <a href="#" onclick="openNotes()" class="flex flex-col items-center text-gray-400 gap-0.5 nav-item" data-nav="notes"><i class="fas fa-file-alt text-lg"></i><span class="text-[10px] font-semibold">Notes</span></a>
+        <a href="#" onclick="openLecture()" class="flex flex-col items-center text-gray-400 gap-0.5 nav-item relative" data-nav="live"><i class="fas fa-play-circle text-lg"></i><span class="text-[10px] font-semibold">Live</span><span class="absolute -top-0.5 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></span></a>
+        <a href="resistor.html" class="flex flex-col items-center text-gray-400 gap-0.5 nav-item" data-nav="profile"><i class="fas fa-user-circle text-lg"></i><span class="text-[10px] font-semibold">Profile</span></a>
+    </nav>
+
+    <!-- WHATSAPP FLOAT -->
+    <button id="whatsappBtn" class="whatsapp-btn fixed bottom-20 right-4 md:bottom-8 md:right-8 w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl z-30 hover:scale-110 active:scale-95 transition-all"><i class="fab fa-whatsapp"></i></button>
+
+    <!-- ==================== ALL SCRIPTS ==================== -->
     <script>
-        (function() {
+        // ========== FIREBASE INITIALIZATION ==========
+        let db, auth;
+        try {
             firebase.initializeApp({
                 apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
                 authDomain: "dumbbell-gyme.firebaseapp.com",
@@ -1135,473 +615,276 @@
                 messagingSenderId: "305021976299",
                 appId: "1:305021976299:web:fb85c2b332935d698088ae"
             });
-            const db = firebase.firestore(),
-                IK = '53fb01955a45c5462724b8f7d238500a';
-            let trendChart = null,
-                radarChart = null,
-                currentData = null,
-                allScores = {},
-                allAtt = {},
-                calMonth = new Date().getMonth(),
-                calYear = new Date().getFullYear(),
-                activeMonth = new Date().toLocaleString('default', { month: 'long' }),
-                sortDir = {},
-                examList = [],
-                achievements = [],
-                unsub = null;
-            const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                'October', 'November', 'December'
+            db = firebase.firestore();
+            auth = firebase.auth();
+            console.log('✅ Firebase connected');
+        } catch (e) {
+            console.warn('Firebase init error:', e.message);
+        }
+
+        // ========== UTILITIES ==========
+        function openNotes() { window.open('thp-special-notes.html', '_blank'); }
+        function openLecture() { window.open('thp-online-lecture.html', '_blank'); }
+        function showToast(m, d = 3000) {
+            const t = document.getElementById('toast');
+            t.textContent = m;
+            t.classList.add('show');
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.classList.remove('show'), d);
+        }
+        function closeMenu() {
+            document.getElementById('mobileMenu').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // ========== STUDENT PROFILE (Firebase + LocalStorage) ==========
+        function getStudentId() {
+            let id = localStorage.getItem('thp_student_id');
+            if (!id) {
+                id = 'STU' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase();
+                localStorage.setItem('thp_student_id', id);
+            }
+            return id;
+        }
+
+        function openLoginModal() {
+            const student = JSON.parse(localStorage.getItem('thp_student_data') || '{}');
+            document.getElementById('studentName').value = student.name || '';
+            document.getElementById('studentPhone').value = student.phone || '';
+            document.getElementById('studentClass').value = student.class || '';
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function saveStudentProfile() {
+            const name = document.getElementById('studentName').value.trim();
+            const phone = document.getElementById('studentPhone').value.trim();
+            const studentClass = document.getElementById('studentClass').value.trim();
+
+            if (!name) { showToast('Please enter your name'); return; }
+
+            const studentId = getStudentId();
+            const studentData = {
+                id: studentId,
+                name: name,
+                phone: phone,
+                class: studentClass,
+                lastLogin: new Date().toISOString(),
+                visits: (JSON.parse(localStorage.getItem('thp_student_data') || '{}').visits || 0) + 1
+            };
+
+            localStorage.setItem('thp_student_data', JSON.stringify(studentData));
+
+            // Save to Firestore
+            if (db) {
+                db.collection('students').doc(studentId).set(studentData, { merge: true })
+                    .then(() => console.log('✅ Student saved to Firestore'))
+                    .catch(e => console.warn('Firestore save error:', e));
+            }
+
+            updateStudentUI(studentData);
+            closeLoginModal();
+            showToast('Welcome, ' + name + '! 🎓');
+        }
+
+        function updateStudentUI(studentData) {
+            const bar = document.getElementById('studentWelcomeBar');
+            if (!studentData || !studentData.name) {
+                bar.classList.add('hidden');
+                return;
+            }
+
+            bar.classList.remove('hidden');
+            document.getElementById('studentDisplayName').textContent = studentData.name;
+            document.getElementById('studentInitial').textContent = studentData.name.charAt(0).toUpperCase();
+            document.getElementById('studentDisplayInfo').textContent =
+                (studentData.class ? 'Class: ' + studentData.class + ' | ' : '') + 'Visits: ' + (studentData.visits || 1);
+            document.getElementById('studentBadge').textContent = studentData.class || 'Student';
+        }
+
+        function loadStudentProfile() {
+            const studentData = JSON.parse(localStorage.getItem('thp_student_data') || 'null');
+            if (studentData && studentData.name) {
+                updateStudentUI(studentData);
+            } else {
+                // Show login modal after delay for new users
+                setTimeout(() => {
+                    if (!localStorage.getItem('thp_student_data')) {
+                        openLoginModal();
+                    }
+                }, 5000);
+            }
+        }
+
+        // ========== NOTIFICATIONS (Firestore) ==========
+        function loadNotifications() {
+            const notifList = document.getElementById('notifList');
+            const notifBadge = document.getElementById('notifBadge');
+
+            // Default notifications
+            const defaultNotifs = [
+                { title: 'New batch starting soon!', message: 'CUET 2026 batch admissions open. Limited seats.', time: '2 hours ago', read: false },
+                { title: 'Demo lecture available', message: 'Watch Shivam Sir's latest Math lecture now.', time: '1 day ago', read: false },
+                { title: 'Fee discount alert', message: '33% off on SSC, Bank, Railway course. Enroll today!', time: '3 days ago', read: true },
             ];
-            const stored = localStorage.getItem('thp_current_student');
-            if (!stored) location.href = 'index.html';
-            const student = JSON.parse(stored);
 
-            function showToast(msg, type = 'success') {
-                const stack = document.getElementById('toastStack');
-                const t = document.createElement('div');
-                t.className = `toast-item ${type}`;
-                t.innerHTML = msg;
-                stack.appendChild(t);
-                setTimeout(() => { t.style.opacity = '0';
-                    t.style.transform = 'translateX(100%)';
-                    setTimeout(() => t.remove(), 300); }, 2800);
+            // Try Firestore
+            if (db) {
+                db.collection('notifications').orderBy('timestamp', 'desc').limit(10).get()
+                    .then(snapshot => {
+                        const notifs = [];
+                        snapshot.forEach(doc => {
+                            notifs.push({ id: doc.id, ...doc.data() });
+                        });
+                        renderNotifications(notifs.length > 0 ? notifs : defaultNotifs);
+                    })
+                    .catch(() => renderNotifications(defaultNotifs));
+            } else {
+                renderNotifications(defaultNotifs);
             }
 
-            function initTheme() {
-                const saved = localStorage.getItem('thp_theme') || 'dark';
-                document.documentElement.setAttribute('data-theme', saved);
-                updateThemeBtn(saved);
-            }
-
-            function updateThemeBtn(theme) {
-                document.getElementById('themeFAB').innerHTML = theme === 'dark' ?
-                    '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            }
-            document.getElementById('themeFAB').addEventListener('click', () => {
-                const cur = document.documentElement.getAttribute('data-theme');
-                const next = cur === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('thp_theme', next);
-                updateThemeBtn(next);
-                if (currentData) buildCharts(currentData.testScores || {});
-                showToast('Theme updated');
-            });
-            document.addEventListener('keydown', e => {
-                if (e.ctrlKey && e.key === 'd') { e.preventDefault();
-                    document.getElementById('themeFAB').click(); }
-                if (e.ctrlKey && e.key === 'e') { e.preventDefault();
-                    openEdit(); }
-                if (e.ctrlKey && e.key === 'r') { e.preventDefault();
-                    refreshData(); }
-                if (e.key === 'Escape') closeModal('editModal');
-                if (e.ctrlKey && e.key === 'k') { e.preventDefault();
-                    document.getElementById('examSearch')?.focus(); }
-            });
-
-            function openModal(id) { document.getElementById(id).classList.add('open'); }
-
-            function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-            document.querySelectorAll('.modal-backdrop').forEach(m => m.addEventListener('click', function(e) {
-                if (e.target === this) closeModal(this.id);
-            }));
-
-            function animateValue(el, target) {
-                const start = parseInt(el.textContent) || 0,
-                    dur = 600,
-                    st = performance.now();
-
-                function upd(ct) {
-                    const prog = Math.min((ct - st) / dur, 1),
-                        eased = 1 - Math.pow(1 - prog, 3);
-                    el.textContent = Math.round(start + (target - start) * eased) + (el.id.includes('Score') ? '%' :
-                        '');
-                    if (prog < 1) requestAnimationFrame(upd);
-                }
-                requestAnimationFrame(upd);
-            }
-
-            function computeAchievements(data) {
-                const att = data.attendance || {},
-                    scores = data.testScores || {};
-                let streak = 0,
-                    allP = [];
-                const today = new Date();
-                for (let i = 0; i < 60; i++) {
-                    const d = new Date(today);
-                    d.setDate(d.getDate() - i);
-                    if (att[d.toISOString().split('T')[0]] === 'present') streak++;
-                    else break;
-                }
-                Object.values(scores).forEach(m => {
-                    if (typeof m === 'object') Object.values(m).forEach(e => {
-                        let p = null;
-                        if (typeof e === 'object') p = e.percentage || e.percent;
-                        else if (typeof e === 'number') p = e;
-                        if (p && !isNaN(Number(p))) allP.push(Number(p));
-                    });
-                });
-                const ach = [];
-                if (streak >= 7) ach.push({ icon: '🔥', text: `${streak}d streak` });
-                if (allP.some(p => p >= 90)) ach.push({ icon: '🌟', text: '90%+ Master' });
-                if (allP.length >= 3 && allP.slice(-3).every(p => p >= 75)) ach.push({ icon: '💪',
-                    text: 'Consistent' });
-                achievements = ach;
-                return { ach, streak, allP };
-            }
-
-            function renderAchievements(ach, streak) {
-                document.getElementById('achPills').innerHTML = ach.map(a =>
-                    `<span class="ach-pill">${a.icon} ${a.text}</span>`).join('');
-                const stag = document.getElementById('streakTag');
-                if (streak >= 3) { stag.style.display = 'inline-flex';
-                    document.getElementById('streakNum').textContent = streak; } else stag.style.display =
-                    'none';
-            }
-
-            function renderCalendar(att, m, y) {
-                document.getElementById('calMonthLabel').textContent = `${MONTHS[m]} ${y}`;
-                const dim = new Date(y, m + 1, 0).getDate(),
-                    fd = new Date(y, m, 1).getDay();
-                let h = '';
-                ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(d => h +=
-                `<div class="cal-day-header">${d}</div>`);
-                for (let i = 0; i < fd; i++) h += '<div></div>';
-                const now = new Date();
-                for (let d = 1; d <= dim; d++) {
-                    const ds =
-                    `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`, st = att?.[ds];
-                    let cls = 'cal-day';
-                    if (st === 'present') cls += ' present';
-                    else if (st === 'absent') cls += ' absent';
-                    if (d === now.getDate() && m === now.getMonth() && y === now.getFullYear()) cls += ' today';
-                    h +=
-                    `<div class="${cls}" onclick="showDayDetail('${ds}','${st||'none'}')" title="${ds}: ${st||'no record'}">${d}</div>`;
-                }
-                document.getElementById('calGrid').innerHTML = h;
-            }
-            window.navCal = function(dir) {
-                calMonth += dir;
-                if (calMonth < 0) { calMonth = 11;
-                    calYear--; }
-                if (calMonth > 11) { calMonth = 0;
-                    calYear++; }
-                renderCalendar(allAtt, calMonth, calYear);
-            };
-            window.resetCal = function() {
-                const n = new Date();
-                calMonth = n.getMonth();
-                calYear = n.getFullYear();
-                renderCalendar(allAtt, calMonth, calYear);
-            };
-            window.showDayDetail = function(d, s) {
-                showToast(`📅 ${d}: ${s==='present'?'Present':s==='absent'?'Absent':'No record'}`, s ===
-                    'present' ? 'success' : s === 'absent' ? 'error' : '');
-            };
-
-            function renderMonthPills(scores) {
-                const avail = MONTHS.filter(m => scores?.[m] && Object.keys(scores[m]).length > 0);
-                if (!avail.length) avail.push(MONTHS[new Date().getMonth()]);
-                if (!avail.includes(activeMonth)) activeMonth = avail[0];
-                document.getElementById('monthPills').innerHTML = avail.map(m =>
-                    `<button class="pill ${m===activeMonth?'active':''}" data-m="${m}">${m.substring(0,3)}</button>`
-                    ).join('');
-                document.getElementById('monthPills').onclick = e => {
-                    if (e.target.classList.contains('pill')) {
-                        activeMonth = e.target.dataset.m;
-                        renderMonthPills(scores);
-                        updateTable(scores, activeMonth);
-                    }
-                };
-                updateTable(scores, activeMonth);
-            }
-
-            function updateTable(scores, month) {
-                const exams = scores?.[month] || {};
-                examList = [];
-                let html = '';
-                if (!Object.keys(exams).length) {
-                    html =
-                        '<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--text-tertiary);">No exams this month</td></tr>';
+            function renderNotifications(notifs) {
+                const unreadCount = notifs.filter(n => !n.read).length;
+                if (unreadCount > 0) {
+                    notifBadge.classList.remove('hidden');
+                    notifBadge.textContent = unreadCount > 9 ? '9+' : unreadCount;
                 } else {
-                    Object.entries(exams).forEach(([name, val]) => {
-                        let marks = '-',
-                            total = '-',
-                            pct = '-',
-                            grade = '-',
-                            cls = '';
-                        if (typeof val === 'object' && val) {
-                            marks = val.marks ?? val.score ?? val.obtained ?? '-';
-                            total = val.total ?? val.maxMarks ?? val.outOf ?? '-';
-                            pct = val.percentage ?? val.percent ?? '-';
-                            if (pct === '-' && marks !== '-' && total !== '-' && Number(total) > 0)
-                                pct = Math.round((Number(marks) / Number(total)) * 100);
-                        } else if (typeof val === 'number') { marks = val;
-                            total = 100;
-                            pct = val; }
-                        if (pct !== '-') {
-                            const pv = Number(pct);
-                            if (!isNaN(pv)) {
-                                if (pv >= 90) { cls = 'grade-excellent';
-                                    grade = 'A+'; } else if (pv >= 75) { cls = 'grade-good';
-                                    grade = 'A'; } else if (pv >= 60) { cls = 'grade-good';
-                                    grade = 'B'; } else if (pv >= 40) { cls = '';
-                                    grade = 'C'; } else { cls = 'grade-poor';
-                                    grade = 'F'; }
-                            }
-                        }
-                        examList.push({ exam: name, marks, total, pct, grade, cls });
-                        html +=
-                            `<tr data-exam="${name.toLowerCase()}"><td><strong>${name}</strong></td><td>${marks}/${total}</td><td class="${cls}">${pct}%</td><td class="${cls}">${grade}</td></tr>`;
-                    });
+                    notifBadge.classList.add('hidden');
                 }
-                document.getElementById('scoresBody').innerHTML = html;
-                document.getElementById('emptyState').style.display = 'none';
-            }
-            window.filterExams = function() {
-                const q = document.getElementById('examSearch').value.toLowerCase();
-                const rows = document.querySelectorAll('#scoresBody tr');
-                let v = 0;
-                rows.forEach(r => {
-                    if ((r.dataset.exam || '').includes(q)) { r.style.display = '';
-                        v++; } else r.style.display = 'none';
-                });
-                document.getElementById('emptyState').style.display = v === 0 && rows.length ? 'block' : 'none';
-            };
-            window.sortTable = function(col) {
-                sortDir[col] = !sortDir[col];
-                const dir = sortDir[col] ? 1 : -1;
-                examList.sort((a, b) => {
-                    let va = a[col],
-                        vb = b[col];
-                    if (col === 'percentage' || col === 'marks') { va = parseFloat(va) || 0;
-                        vb = parseFloat(vb) || 0; }
-                    if (typeof va === 'string') va = va.toLowerCase();
-                    if (typeof vb === 'string') vb = vb.toLowerCase();
-                    return va < vb ? -dir : va > vb ? dir : 0;
-                });
-                let h = '';
-                examList.forEach(d => h +=
-                    `<tr data-exam="${d.exam.toLowerCase()}"><td><strong>${d.exam}</strong></td><td>${d.marks}/${d.total}</td><td class="${d.cls}">${d.pct}%</td><td class="${d.cls}">${d.grade}</td></tr>`
-                    );
-                document.getElementById('scoresBody').innerHTML = h;
-            };
-            window.exportCSV = function() {
-                if (!examList.length) return showToast('No data', 'error');
-                let csv = 'Exam,Marks,Percentage,Grade\n';
-                examList.forEach(d => csv +=
-                    `"${d.exam}","${d.marks}/${d.total}","${d.pct}%","${d.grade}"\n`);
-                const b = new Blob([csv], { type: 'text/csv' }),
-                    u = URL.createObjectURL(b),
-                    a = document.createElement('a');
-                a.href = u;
-                a.download = `exams-${activeMonth}.csv`;
-                a.click();
-                URL.revokeObjectURL(u);
-                showToast('CSV exported');
-            };
-            window.downloadChart = function(id, name) {
-                const c = document.getElementById(id);
-                if (!c) return;
-                const a = document.createElement('a');
-                a.download = `${name}.png`;
-                a.href = c.toDataURL('image/png');
-                a.click();
-                showToast('Chart saved');
-            };
 
-            function buildCharts(scores) {
-                const tctx = document.getElementById('trendChart')?.getContext('2d');
-                const rctx = document.getElementById('radarChart')?.getContext('2d');
-                if (!tctx || !rctx) return;
-                const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-                const gc = dark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)';
-                const tc = dark ? '#a1a1aa' : '#52525b';
-                if (trendChart) trendChart.destroy();
-                const avgs = MONTHS.map(m => {
-                    const ex = scores?.[m] || {};
-                    const pts = [];
-                    Object.values(ex).forEach(e => {
-                        let p = null;
-                        if (typeof e === 'object') p = e.percentage || e.percent;
-                        else if (typeof e === 'number') p = e;
-                        if (p && !isNaN(Number(p))) pts.push(Number(p));
-                    });
-                    return pts.length ? Math.round(pts.reduce((x, y) => x + y, 0) / pts.length) : null;
-                });
-                trendChart = new Chart(tctx, {
-                    type: 'line',
-                    data: {
-                        labels: MONTHS.map(m => m.substring(0, 3)),
-                        datasets: [{
-                            data: avgs,
-                            borderColor: '#6366f1',
-                            backgroundColor: 'rgba(99,102,241,0.08)',
-                            borderWidth: 2.5,
-                            fill: true,
-                            tension: 0.5,
-                            pointRadius: 5,
-                            pointBackgroundColor: '#22c55e',
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { y: { min: 0, max: 100, grid: { color: gc }, ticks: { color: tc } },
-                            x: { grid: { color: gc }, ticks: { color: tc } } }
-                    }
-                });
-                if (radarChart) radarChart.destroy();
-                const cm = MONTHS[new Date().getMonth()],
-                    cex = scores?.[cm] || {};
-                const rl = [],
-                    rd = [];
-                Object.entries(cex).forEach(([n, v]) => {
-                    let p = null;
-                    if (typeof v === 'object') p = v.percentage || v.percent;
-                    else if (typeof v === 'number') p = v;
-                    if (p && !isNaN(Number(p))) { rl.push(n.length > 10 ? n.substring(0, 10) + '…' : n);
-                        rd.push(Number(p)); }
-                });
-                if (!rl.length) { rl.push('No Data');
-                    rd.push(0); }
-                radarChart = new Chart(rctx, {
-                    type: 'radar',
-                    data: {
-                        labels: rl,
-                        datasets: [{ data: rd, borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)',
-                            borderWidth: 2, pointBackgroundColor: '#22c55e' }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { r: { min: 0, max: 100, grid: { color: gc }, ticks: { color: tc,
-                                    backdropColor: 'transparent', font: { size: 9 } },
-                                pointLabels: { color: tc, font: { size: 10 } } } }
-                    }
-                });
+                notifList.innerHTML = notifs.map(n => `
+                    <div class="p-3 rounded-lg ${n.read ? 'bg-white' : 'bg-blue-50'} border border-gray-100 cursor-pointer hover:shadow-sm transition">
+                        <div class="flex justify-between items-start">
+                            <span class="font-semibold text-sm text-gray-900">${n.title}</span>
+                            ${!n.read ? '<span class="w-2 h-2 bg-blue-500 rounded-full mt-1.5"></span>' : ''}
+                        </div>
+                        <p class="text-xs text-gray-600 mt-1">${n.message}</p>
+                        <span class="text-[10px] text-gray-400 mt-1 block">${n.time || 'Recently'}</span>
+                    </div>
+                `).join('');
             }
+        }
 
-            async function loadData() {
-                try {
-                    const doc = await db.collection('students').doc(String(student.rollNo)).get();
-                    if (!doc.exists) { document.getElementById('appLoader').innerHTML =
-                            '<span style="color:var(--accent-rose);">Record not found</span>'; return; }
-                    const d = doc.data();
-                    currentData = d;
-                    allScores = d.testScores || {};
-                    allAtt = d.attendance || {};
-                    document.getElementById('stuName').textContent = d.name || '———';
-                    document.getElementById('stuRoll').textContent = 'Roll ' + d.rollNo;
-                    document.getElementById('stuClass').textContent = 'Class ' + d.class;
-                    document.getElementById('stuPhone').textContent = d.phone || '—';
-                    document.getElementById('stuEmail').textContent = d.email || 'Not set';
-                    document.getElementById('stuAddr').textContent = d.address || '—';
-                    document.getElementById('stuDOB').textContent = d.dateOfBirth || '—';
-                    document.getElementById('stuFather').textContent = d.fatherName ? 'Father: ' + d
-                        .fatherName : '—';
-                    document.getElementById('stuMother').textContent = d.motherName ? 'Mother: ' + d
-                        .motherName : '—';
-                    const av = document.getElementById('profileAvatar');
-                    if (d.profilePhoto) av.innerHTML =
-                        `<img src="${d.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">`;
-                    else av.innerHTML =
-                        `<span id="avatarInitial">${(d.name||'S')[0].toUpperCase()}</span>`;
-                    document.getElementById('eRoll').value = d.rollNo || '';
-                    document.getElementById('eName').value = d.name || '';
-                    document.getElementById('eClass').value = d.class || '';
-                    document.getElementById('ePhone').value = d.phone || '';
-                    document.getElementById('eEmail').value = d.email || '';
-                    document.getElementById('eDOB').value = d.dateOfBirth || '';
-                    document.getElementById('eAddr').value = d.address || '';
-                    document.getElementById('eFather').value = d.fatherName || '';
-                    document.getElementById('eMother').value = d.motherName || '';
-                    let p = 0,
-                        a = 0;
-                    Object.values(allAtt).forEach(v => { if (v === 'present') p++;
-                        else if (v === 'absent') a++; });
-                    animateValue(document.getElementById('presentDays'), p);
-                    animateValue(document.getElementById('absentDays'), a);
-                    const { ach, streak, allP } = computeAchievements(d);
-                    renderAchievements(ach, streak);
-                    animateValue(document.getElementById('avgScore'), allP.length ? Math.round(allP.reduce((x,
-                        y) => x + y, 0) / allP.length) : 0);
-                    animateValue(document.getElementById('bestScore'), allP.length ? Math.max(...allP) : 0);
-                    renderCalendar(allAtt, calMonth, calYear);
-                    renderMonthPills(allScores);
-                    buildCharts(allScores);
-                    setTimeout(() => document.getElementById('appLoader').classList.add('hide'), 500);
-                } catch (e) { document.getElementById('appLoader').innerHTML =
-                        `<span style="color:var(--accent-rose);">Error: ${e.message}</span>`; }
+        function markAllNotificationsRead() {
+            document.getElementById('notifBadge').classList.add('hidden');
+            showToast('All notifications marked as read');
+            if (db) {
+                db.collection('notifications').where('read', '==', false).get()
+                    .then(snapshot => {
+                        snapshot.forEach(doc => doc.ref.update({ read: true }));
+                    })
+                    .catch(() => {});
             }
+        }
 
-            function setupRealtime() {
-                if (unsub) unsub();
-                unsub = db.collection('students').doc(String(student.rollNo)).onSnapshot(doc => {
-                    if (doc.exists && navigator.onLine && currentData && JSON.stringify(doc.data()) !==
-                        JSON.stringify(currentData)) {
-                        showToast('🔄 Live update received');
-                        currentData = doc.data();
-                        allScores = currentData.testScores || {};
-                        allAtt = currentData.attendance || {};
-                        renderCalendar(allAtt, calMonth, calYear);
-                        renderMonthPills(allScores);
-                        buildCharts(allScores);
-                        const { ach, streak } = computeAchievements(currentData);
-                        renderAchievements(ach, streak);
-                    }
-                });
+        // Toggle notification dropdown
+        document.getElementById('notifBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('notifDropdown');
+            dropdown.classList.toggle('hidden');
+            if (!dropdown.classList.contains('hidden')) loadNotifications();
+        });
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('notifDropdown');
+            if (!dropdown.classList.contains('hidden') && !e.target.closest('#notifBtn') && !e.target.closest('#notifDropdown')) {
+                dropdown.classList.add('hidden');
             }
-            window.uploadPhoto = async function(ev) {
-                const f = ev.target.files[0];
-                if (!f) return;
-                if (f.size > 5e6) return showToast('Max 5MB', 'error');
-                showToast('Uploading...');
-                try {
-                    const fd = new FormData();
-                    fd.append('image', f);
-                    const r = await fetch(`https://api.imgbb.com/1/upload?key=${IK}`, { method: 'POST',
-                        body: fd });
-                    const j = await r.json();
-                    if (j.success) {
-                        await db.collection('students').doc(String(student.rollNo)).update({ profilePhoto: j
-                                .data.url });
-                        document.getElementById('profileAvatar').innerHTML =
-                            `<img src="${j.data.url}" style="width:100%;height:100%;object-fit:cover;">`;
-                        showToast('Photo updated!');
-                    }
-                } catch (e) { showToast('Upload failed', 'error'); }
-            };
-            window.openEdit = () => openModal('editModal');
-            document.getElementById('editForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const up = {
-                    email: document.getElementById('eEmail').value.trim(),
-                    dateOfBirth: document.getElementById('eDOB').value,
-                    address: document.getElementById('eAddr').value.trim(),
-                    fatherName: document.getElementById('eFather').value.trim(),
-                    motherName: document.getElementById('eMother').value.trim()
-                };
-                try {
-                    await db.collection('students').doc(String(student.rollNo)).update(up);
-                    showToast('Profile saved!');
-                    closeModal('editModal');
-                    loadData();
-                } catch (er) { showToast('Save failed', 'error'); }
+        });
+
+        // ========== WHATSAPP ==========
+        const wm = encodeURIComponent("Hello, I'm interested in The Heaven Point Coaching.");
+        document.getElementById('whatsappBtn').onclick = () => window.open(`https://wa.me/919648837922?text=${wm}`, '_blank');
+        document.getElementById('whatsappBtn2').onclick = e => { e.preventDefault();
+            window.open(`https://wa.me/919648837922?text=${wm}`, '_blank'); };
+
+        // ========== MOBILE MENU ==========
+        const menu = document.getElementById('mobileMenu'),
+            mb = document.getElementById('mobileMenuBtn');
+        mb.onclick = () => { menu.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; };
+        document.getElementById('closeMobileMenu').onclick = closeMenu;
+        menu.querySelectorAll('a[href^="#"]').forEach(l => l.onclick = () => {
+            closeMenu();
+            const t = document.querySelector(l.getAttribute('href'));
+            if (t) setTimeout(() => t.scrollIntoView({ behavior: 'smooth' }), 350);
+        });
+
+        // ========== HEADER SCROLL + PROGRESS ==========
+        const hdr = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            const sy = window.scrollY;
+            hdr.classList.toggle('scrolled', sy > 40);
+            const sh = document.documentElement.scrollHeight - window.innerHeight;
+            document.getElementById('progressBar').style.width = sh > 0 ? Math.min((sy / sh) * 100, 100) + '%' :
+            '0%';
+        }, { passive: true });
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(a => a.onclick = function(e) {
+            const h = this.getAttribute('href');
+            if (h === '#') return;
+            const t = document.querySelector(h);
+            if (t) { e.preventDefault();
+                window.scrollTo({ top: t.offsetTop - hdr.offsetHeight - 12, behavior: 'smooth' }); }
+        });
+
+        // ========== SERVICE WORKER ==========
+        if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register(
+            '/THE-HEAVEN-POINT/service-worker.js', { scope: '/THE-HEAVEN-POINT/' }));
+
+        // ========== BOTTOM NAV ACTIVE ==========
+        const ni = document.querySelectorAll('.nav-item'),
+            secs = document.querySelectorAll('section[id]');
+
+        function uan() {
+            let c = 'home';
+            secs.forEach(s => { if (window.scrollY >= s.offsetTop - 130) c = s.id; });
+            ni.forEach(item => {
+                const d = item.getAttribute('data-nav');
+                const a = (d === 'home' && window.scrollY < 400) || (d === 'courses' && c === 'batches') || (
+                    d === 'profile' && c === 'admission') || d === c;
+                item.classList.toggle('text-brand', a);
+                item.classList.toggle('text-gray-400', !a);
             });
-            window.refreshData = () => { showToast('Refreshing...');
-                loadData(); };
-            window.logout = () => {
-                if (unsub) unsub();
-                localStorage.removeItem('thp_current_student');
-                showToast('Logged out');
-                setTimeout(() => location.href = 'index.html', 400);
-            };
-            initTheme();
-            loadData();
-            setupRealtime();
-        })();
+        }
+        window.addEventListener('scroll', uan, { passive: true });
+        uan();
+
+        // ========== LIVE STUDENT COUNT (Firestore) ==========
+        function updateLiveCount() {
+            if (db) {
+                db.collection('students').get()
+                    .then(snapshot => {
+                        document.getElementById('liveStudentCount').textContent = snapshot.size +
+                            '+';
+                    })
+                    .catch(() => {
+                        document.getElementById('liveStudentCount').textContent = '50+';
+                    });
+            } else {
+                document.getElementById('liveStudentCount').textContent = '50+';
+            }
+        }
+
+        // ========== INIT ==========
+        function init() {
+            loadStudentProfile();
+            updateLiveCount();
+            loadNotifications();
+            console.log('🎓 The Heaven Point • Shine Brighter');
+            console.log('📱 Firebase Connected • Student Personalization Active');
+            console.log('🔔 Real-time Notifications Ready');
+        }
+
+        // Run on load
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Online/Offline detection
+        window.addEventListener('online', () => showToast('Back online 📶'));
+        window.addEventListener('offline', () => showToast('You are offline 📴', 4000));
     </script>
 </body>
 </html>
