@@ -1,643 +1,603 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>THP Admin | God Panel • Omniscient Control</title>
-  <!-- Core libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    :root {
-      --p: #6366f1; --pd: #4f46e5; --pl: #a5b4fc;
-      --s: #f43f5e; --a: #8b5cf6; --g: #10b981;
-      --w: #f59e0b; --d: #ef4444; --i: #3b82f6;
-      --wa: #25D366; --em: #EA4335;
-      --dk: #0f172a; --lt: #f8fafc; --wt: #ffffff;
-      --g50: #f9fafb; --g100: #f3f4f6; --g200: #e5e7eb;
-      --g300: #d1d5db; --g400: #9ca3af; --g500: #6b7280;
-      --g600: #4b5563; --g700: #374151; --g800: #1f2937; --g900: #111827;
-      --glass: rgba(255,255,255,0.94);
-      --sh-sm: 0 1px 2px rgba(0,0,0,0.04);
-      --sh: 0 4px 6px rgba(0,0,0,0.05);
-      --sh-md: 0 10px 25px rgba(0,0,0,0.08);
-      --sh-lg: 0 20px 50px rgba(0,0,0,0.12);
-      --sh-xl: 0 30px 60px rgba(0,0,0,0.18);
-      --r-sm: 8px; --r: 12px; --r-lg: 16px; --r-xl: 20px; --r-2xl: 24px;
-      --tr: all 0.25s cubic-bezier(0.4,0,0.2,1);
-      --glow: 0 0 18px rgba(99,102,241,0.5);
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at 20% 30%, #f0f4ff, #e9eefa);
-      background-attachment: fixed;
-      min-height: 100vh; overflow-x: hidden; color: var(--g800);
-      transition: background 0.3s ease;
-    }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); border-radius: 12px; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--p), var(--a)); border-radius: 12px; }
-    #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.7; }
-    .main { position: relative; z-index: 1; max-width: 1550px; margin: 0 auto; padding: 16px 20px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Admin — God Panel</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --p: #6366f1; --pd: #4f46e5; --pl: #a5b4fc;
+            --s: #f43f5e; --a: #8b5cf6; --g: #10b981;
+            --w: #f59e0b; --d: #ef4444; --i: #3b82f6;
+            --wa: #25D366; --em: #EA4335;
+            --dk: #0f172a; --lt: #f8fafc; --wt: #ffffff;
+            --g50: #f9fafb; --g100: #f3f4f6; --g200: #e5e7eb;
+            --g300: #d1d5db; --g400: #9ca3af; --g500: #6b7280;
+            --g600: #4b5563; --g700: #374151; --g800: #1f2937; --g900: #111827;
+            --glass: rgba(255,255,255,0.94);
+            --sh-sm: 0 1px 2px rgba(0,0,0,0.04); --sh: 0 4px 6px rgba(0,0,0,0.05);
+            --sh-md: 0 10px 25px rgba(0,0,0,0.08); --sh-lg: 0 20px 50px rgba(0,0,0,0.12);
+            --sh-xl: 0 30px 60px rgba(0,0,0,0.18);
+            --r-sm: 8px; --r: 12px; --r-lg: 16px; --r-xl: 20px; --r-2xl: 24px;
+            --tr: all 0.25s cubic-bezier(0.4,0,0.2,1);
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Poppins',sans-serif;
+            background:linear-gradient(135deg,#f0f4ff 0%,#e8ecf8 25%,#f5f3ff 50%,#fdf2f8 75%,#f0f9ff 100%);
+            min-height:100vh;overflow-x:hidden;color:var(--g800);
+        }
+        ::-webkit-scrollbar{width:5px;height:5px}
+        ::-webkit-scrollbar-track{background:var(--g100);border-radius:10px}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--p),var(--a));border-radius:10px}
+        #particles-js{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+        .main{position:relative;z-index:1;max-width:1500px;margin:0 auto;padding:14px}
 
-    .topbar {
-      background: var(--glass); backdrop-filter: blur(24px);
-      border-radius: 28px; padding: 14px 24px; margin-bottom: 18px;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-      box-shadow: var(--sh-lg), 0 0 30px rgba(99,102,241,0.15);
-      border: 1px solid rgba(255,255,255,0.6);
-    }
-    .tb-brand { display: flex; align-items: center; gap: 12px; }
-    .tb-logo {
-      width: 46px; height: 46px; background: linear-gradient(135deg, #f43f5e, #6366f1);
-      border-radius: 14px; display: flex; align-items: center; justify-content: center;
-      font-size: 22px; box-shadow: 0 0 30px rgba(244,63,94,0.5);
-    }
-    .tb-title {
-      font-size: 21px; font-weight: 800; background: linear-gradient(135deg, #f43f5e, #6366f1);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.3px;
-    }
-    .tb-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .topbar{
+            background:var(--glass);backdrop-filter:blur(20px);
+            border-radius:var(--r-2xl);padding:14px 22px;margin-bottom:14px;
+            display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+            box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,0.5);
+        }
+        .tb-brand{display:flex;align-items:center;gap:10px}
+        .tb-logo{width:42px;height:42px;background:linear-gradient(135deg,#f43f5e,#6366f1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 25px rgba(244,63,94,0.35)}
+        .tb-title{font-size:19px;font-weight:800;background:linear-gradient(135deg,#f43f5e,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .tb-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
-    .btn {
-      padding: 10px 18px; border-radius: 14px; font-weight: 600; font-size: 12px; cursor: pointer;
-      transition: var(--tr); border: none; display: inline-flex; align-items: center; gap: 7px;
-      font-family: inherit; white-space: nowrap; letter-spacing: 0.3px; backdrop-filter: blur(4px);
-    }
-    .btn-p { background: linear-gradient(135deg, var(--p), var(--a)); color: white; box-shadow: 0 6px 14px rgba(99,102,241,0.3); }
-    .btn-p:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(99,102,241,0.5); }
-    .btn-g { background: linear-gradient(135deg, var(--g), #34d399); color: white; }
-    .btn-g:hover { transform: translateY(-3px); box-shadow: 0 12px 22px rgba(16,185,129,0.5); }
-    .btn-d { background: linear-gradient(135deg, var(--d), #f87171); color: white; }
-    .btn-w { background: linear-gradient(135deg, var(--w), #fbbf24); color: #1e1e1e; }
-    .btn-o { background: white; color: var(--p); border: 2px solid var(--pl); }
-    .btn-o:hover { background: var(--p); color: white; border-color: var(--p); }
-    .btn-wa { background: linear-gradient(135deg, #25D366, #128C7E); color: white; }
-    .btn-em { background: linear-gradient(135deg, #EA4335, #BB001B); color: white; }
-    .btn-xs { padding: 5px 10px; font-size: 10px; border-radius: 8px; }
-    .btn-sm { padding: 7px 13px; font-size: 11px; border-radius: 10px; }
-    .btn:disabled { opacity: 0.5; pointer-events: none; filter: grayscale(0.3); }
+        .btn{padding:9px 16px;border-radius:11px;font-weight:600;font-size:12px;cursor:pointer;transition:var(--tr);border:none;display:flex;align-items:center;gap:6px;font-family:inherit;white-space:nowrap}
+        .btn-p{background:linear-gradient(135deg,var(--p),var(--a));color:white}
+        .btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(99,102,241,0.4)}
+        .btn-g{background:linear-gradient(135deg,var(--g),#34d399);color:white}
+        .btn-g:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(16,185,129,0.4)}
+        .btn-d{background:linear-gradient(135deg,var(--d),#f87171);color:white}
+        .btn-w{background:linear-gradient(135deg,var(--w),#fbbf24);color:white}
+        .btn-o{background:white;color:var(--p);border:2px solid var(--pl)}
+        .btn-o:hover{background:var(--p);color:white}
+        .btn-wa{background:linear-gradient(135deg,var(--wa),#128C7E);color:white}
+        .btn-em{background:linear-gradient(135deg,var(--em),#BB001B);color:white}
+        .btn-xs{padding:4px 8px;font-size:10px;border-radius:7px}
+        .btn-sm{padding:6px 11px;font-size:11px;border-radius:9px}
+        .btn:disabled{opacity:0.5;pointer-events:none}
 
-    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 18px; }
-    .stat-card {
-      background: var(--glass); backdrop-filter: blur(22px); border-radius: 22px; padding: 18px 16px;
-      box-shadow: var(--sh-md); border: 1px solid rgba(255,255,255,0.6); transition: var(--tr); cursor: pointer;
-    }
-    .stat-card:hover { transform: translateY(-5px); box-shadow: var(--sh-xl), 0 0 30px rgba(99,102,241,0.3); }
-    .stat-ico { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
-    .st-total .stat-ico { background: rgba(99,102,241,0.12); color: var(--p); }
-    .st-present .stat-ico { background: rgba(16,185,129,0.12); color: var(--g); }
-    .st-absent .stat-ico { background: rgba(239,68,68,0.12); color: var(--d); }
-    .st-wa .stat-ico { background: rgba(37,211,102,0.12); color: var(--wa); }
-    .stat-val { font-size: 30px; font-weight: 800; color: var(--g900); line-height: 1; }
-    .stat-lbl { font-size: 11px; color: var(--g500); margin-top: 4px; font-weight: 500; }
+        .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:14px}
+        .stat-card{
+            background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);padding:15px;
+            box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.5);transition:var(--tr);cursor:pointer
+        }
+        .stat-card:hover{transform:translateY(-3px);box-shadow:var(--sh-xl)}
+        .stat-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:7px}
+        .st-total .stat-ico{background:rgba(99,102,241,0.1);color:var(--p)}
+        .st-present .stat-ico{background:rgba(16,185,129,0.1);color:var(--g)}
+        .st-absent .stat-ico{background:rgba(239,68,68,0.1);color:var(--d)}
+        .st-wa .stat-ico{background:rgba(37,211,102,0.1);color:var(--wa)}
+        .stat-val{font-size:25px;font-weight:800;color:var(--g900);line-height:1}
+        .stat-lbl{font-size:10px;color:var(--g500);margin-top:2px;font-weight:500}
 
-    .notif-panel {
-      background: linear-gradient(115deg, #fef3c7, #fde68a); border: 2px solid #fbbf24;
-      border-radius: 22px; padding: 20px; margin-bottom: 18px; display: none;
-      box-shadow: 0 10px 25px rgba(245,158,11,0.2);
-    }
-    .notif-panel.show { display: block; animation: fadeSlide 0.3s ease; }
-    @keyframes fadeSlide { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .notif-panel{
+            background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #fbbf24;
+            border-radius:var(--r-xl);padding:18px;margin-bottom:14px;display:none
+        }
+        .notif-panel.show{display:block}
+        .notif-panel h3{font-size:16px;font-weight:700;color:#7c2d12;margin-bottom:10px}
 
-    .card {
-      background: var(--glass); backdrop-filter: blur(22px); border-radius: 22px;
-      padding: 20px; box-shadow: var(--sh-md); border: 1px solid rgba(255,255,255,0.55); margin-bottom: 18px;
-    }
-    .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-    .card-title { font-size: 17px; font-weight: 700; color: var(--g900); }
+        .card{
+            background:var(--glass);backdrop-filter:blur(20px);border-radius:var(--r-xl);
+            padding:18px;box-shadow:var(--sh-md);border:1px solid rgba(255,255,255,0.5);margin-bottom:14px
+        }
+        .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+        .card-title{font-size:16px;font-weight:700;color:var(--g900)}
 
-    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
-    .search-inp, .filter-sel {
-      padding: 10px 15px; border: 2px solid var(--g200); border-radius: 14px; font-size: 12px;
-      font-family: inherit; background: white; transition: var(--tr);
-    }
-    .search-inp:focus, .filter-sel:focus { outline: none; border-color: var(--p); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+        .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+        .search-inp{flex:1;min-width:170px;padding:9px 14px;border:2px solid var(--g200);border-radius:11px;font-size:12px;font-family:inherit;background:white}
+        .search-inp:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,0.1)}
+        .filter-sel{padding:9px 14px;border:2px solid var(--g200);border-radius:11px;font-size:12px;font-family:inherit;background:white;cursor:pointer;min-width:120px}
+        .filter-sel:focus{outline:none;border-color:var(--p)}
 
-    .table-wrap { overflow-x: auto; max-height: 480px; overflow-y: auto; border-radius: 16px; }
-    table { width: 100%; border-collapse: collapse; min-width: 1000px; }
-    thead { position: sticky; top: 0; z-index: 12; }
-    th {
-      background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; padding: 12px 10px;
-      text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
-    }
-    td { padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 11px; }
-    tbody tr:hover { background: rgba(99,102,241,0.03); }
-    .badge { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-block; }
-    .bg-g { background: rgba(16,185,129,0.12); color: #047857; }
-    .bg-d { background: rgba(239,68,68,0.12); color: #b91c1c; }
-    .bg-w { background: rgba(245,158,11,0.15); color: #b45309; }
-    .bg-p { background: rgba(139,92,246,0.12); color: #6d28d9; }
-    .bg-r { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #1e1e1e; font-weight: 800; }
+        .table-wrap{overflow-x:auto;max-height:430px;overflow-y:auto;border-radius:var(--r)}
+        table{width:100%;border-collapse:collapse;min-width:950px}
+        thead{position:sticky;top:0;z-index:10}
+        th{background:linear-gradient(135deg,var(--p),var(--a));color:white;padding:10px 8px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+        td{padding:8px;border-bottom:1px solid var(--g100);font-size:11px;white-space:nowrap}
+        tbody tr:hover{background:rgba(99,102,241,0.02)}
+        .badge{padding:3px 8px;border-radius:9px;font-size:10px;font-weight:700;display:inline-block}
+        .bg-g{background:rgba(16,185,129,0.1);color:#059669}
+        .bg-d{background:rgba(239,68,68,0.1);color:#dc2626}
+        .bg-w{background:rgba(245,158,11,0.1);color:#d97706}
+        .bg-p{background:rgba(139,92,246,0.1);color:#7c3aed}
+        .bg-r{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#7c2d12;font-weight:800}
 
-    .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
-    .page-btn {
-      width: 34px; height: 34px; border-radius: 10px; border: 2px solid var(--g200);
-      background: white; cursor: pointer; font-weight: 700; font-size: 12px; font-family: inherit;
-    }
-    .page-btn.active { background: var(--p); color: white; border-color: var(--p); }
+        .pagination{display:flex;justify-content:center;gap:4px;margin-top:12px}
+        .page-btn{width:30px;height:30px;border-radius:7px;border:2px solid var(--g200);background:white;cursor:pointer;font-weight:600;font-size:11px;font-family:inherit}
+        .page-btn:hover{border-color:var(--p);color:var(--p)}
+        .page-btn.active{background:var(--p);color:white;border-color:var(--p)}
+        .page-btn:disabled{opacity:0.4;cursor:not-allowed}
 
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
-      z-index: 1000; display: flex; align-items: center; justify-content: center;
-      opacity: 0; visibility: hidden; transition: var(--tr);
-    }
-    .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal {
-      background: white; border-radius: 28px; padding: 26px; width: 90%; max-width: 650px;
-      max-height: 85vh; overflow-y: auto; box-shadow: var(--sh-xl); transform: scale(0.92); transition: var(--tr);
-    }
-    .modal-overlay.active .modal { transform: scale(1); }
-    .toast-ctr { position: fixed; top: 20px; right: 20px; z-index: 2500; display: flex; flex-direction: column; gap: 8px; }
-    .toast {
-      background: var(--g900); color: white; padding: 12px 18px; border-radius: 14px;
-      font-weight: 600; font-size: 12px; box-shadow: var(--sh-xl); animation: slideIn 0.3s ease-out;
-    }
-    .toast.s { background: linear-gradient(135deg, #059669, #10b981); }
-    .toast.e { background: linear-gradient(135deg, #dc2626, #ef4444); }
-    @keyframes slideIn { from { transform: translateX(130%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    .load-overlay {
-      position: fixed; inset: 0; background: rgba(255,255,255,0.8); backdrop-filter: blur(6px);
-      z-index: 5000; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;
-    }
-    .spinner {
-      width: 48px; height: 48px; border: 5px solid var(--g200); border-top-color: var(--p);
-      border-radius: 50%; animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (max-width: 768px) {
-      .stat-row { grid-template-columns: repeat(2,1fr); }
-    }
-  </style>
+        .modal-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(5px);
+            z-index:1000;display:flex;align-items:center;justify-content:center;
+            opacity:0;visibility:hidden;transition:var(--tr)
+        }
+        .modal-overlay.active{opacity:1;visibility:visible}
+        .modal{
+            background:white;border-radius:var(--r-2xl);padding:24px;
+            width:90%;max-width:620px;max-height:82vh;overflow-y:auto;
+            box-shadow:var(--sh-xl);transform:scale(0.9);transition:var(--tr)
+        }
+        .modal-overlay.active .modal{transform:scale(1)}
+        .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--g100)}
+        .modal-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--g100);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+        .modal-close:hover{background:var(--d);color:white}
+        .form-group{margin-bottom:11px}
+        .form-group label{display:block;font-size:10px;font-weight:700;color:var(--g700);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.3px}
+        .form-group input,.form-group select{width:100%;padding:9px 13px;border:2px solid var(--g200);border-radius:9px;font-size:12px;font-family:inherit;background:var(--g50)}
+        .form-group input:focus,.form-group select:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,0.08);background:white}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+        .toast-ctr{position:fixed;top:18px;right:18px;z-index:2000;display:flex;flex-direction:column;gap:6px}
+        .toast{background:var(--g900);color:white;padding:11px 16px;border-radius:9px;font-weight:600;font-size:11px;box-shadow:var(--sh-xl);animation:slideIn 0.3s ease-out;display:flex;align-items:center;gap:7px;max-width:330px}
+        .toast.s{background:linear-gradient(135deg,#059669,#10b981)}
+        .toast.e{background:linear-gradient(135deg,#dc2626,#ef4444)}
+        @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+        .load-overlay{
+            position:fixed;inset:0;background:rgba(255,255,255,0.7);backdrop-filter:blur(3px);
+            z-index:3000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px
+        }
+        .spinner{width:42px;height:42px;border:4px solid var(--g200);border-top-color:var(--p);border-radius:50%;animation:spin 0.7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        @media(max-width:768px){
+            .stat-row{grid-template-columns:repeat(2,1fr)}
+            .topbar{flex-direction:column}
+            .form-row{grid-template-columns:1fr}
+            .tb-actions{justify-content:center}
+        }
+    </style>
 </head>
 <body>
-<div id="particles-js"></div>
-<div class="load-overlay" id="loadOverlay"><div class="spinner"></div><p style="font-weight:700;">Assembling God Panel...</p></div>
-<div class="toast-ctr" id="toastCtr"></div>
+    <div id="particles-js"></div>
+    <div class="load-overlay" id="loadOverlay"><div class="spinner"></div><p style="font-weight:700;color:var(--g700);">Loading God Panel...</p></div>
+    <div class="toast-ctr" id="toastCtr"></div>
 
-<div class="main">
-  <div class="topbar">
-    <div class="tb-brand"><div class="tb-logo">👑</div><span class="tb-title">THP Admin · God Panel</span></div>
-    <div class="tb-actions">
-      <button class="btn btn-g btn-sm" onclick="openAdd()"><i class="fas fa-plus"></i> Add</button>
-      <button class="btn btn-o btn-sm" onclick="switchTab('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</button>
-      <button class="btn btn-o btn-sm" onclick="switchTab('students')"><i class="fas fa-users"></i> Students</button>
-      <button class="btn btn-o btn-sm" onclick="switchTab('attendance')"><i class="fas fa-calendar-check"></i> Attendance</button>
-      <button class="btn btn-w btn-sm" onclick="showNotif()"><i class="fas fa-bell"></i> Notify</button>
-      <button class="btn btn-d btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-card st-total" onclick="switchTab('students')"><div class="stat-ico"><i class="fas fa-users"></i></div><div class="stat-val" id="totStu">0</div><div class="stat-lbl">Total Students</div></div>
-    <div class="stat-card st-present"><div class="stat-ico"><i class="fas fa-check-circle"></i></div><div class="stat-val" id="todayP">0</div><div class="stat-lbl">Present Today</div></div>
-    <div class="stat-card st-absent"><div class="stat-ico"><i class="fas fa-times-circle"></i></div><div class="stat-val" id="todayA">0</div><div class="stat-lbl">Absent Today</div></div>
-    <div class="stat-card st-wa" onclick="openWA()"><div class="stat-ico"><i class="fab fa-whatsapp"></i></div><div class="stat-val" id="waCount">0</div><div class="stat-lbl">WhatsApp Queue</div></div>
-  </div>
-
-  <div class="notif-panel" id="notifPanel">
-    <h3 style="margin-bottom:12px;">📢 Parent Notification — <span id="notifDate"></span></h3>
-    <div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px">
-      <div style="background:white;padding:12px 20px;border-radius:14px;"><div style="font-size:28px;font-weight:800;color:var(--d)" id="nAbs">0</div><div style="font-size:10px;">ABSENT</div></div>
-      <div style="background:white;padding:12px 20px;border-radius:14px;"><div style="font-size:28px;font-weight:800;color:var(--g)" id="nPres">0</div><div style="font-size:10px;">PRESENT</div></div>
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-wa btn-sm" onclick="openWA()"><i class="fab fa-whatsapp"></i> WhatsApp Absent</button>
-      <button class="btn btn-em btn-sm" onclick="sendEmails()"><i class="fas fa-envelope"></i> Email All Parents</button>
-    </div>
-  </div>
-
-  <div id="tab-dashboard" class="tab-content">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px">
-      <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-bar" style="color:var(--p)"></i> Class Distribution</h3></div><div style="height:270px"><canvas id="classChart"></canvas></div></div>
-      <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-pie" style="color:var(--p)"></i> Today's Attendance</h3></div><div style="height:270px"><canvas id="attPie"></canvas></div></div>
-    </div>
-  </div>
-
-  <div id="tab-students" class="tab-content" style="display:none">
-    <div class="card">
-      <div class="card-head"><h3 class="card-title"><i class="fas fa-users" style="color:var(--p)"></i> All Students (1-90)</h3><span class="badge bg-p" id="stuCount">0</span></div>
-      <div class="filter-bar">
-        <input type="text" class="search-inp" id="stuSearch" placeholder="🔍 Roll / Name / Phone / Class..." oninput="renderStudents()">
-        <select class="filter-sel" id="classFil" onchange="renderStudents()"><option value="">All Classes</option></select>
-      </div>
-      <div class="table-wrap"><table><thead><tr><th>Roll</th><th>Name</th><th>Class</th><th>Phone</th><th>Email</th><th>Att%</th><th>Actions</th></tr></thead><tbody id="stuBody"></tbody></table></div>
-      <div class="pagination" id="pagination"></div>
-    </div>
-  </div>
-
-  <div id="tab-attendance" class="tab-content" style="display:none">
-    <div class="card">
-      <div class="card-head"><h3 class="card-title"><i class="fas fa-calendar-check"></i> Attendance</h3>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <input type="date" class="filter-sel" id="attDate" onchange="loadAtt()">
-          <select class="filter-sel" id="attClass" onchange="loadAtt()"><option value="">All Classes</option></select>
-          <button class="btn btn-g btn-sm" onclick="markAllP()">✓ All Present</button>
+    <div class="main">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="tb-brand"><div class="tb-logo">👑</div><span class="tb-title">Admin God Panel</span></div>
+            <div class="tb-actions">
+                <button class="btn btn-g btn-sm" onclick="openAdd()"><i class="fas fa-plus"></i> Add</button>
+                <button class="btn btn-o btn-sm" onclick="switchTab('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</button>
+                <button class="btn btn-o btn-sm" onclick="switchTab('students')"><i class="fas fa-users"></i> Students</button>
+                <button class="btn btn-o btn-sm" onclick="switchTab('attendance')"><i class="fas fa-calendar-check"></i> Attendance</button>
+                <button class="btn btn-w btn-sm" onclick="showNotif()"><i class="fas fa-bell"></i> Notify</button>
+                <button class="btn btn-d btn-sm" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
         </div>
-      </div>
-      <div class="table-wrap" id="attMatrix"><p style="text-align:center;padding:35px;">Select date & class</p></div>
+
+        <!-- STATS -->
+        <div class="stat-row">
+            <div class="stat-card st-total" onclick="switchTab('students')"><div class="stat-ico"><i class="fas fa-users"></i></div><div class="stat-val" id="totStu">0</div><div class="stat-lbl">Total Students</div></div>
+            <div class="stat-card st-present"><div class="stat-ico"><i class="fas fa-check-circle"></i></div><div class="stat-val" id="todayP">0</div><div class="stat-lbl">Present Today</div></div>
+            <div class="stat-card st-absent"><div class="stat-ico"><i class="fas fa-times-circle"></i></div><div class="stat-val" id="todayA">0</div><div class="stat-lbl">Absent Today</div></div>
+            <div class="stat-card st-wa" onclick="openWA()"><div class="stat-ico"><i class="fab fa-whatsapp"></i></div><div class="stat-val" id="waCount">0</div><div class="stat-lbl">WhatsApp Queue</div></div>
+        </div>
+
+        <!-- NOTIFICATION PANEL -->
+        <div class="notif-panel" id="notifPanel">
+            <h3>📢 Parent Notification — <span id="notifDate"></span></h3>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px">
+                <div style="background:white;padding:12px 18px;border-radius:10px;text-align:center"><div style="font-size:26px;font-weight:800;color:var(--d)" id="nAbs">0</div><div style="font-size:9px;color:var(--g500);font-weight:700">ABSENT</div></div>
+                <div style="background:white;padding:12px 18px;border-radius:10px;text-align:center"><div style="font-size:26px;font-weight:800;color:var(--g)" id="nPres">0</div><div style="font-size:9px;color:var(--g500);font-weight:700">PRESENT</div></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn btn-wa btn-sm" onclick="openWA()"><i class="fab fa-whatsapp"></i> WhatsApp Absent</button>
+                <button class="btn btn-em btn-sm" onclick="sendEmails()"><i class="fas fa-envelope"></i> Email All Parents</button>
+            </div>
+        </div>
+
+        <!-- DASHBOARD TAB -->
+        <div id="tab-dashboard" class="tab-content">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px">
+                <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-bar" style="color:var(--p)"></i> Class Distribution</h3></div><div style="height:260px"><canvas id="classChart"></canvas></div></div>
+                <div class="card"><div class="card-head"><h3 class="card-title"><i class="fas fa-chart-pie" style="color:var(--p)"></i> Today's Attendance</h3></div><div style="height:260px"><canvas id="attPie"></canvas></div></div>
+            </div>
+        </div>
+
+        <!-- STUDENTS TAB -->
+        <div id="tab-students" class="tab-content" style="display:none">
+            <div class="card">
+                <div class="card-head"><h3 class="card-title"><i class="fas fa-users" style="color:var(--p)"></i> All Students (1-90)</h3><span class="badge bg-p" id="stuCount">0</span></div>
+                <div class="filter-bar">
+                    <input type="text" class="search-inp" id="stuSearch" placeholder="🔍 Roll No / Name / Phone / Class..." oninput="renderStudents()">
+                    <select class="filter-sel" id="classFil" onchange="renderStudents()"><option value="">All Classes</option></select>
+                </div>
+                <div class="table-wrap">
+                    <table><thead><tr><th>Roll</th><th>Name</th><th>Class</th><th>Phone</th><th>Email</th><th>Att%</th><th>Actions</th></tr></thead>
+                    <tbody id="stuBody"></tbody></table>
+                </div>
+                <div class="pagination" id="pagination"></div>
+            </div>
+        </div>
+
+        <!-- ATTENDANCE TAB -->
+        <div id="tab-attendance" class="tab-content" style="display:none">
+            <div class="card">
+                <div class="card-head">
+                    <h3 class="card-title"><i class="fas fa-calendar-check" style="color:var(--p)"></i> Attendance</h3>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <input type="date" class="filter-sel" id="attDate" onchange="loadAtt()">
+                        <select class="filter-sel" id="attClass" onchange="loadAtt()"><option value="">All Classes</option></select>
+                        <button class="btn btn-g btn-sm" onclick="markAllP()">✓ All Present</button>
+                    </div>
+                </div>
+                <div class="table-wrap" id="attMatrix"><p style="text-align:center;padding:30px;color:var(--g400)">Select date & class</p></div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- Modals -->
-<div class="modal-overlay" id="addModal">
-  <div class="modal">
-    <div class="card-head"><h2>➕ Add Student</h2><button class="modal-close btn btn-xs btn-d" onclick="closeMod('addModal')">✕</button></div>
-    <form id="addForm">
-      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label>Roll No*</label><input id="addRN" type="number" required></div><div class="form-group"><label>Name*</label><input id="addNm" required></div></div>
-      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label>Class*</label><select id="addCl" required></select></div><div class="form-group"><label>Phone*</label><input id="addPh" required maxlength="10"></div></div>
-      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label>Email</label><input id="addEm" type="email"></div><div class="form-group"><label>Password</label><input id="addPw" value="12345678"></div></div>
-      <button type="submit" class="btn btn-g" style="width:100%;margin-top:12px;">Add Student</button>
-    </form>
-  </div>
-</div>
+    <!-- ADD MODAL -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal">
+            <div class="modal-head"><h2>➕ Add Student</h2><button class="modal-close" onclick="closeMod('addModal')">✕</button></div>
+            <form id="addForm">
+                <div class="form-row"><div class="form-group"><label>Roll No*</label><input type="number" id="addRN" required></div><div class="form-group"><label>Name*</label><input type="text" id="addNm" required></div></div>
+                <div class="form-row"><div class="form-group"><label>Class*</label><select id="addCl" required><option value="">Select</option></select></div><div class="form-group"><label>Phone*</label><input type="tel" id="addPh" required maxlength="10"></div></div>
+                <div class="form-row"><div class="form-group"><label>Email</label><input type="email" id="addEm"></div><div class="form-group"><label>Password</label><input type="text" id="addPw" value="12345678"></div></div>
+                <button type="submit" class="btn btn-g" style="width:100%;margin-top:8px">Add Student</button>
+            </form>
+        </div>
+    </div>
 
-<div class="modal-overlay" id="editModal">
-  <div class="modal">
-    <div class="card-head"><h2>✏️ Edit Student</h2><button class="modal-close btn btn-xs btn-d" onclick="closeMod('editModal')">✕</button></div>
-    <form id="editForm">
-      <input type="hidden" id="editID">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label>Roll No*</label><input id="editRN" type="number" required></div><div class="form-group"><label>Name*</label><input id="editNm" required></div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label>Class*</label><select id="editCl" required></select></div><div class="form-group"><label>Phone*</label><input id="editPh" required maxlength="10"></div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label>Email</label><input id="editEm" type="email"></div><div class="form-group"><label>Password</label><input id="editPw"></div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div class="form-group"><label>Father</label><input id="editFa"></div><div class="form-group"><label>Mother</label><input id="editMo"></div></div>
-      <button type="submit" class="btn btn-p" style="width:100%;margin-top:12px;">Update Student</button>
-    </form>
-  </div>
-</div>
+    <!-- EDIT MODAL -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-head"><h2>✏️ Edit Student</h2><button class="modal-close" onclick="closeMod('editModal')">✕</button></div>
+            <form id="editForm">
+                <input type="hidden" id="editID">
+                <div class="form-row"><div class="form-group"><label>Roll No*</label><input type="number" id="editRN" required></div><div class="form-group"><label>Name*</label><input type="text" id="editNm" required></div></div>
+                <div class="form-row"><div class="form-group"><label>Class*</label><select id="editCl" required><option value="">Select</option></select></div><div class="form-group"><label>Phone*</label><input type="tel" id="editPh" required maxlength="10"></div></div>
+                <div class="form-row"><div class="form-group"><label>Email</label><input type="email" id="editEm"></div><div class="form-group"><label>Password</label><input type="text" id="editPw"></div></div>
+                <div class="form-row"><div class="form-group"><label>Father</label><input type="text" id="editFa"></div><div class="form-group"><label>Mother</label><input type="text" id="editMo"></div></div>
+                <button type="submit" class="btn btn-p" style="width:100%;margin-top:8px">Update Student</button>
+            </form>
+        </div>
+    </div>
 
-<div class="modal-overlay" id="waModal">
-  <div class="modal" style="max-width:700px">
-    <div class="card-head"><h2><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp Absent Students</h2><button class="modal-close btn btn-xs btn-d" onclick="closeMod('waModal')">✕</button></div>
-    <div id="waList" style="max-height:400px;overflow-y:auto;"></div>
-  </div>
-</div>
+    <!-- WHATSAPP MODAL -->
+    <div class="modal-overlay" id="waModal">
+        <div class="modal" style="max-width:750px">
+            <div class="modal-head"><h2><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp Absent Students</h2><button class="modal-close" onclick="closeMod('waModal')">✕</button></div>
+            <div id="waList" style="max-height:380px;overflow-y:auto"></div>
+        </div>
+    </div>
 
-<script>
-  (function() {
-    // ---------- FIREBASE & EMAILJS ----------
-    const firebaseConfig = {
-      apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
-      authDomain: "dumbbell-gyme.firebaseapp.com",
-      projectId: "dumbbell-gyme",
-      storageBucket: "dumbbell-gyme.firebasestorage.app",
-      messagingSenderId: "305021976299",
-      appId: "1:305021976299:web:fb85c2b332935d698088ae"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    emailjs.init("AylbjsNiCx8ji5dWH");
+    <script>
+        // ═══════════════════════════════════════
+        // FIREBASE + EmailJS INIT
+        // ═══════════════════════════════════════
+        const fc = {apiKey:"AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",authDomain:"dumbbell-gyme.firebaseapp.com",projectId:"dumbbell-gyme",storageBucket:"dumbbell-gyme.firebasestorage.app",messagingSenderId:"305021976299",appId:"1:305021976299:web:fb85c2b332935d698088ae"};
+        firebase.initializeApp(fc);
+        const db = firebase.firestore();
+        emailjs.init("AylbjsNiCx8ji5dWH");
 
-    // ---------- GLOBAL STATE ----------
-    let allStudents = [];
-    let currentTab = 'dashboard';
-    let currentPage = 1;
-    const perPage = 25;
-    const today = new Date().toISOString().split('T')[0];
-    let classChartInstance, attPieInstance;
+        let allStu = [], curTab = 'dashboard', curPage = 1, perPage = 25, today = new Date().toISOString().split('T')[0];
+        let classCtx, attCtx;
 
-    // ---------- PARTICLES ----------
-    particlesJS('particles-js', {
-      particles: { number: { value: 40 }, color: { value: '#6366f1' }, opacity: { value: 0.1 }, size: { value: 2.5 }, line_linked: { enable: true, distance: 140, color: '#6366f1', opacity: 0.05 }, move: { enable: true, speed: 1.2 } },
-      interactivity: { events: { onhover: { enable: true, mode: 'grab' } } }, retina_detect: true
-    });
+        // Particles
+        particlesJS('particles-js',{particles:{number:{value:35},color:{value:'#6366f1'},opacity:{value:0.12},size:{value:2},line_linked:{enable:true,distance:140,color:'#6366f1',opacity:0.06},move:{enable:true,speed:1}},interactivity:{events:{onhover:{enable:true,mode:'grab'}}},retina_detect:true});
 
-    // ---------- UTILS ----------
-    function toast(msg, type = 's') {
-      const container = document.getElementById('toastCtr');
-      const div = document.createElement('div');
-      div.className = `toast ${type}`;
-      div.innerHTML = `<span>${type==='s'?'✅':type==='e'?'❌':'ℹ️'}</span> ${msg}`;
-      container.appendChild(div);
-      setTimeout(() => { div.style.opacity = '0'; div.style.transform = 'translateX(130%)'; setTimeout(() => div.remove(), 300); }, 3000);
-    }
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-    window.closeMod = closeModal;
-    document.querySelectorAll('.modal-overlay').forEach(ov => ov.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); }));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active')); });
+        // ═══════════════════════════════════════
+        // AUTH + TOAST + MODAL
+        // ═══════════════════════════════════════
+        function chkAuth(){if(!localStorage.getItem('thp_admin')){location.href='index.html';return false}return true}
+        function toast(m,t='s'){const c=document.getElementById('toastCtr'),d=document.createElement('div');d.className=`toast ${t}`;d.innerHTML=`<span>${t==='s'?'✅':t==='e'?'❌':'ℹ️'}</span> ${m}`;c.appendChild(d);setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(120%)';setTimeout(()=>d.remove(),300)},2800)}
+        function openMod(id){document.getElementById(id).classList.add('active')}
+        function closeMod(id){document.getElementById(id).classList.remove('active')}
+        document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')}));
+        document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>m.classList.remove('active'))});
 
-    function checkAuth() {
-      if (!localStorage.getItem('thp_admin')) { window.location.href = 'index.html'; return false; }
-      return true;
-    }
-    window.logout = function() { localStorage.removeItem('thp_admin'); window.location.href = 'index.html'; };
-
-    // ---------- TAB SWITCHING ----------
-    window.switchTab = function(tab) {
-      currentTab = tab;
-      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-      const target = document.getElementById('tab-' + tab);
-      if (target) target.style.display = 'block';
-      if (tab === 'students') renderStudents();
-      if (tab === 'attendance') loadAttendance();
-      if (tab === 'dashboard') renderCharts();
-    };
-
-    // ---------- DATA LOADING ----------
-    async function loadAllStudents() {
-      try {
-        const snap = await db.collection('students').orderBy('rollNo', 'asc').get();
-        allStudents = [];
-        snap.forEach(doc => allStudents.push({ id: doc.id, ...doc.data() }));
-        console.log('✅ Students loaded:', allStudents.length);
-        updateStats();
-        populateClassFilters();
-        renderStudents();
-        renderCharts();
-        document.getElementById('loadOverlay').style.display = 'none';
-      } catch (e) {
-        toast('Failed to load students', 'e');
-        document.getElementById('loadOverlay').style.display = 'none';
-      }
-    }
-
-    function populateClassFilters() {
-      const classes = [...new Set(allStudents.map(s => s.class).filter(c => c && c !== 'N/A'))].sort((a,b) => (parseInt(a)||0)-(parseInt(b)||0));
-      if (allStudents.some(s => s.class === 'N/A')) classes.push('N/A');
-      const options = classes.map(c => `<option value="${c}">Class ${c}</option>`).join('');
-      ['classFil', 'addCl', 'editCl', 'attClass'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = '<option value="">All/Select</option>' + options;
-      });
-    }
-
-    function updateStats() {
-      document.getElementById('totStu').textContent = allStudents.length;
-      let present = 0, absent = 0;
-      allStudents.forEach(s => {
-        if (s.attendance && s.attendance[today] === 'present') present++;
-        if (s.attendance && s.attendance[today] === 'absent') absent++;
-      });
-      document.getElementById('todayP').textContent = present;
-      document.getElementById('todayA').textContent = absent;
-      document.getElementById('waCount').textContent = absent;
-      document.getElementById('nAbs').textContent = absent;
-      document.getElementById('nPres').textContent = present;
-      document.getElementById('notifDate').textContent = new Date().toLocaleDateString('en-IN', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    }
-    window.showNotif = function() { updateStats(); document.getElementById('notifPanel').classList.add('show'); };
-
-    // ---------- STUDENTS TABLE ----------
-    function getFilteredStudents() {
-      const search = (document.getElementById('stuSearch')?.value || '').toLowerCase();
-      const classFilter = document.getElementById('classFil')?.value || '';
-      let filtered = [...allStudents];
-      if (search) filtered = filtered.filter(s => String(s.rollNo||'').includes(search) || (s.name||'').toLowerCase().includes(search) || (s.phone||'').includes(search));
-      if (classFilter) filtered = filtered.filter(s => s.class === classFilter);
-      return filtered.sort((a,b) => (a.rollNo||0) - (b.rollNo||0));
-    }
-
-    function renderStudents() {
-      currentPage = 1;
-      const filtered = getFilteredStudents();
-      document.getElementById('stuCount').textContent = filtered.length + ' Students';
-      const totalPages = Math.ceil(filtered.length / perPage);
-      if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
-      const start = (currentPage - 1) * perPage;
-      const pageItems = filtered.slice(start, start + perPage);
-      const tbody = document.getElementById('stuBody');
-      if (pageItems.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:35px;">No students found</td></tr>';
-      } else {
-        tbody.innerHTML = pageItems.map(s => {
-          const attValues = s.attendance ? Object.values(s.attendance) : [];
-          const presentCount = attValues.filter(v => v === 'present').length;
-          const totalDays = attValues.length;
-          const attPercent = totalDays > 0 ? Math.round((presentCount / totalDays) * 100) : 0;
-          return `<tr>
-            <td><span class="badge bg-r">${s.rollNo ?? '--'}</span></td>
-            <td><strong>${s.name || 'N/A'}</strong></td>
-            <td><span class="badge bg-p">Class ${s.class || 'N/A'}</span></td>
-            <td>${s.phone || '--'}</td>
-            <td style="font-size:10px;">${s.email || '--'}</td>
-            <td><span class="badge ${attPercent>=75?'bg-g':attPercent>=50?'bg-w':'bg-d'}">${attPercent}%</span></td>
-            <td>
-              <button class="btn btn-p btn-xs" onclick="openEdit('${s.id}')"><i class="fas fa-edit"></i></button>
-              <button class="btn btn-d btn-xs" onclick="deleteStudent('${s.id}')"><i class="fas fa-trash"></i></button>
-            </td></tr>`;
-        }).join('');
-      }
-      renderPagination(totalPages);
-    }
-
-    function renderPagination(totalPages) {
-      const pagDiv = document.getElementById('pagination');
-      if (totalPages <= 1) { pagDiv.innerHTML = ''; return; }
-      let html = `<button class="page-btn" onclick="goToPage(${currentPage-1})" ${currentPage===1?'disabled':''}>◀</button>`;
-      for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= currentPage-2 && i <= currentPage+2)) {
-          html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goToPage(${i})">${i}</button>`;
-        } else if (i === currentPage-3 || i === currentPage+3) {
-          html += '<span style="padding:0 4px;">…</span>';
+        // ═══════════════════════════════════════
+        // TAB SWITCH
+        // ═══════════════════════════════════════
+        function switchTab(t){
+            curTab=t;
+            document.querySelectorAll('.tab-content').forEach(x=>x.style.display='none');
+            document.getElementById('tab-'+t).style.display='block';
+            if(t==='students')renderStudents();
+            if(t==='attendance')loadAtt();
+            if(t==='dashboard')renderCharts();
         }
-      }
-      html += `<button class="page-btn" onclick="goToPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>▶</button>`;
-      pagDiv.innerHTML = html;
-    }
-    window.goToPage = function(page) {
-      const filtered = getFilteredStudents();
-      const totalPages = Math.ceil(filtered.length / perPage);
-      currentPage = Math.max(1, Math.min(page, totalPages));
-      renderStudents();
-    };
 
-    // ---------- ADD STUDENT ----------
-    window.openAdd = function() {
-      document.getElementById('addForm').reset();
-      document.getElementById('addPw').value = '12345678';
-      document.getElementById('addRN').value = allStudents.length + 1;
-      openModal('addModal');
-    };
-    document.getElementById('addForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = {
-        rollNo: parseInt(document.getElementById('addRN').value),
-        name: document.getElementById('addNm').value.trim(),
-        class: document.getElementById('addCl').value,
-        phone: document.getElementById('addPh').value.trim(),
-        password: document.getElementById('addPw').value,
-        email: document.getElementById('addEm').value.trim(),
-        fatherName: '', motherName: '', address: '', profilePhoto: '',
-        attendance: {}, testScores: {}, performance: { strengths: '', weaknesses: '', remarks: '' },
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      try {
-        await db.collection('students').doc(String(data.rollNo)).set(data);
-        toast('Student added!', 's');
-        closeModal('addModal');
-        loadAllStudents();
-      } catch (err) { toast('Failed: ' + err.message, 'e'); }
-    });
-
-    // ---------- EDIT STUDENT ----------
-    window.openEdit = function(id) {
-      const s = allStudents.find(x => x.id === id);
-      if (!s) return;
-      document.getElementById('editID').value = s.id;
-      document.getElementById('editRN').value = s.rollNo || '';
-      document.getElementById('editNm').value = s.name || '';
-      document.getElementById('editCl').value = s.class || '';
-      document.getElementById('editPh').value = s.phone || '';
-      document.getElementById('editEm').value = s.email || '';
-      document.getElementById('editPw').value = s.password || '';
-      document.getElementById('editFa').value = s.fatherName || '';
-      document.getElementById('editMo').value = s.motherName || '';
-      openModal('editModal');
-    };
-    document.getElementById('editForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const oldId = document.getElementById('editID').value;
-      const newRoll = parseInt(document.getElementById('editRN').value);
-      const updated = {
-        rollNo: newRoll, name: document.getElementById('editNm').value.trim(),
-        class: document.getElementById('editCl').value, phone: document.getElementById('editPh').value.trim(),
-        email: document.getElementById('editEm').value.trim(), password: document.getElementById('editPw').value,
-        fatherName: document.getElementById('editFa').value.trim(), motherName: document.getElementById('editMo').value.trim(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      try {
-        if (String(newRoll) !== oldId) {
-          const oldDoc = allStudents.find(s => s.id === oldId);
-          await db.collection('students').doc(String(newRoll)).set({...oldDoc, ...updated}, {merge: true});
-          await db.collection('students').doc(oldId).delete();
-        } else {
-          await db.collection('students').doc(oldId).update(updated);
+        // ═══════════════════════════════════════
+        // LOAD ALL STUDENTS (ROLL NO ORDER)
+        // ═══════════════════════════════════════
+        async function loadAll(){
+            try{
+                const snap=await db.collection('students').orderBy('rollNo','asc').get();
+                allStu=[];snap.forEach(d=>allStu.push({id:d.id,...d.data()}));
+                console.log('✅ Loaded',allStu.length,'students');
+                updateStats();populateFilters();renderStudents();renderCharts();
+                document.getElementById('loadOverlay').style.display='none';
+            }catch(e){toast('Failed to load','e');document.getElementById('loadOverlay').style.display='none'}
         }
-        toast('Updated!', 's');
-        closeModal('editModal');
-        loadAllStudents();
-      } catch (err) { toast('Update failed', 'e'); }
-    });
 
-    // ---------- DELETE ----------
-    window.deleteStudent = async function(id) {
-      const s = allStudents.find(x => x.id === id);
-      if (!confirm(`Delete ${s?.name || 'student'}?`)) return;
-      try { await db.collection('students').doc(id).delete(); toast('Deleted', 's'); loadAllStudents(); } catch (e) { toast('Error', 'e'); }
-    };
+        function populateFilters(){
+            const cls=[...new Set(allStu.map(s=>s.class))].filter(c=>c!=='N/A').sort((a,b)=>parseInt(a)-parseInt(b));
+            if(allStu.some(s=>s.class==='L.K.C.'))cls.push('L.K.C.');
+            if(allStu.some(s=>s.class==='N/A'))cls.push('N/A');
+            const opts=cls.map(c=>`<option value="${c}">Class ${c}</option>`).join('');
+            ['classFil','addCl','editCl','attClass'].forEach(id=>{
+                const el=document.getElementById(id);if(el)el.innerHTML='<option value="">All/Select</option>'+opts;
+            });
+        }
 
-    // ---------- ATTENDANCE ----------
-    async function loadAttendance() {
-      const date = document.getElementById('attDate').value || today;
-      const classFilter = document.getElementById('attClass').value;
-      let filtered = [...allStudents];
-      if (classFilter) filtered = filtered.filter(s => s.class === classFilter);
-      document.getElementById('attDate').value = date;
-      const container = document.getElementById('attMatrix');
-      if (!filtered.length) { container.innerHTML = '<p style="text-align:center;padding:35px;">No students</p>'; return; }
-      const sorted = filtered.sort((a,b) => (a.rollNo||0)-(b.rollNo||0));
-      container.innerHTML = `<table><thead><tr><th>Roll</th><th>Name</th><th>Class</th><th>Phone</th><th>Status</th><th>Action</th></tr></thead><tbody>${sorted.map(s => {
-        const status = (s.attendance && s.attendance[date]) || 'unmarked';
-        return `<tr><td><span class="badge bg-r">${s.rollNo}</span></td><td><strong>${s.name}</strong></td><td>Class ${s.class}</td><td>${s.phone}</td>
-        <td><span class="badge ${status==='present'?'bg-g':status==='absent'?'bg-d':'bg-w'}">${status.toUpperCase()}</span></td>
-        <td><button class="btn btn-g btn-xs" onclick="markAttendance('${s.id}','${date}','present')">✓ P</button>
-        <button class="btn btn-d btn-xs" onclick="markAttendance('${s.id}','${date}','absent')">✕ A</button></td></tr>`;
-      }).join('')}</tbody></table>`;
-    }
-    window.markAttendance = async function(docId, date, status) {
-      try {
-        await db.collection('students').doc(docId).update({ [`attendance.${date}`]: status, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-        const student = allStudents.find(s => s.id === docId);
-        if (student) { if (!student.attendance) student.attendance = {}; student.attendance[date] = status; }
-        toast(`Marked ${status}`, 's');
-        loadAttendance();
-        updateStats();
-      } catch (e) { toast('Failed', 'e'); }
-    };
-    window.markAllP = async function() {
-      const date = document.getElementById('attDate').value || today;
-      const classFilter = document.getElementById('attClass').value;
-      let filtered = [...allStudents];
-      if (classFilter) filtered = filtered.filter(s => s.class === classFilter);
-      if (!filtered.length) { toast('No students', 'e'); return; }
-      if (!confirm(`Mark ALL ${filtered.length} PRESENT?`)) return;
-      const batch = db.batch();
-      filtered.forEach(s => batch.update(db.collection('students').doc(s.id), { [`attendance.${date}`]: 'present', updatedAt: firebase.firestore.FieldValue.serverTimestamp() }));
-      try { await batch.commit(); toast(`${filtered.length} marked present`, 's'); loadAttendance(); updateStats(); } catch (e) { toast('Batch failed', 'e'); }
-    };
+        function updateStats(){
+            document.getElementById('totStu').textContent=allStu.length;
+            let p=0,a=0;
+            allStu.forEach(s=>{if(s.attendance&&s.attendance[today]==='present')p++;if(s.attendance&&s.attendance[today]==='absent')a++});
+            document.getElementById('todayP').textContent=p;
+            document.getElementById('todayA').textContent=a;
+            document.getElementById('waCount').textContent=a;
+            document.getElementById('nAbs').textContent=a;
+            document.getElementById('nPres').textContent=p;
+            document.getElementById('notifDate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+        }
 
-    // ---------- WHATSAPP & EMAIL ----------
-    function getAbsentToday() { return allStudents.filter(s => s.attendance && s.attendance[today] === 'absent'); }
-    window.openWA = function() {
-      const absent = getAbsentToday();
-      const listDiv = document.getElementById('waList');
-      if (absent.length === 0) { listDiv.innerHTML = '<p style="text-align:center;padding:30px;">✅ All present!</p>'; }
-      else {
-        listDiv.innerHTML = absent.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0)).map(s => {
-          const msg = encodeURIComponent(`Dear Parent,\n\n${s.name} (Roll ${s.rollNo}, Class ${s.class}) was ABSENT today.\n\n- THP Coaching`);
-          return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #eee;">
-            <div><strong>${s.name}</strong> <small>R${s.rollNo} | ${s.phone}</small></div>
-            <a href="https://wa.me/91${s.phone}?text=${msg}" target="_blank" style="background:#25D366;color:white;padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:600;">Send</a></div>`;
-        }).join('');
-      }
-      openModal('waModal');
-    };
-    window.sendEmails = async function() {
-      const withEmail = allStudents.filter(s => s.email);
-      if (!withEmail.length) { toast('No parent emails found!', 'e'); return; }
-      if (!confirm(`Send attendance update to ${withEmail.length} parents?`)) return;
-      const formattedDate = new Date().toLocaleDateString('en-IN', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
-      let sent = 0;
-      for (const s of withEmail) {
-        const status = (s.attendance && s.attendance[today]) || 'unmarked';
-        try {
-          await emailjs.send('service_x91ci6d', 'template_eqi91wm', {
-            to_email: s.email,
-            subject: `Attendance - ${formattedDate}`,
-            message: `${s.name} (Roll ${s.rollNo}, Class ${s.class}) was ${status.toUpperCase()} today.`,
-            date: formattedDate,
-            time: new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'})
-          });
-          sent++;
-        } catch (e) { /* continue */ }
-      }
-      toast(`${sent}/${withEmail.length} emails sent!`, 's');
-    };
+        function showNotif(){updateStats();document.getElementById('notifPanel').classList.add('show');document.getElementById('notifPanel').scrollIntoView({behavior:'smooth'})}
 
-    // ---------- CHARTS ----------
-    function renderCharts() {
-      const ctx1 = document.getElementById('classChart')?.getContext('2d');
-      if (ctx1) {
-        const classCount = {};
-        allStudents.forEach(s => { const c = s.class || 'N/A'; classCount[c] = (classCount[c] || 0) + 1; });
-        const labels = Object.keys(classCount).sort((a,b) => (parseInt(a)||99) - (parseInt(b)||99));
-        if (classChartInstance) classChartInstance.destroy();
-        classChartInstance = new Chart(ctx1, {
-          type: 'bar',
-          data: { labels, datasets: [{ label: 'Students', data: labels.map(l => classCount[l]), backgroundColor: labels.map((_,i) => `hsl(${i*35},70%,65%)`), borderRadius: 12 }] },
-          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        // ═══════════════════════════════════════
+        // STUDENTS TABLE
+        // ═══════════════════════════════════════
+        function getFiltered(){
+            const s=(document.getElementById('stuSearch')?.value||'').toLowerCase();
+            const cf=document.getElementById('classFil')?.value||'';
+            let f=[...allStu];
+            if(s)f=f.filter(x=>String(x.rollNo||'').includes(s)||(x.name||'').toLowerCase().includes(s)||(x.phone||'').includes(s));
+            if(cf)f=f.filter(x=>x.class===cf);
+            return f.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0));
+        }
+
+        function renderStudents(){
+            curPage=1;const f=getFiltered();
+            document.getElementById('stuCount').textContent=f.length+' Students';
+            const tp=Math.ceil(f.length/perPage);
+            if(curPage>tp)curPage=Math.max(1,tp);
+            const start=(curPage-1)*perPage,page=f.slice(start,start+perPage);
+            document.getElementById('stuBody').innerHTML=page.length===0?'<tr><td colspan="7" style="text-align:center;padding:30px">No students</td></tr>':
+            page.map(s=>{
+                const ap=s.attendance?Object.values(s.attendance).filter(v=>v==='present').length:0;
+                const at=s.attendance?Object.keys(s.attendance).length:0;
+                const attP=at>0?Math.round((ap/at)*100):0;
+                return`<tr>
+                    <td><span class="badge bg-r">${s.rollNo||'--'}</span></td>
+                    <td><strong>${s.name||'N/A'}</strong></td>
+                    <td><span class="badge bg-p">Class ${s.class||'N/A'}</span></td>
+                    <td>${s.phone||'N/A'}</td>
+                    <td style="font-size:10px">${s.email||'--'}</td>
+                    <td><span class="badge ${attP>=75?'bg-g':attP>=50?'bg-w':'bg-d'}">${attP}%</span></td>
+                    <td>
+                        <button class="btn btn-p btn-xs" onclick="openEdit('${s.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-d btn-xs" onclick="delStu('${s.id}')"><i class="fas fa-trash"></i></button>
+                    </td></tr>`;
+            }).join('');
+            renderPag(tp);
+        }
+
+        function renderPag(tp){
+            const p=document.getElementById('pagination');
+            if(tp<=1){p.innerHTML='';return}
+            let h=`<button class="page-btn" onclick="goPage(${curPage-1})" ${curPage===1?'disabled':''}>◀</button>`;
+            for(let i=1;i<=tp;i++){
+                if(i===1||i===tp||(i>=curPage-2&&i<=curPage+2))h+=`<button class="page-btn ${i===curPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+                else if(i===curPage-3||i===curPage+3)h+='<span>...</span>';
+            }
+            h+=`<button class="page-btn" onclick="goPage(${curPage+1})" ${curPage===tp?'disabled':''}>▶</button>`;
+            p.innerHTML=h;
+        }
+
+        function goPage(p){
+            const f=getFiltered();const tp=Math.ceil(f.length/perPage);
+            curPage=Math.max(1,Math.min(p,tp));renderStudents();
+        }
+
+        // ═══════════════════════════════════════
+        // ADD STUDENT
+        // ═══════════════════════════════════════
+        function openAdd(){
+            document.getElementById('addForm').reset();
+            document.getElementById('addPw').value='12345678';
+            document.getElementById('addRN').value=allStu.length+1;
+            openMod('addModal');
+        }
+        document.getElementById('addForm').addEventListener('submit',async(e)=>{
+            e.preventDefault();
+            const d={
+                rollNo:parseInt(document.getElementById('addRN').value),
+                name:document.getElementById('addNm').value.trim(),
+                class:document.getElementById('addCl').value,
+                phone:document.getElementById('addPh').value.trim(),
+                password:document.getElementById('addPw').value,
+                email:document.getElementById('addEm').value.trim(),
+                fatherName:'',motherName:'',address:'',profilePhoto:'',
+                bloodGroup:'',dateOfBirth:'',gender:'',
+                attendance:{},testScores:{},
+                performance:{strengths:'',weaknesses:'',remarks:''},
+                createdAt:firebase.firestore.FieldValue.serverTimestamp()
+            };
+            try{
+                await db.collection('students').doc(String(d.rollNo)).set(d);
+                toast('Student added!','s');closeMod('addModal');loadAll();
+            }catch(err){toast('Failed','e')}
         });
-      }
-      const ctx2 = document.getElementById('attPie')?.getContext('2d');
-      if (ctx2) {
-        let p = 0, a = 0, u = 0;
-        allStudents.forEach(s => { const st = (s.attendance && s.attendance[today]) || 'unmarked'; if (st==='present') p++; else if (st==='absent') a++; else u++; });
-        if (attPieInstance) attPieInstance.destroy();
-        attPieInstance = new Chart(ctx2, {
-          type: 'doughnut',
-          data: { labels: ['Present','Absent','Unmarked'], datasets: [{ data: [p,a,u], backgroundColor: ['#10b981','#ef4444','#d1d5db'], borderWidth: 3, borderColor: 'white' }] },
-          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-        });
-      }
-    }
 
-    // ---------- INIT ----------
-    async function init() {
-      if (!checkAuth()) return;
-      document.getElementById('attDate').value = today;
-      await loadAllStudents();
-      switchTab('dashboard');
-    }
-    window.addEventListener('DOMContentLoaded', init);
-  })();
-</script>
+        // ═══════════════════════════════════════
+        // EDIT STUDENT
+        // ═══════════════════════════════════════
+        function openEdit(id){
+            const s=allStu.find(x=>x.id===id);if(!s)return;
+            document.getElementById('editID').value=s.id;
+            document.getElementById('editRN').value=s.rollNo||'';
+            document.getElementById('editNm').value=s.name||'';
+            document.getElementById('editCl').value=s.class||'';
+            document.getElementById('editPh').value=s.phone||'';
+            document.getElementById('editEm').value=s.email||'';
+            document.getElementById('editPw').value=s.password||'';
+            document.getElementById('editFa').value=s.fatherName||'';
+            document.getElementById('editMo').value=s.motherName||'';
+            openMod('editModal');
+        }
+        document.getElementById('editForm').addEventListener('submit',async(e)=>{
+            e.preventDefault();
+            const oid=document.getElementById('editID').value;
+            const nrn=parseInt(document.getElementById('editRN').value);
+            const u={
+                rollNo:nrn,name:document.getElementById('editNm').value.trim(),
+                class:document.getElementById('editCl').value,
+                phone:document.getElementById('editPh').value.trim(),
+                email:document.getElementById('editEm').value.trim(),
+                password:document.getElementById('editPw').value,
+                fatherName:document.getElementById('editFa').value.trim(),
+                motherName:document.getElementById('editMo').value.trim(),
+                updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+            };
+            try{
+                if(String(nrn)!==oid){
+                    const old=allStu.find(x=>x.id===oid);
+                    await db.collection('students').doc(String(nrn)).set({...old,...u},{merge:true});
+                    await db.collection('students').doc(oid).delete();
+                }else{await db.collection('students').doc(oid).update(u)}
+                toast('Updated!','s');closeMod('editModal');loadAll();
+            }catch(err){toast('Failed','e')}
+        });
+
+        // ═══════════════════════════════════════
+        // DELETE
+        // ═══════════════════════════════════════
+        async function delStu(id){
+            const s=allStu.find(x=>x.id===id);
+            if(!confirm(`Delete ${s?.name||'student'}?`))return;
+            try{await db.collection('students').doc(id).delete();toast('Deleted!','s');loadAll()}catch(e){toast('Failed','e')}
+        }
+
+        // ═══════════════════════════════════════
+        // ATTENDANCE (PERFECT - ALL STUDENTS)
+        // ═══════════════════════════════════════
+        async function loadAtt(){
+            const date=document.getElementById('attDate').value||today;
+            const cf=document.getElementById('attClass').value;
+            let f=[...allStu];if(cf)f=f.filter(s=>s.class===cf);
+            document.getElementById('attDate').value=date;
+            if(!f.length){document.getElementById('attMatrix').innerHTML='<p style="text-align:center;padding:30px">No students</p>';return}
+            const sorted=f.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0));
+            document.getElementById('attMatrix').innerHTML=`<table><thead><tr><th>Roll</th><th>Name</th><th>Class</th><th>Phone</th><th>Status</th><th>Action</th></tr></thead><tbody>${sorted.map(s=>{
+                const st=(s.attendance&&s.attendance[date])||'unmarked';
+                return`<tr>
+                    <td><span class="badge bg-r">${s.rollNo}</span></td>
+                    <td><strong>${s.name}</strong></td>
+                    <td>Class ${s.class}</td><td>${s.phone}</td>
+                    <td><span class="badge ${st==='present'?'bg-g':st==='absent'?'bg-d':'bg-w'}">${st.toUpperCase()}</span></td>
+                    <td>
+                        <button class="btn btn-g btn-xs" onclick="markAtt('${s.id}','${date}','present')">✓ P</button>
+                        <button class="btn btn-d btn-xs" onclick="markAtt('${s.id}','${date}','absent')">✕ A</button>
+                    </td></tr>`;
+            }).join('')}</tbody></table>`;
+        }
+
+        async function markAtt(docId,date,status){
+            try{
+                const id=String(docId);
+                await db.collection('students').doc(id).update({[`attendance.${date}`]:status,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+                const st=allStu.find(x=>x.id===id||String(x.rollNo)===id);
+                if(st){if(!st.attendance)st.attendance={};st.attendance[date]=status}
+                toast(`Marked ${status}`,'s');loadAtt();updateStats();
+            }catch(e){console.error(e);toast('Failed: '+e.message,'e')}
+        }
+
+        async function markAllP(){
+            const date=document.getElementById('attDate').value||today;
+            const cf=document.getElementById('attClass').value;
+            let f=[...allStu];if(cf)f=f.filter(s=>s.class===cf);
+            if(!f.length){toast('No students','e');return}
+            if(!confirm(`Mark ALL ${f.length} PRESENT?`))return;
+            const b=db.batch();
+            f.forEach(s=>b.update(db.collection('students').doc(String(s.id)),{[`attendance.${date}`]:'present',updatedAt:firebase.firestore.FieldValue.serverTimestamp()}));
+            try{await b.commit();toast(`${f.length} marked present`,'s');loadAtt();updateStats()}catch(e){toast('Failed','e')}
+        }
+
+        // ═══════════════════════════════════════
+        // WHATSAPP
+        // ═══════════════════════════════════════
+        function getAbsent(){return allStu.filter(s=>s.attendance&&s.attendance[today]==='absent')}
+        function openWA(){
+            const abs=getAbsent();
+            document.getElementById('waList').innerHTML=abs.length===0?'<p style="text-align:center;padding:30px;color:var(--g)">✅ All present!</p>':
+            abs.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0)).map(s=>{
+                const msg=encodeURIComponent(`Dear Parent,\n\n${s.name} (Roll ${s.rollNo}, Class ${s.class}) was ABSENT today.\n\n- THP Coaching`);
+                return`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px;border-bottom:1px solid #eee">
+                    <div><strong>${s.name}</strong> <small>R${s.rollNo} | ${s.phone}</small></div>
+                    <a href="https://wa.me/91${s.phone}?text=${msg}" target="_blank" style="background:#25D366;color:white;padding:7px 12px;border-radius:7px;text-decoration:none;font-size:11px;font-weight:600">Send</a>
+                </div>`;
+            }).join('');
+            openMod('waModal');
+        }
+
+        // ═══════════════════════════════════════
+        // EMAIL
+        // ═══════════════════════════════════════
+        async function sendEmails(){
+            const we=allStu.filter(s=>s.email);
+            if(!we.length){toast('No emails found! Add parent emails first.','e');return}
+            if(!confirm(`Send to ${we.length} parents?`))return;
+            const tf=new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+            let sent=0;
+            for(const s of we){
+                const st=(s.attendance&&s.attendance[today])||'unmarked';
+                try{await emailjs.send('service_x91ci6d','template_eqi91wm',{to_email:s.email,subject:`Attendance - ${tf}`,message:`${s.name} (Roll ${s.rollNo}, Class ${s.class}) was ${st.toUpperCase()} today.`,date:tf,time:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})});sent++}catch(e){}
+            }
+            toast(`${sent}/${we.length} emails sent!`,'s');
+        }
+
+        // ═══════════════════════════════════════
+        // CHARTS
+        // ═══════════════════════════════════════
+        function renderCharts(){
+            const c1=document.getElementById('classChart')?.getContext('2d');
+            if(c1){
+                const cc={};allStu.forEach(s=>{const c=s.class||'N/A';cc[c]=(cc[c]||0)+1});
+                const lb=Object.keys(cc).sort((a,b)=>(parseInt(a)||99)-(parseInt(b)||99));
+                if(classCtx)classCtx.destroy();
+                classCtx=new Chart(c1,{type:'bar',data:{labels:lb,datasets:[{label:'Students',data:lb.map(l=>cc[l]),backgroundColor:lb.map((_,i)=>`hsl(${i*30},70%,60%)`),borderRadius:9}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+            }
+            const c2=document.getElementById('attPie')?.getContext('2d');
+            if(c2){
+                let p=0,a=0,u=0;
+                allStu.forEach(s=>{const st=(s.attendance&&s.attendance[today])||'unmarked';if(st==='present')p++;else if(st==='absent')a++;else u++});
+                if(attCtx)attCtx.destroy();
+                attCtx=new Chart(c2,{type:'doughnut',data:{labels:['Present','Absent','Unmarked'],datasets:[{data:[p,a,u],backgroundColor:['#10b981','#ef4444','#d1d5db'],borderWidth:3,borderColor:'white'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
+            }
+        }
+
+        function logout(){localStorage.removeItem('thp_admin');location.href='index.html'}
+
+        // ═══════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════
+        async function init(){
+            if(!chkAuth())return;
+            document.getElementById('attDate').value=today;
+            await loadAll();
+            switchTab('dashboard');
+        }
+        window.addEventListener('DOMContentLoaded',init);
+        console.log('👑 GOD PANEL READY - All 90 Students | Roll No. System | Perfect Attendance');
+    </script>
 </body>
 </html>
