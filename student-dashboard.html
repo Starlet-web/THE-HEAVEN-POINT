@@ -22,11 +22,7 @@
       display: flex;
       justify-content: center;
     }
-    .container {
-      max-width: 1100px;
-      width: 100%;
-    }
-    /* Glass cards */
+    .container { max-width: 1100px; width: 100%; }
     .card {
       background: rgba(255,255,255,0.8);
       backdrop-filter: blur(18px);
@@ -51,9 +47,7 @@
     .meta { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 0.5rem; font-size: 0.85rem; color: #4b5563; }
     .meta i { color: #6366f1; width: 18px; }
 
-    .profile-row {
-      display: flex; align-items: center; gap: 1.8rem; flex-wrap: wrap;
-    }
+    .profile-row { display: flex; align-items: center; gap: 1.8rem; flex-wrap: wrap; }
     .profile-photo {
       width: 110px; height: 110px; border-radius: 50%;
       background: linear-gradient(135deg, #a5b4fc, #8b5cf6);
@@ -105,16 +99,16 @@
     .btn-o { background: white; color: #4f46e5; border: 2px solid #c7d2fe; }
     .btn-o:hover { background: #4f46e5; color: white; }
     .btn-sm { padding: 0.4rem 1rem; font-size: 0.7rem; }
-
-    .toggle-group {
-      display: flex; gap: 0.5rem; background: #f1f5f9; padding: 0.3rem;
-      border-radius: 2rem; margin-bottom: 1rem; width: fit-content;
+    .btn-icon {
+      background: transparent; border: none; color: #4f46e5; font-size: 1rem; cursor: pointer;
+      width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      transition: 0.2s;
     }
-    .toggle-btn {
-      padding: 0.4rem 1.1rem; border-radius: 2rem; border: none; background: transparent;
-      font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: 0.2s; color: #475569;
+    .btn-icon:hover { background: #eef2ff; }
+    select {
+      padding: 0.5rem 1rem; border-radius: 2rem; border: 1px solid #d1d5db; font-weight: 600;
+      font-family: inherit; background: white; cursor: pointer;
     }
-    .toggle-btn.active { background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.08); color: #4f46e5; }
 
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
@@ -178,7 +172,7 @@
     </div>
   </div>
 
-  <!-- Stats -->
+  <!-- Stats (all-time) -->
   <div class="stat-row">
     <div class="stat-box"><div class="stat-val" id="presentDays">0</div><div class="stat-lbl">Present</div></div>
     <div class="stat-box abs"><div class="stat-val" id="absentDays">0</div><div class="stat-lbl">Absent</div></div>
@@ -194,19 +188,24 @@
       <div style="font-size:0.7rem; color:#6b7280; margin-top:4px" id="graphMonthLabel"></div>
     </div>
     <div class="card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2><i class="fas fa-calendar-check"></i> Attendance</h2>
-        <span id="calMonth" style="font-size:0.8rem; background:#f1f5f9; padding:0.2rem 0.8rem; border-radius:1rem;"></span>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+        <button class="btn-icon" id="prevMonthAtt"><i class="fas fa-chevron-left"></i></button>
+        <h2 style="margin:0;"><i class="fas fa-calendar-check"></i> <span id="attMonthLabel">April 2026</span></h2>
+        <button class="btn-icon" id="nextMonthAtt"><i class="fas fa-chevron-right"></i></button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
     </div>
   </div>
 
-  <!-- Scores & Monthly toggle -->
+  <!-- Scores with month navigation -->
   <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-      <h2 style="margin-bottom:0;"><i class="fas fa-star"></i> Performance</h2>
-      <div class="toggle-group" id="monthToggleContainer"></div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="btn-icon" id="prevMonthScore"><i class="fas fa-chevron-left"></i></button>
+        <select id="monthSelect" style="font-weight:600;"></select>
+        <button class="btn-icon" id="nextMonthScore"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <h2 style="margin:0;"><i class="fas fa-star"></i> Exam scores</h2>
     </div>
     <table style="margin-top:1rem;">
       <thead><tr><th>Exam</th><th>Marks</th><th>%</th><th>Grade</th></tr></thead>
@@ -259,7 +258,10 @@
     let scoresChart = null;
     let currentStudentData = null;
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const currentMonthIndex = new Date().getMonth(); // 0-11
+    
+    // View state: which month is being displayed for attendance & scores
+    let viewMonth = new Date().getMonth(); // 0-11
+    let viewYear = new Date().getFullYear();
 
     const sd = localStorage.getItem('thp_current_student');
     if (!sd) { location.href = 'index.html'; }
@@ -274,112 +276,111 @@
     function closeMod(id) { document.getElementById(id).classList.remove('active'); }
     document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); }));
 
-    // ----- Helper: get month data -----
-    function getMonthAttendance(attendanceObj, year, monthIndex) {
-      const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-      const records = {};
-      for (let d = 1; d <= daysInMonth; d++) {
-        const dateStr = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        records[dateStr] = attendanceObj?.[dateStr] || null;
-      }
-      return records;
+    // ---------- Month Navigation ----------
+    function changeMonth(delta) {
+      viewMonth += delta;
+      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      else if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      refreshMonthSpecificUI();
     }
 
-    function getMonthTests(testScores, monthName) {
-      return testScores?.[monthName] || {};
+    function setMonthFromSelect(monthIndex) {
+      viewMonth = parseInt(monthIndex);
+      refreshMonthSpecificUI();
     }
 
-    // ----- Render calendar for current month -----
-    function renderCalendar(attendance) {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth();
-      document.getElementById('calMonth').textContent = `${MONTHS[month]} ${year}`;
-      
+    // Update calendar, scores table, and month labels
+    function refreshMonthSpecificUI() {
+      if (!currentStudentData) return;
+      const att = currentStudentData.attendance || {};
+      const testScores = currentStudentData.testScores || {};
+
+      // Update labels
+      document.getElementById('attMonthLabel').textContent = `${MONTHS[viewMonth]} ${viewYear}`;
+      document.getElementById('monthSelect').value = viewMonth;
+
+      // Calendar
+      renderCalendarForMonth(att, viewYear, viewMonth);
+      // Scores table
+      renderScoresForMonth(testScores, MONTHS[viewMonth]);
+    }
+
+    function renderCalendarForMonth(attendance, year, month) {
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const firstDay = new Date(year, month, 1).getDay();
       let html = '';
       ['S','M','T','W','T','F','S'].forEach(d => html += `<div class="cal-h">${d}</div>`);
       for (let i = 0; i < firstDay; i++) html += '<div></div>';
       
+      const today = new Date();
       for (let d = 1; d <= daysInMonth; d++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
         const status = attendance?.[dateStr];
         let cls = 'cal-d';
         if (status === 'present') cls += ' cal-p';
         else if (status === 'absent') cls += ' cal-a';
-        if (d === now.getDate()) cls += ' cal-t';
+        if (year === today.getFullYear() && month === today.getMonth() && d === today.getDate()) cls += ' cal-t';
         html += `<div class="${cls}">${d}</div>`;
       }
       document.getElementById('calGrid').innerHTML = html;
     }
 
-    // ----- Render month toggle & scores table -----
-    function renderMonthToggleAndScores(testScores) {
-      const container = document.getElementById('monthToggleContainer');
-      const availableMonths = MONTHS.filter(m => testScores?.[m] && Object.keys(testScores[m]).length > 0);
-      
-      // Default active: current month if available, else first available
-      let activeMonth = availableMonths.includes(MONTHS[currentMonthIndex]) ? MONTHS[currentMonthIndex] : (availableMonths[0] || MONTHS[currentMonthIndex]);
-      
-      container.innerHTML = availableMonths.map(m => {
-        const activeClass = (m === activeMonth) ? 'active' : '';
-        return `<button class="toggle-btn ${activeClass}" data-month="${m}">${m.substring(0,3)}</button>`;
-      }).join('');
-      
-      function updateTable(monthName) {
-        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector(`.toggle-btn[data-month="${monthName}"]`)?.classList.add('active');
-        
-        const exams = testScores?.[monthName] || {};
-        let html = '';
-        if (Object.keys(exams).length === 0) {
-          html = '<tr><td colspan="4" style="text-align:center; padding:20px;">No exams this month</td></tr>';
-        } else {
-          Object.entries(exams).forEach(([examName, data]) => {
-            let marks = '-', total = '-', pct = '-', grade = '-', cls = '';
-            if (typeof data === 'object' && data !== null) {
-              marks = data.marks ?? data.score ?? data.obtained ?? '-';
-              total = data.total ?? data.maxMarks ?? data.outOf ?? '-';
-              pct = data.percentage ?? data.percent ?? '-';
-              if (pct === '-' && marks !== '-' && total !== '-' && Number(total) > 0) {
-                pct = Math.round((Number(marks) / Number(total)) * 100);
-              }
-            } else if (typeof data === 'number') {
-              marks = data; total = 100; pct = data;
+    function renderScoresForMonth(testScores, monthName) {
+      const exams = testScores?.[monthName] || {};
+      let html = '';
+      if (Object.keys(exams).length === 0) {
+        html = '<tr><td colspan="4" style="text-align:center; padding:20px;">No exams this month</td></tr>';
+      } else {
+        Object.entries(exams).forEach(([examName, data]) => {
+          let marks = '-', total = '-', pct = '-', grade = '-', cls = '';
+          if (typeof data === 'object' && data !== null) {
+            marks = data.marks ?? data.score ?? data.obtained ?? '-';
+            total = data.total ?? data.maxMarks ?? data.outOf ?? '-';
+            pct = data.percentage ?? data.percent ?? '-';
+            if (pct === '-' && marks !== '-' && total !== '-' && Number(total) > 0) {
+              pct = Math.round((Number(marks) / Number(total)) * 100);
             }
-            if (pct !== '-') {
-              const pv = Number(pct);
-              if (!isNaN(pv)) {
-                if (pv >= 90) { cls = 'sc-h'; grade = 'A+'; }
-                else if (pv >= 75) { cls = 'sc-h'; grade = 'A'; }
-                else if (pv >= 60) { cls = 'sc-m'; grade = 'B'; }
-                else if (pv >= 40) { cls = 'sc-m'; grade = 'C'; }
-                else { cls = 'sc-l'; grade = 'F'; }
-              }
+          } else if (typeof data === 'number') {
+            marks = data; total = 100; pct = data;
+          }
+          if (pct !== '-') {
+            const pv = Number(pct);
+            if (!isNaN(pv)) {
+              if (pv >= 90) { cls = 'sc-h'; grade = 'A+'; }
+              else if (pv >= 75) { cls = 'sc-h'; grade = 'A'; }
+              else if (pv >= 60) { cls = 'sc-m'; grade = 'B'; }
+              else if (pv >= 40) { cls = 'sc-m'; grade = 'C'; }
+              else { cls = 'sc-l'; grade = 'F'; }
             }
-            html += `<tr><td><strong>📝 ${examName}</strong></td><td>${marks}/${total}</td><td class="${cls}">${pct}%</td><td><span class="${cls}">${grade}</span></td></tr>`;
-          });
-        }
-        document.getElementById('scoresBody').innerHTML = html;
+          }
+          html += `<tr><td><strong>📝 ${examName}</strong></td><td>${marks}/${total}</td><td class="${cls}">${pct}%</td><td><span class="${cls}">${grade}</span></td></tr>`;
+        });
       }
-      
-      container.addEventListener('click', (e) => {
-        if (e.target.classList.contains('toggle-btn')) {
-          updateTable(e.target.dataset.month);
-        }
-      });
-      
-      updateTable(activeMonth);
+      document.getElementById('scoresBody').innerHTML = html;
     }
 
-    // ----- Chart: only current month (show exam-wise percentage) -----
+    // Build month dropdown with indicators for months that have exams
+    function populateMonthDropdown(testScores) {
+      const select = document.getElementById('monthSelect');
+      select.innerHTML = '';
+      MONTHS.forEach((name, idx) => {
+        const hasData = testScores?.[name] && Object.keys(testScores[name]).length > 0;
+        const option = document.createElement('option');
+        option.value = idx;
+        option.textContent = `${name.substring(0,3)} ${hasData ? '•' : ''}`;
+        select.appendChild(option);
+      });
+      select.value = viewMonth;
+      select.addEventListener('change', (e) => setMonthFromSelect(e.target.value));
+    }
+
+    // Chart: only current month (bar chart of exams)
     function renderCurrentMonthChart(testScores) {
       const ctx = document.getElementById('scoresChart')?.getContext('2d');
       if (!ctx) return;
       if (scoresChart) { scoresChart.destroy(); scoresChart = null; }
       
-      const currentMonthName = MONTHS[currentMonthIndex];
+      const currentMonthName = MONTHS[new Date().getMonth()];
       document.getElementById('graphMonthLabel').textContent = `📊 ${currentMonthName} exams`;
       const exams = testScores?.[currentMonthName] || {};
       const labels = [];
@@ -452,15 +453,14 @@
         document.getElementById('eAddr').value = d.address||''; document.getElementById('eFather').value = d.fatherName||'';
         document.getElementById('eMother').value = d.motherName||'';
 
-        // Attendance stats
+        // All-time attendance stats
         const att = d.attendance || {};
         let present = 0, absent = 0;
         Object.values(att).forEach(v => { if (v === 'present') present++; else if (v === 'absent') absent++; });
         document.getElementById('presentDays').textContent = present;
         document.getElementById('absentDays').textContent = absent;
-        renderCalendar(att);
 
-        // Scores & stats
+        // All-time score stats
         const testScores = d.testScores || {};
         let allPercentages = [];
         Object.values(testScores).forEach(monthData => {
@@ -481,8 +481,18 @@
           document.getElementById('bestScore').textContent = '0%';
         }
 
-        renderMonthToggleAndScores(testScores);
+        // Initialize month navigation
+        populateMonthDropdown(testScores);
+        refreshMonthSpecificUI();  // calendar & scores for current viewMonth
+
+        // Current month chart (static)
         renderCurrentMonthChart(testScores);
+
+        // Navigation button listeners
+        document.getElementById('prevMonthAtt').addEventListener('click', () => changeMonth(-1));
+        document.getElementById('nextMonthAtt').addEventListener('click', () => changeMonth(1));
+        document.getElementById('prevMonthScore').addEventListener('click', () => changeMonth(-1));
+        document.getElementById('nextMonthScore').addEventListener('click', () => changeMonth(1));
 
         document.getElementById('loader').style.display = 'none';
       } catch (e) {
