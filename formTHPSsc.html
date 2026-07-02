@@ -1,579 +1,928 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>THP CBT · SSC/Banking/Railway Maths</title>
-    <!-- Tailwind via CDN + custom blue/white govt theme -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- MathJax for formulas -->
-    <script>
-        MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-            svg: { fontCache: 'global' }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-    <style>
-        * { user-select: none; -webkit-user-select: none; }
-        body { font-family: 'Segoe UI', Roboto, system-ui, sans-serif; background: #f0f4ff; }
-        .cbt-card { background: white; border-radius: 1.2rem; box-shadow: 0 8px 30px rgba(0,20,80,0.08); }
-        .palette-btn { width: 2.6rem; height: 2.6rem; border-radius: 50%; font-weight: 600; font-size: 0.9rem; transition: all 0.1s; border: 1px solid #d0d9e8; background: white; }
-        .palette-btn.answered { background: #1a56db; color: white; border-color: #1a56db; }
-        .palette-btn.marked { background: #f59e0b; color: white; border-color: #f59e0b; }
-        .palette-btn.not-answered { background: white; color: #1e293b; }
-        .palette-btn.current { outline: 3px solid #2563eb; outline-offset: 2px; }
-        .tab-warning { background: #fee2e2; border-left: 5px solid #b91c1c; }
-        .option-label { display: block; padding: 0.6rem 1rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; margin-bottom: 0.4rem; cursor: pointer; transition: 0.1s; background: #fafcff; }
-        .option-label:hover { background: #eef2ff; border-color: #94a3b8; }
-        input[type="radio"]:checked + .option-label { background: #dbeafe; border-color: #2563eb; }
-        .disabled-click { pointer-events: none; opacity: 0.7; }
-        .dark-mode { background: #0b1120; color: #e2e8f0; }
-        .dark-mode .cbt-card { background: #1e293b; color: #e2e8f0; border-color: #334155; }
-        .dark-mode .option-label { background: #1e293b; border-color: #475569; color: #e2e8f0; }
-        .dark-mode input[type="radio"]:checked + .option-label { background: #1e3a5f; border-color: #3b82f6; }
-        .dark-mode .palette-btn { background: #1e293b; color: #cbd5e1; border-color: #475569; }
-        .dark-mode .palette-btn.answered { background: #2563eb; color: white; }
-        .dark-mode .palette-btn.marked { background: #d97706; color: white; }
-        .dark-mode .palette-btn.current { outline-color: #60a5fa; }
-        .bg-govt-blue { background: #0a2a66; }
-        .text-govt-gold { color: #f5b342; }
-        .border-govt { border-color: #1e3a8a; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="description" content="SYF - Secure Your Future | Premium CBT Exam Preparation with ₹20 Registration (Referral Discount)">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>SYF – Premium Neural Adaptive Prep | ₹20 Registration</title>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <!-- Razorpay -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #f5f5f7;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e8e8ed;
+      --bg-card: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.72);
+      --text-primary: #1d1d1f;
+      --text-secondary: #86868b;
+      --text-tertiary: #aeaeb2;
+      --border-subtle: rgba(0, 0, 0, 0.04);
+      --border-medium: rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.02);
+      --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.06);
+      --shadow-xl: 0 32px 72px rgba(0, 0, 0, 0.08);
+      --gradient-brand: linear-gradient(135deg, #0a0a0a 0%, #1c1c1e 40%, #2c2c2e 100%);
+      --gradient-accent: linear-gradient(135deg, #0071e3 0%, #0077ed 40%, #5ac8fa 100%);
+      --gradient-emerald: linear-gradient(135deg, #30d158 0%, #34c759 60%, #30d158 100%);
+      --gradient-warm: linear-gradient(135deg, #ff9f0a 0%, #ff9f0a 50%, #ffb340 100%);
+      --gradient-purple: linear-gradient(135deg, #af52de 0%, #bf5af2 50%, #da8fff 100%);
+      --accent-blue: #0071e3;
+      --accent-navy: #1d1d1f;
+      --accent-emerald: #34c759;
+      --accent-amber: #ff9f0a;
+      --accent-rose: #ff375f;
+      --accent-purple: #af52de;
+      --radius-xs: 8px;
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 22px;
+      --radius-xl: 28px;
+      --radius-2xl: 36px;
+      --radius-3xl: 48px;
+      --transition-fast: 0.22s cubic-bezier(0.25, 0.1, 0.25, 1);
+      --transition-smooth: 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+      --font-heading: 'Outfit', 'Manrope', 'Inter', sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+    [data-theme="dark"] {
+      --bg-primary: #000000;
+      --bg-secondary: #1c1c1e;
+      --bg-tertiary: #2c2c2e;
+      --bg-card: #1c1c1e;
+      --bg-glass: rgba(44, 44, 46, 0.8);
+      --text-primary: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-tertiary: #6e6e73;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-medium: rgba(255, 255, 255, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+      transition: background var(--transition-smooth), color var(--transition-smooth);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.01em;
+    }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 20px; }
+    .app-container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+    @media (min-width: 768px) { .app-container { padding: 0 40px; } }
+    @media (min-width: 1200px) { .app-container { padding: 0 64px; } }
+
+    .app-header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg-glass); backdrop-filter: blur(40px) saturate(200%);
+      -webkit-backdrop-filter: blur(40px) saturate(200%);
+      border-bottom: 0.5px solid var(--border-subtle); padding: 14px 0;
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap; }
+    .logo-group { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
+    .logo-icon {
+      width: 44px; height: 44px; background: var(--gradient-brand); border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center; font-weight: 800;
+      font-family: var(--font-heading); font-size: 1.25rem; color: #fff; letter-spacing: -0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .logo-text { font-family: var(--font-heading); font-weight: 700; font-size: 1.3rem; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.15; }
+    .logo-text span { display: block; font-size: 0.6rem; font-weight: 600; color: var(--accent-blue); letter-spacing: 2.5px; text-transform: uppercase; }
+    .nav-links { display: none; gap: 2px; align-items: center; flex-wrap: wrap; }
+    @media (min-width: 1100px) { .nav-links { display: flex; } }
+    .nav-link {
+      padding: 8px 18px; border-radius: 50px; font-weight: 500; font-size: 0.82rem;
+      color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast);
+      white-space: nowrap; border: none; background: transparent; font-family: var(--font-body); text-decoration: none; letter-spacing: -0.01em;
+    }
+    .nav-link:hover { color: var(--text-primary); }
+    .nav-link.active { background: var(--bg-tertiary); color: var(--text-primary); font-weight: 600; }
+    .nav-link.locked { opacity: 0.5; pointer-events: none; }
+    .nav-link.locked::after { content: ' 🔒'; font-size: 0.7rem; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .icon-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; transition: all var(--transition-fast); color: var(--text-primary); position: relative;
+    }
+    .icon-btn:hover { background: var(--bg-tertiary); }
+    .badge-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--accent-rose); border-radius: 50%; border: 2px solid var(--bg-secondary); }
+    .theme-toggle { width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent; cursor: pointer; font-size: 1.25rem; transition: all 0.5s ease; display: flex; align-items: center; justify-content: center; color: var(--text-primary); }
+    .auth-btn { padding: 8px 20px; border-radius: 50px; font-weight: 600; font-size: 0.82rem; cursor: pointer; border: none; background: var(--accent-blue); color: #fff; transition: all var(--transition-fast); letter-spacing: -0.01em; }
+    .auth-btn:hover { opacity: 0.9; transform: scale(1.02); }
+    .user-menu { display: none; align-items: center; gap: 10px; }
+    .user-menu.active { display: flex; }
+
+    .btn { padding: 10px 22px; border-radius: 50px; font-weight: 600; cursor: pointer; border: none; font-family: var(--font-body); font-size: 0.85rem; transition: all var(--transition-fast); display: inline-flex; align-items: center; gap: 6px; letter-spacing: -0.01em; }
+    .btn:hover { opacity: 0.88; transform: scale(1.02); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .btn-primary { background: var(--accent-blue); color: #fff; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border-medium); color: var(--text-primary); }
+    .btn-sm { padding: 6px 16px; font-size: 0.78rem; }
+    .btn-back { background: transparent; border: 1.5px solid var(--border-medium); color: var(--text-secondary); }
+    .btn-danger { background: var(--accent-rose); color: #fff; }
+    .btn-emerald { background: var(--accent-emerald); color: #fff; }
+
+    .hero-section { padding: 56px 0 40px; text-align: center; }
+    @media (min-width: 768px) { .hero-section { padding: 72px 0 48px; } }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--bg-tertiary); border-radius: 50px; padding: 6px 18px; font-size: 0.8rem; font-weight: 600; color: var(--accent-emerald); margin-bottom: 18px; letter-spacing: -0.01em; }
+    .pulse-dot { width: 7px; height: 7px; background: var(--accent-emerald); border-radius: 50%; animation: applePulse 2.5s infinite; }
+    @keyframes applePulse { 0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(52,199,89,0.4); } 50% { opacity: 0.7; transform: scale(1.8); box-shadow: 0 0 0 6px rgba(52,199,89,0); } }
+    .hero-title { font-family: var(--font-heading); font-weight: 700; font-size: 2.8rem; letter-spacing: -0.04em; line-height: 1.1; color: var(--text-primary); margin-bottom: 10px; }
+    .hero-title .highlight { background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-subtitle { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 28px; max-width: 600px; margin-left: auto; margin-right: auto; font-weight: 400; }
+    @media (min-width: 768px) { .hero-title { font-size: 3.6rem; } }
+
+    .dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+    @media (min-width: 950px) { .dashboard-grid { grid-template-columns: 280px 1fr 1fr; } }
+    @media (min-width: 1350px) { .dashboard-grid { grid-template-columns: 300px 1fr 1fr 300px; } }
+
+    .profile-card { background: var(--bg-card); border-radius: var(--radius-2xl); padding: 32px 24px; border: 0.5px solid var(--border-subtle); box-shadow: var(--shadow-md); text-align: center; position: relative; overflow: hidden; }
+    .profile-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100px; background: var(--gradient-brand); border-radius: var(--radius-2xl) var(--radius-2xl) 0 0; z-index: 0; }
+    .profile-card>* { position: relative; z-index: 1; }
+    .profile-avatar { width: 88px; height: 88px; border-radius: 50%; background: var(--bg-card); margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 600; color: var(--accent-navy); border: 3px solid var(--bg-card); box-shadow: 0 4px 16px rgba(0,0,0,0.08); background-size: cover; background-position: center; cursor: pointer; transition: transform 0.3s ease; }
+    .profile-avatar:hover { transform: scale(1.04); }
+    .profile-avatar span { position: absolute; bottom: -2px; right: -2px; background: var(--accent-blue); color: #fff; border-radius: 50%; width: 26px; height: 26px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; border: 3px solid white; }
+    .profile-name { font-family: var(--font-heading); font-weight: 600; font-size: 1.15rem; margin-top: 6px; }
+    .profile-email { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 14px; }
+    .streak-row { display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--bg-tertiary); border-radius: 50px; padding: 7px 18px; font-weight: 600; font-size: 0.8rem; color: var(--accent-amber); margin-bottom: 14px; }
+    .mini-stat-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .mini-stat { text-align: center; background: var(--bg-tertiary); border-radius: var(--radius-md); padding: 12px 16px; min-width: 72px; }
+    .mini-stat-val { font-family: var(--font-heading); font-weight: 700; font-size: 1.2rem; }
+    .mini-stat-lbl { font-size: 0.68rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.3px; }
+
+    .section-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.25rem; letter-spacing: -0.03em; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-bottom: 40px; }
+    .subject-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 24px 20px; border: 0.5px solid var(--border-subtle); cursor: pointer; transition: all var(--transition-smooth); position: relative; overflow: hidden; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); display: block; }
+    .subject-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: var(--border-medium); }
+    .subject-card.locked { opacity: 0.6; cursor: not-allowed; }
+    .subject-card.locked:hover { transform: none; box-shadow: var(--shadow-sm); }
+    .subject-card.locked::after { content: '🔒 Premium'; position: absolute; top: 12px; right: 12px; background: var(--accent-rose); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 600; }
+    .card-accent { position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+    .accent-math { background: var(--gradient-accent); } .accent-reason { background: var(--gradient-emerald); } .accent-english { background: var(--gradient-warm); } .accent-gk { background: var(--gradient-purple); }
+    .subj-icon { font-size: 2.4rem; margin-bottom: 10px; display: block; }
+    .subj-name { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; }
+    .subj-chapters { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 12px; }
+    .progress-bar-wrap { background: var(--bg-tertiary); border-radius: 20px; height: 6px; overflow: hidden; margin-bottom: 8px; }
+    .progress-bar-fill { height: 100%; border-radius: 20px; transition: width 1.5s ease; }
+    .fill-math { background: var(--gradient-accent); width: 72%; } .fill-reason { background: var(--gradient-emerald); width: 58%; } .fill-english { background: var(--gradient-warm); width: 45%; } .fill-gk { background: var(--gradient-purple); width: 34%; }
+    .subj-meta { display: flex; justify-content: space-between; font-size: 0.73rem; color: var(--text-tertiary); font-weight: 500; }
+    .badge-difficulty { padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 600; }
+    .badge-easy { background: rgba(52,199,89,0.15); color: #248a3d; } .badge-medium { background: rgba(255,159,10,0.15); color: #b06a00; } .badge-hard { background: rgba(255,55,95,0.15); color: #c7002b; }
+    [data-theme="dark"] .badge-easy { background: rgba(52,199,89,0.2); color: #30d158; } [data-theme="dark"] .badge-medium { background: rgba(255,159,10,0.2); color: #ff9f0a; } [data-theme="dark"] .badge-hard { background: rgba(255,55,95,0.2); color: #ff375f; }
+
+    .perf-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 22px; border: 0.5px solid var(--border-subtle); box-shadow: var(--shadow-md); }
+    .ring-chart { width: 96px; height: 96px; flex-shrink: 0; position: relative; }
+    .ring-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; }
+    .continue-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 18px 20px; border: 0.5px solid var(--border-subtle); cursor: pointer; display: flex; align-items: center; gap: 16px; transition: all var(--transition-smooth); margin-bottom: 12px; }
+    .continue-card:hover { box-shadow: var(--shadow-lg); transform: translateX(4px); border-color: var(--border-medium); }
+    .continue-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; }
+
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-content { background: var(--bg-secondary); border-radius: var(--radius-3xl); width: 100%; max-width: 550px; max-height: 85vh; overflow-y: auto; border: 0.5px solid var(--border-medium); box-shadow: var(--shadow-xl); padding: 36px; position: relative; }
+    .modal-close { position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--bg-tertiary); cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--text-secondary); transition: all var(--transition-fast); }
+    .modal-close:hover { background: var(--border-medium); color: var(--text-primary); }
+    .cbt-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 0.5px solid var(--border-subtle); }
+    .cbt-timer { font-family: var(--font-mono); font-weight: 600; font-size: 1.4rem; color: var(--accent-rose); background: var(--bg-tertiary); padding: 8px 20px; border-radius: 50px; }
+    .option-btn { display: block; width: 100%; text-align: left; padding: 14px 18px; margin-bottom: 10px; border-radius: var(--radius-md); border: 1.5px solid var(--border-medium); background: var(--bg-card); cursor: pointer; font-family: var(--font-body); font-size: 0.9rem; transition: all var(--transition-fast); color: var(--text-primary); }
+    .option-btn:hover { border-color: var(--accent-blue); background: rgba(0,113,227,0.04); }
+    .option-btn.selected { border-color: var(--accent-blue); background: rgba(0,113,227,0.1); font-weight: 600; }
+    .toast-container { position: fixed; bottom: 32px; right: 32px; z-index: 300; display: flex; flex-direction: column; gap: 10px; }
+    .toast { background: var(--bg-card); border: 0.5px solid var(--border-medium); border-radius: var(--radius-md); padding: 14px 22px; font-weight: 500; font-size: 0.85rem; box-shadow: var(--shadow-lg); animation: slideInRight 0.45s ease; color: var(--text-primary); }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+    .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); z-index: 100; padding: 8px 12px; padding-bottom: max(8px, env(safe-area-inset-bottom)); justify-content: space-around; border-top: 0.5px solid var(--border-subtle); }
+    @media (min-width: 1100px) { .bottom-nav { display: none; } }
+    .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.68rem; font-weight: 500; color: var(--text-tertiary); transition: all var(--transition-fast); border: none; background: transparent; font-family: var(--font-body); }
+    .bottom-nav-item.active { color: var(--accent-blue); font-weight: 600; }
+    .bottom-nav-item.locked { opacity: 0.5; pointer-events: none; }
+
+    .step-indicator { display: flex; justify-content: center; gap: 10px; margin-bottom: 28px; }
+    .step-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border-medium); transition: all 0.4s ease; }
+    .step-dot.active { background: var(--accent-blue); box-shadow: 0 0 0 5px rgba(0,113,227,0.2); }
+    .step-dot.completed { background: var(--accent-emerald); }
+    .registration-step { display: none; animation: fadeInUp 0.5s ease; }
+    .registration-step.active { display: block; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; color: var(--text-secondary); }
+    .form-input, .form-select { width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border-medium); background: var(--bg-primary); font-family: var(--font-body); font-size: 0.9rem; transition: 0.25s; color: var(--text-primary); }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 4px rgba(0,113,227,0.12); }
+    .form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2386868b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 44px; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .skill-tag { padding: 7px 16px; border-radius: 50px; border: 1.5px solid var(--border-medium); background: var(--bg-primary); cursor: pointer; font-size: 0.82rem; transition: all var(--transition-fast); user-select: none; }
+    .skill-tag:hover { border-color: var(--accent-blue); background: rgba(0,113,227,0.04); }
+    .skill-tag.selected { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
+    .password-strength { height: 4px; background: var(--bg-tertiary); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+    .password-strength-bar { height: 100%; border-radius: 2px; transition: width 0.4s; width: 0%; }
+    .strength-weak { background: var(--accent-rose); width: 33%; } .strength-medium { background: var(--accent-amber); width: 66%; } .strength-strong { background: var(--accent-emerald); width: 100%; }
+    .photo-upload-area { border: 2px dashed var(--border-medium); border-radius: var(--radius-md); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 16px; }
+    .photo-upload-area:hover { border-color: var(--accent-blue); background: rgba(0,113,227,0.02); }
+    .photo-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: none; }
+    .price-display { text-align: center; background: var(--bg-tertiary); border-radius: var(--radius-md); padding: 16px; margin: 16px 0; }
+    .price-amount { font-family: var(--font-heading); font-weight: 800; font-size: 2.5rem; color: var(--accent-blue); }
+    .price-amount small { font-size: 1rem; color: var(--text-secondary); display: block; }
+    .referral-badge { display: inline-block; background: var(--accent-emerald); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-left: 8px; }
+    .animate-in { animation: appleFadeUp 0.7s ease forwards; opacity: 0; }
+    .delay-1 { animation-delay: 0.12s; } .delay-2 { animation-delay: 0.24s; } .delay-3 { animation-delay: 0.36s; } .delay-4 { animation-delay: 0.48s; } .delay-5 { animation-delay: 0.6s; }
+    @keyframes appleFadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    #upload-avatar-input { display: none; }
+    .spinner-inline { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
-<body id="appBody" class="min-h-screen flex flex-col antialiased">
-
-<!-- ========== LOGIN PAGE ========== -->
-<div id="loginPage" class="flex-1 flex items-center justify-center p-4">
-    <div class="cbt-card w-full max-w-lg p-8 text-center">
-        <div class="flex justify-center items-center gap-2 mb-2">
-            <span class="text-3xl font-bold text-govt-gold">THP</span>
-            <span class="text-2xl font-light text-gray-700">Coaching</span>
+<body>
+  <header class="app-header">
+    <div class="app-container header-inner">
+      <a class="logo-group" href="index.html" title="SYF Home">
+        <div class="logo-icon">SYF</div>
+        <div class="logo-text">Secure Your Future<span>The heaven Point Coaching Classes</span></div>
+      </a>
+      <nav class="nav-links" id="mainNav">
+        <a class="nav-link active" href="index.html">Home</a>
+        <a class="nav-link locked" href="mathematics.html" id="navMath">Mathematics</a>
+        <a class="nav-link locked" href="reasoning.html" id="navReason">Reasoning</a>
+        <a class="nav-link locked" href="english.html" id="navEnglish">English</a>
+        <a class="nav-link locked" href="gk.html" id="navGK">GK/GS</a>
+        <a class="nav-link" href="#" id="navCBT" onclick="SYF.openCBT(); return false;">CBT Mock</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" title="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+        <button class="icon-btn" title="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge-dot"></span></button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+        <div id="auth-section">
+          <button class="auth-btn" id="loginBtn" onclick="SYF.openAuthModal()">Sign In</button>
+          <div class="user-menu" id="userMenu">
+            <span id="displayNameSmall" style="font-weight:600;font-size:0.85rem;"></span>
+            <button class="btn-outline btn-sm" onclick="SYF.openEditProfileModal()">✏️ Edit</button>
+            <button class="btn-outline btn-sm" onclick="SYF.handleLogout()">Sign Out</button>
+          </div>
         </div>
-        <div class="h-1 w-24 bg-govt-gold mx-auto mb-6"></div>
-        <h2 class="text-2xl font-semibold text-gray-800">SSC · Banking · Railway</h2>
-        <p class="text-sm text-gray-500 mb-6">Mathematics Practice CBT</p>
-        <div class="flex flex-col gap-4">
-            <input id="candidateName" type="text" placeholder="Enter your name" class="border border-gray-300 rounded-xl px-4 py-3 w-full text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <div class="flex flex-wrap gap-2 justify-center">
-                <button onclick="startExam()" class="bg-blue-700 hover:bg-blue-800 text-white px-10 py-3 rounded-xl font-semibold text-lg transition">Start Exam</button>
-                <button onclick="toggleLang()" class="bg-gray-200 hover:bg-gray-300 px-6 py-3 rounded-xl font-medium text-gray-700 transition">🇮🇳 हिंदी/English</button>
-                <button onclick="toggleTheme()" class="bg-gray-200 hover:bg-gray-300 px-6 py-3 rounded-xl font-medium text-gray-700 transition">🌓 Theme</button>
-            </div>
-        </div>
-        <div class="mt-6 text-xs text-gray-400">© THP Coaching · Govt Exam CBT Portal</div>
+      </div>
     </div>
-</div>
+  </header>
 
-<!-- ========== INSTRUCTIONS PAGE ========== -->
-<div id="instructionsPage" class="hidden flex-1 flex-col items-center justify-center p-4">
-    <div class="cbt-card w-full max-w-3xl p-6 md:p-8">
-        <h2 class="text-2xl font-bold text-blue-800">📋 Instructions</h2>
-        <ul class="list-disc pl-6 mt-3 space-y-2 text-gray-700 text-sm md:text-base">
-            <li>Total duration: <strong>60 minutes</strong> · Auto-submit at timeout.</li>
-            <li>Total questions: <span id="totalQDisplay">50</span> · Each carries 1 mark.</li>
-            <li>Negative marking: <strong>−0.25</strong> for each wrong answer.</li>
-            <li>Use <strong>Save & Next</strong> to record answer and move forward.</li>
-            <li><strong>Mark for Review</strong> – flag question for later.</li>
-            <li>You can navigate using the <strong>Question Palette</strong>.</li>
-            <li>Tab switching or refresh may trigger warning; answers are auto-saved.</li>
-        </ul>
-        <div class="flex justify-end mt-6 gap-4">
-            <button onclick="goToLogin()" class="px-6 py-2 border border-gray-300 rounded-xl">Back</button>
-            <button onclick="beginExam()" class="bg-blue-700 hover:bg-blue-800 text-white px-8 py-2 rounded-xl font-semibold">Start Exam</button>
-        </div>
-    </div>
-</div>
+  <main class="app-container" style="padding-top:12px;">
+    <section class="hero-section animate-in">
+      <div class="hero-badge"><span class="pulse-dot"></span> Premium Access — ₹20 Only</div>
+      <h1 class="hero-title">Your <span class="highlight">Government Exam</span><br>Success Starts Here</h1>
+      <p class="hero-subtitle">Premium CBT preparation for SSC, Banking, Railway & all competitive exams. Unlock all subjects with a one-time ₹20 registration. Use referral for 50% off!</p>
+    </section>
 
-<!-- ========== EXAM PAGE ========== -->
-<div id="examPage" class="hidden flex-1 flex-col">
-    <!-- top bar -->
-    <div class="bg-white shadow-sm border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-3 flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-            <span class="font-bold text-blue-700 dark:text-blue-400">THP</span>
-            <span class="text-sm bg-blue-100 dark:bg-blue-900 px-3 py-1 rounded-full">SSC Maths</span>
+    <div class="dashboard-grid">
+      <aside class="profile-card animate-in delay-1" id="profileCard">
+        <div class="profile-avatar" id="profileAvatar" onclick="SYF.openEditProfileModal()" title="Edit profile">👤<span>✏️</span></div>
+        <div class="profile-name" id="profileName">Guest User</div>
+        <div class="profile-email" id="profileEmail">Sign in to unlock</div>
+        <div class="streak-row">🔥 <span id="streakCount">0</span> Day Streak</div>
+        <div class="mini-stat-row">
+          <div class="mini-stat"><div class="mini-stat-val" id="totalQuestions">0</div><div class="mini-stat-lbl">Solved</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="overallAccuracy">0%</div><div class="mini-stat-lbl">Accuracy</div></div>
+          <div class="mini-stat"><div class="mini-stat-val" id="userRank">#---</div><div class="mini-stat-lbl">Rank</div></div>
         </div>
-        <div class="flex items-center gap-4 text-sm font-medium">
-            <span id="timerDisplay" class="bg-red-100 dark:bg-red-900 px-4 py-1.5 rounded-full text-red-700 dark:text-red-300">⏳ 60:00</span>
-            <span class="hidden md:inline">👤 <span id="candidateNameDisplay">—</span></span>
-            <button onclick="toggleTheme()" class="text-xl leading-none">🌓</button>
+      </aside>
+
+      <div style="display:flex;flex-direction:column;gap:22px;">
+        <div class="animate-in delay-2">
+          <div class="section-title">Continue Learning</div>
+          <div class="continue-card" onclick="SYF.navigateTo('mathematics.html')">
+            <div class="continue-icon" style="background:var(--gradient-accent);">📐</div>
+            <div style="flex:1;"><div style="font-weight:600;">Mathematics → Digital Sum</div><div style="font-size:0.78rem;color:var(--text-secondary);">Chapter 3 · 42% complete</div></div><span>▶</span>
+          </div>
+          <div class="continue-card" onclick="SYF.navigateTo('reasoning.html')">
+            <div class="continue-icon" style="background:var(--gradient-emerald);">🧠</div>
+            <div style="flex:1;"><div style="font-weight:600;">Reasoning → Blood Relations</div><div style="font-size:0.78rem;color:var(--text-secondary);">Chapter 7 · 68% complete</div></div><span>▶</span>
+          </div>
         </div>
-    </div>
-    <!-- main exam area -->
-    <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
-        <!-- question panel -->
-        <div class="flex-1 overflow-y-auto p-4 md:p-6 bg-[#f8faff] dark:bg-[#0f172a]">
-            <div id="questionContainer" class="cbt-card p-5 md:p-7 max-w-3xl mx-auto">
-                <div class="flex justify-between text-sm text-gray-500 mb-2">
-                    <span>Q<span id="qNumDisplay">1</span>/<span id="totalQDisplay2">50</span></span>
-                    <span id="qStatusBadge" class="bg-gray-200 px-3 py-0.5 rounded-full">Not answered</span>
-                </div>
-                <div id="questionText" class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4"></div>
-                <div id="optionsContainer" class="space-y-2"></div>
-                <div class="flex flex-wrap gap-3 mt-6">
-                    <button onclick="saveAndNext()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl text-sm font-medium">Save & Next</button>
-                    <button onclick="markForReview()" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-xl text-sm font-medium">Mark for Review</button>
-                    <button onclick="clearResponse()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded-xl text-sm font-medium">Clear</button>
-                    <button onclick="previousQuestion()" class="border border-gray-400 hover:bg-gray-200 px-5 py-2 rounded-xl text-sm font-medium">Prev</button>
-                    <button onclick="nextQuestion()" class="border border-gray-400 hover:bg-gray-200 px-5 py-2 rounded-xl text-sm font-medium">Next</button>
-                </div>
+        <div class="perf-card animate-in delay-3">
+          <div class="section-title">Performance Analytics</div>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <div class="ring-chart"><svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="40" fill="none" stroke="var(--bg-tertiary)" stroke-width="7"/><circle cx="48" cy="48" r="40" fill="none" stroke="url(#ringGrad)" stroke-width="7" stroke-dasharray="251.3" stroke-dashoffset="55" stroke-linecap="round"/><defs><linearGradient id="ringGrad"><stop offset="0%" stop-color="#0071e3"/><stop offset="100%" stop-color="#5ac8fa"/></linearGradient></defs></svg><div class="ring-center" id="perfRingPercent">78%</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;">
+              <div style="background:var(--bg-tertiary);padding:10px;border-radius:12px;"><div style="font-weight:700;color:var(--accent-emerald);" id="perfAccuracy">92%</div><small style="color:var(--text-tertiary);">Accuracy</small></div>
+              <div style="background:var(--bg-tertiary);padding:10px;border-radius:12px;"><div style="font-weight:700;color:var(--accent-blue);" id="perfSpeed">48s</div><small style="color:var(--text-tertiary);">Avg Speed</small></div>
+              <div style="background:var(--bg-tertiary);padding:10px;border-radius:12px;"><div style="font-weight:700;color:var(--accent-amber);" id="perfPYQs">1.2K</div><small style="color:var(--text-tertiary);">PYQs</small></div>
+              <div style="background:var(--bg-tertiary);padding:10px;border-radius:12px;"><div style="font-weight:700;color:var(--accent-rose);" id="perfWeak">3</div><small style="color:var(--text-tertiary);">Weak Areas</small></div>
             </div>
+          </div>
         </div>
-        <!-- palette + progress -->
-        <div class="w-full md:w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 p-4 overflow-y-auto flex flex-col">
-            <div class="flex justify-between items-center mb-3">
-                <span class="font-semibold text-gray-700 dark:text-gray-200">Question Palette</span>
-                <span class="text-xs bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full"><span id="answeredCount">0</span>/<span id="totalQDisplay3">50</span></span>
-            </div>
-            <div id="paletteGrid" class="grid grid-cols-5 gap-2 mb-4"></div>
-            <div class="text-xs space-y-1 text-gray-600 dark:text-gray-400">
-                <div><span class="inline-block w-4 h-4 rounded-full bg-blue-600 mr-1"></span> Answered</div>
-                <div><span class="inline-block w-4 h-4 rounded-full bg-amber-500 mr-1"></span> Marked</div>
-                <div><span class="inline-block w-4 h-4 rounded-full bg-white border border-gray-300 mr-1"></span> Not answered</div>
-            </div>
-            <div class="mt-3 bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div id="progressBar" class="bg-blue-600 h-full transition-all" style="width:0%"></div>
-            </div>
-            <button onclick="submitExam()" class="mt-4 bg-red-600 hover:bg-red-700 text-white py-2 rounded-xl font-medium text-sm">Submit Exam</button>
-        </div>
+      </div>
+
+      <div class="perf-card animate-in delay-4">
+        <div class="section-title">Today's Target</div>
+        <div id="todayTargetContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
+      </div>
     </div>
-</div>
 
-<!-- ========== RESULT PAGE ========== -->
-<div id="resultPage" class="hidden flex-1 flex-col items-center justify-center p-4 bg-[#f0f4ff] dark:bg-[#0b1120]">
-    <div class="cbt-card w-full max-w-4xl p-6 md:p-8 max-h-[90vh] overflow-y-auto">
-        <h2 class="text-3xl font-bold text-blue-800 dark:text-blue-300">📊 Result</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 text-center">
-            <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-xl"><span class="block text-2xl font-bold" id="resScore">0</span>Score</div>
-            <div class="bg-green-50 dark:bg-green-900/30 p-3 rounded-xl"><span class="block text-2xl font-bold" id="resCorrect">0</span>Correct</div>
-            <div class="bg-red-50 dark:bg-red-900/30 p-3 rounded-xl"><span class="block text-2xl font-bold" id="resWrong">0</span>Wrong</div>
-            <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-xl"><span class="block text-2xl font-bold" id="resSkipped">0</span>Skipped</div>
-        </div>
-        <div class="mt-4 flex flex-wrap gap-3 justify-center">
-            <button onclick="exportPDF()" class="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm">📄 PDF</button>
-            <button onclick="exportExcel()" class="bg-green-600 text-white px-6 py-2 rounded-xl text-sm">📊 Excel</button>
-            <button onclick="exportCSV()" class="bg-gray-700 text-white px-6 py-2 rounded-xl text-sm">📋 CSV</button>
-            <button onclick="goToLogin()" class="border border-gray-400 px-6 py-2 rounded-xl text-sm">🏠 Home</button>
-        </div>
-        <div id="resultReview" class="mt-5 max-h-80 overflow-y-auto border-t border-gray-200 pt-4"></div>
+    <section class="animate-in delay-5">
+      <div class="section-title">Core Subjects</div>
+      <div class="subject-grid">
+        <a class="subject-card locked" href="mathematics.html" id="cardMath" onclick="return SYF.handleSubjectClick('mathematics.html', event)"><div class="card-accent accent-math"></div><span class="subj-icon">📐</span><div class="subj-name">Mathematics</div><div class="subj-chapters">28 Chapters · 1,240+ PYQs</div><div class="progress-bar-wrap"><div class="progress-bar-fill fill-math"></div></div><div class="subj-meta"><span>72%</span><span class="badge-difficulty badge-medium">Medium</span></div></a>
+        <a class="subject-card locked" href="reasoning.html" id="cardReason" onclick="return SYF.handleSubjectClick('reasoning.html', event)"><div class="card-accent accent-reason"></div><span class="subj-icon">🧠</span><div class="subj-name">Reasoning</div><div class="subj-chapters">22 Chapters · 980+ PYQs</div><div class="progress-bar-wrap"><div class="progress-bar-fill fill-reason"></div></div><div class="subj-meta"><span>58%</span><span class="badge-difficulty badge-easy">Easy</span></div></a>
+        <a class="subject-card locked" href="english.html" id="cardEnglish" onclick="return SYF.handleSubjectClick('english.html', event)"><div class="card-accent accent-english"></div><span class="subj-icon">📖</span><div class="subj-name">English</div><div class="subj-chapters">18 Chapters · 760+ PYQs</div><div class="progress-bar-wrap"><div class="progress-bar-fill fill-english"></div></div><div class="subj-meta"><span>45%</span><span class="badge-difficulty badge-medium">Medium</span></div></a>
+        <a class="subject-card locked" href="gk.html" id="cardGK" onclick="return SYF.handleSubjectClick('gk.html', event)"><div class="card-accent accent-gk"></div><span class="subj-icon">🌍</span><div class="subj-name">GK / GS</div><div class="subj-chapters">35 Chapters · 2,100+ PYQs</div><div class="progress-bar-wrap"><div class="progress-bar-fill fill-gk"></div></div><div class="subj-meta"><span>34%</span><span class="badge-difficulty badge-hard">Hard</span></div></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Auth / Payment Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-content" style="max-width:550px;">
+      <button class="modal-close" onclick="SYF.closeAuthModal()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div style="display:flex;justify-content:center;gap:0;margin-bottom:24px;background:var(--bg-tertiary);border-radius:50px;padding:4px;">
+        <button id="tabSignIn" class="btn" style="flex:1;background:var(--accent-blue);color:#fff;border-radius:50px;" onclick="SYF.switchAuthTab('signin')">Sign In</button>
+        <button id="tabSignUp" class="btn" style="flex:1;background:transparent;color:var(--text-secondary);border-radius:50px;" onclick="SYF.switchAuthTab('signup')">Register (₹20)</button>
+      </div>
+      <div id="signInForm">
+        <h3 style="font-family:var(--font-heading);font-weight:600;margin-bottom:16px;">Welcome Back</h3>
+        <div class="form-group"><label>Email</label><input type="email" class="form-input" id="signInEmail" placeholder="rahul@email.com"></div>
+        <div class="form-group"><label>Password</label><input type="password" class="form-input" id="signInPassword" placeholder="Your password"></div>
+        <button class="btn btn-primary" style="width:100%;" onclick="SYF.handleSignIn()">Sign In</button>
+      </div>
+      <div id="signUpForm" style="display:none;">
+        <div class="step-indicator"><div class="step-dot active" data-step="1"></div><div class="step-dot" data-step="2"></div><div class="step-dot" data-step="3"></div></div>
+        <form id="registrationForm" onsubmit="return false;">
+          <div class="registration-step active" id="step1">
+            <h3 style="font-family:var(--font-heading);font-weight:600;margin-bottom:6px;">Create Account</h3>
+            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">Step 1 of 3</p>
+            <div class="form-row"><div class="form-group"><label>First Name</label><input class="form-input" id="firstName" placeholder="Rahul"></div><div class="form-group"><label>Last Name</label><input class="form-input" id="lastName" placeholder="Sharma"></div></div>
+            <div class="form-group"><label>Email</label><input type="email" class="form-input" id="regEmail" placeholder="rahul@email.com"></div>
+            <div class="form-group"><label>Phone</label><input type="tel" class="form-input" id="phone" placeholder="9876543210"></div>
+            <div class="form-group"><label>Referral Code (Optional)</label><input type="text" class="form-input" id="referralCode" placeholder="Enter referral code" oninput="SYF.updateReferralBadge()"><div id="referralStatus" style="font-size:0.75rem;margin-top:4px;"></div></div>
+            <button type="button" class="btn btn-primary" style="width:100%;" onclick="SYF.registration.nextStep(2)">Continue →</button>
+          </div>
+          <div class="registration-step" id="step2">
+            <h3 style="font-family:var(--font-heading);font-weight:600;margin-bottom:6px;">Profile Photo</h3>
+            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">Step 2 of 3</p>
+            <div class="photo-upload-area" onclick="document.getElementById('regAvatarInput').click()">
+              <img class="photo-preview" id="regPhotoPreview" src="" alt="Preview">
+              <div id="photoPlaceholder">📷 Click to upload photo</div>
+              <input type="file" id="regAvatarInput" accept="image/*" onchange="SYF.previewRegPhoto(event)" style="display:none;">
+            </div>
+            <div class="form-group"><label>Password</label><input type="password" class="form-input" id="regPassword" placeholder="8+ characters" oninput="SYF.checkPasswordStrength(this.value)"><div class="password-strength"><div class="password-strength-bar" id="passwordStrengthBar"></div></div></div>
+            <div class="form-group"><label>Confirm Password</label><input type="password" class="form-input" id="confirmPassword" oninput="SYF.checkPasswordMatch()"><div id="passwordMatchMsg" style="font-size:0.78rem;margin-top:4px;"></div></div>
+            <div style="display:flex;gap:12px;margin-top:18px;"><button type="button" class="btn btn-back" onclick="SYF.registration.prevStep(1)">← Back</button><button type="button" class="btn btn-primary" style="flex:1;" onclick="SYF.registration.nextStep(3)">Continue</button></div>
+          </div>
+          <div class="registration-step" id="step3">
+            <h3 style="font-family:var(--font-heading);font-weight:600;margin-bottom:6px;">Payment</h3>
+            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">Step 3 of 3 — Pay <span id="finalPriceDisplay">₹20</span> to unlock all subjects</p>
+            <div class="price-display">
+              <div class="price-amount" id="finalAmount">₹20 <small>one-time payment</small></div>
+              <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">✓ All Subjects Unlocked<br>✓ 2,500+ Practice Questions<br>✓ 50+ Mock Tests<br>✓ AI Analytics</p>
+            </div>
+            <div id="registrationSummary" style="background:var(--bg-tertiary);padding:14px;border-radius:14px;margin-bottom:16px;font-size:0.85rem;"></div>
+            <div style="display:flex;gap:12px;"><button type="button" class="btn btn-back" onclick="SYF.registration.prevStep(2)">← Back</button><button type="button" class="btn btn-emerald" style="flex:1;" id="payBtn" onclick="SYF.initiatePayment()">💳 Pay & Register</button></div>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
-// ======================== EXAM CONFIG ========================
-const EXAM_CONFIG = {
-    "questions": [
-        { "id":1,"q":"If a 9-digit number 389x6378y is divisible by 72, what is the value of \\(\\sqrt{(6x + 7y)}\\) ?","options":["6","8","4","9"],"ans":2 },
-        { "id":2,"q":"Using the digital sum method, find the digital sum of the product \\(4536 \\times 8192\\) .","options":["5","7","9","2"],"ans":3 },
-        { "id":3,"q":"If the number 738A6A is completely divisible by 11, find the value of A.","options":["7","8","9","6"],"ans":3 },
-        { "id":4,"q":"By applying the digital sum concept, solve for the missing value: \\(34\\%\\) of \\(450 + 26\\%\\) of \\(250 = ?\\)","options":["218","214","222","216"],"ans":0 },
-        { "id":5,"q":"Which of the following numbers is completely divisible by 99? (options not provided, skip)","options":["N/A","N/A","N/A","N/A"],"ans":-1 },
-        { "id":6,"q":"What is the digital sum of the number 123456789?","options":["0","3","6","9"],"ans":3 },
-        { "id":7,"q":"If the number 653xy is divisible by 80, find the value of \\(x + y\\) .","options":["4","6","8","10"],"ans":1 },
-        { "id":8,"q":"What is the least number that must be added to 1056 so that the sum is completely divisible by 23?","options":["2","3","4","5"],"ans":0 },
-        { "id":9,"q":"Use the digital sum method to find the correct option for: \\(12.5 \\times 14.4 + 32.2 \\times 18.5 = ?\\)","options":["775.7","776.7","774.7","773.7"],"ans":1 },
-        { "id":10,"q":"If the number 42573* is exactly divisible by 72, which single digit should replace the asterisk (*)?","options":["4","5","6","7"],"ans":2 },
-        { "id":11,"q":"Evaluate: \\(24^{2} + 15^{2} - 12^{3}\\) .","options":["-917","-927","-827","-937"],"ans":1 },
-        { "id":12,"q":"Find the value of: \\(\\sqrt{729} + \\sqrt{576} - \\sqrt{196}\\) .","options":["27","29","31","33"],"ans":2 },
-        { "id":13,"q":"If \\(x^{3} = 9261\\) , what is the value of \\(x^{2}\\) ?","options":["400","441","484","529"],"ans":1 },
-        { "id":14,"q":"Calculate: \\((28^{2} + 14) + 19^{2}\\) .","options":["417","427","407","437"],"ans":2 },
-        { "id":15,"q":"Solve: \\(17^{3} - 15^{3}\\) .","options":["1528","1538","1548","1558"],"ans":1 },
-        { "id":16,"q":"Find the exact value of \\(29^{2} - 21^{2}\\) .","options":["400","380","420","440"],"ans":0 },
-        { "id":17,"q":"Simplify: \\((3\\sqrt{3375} \\times \\sqrt{225}) + 18^{2}\\) .","options":["529","539","549","559"],"ans":2 },
-        { "id":18,"q":"What is the sum of the squares of the first 5 prime numbers?","options":["206","208","210","212"],"ans":2 },
-        { "id":19,"q":"Find the unit digit of the expression: \\(16^{3} + 14^{2}\\) .","options":["2","4","6","8"],"ans":1 },
-        { "id":20,"q":"Solve for \\(x: x^{2} = 23^{2} + 11^{2} + 50\\) .","options":["\\(10\\sqrt{7}\\)","20","30","70"],"ans":0 },
-        { "id":21,"q":"What is \\(12.5\\%\\) of 6400?","options":["600","800","1000","1200"],"ans":1 },
-        { "id":22,"q":"If \\(40\\%\\) of a number is 240, what is \\(150\\%\\) of that same number?","options":["800","900","1000","1200"],"ans":1 },
-        { "id":23,"q":"Two numbers are respectively \\(20\\%\\) and \\(50\\%\\) more than a third number. What percentage is the first number of the second?","options":["75%","80%","85%","90%"],"ans":1 },
-        { "id":24,"q":"A man spends \\(75\\%\\) of his income. If his income increases by \\(20\\%\\) and his expenditure increases by \\(10\\%\\) , find the percentage increase in his savings.","options":["40%","45%","50%","55%"],"ans":2 },
-        { "id":25,"q":"Rahul's salary is \\(20\\%\\) more than Priya's salary. By what percentage is Priya's salary less than Rahul's?","options":["15%","16.66%","20%","25%"],"ans":1 },
-        { "id":26,"q":"The price of sugar is increased by \\(25\\%\\) . By how much percent must a family reduce its consumption of sugar so that the expenditure remains the same?","options":["15%","20%","25%","30%"],"ans":1 },
-        { "id":27,"q":"If the price of petrol decreases by \\(10\\%\\) , how much more petrol can a person buy for Rs. 4500 if they originally bought 50 liters?","options":["4.5 L","5 L","5.55 L","6 L"],"ans":2 },
-        { "id":28,"q":"The population of a town is 10,000. It increases by \\(10\\%\\) during the first year and by \\(20\\%\\) during the second year. What is the population after 2 years?","options":["12,000","13,000","13,200","14,200"],"ans":2 },
-        { "id":29,"q":"A machine depreciates in value by \\(15\\%\\) every year. If its present value is Rs. 34,000, what was its value one year ago?","options":["Rs. 38,000","Rs. 40,000","Rs. 42,000","Rs. 45,000"],"ans":1 },
-        { "id":30,"q":"A student needs \\(40\\%\\) marks to pass an exam. He gets 178 marks and fails by 22 marks. Find the maximum marks for the exam.","options":["400","450","500","600"],"ans":2 },
-        { "id":31,"q":"In an examination, a student scores \\(30\\%\\) marks and fails by 15 marks. Another student scores \\(40\\%\\) marks and gets 25 marks more than the minimum passing marks. Find the passing percentage.","options":["30%","33.75%","35%","40%"],"ans":1 },
-        { "id":32,"q":"If the numerator of a fraction is increased by \\(20\\%\\) and the denominator is decreased by \\(10\\%\\) , the value of the fraction becomes \\(16 / 21\\) . Find the original fraction.","options":["3/7","4/7","5/7","6/7"],"ans":1 },
-        { "id":33,"q":"A number is first increased by \\(20\\%\\) and then decreased by \\(20\\%\\) . What is the net percentage change in the number?","options":["2% Inc","4% Dec","4% Inc","No Change"],"ans":1 },
-        { "id":34,"q":"The length of a rectangle is increased by \\(30\\%\\) and its breadth is decreased by \\(20\\%\\) . Find the percentage change in its area.","options":["4% Inc","4% Dec","10% Inc","10% Dec"],"ans":0 },
-        { "id":35,"q":"40 liters of a mixture of milk and water contains \\(10\\%\\) water. How much water must be added to make it \\(20\\%\\) water in the new mixture?","options":["4 L","5 L","6 L","8 L"],"ans":1 },
-        { "id":36,"q":"An article is bought for Rs. 600 and sold for Rs. 750. Find the profit percentage.","options":["20%","25%","30%","35%"],"ans":1 },
-        { "id":37,"q":"By selling a watch for Rs. 1440, a man loses \\(10\\%\\) . At what price should he sell it to gain \\(10\\%\\) ?","options":["Rs. 1600","Rs. 1760","Rs. 1800","Rs. 1860"],"ans":1 },
-        { "id":38,"q":"The cost price of 15 articles is equal to the selling price of 12 articles. Find the profit percentage.","options":["20%","25%","30%","33.33%"],"ans":1 },
-        { "id":39,"q":"A man sells an article at a loss of \\(10\\%\\) . Had he sold it for Rs. 45 more, he would have gained \\(5\\%\\) . Find the cost price.","options":["Rs. 250","Rs. 300","Rs. 350","Rs. 400"],"ans":1 },
-        { "id":40,"q":"An item was sold at a \\(12\\%\\) profit. Had it been sold for Rs. 18 more, the profit would have been \\(18\\%\\) . What is the cost price?","options":["Rs. 200","Rs. 250","Rs. 300","Rs. 350"],"ans":2 },
-        { "id":41,"q":"A tradesman sold an article at a profit of \\(15\\%\\) . If he had bought it for \\(10\\%\\) less and sold it for Rs. 4 less, he would have gained \\(25\\%\\) . Find the cost price.","options":["Rs. 120","Rs. 140","Rs. 160","Rs. 180"],"ans":0 },
-        { "id":42,"q":"A sells an item to B at a profit of \\(20\\%\\) , B sells it to C at a profit of \\(10\\%\\) , and C sells it to D at a loss of \\(15\\%\\) . If D pays Rs. 1122, what did A pay for it?","options":["Rs. 800","Rs. 900","Rs. 1000","Rs. 1100"],"ans":2 },
-        { "id":43,"q":"A manufacturer makes a profit of \\(15\\%\\) , the wholesale dealer makes \\(10\\%\\) , and the retailer makes \\(20\\%\\) . If the retail price is Rs. 1518, find the original manufacturing cost.","options":["Rs. 1000","Rs. 1200","Rs. 1250","Rs. 1500"],"ans":0 },
-        { "id":44,"q":"Find the single equivalent discount for two successive discounts of \\(20\\%\\) and \\(15\\%\\) .","options":["30%","32%","35%","38%"],"ans":1 },
-        { "id":45,"q":"A shopkeeper marks his goods \\(40\\%\\) above the cost price and allows a discount of \\(25\\%\\) . What is his gain or loss percentage?","options":["5% Gain","5% Loss","10% Gain","15% Gain"],"ans":0 },
-        { "id":46,"q":"An article is marked at Rs. 800. A customer buys it for Rs. 576 after getting two successive discounts. If the first discount is \\(10\\%\\) , find the second discount.","options":["15%","18%","20%","25%"],"ans":2 },
-        { "id":47,"q":"After allowing a discount of \\(15\\%\\) on the marked price, a shopkeeper earns a profit of \\(19\\%\\) . Find the ratio of the cost price to the marked price.","options":["3:5","4:7","5:7","6:7"],"ans":2 },
-        { "id":48,"q":"A fruit vendor buys apples at the rate of 5 for Rs. 4 and sells them at the rate of 4 for Rs. 5. Find his profit percentage.","options":["45%","50%","56.25%","60%"],"ans":2 },
-        { "id":49,"q":"Oranges are bought at 11 for Rs. 10 and an equal number at 9 for Rs. 10. The whole lot is sold at 10 for Rs. 10. Find the overall profit or loss percentage.","options":["1% Gain","1% Loss","2% Gain","2% Loss"],"ans":1 },
-        { "id":50,"q":"A dishonest dealer professes to sell his goods at cost price but uses a false weight of 900 grams for a kilogram. Find his true gain percentage.","options":["10%","11.11%","12.5%","15%"],"ans":1 }
-    ],
-    "negativeMarks": 0.25,
-    "totalTime": 3600,
-    "totalQuestions": 50
-};
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal-content" style="max-width:500px;">
+      <button class="modal-close" onclick="SYF.closeEditProfileModal()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <h3 style="font-family:var(--font-heading);font-weight:600;margin-bottom:18px;">Edit Profile</h3>
+      <div class="form-group"><label>Full Name</label><input type="text" class="form-input" id="editName" placeholder="Your name"></div>
+      <div class="form-group"><label>Phone</label><input type="tel" class="form-input" id="editPhone" placeholder="Phone number"></div>
+      <div class="form-group"><label>Profile Photo</label><input type="file" id="editAvatarInput" accept="image/*" onchange="SYF.previewEditPhoto(event)"><img id="editPhotoPreview" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin-top:8px;display:none;"></div>
+      <div class="form-group"><label>New Password (leave blank to keep)</label><input type="password" class="form-input" id="editPassword" placeholder="New password"></div>
+      <button class="btn btn-primary" style="width:100%;" onclick="SYF.saveProfileChanges()">Save Changes</button>
+    </div>
+  </div>
 
-// ======================== APP STATE ========================
-let state = {
-    current: 0,
-    answers: {},    // qId -> selected option index
-    marked: new Set(),
-    review: new Set(),
-    visited: new Set(),
-    submitted: false,
-    timer: EXAM_CONFIG.totalTime,
-    lang: 'en',
-    dark: false,
-    candidate: '',
-    shuffledIndices: []
-};
+  <div class="toast-container" id="toastContainer"></div>
 
-// Helper to shuffle
-function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-}
+  <nav class="bottom-nav">
+    <button class="bottom-nav-item active" onclick="window.location.href='index.html'">🏠<span>Home</span></button>
+    <button class="bottom-nav-item locked" id="bottomMath" onclick="SYF.navigateTo('mathematics.html')">📐<span>Math</span></button>
+    <button class="bottom-nav-item locked" id="bottomReason" onclick="SYF.navigateTo('reasoning.html')">🧠<span>Reason</span></button>
+    <button class="bottom-nav-item" onclick="SYF.openCBT()">💻<span>CBT</span></button>
+    <button class="bottom-nav-item" onclick="SYF.openEditProfileModal()">👤<span>Profile</span></button>
+  </nav>
 
-// Load from localStorage
-function loadState() {
-    try {
-        const saved = localStorage.getItem('thp_cbt_state');
-        if (saved) {
-            const parsed = JSON.parse(saved);
-            Object.assign(state, parsed);
-            // ensure sets
-            state.marked = new Set(parsed.marked || []);
-            state.review = new Set(parsed.review || []);
-            state.visited = new Set(parsed.visited || []);
-            state.answers = parsed.answers || {};
-            if (!state.shuffledIndices || state.shuffledIndices.length !== EXAM_CONFIG.totalQuestions) {
-                state.shuffledIndices = shuffleArray([...Array(EXAM_CONFIG.totalQuestions).keys()]);
-            }
-            return true;
+  <script>
+    (function() {
+      const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS';
+      const REFERRAL_CODE = 'syf@786';
+      const DISCOUNT_PERCENT = 50;
+      const BASE_AMOUNT_INR = 20; // ₹20
+      const BASE_AMOUNT_PAISE = 2000;
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
+        authDomain: "starlet-registor.firebaseapp.com",
+        projectId: "starlet-registor",
+        storageBucket: "starlet-registor.firebasestorage.app",
+        messagingSenderId: "904193225045",
+        appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const firestore = firebase.firestore();
+
+      let currentUser = null;
+      let userProfile = { name: 'Guest User', email: '', avatar: '', streak: 0, questionsSolved: 0, accuracy: 50, rank: '#---', paymentStatus: 'pending', phone: '' };
+      let regPhotoFile = null;
+      let regPhotoDataUrl = null;
+      let editPhotoFile = null;
+      let currentReferralValid = false;
+
+      function showToast(msg, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div'); toast.className = 'toast';
+        toast.textContent = `${type==='success'?'✅':type==='error'?'❌':'ℹ️'} ${msg}`;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(60px)'; setTimeout(() => toast.remove(), 350); }, 3400);
+      }
+
+      function initTheme() {
+        const toggle = document.getElementById('themeToggle');
+        const saved = localStorage.getItem('syf-theme-v8') || 'light';
+        document.documentElement.setAttribute('data-theme', saved);
+        if (toggle) {
+          toggle.innerHTML = saved === 'dark' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+          toggle.addEventListener('click', () => {
+            const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('syf-theme-v8', next);
+            initTheme();
+          });
         }
-    } catch(e) {}
-    return false;
-}
+      }
 
-function saveState() {
-    const toStore = {
-        current: state.current,
-        answers: state.answers,
-        marked: [...state.marked],
-        review: [...state.review],
-        visited: [...state.visited],
-        timer: state.timer,
-        candidate: state.candidate,
-        shuffledIndices: state.shuffledIndices,
-        lang: state.lang,
-        dark: state.dark
-    };
-    localStorage.setItem('thp_cbt_state', JSON.stringify(toStore));
-}
+      function unlockAllSubjects() {
+        const lockedElements = document.querySelectorAll('.locked');
+        lockedElements.forEach(el => {
+          el.classList.remove('locked');
+          if (el.tagName === 'A') {
+            el.onclick = null;
+            el.style.cursor = 'pointer';
+          }
+        });
+      }
 
-// get shuffled question list
-function getQuestion(index) {
-    const idx = state.shuffledIndices[index];
-    return EXAM_CONFIG.questions[idx];
-}
+      function updateUI() {
+        document.getElementById('profileName').textContent = userProfile.name || 'Guest User';
+        document.getElementById('profileEmail').textContent = userProfile.email || 'Sign in to unlock';
+        document.getElementById('streakCount').textContent = userProfile.streak;
+        document.getElementById('totalQuestions').textContent = userProfile.questionsSolved;
+        document.getElementById('overallAccuracy').textContent = userProfile.accuracy + '%';
+        document.getElementById('userRank').textContent = userProfile.rank;
+        const avatar = document.getElementById('profileAvatar');
+        if (userProfile.avatar) { avatar.style.backgroundImage = `url(${userProfile.avatar})`; avatar.textContent = ''; }
+        else { avatar.style.backgroundImage = ''; avatar.textContent = currentUser ? (userProfile.name?.charAt(0) || '👤') : '👤'; }
+        if (currentUser) document.getElementById('displayNameSmall').textContent = userProfile.name || currentUser.email;
+        document.getElementById('perfRingPercent').textContent = userProfile.accuracy + '%';
+        document.getElementById('perfAccuracy').textContent = userProfile.accuracy + '%';
+        document.getElementById('perfSpeed').textContent = Math.max(26, 62 - userProfile.accuracy * 0.32) + 's';
+        document.getElementById('perfPYQs').textContent = (userProfile.questionsSolved * 0.85).toFixed(1) + 'K';
+        document.getElementById('perfWeak').textContent = Math.max(1, Math.floor((100 - userProfile.accuracy) / 8));
+        if (userProfile.paymentStatus === 'paid') unlockAllSubjects();
+        renderTodayTarget();
+      }
 
-function getQuestionById(qId) {
-    return EXAM_CONFIG.questions.find(q => q.id === qId);
-}
+      function renderTodayTarget() {
+        const container = document.getElementById('todayTargetContainer');
+        if (!container) return;
+        const tasks = [
+          { name: 'Math', task: 'Digital Sum Set', done: userProfile.accuracy > 64 },
+          { name: 'Reasoning', task: 'Coding Decoding', done: userProfile.questionsSolved > 58 },
+          { name: 'English', task: 'RC Practice', done: userProfile.accuracy > 72 },
+          { name: 'GK', task: 'History Quiz', done: userProfile.streak > 6 }
+        ];
+        container.innerHTML = tasks.map(t => `<div style="display:flex;gap:10px;align-items:center;padding:12px;background:var(--bg-tertiary);border-radius:14px;"><span style="font-size:1.2rem;">${t.done ? '✓' : '○'}</span><div style="flex:1;"><strong>${t.name}</strong><br><small style="color:var(--text-tertiary);">${t.task}</small></div><span style="color:${t.done ? 'var(--accent-emerald)' : 'var(--accent-amber)'};font-weight:500;font-size:0.8rem;">${t.done ? 'Done' : 'Pending'}</span></div>`).join('');
+      }
 
-// ======================== UI RENDER ========================
-function renderQuestion() {
-    const q = getQuestion(state.current);
-    if (!q) return;
-    document.getElementById('qNumDisplay').textContent = state.current+1;
-    document.getElementById('totalQDisplay2').textContent = EXAM_CONFIG.totalQuestions;
-    document.getElementById('questionText').innerHTML = q.q;
-    const container = document.getElementById('optionsContainer');
-    container.innerHTML = '';
-    const selected = state.answers[q.id] !== undefined ? state.answers[q.id] : -1;
-    q.options.forEach((opt, idx) => {
-        const div = document.createElement('div');
-        div.className = 'flex items-start gap-2';
-        const radio = document.createElement('input');
-        radio.type = 'radio';
-        radio.name = 'questionOption';
-        radio.value = idx;
-        radio.id = `opt_${idx}`;
-        if (selected === idx) radio.checked = true;
-        radio.onchange = () => {
-            state.answers[q.id] = idx;
-            state.visited.add(q.id);
-            saveState();
-            updatePalette();
-            updateProgress();
-            updateStats();
+      async function loadProfile(uid) {
+        try {
+          const doc = await firestore.collection('users').doc(uid).get();
+          if (doc.exists) {
+            const d = doc.data();
+            userProfile = {
+              name: d.name || 'User',
+              email: d.email || '',
+              avatar: d.avatar || '',
+              streak: d.streak || 0,
+              questionsSolved: d.questionsSolved || 0,
+              accuracy: d.accuracy || 50,
+              rank: d.rank || '#---',
+              paymentStatus: d.paymentStatus || 'pending',
+              phone: d.phone || ''
+            };
+          }
+          updateUI();
+        } catch (e) { console.error(e); updateUI(); }
+      }
+
+      auth.onAuthStateChanged(async (user) => {
+        const loginBtn = document.getElementById('loginBtn'), menu = document.getElementById('userMenu');
+        if (user) {
+          currentUser = user; loginBtn.style.display = 'none'; menu.classList.add('active');
+          await loadProfile(user.uid);
+        } else {
+          currentUser = null; loginBtn.style.display = 'inline-block'; menu.classList.remove('active');
+          userProfile = { name: 'Guest User', email: '', avatar: '', streak: 0, questionsSolved: 0, accuracy: 50, rank: '#---', paymentStatus: 'pending', phone: '' };
+          updateUI();
+          document.querySelectorAll('.subject-card').forEach(c => c.classList.add('locked'));
+        }
+      });
+
+      function switchAuthTab(tab) {
+        const signInForm = document.getElementById('signInForm');
+        const signUpForm = document.getElementById('signUpForm');
+        const tabSignIn = document.getElementById('tabSignIn');
+        const tabSignUp = document.getElementById('tabSignUp');
+        if (tab === 'signin') {
+          signInForm.style.display = 'block'; signUpForm.style.display = 'none';
+          tabSignIn.style.background = 'var(--accent-blue)'; tabSignIn.style.color = '#fff';
+          tabSignUp.style.background = 'transparent'; tabSignUp.style.color = 'var(--text-secondary)';
+        } else {
+          signInForm.style.display = 'none'; signUpForm.style.display = 'block';
+          tabSignUp.style.background = 'var(--accent-blue)'; tabSignUp.style.color = '#fff';
+          tabSignIn.style.background = 'transparent'; tabSignIn.style.color = 'var(--text-secondary)';
+          goToStep(1);
+        }
+      }
+
+      async function handleSignIn() {
+        const email = document.getElementById('signInEmail').value.trim();
+        const password = document.getElementById('signInPassword').value;
+        if (!email || !password) return showToast('Enter email and password', 'warning');
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+          showToast('✅ Signed in!', 'success');
+          SYF.closeAuthModal();
+        } catch (e) {
+          let msg = 'Sign in failed';
+          if (e.code === 'auth/user-not-found') msg = 'No account found. Please register.';
+          else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
+          showToast(msg, 'error');
+        }
+      }
+
+      function handleLogout() {
+        auth.signOut().then(() => showToast('Signed out', 'success'));
+      }
+
+      function updateReferralBadge() {
+        const code = document.getElementById('referralCode').value.trim();
+        const statusEl = document.getElementById('referralStatus');
+        if (code === REFERRAL_CODE) {
+          statusEl.innerHTML = '<span class="referral-badge">✅ 50% Discount Applied! Pay only ₹10</span>';
+          currentReferralValid = true;
+        } else if (code === '') {
+          statusEl.innerHTML = '';
+          currentReferralValid = false;
+        } else {
+          statusEl.innerHTML = '<span style="color:var(--accent-rose);">❌ Invalid referral code</span>';
+          currentReferralValid = false;
+        }
+        if (document.getElementById('step3').classList.contains('active')) {
+          updatePaymentDisplay();
+        }
+      }
+
+      function updatePaymentDisplay() {
+        const amount = currentReferralValid ? BASE_AMOUNT_INR / 2 : BASE_AMOUNT_INR;
+        document.getElementById('finalPriceDisplay').textContent = '₹' + amount;
+        document.getElementById('finalAmount').innerHTML = '₹' + amount + ' <small>one-time payment</small>';
+        document.getElementById('payBtn').innerHTML = `💳 Pay ₹${amount} & Register`;
+      }
+
+      function previewRegPhoto(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) { showToast('Image too large (max 5MB)', 'error'); return; }
+        regPhotoFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          regPhotoDataUrl = e.target.result;
+          document.getElementById('regPhotoPreview').src = regPhotoDataUrl;
+          document.getElementById('regPhotoPreview').style.display = 'block';
+          document.getElementById('photoPlaceholder').style.display = 'none';
         };
-        const label = document.createElement('label');
-        label.htmlFor = `opt_${idx}`;
-        label.className = 'option-label flex-1 text-sm md:text-base';
-        label.innerHTML = opt;
-        div.appendChild(radio);
-        div.appendChild(label);
-        container.appendChild(div);
-    });
-    // status badge
-    const badge = document.getElementById('qStatusBadge');
-    if (state.marked.has(q.id)) badge.textContent = '🔖 Marked';
-    else if (state.answers[q.id] !== undefined) badge.textContent = '✔ Answered';
-    else badge.textContent = 'Not answered';
-    // update palette highlight
-    document.querySelectorAll('.palette-btn').forEach(btn => btn.classList.remove('current'));
-    const currBtn = document.querySelector(`.palette-btn[data-index="${state.current}"]`);
-    if (currBtn) currBtn.classList.add('current');
-    MathJax.typesetPromise().catch(()=>{});
-}
+        reader.readAsDataURL(file);
+      }
 
-function buildPalette() {
-    const grid = document.getElementById('paletteGrid');
-    grid.innerHTML = '';
-    for (let i = 0; i < EXAM_CONFIG.totalQuestions; i++) {
-        const q = getQuestion(i);
-        const btn = document.createElement('button');
-        btn.className = 'palette-btn not-answered';
-        btn.dataset.index = i;
-        btn.textContent = i+1;
-        btn.onclick = () => { state.current = i; renderQuestion(); saveState(); };
-        grid.appendChild(btn);
-    }
-    updatePalette();
-}
+      async function uploadRegPhoto() {
+        if (!regPhotoFile) return null;
+        const formData = new FormData();
+        formData.append('image', regPhotoFile);
+        try {
+          const resp = await fetch('https://api.imgbb.com/1/upload?key=53fb01955a45c5462724b8f7d238500a', { method: 'POST', body: formData });
+          const json = await resp.json();
+          if (json.success) return json.data.url;
+        } catch (e) { console.error('Photo upload error:', e); }
+        return null;
+      }
 
-function updatePalette() {
-    const btns = document.querySelectorAll('.palette-btn');
-    btns.forEach((btn, idx) => {
-        const q = getQuestion(idx);
-        btn.classList.remove('answered', 'marked', 'not-answered');
-        if (state.marked.has(q.id)) btn.classList.add('marked');
-        else if (state.answers[q.id] !== undefined) btn.classList.add('answered');
-        else btn.classList.add('not-answered');
-    });
-    document.querySelectorAll('.palette-btn').forEach(b => b.classList.remove('current'));
-    const curr = document.querySelector(`.palette-btn[data-index="${state.current}"]`);
-    if (curr) curr.classList.add('current');
-}
-
-function updateProgress() {
-    const total = EXAM_CONFIG.totalQuestions;
-    const done = Object.keys(state.answers).filter(id => state.answers[id] !== undefined).length;
-    const pct = (done / total) * 100;
-    document.getElementById('progressBar').style.width = pct + '%';
-    document.getElementById('answeredCount').textContent = done;
-}
-
-function updateStats() {
-    updateProgress();
-}
-
-// ======================== EXAM ACTIONS ========================
-function saveAndNext() {
-    const q = getQuestion(state.current);
-    const radios = document.querySelectorAll('input[name="questionOption"]');
-    let selected = -1;
-    radios.forEach(r => { if (r.checked) selected = parseInt(r.value); });
-    if (selected !== -1) {
-        state.answers[q.id] = selected;
-        state.visited.add(q.id);
-        saveState();
-    }
-    nextQuestion();
-}
-
-function markForReview() {
-    const q = getQuestion(state.current);
-    if (state.marked.has(q.id)) state.marked.delete(q.id);
-    else state.marked.add(q.id);
-    saveState();
-    renderQuestion();
-    updatePalette();
-}
-
-function clearResponse() {
-    const q = getQuestion(state.current);
-    delete state.answers[q.id];
-    saveState();
-    renderQuestion();
-    updatePalette();
-    updateProgress();
-}
-
-function previousQuestion() {
-    if (state.current > 0) { state.current--; renderQuestion(); saveState(); }
-}
-
-function nextQuestion() {
-    if (state.current < EXAM_CONFIG.totalQuestions - 1) { state.current++; renderQuestion(); saveState(); }
-}
-
-// ======================== TIMER ========================
-let timerInterval = null;
-function startTimer() {
-    if (timerInterval) clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-        state.timer--;
-        if (state.timer <= 0) {
-            clearInterval(timerInterval);
-            submitExam();
+      function goToStep(step) {
+        document.querySelectorAll('.step-dot').forEach((d, i) => { d.classList.remove('active', 'completed'); if (i + 1 < step) d.classList.add('completed'); if (i + 1 === step) d.classList.add('active'); });
+        document.querySelectorAll('.registration-step').forEach(s => s.classList.remove('active'));
+        const targetStep = document.getElementById(`step${step}`);
+        if (targetStep) targetStep.classList.add('active');
+        if (step === 3) {
+          const fn = document.getElementById('firstName')?.value.trim() || '';
+          const ln = document.getElementById('lastName')?.value.trim() || '';
+          const em = document.getElementById('regEmail')?.value.trim() || '';
+          const ref = document.getElementById('referralCode')?.value.trim() || 'None';
+          document.getElementById('registrationSummary').innerHTML = `<strong>Name:</strong> ${fn} ${ln}<br><strong>Email:</strong> ${em}<br><strong>Referral:</strong> ${ref}`;
+          updatePaymentDisplay();
         }
-        updateTimerDisplay();
-        saveState();
-    }, 1000);
-}
+      }
 
-function updateTimerDisplay() {
-    const mins = Math.floor(state.timer / 60);
-    const secs = state.timer % 60;
-    document.getElementById('timerDisplay').textContent = `⏳ ${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-}
+      function checkPasswordStrength(pw) {
+        const bar = document.getElementById('passwordStrengthBar');
+        bar.className = 'password-strength-bar';
+        let s = 0;
+        if (pw.length >= 8) s++;
+        if (pw.length >= 12) s++;
+        if (/[A-Z]/.test(pw)) s++;
+        if (/[0-9]/.test(pw)) s++;
+        if (/[^A-Za-z0-9]/.test(pw)) s++;
+        if (s <= 2) bar.classList.add('strength-weak');
+        else if (s <= 4) bar.classList.add('strength-medium');
+        else bar.classList.add('strength-strong');
+      }
 
-// ======================== SUBMIT ========================
-function submitExam() {
-    if (state.submitted) return;
-    if (!confirm('Submit the exam? Answers will be final.')) return;
-    state.submitted = true;
-    clearInterval(timerInterval);
-    document.getElementById('examPage').classList.add('hidden');
-    document.getElementById('resultPage').classList.remove('hidden');
-    showResult();
-    saveState();
-}
+      function checkPasswordMatch() {
+        const pw = document.getElementById('regPassword').value;
+        const cp = document.getElementById('confirmPassword').value;
+        const msg = document.getElementById('passwordMatchMsg');
+        if (cp === '') msg.textContent = '';
+        else if (pw === cp) { msg.textContent = '✓ Match'; msg.style.color = 'var(--accent-emerald)'; }
+        else { msg.textContent = '✗ Not match'; msg.style.color = 'var(--accent-rose)'; }
+      }
 
-// ======================== RESULT ========================
-function showResult() {
-    let correct = 0, wrong = 0, skipped = 0;
-    const details = [];
-    EXAM_CONFIG.questions.forEach((q, idx) => {
-        const userAns = state.answers[q.id];
-        const correctAns = q.ans;
-        let status = '';
-        if (userAns === undefined) { skipped++; status = 'Skipped'; }
-        else if (userAns === correctAns) { correct++; status = 'Correct'; }
-        else { wrong++; status = 'Wrong'; }
-        details.push({ id: q.id, question: q.q, user: userAns!==undefined?q.options[userAns]:'—', correct: correctAns!==-1?q.options[correctAns]:'N/A', status });
-    });
-    const score = correct - (wrong * 0.25);
-    document.getElementById('resScore').textContent = score.toFixed(2);
-    document.getElementById('resCorrect').textContent = correct;
-    document.getElementById('resWrong').textContent = wrong;
-    document.getElementById('resSkipped').textContent = skipped;
-    const reviewDiv = document.getElementById('resultReview');
-    reviewDiv.innerHTML = details.map(d => 
-        `<div class="border-b border-gray-200 py-2 text-sm flex flex-wrap gap-2"><span class="font-medium">Q${d.id}</span> <span class="text-gray-600">${d.question.substring(0,80)}...</span> <span class="ml-auto ${d.status==='Correct'?'text-green-600':d.status==='Wrong'?'text-red-600':'text-gray-400'}">${d.status} (Your: ${d.user})</span></div>`
-    ).join('');
-}
+      function initiatePayment() {
+        const fn = document.getElementById('firstName').value.trim();
+        const ln = document.getElementById('lastName').value.trim();
+        const em = document.getElementById('regEmail').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const pw = document.getElementById('regPassword').value;
+        const cp = document.getElementById('confirmPassword').value;
+        const refCode = document.getElementById('referralCode').value.trim();
 
-// ======================== EXPORT ========================
-function exportPDF() { alert('PDF export (simulated) – use browser print or library.'); }
-function exportExcel() { alert('Excel export (simulated) – CSV available instead.'); }
-function exportCSV() {
-    let csv = "QID,Question,Your Answer,Correct,Status\n";
-    EXAM_CONFIG.questions.forEach(q => {
-        const u = state.answers[q.id]!==undefined?q.options[state.answers[q.id]]:'—';
-        const c = q.ans!==-1?q.options[q.ans]:'N/A';
-        const s = state.answers[q.id]===undefined?'Skipped':(state.answers[q.id]===q.ans?'Correct':'Wrong');
-        csv += `${q.id},"${q.q.replace(/,/g,'')}",${u},${c},${s}\n`;
-    });
-    const blob = new Blob([csv], {type:'text/csv'});
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'THP_Result.csv';
-    link.click();
-}
+        if (!fn || !ln || !em.includes('@') || pw.length < 8) return showToast('Fill all fields correctly', 'error');
+        if (pw !== cp) return showToast('Passwords do not match', 'error');
 
-// ======================== NAVIGATION ========================
-function startExam() {
-    const name = document.getElementById('candidateName').value.trim() || 'Candidate';
-    state.candidate = name;
-    document.getElementById('candidateNameDisplay').textContent = name;
-    document.getElementById('loginPage').classList.add('hidden');
-    document.getElementById('instructionsPage').classList.remove('hidden');
-    document.getElementById('totalQDisplay').textContent = EXAM_CONFIG.totalQuestions;
-    document.getElementById('totalQDisplay3').textContent = EXAM_CONFIG.totalQuestions;
-}
+        const amountPaise = currentReferralValid ? BASE_AMOUNT_PAISE / 2 : BASE_AMOUNT_PAISE;
+        const amountINR = amountPaise / 100;
 
-function beginExam() {
-    document.getElementById('instructionsPage').classList.add('hidden');
-    document.getElementById('examPage').classList.remove('hidden');
-    // init shuffled if not
-    if (!state.shuffledIndices || state.shuffledIndices.length !== EXAM_CONFIG.totalQuestions) {
-        state.shuffledIndices = shuffleArray([...Array(EXAM_CONFIG.totalQuestions).keys()]);
-    }
-    buildPalette();
-    renderQuestion();
-    updateProgress();
-    updateTimerDisplay();
-    startTimer();
-    saveState();
-    // block right click etc
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('copy', e => e.preventDefault());
-    document.addEventListener('paste', e => e.preventDefault());
-    document.addEventListener('selectstart', e => e.preventDefault());
-    // tab warning
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden && !state.submitted) {
-            alert('⚠️ Tab switch detected. Stay on exam page.');
+        const btn = document.getElementById('payBtn');
+        btn.innerHTML = '<span class="spinner-inline"></span> Processing...';
+        btn.disabled = true;
+
+        const receiptId = 'SYF_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+        const options = {
+          key: RAZORPAY_KEY_ID,
+          amount: amountPaise,
+          currency: 'INR',
+          name: 'SYF - Secure Your Future',
+          description: `Premium Registration (${currentReferralValid ? '50% off' : 'Standard'})`,
+          handler: async function(response) {
+            btn.innerHTML = '<span class="spinner-inline"></span> Creating account...';
+            try {
+              let avatarUrl = '';
+              if (regPhotoFile) {
+                avatarUrl = await uploadRegPhoto();
+              }
+              const userCred = await auth.createUserWithEmailAndPassword(em, pw);
+              await userCred.user.updateProfile({ displayName: `${fn} ${ln}` });
+              await firestore.collection('users').doc(userCred.user.uid).set({
+                name: `${fn} ${ln}`,
+                email: em,
+                phone: phone,
+                avatar: avatarUrl || '',
+                streak: 1,
+                accuracy: 55,
+                questionsSolved: 0,
+                rank: '#---',
+                paymentStatus: 'paid',
+                paymentId: response.razorpay_payment_id,
+                receiptId: receiptId,
+                amount: amountINR,
+                referralUsed: currentReferralValid,
+                lastActiveDate: new Date().toISOString().split('T')[0],
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              });
+              showToast('🎉 Registration successful! All subjects unlocked.', 'success');
+              SYF.closeAuthModal();
+            } catch (e) {
+              showToast('Error: ' + e.message, 'error');
+              btn.innerHTML = `💳 Pay ₹${amountINR} & Register`;
+              btn.disabled = false;
+            }
+          },
+          modal: {
+            ondismiss: function() {
+              btn.innerHTML = `💳 Pay ₹${amountINR} & Register`;
+              btn.disabled = false;
+              showToast('Payment cancelled', 'warning');
+            }
+          },
+          prefill: { name: `${fn} ${ln}`, email: em, contact: phone },
+          notes: { receipt_id: receiptId, referral: refCode },
+          theme: { color: '#0071e3' }
+        };
+
+        try {
+          const rzp = new Razorpay(options);
+          rzp.on('payment.failed', function(response) {
+            btn.innerHTML = `💳 Pay ₹${amountINR} & Register`;
+            btn.disabled = false;
+            showToast('Payment failed: ' + response.error.description, 'error');
+          });
+          rzp.open();
+        } catch (e) {
+          btn.innerHTML = `💳 Pay ₹${amountINR} & Register`;
+          btn.disabled = false;
+          showToast('Error opening payment gateway', 'error');
         }
-    });
-}
+      }
 
-function goToLogin() {
-    if (!state.submitted && confirm('Going back will lose progress?')) {
-        localStorage.removeItem('thp_cbt_state');
-        location.reload();
-    } else if (state.submitted) {
-        location.reload();
-    }
-}
+      function handleSubjectClick(url, event) {
+        if (!currentUser || userProfile.paymentStatus !== 'paid') {
+          event.preventDefault();
+          showToast('🔒 Please register (₹20) to unlock all subjects', 'warning');
+          SYF.openAuthModal();
+          return false;
+        }
+        return true;
+      }
 
-function toggleLang() {
-    state.lang = state.lang === 'en' ? 'hi' : 'en';
-    alert('Language toggle: ' + (state.lang==='en'?'English':'हिंदी') + ' (UI placeholder)');
-}
+      function navigateTo(url) {
+        if (!currentUser || userProfile.paymentStatus !== 'paid') {
+          showToast('🔒 Please register (₹20) to unlock all subjects', 'warning');
+          SYF.openAuthModal();
+          return;
+        }
+        window.location.href = url;
+      }
 
-function toggleTheme() {
-    state.dark = !state.dark;
-    document.getElementById('appBody').classList.toggle('dark-mode', state.dark);
-    saveState();
-}
+      function openCBT() {
+        if (!currentUser || userProfile.paymentStatus !== 'paid') {
+          showToast('🔒 Please register to access CBT mock tests', 'warning');
+          SYF.openAuthModal();
+          return;
+        }
+        window.open('https://freemocktest.co/exams/', '_blank');
+      }
 
-// ======================== INIT ========================
-(function init() {
-    const loaded = loadState();
-    if (loaded && state.candidate && !state.submitted) {
-        document.getElementById('loginPage').classList.add('hidden');
-        document.getElementById('examPage').classList.remove('hidden');
-        document.getElementById('candidateNameDisplay').textContent = state.candidate;
-        buildPalette();
-        renderQuestion();
-        updateProgress();
-        updateTimerDisplay();
-        startTimer();
-        document.getElementById('appBody').classList.toggle('dark-mode', state.dark);
-    } else if (loaded && state.submitted) {
-        document.getElementById('loginPage').classList.add('hidden');
-        document.getElementById('resultPage').classList.remove('hidden');
-        showResult();
-    } else {
-        // fresh
-        state.shuffledIndices = shuffleArray([...Array(EXAM_CONFIG.totalQuestions).keys()]);
-        saveState();
-    }
-})();
+      async function uploadAvatar(file) {
+        if (!file) return null;
+        const formData = new FormData();
+        formData.append('image', file);
+        try {
+          const resp = await fetch('https://api.imgbb.com/1/upload?key=53fb01955a45c5462724b8f7d238500a', { method: 'POST', body: formData });
+          const json = await resp.json();
+          if (json.success) return json.data.url;
+        } catch (e) { console.error(e); }
+        return null;
+      }
 
-</script>
+      async function saveProfileChanges() {
+        if (!currentUser) return;
+        const newName = document.getElementById('editName').value.trim();
+        const newPhone = document.getElementById('editPhone').value.trim();
+        const newPassword = document.getElementById('editPassword').value;
+        const file = document.getElementById('editAvatarInput').files[0];
+
+        if (!newName) return showToast('Name is required', 'error');
+        try {
+          let avatarUrl = userProfile.avatar;
+          if (file) {
+            avatarUrl = await uploadAvatar(file);
+            if (!avatarUrl) throw new Error('Photo upload failed');
+          }
+          if (newPassword && newPassword.length >= 6) {
+            await currentUser.updatePassword(newPassword);
+          }
+          await firestore.collection('users').doc(currentUser.uid).update({
+            name: newName,
+            phone: newPhone,
+            avatar: avatarUrl || userProfile.avatar
+          });
+          if (newName) {
+            await currentUser.updateProfile({ displayName: newName });
+          }
+          userProfile.name = newName || userProfile.name;
+          userProfile.phone = newPhone;
+          userProfile.avatar = avatarUrl || userProfile.avatar;
+          updateUI();
+          showToast('Profile updated!', 'success');
+          SYF.closeEditProfileModal();
+        } catch (e) {
+          showToast('Update failed: ' + e.message, 'error');
+        }
+      }
+
+      function openEditProfileModal() {
+        if (!currentUser) {
+          showToast('Please sign in first', 'warning');
+          SYF.openAuthModal();
+          return;
+        }
+        document.getElementById('editName').value = userProfile.name || '';
+        document.getElementById('editPhone').value = userProfile.phone || '';
+        document.getElementById('editPassword').value = '';
+        document.getElementById('editAvatarInput').value = '';
+        document.getElementById('editPhotoPreview').style.display = 'none';
+        document.getElementById('editProfileModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeEditProfileModal() {
+        document.getElementById('editProfileModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function previewEditPhoto(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById('editPhotoPreview').src = e.target.result;
+          document.getElementById('editPhotoPreview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      window.SYF = {
+        showToast,
+        openAuthModal: () => { document.getElementById('authModal').classList.add('active'); document.body.style.overflow = 'hidden'; switchAuthTab('signin'); },
+        closeAuthModal: () => { document.getElementById('authModal').classList.remove('active'); document.body.style.overflow = ''; },
+        switchAuthTab,
+        handleSignIn,
+        handleLogout,
+        updateReferralBadge,
+        previewRegPhoto,
+        initiatePayment,
+        handleSubjectClick,
+        navigateTo,
+        openCBT,
+        openEditProfileModal,
+        closeEditProfileModal,
+        previewEditPhoto,
+        saveProfileChanges,
+        checkPasswordStrength,
+        checkPasswordMatch,
+        registration: {
+          nextStep: (step) => {
+            if (step === 2 && !document.getElementById('regEmail').value.includes('@')) return showToast('Valid email required', 'error');
+            if (step === 3) {
+              const pw = document.getElementById('regPassword').value;
+              const cp = document.getElementById('confirmPassword').value;
+              if (pw.length < 8) return showToast('Password min 8 characters', 'error');
+              if (pw !== cp) return showToast('Passwords do not match', 'error');
+            }
+            goToStep(step);
+          },
+          prevStep: (step) => goToStep(step)
+        }
+      };
+
+      document.addEventListener('click', (e) => { if (e.target.classList.contains('skill-tag')) e.target.classList.toggle('selected'); });
+      document.getElementById('authModal').addEventListener('click', function(e) { if (e.target === this) SYF.closeAuthModal(); });
+      document.getElementById('editProfileModal').addEventListener('click', function(e) { if (e.target === this) SYF.closeEditProfileModal(); });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (document.getElementById('authModal').classList.contains('active')) SYF.closeAuthModal();
+          if (document.getElementById('editProfileModal').classList.contains('active')) SYF.closeEditProfileModal();
+        }
+      });
+
+      initTheme();
+      updateUI();
+      renderTodayTarget();
+      console.log('🚀 SYF Premium v8.0 — Referral + Edit Profile + External CBT Ready');
+    })();
+  </script>
 </body>
 </html>
