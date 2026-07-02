@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYF - SSC Bank Railway Reasoning | Learning Platform</title>
+    <meta name="description" content="SYF Reasoning - SSC, Bank, Railway exam preparation">
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #7c3aed; --primary-dark: #6d28d9; --accent: #f97316;
+            --bg: #f1f5f9; --card-bg: #ffffff; --text: #0f172a; --text-light: #64748b;
+            --border: #e2e8f0; --shadow: 0 4px 6px -1px rgba(0,0,0,0.07);
+            --radius: 12px; --radius-lg: 16px; --transition: all 0.25s ease;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        .header { background: linear-gradient(135deg, #4c1d95, #5b21b6, #6d28d9); color: white; padding: 16px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .header-inner { max-width: 1300px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .logo-section { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 48px; height: 48px; background: var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; }
+        .logo-text h1 { font-size: 1.4rem; font-weight: 800; } .logo-text span { font-size: 0.7rem; color: #fb923c; letter-spacing: 1.5px; }
+        .header-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+        .stat-badge { background: rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 10px; display: flex; align-items: center; gap: 6px; font-size: 0.82rem; }
+        .stat-badge i { color: #fb923c; }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 28px 24px; }
+        .search-wrapper { position: relative; max-width: 480px; margin-bottom: 28px; }
+        .search-wrapper input { width: 100%; padding: 14px 50px 14px 20px; border: 2px solid var(--border); border-radius: 50px; font-size: 0.95rem; outline: none; background: var(--card-bg); }
+        .search-wrapper input:focus { border-color: var(--primary); }
+        .search-wrapper i { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+        
+        .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .chapter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; margin-bottom: 40px; }
+        .chapter-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow); cursor: pointer; border: 1px solid var(--border); border-left: 4px solid var(--primary); transition: var(--transition); }
+        .chapter-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.12); }
+        .chapter-number { font-size: 0.73rem; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .chapter-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+        .chapter-desc { font-size: 0.85rem; color: var(--text-light); margin-bottom: 14px; }
+        .chapter-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+        .meta-item { font-size: 0.75rem; background: #f8fafc; padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 5px; }
+        .meta-item.cbt-available { background: #dcfce7; color: #16a34a; font-weight: 600; }
+        .meta-item.cbt-na { background: #fef3c7; color: #d97706; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--card-bg); border-radius: var(--radius-lg); width: 95%; max-width: 1000px; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; animation: modalIn 0.3s ease; }
+        @keyframes modalIn { from { opacity:0; transform: scale(0.93); } to { opacity:1; transform: scale(1); } }
+        .modal-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: #f1f5f9; cursor: pointer; font-size: 1.1rem; transition: var(--transition); }
+        .modal-close:hover { background: #ef4444; color: white; }
+        .modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+
+        .tab-buttons { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+        .tab-btn { padding: 9px 16px; border: 2px solid var(--border); background: white; border-radius: 22px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: var(--transition); white-space: nowrap; display: flex; align-items: center; gap: 5px; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .tab-btn .cbt-badge { background: #16a34a; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; }
+        .tab-content { display: none; } .tab-content.active { display: block; }
+
+        .list-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: #f8fafc; border-radius: 10px; cursor: pointer; border: 1px solid var(--border); transition: var(--transition); margin-bottom: 8px; }
+        .list-item:hover { background: #eff6ff; border-color: var(--primary); }
+        .list-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1rem; flex-shrink: 0; }
+        .list-icon.pdf { background: #ef4444; } .list-icon.video { background: #ff0000; }
+        .list-info { flex: 1; } .list-info strong { display: block; font-size: 0.9rem; } .list-info small { font-size: 0.78rem; color: var(--text-light); }
+        .list-arrow { color: var(--primary); }
+
+        .lecture-thumb { width: 120px; height: 68px; border-radius: 6px; object-fit: cover; flex-shrink: 0; background: #1e293b; }
+        
+        .video-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 10px; overflow: hidden; background: #000; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        
+        .cbt-box { text-align: center; padding: 40px; }
+        .cbt-btn { padding: 16px 36px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
+        .cbt-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124,58,237,0.4); }
+        
+        .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 20px; cursor: pointer; margin-bottom: 12px; font-weight: 600; font-size: 0.82rem; }
+        .back-btn:hover { background: var(--primary-dark); }
+        
+        .spinner { width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 30px auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 40px; color: var(--text-light); }
+        .empty-state i { font-size: 3rem; opacity: 0.25; margin-bottom: 12px; }
+
+        /* PDF Book Reader */
+        .pdf-book-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0f; z-index: 6000; display: none; flex-direction: column; animation: pdfFadeIn 0.3s ease; }
+        @keyframes pdfFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .pdf-book-overlay.active { display: flex; }
+        .pdf-book-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%); color: white; z-index: 10; flex-shrink: 0; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.08); transition: transform 0.3s, opacity 0.3s; }
+        .pdf-book-toolbar.hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        .pdf-book-toolbar .pdf-title { font-weight: 600; font-size: 0.85rem; flex: 1; min-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pdf-book-toolbar button { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: white; padding: 7px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+        .pdf-book-toolbar button:hover { background: rgba(255,255,255,0.18); }
+        .pdf-book-toolbar button.active-btn { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px rgba(124,58,237,0.4); }
+        .pdf-zoom-group { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 3px; }
+        .pdf-zoom-group button { border-radius: 7px; padding: 6px 9px; border: none; background: transparent; }
+        .pdf-zoom-group span { font-size: 0.75rem; min-width: 40px; text-align: center; font-weight: 600; }
+        .pdf-book-container { flex: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: grab; }
+        .pdf-book-container.dark-mode iframe { filter: invert(0.9) hue-rotate(180deg) brightness(0.9) contrast(1.1); }
+        .pdf-book-container.dark-mode { background: #0d0d1a; }
+        .pdf-book-container iframe { width: 100%; height: 100%; border: none; background: white; transition: transform 0.2s; }
+        .pdf-bottom-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%); color: white; flex-shrink: 0; border-top: 1px solid rgba(255,255,255,0.08); transition: transform 0.3s, opacity 0.3s; }
+        .pdf-bottom-bar.hidden { transform: translateY(100%); opacity: 0; pointer-events: none; }
+
+        /* Image Swiper */
+        .image-swiper-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 7000; display: none; flex-direction: column; animation: pdfFadeIn 0.3s ease; }
+        .image-swiper-overlay.active { display: flex; }
+        .image-swiper-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: rgba(0,0,0,0.9); color: white; z-index: 10; flex-shrink: 0; gap: 8px; }
+        .image-swiper-toolbar .img-counter { font-size: 0.85rem; font-weight: 600; }
+        .image-swiper-toolbar .img-title-display { font-size: 0.9rem; font-weight: 500; flex: 1; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .image-swiper-toolbar button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
+        .image-swiper-container { flex: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .swiper { width: 100%; height: 100%; }
+        .swiper-slide { display: flex; align-items: center; justify-content: center; position: relative; }
+        .swiper-slide img { max-width: 95%; max-height: 90vh; object-fit: contain; border-radius: 4px; transition: transform 0.3s; cursor: zoom-in; }
+        .swiper-slide img.zoomed { cursor: zoom-out; transform: scale(2.5); }
+        .swiper-slide .slide-caption { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 25px; font-size: 0.85rem; backdrop-filter: blur(10px); z-index: 5; pointer-events: none; }
+        .image-thumb-strip { display: flex; gap: 8px; padding: 10px 16px; background: rgba(0,0,0,0.9); overflow-x: auto; flex-shrink: 0; border-top: 1px solid rgba(255,255,255,0.1); }
+        .image-thumb-strip .thumb-item { width: 60px; height: 45px; border-radius: 6px; overflow: hidden; cursor: pointer; flex-shrink: 0; border: 2px solid transparent; transition: all 0.2s; opacity: 0.5; }
+        .image-thumb-strip .thumb-item.active-thumb { border-color: var(--primary); opacity: 1; box-shadow: 0 0 12px rgba(124,58,237,0.4); }
+        .image-thumb-strip .thumb-item:hover { opacity: 0.8; }
+        .image-thumb-strip .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        @media (max-width:768px) { .chapter-grid { grid-template-columns: 1fr; } .modal { width: 98%; max-height: 93vh; } .lecture-thumb { width: 90px; height: 50px; } .header-stats { width: 100%; justify-content: center; } }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo-section"><div class="logo-icon">SYF</div><div class="logo-text"><h1>SYF Reasoning</h1><span>SSC • BANK • RAILWAY</span></div></div>
+            <div class="header-stats">
+                <div class="stat-badge"><i class="fas fa-book-open"></i><span id="totalChapters">0</span> Ch</div>
+                <div class="stat-badge"><i class="fas fa-play-circle"></i><span id="totalLectures">0</span> Lec</div>
+                <div class="stat-badge"><i class="fas fa-file-pdf"></i><span id="totalNotes">0</span> PDF</div>
+                <div class="stat-badge"><i class="fas fa-question-circle"></i><span id="totalCBT">0</span> CBT</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-wrapper"><input type="text" id="searchInput" placeholder="Search chapters..." oninput="filterChapters()"><i class="fas fa-search"></i></div>
+        <div class="section-title"><i class="fas fa-list-ol" style="color:var(--accent);"></i> All Chapters</div>
+        <div class="chapter-grid" id="chapterGrid"><div class="spinner"></div></div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header"><h3 id="modalTitle">Chapter Details</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+            <div class="modal-body">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('lectures',event)"><i class="fas fa-play-circle"></i> Lectures</button>
+                    <button class="tab-btn" onclick="switchTab('notes',event)"><i class="fas fa-file-pdf"></i> Notes</button>
+                    <button class="tab-btn" id="cbtTabBtn" onclick="switchTab('cbt',event)"><i class="fas fa-question-circle"></i> CBT</button>
+                    <button class="tab-btn" onclick="switchTab('images',event)"><i class="fas fa-images"></i> Images</button>
+                </div>
+                <div class="tab-content active" id="tab-lectures"><div id="lecturesList"><div class="spinner"></div></div></div>
+                <div class="tab-content" id="tab-notes"><div id="notesList"><div class="spinner"></div></div></div>
+                <div class="tab-content" id="tab-cbt"><div id="cbtContainer"><div class="spinner"></div></div></div>
+                <div class="tab-content" id="tab-images"><div class="image-gallery" id="imageGallery"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pdf-book-overlay" id="pdfBookOverlay">
+        <div class="pdf-book-toolbar" id="pdfToolbar">
+            <button onclick="closePdfBook()"><i class="fas fa-arrow-left"></i> Back</button>
+            <span class="pdf-title" id="pdfBookTitle">PDF Viewer</span>
+            <div class="pdf-zoom-group"><button onclick="pdfZoomOut()"><i class="fas fa-search-minus"></i></button><span id="pdfZoomLevel">100%</span><button onclick="pdfZoomIn()"><i class="fas fa-search-plus"></i></button></div>
+            <button onclick="pdfToggleFullscreen()"><i class="fas fa-expand"></i></button>
+            <button id="pdfDarkModeBtn" onclick="pdfToggleDarkMode()"><i class="fas fa-moon"></i></button>
+        </div>
+        <div class="pdf-book-container" id="pdfBookContainer"><iframe id="pdfBookIframe" src="" allowfullscreen></iframe></div>
+        <div class="pdf-bottom-bar" id="pdfBottomBar"><span style="font-size:0.7rem;color:rgba(255,255,255,0.5);">📖 Swipe or use arrow keys</span><button onclick="pdfToggleToolbar()" style="background:transparent;border:none;color:white;cursor:pointer;"><i class="fas fa-ellipsis-h"></i></button></div>
+    </div>
+
+    <div class="image-swiper-overlay" id="imageSwiperOverlay">
+        <div class="image-swiper-toolbar">
+            <button onclick="closeImageSwiper()"><i class="fas fa-arrow-left"></i> Back</button>
+            <span class="img-title-display" id="imgTitleDisplay">Image</span>
+            <span class="img-counter" id="imgCounter">1 / 1</span>
+            <button onclick="toggleImageZoom()"><i class="fas fa-search-plus"></i></button>
+        </div>
+        <div class="image-swiper-container"><div class="swiper" id="imageSwiper"><div class="swiper-wrapper" id="imageSwiperWrapper"></div><div class="swiper-button-next" style="color:white;"></div><div class="swiper-button-prev" style="color:white;"></div><div class="swiper-pagination" style="bottom:20px;"></div></div></div>
+        <div class="image-thumb-strip" id="imageThumbStrip"></div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
+            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
+            storageBucket: "starlet-registor.firebasestorage.app", messagingSenderId: "904193225045",
+            appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc", measurementId: "G-1NLM1F0262"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const DB_PATH = 'reasoning';
+
+        let allChapters = [], currentChapterId = null;
+        let totalNotesCount = 0, totalLecturesCount = 0, totalCBTCount = 0;
+        let _lecturesBackup = null;
+        let pdfZoomLevel = 100, pdfIsDarkMode = false, pdfToolbarVisible = true, pdfToolbarTimeout;
+        let imageSwiperInstance = null, allChapterImages = [];
+
+        function loadChapters() {
+            const grid = document.getElementById('chapterGrid'); grid.innerHTML = '<div class="spinner"></div>';
+            db.ref(DB_PATH).on('value', (snapshot) => {
+                allChapters = []; totalNotesCount = 0; totalLecturesCount = 0; totalCBTCount = 0;
+                if (snapshot.exists()) {
+                    const promises = [];
+                    snapshot.forEach((child) => {
+                        const cd = child.val(), cid = child.key;
+                        const obj = { id: cid, ...cd, notesCount: 0, lecturesCount: 0, hasCBT: false };
+                        promises.push(db.ref(`${DB_PATH}/${cid}/lectures`).once('value').then(ls => { if(ls.exists()){ obj.lecturesCount = ls.numChildren(); totalLecturesCount += obj.lecturesCount; } }));
+                        promises.push(db.ref(`${DB_PATH}/${cid}/notes`).once('value').then(ns => { if(ns.exists()){ obj.notesCount = ns.numChildren(); totalNotesCount += obj.notesCount; } }));
+                        promises.push(db.ref(`${DB_PATH}/${cid}/cbt`).once('value').then(cs => { if(cs.exists() && cs.val().cbtUrl && cs.val().cbtUrl.trim() !== ''){ obj.hasCBT = true; totalCBTCount++; } }));
+                        allChapters.push(obj);
+                    });
+                    Promise.all(promises).then(() => { allChapters.sort((a,b) => (a.order||0)-(b.order||0)); renderChapters(allChapters); updateStats(); });
+                } else { grid.innerHTML = '<div class="empty-state"><i class="fas fa-book-open"></i><h3>No Chapters Yet</h3></div>'; updateStats(); }
+            });
+        }
+
+        function renderChapters(chapters) {
+            const grid = document.getElementById('chapterGrid');
+            if (!chapters.length) { grid.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><h3>No Match</h3></div>'; return; }
+            grid.innerHTML = chapters.map((ch,i) => `
+                <div class="chapter-card" onclick="openChapter('${ch.id}')">
+                    <div class="chapter-number">Chapter ${ch.order||i+1}</div><div class="chapter-title">${escapeHTML(ch.title||'Untitled')}</div>
+                    <div class="chapter-desc">${escapeHTML(ch.description||'Explore lectures, notes & more')}</div>
+                    <div class="chapter-meta">
+                        <span class="meta-item"><i class="fas fa-play-circle"></i>${ch.lecturesCount||0} Lectures</span>
+                        <span class="meta-item"><i class="fas fa-file-pdf"></i>${ch.notesCount||0} Notes</span>
+                        <span class="meta-item ${ch.hasCBT ? 'cbt-available' : 'cbt-na'}"><i class="fas fa-question-circle"></i>${ch.hasCBT ? 'CBT ✓' : 'No CBT'}</span>
+                    </div></div>`).join('');
+        }
+
+        function filterChapters() { const q = document.getElementById('searchInput').value.toLowerCase(); renderChapters(allChapters.filter(c => (c.title||'').toLowerCase().includes(q) || (c.description||'').toLowerCase().includes(q))); }
+        function openChapter(id) {
+            currentChapterId = id; const ch = allChapters.find(c => c.id === id); if(!ch) return;
+            document.getElementById('modalTitle').textContent = ch.title || 'Chapter';
+            document.getElementById('modalOverlay').classList.add('active'); document.body.style.overflow = 'hidden';
+            document.getElementById('cbtTabBtn').innerHTML = ch.hasCBT ? '<i class="fas fa-question-circle"></i> CBT <span class="cbt-badge">Available</span>' : '<i class="fas fa-question-circle"></i> CBT';
+            ['lectures','notes','cbt','images'].forEach(tab => { const c = document.getElementById(`${tab==='cbt'?'cbtContainer':tab+'List'}`); if(c) c.innerHTML = '<div class="spinner"></div>'; });
+            loadLectures(id); loadNotes(id); loadCBT(id); loadImages(id);
+            const ft = document.querySelector('.tab-btn'); if(ft) switchTab('lectures', {target: ft});
+        }
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); document.body.style.overflow = ''; }
+        document.getElementById('modalOverlay').addEventListener('click', e => { if(e.target === e.currentTarget) closeModal(); });
+        document.addEventListener('keydown', e => { if(e.key === 'Escape') { closeModal(); closePdfBook(); closeImageSwiper(); } });
+        function switchTab(name, event) { const btn = event.target.closest('.tab-btn'); if(!btn) return; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); btn.classList.add('active'); const tab = document.getElementById(`tab-${name}`); if(tab) tab.classList.add('active'); }
+
+        function loadLectures(chapterId) {
+            const c = document.getElementById('lecturesList'); c.innerHTML = '<div class="spinner"></div>';
+            db.ref(`${DB_PATH}/${chapterId}/lectures`).on('value', (snap) => {
+                if(snap.exists()){
+                    const lec = []; snap.forEach(ch => lec.push({id: ch.key, ...ch.val()})); lec.sort((a,b) => (a.order||0)-(b.order||0));
+                    if(!lec.length){ c.innerHTML = '<div class="empty-state"><i class="fas fa-play-circle"></i><h3>No Lectures</h3></div>'; return; }
+                    c.innerHTML = lec.map((l, i) => {
+                        const vid = extractYouTubeID(l.youtubeUrl), thumb = vid ? `https://img.youtube.com/vi/${vid}/mqdefault.jpg` : '';
+                        return `<div class="list-item" onclick="playLecture('${vid}', '${escapeHTML(l.title||'Lecture '+ (i+1)).replace(/'/g, "\\'")}')">${thumb ? `<img class="lecture-thumb" src="${thumb}">` : '<div style="width:120px;height:68px;background:#1e293b;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;"><i class="fas fa-play"></i></div>'}<div class="list-info"><strong>${escapeHTML(l.title||'Lecture '+ (i+1))}</strong><small>${escapeHTML(l.description||'Click to watch')}</small></div><div class="list-arrow"><i class="fas fa-play-circle fa-2x"></i></div></div>`;
+                    }).join('');
+                } else { c.innerHTML = '<div class="empty-state"><i class="fas fa-play-circle"></i><h3>No Lectures Yet</h3></div>'; }
+            });
+        }
+        function extractYouTubeID(url) { if(!url) return null; const p = [/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^#&?]{11})/, /^([a-zA-Z0-9_-]{11})$/]; for(const pt of p){ const m = url.match(pt); if(m) return m[1]; } return null; }
+        function playLecture(vid, title) { if(!vid) return; const c = document.getElementById('lecturesList'); _lecturesBackup = c.innerHTML; c.innerHTML = `<button class="back-btn" onclick="backToLectures()"><i class="fas fa-arrow-left"></i> Back</button><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${vid}?autoplay=1&rel=0" allowfullscreen></iframe></div><h4 style="margin-top:10px;">▶ ${title}</h4>`; document.getElementById('modalTitle').textContent = '🎥 ' + title; }
+        function backToLectures() { if(_lecturesBackup){ document.getElementById('lecturesList').innerHTML = _lecturesBackup; _lecturesBackup = null; } const ch = allChapters.find(c => c.id === currentChapterId); if(ch) document.getElementById('modalTitle').textContent = ch.title || 'Chapter'; }
+
+        function loadNotes(chapterId) {
+            const c = document.getElementById('notesList'); c.innerHTML = '<div class="spinner"></div>';
+            db.ref(`${DB_PATH}/${chapterId}/notes`).on('value', (snap) => {
+                if(snap.exists()){
+                    const notes = []; snap.forEach(ch => notes.push({id: ch.key, ...ch.val()})); notes.sort((a,b) => (a.order||0)-(b.order||0));
+                    if(!notes.length){ c.innerHTML = '<div class="empty-state"><i class="fas fa-file-pdf"></i><h3>No Notes</h3></div>'; return; }
+                    c.innerHTML = notes.map(n => `<div class="list-item" onclick="openPdfInBook('${n.pdfUrl}', '${escapeHTML(n.title).replace(/'/g, "\\'")}')"><div class="list-icon pdf"><i class="fas fa-file-pdf"></i></div><div class="list-info"><strong>${escapeHTML(n.title)}</strong><small>📖 Open in Book Reader</small></div><div class="list-arrow"><i class="fas fa-book-open fa-lg"></i></div></div>`).join('');
+                } else { c.innerHTML = '<div class="empty-state"><i class="fas fa-file-pdf"></i><h3>No Notes Yet</h3></div>'; }
+            });
+        }
+
+        function loadCBT(chapterId) {
+            const c = document.getElementById('cbtContainer'); c.innerHTML = '<div class="spinner"></div>';
+            db.ref(`${DB_PATH}/${chapterId}/cbt`).on('value', (snap) => {
+                if(snap.exists()){ const cbt = snap.val(); if(cbt.cbtUrl && cbt.cbtUrl.trim() !== ''){ c.innerHTML = `<div class="cbt-box"><i class="fas fa-brain" style="font-size:4rem;color:var(--primary);margin-bottom:16px;"></i><h3>CBT Exam Ready</h3><p style="color:var(--text-light);margin:8px 0 20px;">Test your reasoning skills</p><button class="cbt-btn" onclick="window.open('${cbt.cbtUrl}','_blank')"><i class="fas fa-play-circle"></i> Start Exam</button>${cbt.filename?`<p style="margin-top:12px;font-size:0.8rem;color:var(--text-light);">📁 ${cbt.filename}</p>`:''}</div>`; } else { c.innerHTML = '<div class="empty-state"><i class="fas fa-hourglass-half"></i><h3>Coming Soon</h3></div>'; } }
+                else { c.innerHTML = '<div class="empty-state"><i class="fas fa-hourglass-half"></i><h3>Coming Soon</h3></div>'; }
+            });
+        }
+
+        function loadImages(chapterId) {
+            const c = document.getElementById('imageGallery'); c.innerHTML = '<div class="spinner" style="grid-column:1/-1;"></div>';
+            db.ref(`${DB_PATH}/${chapterId}/images`).on('value', (snap) => {
+                if(snap.exists()){
+                    const imgs = []; snap.forEach(ch => imgs.push({id: ch.key, ...ch.val()}));
+                    if(!imgs.length){ c.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><h3>No Images</h3></div>'; return; }
+                    c.innerHTML = imgs.map((i, idx) => `<div class="gallery-item" onclick="openImageSwiper('${chapterId}', ${idx})" style="position:relative;"><img src="${i.url}" alt="${escapeHTML(i.title)}" loading="lazy"><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:white;padding:6px 8px;font-size:0.7rem;text-align:center;">${escapeHTML(i.title||'Image '+ (idx+1))}</div></div>`).join('');
+                } else { c.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-images"></i><h3>No Images</h3></div>'; }
+            });
+        }
+
+        // PDF Reader
+        function openPdfInBook(url, title) { if(!url) return; document.getElementById('pdfBookTitle').textContent = title||'PDF'; document.getElementById('pdfBookIframe').src = url+'#toolbar=0'; document.getElementById('pdfBookOverlay').classList.add('active'); document.body.style.overflow='hidden'; pdfZoomLevel=100; pdfIsDarkMode=false; pdfToolbarVisible=true; document.getElementById('pdfZoomLevel').textContent='100%'; document.getElementById('pdfBookContainer').classList.remove('dark-mode'); document.getElementById('pdfDarkModeBtn').classList.remove('active-btn'); document.getElementById('pdfToolbar').classList.remove('hidden'); document.getElementById('pdfBottomBar').classList.remove('hidden'); resetPdfToolbarTimeout(); }
+        function closePdfBook() { document.getElementById('pdfBookOverlay').classList.remove('active'); document.getElementById('pdfBookIframe').src=''; document.body.style.overflow=''; clearTimeout(pdfToolbarTimeout); }
+        function pdfZoomIn() { pdfZoomLevel = Math.min(pdfZoomLevel+25, 300); updatePdfZoom(); }
+        function pdfZoomOut() { pdfZoomLevel = Math.max(pdfZoomLevel-25, 50); updatePdfZoom(); }
+        function updatePdfZoom() { document.getElementById('pdfZoomLevel').textContent = pdfZoomLevel+'%'; document.getElementById('pdfBookIframe').style.transform = `scale(${pdfZoomLevel/100})`; }
+        function pdfToggleFullscreen() { const el = document.getElementById('pdfBookOverlay'); document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen().catch(()=>{}); }
+        function pdfToggleDarkMode() { pdfIsDarkMode=!pdfIsDarkMode; const c=document.getElementById('pdfBookContainer'), b=document.getElementById('pdfDarkModeBtn'); if(pdfIsDarkMode){c.classList.add('dark-mode');b.classList.add('active-btn');b.innerHTML='<i class="fas fa-sun"></i> Light';}else{c.classList.remove('dark-mode');b.classList.remove('active-btn');b.innerHTML='<i class="fas fa-moon"></i> Dark';} }
+        function pdfToggleToolbar() { pdfToolbarVisible=!pdfToolbarVisible; const t=document.getElementById('pdfToolbar'), bb=document.getElementById('pdfBottomBar'); if(pdfToolbarVisible){t.classList.remove('hidden');bb.classList.remove('hidden');resetPdfToolbarTimeout();}else{t.classList.add('hidden');bb.classList.add('hidden');} }
+        function resetPdfToolbarTimeout() { clearTimeout(pdfToolbarTimeout); pdfToolbarTimeout = setTimeout(() => { if(pdfToolbarVisible){ document.getElementById('pdfToolbar').classList.add('hidden'); document.getElementById('pdfBottomBar').classList.add('hidden'); pdfToolbarVisible=false; } }, 4000); }
+
+        // Image Swiper
+        function openImageSwiper(chapterId, startIndex) {
+            const c=document.getElementById('imageSwiperWrapper'), ts=document.getElementById('imageThumbStrip'); c.innerHTML=''; ts.innerHTML=''; allChapterImages=[];
+            db.ref(`${DB_PATH}/${chapterId}/images`).once('value', (snap) => {
+                if(snap.exists()){ snap.forEach(ch => allChapterImages.push({id:ch.key,...ch.val()})); if(!allChapterImages.length) return;
+                    allChapterImages.forEach((img,idx)=>{ c.innerHTML+=`<div class="swiper-slide"><img src="${img.url}" class="swiper-image" onclick="toggleImageZoom()"><div class="slide-caption">${escapeHTML(img.title||'Image '+ (idx+1))}</div></div>`; ts.innerHTML+=`<div class="thumb-item ${idx===startIndex?'active-thumb':''}" onclick="imageSwiperInstance.slideTo(${idx})"><img src="${img.url}"></div>`; });
+                    document.getElementById('imageSwiperOverlay').classList.add('active'); document.body.style.overflow='hidden';
+                    if(imageSwiperInstance) imageSwiperInstance.destroy();
+                    imageSwiperInstance = new Swiper('#imageSwiper', { initialSlide: startIndex, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, pagination: { el: '.swiper-pagination', clickable: true }, keyboard: { enabled: true }, on: { slideChange: function() { updateImageCounter(); updateActiveThumb(); } } });
+                    updateImageCounter();
+                }
+            });
+        }
+        function closeImageSwiper() { document.getElementById('imageSwiperOverlay').classList.remove('active'); document.body.style.overflow=''; if(imageSwiperInstance){imageSwiperInstance.destroy();imageSwiperInstance=null;} }
+        function updateImageCounter() { if(!imageSwiperInstance) return; const cur=imageSwiperInstance.activeIndex+1, tot=allChapterImages.length; document.getElementById('imgCounter').textContent=`${cur} / ${tot}`; if(allChapterImages[imageSwiperInstance.activeIndex]) document.getElementById('imgTitleDisplay').textContent = allChapterImages[imageSwiperInstance.activeIndex].title||`Image ${cur}`; }
+        function updateActiveThumb() { if(!imageSwiperInstance) return; document.querySelectorAll('.thumb-item').forEach((t,i)=>{ t.classList.toggle('active-thumb', i===imageSwiperInstance.activeIndex); if(i===imageSwiperInstance.activeIndex) t.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }); }
+        function toggleImageZoom() { if(!imageSwiperInstance) return; const img=document.querySelector('.swiper-slide-active img'); if(img) img.classList.toggle('zoomed'); }
+
+        function escapeHTML(str) { if(!str) return ''; const d=document.createElement('div'); d.textContent=str; return d.innerHTML; }
+        function updateStats() { document.getElementById('totalChapters').textContent=allChapters.length; document.getElementById('totalNotes').textContent=totalNotesCount; document.getElementById('totalLectures').textContent=totalLecturesCount; document.getElementById('totalCBT').textContent=totalCBTCount; }
+
+        document.addEventListener('DOMContentLoaded', () => { loadChapters(); });
+        document.addEventListener('DOMContentLoaded', () => { const pc=document.getElementById('pdfBookContainer'); if(pc) pc.addEventListener('click', (e) => { if(e.target===pc||e.target.tagName==='IFRAME') pdfToggleToolbar(); }); });
+        document.addEventListener('keydown', (e) => {
+            const po=document.getElementById('pdfBookOverlay'), io=document.getElementById('imageSwiperOverlay');
+            if(po.classList.contains('active')){ switch(e.key){ case'+':case'=':pdfZoomIn();break;case'-':pdfZoomOut();break;case'f':pdfToggleFullscreen();break;case'd':pdfToggleDarkMode();break;case't':pdfToggleToolbar();break; } }
+            if(io.classList.contains('active')&&imageSwiperInstance){ switch(e.key){ case'ArrowLeft':imageSwiperInstance.slidePrev();break;case'ArrowRight':imageSwiperInstance.slideNext();break;case'z':toggleImageZoom();break; } }
+        });
+    </script>
+</body>
+</html>
