@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>THP Coaching | Calendar CBT</title>
+  <!-- Tailwind via CDN + custom layer -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- MathJax / KaTeX support -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <!-- Fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      transition: background-color 0.3s, color 0.2s;
+    }
+    .dark body { background-color: #0f172a; }
+    .btn-ripple {
+      position: relative;
+      overflow: hidden;
+      transform: translate3d(0,0,0);
+    }
+    .btn-ripple:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      transform: scale(10,10);
+      opacity: 0;
+      transition: transform .4s, opacity 1s;
+    }
+    .btn-ripple:active:after {
+      transform: scale(0,0);
+      opacity: .3;
+      transition: 0s;
+    }
+    .question-palette-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+    .dark .question-palette-btn {
+      background-color: #334155;
+      color: #e2e8f0;
+    }
+    .answered { background-color: #10b981 !important; color: white !important; }
+    .marked-review { background-color: #f59e0b !important; color: white !important; }
+    .not-visited { background-color: #cbd5e1; }
+    .dark .not-visited { background-color: #475569; }
+    .current-question { ring: 3px solid #3b82f6; border: 2px solid #2563eb; }
+    @media (max-width: 640px) {
+      .question-palette-btn { width: 2.2rem; height: 2.2rem; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen">
+  <!-- Loading screen -->
+  <div id="loadingScreen" class="fixed inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-50 transition-opacity duration-500">
+    <div class="flex flex-col items-center gap-3">
+      <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      <span class="text-xl font-semibold text-indigo-700 dark:text-indigo-300">THP Coaching</span>
+      <p class="text-sm text-slate-500">Loading your exam...</p>
+    </div>
+  </div>
+
+  <!-- Main App Container (hidden until load) -->
+  <div id="appRoot" class="hidden flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">THP</div>
+        <div>
+          <h1 class="text-lg font-bold leading-tight">Calendar Practice Set</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">25 Questions | 60 Min</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-700 px-3 py-1.5 rounded-full text-sm font-mono">
+          <span class="text-red-500">⏳</span> <span id="timerDisplay">01:00:00</span>
+        </div>
+        <button id="langToggle" class="bg-slate-200 dark:bg-slate-600 px-3 py-1.5 rounded text-xs font-semibold">हिंदी</button>
+        <button id="darkModeToggle" class="bg-slate-200 dark:bg-slate-600 p-2 rounded-full text-sm">🌓</button>
+      </div>
+    </header>
+
+    <!-- Mobile timer bar -->
+    <div class="sm:hidden bg-indigo-50 dark:bg-slate-700 px-3 py-2 text-center font-mono font-bold text-red-600 dark:text-red-400 border-b">
+      <span id="timerMobile">01:00:00</span>
+    </div>
+
+    <!-- Main layout -->
+    <div class="flex flex-1 overflow-hidden">
+      <!-- Question Palette Sidebar -->
+      <aside class="hidden lg:flex flex-col w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-4 gap-4 overflow-y-auto">
+        <h3 class="font-semibold text-sm uppercase tracking-wide text-slate-500">Question Palette</h3>
+        <div id="paletteGrid" class="grid grid-cols-5 gap-2">
+          <!-- dynamic palette buttons -->
+        </div>
+        <div class="mt-4 space-y-2 text-xs">
+          <div class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-green-500"></span> Answered</div>
+          <div class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-amber-500"></span> Marked for Review</div>
+          <div class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-slate-300 dark:bg-slate-600"></span> Not Answered</div>
+          <div class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-white dark:bg-slate-700 border"></span> Not Visited</div>
+        </div>
+      </aside>
+
+      <!-- Question & Actions Area -->
+      <main class="flex-1 flex flex-col p-4 md:p-6 overflow-y-auto">
+        <!-- Progress & status -->
+        <div class="flex flex-wrap items-center justify-between mb-4 gap-2">
+          <div class="flex gap-2 text-sm font-medium">
+            <span class="bg-indigo-100 dark:bg-indigo-900 px-3 py-1 rounded-full">Q <span id="currentQNum">1</span>/25</span>
+            <span class="bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full" id="questionStatus">Not Visited</span>
+          </div>
+          <div class="flex gap-2 text-xs">
+            <span class="text-green-600 dark:text-green-400">✅ Answered: <span id="answeredCount">0</span></span>
+            <span class="text-amber-600 dark:text-amber-400">📝 Review: <span id="reviewCount">0</span></span>
+            <span class="text-slate-500">❌ Not Answered: <span id="notAnsweredCount">25</span></span>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-slate-200 dark:border-slate-700 p-5 md:p-6 mb-4 transition-all">
+          <div id="questionText" class="text-lg font-medium mb-6 leading-relaxed">
+            <!-- question rendered here -->
+          </div>
+          <div id="optionsContainer" class="space-y-3">
+            <!-- dynamic options -->
+          </div>
+          <!-- Numerical / fill answer -->
+          <div id="numericalInputArea" class="hidden mt-4">
+            <input type="text" id="numericalAnswer" class="w-full md:w-1/2 p-3 border rounded-lg dark:bg-slate-700 dark:border-slate-600" placeholder="Enter your answer">
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap items-center gap-3 mt-2">
+          <button id="markReviewBtn" class="btn-ripple bg-amber-500 hover:bg-amber-600 text-white px-4 py-2.5 rounded-lg font-medium text-sm shadow">📌 Mark for Review</button>
+          <button id="clearResponseBtn" class="btn-ripple bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 px-4 py-2.5 rounded-lg font-medium text-sm">🧹 Clear</button>
+          <button id="saveNextBtn" class="btn-ripple bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm ml-auto shadow">Save & Next</button>
+        </div>
+        <div class="flex justify-between mt-4">
+          <button id="prevBtn" class="btn-ripple bg-slate-300 dark:bg-slate-600 hover:bg-slate-400 px-4 py-2 rounded-lg text-sm">← Previous</button>
+          <button id="nextBtn" class="btn-ripple bg-slate-300 dark:bg-slate-600 hover:bg-slate-400 px-4 py-2 rounded-lg text-sm">Next →</button>
+        </div>
+        <div class="mt-6 text-right">
+          <button id="submitExamBtn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-lg font-bold shadow-lg">Submit Exam</button>
+        </div>
+      </main>
+    </div>
+    <footer class="bg-white dark:bg-slate-800 border-t text-center py-2 text-xs text-slate-500 dark:text-slate-400">
+      Powered by THP Coaching | © 2026 CBT Engine
+    </footer>
+  </div>
+
+  <!-- Result Modal -->
+  <div id="resultModal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden overflow-y-auto p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-3xl w-full p-6 shadow-2xl max-h-[90vh] overflow-auto">
+      <h2 class="text-2xl font-bold mb-4 text-center">📊 Exam Result</h2>
+      <div id="resultContent"></div>
+      <div class="flex gap-3 justify-end mt-6">
+        <button id="exportPdfBtn" class="bg-gray-200 dark:bg-slate-600 px-4 py-2 rounded">PDF</button>
+        <button id="exportExcelBtn" class="bg-green-100 dark:bg-green-800 px-4 py-2 rounded">Excel</button>
+        <button id="exportCsvBtn" class="bg-blue-100 dark:bg-blue-800 px-4 py-2 rounded">CSV</button>
+        <button id="closeResultBtn" class="bg-indigo-600 text-white px-5 py-2 rounded">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== EDITABLE EXAM CONFIG ==========
+    const EXAM_CONFIG = {
+      title: "Calendar Practice Set",
+      totalTimeMinutes: 60,
+      negativeMarking: 0.25,  // 1/4 negative
+      marksPerQuestion: 1,
+      questions: [
+        { id:1, text:"26 January 1950 was a:", options:["Monday","Tuesday","Thursday","Friday"], correct:"Thursday", type:"mcq" },
+        { id:2, text:"15 August 1947 was:", options:["Wednesday","Thursday","Friday","Saturday"], correct:"Friday", type:"mcq" },
+        { id:3, text:"Which day was 2 October 1869?", options:["Friday","Saturday","Sunday","Monday"], correct:"Saturday", type:"mcq" },
+        { id:4, text:"What day was 1 January 2000?", options:["Friday","Saturday","Sunday","Monday"], correct:"Saturday", type:"mcq" },
+        { id:5, text:"Which day was 29 February 2024?", options:["Wednesday","Thursday","Friday","Saturday"], correct:"Thursday", type:"mcq" },
+        { id:6, text:"Which day was 31 December 1999?", options:["Thursday","Friday","Saturday","Sunday"], correct:"Friday", type:"mcq" },
+        { id:7, text:"14 November 1889 was:", options:["Thursday","Friday","Saturday","Sunday"], correct:"Thursday", type:"mcq" },
+        { id:8, text:"Which day was 1 March 1900?", options:["Wednesday","Thursday","Friday","Saturday"], correct:"Thursday", type:"mcq" },
+        { id:9, text:"What day was 25 December 2023?", options:["Sunday","Monday","Tuesday","Wednesday"], correct:"Monday", type:"mcq" },
+        { id:10, text:"Which day was 5 June 1972?", options:["Monday","Tuesday","Wednesday","Thursday"], correct:"Monday", type:"mcq" },
+        { id:11, text:"If 15 August is Monday, what day will be 31 August?", options:["Tuesday","Wednesday","Thursday","Friday"], correct:"Wednesday", type:"mcq" },
+        { id:12, text:"If 1 January is Friday, then 31 December of the same (non-leap) year will be:", options:["Friday","Saturday","Sunday","Monday"], correct:"Friday", type:"mcq" },
+        { id:13, text:"If today is Wednesday, what day will it be after 100 days?", options:["Thursday","Friday","Saturday","Sunday"], correct:"Friday", type:"mcq" },
+        { id:14, text:"If today is Monday, what day was 75 days ago?", options:["Friday","Saturday","Sunday","Monday"], correct:"Saturday", type:"mcq" },
+        { id:15, text:"If the day before yesterday was Thursday, what day will be tomorrow?", options:["Saturday","Sunday","Monday","Tuesday"], correct:"Sunday", type:"mcq" },
+        { id:16, text:"Which of the following is a Leap Year?", options:["1700","1800","2000","2100"], correct:"2000", type:"mcq" },
+        { id:17, text:"Number of odd days in a Leap Year:", options:["0","1","2","3"], correct:"2", type:"mcq" },
+        { id:18, text:"Which century year is a Leap Year?", options:["1900","2000","2100","2200"], correct:"2000", type:"mcq" },
+        { id:19, text:"If 1st January is Tuesday, then 1st February will be:", options:["Thursday","Friday","Saturday","Sunday"], correct:"Friday", type:"mcq" },
+        { id:20, text:"If 1 March is Sunday in a Leap Year, then 1 November will be:", options:["Saturday","Sunday","Monday","Tuesday"], correct:"Sunday", type:"mcq" },
+        { id:21, text:"Which month always has exactly 30 days?", options:["February","April","August","December"], correct:"April", type:"mcq" },
+        { id:22, text:"If 10 January is Wednesday, then 10 February will be:", options:["Friday","Saturday","Sunday","Monday"], correct:"Saturday", type:"mcq" },
+        { id:23, text:"If 31st December is Monday, then 1st January of the next year will be:", options:["Monday","Tuesday","Wednesday","Sunday"], correct:"Tuesday", type:"mcq" },
+        { id:24, text:"How many odd days are there in 100 years?", options:["3","4","5","6"], correct:"5", type:"mcq" },
+        { id:25, text:"If Republic Day (26 January) falls on Friday, then Independence Day (15 August) in the same non-leap year will fall on:", options:["Tuesday","Wednesday","Thursday","Friday"], correct:"Wednesday", type:"mcq" }
+      ]
+    };
+
+    // Global state
+    let currentLang = 'en';
+    let darkMode = false;
+    let examStarted = false;
+    let timerInterval;
+    let remainingSeconds = EXAM_CONFIG.totalTimeMinutes * 60;
+    let currentQuestionIndex = 0;
+    let questions = [];
+    let userAnswers = {}; // key: questionId, value: { answer, status: 'answered'|'review'|'clear' }
+    let questionStatusMap = {}; // 'not-visited','visited','answered','review'
+    let examSubmitted = false;
+
+    // LocalStorage keys
+    const STORAGE_KEY = 'thp_cbt_calendar_state';
+
+    // Utility: shuffle array
+    const shuffleArray = (arr) => {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    // Initialize or load state
+    function initializeExam() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.questions && parsed.remainingSeconds && !parsed.submitted) {
+            questions = parsed.questions;
+            remainingSeconds = parsed.remainingSeconds;
+            userAnswers = parsed.userAnswers || {};
+            questionStatusMap = parsed.questionStatusMap || {};
+            currentQuestionIndex = parsed.currentIndex || 0;
+            darkMode = parsed.darkMode || false;
+            currentLang = parsed.lang || 'en';
+            return true;
+          }
+        } catch (e) {}
+      }
+      // Fresh start
+      questions = EXAM_CONFIG.questions.map(q => ({...q, options: [...q.options]}));
+      // Randomize order
+      questions = shuffleArray(questions);
+      userAnswers = {};
+      questionStatusMap = {};
+      questions.forEach(q => { questionStatusMap[q.id] = 'not-visited'; });
+      remainingSeconds = EXAM_CONFIG.totalTimeMinutes * 60;
+      currentQuestionIndex = 0;
+      return false;
+    }
+
+    function saveStateToLocal() {
+      if (examSubmitted) return;
+      const state = {
+        questions,
+        remainingSeconds,
+        userAnswers,
+        questionStatusMap,
+        currentIndex: currentQuestionIndex,
+        darkMode,
+        lang: currentLang,
+        submitted: examSubmitted
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    // Timer
+    function updateTimerDisplay() {
+      const hrs = Math.floor(remainingSeconds / 3600);
+      const mins = Math.floor((remainingSeconds % 3600) / 60);
+      const secs = remainingSeconds % 60;
+      const disp = `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+      document.getElementById('timerDisplay').innerText = disp;
+      document.getElementById('timerMobile').innerText = disp;
+    }
+
+    function startTimer() {
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        if (remainingSeconds <= 0) {
+          clearInterval(timerInterval);
+          submitExam(true);
+          return;
+        }
+        remainingSeconds--;
+        updateTimerDisplay();
+        saveStateToLocal();
+      }, 1000);
+    }
+
+    // Render current question
+    function renderQuestion() {
+      if (!questions.length) return;
+      const q = questions[currentQuestionIndex];
+      document.getElementById('currentQNum').innerText = currentQuestionIndex + 1;
+      const status = questionStatusMap[q.id] || 'not-visited';
+      document.getElementById('questionStatus').innerText = status.replace('-',' ');
+      document.getElementById('questionText').innerHTML = `<span class="font-semibold">Q${currentQuestionIndex+1}.</span> ${q.text}`;
+      
+      const optContainer = document.getElementById('optionsContainer');
+      optContainer.innerHTML = '';
+      document.getElementById('numericalInputArea').classList.add('hidden');
+      
+      if (q.type === 'mcq' || !q.type) {
+        const selectedAns = userAnswers[q.id]?.answer || '';
+        q.options.forEach((opt, idx) => {
+          const letter = String.fromCharCode(65 + idx);
+          const isSelected = (selectedAns === opt);
+          const div = document.createElement('div');
+          div.className = `flex items-center p-3 rounded-xl border cursor-pointer transition-all hover:bg-indigo-50 dark:hover:bg-slate-700 ${isSelected ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/40 ring-2 ring-indigo-400' : 'border-slate-200 dark:border-slate-600'}`;
+          div.innerHTML = `<span class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-bold mr-3">${letter}</span><span>${opt}</span>`;
+          div.addEventListener('click', () => selectOption(q.id, opt));
+          optContainer.appendChild(div);
+        });
+      } else if (q.type === 'numerical' || q.type === 'fill') {
+        document.getElementById('numericalInputArea').classList.remove('hidden');
+        const input = document.getElementById('numericalAnswer');
+        input.value = userAnswers[q.id]?.answer || '';
+        input.oninput = () => {
+          const val = input.value.trim();
+          if (val) {
+            userAnswers[q.id] = { answer: val, status: 'answered' };
+            questionStatusMap[q.id] = 'answered';
+          } else {
+            delete userAnswers[q.id];
+            questionStatusMap[q.id] = 'visited';
+          }
+          saveStateToLocal();
+          updateCounters();
+          renderPalette();
+        };
+      }
+      updatePaletteHighlight();
+      updateCounters();
+      renderPalette();
+    }
+
+    function selectOption(qId, optionText) {
+      userAnswers[qId] = { answer: optionText, status: 'answered' };
+      questionStatusMap[qId] = 'answered';
+      saveStateToLocal();
+      renderQuestion();
+    }
+
+    function markForReview() {
+      const q = questions[currentQuestionIndex];
+      if (userAnswers[q.id]) {
+        userAnswers[q.id].status = 'review';
+        questionStatusMap[q.id] = 'review';
+      } else {
+        userAnswers[q.id] = { answer: '', status: 'review' };
+        questionStatusMap[q.id] = 'review';
+      }
+      saveStateToLocal();
+      renderQuestion();
+      moveNext();
+    }
+
+    function clearResponse() {
+      const q = questions[currentQuestionIndex];
+      delete userAnswers[q.id];
+      questionStatusMap[q.id] = 'visited';
+      saveStateToLocal();
+      renderQuestion();
+    }
+
+    function moveNext() {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        if (questionStatusMap[questions[currentQuestionIndex].id] === 'not-visited') {
+          questionStatusMap[questions[currentQuestionIndex].id] = 'visited';
+        }
+        saveStateToLocal();
+        renderQuestion();
+      }
+    }
+
+    function movePrev() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        saveStateToLocal();
+        renderQuestion();
+      }
+    }
+
+    function renderPalette() {
+      const grid = document.getElementById('paletteGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'question-palette-btn';
+        const stat = questionStatusMap[q.id] || 'not-visited';
+        if (stat === 'answered') btn.classList.add('answered');
+        else if (stat === 'review') btn.classList.add('marked-review');
+        else if (stat === 'not-visited') btn.classList.add('not-visited');
+        if (idx === currentQuestionIndex) btn.classList.add('current-question');
+        btn.innerText = idx + 1;
+        btn.addEventListener('click', () => {
+          currentQuestionIndex = idx;
+          if (questionStatusMap[q.id] === 'not-visited') questionStatusMap[q.id] = 'visited';
+          saveStateToLocal();
+          renderQuestion();
+        });
+        grid.appendChild(btn);
+      });
+    }
+
+    function updatePaletteHighlight() {
+      renderPalette();
+    }
+
+    function updateCounters() {
+      let answered = 0, review = 0, notAns = 0;
+      questions.forEach(q => {
+        const st = questionStatusMap[q.id] || 'not-visited';
+        if (st === 'answered') answered++;
+        else if (st === 'review') review++;
+        else if (st === 'visited' || st === 'not-visited') notAns++;
+      });
+      document.getElementById('answeredCount').innerText = answered;
+      document.getElementById('reviewCount').innerText = review;
+      document.getElementById('notAnsweredCount').innerText = notAns;
+    }
+
+    function submitExam(auto = false) {
+      if (examSubmitted) return;
+      clearInterval(timerInterval);
+      examSubmitted = true;
+      localStorage.removeItem(STORAGE_KEY);
+      // Calculate results
+      let score = 0, correctCount = 0, wrongCount = 0, unattempted = 0;
+      const details = [];
+      questions.forEach(q => {
+        const user = userAnswers[q.id];
+        const correctAns = q.correct;
+        const userAns = user?.answer || '';
+        const isCorrect = (userAns === correctAns);
+        if (user && userAns) {
+          if (isCorrect) { correctCount++; score += EXAM_CONFIG.marksPerQuestion; }
+          else { wrongCount++; score -= EXAM_CONFIG.negativeMarking; }
+        } else {
+          unattempted++;
+        }
+        details.push({
+          qId: q.id,
+          text: q.text,
+          userAnswer: userAns || '--',
+          correctAnswer: correctAns,
+          isCorrect
+        });
+      });
+      document.getElementById('resultContent').innerHTML = `
+        <div class="grid grid-cols-2 gap-3 text-center mb-4">
+          <div class="bg-green-100 dark:bg-green-900 p-3 rounded-xl"><div class="text-2xl font-bold">${correctCount}</div>Correct</div>
+          <div class="bg-red-100 dark:bg-red-900 p-3 rounded-xl"><div class="text-2xl font-bold">${wrongCount}</div>Wrong</div>
+          <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-xl"><div class="text-2xl font-bold">${unattempted}</div>Unattempted</div>
+          <div class="bg-indigo-100 dark:bg-indigo-900 p-3 rounded-xl"><div class="text-2xl font-bold">${score.toFixed(2)}</div>Score</div>
+        </div>
+        <div class="text-sm max-h-60 overflow-y-auto">${details.map(d=>`<div class="border-b py-1">Q${d.qId}: ${d.text.substring(0,40)}... <span class="${d.isCorrect?'text-green-600':'text-red-500'}">${d.userAnswer} ${d.isCorrect?'✓':'✗'}</span></div>`).join('')}</div>
+      `;
+      document.getElementById('resultModal').classList.remove('hidden');
+    }
+
+    // Export functions (simplified)
+    function exportToCsv() {
+      let csv = "Question,Your Answer,Correct,Result\n";
+      questions.forEach(q => {
+        const ua = userAnswers[q.id]?.answer || '';
+        csv += `"${q.text}",${ua},${q.correct},${ua===q.correct?'Correct':'Wrong'}\n`;
+      });
+      downloadBlob(csv, 'result.csv', 'text/csv');
+    }
+
+    function downloadBlob(content, filename, type) {
+      const blob = new Blob([content], {type});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+    }
+
+    // UI toggles
+    document.addEventListener('DOMContentLoaded', () => {
+      const loaded = initializeExam();
+      document.getElementById('loadingScreen').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('appRoot').classList.remove('hidden');
+      }, 400);
+      
+      if (darkMode) document.documentElement.classList.add('dark');
+      startTimer();
+      renderQuestion();
+      renderPalette();
+
+      // Event listeners
+      document.getElementById('saveNextBtn').addEventListener('click', () => {
+        const q = questions[currentQuestionIndex];
+        if (userAnswers[q.id]?.answer) {
+          questionStatusMap[q.id] = 'answered';
+        } else if (!userAnswers[q.id]) {
+          questionStatusMap[q.id] = 'visited';
+        }
+        saveStateToLocal();
+        moveNext();
+      });
+      document.getElementById('markReviewBtn').addEventListener('click', markForReview);
+      document.getElementById('clearResponseBtn').addEventListener('click', clearResponse);
+      document.getElementById('prevBtn').addEventListener('click', movePrev);
+      document.getElementById('nextBtn').addEventListener('click', moveNext);
+      document.getElementById('submitExamBtn').addEventListener('click', ()=> submitExam(false));
+      document.getElementById('darkModeToggle').addEventListener('click', ()=>{
+        darkMode = !darkMode;
+        document.documentElement.classList.toggle('dark', darkMode);
+        saveStateToLocal();
+      });
+      document.getElementById('langToggle').addEventListener('click', ()=>{
+        currentLang = currentLang === 'en' ? 'hi' : 'en';
+        document.getElementById('langToggle').innerText = currentLang==='en'?'हिंदी':'English';
+        saveStateToLocal();
+      });
+      document.getElementById('closeResultBtn').addEventListener('click', ()=>{
+        document.getElementById('resultModal').classList.add('hidden');
+      });
+      document.getElementById('exportCsvBtn').addEventListener('click', exportToCsv);
+      document.getElementById('exportExcelBtn').addEventListener('click', ()=> exportToCsv());
+      document.getElementById('exportPdfBtn').addEventListener('click', ()=> window.print());
+
+      // Disable right-click / copy
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.addEventListener('copy', e => e.preventDefault());
+      document.addEventListener('cut', e => e.preventDefault());
+      document.addEventListener('selectstart', e => e.preventDefault());
+      
+      // Tab switch detection
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && !examSubmitted) {
+          alert('Warning: Tab switch detected. Please stay on the exam page.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
