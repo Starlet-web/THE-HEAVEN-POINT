@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SYF Admin Login</title>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .login-card {
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(20px);
+      padding: 48px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+    
+    .login-card h1 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 2rem;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+    
+    .login-card p {
+      color: #94a3b8;
+      margin-bottom: 24px;
+    }
+    
+    .info-box {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+      color: #93c5fd;
+      line-height: 1.6;
+    }
+    
+    .info-box strong {
+      color: #60a5fa;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(15, 23, 42, 0.8);
+      color: #f1f5f9;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+    }
+    
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      padding: 10px;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 8px;
+      display: none;
+    }
+    
+    .success-msg {
+      color: #10b981;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      padding: 10px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 8px;
+      display: none;
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    
+    .back-link:hover {
+      color: #3b82f6;
+    }
+    
+    .setup-card {
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(20px);
+      padding: 32px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+    
+    .setup-card h2 {
+      font-family: 'Manrope', sans-serif;
+      color: #f1f5f9;
+      margin-bottom: 16px;
+      font-size: 1.5rem;
+    }
+    
+    .setup-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .setup-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
+    }
+    
+    .divider {
+      text-align: center;
+      margin: 24px 0;
+      color: #64748b;
+      position: relative;
+    }
+    
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Setup Card (for first-time admin creation) -->
+  <div class="setup-card" id="setupCard">
+    <h2>🔧 First Time Setup</h2>
+    <p style="color: #94a3b8; margin-bottom: 20px; font-size: 0.9rem;">
+      Agar aapne abhi tak admin account create nahi kiya hai, to yahan se create karein.
+    </p>
+    
+    <div class="form-group">
+      <label>Admin Email</label>
+      <input type="email" class="form-input" id="setupEmail" placeholder="admin@syf.com" value="admin@syf.com">
+    </div>
+    
+    <div class="form-group">
+      <label>Admin Password</label>
+      <input type="password" class="form-input" id="setupPassword" placeholder="Strong password (min 8 characters)" value="Admin@123456">
+    </div>
+    
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" class="form-input" id="setupConfirmPassword" placeholder="Confirm password" value="Admin@123456">
+    </div>
+    
+    <div class="error-msg" id="setupError"></div>
+    <div class="success-msg" id="setupSuccess"></div>
+    
+    <button class="setup-btn" id="setupBtn" onclick="createAdminAccount()">
+      Create Admin Account
+    </button>
+    
+    <div class="divider">OR</div>
+    
+    <p style="text-align: center; color: #94a3b8; font-size: 0.9rem;">
+      Already have admin account?
+      <a href="#" onclick="showLoginCard()" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Login here</a>
+    </p>
+  </div>
+
+  <!-- Login Card -->
+  <div class="login-card" id="loginCard" style="display: none;">
+    <h1>🔐 Admin Login</h1>
+    <p>Access the SYF management panel</p>
+    
+    <div class="info-box">
+      <strong>Default Admin Credentials:</strong><br>
+      Email: admin@syf.com<br>
+      Password: Admin@123456<br>
+      <small style="color: #fbbf24;">⚠️ Please change password after first login</small>
+    </div>
+    
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-input" id="adminEmail" placeholder="admin@syf.com" value="admin@syf.com">
+    </div>
+    
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" class="form-input" id="adminPassword" placeholder="Enter password" value="Admin@123456">
+    </div>
+    
+    <div class="error-msg" id="loginError"></div>
+    
+    <button class="login-btn" id="loginBtn" onclick="adminLogin()">
+      Sign In as Admin
+    </button>
+    
+    <div class="divider">OR</div>
+    
+    <p style="text-align: center; color: #94a3b8; font-size: 0.9rem;">
+      Need to create admin account?
+      <a href="#" onclick="showSetupCard()" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Setup here</a>
+    </p>
+    
+    <a href="index.html" class="back-link">← Back to Website</a>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
+      authDomain: "starlet-registor.firebaseapp.com",
+      databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com",
+      projectId: "starlet-registor",
+      storageBucket: "starlet-registor.firebasestorage.app",
+      messagingSenderId: "904193225045",
+      appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function showSetupCard() {
+      document.getElementById('setupCard').style.display = 'block';
+      document.getElementById('loginCard').style.display = 'none';
+    }
+
+    function showLoginCard() {
+      document.getElementById('setupCard').style.display = 'none';
+      document.getElementById('loginCard').style.display = 'block';
+    }
+
+    async function createAdminAccount() {
+      const email = document.getElementById('setupEmail').value.trim();
+      const password = document.getElementById('setupPassword').value;
+      const confirmPassword = document.getElementById('setupConfirmPassword').value;
+      const errorDiv = document.getElementById('setupError');
+      const successDiv = document.getElementById('setupSuccess');
+      const btn = document.getElementById('setupBtn');
+
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+
+      // Validation
+      if (!email || !password) {
+        errorDiv.textContent = '❌ Please fill all fields';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      if (password.length < 8) {
+        errorDiv.textContent = '❌ Password must be at least 8 characters';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        errorDiv.textContent = '❌ Passwords do not match';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Creating Admin Account...';
+
+      try {
+        // Create admin user
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        
+        successDiv.innerHTML = `
+          ✅ Admin account created successfully!<br>
+          <small>Email: ${email}</small><br>
+          <small>You can now login with these credentials.</small>
+        `;
+        successDiv.style.display = 'block';
+
+        // Switch to login card after 2 seconds
+        setTimeout(() => {
+          document.getElementById('adminEmail').value = email;
+          document.getElementById('adminPassword').value = '';
+          showLoginCard();
+        }, 2000);
+
+      } catch (error) {
+        let errorMessage = '❌ ';
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            errorMessage += 'This email is already registered. Please login instead.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage += 'Invalid email format.';
+            break;
+          case 'auth/weak-password':
+            errorMessage += 'Password is too weak. Use at least 8 characters.';
+            break;
+          default:
+            errorMessage += error.message;
+        }
+        errorDiv.textContent = errorMessage;
+        errorDiv.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Create Admin Account';
+      }
+    }
+
+    async function adminLogin() {
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value;
+      const errorDiv = document.getElementById('loginError');
+      const btn = document.getElementById('loginBtn');
+
+      errorDiv.style.display = 'none';
+
+      if (!email || !password) {
+        errorDiv.textContent = '❌ Please fill all fields';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span> Signing In...';
+
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        
+        // Successful login - redirect to admin dashboard
+        window.location.href = 'admin.html';
+        
+      } catch (error) {
+        let errorMessage = '❌ ';
+        switch (error.code) {
+          case 'auth/user-not-found':
+            errorMessage += 'No account found with this email. Please create admin account first.';
+            break;
+          case 'auth/wrong-password':
+            errorMessage += 'Incorrect password. Please try again.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage += 'Invalid email format.';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage += 'Too many attempts. Please try again later.';
+            break;
+          default:
+            errorMessage += error.message;
+        }
+        errorDiv.textContent = errorMessage;
+        errorDiv.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Sign In as Admin';
+      }
+    }
+
+    // Enter key to submit
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const loginCard = document.getElementById('loginCard');
+        if (loginCard.style.display !== 'none') {
+          adminLogin();
+        } else {
+          createAdminAccount();
+        }
+      }
+    });
+
+    // Check if already logged in
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, redirect to admin dashboard
+        const adminEmails = ['admin@syf.com'];
+        if (adminEmails.includes(user.email)) {
+          window.location.href = 'admin.html';
+        } else {
+          auth.signOut();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
