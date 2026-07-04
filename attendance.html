@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>THP Admin • Complete Student Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #818cf8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: rgba(255,255,255,0.85);
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 10px 30px rgba(0,0,0,0.06);
+      --radius: 1.2rem;
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8ecfc 50%, #f5f3ff 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      color: var(--text);
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+    .login-box {
+      max-width: 420px;
+      margin: 4rem auto;
+      text-align: center;
+      background: white;
+      padding: 2.5rem 2rem;
+      border-radius: 2rem;
+      box-shadow: var(--shadow);
+    }
+    .login-box h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .login-box p { color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.9rem; }
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .input-group input {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
+      border: 2px solid var(--border);
+      border-radius: 0.8rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+    }
+
+    /* Buttons */
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-radius: 0.8rem;
+      font-size: 0.85rem;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .btn:hover {
+      background: #4338ca;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(79,70,229,0.3);
+    }
+    .btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 2px solid #c7d2fe;
+    }
+    .btn-outline:hover {
+      background: #eef2ff;
+      color: #4338ca;
+    }
+    .btn-sm { padding: 0.4rem 0.9rem; font-size: 0.75rem; }
+    .btn-icon {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--primary);
+      cursor: pointer;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .btn-icon:hover { background: #eef2ff; }
+    .btn-icon:disabled { color: #cbd5e1; cursor: not-allowed; background: transparent; }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .search-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .search-group input,
+    .search-group select {
+      padding: 0.6rem 1rem;
+      border: 2px solid var(--border);
+      background: white;
+      font-size: 0.8rem;
+      border-radius: 0.7rem;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+    .search-group input:focus,
+    .search-group select:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.08);
+    }
+    .search-group input { width: 200px; }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.9rem;
+      border-radius: 1.5rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+    .badge-roll { background: #fef3c7; color: #92400e; }
+    .badge-class { background: #e0e7ff; color: #3730a3; }
+
+    /* Navigation */
+    .student-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+      margin: 0.8rem 0 1.2rem;
+    }
+    .student-indicator {
+      background: #f1f5f9;
+      padding: 0.5rem 1.5rem;
+      border-radius: 2rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    /* Card */
+    .card-area {
+      overflow: hidden;
+      position: relative;
+      min-height: 450px;
+    }
+    .student-card {
+      background: white;
+      border-radius: 1.6rem;
+      padding: 1.6rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+    }
+    .student-card.active {
+      transform: translateX(0);
+      opacity: 1;
+      position: relative;
+    }
+
+    /* Profile */
+    .profile-row {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .avatar {
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a5b4fc, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 12px 25px rgba(99,102,241,0.35);
+      flex-shrink: 0;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: 0.3rem;
+    }
+    .meta i { color: var(--primary); width: 16px; }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+    .stat-box {
+      padding: 0.8rem;
+      border-radius: 1rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    .stat-box.present { background: #ecfdf5; color: #065f46; }
+    .stat-box.absent { background: #fef2f2; color: #991b1b; }
+    .stat-box.avg { background: #fffbeb; color: #92400e; }
+    .stat-box.best { background: #eff6ff; color: #1e40af; }
+    .stat-val { font-size: 1.4rem; font-weight: 800; display: block; }
+
+    /* Month tabs */
+    .month-tabs {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin: 0.8rem 0;
+    }
+    .month-tab {
+      padding: 0.4rem 1rem;
+      border-radius: 1.5rem;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .month-tab:hover { background: #f8fafc; }
+    .month-tab.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+    }
+
+    /* Grid & chart */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 1rem; }
+    .chart-box { height: 210px; position: relative; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; text-align: center; font-size: 0.65rem; }
+    .cal-h { font-weight: 700; color: #94a3b8; padding: 4px 0; }
+    .cal-d { padding: 6px 2px; border-radius: 5px; font-weight: 600; }
+    .cal-p { background: var(--success); color: white; }
+    .cal-a { background: var(--danger); color: white; }
+    .cal-t { border: 2px solid var(--primary); font-weight: 800; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-top: 0.5rem; }
+    th { background: #f8fafc; padding: 0.6rem; text-align: left; border-bottom: 2px solid var(--border); font-weight: 700; color: var(--text-light); text-transform: uppercase; font-size: 0.65rem; }
+    td { padding: 0.5rem; border-bottom: 1px solid #f1f5f9; }
+    .grade-high { color: #059669; font-weight: 700; }
+    .grade-mid { color: #d97706; font-weight: 700; }
+    .grade-low { color: #dc2626; font-weight: 700; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e293b;
+      color: white;
+      padding: 0.8rem 1.6rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      z-index: 9999;
+      transform: translateX(120%);
+      transition: var(--transition);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    .toast.show { transform: translateX(0); }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
+
+    /* Loader */
+    .loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      gap: 1rem;
+      color: var(--text-light);
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e2e8f0;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* No data */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-light);
+    }
+    .empty-state i { font-size: 3rem; color: #cbd5e1; margin-bottom: 0.8rem; }
+
+    @media (max-width: 768px) {
+      .container { padding: 1.2rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .search-group input { width: 140px; }
+      .toolbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<div class="container" id="app">
+  <!-- ========== LOGIN ========== -->
+  <div id="loginScreen">
+    <div class="login-box">
+      <h1>🔐 THP Admin</h1>
+      <p>Enter password to access student dashboards</p>
+      <div class="input-group">
+        <input type="password" id="adminPass" placeholder="Password" autocomplete="off" />
+        <button class="btn" id="loginBtn"><i class="fas fa-arrow-right"></i> Login</button>
+      </div>
+      <small style="color:#94a3b8;">Default: admin123</small>
+    </div>
+  </div>
+
+  <!-- ========== DASHBOARD ========== -->
+  <div id="dashboardScreen" style="display:none;">
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-group">
+        <input type="text" id="searchInput" placeholder="🔍 Search name or roll..." />
+        <select id="classFilter">
+          <option value="">📚 All Classes</option>
+        </select>
+        <button class="btn btn-sm" id="searchBtn"><i class="fas fa-search"></i> Find</button>
+        <span id="resultCount" style="font-size:0.8rem; color:var(--text-light);"></span>
+      </div>
+      <div style="display:flex; gap:0.6rem;">
+        <button class="btn btn-outline btn-sm" id="downloadBtn"><i class="fas fa-download"></i> Download CSV</button>
+        <button class="btn btn-outline btn-sm" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="student-nav">
+      <button class="btn-icon" id="prevBtn" title="Previous student"><i class="fas fa-chevron-left"></i></button>
+      <span class="student-indicator" id="indicator">0 / 0</span>
+      <button class="btn-icon" id="nextBtn" title="Next student"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Card area -->
+    <div class="card-area" id="cardArea">
+      <div class="loader"><div class="spinner"></div><span>Loading students...</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    // ============ FIREBASE ============
+    firebase.initializeApp({
+      apiKey: "AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",
+      authDomain: "dumbbell-gyme.firebaseapp.com",
+      projectId: "dumbbell-gyme",
+      storageBucket: "dumbbell-gyme.firebasestorage.app",
+      messagingSenderId: "305021976299",
+      appId: "1:305021976299:web:fb85c2b332935d698088ae"
+    });
+    const db = firebase.firestore();
+    const ADMIN_PASS = 'admin123';
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    // ============ STATE ============
+    let allStudents = [];
+    let filteredStudents = [];
+    let currentIndex = 0;
+    let selectedMonthKey = ''; // "YYYY-MM"
+    let chartInstance = null;
+    let touchStartX = 0;
+
+    // ============ DOM REFS ============
+    const $ = (id) => document.getElementById(id);
+    const loginScreen = $('loginScreen');
+    const dashboardScreen = $('dashboardScreen');
+    const cardArea = $('cardArea');
+    const indicator = $('indicator');
+    const prevBtn = $('prevBtn');
+    const nextBtn = $('nextBtn');
+    const searchInput = $('searchInput');
+    const classFilter = $('classFilter');
+    const resultCount = $('resultCount');
+
+    // ============ TOAST ============
+    function toast(msg, type = 'success') {
+      const t = $('toast');
+      t.textContent = msg;
+      t.className = `toast ${type} show`;
+      clearTimeout(t._timeout);
+      t._timeout = setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ============ LOGIN / LOGOUT ============
+    $('loginBtn').addEventListener('click', () => {
+      if ($('adminPass').value.trim() === ADMIN_PASS) {
+        loginScreen.style.display = 'none';
+        dashboardScreen.style.display = 'block';
+        loadAllData();
+      } else {
+        toast('Incorrect password', 'error');
+      }
+    });
+    $('adminPass').addEventListener('keypress', e => {
+      if (e.key === 'Enter') $('loginBtn').click();
+    });
+    $('logoutBtn').addEventListener('click', () => {
+      dashboardScreen.style.display = 'none';
+      loginScreen.style.display = 'block';
+      $('adminPass').value = '';
+      allStudents = [];
+      filteredStudents = [];
+      currentIndex = 0;
+      if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+    });
+
+    // ============ NAVIGATION ============
+    function navigate(delta) {
+      if (!filteredStudents.length) return;
+      const newIdx = currentIndex + delta;
+      if (newIdx < 0 || newIdx >= filteredStudents.length) return;
+      currentIndex = newIdx;
+      renderStudentCard();
+    }
+    prevBtn.addEventListener('click', () => navigate(-1));
+    nextBtn.addEventListener('click', () => navigate(1));
+
+    // Swipe
+    cardArea.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+    cardArea.addEventListener('touchend', e => {
+      if (!filteredStudents.length) return;
+      const diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 60) navigate(diff < 0 ? 1 : -1);
+    });
+
+    // Keyboard arrows
+    document.addEventListener('keydown', e => {
+      if (dashboardScreen.style.display === 'none') return;
+      if (e.key === 'ArrowLeft') navigate(-1);
+      else if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    // ============ SEARCH & FILTER ============
+    function applyFilters() {
+      const query = searchInput.value.trim().toLowerCase();
+      const cls = classFilter.value;
+      filteredStudents = allStudents.filter(s => {
+        const matchSearch = !query ||
+          (s.name && s.name.toLowerCase().includes(query)) ||
+          (s.rollNo && String(s.rollNo).toLowerCase().includes(query));
+        const matchClass = !cls || (s.class && String(s.class) === cls);
+        return matchSearch && matchClass;
+      });
+      filteredStudents.sort((a, b) => {
+        const rollA = parseInt(a.rollNo) || 0;
+        const rollB = parseInt(b.rollNo) || 0;
+        return rollA - rollB;
+      });
+      currentIndex = 0;
+      resultCount.textContent = filteredStudents.length
+        ? `${filteredStudents.length} student${filteredStudents.length > 1 ? 's' : ''}`
+        : 'No matches';
+      renderStudentCard();
+    }
+    $('searchBtn').addEventListener('click', applyFilters);
+    searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') applyFilters(); });
+    classFilter.addEventListener('change', applyFilters);
+
+    // ============ LOAD DATA ============
+    async function loadAllData() {
+      cardArea.innerHTML = '<div class="loader"><div class="spinner"></div><span>Loading students...</span></div>';
+      try {
+        const snap = await db.collection('students').get();
+        if (snap.empty) {
+          cardArea.innerHTML = '<div class="empty-state"><i class="fas fa-users-slash"></i><p>No students found in database.</p></div>';
+          return;
+        }
+        allStudents = [];
+        const classSet = new Set();
+        snap.forEach(doc => {
+          const d = doc.data();
+          allStudents.push({ id: doc.id, ...d });
+          if (d.class) classSet.add(String(d.class));
+        });
+
+        // Populate class dropdown
+        classFilter.innerHTML = '<option value="">📚 All Classes</option>';
+        [...classSet].sort().forEach(c => {
+          classFilter.innerHTML += `<option value="${c}">${c}</option>`;
+        });
+
+        applyFilters();
+      } catch (err) {
+        console.error(err);
+        cardArea.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i><p>Error: ${err.message}</p></div>`;
+        toast('Failed to load data', 'error');
+      }
+    }
+
+    // ============ GET MONTH KEYS ============
+    function getAvailableMonths(student) {
+      const keys = new Set();
+      const att = student.attendance || {};
+      Object.keys(att).forEach(ds => {
+        const mk = ds.substring(0, 7);
+        if (/^\d{4}-\d{2}$/.test(mk)) keys.add(mk);
+      });
+      const scores = student.testScores || {};
+      Object.keys(scores).forEach(monthName => {
+        const idx = MONTHS.indexOf(monthName);
+        if (idx >= 0 && scores[monthName] && Object.keys(scores[monthName]).length > 0) {
+          const y = new Date().getFullYear();
+          keys.add(`${y}-${String(idx + 1).padStart(2, '0')}`);
+        }
+      });
+      const now = new Date();
+      const currentMK = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      keys.add(currentMK);
+      return [...keys].sort();
+    }
+
+    // ============ RENDER CARD ============
+    function renderStudentCard() {
+      if (!filteredStudents.length) {
+        cardArea.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>No students match your search.</p></div>';
+        indicator.textContent = '0 / 0';
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        return;
+      }
+
+      const student = filteredStudents[currentIndex];
+      indicator.textContent = `${currentIndex + 1} / ${filteredStudents.length}`;
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === filteredStudents.length - 1;
+
+      const att = student.attendance || {};
+      const testScores = student.testScores || {};
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth();
+
+      // All-time stats
+      let totalPresent = 0, totalAbsent = 0;
+      Object.values(att).forEach(v => {
+        if (v === 'present') totalPresent++;
+        else if (v === 'absent') totalAbsent++;
+      });
+      let allPercentages = [];
+      Object.values(testScores).forEach(monthData => {
+        if (monthData && typeof monthData === 'object') {
+          Object.values(monthData).forEach(exam => {
+            let pct = exam?.percentage ?? exam?.percent;
+            if (pct === undefined && typeof exam === 'number') pct = exam;
+            if (pct !== undefined && !isNaN(Number(pct))) allPercentages.push(Number(pct));
+          });
+        }
+      });
+      const avgScore = allPercentages.length ? Math.round(allPercentages.reduce((a, b) => a + b, 0) / allPercentages.length) : 0;
+      const bestScore = allPercentages.length ? Math.max(...allPercentages) : 0;
+
+      // Available months
+      const availableMonths = getAvailableMonths(student);
+      if (!selectedMonthKey || !availableMonths.includes(selectedMonthKey)) {
+        selectedMonthKey = availableMonths[availableMonths.length - 1] || `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+      }
+
+      const [selYear, selMonthStr] = selectedMonthKey.split('-');
+      const selMonthIndex = parseInt(selMonthStr) - 1;
+      const selMonthName = MONTHS[selMonthIndex];
+      const selYearNum = parseInt(selYear);
+
+      // Month tabs HTML
+      let tabsHtml = '<div class="month-tabs">';
+      availableMonths.forEach(mk => {
+        const [y, m] = mk.split('-');
+        const label = new Date(parseInt(y), parseInt(m) - 1).toLocaleString('default', { month: 'short', year: 'numeric' });
+        const activeCls = mk === selectedMonthKey ? 'active' : '';
+        tabsHtml += `<button class="month-tab ${activeCls}" data-month="${mk}">${label}</button>`;
+      });
+      tabsHtml += '</div>';
+
+      // Avatar
+      const avatarHtml = student.profilePhoto
+        ? `<img src="${student.profilePhoto}" alt="photo" onerror="this.style.display='none';this.parentElement.innerHTML='${(student.name || 'S')[0].toUpperCase()}';" />`
+        : (student.name || 'S')[0].toUpperCase();
+
+      // Profile
+      const profileHtml = `
+        <div class="profile-row">
+          <div class="avatar">${avatarHtml}</div>
+          <div style="flex:1; min-width:200px;">
+            <h2 style="font-size:1.3rem; font-weight:700; margin-bottom:4px;">${student.name || '———'}</h2>
+            <div style="margin:4px 0;">
+              <span class="badge badge-roll"><i class="fas fa-id-card"></i> Roll: ${student.rollNo || '—'}</span>
+              <span class="badge badge-class"><i class="fas fa-graduation-cap"></i> Class: ${student.class || '—'}</span>
+            </div>
+            <div class="meta">
+              <span><i class="fas fa-phone"></i> ${student.phone || '—'}</span>
+              <span><i class="fas fa-envelope"></i> ${student.email || '—'}</span>
+            </div>
+            <div class="meta" style="margin-top:2px;">
+              <span><i class="fas fa-map-marker-alt"></i> ${student.address || '—'}</span>
+              <span><i class="fas fa-calendar"></i> ${student.dateOfBirth || '—'}</span>
+            </div>
+          </div>
+        </div>`;
+
+      // Stats
+      const statsHtml = `
+        <div class="stats-grid">
+          <div class="stat-box present"><span class="stat-val">${totalPresent}</span>Present</div>
+          <div class="stat-box absent"><span class="stat-val">${totalAbsent}</span>Absent</div>
+          <div class="stat-box avg"><span class="stat-val">${avgScore}%</span>Avg Score</div>
+          <div class="stat-box best"><span class="stat-val">${bestScore}%</span>Best Score</div>
+        </div>`;
+
+      // Calendar
+      const daysInMonth = new Date(selYearNum, selMonthIndex + 1, 0).getDate();
+      const firstDay = new Date(selYearNum, selMonthIndex, 1).getDay();
+      let calHtml = '<div class="cal-grid">';
+      ['S','M','T','W','T','F','S'].forEach(d => calHtml += `<div class="cal-h">${d}</div>`);
+      for (let i = 0; i < firstDay; i++) calHtml += '<div></div>';
+      for (let d = 1; d <= daysInMonth; d++) {
+        const ds = `${selYearNum}-${String(selMonthIndex + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const status = att[ds];
+        let cls = 'cal-d';
+        if (status === 'present') cls += ' cal-p';
+        else if (status === 'absent') cls += ' cal-a';
+        if (selYearNum === currentYear && selMonthIndex === currentMonth && d === now.getDate()) cls += ' cal-t';
+        calHtml += `<div class="${cls}">${d}</div>`;
+      }
+      calHtml += '</div>';
+
+      // Scores table
+      const exams = testScores[selMonthName] || {};
+      let scoresHtml = '<table><thead><tr><th>Exam</th><th>Marks</th><th>%</th><th>Grade</th></tr></thead><tbody>';
+      if (Object.keys(exams).length === 0) {
+        scoresHtml += '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">No exams this month</td></tr>';
+      } else {
+        Object.entries(exams).forEach(([examName, examData]) => {
+          let marks = '-', total = '-', pct = '-', grade = '-', gradeCls = '';
+          if (examData && typeof examData === 'object') {
+            marks = examData.marks ?? examData.score ?? examData.obtained ?? '-';
+            total = examData.total ?? examData.maxMarks ?? examData.outOf ?? '-';
+            pct = examData.percentage ?? examData.percent ?? '-';
+            if (pct === '-' && marks !== '-' && total !== '-' && Number(total) > 0) {
+              pct = Math.round((Number(marks) / Number(total)) * 100);
+            }
+          } else if (typeof examData === 'number') {
+            marks = examData; total = 100; pct = examData;
+          }
+          if (pct !== '-' && !isNaN(Number(pct))) {
+            const pv = Number(pct);
+            if (pv >= 90) { gradeCls = 'grade-high'; grade = 'A+'; }
+            else if (pv >= 75) { gradeCls = 'grade-high'; grade = 'A'; }
+            else if (pv >= 60) { gradeCls = 'grade-mid'; grade = 'B'; }
+            else if (pv >= 40) { gradeCls = 'grade-mid'; grade = 'C'; }
+            else { gradeCls = 'grade-low'; grade = 'F'; }
+          }
+          scoresHtml += `<tr>
+            <td>📝 ${examName}</td>
+            <td>${marks}/${total}</td>
+            <td class="${gradeCls}">${pct}%</td>
+            <td><strong class="${gradeCls}">${grade}</strong></td>
+          </tr>`;
+        });
+      }
+      scoresHtml += '</tbody></table>';
+
+      // Full card HTML
+      cardArea.innerHTML = `
+        <div class="student-card active">
+          ${profileHtml}
+          ${statsHtml}
+          ${tabsHtml}
+          <div class="grid-2">
+            <div>
+              <h2 style="margin-bottom:0.5rem;"><i class="fas fa-chart-bar" style="color:var(--primary);"></i> ${selMonthName} Scores</h2>
+              <div class="chart-box"><canvas id="scoresChart"></canvas></div>
+            </div>
+            <div>
+              <h2 style="margin-bottom:0.5rem;"><i class="fas fa-calendar-check" style="color:var(--primary);"></i> ${selMonthName} ${selYearNum}</h2>
+              ${calHtml}
+            </div>
+          </div>
+          <div style="margin-top:1rem;">
+            <h2 style="margin-bottom:0.5rem;"><i class="fas fa-clipboard-list" style="color:var(--primary);"></i> ${selMonthName} Exams</h2>
+            ${scoresHtml}
+          </div>
+        </div>`;
+
+      // Month tab listeners
+      cardArea.querySelectorAll('.month-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          selectedMonthKey = this.dataset.month;
+          renderStudentCard();
+        });
+      });
+
+      // Render chart
+      renderChart(exams);
+    }
+
+    // ============ CHART ============
+    function renderChart(exams) {
+      if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+      const ctx = document.getElementById('scoresChart')?.getContext('2d');
+      if (!ctx) return;
+      const labels = [], data = [];
+      if (exams && typeof exams === 'object') {
+        Object.entries(exams).forEach(([name, val]) => {
+          let pct = null;
+          if (val && typeof val === 'object') pct = val.percentage ?? val.percent;
+          else if (typeof val === 'number') pct = val;
+          if (pct !== null && pct !== undefined && !isNaN(Number(pct))) {
+            labels.push(name.length > 15 ? name.substring(0, 13) + '…' : name);
+            data.push(Number(pct));
+          }
+        });
+      }
+      if (labels.length === 0) {
+        labels.push('No data');
+        data.push(0);
+      }
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Score %',
+            data,
+            backgroundColor: data.map(v => v >= 75 ? 'rgba(16,185,129,0.7)' : v >= 40 ? 'rgba(245,158,11,0.7)' : 'rgba(239,68,68,0.7)'),
+            borderRadius: 8,
+            borderSkipped: false,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (ctx) => `${ctx.parsed.y}%` } }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { callback: (v) => v + '%' },
+              grid: { color: '#f1f5f9' }
+            },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // ============ DOWNLOAD CSV ============
+    $('downloadBtn').addEventListener('click', () => {
+      if (!filteredStudents.length) {
+        toast('No student selected', 'error');
+        return;
+      }
+      const student = filteredStudents[currentIndex];
+      const att = student.attendance || {};
+      const entries = Object.entries(att).sort((a, b) => a[0].localeCompare(b[0]));
+      if (entries.length === 0) {
+        toast('No attendance data to download', 'error');
+        return;
+      }
+      let csv = 'Date,Status\n';
+      entries.forEach(([date, status]) => {
+        csv += `${date},${status}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `attendance_${student.rollNo || student.id}_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('Report downloaded successfully! 📥', 'success');
+    });
+
+    // ============ INIT ============
+    // Check if already logged in (optional)
+    // For fresh start, always show login
+  })();
+</script>
+</body>
+</html>
