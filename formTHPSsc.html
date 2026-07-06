@@ -3,21 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-  <meta name="description" content="SYF - Secure Your Future | Premium CBT Exam Preparation with ₹20 Registration (Referral Discount)">
+  <meta name="description" content="SYF - Secure Your Future | Premium CBT Exam Preparation with ₹20 Registration">
   <meta name="theme-color" content="#000000">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SYF – Premium Neural Adaptive Prep | ₹20 Registration</title>
 
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <!-- Razorpay -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -87,6 +84,9 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       letter-spacing: -0.01em;
+      background-image:
+        radial-gradient(ellipse at 5% 15%, rgba(0, 113, 227, 0.04) 0%, transparent 55%),
+        radial-gradient(ellipse at 92% 80%, rgba(52, 199, 89, 0.04) 0%, transparent 55%);
     }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -175,24 +175,115 @@
     .mini-stat-lbl { font-size: 0.68rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.3px; }
 
     .section-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.25rem; letter-spacing: -0.03em; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
-    .subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-bottom: 40px; }
-    .subject-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 24px 20px; border: 0.5px solid var(--border-subtle); cursor: pointer; transition: all var(--transition-smooth); position: relative; overflow: hidden; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text-primary); display: block; }
-    .subject-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: var(--border-medium); }
-    .subject-card.locked { opacity: 0.6; cursor: not-allowed; }
-    .subject-card.locked:hover { transform: none; box-shadow: var(--shadow-sm); }
-    .subject-card.locked::after { content: '🔒 Premium'; position: absolute; top: 12px; right: 12px; background: var(--accent-rose); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 600; }
-    .card-accent { position: absolute; top: 0; left: 0; right: 0; height: 4px; }
-    .accent-math { background: var(--gradient-accent); } .accent-reason { background: var(--gradient-emerald); } .accent-english { background: var(--gradient-warm); } .accent-gk { background: var(--gradient-purple); }
-    .subj-icon { font-size: 2.4rem; margin-bottom: 10px; display: block; }
-    .subj-name { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; }
-    .subj-chapters { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 12px; }
-    .progress-bar-wrap { background: var(--bg-tertiary); border-radius: 20px; height: 6px; overflow: hidden; margin-bottom: 8px; }
+    
+    /* ========== NEW THUMBNAIL CARDS ========== */
+    .subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .subject-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      border: 0.5px solid var(--border-subtle);
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+    }
+    .subject-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-6px);
+      border-color: var(--border-medium);
+    }
+    .subject-card.locked {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .subject-card.locked:hover {
+      transform: none;
+      box-shadow: var(--shadow-sm);
+    }
+    .subject-card.locked .card-thumbnail::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1;
+    }
+    .subject-card.locked .card-lock-badge {
+      display: flex;
+    }
+    .card-thumbnail {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .subject-card:hover .card-thumbnail img {
+      transform: scale(1.08);
+    }
+    .card-lock-badge {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 55, 95, 0.9);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 2;
+      gap: 6px;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+    .card-accent {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      z-index: 3;
+    }
+    .accent-math { background: var(--gradient-accent); }
+    .accent-reason { background: var(--gradient-emerald); }
+    .accent-english { background: var(--gradient-warm); }
+    .accent-gk { background: var(--gradient-purple); }
+    .card-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .subj-icon { font-size: 1.8rem; }
+    .subj-name { font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; }
+    .subj-chapters { font-size: 0.78rem; color: var(--text-secondary); }
+    .progress-bar-wrap { background: var(--bg-tertiary); border-radius: 20px; height: 6px; overflow: hidden; }
     .progress-bar-fill { height: 100%; border-radius: 20px; transition: width 1.5s ease; }
-    .fill-math { background: var(--gradient-accent); width: 72%; } .fill-reason { background: var(--gradient-emerald); width: 58%; } .fill-english { background: var(--gradient-warm); width: 45%; } .fill-gk { background: var(--gradient-purple); width: 34%; }
+    .fill-math { background: var(--gradient-accent); width: 72%; }
+    .fill-reason { background: var(--gradient-emerald); width: 58%; }
+    .fill-english { background: var(--gradient-warm); width: 45%; }
+    .fill-gk { background: var(--gradient-purple); width: 34%; }
     .subj-meta { display: flex; justify-content: space-between; font-size: 0.73rem; color: var(--text-tertiary); font-weight: 500; }
     .badge-difficulty { padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 600; }
-    .badge-easy { background: rgba(52,199,89,0.15); color: #248a3d; } .badge-medium { background: rgba(255,159,10,0.15); color: #b06a00; } .badge-hard { background: rgba(255,55,95,0.15); color: #c7002b; }
-    [data-theme="dark"] .badge-easy { background: rgba(52,199,89,0.2); color: #30d158; } [data-theme="dark"] .badge-medium { background: rgba(255,159,10,0.2); color: #ff9f0a; } [data-theme="dark"] .badge-hard { background: rgba(255,55,95,0.2); color: #ff375f; }
+    .badge-easy { background: rgba(52,199,89,0.15); color: #248a3d; }
+    .badge-medium { background: rgba(255,159,10,0.15); color: #b06a00; }
+    .badge-hard { background: rgba(255,55,95,0.15); color: #c7002b; }
+    [data-theme="dark"] .badge-easy { background: rgba(52,199,89,0.2); color: #30d158; }
+    [data-theme="dark"] .badge-medium { background: rgba(255,159,10,0.2); color: #ff9f0a; }
+    [data-theme="dark"] .badge-hard { background: rgba(255,55,95,0.2); color: #ff375f; }
 
     .perf-card { background: var(--bg-card); border-radius: var(--radius-xl); padding: 22px; border: 0.5px solid var(--border-subtle); box-shadow: var(--shadow-md); }
     .ring-chart { width: 96px; height: 96px; flex-shrink: 0; position: relative; }
@@ -206,11 +297,6 @@
     .modal-content { background: var(--bg-secondary); border-radius: var(--radius-3xl); width: 100%; max-width: 550px; max-height: 85vh; overflow-y: auto; border: 0.5px solid var(--border-medium); box-shadow: var(--shadow-xl); padding: 36px; position: relative; }
     .modal-close { position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--bg-tertiary); cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--text-secondary); transition: all var(--transition-fast); }
     .modal-close:hover { background: var(--border-medium); color: var(--text-primary); }
-    .cbt-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 0.5px solid var(--border-subtle); }
-    .cbt-timer { font-family: var(--font-mono); font-weight: 600; font-size: 1.4rem; color: var(--accent-rose); background: var(--bg-tertiary); padding: 8px 20px; border-radius: 50px; }
-    .option-btn { display: block; width: 100%; text-align: left; padding: 14px 18px; margin-bottom: 10px; border-radius: var(--radius-md); border: 1.5px solid var(--border-medium); background: var(--bg-card); cursor: pointer; font-family: var(--font-body); font-size: 0.9rem; transition: all var(--transition-fast); color: var(--text-primary); }
-    .option-btn:hover { border-color: var(--accent-blue); background: rgba(0,113,227,0.04); }
-    .option-btn.selected { border-color: var(--accent-blue); background: rgba(0,113,227,0.1); font-weight: 600; }
     .toast-container { position: fixed; bottom: 32px; right: 32px; z-index: 300; display: flex; flex-direction: column; gap: 10px; }
     .toast { background: var(--bg-card); border: 0.5px solid var(--border-medium); border-radius: var(--radius-md); padding: 14px 22px; font-weight: 500; font-size: 0.85rem; box-shadow: var(--shadow-lg); animation: slideInRight 0.45s ease; color: var(--text-primary); }
     @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
@@ -253,6 +339,7 @@
     #upload-avatar-input { display: none; }
     .spinner-inline { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .premium-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--gradient-accent); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -260,14 +347,14 @@
     <div class="app-container header-inner">
       <a class="logo-group" href="index.html" title="SYF Home">
         <div class="logo-icon">SYF</div>
-        <div class="logo-text">Secure Your Future<span>The heaven Point Coaching Classes</span></div>
+        <div class="logo-text">Secure Your Future<span>Premium Neural Prep</span></div>
       </a>
       <nav class="nav-links" id="mainNav">
         <a class="nav-link active" href="index.html">Home</a>
-        <a class="nav-link locked" href="mathematics.html" id="navMath">Mathematics</a>
-        <a class="nav-link locked" href="reasoning.html" id="navReason">Reasoning</a>
-        <a class="nav-link locked" href="english.html" id="navEnglish">English</a>
-        <a class="nav-link locked" href="gk.html" id="navGK">GK/GS</a>
+        <a class="nav-link locked" href="#" id="navMath" onclick="SYF.navigateTo('mathematics.html'); return false;">Mathematics</a>
+        <a class="nav-link locked" href="#" id="navReason" onclick="SYF.navigateTo('reasoning.html'); return false;">Reasoning</a>
+        <a class="nav-link locked" href="#" id="navEnglish" onclick="SYF.navigateTo('english.html'); return false;">English</a>
+        <a class="nav-link locked" href="#" id="navGK" onclick="SYF.navigateTo('gk.html'); return false;">GK/GS</a>
         <a class="nav-link" href="#" id="navCBT" onclick="SYF.openCBT(); return false;">CBT Mock</a>
       </nav>
       <div class="header-actions">
@@ -278,6 +365,7 @@
           <button class="auth-btn" id="loginBtn" onclick="SYF.openAuthModal()">Sign In</button>
           <div class="user-menu" id="userMenu">
             <span id="displayNameSmall" style="font-weight:600;font-size:0.85rem;"></span>
+            <span class="premium-badge" id="premiumBadge" style="display:none;">⭐ Premium</span>
             <button class="btn-outline btn-sm" onclick="SYF.openEditProfileModal()">✏️ Edit</button>
             <button class="btn-outline btn-sm" onclick="SYF.handleLogout()">Sign Out</button>
           </div>
@@ -290,7 +378,7 @@
     <section class="hero-section animate-in">
       <div class="hero-badge"><span class="pulse-dot"></span> Premium Access — ₹20 Only</div>
       <h1 class="hero-title">Your <span class="highlight">Government Exam</span><br>Success Starts Here</h1>
-      <p class="hero-subtitle">Premium CBT preparation for SSC, Banking, Railway & all competitive exams. Unlock all subjects with a one-time ₹20 registration. Use referral for 50% off!</p>
+      <p class="hero-subtitle">Premium CBT preparation for SSC, Banking, Railway & all competitive exams. Unlock all subjects with a one-time ₹20 registration. Use referral <strong>syf@786</strong> for 50% off!</p>
     </section>
 
     <div class="dashboard-grid">
@@ -341,10 +429,77 @@
     <section class="animate-in delay-5">
       <div class="section-title">Core Subjects</div>
       <div class="subject-grid">
-        <a class="subject-card locked" href="mathematics.html" id="cardMath" onclick="return SYF.handleSubjectClick('mathematics.html', event)"><div class="card-accent accent-math"></div><span class="subj-icon">📐</span><div class="subj-name">Mathematics</div><div class="subj-chapters">28 Chapters · 1,240+ PYQs</div><div class="progress-bar-wrap"><div class="progress-bar-fill fill-math"></div></div><div class="subj-meta"><span>72%</span><span class="badge-difficulty badge-medium">Medium</span></div></a>
-        <a class="subject-card locked" href="reasoning.html" id="cardReason" onclick="return SYF.handleSubjectClick('reasoning.html', event)"><div class="card-accent accent-reason"></div><span class="subj-icon">🧠</span><div class="subj-name">Reasoning</div><div class="subj-chapters">22 Chapters · 980+ PYQs</div><div class="progress-bar-wrap"><div class="progress-bar-fill fill-reason"></div></div><div class="subj-meta"><span>58%</span><span class="badge-difficulty badge-easy">Easy</span></div></a>
-        <a class="subject-card locked" href="english.html" id="cardEnglish" onclick="return SYF.handleSubjectClick('english.html', event)"><div class="card-accent accent-english"></div><span class="subj-icon">📖</span><div class="subj-name">English</div><div class="subj-chapters">18 Chapters · 760+ PYQs</div><div class="progress-bar-wrap"><div class="progress-bar-fill fill-english"></div></div><div class="subj-meta"><span>45%</span><span class="badge-difficulty badge-medium">Medium</span></div></a>
-        <a class="subject-card locked" href="gk.html" id="cardGK" onclick="return SYF.handleSubjectClick('gk.html', event)"><div class="card-accent accent-gk"></div><span class="subj-icon">🌍</span><div class="subj-name">GK / GS</div><div class="subj-chapters">35 Chapters · 2,100+ PYQs</div><div class="progress-bar-wrap"><div class="progress-bar-fill fill-gk"></div></div><div class="subj-meta"><span>34%</span><span class="badge-difficulty badge-hard">Hard</span></div></a>
+        <!-- Mathematics Card -->
+        <a class="subject-card locked" href="#" id="cardMath" onclick="return SYF.handleSubjectClick('mathematics.html', event)">
+          <div class="card-thumbnail">
+            <img src="https://i.ibb.co/xt7mYYBs/file-000000002fcc7207b8b433ab7215535e.png" alt="Mathematics" loading="lazy">
+            <div class="card-lock-badge">🔒 Premium</div>
+          </div>
+          <div class="card-accent accent-math"></div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="subj-icon">📐</span>
+              <span class="subj-name">Mathematics</span>
+            </div>
+            <div class="subj-chapters">28 Chapters · 1,240+ PYQs</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill fill-math"></div></div>
+            <div class="subj-meta"><span>72% Complete</span><span class="badge-difficulty badge-medium">Medium</span></div>
+          </div>
+        </a>
+
+        <!-- Reasoning Card -->
+        <a class="subject-card locked" href="#" id="cardReason" onclick="return SYF.handleSubjectClick('reasoning.html', event)">
+          <div class="card-thumbnail">
+            <img src="https://i.ibb.co/d01VX9wV/file-000000007a4472078026e857a3deee23.png" alt="Reasoning" loading="lazy">
+            <div class="card-lock-badge">🔒 Premium</div>
+          </div>
+          <div class="card-accent accent-reason"></div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="subj-icon">🧠</span>
+              <span class="subj-name">Reasoning</span>
+            </div>
+            <div class="subj-chapters">22 Chapters · 980+ PYQs</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill fill-reason"></div></div>
+            <div class="subj-meta"><span>58% Complete</span><span class="badge-difficulty badge-easy">Easy</span></div>
+          </div>
+        </a>
+
+        <!-- English Card -->
+        <a class="subject-card locked" href="#" id="cardEnglish" onclick="return SYF.handleSubjectClick('english.html', event)">
+          <div class="card-thumbnail">
+            <img src="https://i.ibb.co/3y7fQJDh/file-00000000909072078968a679d3f8cf52.png" alt="English" loading="lazy">
+            <div class="card-lock-badge">🔒 Premium</div>
+          </div>
+          <div class="card-accent accent-english"></div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="subj-icon">📖</span>
+              <span class="subj-name">English</span>
+            </div>
+            <div class="subj-chapters">18 Chapters · 760+ PYQs</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill fill-english"></div></div>
+            <div class="subj-meta"><span>45% Complete</span><span class="badge-difficulty badge-medium">Medium</span></div>
+          </div>
+        </a>
+
+        <!-- GK/GS Card -->
+        <a class="subject-card locked" href="#" id="cardGK" onclick="return SYF.handleSubjectClick('gk.html', event)">
+          <div class="card-thumbnail">
+            <img src="https://i.ibb.co/Qv2WQnTn/file-00000000ce4c71fa8ca621e3d060cb0d.png" alt="GK/GS" loading="lazy">
+            <div class="card-lock-badge">🔒 Premium</div>
+          </div>
+          <div class="card-accent accent-gk"></div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="subj-icon">🌍</span>
+              <span class="subj-name">GK / GS</span>
+            </div>
+            <div class="subj-chapters">35 Chapters · 2,100+ PYQs</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill fill-gk"></div></div>
+            <div class="subj-meta"><span>34% Complete</span><span class="badge-difficulty badge-hard">Hard</span></div>
+          </div>
+        </a>
       </div>
     </section>
   </main>
@@ -368,7 +523,6 @@
         <form id="registrationForm" onsubmit="return false;">
           <div class="registration-step active" id="step1">
             <h3 style="font-family:var(--font-heading);font-weight:600;margin-bottom:6px;">Create Account</h3>
-            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">Step 1 of 3</p>
             <div class="form-row"><div class="form-group"><label>First Name</label><input class="form-input" id="firstName" placeholder="Rahul"></div><div class="form-group"><label>Last Name</label><input class="form-input" id="lastName" placeholder="Sharma"></div></div>
             <div class="form-group"><label>Email</label><input type="email" class="form-input" id="regEmail" placeholder="rahul@email.com"></div>
             <div class="form-group"><label>Phone</label><input type="tel" class="form-input" id="phone" placeholder="9876543210"></div>
@@ -377,7 +531,6 @@
           </div>
           <div class="registration-step" id="step2">
             <h3 style="font-family:var(--font-heading);font-weight:600;margin-bottom:6px;">Profile Photo</h3>
-            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">Step 2 of 3</p>
             <div class="photo-upload-area" onclick="document.getElementById('regAvatarInput').click()">
               <img class="photo-preview" id="regPhotoPreview" src="" alt="Preview">
               <div id="photoPlaceholder">📷 Click to upload photo</div>
@@ -389,7 +542,7 @@
           </div>
           <div class="registration-step" id="step3">
             <h3 style="font-family:var(--font-heading);font-weight:600;margin-bottom:6px;">Payment</h3>
-            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">Step 3 of 3 — Pay <span id="finalPriceDisplay">₹20</span> to unlock all subjects</p>
+            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:16px;">Pay <span id="finalPriceDisplay">₹20</span> to unlock all subjects</p>
             <div class="price-display">
               <div class="price-amount" id="finalAmount">₹20 <small>one-time payment</small></div>
               <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">✓ All Subjects Unlocked<br>✓ 2,500+ Practice Questions<br>✓ 50+ Mock Tests<br>✓ AI Analytics</p>
@@ -429,9 +582,10 @@
     (function() {
       const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS';
       const REFERRAL_CODE = 'syf@786';
-      const DISCOUNT_PERCENT = 50;
-      const BASE_AMOUNT_INR = 20; // ₹20
+      const BASE_AMOUNT_INR = 20;
       const BASE_AMOUNT_PAISE = 2000;
+      const DAILY_STREAK_INCREMENT = 2;
+      const DAILY_ACCURACY_INCREMENT = 3;
 
       const firebaseConfig = {
         apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
@@ -446,10 +600,12 @@
       const firestore = firebase.firestore();
 
       let currentUser = null;
-      let userProfile = { name: 'Guest User', email: '', avatar: '', streak: 0, questionsSolved: 0, accuracy: 50, rank: '#---', paymentStatus: 'pending', phone: '' };
+      let userProfile = {
+        name: 'Guest User', email: '', avatar: '', streak: 0,
+        questionsSolved: 0, accuracy: 50, rank: '#---',
+        paymentStatus: 'pending', phone: '', lastActiveDate: ''
+      };
       let regPhotoFile = null;
-      let regPhotoDataUrl = null;
-      let editPhotoFile = null;
       let currentReferralValid = false;
 
       function showToast(msg, type = 'info') {
@@ -462,28 +618,25 @@
 
       function initTheme() {
         const toggle = document.getElementById('themeToggle');
-        const saved = localStorage.getItem('syf-theme-v8') || 'light';
+        const saved = localStorage.getItem('syf-theme-v10') || 'light';
         document.documentElement.setAttribute('data-theme', saved);
         if (toggle) {
           toggle.innerHTML = saved === 'dark' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
           toggle.addEventListener('click', () => {
             const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('syf-theme-v8', next);
+            localStorage.setItem('syf-theme-v10', next);
             initTheme();
           });
         }
       }
 
       function unlockAllSubjects() {
-        const lockedElements = document.querySelectorAll('.locked');
-        lockedElements.forEach(el => {
+        document.querySelectorAll('.locked').forEach(el => {
           el.classList.remove('locked');
-          if (el.tagName === 'A') {
-            el.onclick = null;
-            el.style.cursor = 'pointer';
-          }
+          if (el.tagName === 'A') { el.onclick = null; el.style.cursor = 'pointer'; }
         });
+        document.getElementById('premiumBadge').style.display = 'inline-flex';
       }
 
       function updateUI() {
@@ -502,7 +655,10 @@
         document.getElementById('perfSpeed').textContent = Math.max(26, 62 - userProfile.accuracy * 0.32) + 's';
         document.getElementById('perfPYQs').textContent = (userProfile.questionsSolved * 0.85).toFixed(1) + 'K';
         document.getElementById('perfWeak').textContent = Math.max(1, Math.floor((100 - userProfile.accuracy) / 8));
-        if (userProfile.paymentStatus === 'paid') unlockAllSubjects();
+        if (userProfile.paymentStatus === 'paid') {
+          unlockAllSubjects();
+          document.getElementById('premiumBadge').style.display = 'inline-flex';
+        }
         renderTodayTarget();
       }
 
@@ -518,22 +674,46 @@
         container.innerHTML = tasks.map(t => `<div style="display:flex;gap:10px;align-items:center;padding:12px;background:var(--bg-tertiary);border-radius:14px;"><span style="font-size:1.2rem;">${t.done ? '✓' : '○'}</span><div style="flex:1;"><strong>${t.name}</strong><br><small style="color:var(--text-tertiary);">${t.task}</small></div><span style="color:${t.done ? 'var(--accent-emerald)' : 'var(--accent-amber)'};font-weight:500;font-size:0.8rem;">${t.done ? 'Done' : 'Pending'}</span></div>`).join('');
       }
 
+      async function updateDailyActivity(uid) {
+        const today = new Date().toISOString().split('T')[0];
+        const userRef = firestore.collection('users').doc(uid);
+        try {
+          const doc = await userRef.get();
+          if (!doc.exists) return;
+          const data = doc.data();
+          const lastActive = data.lastActiveDate || '';
+          if (lastActive !== today) {
+            const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+            let newStreak = data.streak || 0;
+            if (lastActive === yesterday) {
+              newStreak += DAILY_STREAK_INCREMENT;
+            } else {
+              newStreak = DAILY_STREAK_INCREMENT;
+            }
+            let newAccuracy = (data.accuracy || 50) + DAILY_ACCURACY_INCREMENT;
+            newAccuracy = Math.min(98, newAccuracy);
+            await userRef.update({ lastActiveDate: today, streak: newStreak, accuracy: newAccuracy });
+            userProfile.streak = newStreak;
+            userProfile.accuracy = newAccuracy;
+            userProfile.lastActiveDate = today;
+            updateUI();
+          }
+        } catch (e) { console.error(e); }
+      }
+
       async function loadProfile(uid) {
         try {
           const doc = await firestore.collection('users').doc(uid).get();
           if (doc.exists) {
             const d = doc.data();
             userProfile = {
-              name: d.name || 'User',
-              email: d.email || '',
-              avatar: d.avatar || '',
-              streak: d.streak || 0,
-              questionsSolved: d.questionsSolved || 0,
-              accuracy: d.accuracy || 50,
-              rank: d.rank || '#---',
-              paymentStatus: d.paymentStatus || 'pending',
-              phone: d.phone || ''
+              name: d.name || 'User', email: d.email || '', avatar: d.avatar || '',
+              streak: d.streak || 0, questionsSolved: d.questionsSolved || 0,
+              accuracy: d.accuracy || 50, rank: d.rank || '#---',
+              paymentStatus: d.paymentStatus || 'pending', phone: d.phone || '',
+              lastActiveDate: d.lastActiveDate || ''
             };
+            await updateDailyActivity(uid);
           }
           updateUI();
         } catch (e) { console.error(e); updateUI(); }
@@ -546,27 +726,21 @@
           await loadProfile(user.uid);
         } else {
           currentUser = null; loginBtn.style.display = 'inline-block'; menu.classList.remove('active');
-          userProfile = { name: 'Guest User', email: '', avatar: '', streak: 0, questionsSolved: 0, accuracy: 50, rank: '#---', paymentStatus: 'pending', phone: '' };
+          document.getElementById('premiumBadge').style.display = 'none';
+          userProfile = { name: 'Guest User', email: '', avatar: '', streak: 0, questionsSolved: 0, accuracy: 50, rank: '#---', paymentStatus: 'pending', phone: '', lastActiveDate: '' };
           updateUI();
-          document.querySelectorAll('.subject-card').forEach(c => c.classList.add('locked'));
+          document.querySelectorAll('.subject-card, .nav-link.locked, .bottom-nav-item.locked').forEach(c => c.classList.add('locked'));
         }
       });
 
       function switchAuthTab(tab) {
-        const signInForm = document.getElementById('signInForm');
-        const signUpForm = document.getElementById('signUpForm');
-        const tabSignIn = document.getElementById('tabSignIn');
-        const tabSignUp = document.getElementById('tabSignUp');
-        if (tab === 'signin') {
-          signInForm.style.display = 'block'; signUpForm.style.display = 'none';
-          tabSignIn.style.background = 'var(--accent-blue)'; tabSignIn.style.color = '#fff';
-          tabSignUp.style.background = 'transparent'; tabSignUp.style.color = 'var(--text-secondary)';
-        } else {
-          signInForm.style.display = 'none'; signUpForm.style.display = 'block';
-          tabSignUp.style.background = 'var(--accent-blue)'; tabSignUp.style.color = '#fff';
-          tabSignIn.style.background = 'transparent'; tabSignIn.style.color = 'var(--text-secondary)';
-          goToStep(1);
-        }
+        document.getElementById('signInForm').style.display = tab === 'signin' ? 'block' : 'none';
+        document.getElementById('signUpForm').style.display = tab === 'signup' ? 'block' : 'none';
+        document.getElementById('tabSignIn').style.background = tab === 'signin' ? 'var(--accent-blue)' : 'transparent';
+        document.getElementById('tabSignIn').style.color = tab === 'signin' ? '#fff' : 'var(--text-secondary)';
+        document.getElementById('tabSignUp').style.background = tab === 'signup' ? 'var(--accent-blue)' : 'transparent';
+        document.getElementById('tabSignUp').style.color = tab === 'signup' ? '#fff' : 'var(--text-secondary)';
+        if (tab === 'signup') goToStep(1);
       }
 
       async function handleSignIn() {
@@ -577,34 +751,17 @@
           await auth.signInWithEmailAndPassword(email, password);
           showToast('✅ Signed in!', 'success');
           SYF.closeAuthModal();
-        } catch (e) {
-          let msg = 'Sign in failed';
-          if (e.code === 'auth/user-not-found') msg = 'No account found. Please register.';
-          else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
-          showToast(msg, 'error');
-        }
+        } catch (e) { showToast(e.code === 'auth/user-not-found' ? 'No account found' : 'Incorrect password', 'error'); }
       }
 
-      function handleLogout() {
-        auth.signOut().then(() => showToast('Signed out', 'success'));
-      }
+      function handleLogout() { auth.signOut().then(() => showToast('Signed out', 'success')); }
 
       function updateReferralBadge() {
         const code = document.getElementById('referralCode').value.trim();
         const statusEl = document.getElementById('referralStatus');
-        if (code === REFERRAL_CODE) {
-          statusEl.innerHTML = '<span class="referral-badge">✅ 50% Discount Applied! Pay only ₹10</span>';
-          currentReferralValid = true;
-        } else if (code === '') {
-          statusEl.innerHTML = '';
-          currentReferralValid = false;
-        } else {
-          statusEl.innerHTML = '<span style="color:var(--accent-rose);">❌ Invalid referral code</span>';
-          currentReferralValid = false;
-        }
-        if (document.getElementById('step3').classList.contains('active')) {
-          updatePaymentDisplay();
-        }
+        currentReferralValid = code === REFERRAL_CODE;
+        statusEl.innerHTML = currentReferralValid ? '<span class="referral-badge">✅ 50% Discount! Pay ₹10</span>' : (code ? '<span style="color:var(--accent-rose);">❌ Invalid</span>' : '');
+        if (document.getElementById('step3').classList.contains('active')) updatePaymentDisplay();
       }
 
       function updatePaymentDisplay() {
@@ -616,67 +773,50 @@
 
       function previewRegPhoto(event) {
         const file = event.target.files[0];
-        if (!file) return;
-        if (file.size > 5 * 1024 * 1024) { showToast('Image too large (max 5MB)', 'error'); return; }
+        if (!file || file.size > 5e6) return;
         regPhotoFile = file;
         const reader = new FileReader();
         reader.onload = (e) => {
-          regPhotoDataUrl = e.target.result;
-          document.getElementById('regPhotoPreview').src = regPhotoDataUrl;
+          document.getElementById('regPhotoPreview').src = e.target.result;
           document.getElementById('regPhotoPreview').style.display = 'block';
           document.getElementById('photoPlaceholder').style.display = 'none';
         };
         reader.readAsDataURL(file);
       }
 
-      async function uploadRegPhoto() {
-        if (!regPhotoFile) return null;
-        const formData = new FormData();
-        formData.append('image', regPhotoFile);
+      async function uploadImage(file) {
+        if (!file) return null;
+        const fd = new FormData(); fd.append('image', file);
         try {
-          const resp = await fetch('https://api.imgbb.com/1/upload?key=53fb01955a45c5462724b8f7d238500a', { method: 'POST', body: formData });
-          const json = await resp.json();
-          if (json.success) return json.data.url;
-        } catch (e) { console.error('Photo upload error:', e); }
-        return null;
+          const r = await fetch('https://api.imgbb.com/1/upload?key=53fb01955a45c5462724b8f7d238500a', { method: 'POST', body: fd });
+          const j = await r.json();
+          return j.success ? j.data.url : null;
+        } catch (e) { return null; }
       }
 
       function goToStep(step) {
         document.querySelectorAll('.step-dot').forEach((d, i) => { d.classList.remove('active', 'completed'); if (i + 1 < step) d.classList.add('completed'); if (i + 1 === step) d.classList.add('active'); });
         document.querySelectorAll('.registration-step').forEach(s => s.classList.remove('active'));
-        const targetStep = document.getElementById(`step${step}`);
-        if (targetStep) targetStep.classList.add('active');
+        const target = document.getElementById(`step${step}`);
+        if (target) target.classList.add('active');
         if (step === 3) {
-          const fn = document.getElementById('firstName')?.value.trim() || '';
-          const ln = document.getElementById('lastName')?.value.trim() || '';
-          const em = document.getElementById('regEmail')?.value.trim() || '';
-          const ref = document.getElementById('referralCode')?.value.trim() || 'None';
-          document.getElementById('registrationSummary').innerHTML = `<strong>Name:</strong> ${fn} ${ln}<br><strong>Email:</strong> ${em}<br><strong>Referral:</strong> ${ref}`;
+          document.getElementById('registrationSummary').innerHTML = `<strong>Name:</strong> ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}<br><strong>Email:</strong> ${document.getElementById('regEmail').value}`;
           updatePaymentDisplay();
         }
       }
 
       function checkPasswordStrength(pw) {
-        const bar = document.getElementById('passwordStrengthBar');
-        bar.className = 'password-strength-bar';
+        const bar = document.getElementById('passwordStrengthBar'); bar.className = 'password-strength-bar';
         let s = 0;
-        if (pw.length >= 8) s++;
-        if (pw.length >= 12) s++;
-        if (/[A-Z]/.test(pw)) s++;
-        if (/[0-9]/.test(pw)) s++;
-        if (/[^A-Za-z0-9]/.test(pw)) s++;
-        if (s <= 2) bar.classList.add('strength-weak');
-        else if (s <= 4) bar.classList.add('strength-medium');
-        else bar.classList.add('strength-strong');
+        if (pw.length >= 8) s++; if (pw.length >= 12) s++; if (/[A-Z]/.test(pw)) s++; if (/[0-9]/.test(pw)) s++; if (/[^A-Za-z0-9]/.test(pw)) s++;
+        bar.classList.add(s <= 2 ? 'strength-weak' : s <= 4 ? 'strength-medium' : 'strength-strong');
       }
 
       function checkPasswordMatch() {
-        const pw = document.getElementById('regPassword').value;
-        const cp = document.getElementById('confirmPassword').value;
+        const pw = document.getElementById('regPassword').value, cp = document.getElementById('confirmPassword').value;
         const msg = document.getElementById('passwordMatchMsg');
-        if (cp === '') msg.textContent = '';
-        else if (pw === cp) { msg.textContent = '✓ Match'; msg.style.color = 'var(--accent-emerald)'; }
-        else { msg.textContent = '✗ Not match'; msg.style.color = 'var(--accent-rose)'; }
+        msg.textContent = cp === '' ? '' : (pw === cp ? '✓ Match' : '✗ Not match');
+        msg.style.color = pw === cp ? 'var(--accent-emerald)' : 'var(--accent-rose)';
       }
 
       function initiatePayment() {
@@ -686,51 +826,32 @@
         const phone = document.getElementById('phone').value.trim();
         const pw = document.getElementById('regPassword').value;
         const cp = document.getElementById('confirmPassword').value;
-        const refCode = document.getElementById('referralCode').value.trim();
-
         if (!fn || !ln || !em.includes('@') || pw.length < 8) return showToast('Fill all fields correctly', 'error');
         if (pw !== cp) return showToast('Passwords do not match', 'error');
 
         const amountPaise = currentReferralValid ? BASE_AMOUNT_PAISE / 2 : BASE_AMOUNT_PAISE;
         const amountINR = amountPaise / 100;
-
         const btn = document.getElementById('payBtn');
         btn.innerHTML = '<span class="spinner-inline"></span> Processing...';
         btn.disabled = true;
 
-        const receiptId = 'SYF_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9).toUpperCase();
-
-        const options = {
-          key: RAZORPAY_KEY_ID,
-          amount: amountPaise,
-          currency: 'INR',
+        const rzp = new Razorpay({
+          key: RAZORPAY_KEY_ID, amount: amountPaise, currency: 'INR',
           name: 'SYF - Secure Your Future',
           description: `Premium Registration (${currentReferralValid ? '50% off' : 'Standard'})`,
           handler: async function(response) {
             btn.innerHTML = '<span class="spinner-inline"></span> Creating account...';
             try {
-              let avatarUrl = '';
-              if (regPhotoFile) {
-                avatarUrl = await uploadRegPhoto();
-              }
+              const avatarUrl = await uploadImage(regPhotoFile);
               const userCred = await auth.createUserWithEmailAndPassword(em, pw);
               await userCred.user.updateProfile({ displayName: `${fn} ${ln}` });
+              const today = new Date().toISOString().split('T')[0];
               await firestore.collection('users').doc(userCred.user.uid).set({
-                name: `${fn} ${ln}`,
-                email: em,
-                phone: phone,
-                avatar: avatarUrl || '',
-                streak: 1,
-                accuracy: 55,
-                questionsSolved: 0,
-                rank: '#---',
-                paymentStatus: 'paid',
-                paymentId: response.razorpay_payment_id,
-                receiptId: receiptId,
-                amount: amountINR,
-                referralUsed: currentReferralValid,
-                lastActiveDate: new Date().toISOString().split('T')[0],
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                name: `${fn} ${ln}`, email: em, phone, avatar: avatarUrl || '',
+                streak: DAILY_STREAK_INCREMENT, accuracy: 55, questionsSolved: 0, rank: '#---',
+                paymentStatus: 'paid', paymentId: response.razorpay_payment_id,
+                amount: amountINR, referralUsed: currentReferralValid,
+                lastActiveDate: today, createdAt: firebase.firestore.FieldValue.serverTimestamp()
               });
               showToast('🎉 Registration successful! All subjects unlocked.', 'success');
               SYF.closeAuthModal();
@@ -740,31 +861,12 @@
               btn.disabled = false;
             }
           },
-          modal: {
-            ondismiss: function() {
-              btn.innerHTML = `💳 Pay ₹${amountINR} & Register`;
-              btn.disabled = false;
-              showToast('Payment cancelled', 'warning');
-            }
-          },
+          modal: { ondismiss: () => { btn.innerHTML = `💳 Pay ₹${amountINR} & Register`; btn.disabled = false; showToast('Payment cancelled', 'warning'); } },
           prefill: { name: `${fn} ${ln}`, email: em, contact: phone },
-          notes: { receipt_id: receiptId, referral: refCode },
           theme: { color: '#0071e3' }
-        };
-
-        try {
-          const rzp = new Razorpay(options);
-          rzp.on('payment.failed', function(response) {
-            btn.innerHTML = `💳 Pay ₹${amountINR} & Register`;
-            btn.disabled = false;
-            showToast('Payment failed: ' + response.error.description, 'error');
-          });
-          rzp.open();
-        } catch (e) {
-          btn.innerHTML = `💳 Pay ₹${amountINR} & Register`;
-          btn.disabled = false;
-          showToast('Error opening payment gateway', 'error');
-        }
+        });
+        rzp.on('payment.failed', (r) => { btn.innerHTML = `💳 Pay ₹${amountINR} & Register`; btn.disabled = false; showToast('Payment failed: ' + r.error.description, 'error'); });
+        rzp.open();
       }
 
       function handleSubjectClick(url, event) {
@@ -774,7 +876,8 @@
           SYF.openAuthModal();
           return false;
         }
-        return true;
+        window.location.href = url;
+        return false;
       }
 
       function navigateTo(url) {
@@ -795,60 +898,25 @@
         window.open('https://freemocktest.co/exams/', '_blank');
       }
 
-      async function uploadAvatar(file) {
-        if (!file) return null;
-        const formData = new FormData();
-        formData.append('image', file);
-        try {
-          const resp = await fetch('https://api.imgbb.com/1/upload?key=53fb01955a45c5462724b8f7d238500a', { method: 'POST', body: formData });
-          const json = await resp.json();
-          if (json.success) return json.data.url;
-        } catch (e) { console.error(e); }
-        return null;
-      }
-
       async function saveProfileChanges() {
         if (!currentUser) return;
-        const newName = document.getElementById('editName').value.trim();
-        const newPhone = document.getElementById('editPhone').value.trim();
-        const newPassword = document.getElementById('editPassword').value;
+        const name = document.getElementById('editName').value.trim();
+        const phone = document.getElementById('editPhone').value.trim();
+        const password = document.getElementById('editPassword').value;
         const file = document.getElementById('editAvatarInput').files[0];
-
-        if (!newName) return showToast('Name is required', 'error');
+        if (!name) return showToast('Name required', 'error');
         try {
-          let avatarUrl = userProfile.avatar;
-          if (file) {
-            avatarUrl = await uploadAvatar(file);
-            if (!avatarUrl) throw new Error('Photo upload failed');
-          }
-          if (newPassword && newPassword.length >= 6) {
-            await currentUser.updatePassword(newPassword);
-          }
-          await firestore.collection('users').doc(currentUser.uid).update({
-            name: newName,
-            phone: newPhone,
-            avatar: avatarUrl || userProfile.avatar
-          });
-          if (newName) {
-            await currentUser.updateProfile({ displayName: newName });
-          }
-          userProfile.name = newName || userProfile.name;
-          userProfile.phone = newPhone;
-          userProfile.avatar = avatarUrl || userProfile.avatar;
-          updateUI();
-          showToast('Profile updated!', 'success');
-          SYF.closeEditProfileModal();
-        } catch (e) {
-          showToast('Update failed: ' + e.message, 'error');
-        }
+          const avatarUrl = file ? await uploadImage(file) : userProfile.avatar;
+          if (password && password.length >= 6) await currentUser.updatePassword(password);
+          await firestore.collection('users').doc(currentUser.uid).update({ name, phone, avatar: avatarUrl || userProfile.avatar });
+          if (name) await currentUser.updateProfile({ displayName: name });
+          userProfile.name = name; userProfile.phone = phone; userProfile.avatar = avatarUrl || userProfile.avatar;
+          updateUI(); showToast('Profile updated!', 'success'); SYF.closeEditProfileModal();
+        } catch (e) { showToast('Update failed: ' + e.message, 'error'); }
       }
 
       function openEditProfileModal() {
-        if (!currentUser) {
-          showToast('Please sign in first', 'warning');
-          SYF.openAuthModal();
-          return;
-        }
+        if (!currentUser) return showToast('Sign in first', 'warning') || SYF.openAuthModal();
         document.getElementById('editName').value = userProfile.name || '';
         document.getElementById('editPhone').value = userProfile.phone || '';
         document.getElementById('editPassword').value = '';
@@ -867,10 +935,7 @@
         const file = event.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = (e) => {
-          document.getElementById('editPhotoPreview').src = e.target.result;
-          document.getElementById('editPhotoPreview').style.display = 'block';
-        };
+        reader.onload = (e) => { document.getElementById('editPhotoPreview').src = e.target.result; document.getElementById('editPhotoPreview').style.display = 'block'; };
         reader.readAsDataURL(file);
       }
 
@@ -878,27 +943,15 @@
         showToast,
         openAuthModal: () => { document.getElementById('authModal').classList.add('active'); document.body.style.overflow = 'hidden'; switchAuthTab('signin'); },
         closeAuthModal: () => { document.getElementById('authModal').classList.remove('active'); document.body.style.overflow = ''; },
-        switchAuthTab,
-        handleSignIn,
-        handleLogout,
-        updateReferralBadge,
-        previewRegPhoto,
-        initiatePayment,
-        handleSubjectClick,
-        navigateTo,
-        openCBT,
-        openEditProfileModal,
-        closeEditProfileModal,
-        previewEditPhoto,
-        saveProfileChanges,
-        checkPasswordStrength,
-        checkPasswordMatch,
+        switchAuthTab, handleSignIn, handleLogout, updateReferralBadge,
+        previewRegPhoto, initiatePayment, handleSubjectClick, navigateTo, openCBT,
+        openEditProfileModal, closeEditProfileModal, previewEditPhoto, saveProfileChanges,
+        checkPasswordStrength, checkPasswordMatch,
         registration: {
           nextStep: (step) => {
             if (step === 2 && !document.getElementById('regEmail').value.includes('@')) return showToast('Valid email required', 'error');
             if (step === 3) {
-              const pw = document.getElementById('regPassword').value;
-              const cp = document.getElementById('confirmPassword').value;
+              const pw = document.getElementById('regPassword').value, cp = document.getElementById('confirmPassword').value;
               if (pw.length < 8) return showToast('Password min 8 characters', 'error');
               if (pw !== cp) return showToast('Passwords do not match', 'error');
             }
@@ -909,19 +962,12 @@
       };
 
       document.addEventListener('click', (e) => { if (e.target.classList.contains('skill-tag')) e.target.classList.toggle('selected'); });
-      document.getElementById('authModal').addEventListener('click', function(e) { if (e.target === this) SYF.closeAuthModal(); });
-      document.getElementById('editProfileModal').addEventListener('click', function(e) { if (e.target === this) SYF.closeEditProfileModal(); });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          if (document.getElementById('authModal').classList.contains('active')) SYF.closeAuthModal();
-          if (document.getElementById('editProfileModal').classList.contains('active')) SYF.closeEditProfileModal();
-        }
-      });
+      document.getElementById('authModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) SYF.closeAuthModal(); });
+      document.getElementById('editProfileModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) SYF.closeEditProfileModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { SYF.closeAuthModal(); SYF.closeEditProfileModal(); } });
 
-      initTheme();
-      updateUI();
-      renderTodayTarget();
-      console.log('🚀 SYF Premium v8.0 — Referral + Edit Profile + External CBT Ready');
+      initTheme(); updateUI(); renderTodayTarget();
+      console.log('🚀 SYF Premium v10 — 16:9 Thumbnail Cards Ready');
     })();
   </script>
 </body>
