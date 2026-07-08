@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>THP Admin · Room & Class Panel</title>
+  <title>THP Admin · Dual Batch Rooms</title>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
@@ -115,7 +115,7 @@
     .bg-p{background:rgba(139,92,246,0.1);color:#7c3aed}
     .bg-r{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#7c2d12;font-weight:800}
 
-    .pagination{display:flex;justify-content:center;gap:4px;margin-top:12px}
+    .pagination{display:flex;justify-content:center;gap:4px;margin-top:12px;flex-wrap:wrap}
     .page-btn{width:30px;height:30px;border-radius:7px;border:2px solid var(--g200);background:white;cursor:pointer;font-weight:600;font-size:11px;font-family:inherit}
     .page-btn:hover{border-color:var(--p);color:var(--p)}
     .page-btn.active{background:var(--p);color:white;border-color:var(--p)}
@@ -171,7 +171,7 @@
 <div class="main">
   <!-- TOPBAR -->
   <div class="topbar">
-    <div class="tb-brand"><div class="tb-logo">👑</div><span class="tb-title">Admin · Room + Class</span></div>
+    <div class="tb-brand"><div class="tb-logo">👑</div><span class="tb-title">Admin · Batch Rooms</span></div>
     <div class="tb-actions">
       <button class="btn btn-g btn-sm" onclick="openAdd()"><i class="fas fa-plus"></i> Add</button>
       <button class="btn btn-o btn-sm" onclick="switchTab('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</button>
@@ -211,12 +211,13 @@
     </div>
   </div>
 
-  <!-- STUDENTS TAB (Room toggle + Class visible) -->
+  <!-- STUDENTS TAB (Two batch toggles) -->
   <div id="tab-students" class="tab-content" style="display:none">
     <div class="card">
-      <div class="card-head"><h3 class="card-title"><i class="fas fa-users" style="color:var(--p)"></i> All Students (Class & Room)</h3><span class="badge bg-p" id="stuCount">0</span></div>
+      <div class="card-head"><h3 class="card-title"><i class="fas fa-users" style="color:var(--p)"></i> All Students</h3><span class="badge bg-p" id="stuCount">0</span></div>
       <div class="filter-bar">
-        <input type="text" class="search-inp" id="stuSearch" placeholder="🔍 Roll / Name / Phone / Room..." oninput="renderStudents()">
+        <input type="text" class="search-inp" id="stuSearch" placeholder="🔍 Roll / Name / Phone..." oninput="renderStudents()">
+        <select class="filter-sel" id="batchFil" onchange="onBatchChange()"><option value="">All Batches</option><option value="First">First Batch</option><option value="Second">Second Batch</option></select>
         <select class="filter-sel" id="roomFil" onchange="renderStudents()"><option value="">All Rooms</option></select>
       </div>
       <div class="table-wrap">
@@ -227,13 +228,14 @@
     </div>
   </div>
 
-  <!-- ATTENDANCE TAB (Room toggle) -->
+  <!-- ATTENDANCE TAB (Action column first, two toggles) -->
   <div id="tab-attendance" class="tab-content" style="display:none">
     <div class="card">
       <div class="card-head">
         <h3 class="card-title"><i class="fas fa-calendar-check" style="color:var(--p)"></i> Attendance</h3>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <input type="date" class="filter-sel" id="attDate" onchange="loadAtt()">
+          <select class="filter-sel" id="attBatch" onchange="onAttBatchChange()"><option value="">All Batches</option><option value="First">First Batch</option><option value="Second">Second Batch</option></select>
           <select class="filter-sel" id="attRoom" onchange="loadAtt()"><option value="">All Rooms</option></select>
           <button class="btn btn-g btn-sm" onclick="markAllP()">✓ All Present</button>
         </div>
@@ -243,13 +245,13 @@
   </div>
 </div>
 
-<!-- ADD MODAL (Class + Room) -->
+<!-- ADD MODAL -->
 <div class="modal-overlay" id="addModal">
   <div class="modal">
     <div class="modal-head"><h2>➕ Add Student</h2><button class="modal-close" onclick="closeMod('addModal')">✕</button></div>
     <form id="addForm">
       <div class="form-row"><div class="form-group"><label>Roll No*</label><input type="number" id="addRN" required></div><div class="form-group"><label>Name*</label><input type="text" id="addNm" required></div></div>
-      <div class="form-row"><div class="form-group"><label>Class*</label><select id="addCl" required><option value="">Select Class</option></select></div><div class="form-group"><label>Room*</label><select id="addRoom" required><option value="">Select Room</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label>Class*</label><select id="addCl" required><option value="">Select Class</option></select></div><div class="form-group"><label>Batch & Room*</label><select id="addRoom" required><option value="">Select Room</option></select></div></div>
       <div class="form-row"><div class="form-group"><label>Phone*</label><input type="tel" id="addPh" required maxlength="10"></div><div class="form-group"><label>Email</label><input type="email" id="addEm"></div></div>
       <div class="form-group"><label>Password</label><input type="text" id="addPw" value="12345678"></div>
       <button type="submit" class="btn btn-g" style="width:100%;margin-top:8px">Add Student</button>
@@ -257,14 +259,14 @@
   </div>
 </div>
 
-<!-- EDIT MODAL (Class + Room editable) -->
+<!-- EDIT MODAL -->
 <div class="modal-overlay" id="editModal">
   <div class="modal">
     <div class="modal-head"><h2>✏️ Edit Student</h2><button class="modal-close" onclick="closeMod('editModal')">✕</button></div>
     <form id="editForm">
       <input type="hidden" id="editID">
       <div class="form-row"><div class="form-group"><label>Roll No*</label><input type="number" id="editRN" required></div><div class="form-group"><label>Name*</label><input type="text" id="editNm" required></div></div>
-      <div class="form-row"><div class="form-group"><label>Class*</label><select id="editCl" required><option value="">Select Class</option></select></div><div class="form-group"><label>Room*</label><select id="editRoom" required><option value="">Select Room</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label>Class*</label><select id="editCl" required><option value="">Select Class</option></select></div><div class="form-group"><label>Batch & Room*</label><select id="editRoom" required><option value="">Select Room</option></select></div></div>
       <div class="form-row"><div class="form-group"><label>Phone*</label><input type="tel" id="editPh" required maxlength="10"></div><div class="form-group"><label>Email</label><input type="email" id="editEm"></div></div>
       <div class="form-row"><div class="form-group"><label>Father</label><input type="text" id="editFa"></div><div class="form-group"><label>Mother</label><input type="text" id="editMo"></div></div>
       <div class="form-group"><label>Password</label><input type="text" id="editPw"></div>
@@ -283,30 +285,22 @@
 
 <script>
   (function() {
-    // ═══════════════════════════════════════
-    // FIREBASE + EmailJS INIT
-    // ═══════════════════════════════════════
     const fc = {apiKey:"AIzaSyAjjjVn1JO3vVgO89yEqontYxwvi-fnetQ",authDomain:"dumbbell-gyme.firebaseapp.com",projectId:"dumbbell-gyme",storageBucket:"dumbbell-gyme.firebasestorage.app",messagingSenderId:"305021976299",appId:"1:305021976299:web:fb85c2b332935d698088ae"};
     firebase.initializeApp(fc);
     const db = firebase.firestore();
     emailjs.init("AylbjsNiCx8ji5dWH");
 
-    // ═══════════════════════════════════════
-    // SHORT ROOM CODES (First Batch 1-6, Second Batch 1-6)
-    // ═══════════════════════════════════════
-    const ROOM_CODES = ["1A","1B","1C","1D","1E","1F","2A","2B","2C","2D","2E","2F"];
-    // Class options preserved from original (can be dynamic)
+    // First Batch Rooms 1-6, Second Batch Rooms 1-6
+    const FIRST_BATCH = ["F1","F2","F3","F4","F5","F6"];
+    const SECOND_BATCH = ["S1","S2","S3","S4","S5","S6"];
+    const ALL_ROOMS = [...FIRST_BATCH, ...SECOND_BATCH];
     const CLASS_OPTIONS = ["1","2","3","4","5","6","7","8","9","10","11","12","L.K.C.","N/A"];
 
     let allStu = [], curTab = 'dashboard', curPage = 1, perPage = 25, today = new Date().toISOString().split('T')[0];
     let classCtx, attCtx;
 
-    // Particles
     particlesJS('particles-js',{particles:{number:{value:35},color:{value:'#6366f1'},opacity:{value:0.12},size:{value:2},line_linked:{enable:true,distance:140,color:'#6366f1',opacity:0.06},move:{enable:true,speed:1}},interactivity:{events:{onhover:{enable:true,mode:'grab'}}},retina_detect:true});
 
-    // ═══════════════════════════════════════
-    // AUTH + TOAST + MODAL
-    // ═══════════════════════════════════════
     function chkAuth(){if(!localStorage.getItem('thp_admin')){location.href='index.html';return false}return true}
     function toast(m,t='s'){const c=document.getElementById('toastCtr'),d=document.createElement('div');d.className=`toast ${t}`;d.innerHTML=`<span>${t==='s'?'✅':t==='e'?'❌':'ℹ️'}</span> ${m}`;c.appendChild(d);setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(120%)';setTimeout(()=>d.remove(),300)},2800)}
     function openMod(id){document.getElementById(id).classList.add('active')}
@@ -314,19 +308,17 @@
     document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('active')}));
     document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>m.classList.remove('active'))});
 
-    // Populate dropdowns (rooms + classes)
     function populateDropdowns() {
       const roomSelects = ['roomFil', 'addRoom', 'editRoom', 'attRoom'];
       roomSelects.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           let html = '<option value="">All/Select</option>';
-          ROOM_CODES.forEach(r => html += `<option value="${r}">${r}</option>`);
+          ALL_ROOMS.forEach(r => html += `<option value="${r}">${r}</option>`);
           el.innerHTML = html;
         }
       });
-      const classSelects = ['addCl', 'editCl'];
-      classSelects.forEach(id => {
+      ['addCl','editCl'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           let html = '<option value="">Select Class</option>';
@@ -336,31 +328,24 @@
       });
     }
 
-    // ═══════════════════════════════════════
-    // TAB SWITCH
-    // ═══════════════════════════════════════
     window.switchTab = function(t) {
       curTab=t;
       document.querySelectorAll('.tab-content').forEach(x=>x.style.display='none');
       document.getElementById('tab-'+t).style.display='block';
-      if(t==='students') renderStudents();
+      if(t==='students') { curPage=1; renderStudents(); }
       if(t==='attendance') loadAtt();
       if(t==='dashboard') renderCharts();
     };
 
-    // ═══════════════════════════════════════
-    // LOAD ALL STUDENTS (preserve class + room)
-    // ═══════════════════════════════════════
     async function loadAll(){
       try{
         const snap=await db.collection('students').orderBy('rollNo','asc').get();
         allStu=[];snap.forEach(d=>{
           let data = d.data();
-          if (!data.room) data.room = '1A'; // default room
+          if (!data.room) data.room = 'F1';
           if (!data.class) data.class = 'N/A';
           allStu.push({id:d.id, ...data});
         });
-        console.log('✅ Loaded',allStu.length,'students');
         updateStats(); populateDropdowns(); renderStudents(); renderCharts();
         document.getElementById('loadOverlay').style.display='none';
       }catch(e){toast('Failed to load','e');document.getElementById('loadOverlay').style.display='none'}
@@ -380,199 +365,225 @@
 
     window.showNotif = function(){updateStats();document.getElementById('notifPanel').classList.add('show');document.getElementById('notifPanel').scrollIntoView({behavior:'smooth'})};
 
-    // ═══════════════════════════════════════
-    // STUDENTS TABLE (Room filter)
-    // ═══════════════════════════════════════
-    function getFiltered(){
-      const s=(document.getElementById('stuSearch')?.value||'').toLowerCase();
-      const rf=document.getElementById('roomFil')?.value||'';
-      let f=[...allStu];
-      if(s) f=f.filter(x=>String(x.rollNo||'').includes(s)||(x.name||'').toLowerCase().includes(s)||(x.phone||'').includes(s)||(x.room||'').toLowerCase().includes(s));
-      if(rf) f=f.filter(x=>x.room===rf);
+    // Batch change updates room dropdown
+    window.onBatchChange = function() {
+      const batch = document.getElementById('batchFil').value;
+      const roomSel = document.getElementById('roomFil');
+      let rooms = [];
+      if (batch === 'First') rooms = FIRST_BATCH;
+      else if (batch === 'Second') rooms = SECOND_BATCH;
+      else rooms = ALL_ROOMS;
+      let html = '<option value="">All Rooms</option>';
+      rooms.forEach(r => html += `<option value="${r}">${r}</option>`);
+      roomSel.innerHTML = html;
+      curPage = 1;
+      renderStudents();
+    };
+
+    window.onAttBatchChange = function() {
+      const batch = document.getElementById('attBatch').value;
+      const roomSel = document.getElementById('attRoom');
+      let rooms = [];
+      if (batch === 'First') rooms = FIRST_BATCH;
+      else if (batch === 'Second') rooms = SECOND_BATCH;
+      else rooms = ALL_ROOMS;
+      let html = '<option value="">All Rooms</option>';
+      rooms.forEach(r => html += `<option value="${r}">${r}</option>`);
+      roomSel.innerHTML = html;
+      loadAtt();
+    };
+
+    function getFilteredStudents(){
+      const s = (document.getElementById('stuSearch')?.value||'').toLowerCase();
+      const rf = document.getElementById('roomFil')?.value||'';
+      let f = [...allStu];
+      if(s) f = f.filter(x => String(x.rollNo||'').includes(s) || (x.name||'').toLowerCase().includes(s) || (x.phone||'').includes(s));
+      if(rf) f = f.filter(x => x.room === rf);
       return f.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0));
     }
 
     window.renderStudents = function(){
-      curPage=1;const f=getFiltered();
-      document.getElementById('stuCount').textContent=f.length+' Students';
-      const tp=Math.ceil(f.length/perPage);
-      if(curPage>tp)curPage=Math.max(1,tp);
-      const start=(curPage-1)*perPage,page=f.slice(start,start+perPage);
-      document.getElementById('stuBody').innerHTML=page.length===0?'<tr><td colspan="7" style="text-align:center;padding:30px">No students</td></tr>':
-      page.map(s=>{
-        const ap=s.attendance?Object.values(s.attendance).filter(v=>v==='present').length:0;
-        const at=s.attendance?Object.keys(s.attendance).length:0;
-        const attP=at>0?Math.round((ap/at)*100):0;
-        return`<tr>
-          <td><span class="badge bg-r">${s.rollNo||'--'}</span></td>
-          <td><strong>${s.name||'N/A'}</strong></td>
-          <td><span class="badge bg-p">Class ${s.class||'N/A'}</span></td>
-          <td><span class="badge bg-g">${s.room||'1A'}</span></td>
-          <td>${s.phone||'N/A'}</td>
-          <td style="font-size:10px">${s.email||'--'}</td>
-          <td><span class="badge ${attP>=75?'bg-g':attP>=50?'bg-w':'bg-d'}">${attP}%</span></td>
-          <td>
-            <button class="btn btn-p btn-xs" onclick="openEdit('${s.id}')"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-d btn-xs" onclick="delStu('${s.id}')"><i class="fas fa-trash"></i></button>
-          </td></tr>`;
-      }).join('');
-      renderPag(tp);
+      const filtered = getFilteredStudents();
+      document.getElementById('stuCount').textContent = filtered.length + ' Students';
+      const totalPages = Math.ceil(filtered.length / perPage);
+      if (curPage > totalPages) curPage = Math.max(1, totalPages);
+      const start = (curPage - 1) * perPage;
+      const page = filtered.slice(start, start + perPage);
+      
+      document.getElementById('stuBody').innerHTML = page.length === 0 ? 
+        '<tr><td colspan="7" style="text-align:center;padding:30px">No students</td></tr>' :
+        page.map(s => {
+          const ap = s.attendance ? Object.values(s.attendance).filter(v=>v==='present').length : 0;
+          const at = s.attendance ? Object.keys(s.attendance).length : 0;
+          const attP = at>0 ? Math.round((ap/at)*100) : 0;
+          return `<tr>
+            <td><span class="badge bg-r">${s.rollNo||'--'}</span></td>
+            <td><strong>${s.name||'N/A'}</strong></td>
+            <td><span class="badge bg-p">Class ${s.class||'N/A'}</span></td>
+            <td><span class="badge bg-g">${s.room||'F1'}</span></td>
+            <td>${s.phone||'N/A'}</td>
+            <td><span class="badge ${attP>=75?'bg-g':attP>=50?'bg-w':'bg-d'}">${attP}%</span></td>
+            <td>
+              <button class="btn btn-p btn-xs" onclick="openEdit('${s.id}')"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-d btn-xs" onclick="delStu('${s.id}')"><i class="fas fa-trash"></i></button>
+            </td></tr>`;
+        }).join('');
+      
+      renderPagination(totalPages);
     };
 
-    function renderPag(tp){
-      const p=document.getElementById('pagination');
-      if(tp<=1){p.innerHTML='';return}
-      let h=`<button class="page-btn" onclick="goPage(${curPage-1})" ${curPage===1?'disabled':''}>◀</button>`;
-      for(let i=1;i<=tp;i++){
-        if(i===1||i===tp||(i>=curPage-2&&i<=curPage+2))h+=`<button class="page-btn ${i===curPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
-        else if(i===curPage-3||i===curPage+3)h+='<span>...</span>';
+    function renderPagination(totalPages) {
+      const container = document.getElementById('pagination');
+      if (totalPages <= 1) { container.innerHTML = ''; return; }
+      
+      let html = `<button class="page-btn" onclick="goToPage(${curPage-1})" ${curPage===1?'disabled':''}>◀</button>`;
+      
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= curPage - 2 && i <= curPage + 2)) {
+          html += `<button class="page-btn ${i === curPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+        } else if (i === curPage - 3 || i === curPage + 3) {
+          html += '<span style="padding:0 4px;">...</span>';
+        }
       }
-      h+=`<button class="page-btn" onclick="goPage(${curPage+1})" ${curPage===tp?'disabled':''}>▶</button>`;
-      p.innerHTML=h;
+      
+      html += `<button class="page-btn" onclick="goToPage(${curPage+1})" ${curPage===totalPages?'disabled':''}>▶</button>`;
+      container.innerHTML = html;
     }
 
-    window.goPage = function(p){
-      const f=getFiltered();const tp=Math.ceil(f.length/perPage);
-      curPage=Math.max(1,Math.min(p,tp));renderStudents();
+    window.goToPage = function(pageNum) {
+      const filtered = getFilteredStudents();
+      const totalPages = Math.ceil(filtered.length / perPage);
+      curPage = Math.max(1, Math.min(pageNum, totalPages));
+      renderStudents();
+      document.getElementById('stuBody').scrollIntoView({behavior:'smooth',block:'start'});
     };
 
-    // ═══════════════════════════════════════
-    // ADD STUDENT (class + room)
-    // ═══════════════════════════════════════
     window.openAdd = function(){
       document.getElementById('addForm').reset();
       document.getElementById('addPw').value='12345678';
-      document.getElementById('addRN').value=allStu.length+1;
+      document.getElementById('addRN').value = allStu.length + 1;
       openMod('addModal');
     };
+
     document.getElementById('addForm').addEventListener('submit',async(e)=>{
       e.preventDefault();
-      const d={
-        rollNo:parseInt(document.getElementById('addRN').value),
-        name:document.getElementById('addNm').value.trim(),
+      const d = {
+        rollNo: parseInt(document.getElementById('addRN').value),
+        name: document.getElementById('addNm').value.trim(),
         class: document.getElementById('addCl').value,
         room: document.getElementById('addRoom').value,
-        phone:document.getElementById('addPh').value.trim(),
-        password:document.getElementById('addPw').value,
-        email:document.getElementById('addEm').value.trim(),
+        phone: document.getElementById('addPh').value.trim(),
+        password: document.getElementById('addPw').value,
+        email: document.getElementById('addEm').value.trim(),
         fatherName:'',motherName:'',address:'',profilePhoto:'',
         bloodGroup:'',dateOfBirth:'',gender:'',
         attendance:{},testScores:{},
         performance:{strengths:'',weaknesses:'',remarks:''},
-        createdAt:firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
-      try{
+      try {
         await db.collection('students').doc(String(d.rollNo)).set(d);
-        toast('Student added!','s');closeMod('addModal');loadAll();
-      }catch(err){toast('Failed','e')}
+        toast('Student added!','s'); closeMod('addModal'); loadAll();
+      } catch(err) { toast('Failed','e'); }
     });
 
-    // ═══════════════════════════════════════
-    // EDIT STUDENT (class + room editable)
-    // ═══════════════════════════════════════
     window.openEdit = function(id){
-      const s=allStu.find(x=>x.id===id);if(!s)return;
-      document.getElementById('editID').value=s.id;
-      document.getElementById('editRN').value=s.rollNo||'';
-      document.getElementById('editNm').value=s.name||'';
-      document.getElementById('editCl').value=s.class||'';
-      document.getElementById('editRoom').value=s.room||'1A';
-      document.getElementById('editPh').value=s.phone||'';
-      document.getElementById('editEm').value=s.email||'';
-      document.getElementById('editPw').value=s.password||'';
-      document.getElementById('editFa').value=s.fatherName||'';
-      document.getElementById('editMo').value=s.motherName||'';
+      const s = allStu.find(x=>x.id===id); if(!s) return;
+      document.getElementById('editID').value = s.id;
+      document.getElementById('editRN').value = s.rollNo||'';
+      document.getElementById('editNm').value = s.name||'';
+      document.getElementById('editCl').value = s.class||'';
+      document.getElementById('editRoom').value = s.room||'F1';
+      document.getElementById('editPh').value = s.phone||'';
+      document.getElementById('editEm').value = s.email||'';
+      document.getElementById('editPw').value = s.password||'';
+      document.getElementById('editFa').value = s.fatherName||'';
+      document.getElementById('editMo').value = s.motherName||'';
       openMod('editModal');
     };
+
     document.getElementById('editForm').addEventListener('submit',async(e)=>{
       e.preventDefault();
-      const oid=document.getElementById('editID').value;
-      const nrn=parseInt(document.getElementById('editRN').value);
-      const u={
-        rollNo:nrn,name:document.getElementById('editNm').value.trim(),
+      const oid = document.getElementById('editID').value;
+      const nrn = parseInt(document.getElementById('editRN').value);
+      const u = {
+        rollNo: nrn, name: document.getElementById('editNm').value.trim(),
         class: document.getElementById('editCl').value,
         room: document.getElementById('editRoom').value,
-        phone:document.getElementById('editPh').value.trim(),
-        email:document.getElementById('editEm').value.trim(),
-        password:document.getElementById('editPw').value,
-        fatherName:document.getElementById('editFa').value.trim(),
-        motherName:document.getElementById('editMo').value.trim(),
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+        phone: document.getElementById('editPh').value.trim(),
+        email: document.getElementById('editEm').value.trim(),
+        password: document.getElementById('editPw').value,
+        fatherName: document.getElementById('editFa').value.trim(),
+        motherName: document.getElementById('editMo').value.trim(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
-      try{
-        if(String(nrn)!==oid){
-          const old=allStu.find(x=>x.id===oid);
-          await db.collection('students').doc(String(nrn)).set({...old,...u},{merge:true});
+      try {
+        if(String(nrn) !== oid) {
+          const old = allStu.find(x=>x.id===oid);
+          await db.collection('students').doc(String(nrn)).set({...old, ...u}, {merge:true});
           await db.collection('students').doc(oid).delete();
-        }else{await db.collection('students').doc(oid).update(u)}
-        toast('Updated!','s');closeMod('editModal');loadAll();
-      }catch(err){toast('Failed','e')}
+        } else { await db.collection('students').doc(oid).update(u); }
+        toast('Updated!','s'); closeMod('editModal'); loadAll();
+      } catch(err) { toast('Failed','e'); }
     });
 
-    // ═══════════════════════════════════════
-    // DELETE
-    // ═══════════════════════════════════════
     window.delStu = async function(id){
-      const s=allStu.find(x=>x.id===id);
-      if(!confirm(`Delete ${s?.name||'student'}?`))return;
-      try{await db.collection('students').doc(id).delete();toast('Deleted!','s');loadAll()}catch(e){toast('Failed','e')}
+      const s = allStu.find(x=>x.id===id);
+      if(!confirm(`Delete ${s?.name||'student'}?`)) return;
+      try { await db.collection('students').doc(id).delete(); toast('Deleted!','s'); loadAll(); } catch(e) { toast('Failed','e'); }
     };
 
-    // ═══════════════════════════════════════
-    // ATTENDANCE (Room filter)
-    // ═══════════════════════════════════════
     window.loadAtt = async function(){
-      const date=document.getElementById('attDate').value||today;
-      const rf=document.getElementById('attRoom').value;
-      let f=[...allStu];if(rf)f=f.filter(s=>s.room===rf);
-      document.getElementById('attDate').value=date;
-      if(!f.length){document.getElementById('attMatrix').innerHTML='<p style="text-align:center;padding:30px">No students</p>';return}
-      const sorted=f.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0));
-      document.getElementById('attMatrix').innerHTML=`<table><thead><tr><th>Roll</th><th>Name</th><th>Class</th><th>Room</th><th>Status</th><th>Action</th></tr></thead><tbody>${sorted.map(s=>{
-        const st=(s.attendance&&s.attendance[date])||'unmarked';
-        return`<tr>
-          <td><span class="badge bg-r">${s.rollNo}</span></td>
-          <td><strong>${s.name}</strong></td>
-          <td>Class ${s.class||'N/A'}</td><td>${s.room||'1A'}</td>
-          <td><span class="badge ${st==='present'?'bg-g':st==='absent'?'bg-d':'bg-w'}">${st.toUpperCase()}</span></td>
+      const date = document.getElementById('attDate').value || today;
+      const rf = document.getElementById('attRoom').value;
+      let f = [...allStu]; if(rf) f = f.filter(s => s.room === rf);
+      document.getElementById('attDate').value = date;
+      if(!f.length) { document.getElementById('attMatrix').innerHTML = '<p style="text-align:center;padding:30px">No students</p>'; return; }
+      const sorted = f.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0));
+      document.getElementById('attMatrix').innerHTML = `<table><thead><tr><th>Action</th><th>Roll</th><th>Name</th><th>Class</th><th>Room</th><th>Status</th></tr></thead><tbody>${sorted.map(s=>{
+        const st = (s.attendance&&s.attendance[date])||'unmarked';
+        return `<tr>
           <td>
             <button class="btn btn-g btn-xs" onclick="markAtt('${s.id}','${date}','present')">✓ P</button>
             <button class="btn btn-d btn-xs" onclick="markAtt('${s.id}','${date}','absent')">✕ A</button>
-          </td></tr>`;
+          </td>
+          <td><span class="badge bg-r">${s.rollNo}</span></td>
+          <td><strong>${s.name}</strong></td>
+          <td>Class ${s.class||'N/A'}</td>
+          <td>${s.room||'F1'}</td>
+          <td><span class="badge ${st==='present'?'bg-g':st==='absent'?'bg-d':'bg-w'}">${st.toUpperCase()}</span></td>
+        </tr>`;
       }).join('')}</tbody></table>`;
     };
 
     window.markAtt = async function(docId,date,status){
-      try{
-        const id=String(docId);
-        await db.collection('students').doc(id).update({[`attendance.${date}`]:status,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
-        const st=allStu.find(x=>x.id===id||String(x.rollNo)===id);
-        if(st){if(!st.attendance)st.attendance={};st.attendance[date]=status}
-        toast(`Marked ${status}`,'s');loadAtt();updateStats();
-      }catch(e){console.error(e);toast('Failed: '+e.message,'e')}
+      try {
+        const id = String(docId);
+        await db.collection('students').doc(id).update({[`attendance.${date}`]:status, updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+        const st = allStu.find(x=>x.id===id||String(x.rollNo)===id);
+        if(st){ if(!st.attendance) st.attendance={}; st.attendance[date]=status; }
+        toast(`Marked ${status}`,'s'); loadAtt(); updateStats();
+      } catch(e) { toast('Failed: '+e.message,'e'); }
     };
 
     window.markAllP = async function(){
-      const date=document.getElementById('attDate').value||today;
-      const rf=document.getElementById('attRoom').value;
-      let f=[...allStu];if(rf)f=f.filter(s=>s.room===rf);
-      if(!f.length){toast('No students','e');return}
-      if(!confirm(`Mark ALL ${f.length} PRESENT?`))return;
-      const b=db.batch();
-      f.forEach(s=>b.update(db.collection('students').doc(String(s.id)),{[`attendance.${date}`]:'present',updatedAt:firebase.firestore.FieldValue.serverTimestamp()}));
-      try{await b.commit();toast(`${f.length} marked present`,'s');loadAtt();updateStats()}catch(e){toast('Failed','e')}
+      const date = document.getElementById('attDate').value || today;
+      const rf = document.getElementById('attRoom').value;
+      let f = [...allStu]; if(rf) f = f.filter(s=>s.room===rf);
+      if(!f.length) { toast('No students','e'); return; }
+      if(!confirm(`Mark ALL ${f.length} PRESENT?`)) return;
+      const b = db.batch();
+      f.forEach(s => b.update(db.collection('students').doc(String(s.id)), {[`attendance.${date}`]:'present', updatedAt:firebase.firestore.FieldValue.serverTimestamp()}));
+      try { await b.commit(); toast(`${f.length} marked present`,'s'); loadAtt(); updateStats(); } catch(e) { toast('Failed','e'); }
     };
 
-    // ═══════════════════════════════════════
-    // WHATSAPP
-    // ═══════════════════════════════════════
-    function getAbsent(){return allStu.filter(s=>s.attendance&&s.attendance[today]==='absent')}
+    function getAbsent(){ return allStu.filter(s=>s.attendance&&s.attendance[today]==='absent'); }
     window.openWA = function(){
-      const abs=getAbsent();
-      document.getElementById('waList').innerHTML=abs.length===0?'<p style="text-align:center;padding:30px;color:var(--g)">✅ All present!</p>':
+      const abs = getAbsent();
+      document.getElementById('waList').innerHTML = abs.length===0 ? '<p style="text-align:center;padding:30px;color:var(--g)">✅ All present!</p>' :
       abs.sort((a,b)=>(a.rollNo||0)-(b.rollNo||0)).map(s=>{
-        const msg=encodeURIComponent(`Dear Parent,\n\n${s.name} (Roll ${s.rollNo}, Class ${s.class}, Room ${s.room}) was ABSENT today.\n\n- THP Coaching`);
-        return`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px;border-bottom:1px solid #eee">
+        const msg = encodeURIComponent(`Dear Parent,\n\n${s.name} (Roll ${s.rollNo}, Class ${s.class}, Room ${s.room}) was ABSENT today.\n\n- THP Coaching`);
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px;border-bottom:1px solid #eee">
           <div><strong>${s.name}</strong> <small>R${s.rollNo} | ${s.phone}</small></div>
           <a href="https://wa.me/91${s.phone}?text=${msg}" target="_blank" style="background:#25D366;color:white;padding:7px 12px;border-radius:7px;text-decoration:none;font-size:11px;font-weight:600">Send</a>
         </div>`;
@@ -580,56 +591,46 @@
       openMod('waModal');
     };
 
-    // ═══════════════════════════════════════
-    // EMAIL
-    // ═══════════════════════════════════════
     window.sendEmails = async function(){
-      const we=allStu.filter(s=>s.email);
-      if(!we.length){toast('No emails found!','e');return}
-      if(!confirm(`Send to ${we.length} parents?`))return;
-      const tf=new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-      let sent=0;
-      for(const s of we){
-        const st=(s.attendance&&s.attendance[today])||'unmarked';
-        try{await emailjs.send('service_x91ci6d','template_eqi91wm',{to_email:s.email,subject:`Attendance - ${tf}`,message:`${s.name} (Roll ${s.rollNo}, Class ${s.class}, Room ${s.room}) was ${st.toUpperCase()} today.`,date:tf,time:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})});sent++}catch(e){}
+      const we = allStu.filter(s=>s.email);
+      if(!we.length) { toast('No emails found!','e'); return; }
+      if(!confirm(`Send to ${we.length} parents?`)) return;
+      const tf = new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+      let sent = 0;
+      for(const s of we) {
+        const st = (s.attendance&&s.attendance[today])||'unmarked';
+        try { await emailjs.send('service_x91ci6d','template_eqi91wm',{to_email:s.email,subject:`Attendance - ${tf}`,message:`${s.name} (Roll ${s.rollNo}, Class ${s.class}, Room ${s.room}) was ${st.toUpperCase()} today.`,date:tf,time:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}); sent++; } catch(e) {}
       }
       toast(`${sent}/${we.length} emails sent!`,'s');
     };
 
-    // ═══════════════════════════════════════
-    // CHARTS (room distribution)
-    // ═══════════════════════════════════════
     window.renderCharts = function(){
-      const c1=document.getElementById('classChart')?.getContext('2d');
-      if(c1){
-        const rc={};allStu.forEach(s=>{const r=s.room||'1A';rc[r]=(rc[r]||0)+1});
-        const lb=Object.keys(rc).sort();
-        if(classCtx)classCtx.destroy();
-        classCtx=new Chart(c1,{type:'bar',data:{labels:lb,datasets:[{label:'Students',data:lb.map(l=>rc[l]),backgroundColor:lb.map((_,i)=>`hsl(${i*30},70%,60%)`),borderRadius:9}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+      const c1 = document.getElementById('classChart')?.getContext('2d');
+      if(c1) {
+        const rc = {}; allStu.forEach(s=>{ const r = s.room||'F1'; rc[r] = (rc[r]||0)+1; });
+        const lb = Object.keys(rc).sort();
+        if(classCtx) classCtx.destroy();
+        classCtx = new Chart(c1, {type:'bar', data:{labels:lb, datasets:[{label:'Students',data:lb.map(l=>rc[l]),backgroundColor:lb.map((_,i)=>`hsl(${i*30},70%,60%)`),borderRadius:9}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
       }
-      const c2=document.getElementById('attPie')?.getContext('2d');
-      if(c2){
+      const c2 = document.getElementById('attPie')?.getContext('2d');
+      if(c2) {
         let p=0,a=0,u=0;
-        allStu.forEach(s=>{const st=(s.attendance&&s.attendance[today])||'unmarked';if(st==='present')p++;else if(st==='absent')a++;else u++});
-        if(attCtx)attCtx.destroy();
-        attCtx=new Chart(c2,{type:'doughnut',data:{labels:['Present','Absent','Unmarked'],datasets:[{data:[p,a,u],backgroundColor:['#10b981','#ef4444','#d1d5db'],borderWidth:3,borderColor:'white'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
+        allStu.forEach(s=>{ const st = (s.attendance&&s.attendance[today])||'unmarked'; if(st==='present')p++; else if(st==='absent')a++; else u++; });
+        if(attCtx) attCtx.destroy();
+        attCtx = new Chart(c2, {type:'doughnut', data:{labels:['Present','Absent','Unmarked'],datasets:[{data:[p,a,u],backgroundColor:['#10b981','#ef4444','#d1d5db'],borderWidth:3,borderColor:'white'}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
       }
     };
 
-    window.logout = function(){localStorage.removeItem('thp_admin');location.href='index.html'};
+    window.logout = function(){ localStorage.removeItem('thp_admin'); location.href='index.html'; };
 
-    // ═══════════════════════════════════════
-    // INIT
-    // ═══════════════════════════════════════
     async function init(){
-      if(!chkAuth())return;
-      document.getElementById('attDate').value=today;
+      if(!chkAuth()) return;
+      document.getElementById('attDate').value = today;
       populateDropdowns();
       await loadAll();
       switchTab('dashboard');
     }
-    window.addEventListener('DOMContentLoaded',init);
-    console.log('👑 GOD PANEL · Class preserved, Room toggle (1A-2F)');
+    window.addEventListener('DOMContentLoaded', init);
   })();
 </script>
 </body>
