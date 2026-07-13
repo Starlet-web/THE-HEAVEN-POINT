@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>रासायनिक बलगतिकी | THP कोचिंग</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6a3093;
+      --primary-soft: #8e44ad;
+      --secondary: #a044ff;
+      --accent: #ff7e5f;
+      --accent-glow: #ff9a7f;
+      --text: #1e1e2f;
+      --bg: #faf7ff;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --glass-border: rgba(106, 48, 147, 0.25);
+      --shadow: 0 20px 35px rgba(106, 48, 147, 0.08), 0 6px 12px rgba(0,0,0,0.05);
+      --border: #e9d8ff;
+      --gold: #d4af37;
+      --thp-gradient: linear-gradient(135deg, #4a1a6b 0%, #6a3093 50%, #a044ff 100%);
+      --card-shadow: 0 25px 45px rgba(106, 48, 147, 0.12);
+      --table-stripe: rgba(106, 48, 147, 0.04);
+      --reaction-bg: rgba(106, 48, 147, 0.06);
+      --reaction-border: rgba(106, 48, 147, 0.3);
+    }
+
+    [data-theme="dark"] {
+      --primary: #b37bff;
+      --primary-soft: #9b6bff;
+      --secondary: #c58aff;
+      --accent: #ff9a7f;
+      --accent-glow: #ffb69b;
+      --text: #f0e9ff;
+      --bg: #0f0a1a;
+      --card-bg: rgba(25, 18, 35, 0.94);
+      --glass-border: rgba(180, 130, 255, 0.3);
+      --shadow: 0 20px 35px rgba(0,0,0,0.5);
+      --border: #3a2a4a;
+      --gold: #e5c158;
+      --card-shadow: 0 25px 45px rgba(0,0,0,0.55);
+      --table-stripe: rgba(180, 130, 255, 0.06);
+      --reaction-bg: rgba(180, 130, 255, 0.08);
+      --reaction-border: rgba(180, 130, 255, 0.4);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      padding: 0 12px 30px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 15% 25%, rgba(106, 48, 147, 0.15) 0%, transparent 28%),
+                  radial-gradient(circle at 85% 70%, rgba(160, 68, 255, 0.15) 0%, transparent 28%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 15px 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* THP Branding Header */
+    .brand-header {
+      background: var(--thp-gradient);
+      border-radius: 32px;
+      padding: 25px 22px 18px;
+      color: white;
+      box-shadow: 0 20px 35px rgba(106, 48, 147, 0.4);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .thp-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+    .thp-logo span {
+      background: rgba(255,255,255,0.18);
+      padding: 4px 18px;
+      border-radius: 40px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #fff3e0;
+    }
+    .mohit-badge {
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-weight: 600;
+      border: 1px solid rgba(255,215,0,0.5);
+      color: #ffd966;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+    .mohit-badge i {
+      font-style: normal;
+      font-size: 1.3rem;
+    }
+
+    .theme-toggle {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s;
+      font-size: 0.9rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.03);
+    }
+
+    /* Section Cards */
+    .section {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border-radius: 28px;
+      padding: 24px 22px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(25px);
+      animation: fadeSlide 0.5s ease forwards;
+    }
+    @keyframes fadeSlide {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .section:hover {
+      box-shadow: 0 28px 48px rgba(106, 48, 147, 0.2);
+      border-color: var(--secondary);
+    }
+
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--primary);
+      font-size: 1.7rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2::after {
+      content: "";
+      height: 3px;
+      flex: 1;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      border-radius: 5px;
+    }
+
+    h3 {
+      color: var(--primary-soft);
+      margin: 18px 0 10px;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .formula-box {
+      background: linear-gradient(120deg, rgba(106,48,147,0.08) 0%, rgba(160,68,255,0.08) 100%);
+      border-left: 5px solid var(--primary);
+      padding: 16px 18px;
+      margin: 18px 0;
+      border-radius: 0 16px 16px 0;
+      font-size: 0.95rem;
+      backdrop-filter: blur(4px);
+      overflow-x: auto;
+    }
+
+    /* REACTION BLOCK - extra clear styling */
+    .reaction-block {
+      background: var(--reaction-bg);
+      border: 1px solid var(--reaction-border);
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin: 16px 0;
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+    }
+    .reaction-block .math {
+      font-size: 1.05rem;
+    }
+
+    .key-point {
+      background: rgba(255, 126, 95, 0.08);
+      border-left: 5px solid var(--accent);
+      padding: 14px 16px;
+      margin: 18px 0;
+      border-radius: 0 16px 16px 0;
+      font-weight: 500;
+    }
+
+    .styled-list {
+      list-style: none;
+      margin: 12px 0;
+    }
+    .styled-list li {
+      padding: 9px 12px 9px 28px;
+      margin-bottom: 6px;
+      background: rgba(106,48,147,0.04);
+      border-radius: 10px;
+      position: relative;
+    }
+    .styled-list li::before {
+      content: "●";
+      position: absolute;
+      left: 12px;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 0.9rem;
+      background: var(--card-bg);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    th {
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      font-weight: 600;
+    }
+    td, th {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    tr:nth-child(even) {
+      background: var(--table-stripe);
+    }
+
+    .image-container {
+      margin: 14px auto;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+      border: 1px solid var(--border);
+      max-width: 360px;
+      background: var(--card-bg);
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      max-height: 200px;
+    }
+    .image-caption {
+      padding: 8px;
+      text-align: center;
+      font-size: 0.8rem;
+      background: rgba(106,48,147,0.04);
+      font-style: italic;
+      border-top: 1px solid var(--border);
+    }
+
+    .graph-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      justify-content: center;
+      margin: 18px 0;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: var(--primary);
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      z-index: 99;
+      box-shadow: 0 8px 18px rgba(106,48,147,0.4);
+      text-decoration: none;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .watermark {
+      position: fixed;
+      bottom: 18px;
+      left: 22px;
+      font-family: 'Space Grotesk', sans-serif;
+      color: rgba(106,48,147,0.2);
+      font-weight: 700;
+      font-size: 1.5rem;
+      z-index: -1;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+
+    p, .styled-list, .formula-box, .key-point {
+      font-size: 0.95rem;
+    }
+
+    .clear-reaction {
+      display: block;
+      background: var(--reaction-bg);
+      padding: 12px 16px;
+      border-radius: 14px;
+      margin: 10px 0;
+      border-left: 4px solid var(--primary);
+      font-weight: 500;
+    }
+
+    @media (max-width: 500px) {
+      .brand-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .image-container {
+        max-width: 100%;
+      }
+      h2 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="watermark">THP</div>
+  
+  <button class="theme-toggle" id="themeToggle">
+    <span>🌓</span> <span>थीम बदलें</span>
+  </button>
+
+  <div class="container">
+    <!-- THP Branding + Mohit Sir -->
+    <div class="brand-header">
+      <div class="thp-logo">
+        ⚛️ THP <span>कोचिंग</span>
+      </div>
+      <div class="mohit-badge">
+        <i>🧠</i> मोहित सर द्वारा नोट्स <span style="font-weight:400;">(M.Sc न्यूरोसाइंस)</span>
+      </div>
+    </div>
+
+    <main>
+      <!-- सभी सामग्री हिंदी में अनुवादित, संरचना और समीकरण यथावत -->
+      
+      <section class="section">
+        <h2>रासायनिक बलगतिकी का परिचय</h2>
+        <p>रासायनिक बलगतिकी रसायन विज्ञान की वह शाखा है जो अभिक्रिया की दरों, अभिक्रिया की दर को प्रभावित करने वाले कारकों और उन क्रियाविधियों का अध्ययन करती है जिनके द्वारा अभिक्रियाएँ संपन्न होती हैं।</p>
+        
+        <p>अभिक्रिया की दर को प्रभावित करने वाले कारक हैं: सांद्रता, ताप, दाब और उत्प्रेरक।</p>
+        
+        <p>रासायनिक अभिक्रिया की दर के आधार पर रासायनिक अभिक्रियाएँ तीन प्रकार की होती हैं:</p>
+        
+        <ul class="styled-list">
+          <li><strong>अति तीव्र अभिक्रियाएँ:</strong>
+            <ul>
+              <li>कुछ अभिक्रियाएँ (जैसे आयनिक अभिक्रियाएँ) बहुत तेज़ होती हैं।</li>
+              <li>उदाहरण: AgNO₃ और NaCl से AgCl का उत्पादन।</li>
+            </ul>
+          </li>
+          <li><strong>अति मंद अभिक्रियाएँ:</strong>
+            <ul>
+              <li>कुछ अभिक्रियाएँ बहुत धीमी होती हैं।</li>
+              <li>उदाहरण: वायु और नमी की उपस्थिति में लोहे में जंग लगना।</li>
+            </ul>
+          </li>
+          <li><strong>मध्यम मंद अभिक्रियाएँ:</strong>
+            <ul>
+              <li>कुछ अभिक्रियाएँ मध्यम दर से होती हैं।</li>
+              <li>उदाहरण: गन्ना शर्करा का प्रतिलोमन और स्टार्च का जल अपघटन।</li>
+            </ul>
+          </li>
+        </ul>
+        
+        <p><strong>रासायनिक अभिक्रिया की दर:</strong></p>
+        <p>रासायनिक अभिक्रिया की दर को इकाई समय में अभिकारकों या उत्पादों की सांद्रता में परिवर्तन के रूप में परिभाषित किया जा सकता है। इसे निम्न रूप में व्यक्त किया जा सकता है:</p>
+        <ol class="styled-list">
+          <li>किसी एक अभिकारक की सांद्रता में कमी की दर, या</li>
+          <li>किसी एक उत्पाद की सांद्रता में वृद्धि की दर।</li>
+        </ol>
+      </section>
+      
+      <section class="section">
+        <h2>दर व्यंजक</h2>
+        <p>अभिक्रिया, \( R \rightarrow P \) के लिए:</p>
+        
+        <div class="formula-box">
+          <p>\( R \) के विलुप्त होने की दर = \( \frac{\text{R की सांद्रता में कमी}}{\text{लिया गया समय}} \)</p>
+          <p class="math">\[ = -\frac{\Delta [R]}{\Delta t} \]</p>
+          
+          <p>\( P \) के प्रकट होने की दर = \( \frac{\text{P की सांद्रता में वृद्धि}}{\text{लिया गया समय}} = +\frac{\Delta [P]}{\Delta t} \)</p>
+        </div>
+        
+        <div class="formula-box">
+          <p><strong>उदाहरण:</strong></p>
+          
+          <div class="clear-reaction">
+            <p><strong>(1)</strong> \( PCl_5 \rightarrow PCl_3 + Cl_2 \)</p>
+            <p class="math">\[दर = -\frac{\Delta [PCl_5]}{\Delta t} = +\frac{\Delta [PCl_3]}{\Delta t} = +\frac{\Delta [Cl_2]}{\Delta t}\]</p>
+          </div>
+          
+          <div class="clear-reaction">
+            <p><strong>(2)</strong> \( H_{2(g)} + Cl_{2(g)} \rightarrow 2HCl_{(g)} \)</p>
+            <p class="math">\[दर = -\frac{\Delta [H_{2}]}{\Delta t} = -\frac{\Delta [Cl_{2}]}{\Delta t} = +\frac{1}{2}\frac{\Delta [HCl]}{\Delta t}\]</p>
+          </div>
+          
+          <div class="clear-reaction">
+            <p><strong>(3)</strong> \( 2HI_{(g)} \rightarrow H_{2(g)} + I_{2(g)} \)</p>
+            <p class="math">\[दर = -\frac{1}{2} \frac{\Delta [HI]}{\Delta t} = +\frac{\Delta [H_2]}{\Delta t} = +\frac{\Delta [I_2]}{\Delta t}\]</p>
+          </div>
+          
+          <div class="clear-reaction">
+            <p><strong>(4)</strong> \( 5 Br^- + BrO_3^- + 6 H^+ \rightarrow 3 Br_2 + 3 H_2O \)</p>
+            <p class="math">\[दर = -\frac{1}{5} \frac{\Delta [Br^-]}{\Delta t} = - \frac{\Delta [BrO_3^-]}{\Delta t} = -\frac{1}{6} \frac{\Delta [H^+]}{\Delta t} = +\frac{1}{3} \frac{\Delta [Br_2]}{\Delta t} = +\frac{1}{3} \frac{\Delta [H_2O]}{\Delta t}\]</p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>अभिक्रिया की दर की इकाइयाँ</h2>
+        <div class="formula-box">
+          <p class="math">\[\text{इकाई} \Rightarrow \text{mol L}^{-1} \text{s}^{-1}\]</p>
+        </div>
+        
+        <div class="key-point">
+          <p><strong>नोट:</strong> गैसीय अभिक्रियाओं में जब गैसों की सांद्रता उनके आंशिक दाबों के रूप में होती है, तो इकाई \(\text{atm s}^{-1}\) हो जाती है।</p>
+        </div>
+        
+        <h3>अभिक्रिया की औसत दर</h3>
+        <p>अभिक्रिया की औसत दर एक लंबे समय अंतराल में उत्पादों का प्रकट होना या अभिकारकों का विलुप्त होना है।</p>
+        
+        <div class="formula-box">
+          <p class="math">\[V_{\text{औसत}} = -\frac{\Delta [R]}{\Delta t} = \frac{\Delta [P]}{\Delta t}\]</p>
+        </div>
+        
+        <h3>अभिक्रिया की तात्क्षणिक दर</h3>
+        <p>किसी विशेष क्षण पर अभिक्रिया की दर को अभिक्रिया की तात्क्षणिक दर कहते हैं।</p>
+        
+        <div class="formula-box">
+          <p class="math">\[V_{\text{तात्क्षणिक}} = -\frac{d[R]}{dt} = +\frac{d[P]}{dt}\]</p>
+          <p>जब \(\Delta t \to 0\), तात्क्षणिक दर = औसत दर।</p>
+        </div>
+        
+        <h3>अभिक्रिया की दर का प्रायोगिक निर्धारण</h3>
+        <p>अभिक्रिया की दर किसी भी अभिकारक या उत्पाद की सांद्रता और समय के बीच ग्राफ की प्रवणता से ज्ञात की जा सकती है जैसा कि नीचे दिया गया है।</p>
+        
+        <div class="formula-box">
+          <p class="math">\[V_{\text{औसत}} = -\frac{\Delta [R]}{\Delta t} = -\left\{\frac{[R]_2-[R]_1}{t_2-t_1}\right\}\]</p>
+          <p class="math">\[V_{\text{तात्क्षणिक}} = -\frac{d[R]}{dt}\]</p>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>अभिक्रिया की दर को प्रभावित करने वाले कारक</h2>
+        <p>अभिक्रिया की दर प्रायोगिक परिस्थितियों जैसे एक या अधिक अभिकारकों की सांद्रता (गैसों के मामले में दाब), ताप, उत्प्रेरक और अभिकारकों के पृष्ठीय क्षेत्रफल पर निर्भर करती है।</p>
+        
+        <ol class="styled-list">
+          <li><strong>अभिकारकों की सांद्रता:</strong>
+            <ul>
+              <li>अभिकारकों की सांद्रता अधिक होने पर अभिक्रियाएँ अधिक गति से होती हैं।</li>
+              <li>इसके विपरीत, अभिकारकों की सांद्रता घटने पर अभिक्रिया दर घट जाती है।</li>
+            </ul>
+          </li>
+          <li><strong>ताप:</strong>
+            <ul>
+              <li>उच्च ताप पर अभिक्रियाएँ अधिक गति से होती हैं।</li>
+              <li>ताप में 10°C वृद्धि पर अभिक्रिया की गति लगभग दोगुनी हो जाती है।</li>
+            </ul>
+          </li>
+          <li><strong>उत्प्रेरक:</strong>
+            <ul>
+              <li>उत्प्रेरक अभिक्रिया की गति को बदल देता है, यह साम्यावस्था शीघ्र प्राप्त करने में सहायता करता है।</li>
+              <li>यह बिना उपभुक्त हुए अभिक्रिया में भाग लेता है।</li>
+            </ul>
+          </li>
+          <li><strong>अभिकारकों का पृष्ठीय क्षेत्रफल:</strong>
+            <ul>
+              <li>कण का आकार जितना छोटा होगा, पृष्ठीय क्षेत्रफल उतना ही अधिक होगा और अभिक्रिया उतनी ही तीव्र होगी।</li>
+              <li>उत्प्रेरक का चूर्णित रूप बेहतर उत्प्रेरक होता है।</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+      
+      <section class="section">
+        <h2>दर की सांद्रता पर निर्भरता</h2>
+        <p>अभिकारकों की सांद्रता के पदों में अभिक्रिया की दर के निरूपण को "दर नियम" या दर समीकरण या दर व्यंजक कहते हैं।</p>
+        
+        <h3>दर व्यंजक और दर स्थिरांक</h3>
+        <p>एक सामान्य अभिक्रिया पर विचार कीजिए:</p>
+        <div class="formula-box">
+          <p class="math">\[aA + bB \rightarrow cC + dD\]</p>
+          <p>जहाँ \(a, b, c\) और \(d\) अभिकारकों और उत्पादों के स्टॉइकियोमीट्री गुणांक हैं।</p>
+          
+          <p>इस अभिक्रिया के लिए दर व्यंजक है:</p>
+          <p class="math">\[\text{दर} \propto [A]^x[B]^y\]</p>
+          <p>जहाँ \(x\) और \(y\) अभिकारकों के स्टॉइकियोमीट्री गुणांकों (a और b) के बराबर हो भी सकते हैं और नहीं भी।</p>
+          
+          <p class="math">\[\text{दर} = k[A]^x[B]^y\]</p>
+          <p class="math">\[-\frac{d[A]}{dt} = k[A]^x[B]^y\]</p>
+          <p>समीकरण का यह रूप अवकल दर समीकरण कहलाता है, जहाँ \(k\) आनुपातिकता स्थिरांक है जिसे दर स्थिरांक या वेग स्थिरांक कहते हैं।</p>
+        </div>
+        
+        <div class="key-point">
+          <p><strong>दर नियम:</strong> दर नियम वह व्यंजक है जिसमें अभिक्रिया की दर अभिकारकों की मोलर सांद्रता के पदों में दी जाती है, जिसमें प्रत्येक पद किसी घात तक बढ़ाया जाता है, जो संतुलित रासायनिक समीकरण में अभिकारक स्पीशीज के स्टॉइकियोमीट्री गुणांक के समान हो भी सकता है और नहीं भी।</p>
+        </div>
+        
+        <div class="key-point">
+          <p><strong>नोट:</strong> रासायनिक अभिक्रिया के लिए दर नियम संतुलित रासायनिक समीकरण से, अर्थात सैद्धांतिक रूप से तय नहीं किया जा सकता। इसे प्रायोगिक रूप से निर्धारित करना होता है।</p>
+        </div>
+        
+        <div class="formula-box">
+          <p><strong>उदाहरण:</strong></p>
+          
+          <div class="clear-reaction">
+            <p><strong>(1)</strong> \( 2NO_{(g)} + O_{2(g)} \rightarrow 2NO_{2(g)} \)</p>
+            <p class="math">\[\text{दर} = k [NO]^{2} [O_{2}]\]</p>
+            <p class="math">\[\frac{-d[R]}{dt} = k [NO]^{2} [O_{2}]\]</p>
+          </div>
+          
+          <div class="clear-reaction">
+            <p><strong>(2)</strong> \( CHCl_3 + Cl_2 \rightarrow CCl_4 + HCl \)</p>
+            <p class="math">\[\text{दर} = k [CHCl_3] [Cl_2]^{1/2}\]</p>
+          </div>
+          
+          <div class="clear-reaction">
+            <p><strong>(3)</strong> \( CH_3COOC_2H_5 + H_2O \rightarrow CH_3COOH + C_2H_5OH \)</p>
+            <p class="math">\[\text{दर} = k [CH_3COOC_2H_5]^{1} [H_2O]^{0}\]</p>
+          </div>
+        </div>
+        
+        <h3>दर स्थिरांकों की विशेषताएँ:</h3>
+        <ol class="styled-list">
+          <li>दर स्थिरांक का मान जितना अधिक होगा, अभिक्रिया उतनी ही तीव्र होगी।</li>
+          <li>दर स्थिरांक का मान ताप पर निर्भर करता है।</li>
+          <li>इसका मान अभिकारकों की सांद्रता पर निर्भर नहीं करता।</li>
+          <li>दर स्थिरांक की इकाई अभिक्रिया की कोटि पर निर्भर करती है।</li>
+        </ol>
+      </section>
+      
+      <section class="section">
+        <h2>रासायनिक अभिक्रिया की कोटि</h2>
+        <p>दर नियम व्यंजक में अभिकारकों की सांद्रता की घातों के योग को रासायनिक अभिक्रिया की कोटि कहते हैं।</p>
+        
+        <div class="formula-box">
+          <p>अभिक्रिया के लिए:</p>
+          <p class="math">\[aA + bB \rightarrow cC + dD, \quad \text{दर} = k[A]^x[B]^y\]</p>
+          <p>कोटि, \(n = x + y\)</p>
+        </div>
+        
+        <h3>प्रारंभिक अभिक्रियाएँ:</h3>
+        <p>एक पद में होने वाली अभिक्रियाएँ प्रारंभिक अभिक्रियाएँ कहलाती हैं।</p>
+        
+        <h3>जटिल अभिक्रियाएँ:</h3>
+        <p>कई पदों में होने वाली अभिक्रियाएँ जटिल अभिक्रियाएँ कहलाती हैं। जटिल अभिक्रिया में प्रत्येक पद को अभिक्रिया का प्रारंभिक पद कहते हैं।</p>
+        
+        <h3>अभिक्रिया की अणुसंख्यता:</h3>
+        <p>किसी प्रारंभिक अभिक्रिया में भाग लेने वाली अभिकारक स्पीशीज (परमाणु या अणु) की संख्या, जिन्हें रासायनिक अभिक्रिया संपन्न करने के लिए एक साथ टकराना आवश्यक होता है, अभिक्रिया की अणुसंख्यता कहलाती है।</p>
+        
+        <div class="formula-box">
+          <p><strong>उदाहरण:</strong></p>
+          
+          <div class="clear-reaction">
+            <p><strong>एकाणुक अभिक्रियाएँ (अणुसंख्यता = 1):</strong></p>
+            <p class="math">\[NH_4NO_2 \rightarrow N_2 + 2H_2O\]</p>
+            <p class="math">\[O_3F_2 \rightarrow O_2 + F_2\]</p>
+          </div>
+          
+          <div class="clear-reaction">
+            <p><strong>द्विअणुक अभिक्रियाएँ (अणुसंख्यता = 2):</strong></p>
+            <p class="math">\[2HI \rightarrow H_2 + I_2\]</p>
+          </div>
+          
+          <div class="clear-reaction">
+            <p><strong>त्रिअणुक अभिक्रियाएँ (अणुसंख्यता = 3):</strong></p>
+            <p class="math">\[2NO + O_2 \rightarrow 2NO_2\]</p>
+          </div>
+        </div>
+        
+        <div class="key-point">
+          <p><strong>नोट्स:</strong></p>
+          <ol>
+            <li>तीन से अधिक अणुसंख्यता वाली अभिक्रियाएँ नहीं पाई जाती हैं क्योंकि तीन से अधिक अणुओं के एक साथ एकत्रित होकर अभिक्रिया कर उत्पाद बनाने की प्रायिकता कम होती है।</li>
+            <li>जटिल अभिक्रियाओं के लिए अणुसंख्यता का कोई अर्थ नहीं है।</li>
+          </ol>
+        </div>
+        
+        <p>अभिक्रिया का सबसे धीमा पद रासायनिक अभिक्रिया का दर निर्धारक पद होता है और अभिक्रिया की समग्र दर तय करता है।</p>
+        
+        <h3>कोटि और अणुसंख्यता में अंतर</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>कोटि</th>
+              <th>अणुसंख्यता</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1) दर नियम व्यंजक में अभिकारकों की सांद्रता की घातों के योग को रासायनिक अभिक्रिया की कोटि कहते हैं।</td>
+              <td>1) अभिकारक स्पीशीज की वह संख्या जिन्हें रासायनिक अभिक्रिया संपन्न करने के लिए एक साथ टकराना आवश्यक होता है, अणुसंख्यता कहलाती है।</td>
+            </tr>
+            <tr>
+              <td>2) अभिक्रिया की कोटि शून्य, पूर्ण संख्या या भिन्नात्मक मान हो सकती है।</td>
+              <td>2) अणुसंख्यता सदैव एक पूर्ण संख्या होती है। यह शून्य या भिन्न नहीं हो सकती।</td>
+            </tr>
+            <tr>
+              <td>3) अभिक्रिया की कोटि प्रायोगिक रूप से निर्धारित की जाती है।</td>
+              <td>3) यह एक सैद्धांतिक राशि है।</td>
+            </tr>
+            <tr>
+              <td>4) यह प्रारंभिक और साथ ही जटिल अभिक्रियाओं पर लागू होती है।</td>
+              <td>4) यह केवल प्रारंभिक अभिक्रियाओं पर लागू होती है।</td>
+            </tr>
+            <tr>
+              <td>5) अभिक्रिया की कोटि, संतुलित समीकरणों से देखे गए अभिकारकों के स्टॉइकियोमीट्री मानों के बराबर हो भी सकती है और नहीं भी।</td>
+              <td>5) अणुसंख्यता समीकरणों के स्टॉइकियोमीट्री गुणांकों से देखी जा सकती है।</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <section class="section">
+        <h2>दर स्थिरांकों की इकाइयाँ</h2>
+        <div class="formula-box">
+          <p>दर स्थिरांक की इकाई, \(k = \frac{\text{mol L}^{-1}}{\text{(mol L}^{-1})^n \text{s}}\)</p>
+          <p>जहाँ, \(n\) = अभिक्रिया की कोटि।</p>
+          
+          <p>1) शून्य कोटि अभिक्रियाओं के लिए, \(n=0\):</p>
+          <p class="math">\[k \text{ की इकाई} = \frac{\text{mol L}^{-1}}{\text{s}} = \text{mol L}^{-1} \text{s}^{-1}\]</p>
+          
+          <p>2) प्रथम कोटि अभिक्रियाओं के लिए, \(n=1\):</p>
+          <p class="math">\[k \text{ की इकाई} = \frac{\text{mol L}^{-1}}{\text{(mol L}^{-1})^1 \text{s}} = \text{s}^{-1}\]</p>
+          
+          <p>3) द्वितीय कोटि अभिक्रियाओं के लिए, \(n=2\):</p>
+          <p class="math">\[k \text{ की इकाई} = \frac{\text{mol L}^{-1}}{\text{(mol L}^{-1})^2 \text{s}} = \text{mol}^{-1} \text{L s}^{-1}\]</p>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>समाकलित दर समीकरण</h2>
+        <p>समाकलित दर समीकरण सीधे मापी गई प्रायोगिक राशियों, अर्थात विभिन्न समयों पर सांद्रता और दर स्थिरांक के बीच संबंध देता है।</p>
+        
+        <h3>शून्य कोटि अभिक्रियाएँ:</h3>
+        <p>शून्य कोटि अभिक्रिया का अर्थ है कि अभिक्रिया की अवकल दर अभिकारकों की सांद्रता की शून्य घात के समानुपाती होती है। विचार कीजिए, \( R \rightarrow P \)</p>
+        
+        <div class="formula-box">
+          <p class="math">\[
+          \begin{aligned}
+          &\text{दर} = -\frac{d[R]}{dt} = k [R]^0 \\
+          &-\frac{d[R]}{dt} = k
+          \end{aligned}
+          \]</p>
+          <p>दोनों पक्षों का समाकलन करने पर:</p>
+          <p class="math">\[
+          \begin{aligned}
+          &\int d[R] = \int -k dt \\
+          &[R] = -kt + I \quad \text{(1)}
+          \end{aligned}
+          \]</p>
+          <p>\( t = 0 \) पर, अभिकारक की सांद्रता \([R] = [R]_0\)। समीकरण (1) बन जाती है:</p>
+          <p class="math">\[
+          \begin{aligned}
+          &[R]_0 = -k \times 0 + I \\
+          &\text{अर्थात, } I = [R]_0
+          \end{aligned}
+          \]</p>
+          <p>(1) में \( I \) का मान प्रतिस्थापित करने पर:</p>
+          <p class="math">\[[R] = -kt + [R]_0 \quad \text{(2)}\]</p>
+          <p class="math">\[kt = [R]_0 - [R]\]</p>
+          <p class="math">\[k = \frac{[R]_0 - [R]}{t} \quad \text{(3)}\]</p>
+        </div>
+        
+        <div class="graph-container">
+          <div class="graph">
+            <div class="graph-title" style="font-weight:600; color:var(--primary); text-align:center; margin-bottom:8px;">शून्य कोटि अभिक्रिया: सांद्रता बनाम समय</div>
+            <div class="image-container">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP0p4EfJsABZ6Mf0s1rTvQNaWKCn15su035WUISdo5FeG-KDuq" alt="शून्य कोटि अभिक्रिया ग्राफ">
+              <div class="image-caption">शून्य कोटि अभिक्रिया के लिए समय के साथ सांद्रता में रैखिक कमी</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="key-point">
+          <p><strong>ग्राफ:</strong> शून्य कोटि अभिक्रिया के लिए सांद्रता बनाम समय प्लॉट में विचरण:</p>
+          <p class="math">\[[R] = -kt + [R]_0\]</p>
+          <p>प्रवणता = \(-k\), अंतःखंड = \([R]_0\)</p>
+        </div>
+        
+        <div class="key-point">
+          <p><strong>उदाहरण:</strong> कुछ एंजाइम उत्प्रेरित अभिक्रियाएँ और धातु सतहों पर होने वाली अभिक्रियाएँ शून्य कोटि अभिक्रियाएँ होती हैं।</p>
+          <ol>
+            <li>प्लैटिनम सतह पर NH₃ का अपघटन:
+              <p class="math">\[2NH_3 \xrightarrow{Pt} N_{2(g)} + 3H_{2(g)}\]</p>
+              <p class="math">\[\text{दर} = k [NH_3]^0\]</p>
+            </li>
+            <li>स्वर्ण सतह पर HI का ऊष्मीय अपघटन:
+              <p class="math">\[2HI_{(g)} \xrightarrow{Au} H_{2(g)} + I_{2(g)}\]</p>
+              <p class="math">\[\text{दर} = k[HI]^0\]</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>प्रथम कोटि अभिक्रियाएँ</h2>
+        <p>प्रथम कोटि अभिक्रिया का अर्थ है कि अभिक्रिया की दर अभिकारक \( R \) की सांद्रता की प्रथम घात के समानुपाती होती है।</p>
+        <p>अभिक्रिया, \( R \rightarrow P \) के लिए:</p>
+        
+        <div class="formula-box">
+          <p class="math">\[
+          \begin{aligned}
+          &\text{दर} = -\frac{d[R]}{dt} = k[R] \\
+          &\frac{d[R]}{[R]} = -k dt \\
+          &\text{समाकलन पर: } \int \frac{d[R]}{[R]} = \int -k dt \\
+          &\ln[R] = -kt + I \quad \text{(1)}
+          \end{aligned}
+          \]</p>
+          <p>जब \( t = 0 \), \([R] = [R]_0\), जहाँ \([R]_0\) अभिकारक की प्रारंभिक सांद्रता है।</p>
+          <p>समीकरण (1) बन जाती है:</p>
+          <p class="math">\[
+          \begin{aligned}
+          &\ln[R]_0 = -k \times 0 + I \\
+          &\text{अर्थात, } I = \ln[R]_0
+          \end{aligned}
+          \]</p>
+          <p>(1) में \( I \) का मान प्रतिस्थापित करने पर:</p>
+          <p class="math">\[
+          \begin{aligned}
+          &\ln[R] = -kt + \ln[R]_0 \quad \text{(2)} \\
+          &\ln[R] - \ln[R]_0 = -kt \\
+          &\ln\frac{[R]}{[R]_0} = -kt \quad \text{(3)} \\
+          &k = -\frac{1}{t} \ln\frac{[R]}{[R]_0} \\
+          &k = \frac{1}{t} \ln\frac{[R]_0}{[R]} \\
+          &k = \frac{2.303}{t} \log \frac{[R]_0}{[R]} \\
+          \end{aligned}
+          \]</p>
+        </div>
+        
+        <div class="graph-container">
+          <div class="graph">
+            <div class="graph-title" style="font-weight:600; color:var(--primary); text-align:center; margin-bottom:8px;">प्रथम कोटि अभिक्रिया: ln(सांद्रता) बनाम समय</div>
+            <div class="image-container">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSccfTRvFDy0Xe5mydY-Q1N4N-qwNvshe25tpEOPFFOyM54GncRrspWiUTj&s=10" alt="प्रथम कोटि अभिक्रिया ग्राफ">
+              <div class="image-caption">प्रथम कोटि अभिक्रिया के लिए ln(सांद्रता) और समय के बीच रैखिक संबंध</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="key-point">
+          <p><strong>ग्राफ:</strong></p>
+          <p class="math">\[\ln[R] = -kt + \ln [R]_0\]</p>
+          <p>प्रवणता = \(-k\), अंतःखंड = \(\ln [R]_0\)</p>
+          <p>वैकल्पिक रूप से:</p>
+          <p class="math">\[\log [R] = \frac{-kt}{2.303} + \log [R]_0\]</p>
+          <p>प्रवणता = \(\frac{-k}{2.303}\), अंतःखंड = \(\log [R]_0\)</p>
+          <p>और:</p>
+          <p class="math">\[\log \frac{[R]_0}{[R]} = \frac{kt}{2.303}\]</p>
+          <p>प्रवणता = \(\frac{k}{2.303}\)</p>
+        </div>
+        
+        <div class="key-point">
+          <p><strong>प्रथम कोटि अभिक्रियाओं के उदाहरण:</strong></p>
+          <ul>
+            <li>अस्थायी नाभिकों के सभी प्राकृतिक और कृत्रिम रेडियोसक्रिय क्षय प्रथम कोटि बलगतिकी द्वारा होते हैं।
+              <p class="math">\[Ra \rightarrow Rn + \alpha\]</p>
+              <p class="math">\[\text{दर} = k [Ra]\]</p>
+            </li>
+            <li>एस्टरों का जल अपघटन</li>
+            <li>\( N_2O_5 \) और \( N_2O \) का अपघटन</li>
+          </ul>
+        </div>
+        
+        <div class="formula-box">
+          <p><strong>प्रथम कोटि अभिक्रिया के लिए समाकलित दर अभिक्रिया</strong></p>
+          <p class="math">\[ A(g) \rightarrow B(g) + C(g) \]</p>
+          
+          <table>
+            <tr><td><strong>समय</strong></td><td><strong>A</strong></td><td><strong>B</strong></td><td><strong>C</strong></td></tr>
+            <tr><td>t = 0</td><td>\( P_0 \)</td><td>0</td><td>0</td></tr>
+            <tr><td>t = t</td><td>\( P_0 - P \)</td><td>P</td><td>P</td></tr>
+            <tr><td>अंतिम t</td><td>\( P_0 - P \)</td><td>P</td><td>P</td></tr>
+          </table>
+          
+          <p class="math">\[
+          \begin{aligned}
+          &P_t = (P_0 - P) + P + P = P_0 + P \\
+          &\Rightarrow P = P_t - P_0 \\
+          &P_A = P_0 - P = P_0 - (P_t - P_0) = 2P_0 - P_t \\
+          &k = \frac{2.303}{t} \log \left( \frac{P_0}{P_A} \right) = \frac{2.303}{t} \log \left( \frac{P_0}{2P_0 - P_t} \right)
+          \end{aligned}
+          \]</p>
+          
+          <p><strong>उदाहरण:</strong></p>
+          <div class="clear-reaction">
+            <p><strong>(1)</strong> एज़ोआइसोप्रोपेन का अपघटन:</p>
+            <p class="math">\[(CH_3)_2CHN = NCH(CH_3)_2 \rightarrow N_2(g) + 6C_2H_4(g)\]</p>
+          </div>
+          <div class="clear-reaction">
+            <p><strong>(2)</strong> सल्फ्यूरिल क्लोराइड का अपघटन:</p>
+            <p class="math">\[SO_2Cl_2 \xrightarrow{\Delta} SO_2 + Cl_2\]</p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="section">
+        <h2>अभिक्रिया की अर्ध-आयु</h2>
+        <p>वह समय जिस पर किसी अभिकारक की सांद्रता अपनी प्रारंभिक सांद्रता की आधी रह जाती है, अभिकारक की अर्ध-आयु कहलाती है। इसे \( t_{1/2} \) से निरूपित किया जाता है।</p>
+        
+        <h3>शून्य कोटि अभिक्रिया के लिए:</h3>
+        <div class="formula-box">
+          <p class="math">\[
+          \begin{aligned}
+          &k = \frac{[R]_0 - [R]}{t} \\
+          &t = t_{1/2} \text{ पर}, [R] = \frac{[R]_0}{2} \\
+          &k = \frac{[R]_0 - \frac{[R]_0}{2}}{t_{1/2}} = \frac{\frac{[R]_0}{2}}{t_{1/2}} \\
+          &t_{1/2} = \frac{[R]_0}{2k}
+          \end{aligned}
+          \]</p>
+        </div>
+        <p>शून्य कोटि अभिक्रिया के लिए \( t_{1/2} \), अभिकारकों की प्रारंभिक सांद्रता के अनुक्रमानुपाती और दर स्थिरांक के व्युत्क्रमानुपाती होता है।</p>
+        
+        <h3>प्रथम कोटि अभिक्रिया के लिए:</h3>
+        <div class="formula-box">
+          <p class="math">\[
+          \begin{aligned}
+          &k = \frac{2.303}{t} \log \frac{[R]_0}{[R]} \\
+          &t = t_{1/2} \text{ पर}, [R] = \frac{[R]_0}{2} \\
+          &k = \frac{2.303}{t_{1/2}} \log \frac{[R]_0}{\frac{[R]_0}{2}} = \frac{2.303}{t_{1/2}} \log 2 \\
+          &t_{1/2} = \frac{2.303}{k} \log 2 = \frac{2.303 \times 0.3010}{k} \\
+          &t_{1/2} = \frac{0.693}{k}
+          \end{aligned}
+          \]</p>
+        </div>
+        <p>प्रथम कोटि अभिक्रियाओं के लिए, \( t_{1/2} \), \( [R]_0 \) पर निर्भर नहीं करता है।</p>
+        
+        <h3>शून्य और प्रथम कोटि अभिक्रियाओं के लिए समाकलित दर नियम</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>कोटि</th>
+              <th>शून्य कोटि</th>
+              <th>प्रथम कोटि</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>अभिक्रिया प्रकार</td>
+              <td>\( R \rightarrow P \)</td>
+              <td>\( R \rightarrow P \)</td>
+            </tr>
+            <tr>
+              <td>अवकल दर नियम</td>
+              <td>\(-\frac{d[R]}{dt} = k\)</td>
+              <td>\(-\frac{d[R]}{dt} = k[R]\)</td>
+            </tr>
+            <tr>
+              <td>समाकलित दर नियम</td>
+              <td>\(kt = [R]_0 - [R]\)</td>
+              <td>\(k = \frac{2.303}{t} \log \frac{[R]_0}{[R]}\)</td>
+            </tr>
+            <tr>
+              <td>सरल रेखा प्लॉट</td>
+              <td>\([R]\) vs \(t\)</td>
+              <td>\(\ln[R]\) vs \(t\)</td>
+            </tr>
+            <tr>
+              <td>अर्ध-आयु</td>
+              <td>\(\frac{[R]_0}{2k}\)</td>
+              <td>\(\frac{0.693}{k}\)</td>
+            </tr>
+            <tr>
+              <td>\(k\) की इकाइयाँ</td>
+              <td>\(\text{mol L}^{-1} \text{s}^{-1}\)</td>
+              <td>\(\text{s}^{-1}\)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <section class="section">
+        <h2>छद्म प्रथम कोटि अभिक्रियाएँ</h2>
+        <p>वह अभिक्रिया जो वास्तव में प्रथम कोटि की नहीं होती है लेकिन कुछ शर्तों के तहत प्रथम कोटि की अभिक्रिया बन जाती है, छद्म प्रथम कोटि अभिक्रियाएँ कहलाती हैं।</p>
+        
+        <div class="formula-box">
+          <p><strong>उदाहरण:</strong></p>
+          
+          <div class="clear-reaction">
+            <p><strong>1) गन्ना शर्करा का प्रतिलोमन:</strong></p>
+            <p class="math">\[C_{12}H_{22}O_{11} + H_2O \xrightarrow{H^+} C_6H_{12}O_6 + C_6H_{12}O_6\]</p>
+            <p>\(\text{दर} = k [C_{12}H_{22}O_{11}]^1 [H_2O]^0\)</p>
+          </div>
+          
+          <div class="clear-reaction">
+            <p><strong>2) एस्टर का जल अपघटन:</strong></p>
+            <p class="math">\[CH_3COOC_2H_5 + H_2O \xrightarrow{H^+} CH_3COOH + C_2H_5OH\]</p>
+            <p>\(\text{दर} = k [CH_3COOC_2H_5]^1 [H_2O]^0\)</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  
+  <a href="#" class="back-to-top" id="backToTop">↑</a>
+  
+  <script>
+    (function() {
+      const themeToggle = document.getElementById('themeToggle');
+      const body = document.body;
+      const stored = localStorage.getItem('thp-theme');
+      if (stored === 'dark') body.setAttribute('data-theme', 'dark');
+      
+      themeToggle.addEventListener('click', () => {
+        const current = body.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', next);
+        localStorage.setItem('thp-theme', next);
+      });
+
+      const backBtn = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        backBtn.classList.toggle('visible', window.scrollY > 350);
+      });
+      backBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      const sections = document.querySelectorAll('.section');
+      sections.forEach((sec, i) => {
+        sec.style.animationDelay = `${0.06 * i}s`;
+      });
+    })();
+  </script>
+</body>
+</html>
