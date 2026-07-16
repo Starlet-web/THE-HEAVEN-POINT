@@ -3,249 +3,610 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Distinguished Faculty | THP Coaching Classes</title>
-    <meta name="description" content="Meet THP Coaching's distinguished faculty - Experienced educators committed to your success">
+    <title>Our Faculty | THP Coaching Classes</title>
+    <meta name="description" content="Meet the experienced faculty at THP Coaching Classes. Our teachers are dedicated to your success.">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        :root {
-            --primary: #1e3a5f; --primary-light: #2563eb; --accent: #d4a853; --accent-light: #f0c76e;
-            --bg: #fafbfc; --card: #ffffff; --text: #1a1a2e; --text-light: #64748b; --text-muted: #94a3b8;
-            --border: #e8ecf1; --border-light: #f1f5f9; --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
-            --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow-lg: 0 20px 50px rgba(0,0,0,0.08);
-            --shadow-xl: 0 30px 60px rgba(0,0,0,0.1); --radius: 16px; --radius-lg: 24px;
-            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* ============ TOP BAR ============ */
-        .top-bar { background: var(--primary); color: white; padding: 8px 0; font-size: 0.8rem; text-align: center; letter-spacing: 0.5px; }
-        .top-bar i { color: var(--accent-light); margin: 0 4px; }
-        .top-bar a { color: var(--accent-light); text-decoration: none; font-weight: 600; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
 
-        /* ============ NAVBAR ============ */
-        .navbar { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; padding: 0 24px; }
-        .navbar-inner { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
-        .navbar .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .navbar .logo .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; }
-        .navbar .logo .logo-text { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--primary); }
-        .navbar .logo .logo-text span { color: var(--accent); }
-        .navbar nav { display: flex; gap: 4px; align-items: center; }
-        .navbar nav a { color: var(--text); text-decoration: none; padding: 10px 20px; border-radius: 30px; font-weight: 500; font-size: 0.9rem; transition: var(--transition); }
-        .navbar nav a:hover { background: #f1f5f9; color: var(--primary); }
-        .navbar nav a.active { background: var(--primary); color: white; font-weight: 600; }
-        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; }
+        /* ---------- TOP BAR ---------- */
+        .top-bar {
+            background: #0f172a;
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            letter-spacing: 0.3px;
+        }
+        .top-bar i {
+            color: #f59e0b;
+            margin-right: 6px;
+        }
+        .top-bar a {
+            color: #f59e0b;
+            text-decoration: none;
+            font-weight: 600;
+        }
 
-        /* ============ HERO ============ */
-        .hero { background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); padding: 80px 20px 60px; text-align: center; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: -50%; left: -20%; width: 140%; height: 200%; background: radial-gradient(ellipse at 30% 20%, rgba(30,58,95,0.03) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(212,168,83,0.04) 0%, transparent 60%); pointer-events: none; }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--border); padding: 8px 20px; border-radius: 50px; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-bottom: 24px; box-shadow: var(--shadow-sm); position: relative; }
-        .hero-badge .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; }
-        .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: var(--primary); margin-bottom: 16px; position: relative; line-height: 1.2; }
-        .hero-title .accent { color: var(--accent); position: relative; }
-        .hero-title .accent::after { content: ''; position: absolute; bottom: 4px; left: 0; width: 100%; height: 8px; background: rgba(212,168,83,0.2); border-radius: 4px; z-index: -1; }
-        .hero-subtitle { color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto 40px; line-height: 1.7; position: relative; }
-        
-        /* Stats */
-        .hero-stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; max-width: 700px; margin: 0 auto; }
-        .hero-stat { text-align: center; }
-        .hero-stat .stat-num { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--primary); }
-        .hero-stat .stat-lbl { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
-        .hero-stat .stat-star { color: var(--accent); }
-        .hero-stat.divider { width: 1px; background: var(--border); align-self: stretch; }
+        /* ---------- NAVBAR ---------- */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .navbar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 68px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        .logo img {
+            height: 38px;
+        }
+        .logo span {
+            color: #b45309;
+        }
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+        .nav-links a {
+            color: #4b5563;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #111827;
+        }
 
-        /* ============ SEARCH ============ */
-        .search-section { max-width: 800px; margin: -20px auto 50px; padding: 0 20px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 2; }
-        .search-box { flex: 1; min-width: 280px; position: relative; }
-        .search-box input { width: 100%; padding: 16px 55px 16px 24px; border: 2px solid var(--border); border-radius: 50px; font-size: 0.95rem; font-family: 'Inter', sans-serif; outline: none; transition: var(--transition); background: white; box-shadow: var(--shadow-sm); }
-        .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(30,58,95,0.06); }
-        .search-box .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1.2rem; }
-        .filter-select { padding: 16px 24px; border: 2px solid var(--border); border-radius: 50px; font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; cursor: pointer; background: white; min-width: 180px; box-shadow: var(--shadow-sm); }
+        /* ---------- HERO ---------- */
+        .hero {
+            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: white;
+            border: 1px solid #d1d5db;
+            color: #1e3a8a;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .hero h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+        .hero h1 span {
+            color: #b45309;
+            border-bottom: 4px solid #fde68a;
+        }
+        .hero p {
+            max-width: 640px;
+            margin: 0 auto 30px;
+            color: #6b7280;
+            font-size: 1.05rem;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat .number {
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: #1e3a8a;
+        }
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-        /* ============ FACULTY GRID ============ */
-        .faculty-section { max-width: 1400px; margin: 0 auto; padding: 0 20px 80px; }
-        .section-header { text-align: center; margin-bottom: 50px; }
-        .section-header .label { display: inline-block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
-        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); }
-        
-        .faculty-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(370px, 1fr)); gap: 28px; }
+        /* ---------- SEARCH & FILTER ---------- */
+        .toolbar {
+            max-width: 800px;
+            margin: -24px auto 40px;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: 0.2s;
+        }
+        .search-box input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+            outline: none;
+        }
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        .filter-select {
+            padding: 14px 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            cursor: pointer;
+            min-width: 160px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
 
-        /* ============ FACULTY CARD ============ */
-        .faculty-card { background: var(--card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); transition: var(--transition); cursor: pointer; position: relative; }
-        .faculty-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: #d4d8dd; }
-        .faculty-card .card-image-section { position: relative; background: linear-gradient(135deg, #f8fafc, #e8ecf1); padding: 40px 30px 50px; text-align: center; overflow: hidden; }
-        .faculty-card .card-image-section .bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; background: repeating-linear-gradient(45deg, var(--primary), var(--primary) 2px, transparent 2px, transparent 10px); }
-        .faculty-card .card-image-section .profile-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 8px 30px rgba(0,0,0,0.1); position: relative; z-index: 1; transition: var(--transition); }
-        .faculty-card:hover .card-image-section .profile-img { transform: scale(1.04); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
-        .faculty-card .card-image-section .status-badge { position: absolute; top: 20px; right: 20px; background: white; padding: 6px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; color: #10b981; box-shadow: var(--shadow-sm); z-index: 1; }
-        .faculty-card .card-image-section .images-count { position: absolute; bottom: 15px; right: 20px; background: rgba(0,0,0,0.6); color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.7rem; z-index: 1; }
-        .faculty-card .card-image-section .images-count i { margin-right: 4px; }
-        
-        .faculty-card .card-info { padding: 24px; text-align: center; margin-top: -30px; position: relative; z-index: 1; background: white; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-        .faculty-card .card-info .name { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-        .faculty-card .card-info .role { font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-bottom: 4px; }
-        .faculty-card .card-info .subject-tag { display: inline-block; background: #f1f5f9; padding: 4px 14px; border-radius: 15px; font-size: 0.75rem; color: var(--text-light); margin-bottom: 16px; }
-        
-        .faculty-card .card-info .mini-details { display: flex; justify-content: center; gap: 20px; margin-bottom: 16px; }
-        .faculty-card .card-info .mini-details .md-item { text-align: center; }
-        .faculty-card .card-info .mini-details .md-item .md-val { font-weight: 700; font-size: 0.9rem; color: var(--text); }
-        .faculty-card .card-info .mini-details .md-item .md-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
-        
-        .faculty-card .card-info .social-links { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
-        .faculty-card .card-info .social-links a { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-light); background: #f8fafc; text-decoration: none; transition: var(--transition); font-size: 0.85rem; }
-        .faculty-card .card-info .social-links a:hover { background: var(--primary); color: white; transform: translateY(-2px); }
-        
-        .faculty-card .card-info .view-profile-btn { width: 100%; padding: 12px; background: white; border: 2px solid var(--border); border-radius: 14px; color: var(--primary); font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .faculty-card .card-info .view-profile-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        /* ---------- FACULTY GRID ---------- */
+        .faculty-grid {
+            max-width: 1280px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+        }
 
-        /* ============ DETAIL MODAL ============ */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-        
-        .modal-dialog { background: white; border-radius: var(--radius-lg); max-width: 800px; width: 100%; max-height: 92vh; overflow-y: auto; position: relative; animation: modalUp 0.4s cubic-bezier(0.4,0,0.2,1); box-shadow: var(--shadow-xl); }
-        @keyframes modalUp { from { opacity:0; transform:translateY(40px) scale(0.96); } to { opacity:1; transform:translateY(0) scale(1); } }
-        
-        .modal-close { position: sticky; top: 16px; float: right; margin-right: 16px; width: 42px; height: 42px; border-radius: 50%; background: white; border: 1px solid var(--border); cursor: pointer; font-size: 1.1rem; z-index: 10; transition: var(--transition); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); }
-        .modal-close:hover { background: #ef4444; color: white; border-color: #ef4444; }
-        
-        /* Image Swiper in Modal */
-        .modal-image-swiper { position: relative; width: 100%; height: 400px; background: #f1f5f9; overflow: hidden; }
-        .modal-image-swiper .swiper { width: 100%; height: 100%; }
-        .modal-image-swiper .swiper-slide { display: flex; align-items: center; justify-content: center; }
-        .modal-image-swiper .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .modal-image-swiper .swiper-pagination-bullet { background: white; opacity: 0.6; }
-        .modal-image-swiper .swiper-pagination-bullet-active { background: var(--accent); opacity: 1; }
-        .modal-image-swiper .swiper-button-next, .modal-image-swiper .swiper-button-prev { color: white; background: rgba(0,0,0,0.3); width: 40px; height: 40px; border-radius: 50%; }
-        .modal-image-swiper .swiper-button-next:after, .modal-image-swiper .swiper-button-prev:after { font-size: 1rem; }
-        
-        .modal-body-content { padding: 30px; }
-        .modal-body-content .m-name { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--text); text-align: center; }
-        .modal-body-content .m-role { text-align: center; color: var(--primary); font-weight: 600; font-size: 1rem; margin-bottom: 24px; }
-        
-        .modal-body-content .info-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
-        .modal-body-content .info-cards .info-card { background: #f8fafc; padding: 18px; border-radius: var(--radius); text-align: center; border: 1px solid var(--border-light); }
-        .modal-body-content .info-cards .info-card .ic-icon { font-size: 1.5rem; margin-bottom: 6px; }
-        .modal-body-content .info-cards .info-card .ic-val { font-weight: 700; font-size: 0.95rem; }
-        .modal-body-content .info-cards .info-card .ic-lbl { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; }
-        
-        .modal-body-content .bio-block { background: #f8fafc; padding: 24px; border-radius: var(--radius); margin-bottom: 24px; border-left: 4px solid var(--accent); }
-        .modal-body-content .bio-block h4 { font-weight: 700; margin-bottom: 8px; color: var(--primary); }
-        .modal-body-content .bio-block p { color: var(--text-light); line-height: 1.8; }
-        
-        .modal-body-content .modal-social { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .modal-body-content .modal-social a { padding: 12px 24px; border-radius: 30px; color: white; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
-        .modal-body-content .modal-social a:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-        .ms-yt { background: #ef4444; } .ms-ig { background: linear-gradient(45deg, #f09433, #dc2743); }
-        .ms-fb { background: #2563eb; } .ms-web { background: var(--primary); }
+        .faculty-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+        }
+        .faculty-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            border-color: #cbd5e1;
+        }
 
-        /* ============ FOOTER ============ */
-        .footer { background: var(--primary); color: white; padding: 40px 20px; text-align: center; }
-        .footer .f-brand { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 12px; }
-        .footer .f-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
-        .footer .f-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: var(--transition); }
-        .footer .f-links a:hover { color: var(--accent-light); }
-        .footer .f-social { display: flex; gap: 16px; justify-content: center; margin-bottom: 12px; }
-        .footer .f-social a { color: rgba(255,255,255,0.7); font-size: 1.2rem; transition: var(--transition); }
-        .footer .f-social a:hover { color: var(--accent-light); }
-        .footer .f-copy { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+        .card-photo {
+            height: 240px;
+            background: #f3f4f6;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .faculty-card:hover .card-photo img {
+            transform: scale(1.03);
+        }
+        .photo-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.65);
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .photo-badge i {
+            margin-right: 4px;
+        }
+        .verified-tick {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #10b981;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+        }
 
-        .no-results { text-align: center; padding: 80px 20px; grid-column: 1/-1; }
-        .no-results i { font-size: 4rem; color: var(--text-muted); margin-bottom: 16px; }
-        .loader { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 60px auto; }
+        .card-body {
+            padding: 20px 20px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-body .name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+        .card-body .designation {
+            font-size: 0.85rem;
+            color: #2563eb;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .card-body .subjects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .card-body .subject-tag {
+            background: #f3f4f6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        .card-body .details-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 16px;
+            padding: 12px 0;
+            border-top: 1px solid #f3f4f6;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .detail-item {
+            text-align: center;
+        }
+        .detail-item .val {
+            font-weight: 700;
+            color: #111827;
+        }
+        .detail-item .lbl {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+        .card-body .bio-excerpt {
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+        .social-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .social-row a {
+            color: #6b7280;
+            background: #f9fafb;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .social-row a:hover {
+            background: #1e3a8a;
+            color: white;
+        }
+        .view-profile-btn {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            border: 1.5px solid #d1d5db;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #1e3a8a;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+        .view-profile-btn:hover {
+            background: #1e3a8a;
+            color: white;
+            border-color: #1e3a8a;
+        }
+
+        /* ---------- MODAL ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-dialog {
+            background: white;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            animation: modalPop 0.3s ease;
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-close {
+            position: sticky;
+            top: 16px;
+            float: right;
+            margin-right: 16px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1rem;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+        .modal-swiper {
+            height: 380px;
+            background: #f3f4f6;
+        }
+        .modal-swiper .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .modal-content {
+            padding: 28px;
+        }
+        .modal-content h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .modal-content .role {
+            text-align: center;
+            color: #2563eb;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .info-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .info-card .ic-val {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .info-card .ic-lbl {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+        .bio-block {
+            background: #f9fafb;
+            border-left: 4px solid #b45309;
+            padding: 18px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 20px;
+        }
+        .modal-social {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .modal-social a {
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .social-yt { background: #ef4444; }
+        .social-ig { background: #e4405f; }
+        .social-fb { background: #2563eb; }
+        .social-web { background: #1e3a8a; }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 60px auto;
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 768px) {
-            .navbar nav { display: none; } .mobile-menu-btn { display: block; }
-            .navbar nav.open { display: flex; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: white; padding: 16px; border-bottom: 1px solid var(--border); }
+            .nav-links { display: none; }
+            .mobile-menu { display: block; }
+            .hero h1 { font-size: 1.8rem; }
             .faculty-grid { grid-template-columns: 1fr; }
-            .hero-stats { gap: 20px; }
-            .modal-image-swiper { height: 250px; }
+            .modal-swiper { height: 240px; }
+            .info-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Bar -->
+    <!-- TOP BAR -->
     <div class="top-bar">
-        <i class="fas fa-phone"></i> +91 98765 43210 | <i class="fas fa-envelope"></i> info@thpcoaching.com | 
-        <a href="#">Admissions Open 2024-25</a>
+        <span><i class="fas fa-phone-alt"></i> +91-98765 43210</span>
+        <span><i class="fas fa-envelope"></i> info@thpcoaching.com</span>
+        <span><a href="#">Admissions Open 2024-25</a></span>
     </div>
 
-    <!-- Navbar -->
+    <!-- NAVBAR -->
     <header class="navbar">
         <div class="navbar-inner">
             <a href="#" class="logo">
-                <div class="logo-icon">🎓</div>
-                <div class="logo-text">THP <span>Coaching</span></div>
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%231e3a8a'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='20' font-weight='bold' font-family='Arial'%3E🎓%3C/text%3E%3C/svg%3E" alt="THP">
+                <span>THP</span> Coaching
             </a>
-            <button class="mobile-menu-btn" onclick="document.getElementById('navMenu').classList.toggle('open')"><i class="fas fa-bars"></i></button>
-            <nav id="navMenu">
-                <a href="#">Home</a><a href="#" class="active">Faculty</a><a href="#">Courses</a><a href="#">Results</a><a href="#">Contact</a>
-            </nav>
+            <button class="mobile-menu" onclick="document.getElementById('navLinks').classList.toggle('show')"><i class="fas fa-bars"></i></button>
+            <div class="nav-links" id="navLinks">
+                <a href="#">Home</a>
+                <a href="#" class="active">Faculty</a>
+                <a href="#">Courses</a>
+                <a href="#">Results</a>
+                <a href="#">Contact</a>
+            </div>
         </div>
     </header>
 
-    <!-- Hero -->
+    <!-- HERO -->
     <section class="hero">
-        <div class="hero-badge"><span class="dot"></span> Trusted by 10,000+ Students</div>
-        <h1 class="hero-title">Learn from <span class="accent">Distinguished</span> Faculty</h1>
-        <p class="hero-subtitle">Our educators bring decades of combined experience, deep subject expertise, and a passion for teaching that transforms students into achievers.</p>
+        <div class="hero-badge">⭐ Trusted by 10,000+ Students</div>
+        <h1>Meet Our <span>Expert Faculty</span></h1>
+        <p>Our teachers are not just educators, they are mentors who bring real-world experience and a deep passion for your success.</p>
         <div class="hero-stats">
-            <div class="hero-stat"><div class="stat-num" id="statFaculty">0</div><div class="stat-lbl">Expert Faculty</div></div>
-            <div class="hero-stat divider"></div>
-            <div class="hero-stat"><div class="stat-num">15+</div><div class="stat-lbl">Years Legacy</div></div>
-            <div class="hero-stat divider"></div>
-            <div class="hero-stat"><div class="stat-num">10K+</div><div class="stat-lbl">Students</div></div>
-            <div class="hero-stat divider"></div>
-            <div class="hero-stat"><div class="stat-num"><span class="stat-star">★</span> 4.9</div><div class="stat-lbl">Rating</div></div>
+            <div class="hero-stat"><div class="number" id="facultyCount">0</div><div class="label">Faculty Members</div></div>
+            <div class="hero-stat"><div class="number">15+</div><div class="label">Years of Legacy</div></div>
+            <div class="hero-stat"><div class="number">10K+</div><div class="label">Students Taught</div></div>
         </div>
     </section>
 
-    <!-- Search -->
-    <div class="search-section">
+    <!-- TOOLBAR -->
+    <div class="toolbar">
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search faculty by name, subject, qualification..." oninput="renderFaculty()">
-            <i class="fas fa-search search-icon"></i>
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search by name, subject, expertise..." oninput="renderFaculty()">
         </div>
         <select class="filter-select" id="subjectFilter" onchange="renderFaculty()">
             <option value="all">📚 All Subjects</option>
         </select>
     </div>
 
-    <!-- Faculty Grid -->
-    <section class="faculty-section">
-        <div class="section-header"><div class="label">Our Team</div><h2>Meet Your Mentors</h2></div>
-        <div class="faculty-grid" id="facultyGrid"><div class="loader"></div></div>
-    </section>
+    <!-- FACULTY GRID -->
+    <div class="faculty-grid" id="facultyGrid">
+        <div class="spinner"></div>
+    </div>
 
-    <!-- Detail Modal -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
         <div class="modal-dialog" id="modalDialog"></div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="f-brand">THP Coaching Classes</div>
-        <div class="f-links"><a href="#">About</a><a href="#">Faculty</a><a href="#">Courses</a><a href="#">Results</a><a href="#">Contact</a></div>
-        <div class="f-social"><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-telegram"></i></a></div>
-        <p class="f-copy">© 2024 THP Coaching Classes. All rights reserved.</p>
-    </footer>
-
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
-            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
-            storageBucket: "starlet-registor.firebasestorage.app", messagingSenderId: "904193225045",
+            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
+            authDomain: "starlet-registor.firebaseapp.com",
+            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com",
+            projectId: "starlet-registor",
+            storageBucket: "starlet-registor.firebasestorage.app",
+            messagingSenderId: "904193225045",
             appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
         };
         firebase.initializeApp(firebaseConfig);
@@ -254,121 +615,118 @@
         let allFaculty = [];
 
         function loadFaculty() {
-            db.ref(DB_PATH).on('value', (snap) => {
+            db.ref(DB_PATH).on('value', snap => {
                 allFaculty = [];
                 const subjects = new Set();
-                if(snap.exists()) {
-                    snap.forEach(c => {
-                        const d = { id: c.key, ...c.val() };
-                        // Ensure images array
-                        if(!d.images || !Array.isArray(d.images)) d.images = d.image ? [d.image] : [];
+                if (snap.exists()) {
+                    snap.forEach(child => {
+                        const d = { id: child.key, ...child.val() };
+                        if (!d.images || !Array.isArray(d.images)) d.images = d.image ? [d.image] : [];
                         allFaculty.push(d);
-                        if(d.subject) subjects.add(d.subject);
+                        if (d.subject) subjects.add(d.subject);
                     });
                     allFaculty.sort((a,b) => (a.order||0)-(b.order||0));
                 }
+                document.getElementById('facultyCount').textContent = allFaculty.length;
                 const filter = document.getElementById('subjectFilter');
                 filter.innerHTML = '<option value="all">📚 All Subjects</option>';
-                [...subjects].sort().forEach(s => filter.innerHTML += `<option value="${s}">📖 ${s}</option>`);
-                document.getElementById('statFaculty').textContent = allFaculty.length;
+                [...subjects].sort().forEach(s => {
+                    filter.innerHTML += `<option value="${s}">📖 ${s}</option>`;
+                });
                 renderFaculty();
             });
         }
 
         function renderFaculty() {
             const grid = document.getElementById('facultyGrid');
-            const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            const sf = document.getElementById('subjectFilter')?.value || 'all';
-            
+            const q = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const subj = document.getElementById('subjectFilter')?.value || 'all';
             let filtered = allFaculty.filter(f => {
-                const ms = !q || (f.name+'').toLowerCase().includes(q) || (f.subject+'').toLowerCase().includes(q) || (f.designation+'').toLowerCase().includes(q) || (f.qualification+'').toLowerCase().includes(q) || (f.bio+'').toLowerCase().includes(q);
-                const mf = sf === 'all' || f.subject === sf;
-                return ms && mf;
+                const matchSearch = !q || (f.name||'').toLowerCase().includes(q) || (f.subject||'').toLowerCase().includes(q) || (f.designation||'').toLowerCase().includes(q) || (f.bio||'').toLowerCase().includes(q);
+                const matchSubject = subj === 'all' || f.subject === subj;
+                return matchSearch && matchSubject;
             });
-
-            if(!filtered.length) {
-                grid.innerHTML = '<div class="no-results"><i class="fas fa-user-slash"></i><h2>No Faculty Found</h2><p style="color:var(--text-light);">Try different search terms</p></div>';
+            if (!filtered.length) {
+                grid.innerHTML = '<div class="no-results"><i class="fas fa-user-slash" style="font-size:3rem;opacity:0.3;"></i><h3>No faculty found</h3></div>';
                 return;
             }
-
             grid.innerHTML = filtered.map(f => {
-                const mainImg = (f.images && f.images.length > 0) ? f.images[0] : (f.image || 'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=200&background=1e3a5f&color=fff');
-                const imageCount = (f.images && f.images.length) || (f.image ? 1 : 0);
+                const mainImg = (f.images && f.images.length) ? f.images[0] : (f.image || 'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=400&background=1e3a8a&color=fff');
+                const imgCount = (f.images && f.images.length) || (f.image ? 1 : 0);
                 const s = f.social || {};
-                
                 return `
                 <div class="faculty-card" onclick="openModal('${f.id}')">
-                    <div class="card-image-section">
-                        <div class="bg-pattern"></div>
-                        <span class="status-badge"><i class="fas fa-circle" style="font-size:0.4rem;color:#10b981;"></i> Available</span>
-                        <img src="${mainImg}" alt="${escapeHTML(f.name)}" class="profile-img" onerror="this.src='https://ui-avatars.com/api/?name=Faculty&size=200'">
-                        ${imageCount > 1 ? `<span class="images-count"><i class="fas fa-images"></i> ${imageCount} photos</span>` : ''}
+                    <div class="card-photo">
+                        <img src="${mainImg}" alt="${escapeHTML(f.name)}" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop'">
+                        <div class="verified-tick"><i class="fas fa-check"></i></div>
+                        ${imgCount > 1 ? `<div class="photo-badge"><i class="fas fa-images"></i> ${imgCount} photos</div>` : ''}
                     </div>
-                    <div class="card-info">
-                        <h3 class="name">${escapeHTML(f.name || 'Faculty')}</h3>
-                        <p class="role">${escapeHTML(f.designation || 'Teacher')}</p>
-                        <span class="subject-tag">📖 ${escapeHTML(f.subject || 'Various')}</span>
-                        <div class="mini-details">
-                            <div class="md-item"><div class="md-val">${escapeHTML(f.experience || '5+ Yrs')}</div><div class="md-lbl">Experience</div></div>
-                            <div class="md-item"><div class="md-val">${escapeHTML(f.qualification || 'MA/BEd')}</div><div class="md-lbl">Qualification</div></div>
+                    <div class="card-body">
+                        <div class="name">${escapeHTML(f.name)}</div>
+                        <div class="designation">${escapeHTML(f.designation || 'Senior Faculty')}</div>
+                        <div class="subjects">
+                            <span class="subject-tag">${escapeHTML(f.subject)}</span>
                         </div>
-                        <div class="social-links">
-                            ${s.youtube?`<a href="${s.youtube}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-youtube"></i></a>`:''}
-                            ${s.instagram?`<a href="${s.instagram}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-instagram"></i></a>`:''}
-                            ${s.facebook?`<a href="${s.facebook}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-facebook"></i></a>`:''}
-                            ${s.website?`<a href="${s.website}" target="_blank" onclick="event.stopPropagation()"><i class="fas fa-globe"></i></a>`:''}
+                        <div class="details-row">
+                            <div class="detail-item"><div class="val">${escapeHTML(f.experience || '5+ yrs')}</div><div class="lbl">Experience</div></div>
+                            <div class="detail-item"><div class="val">${escapeHTML(f.qualification || 'MA/BEd')}</div><div class="lbl">Qualification</div></div>
                         </div>
-                        <button class="view-profile-btn"><i class="fas fa-user"></i> View Full Profile</button>
+                        <div class="bio-excerpt">${escapeHTML((f.bio || '').substring(0,100))}...</div>
+                        <div class="social-row">
+                            ${s.youtube ? `<a href="${s.youtube}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-youtube"></i></a>` : ''}
+                            ${s.instagram ? `<a href="${s.instagram}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-instagram"></i></a>` : ''}
+                            ${s.facebook ? `<a href="${s.facebook}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-facebook-f"></i></a>` : ''}
+                            ${s.website ? `<a href="${s.website}" target="_blank" onclick="event.stopPropagation()"><i class="fas fa-globe"></i></a>` : ''}
+                        </div>
+                        <button class="view-profile-btn">View Full Profile</button>
                     </div>
                 </div>`;
             }).join('');
         }
 
-        // ============ MODAL WITH SWIPER ============
         function openModal(fid) {
             const f = allFaculty.find(x => x.id === fid);
-            if(!f) return;
-            
-            const allImages = (f.images && f.images.length > 0) ? f.images : (f.image ? [f.image] : ['https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=600&background=1e3a5f&color=fff']);
+            if (!f) return;
+            const allImgs = (f.images && f.images.length) ? f.images : (f.image ? [f.image] : []);
             const s = f.social || {};
-            
             document.getElementById('modalDialog').innerHTML = `
                 <button class="modal-close" onclick="closeModal()">✕</button>
-                <div class="modal-image-swiper">
-                    <div class="swiper modalSwiper">
+                <div class="modal-swiper">
+                    <div class="swiper modalSwiperInst">
                         <div class="swiper-wrapper">
-                            ${allImages.map(img => `<div class="swiper-slide"><img src="${img}" alt="${escapeHTML(f.name)}" onerror="this.src='https://via.placeholder.com/800x400?text=No+Image'"></div>`).join('')}
+                            ${allImgs.length ? allImgs.map(img => `<div class="swiper-slide"><img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop'"></div>`).join('') : '<div class="swiper-slide"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop"></div>'}
                         </div>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
                     </div>
                 </div>
-                <div class="modal-body-content">
-                    <h2 class="m-name">${escapeHTML(f.name || 'Faculty')}</h2>
-                    <p class="m-role">${escapeHTML(f.designation || 'Teacher')} • ${escapeHTML(f.subject || '')}</p>
-                    <div class="info-cards">
-                        <div class="info-card"><div class="ic-icon">📚</div><div class="ic-val">${escapeHTML(f.subject||'N/A')}</div><div class="ic-lbl">Subject Expertise</div></div>
-                        <div class="info-card"><div class="ic-icon">⏱️</div><div class="ic-val">${escapeHTML(f.experience||'N/A')}</div><div class="ic-lbl">Experience</div></div>
-                        <div class="info-card"><div class="ic-icon">🎓</div><div class="ic-val">${escapeHTML(f.qualification||'N/A')}</div><div class="ic-lbl">Qualification</div></div>
-                        <div class="info-card"><div class="ic-icon">🏫</div><div class="ic-val">THP Coaching</div><div class="ic-lbl">Institute</div></div>
+                <div class="modal-content">
+                    <h2>${escapeHTML(f.name)}</h2>
+                    <p class="role">${escapeHTML(f.designation)} | ${escapeHTML(f.subject)}</p>
+                    <div class="info-grid">
+                        <div class="info-card"><div class="ic-val">${escapeHTML(f.experience||'N/A')}</div><div class="ic-lbl">Experience</div></div>
+                        <div class="info-card"><div class="ic-val">${escapeHTML(f.qualification||'N/A')}</div><div class="ic-lbl">Qualification</div></div>
+                        <div class="info-card"><div class="ic-val">${escapeHTML(f.subject)}</div><div class="ic-lbl">Specialization</div></div>
+                        <div class="info-card"><div class="ic-val">THP Coaching</div><div class="ic-lbl">Institute</div></div>
                     </div>
-                    <div class="bio-block"><h4>📝 About</h4><p>${escapeHTML(f.bio || 'A dedicated educator passionate about helping students achieve their academic goals through innovative teaching methods and personalized attention.')}</p></div>
+                    <div class="bio-block">
+                        <strong style="display:block;margin-bottom:8px;">📝 About ${escapeHTML(f.name)}</strong>
+                        ${escapeHTML(f.bio || 'A dedicated educator with a proven track record of helping students excel in their academic pursuits.')}
+                    </div>
                     <div class="modal-social">
-                        ${s.youtube?`<a href="${s.youtube}" target="_blank" class="ms-yt"><i class="fab fa-youtube"></i> YouTube</a>`:''}
-                        ${s.instagram?`<a href="${s.instagram}" target="_blank" class="ms-ig"><i class="fab fa-instagram"></i> Instagram</a>`:''}
-                        ${s.facebook?`<a href="${s.facebook}" target="_blank" class="ms-fb"><i class="fab fa-facebook"></i> Facebook</a>`:''}
-                        ${s.website?`<a href="${s.website}" target="_blank" class="ms-web"><i class="fas fa-globe"></i> Website</a>`:''}
+                        ${s.youtube?`<a href="${s.youtube}" target="_blank" class="social-yt"><i class="fab fa-youtube"></i> YouTube</a>`:''}
+                        ${s.instagram?`<a href="${s.instagram}" target="_blank" class="social-ig"><i class="fab fa-instagram"></i> Instagram</a>`:''}
+                        ${s.facebook?`<a href="${s.facebook}" target="_blank" class="social-fb"><i class="fab fa-facebook"></i> Facebook</a>`:''}
+                        ${s.website?`<a href="${s.website}" target="_blank" class="social-web"><i class="fas fa-globe"></i> Website</a>`:''}
                     </div>
                 </div>`;
-            
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
-            
-            // Initialize Swiper
             setTimeout(() => {
-                new Swiper('.modalSwiper', {
-                    slidesPerView: 1, loop: allImages.length > 1,
+                new Swiper('.modalSwiperInst', {
+                    slidesPerView: 1,
+                    loop: allImgs.length > 1,
                     pagination: { el: '.swiper-pagination', clickable: true },
                     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
                     keyboard: { enabled: true }
@@ -379,16 +737,14 @@
         function closeModal() {
             document.getElementById('modalOverlay').classList.remove('active');
             document.body.style.overflow = '';
-            // Destroy swiper
-            document.querySelectorAll('.modalSwiper').forEach(el => { if(el.swiper) el.swiper.destroy(); });
+            document.querySelectorAll('.modalSwiperInst').forEach(el => { if(el.swiper) el.swiper.destroy(); });
         }
-
         function closeModalOutside(e) { if(e.target === e.currentTarget) closeModal(); }
         document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
 
         function escapeHTML(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
-        document.addEventListener('DOMContentLoaded', () => { loadFaculty(); });
+        document.addEventListener('DOMContentLoaded', loadFaculty);
     </script>
 </body>
 </html>
