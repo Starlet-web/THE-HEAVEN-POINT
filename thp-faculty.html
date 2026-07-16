@@ -4,886 +4,599 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Faculty | THP Coaching Classes</title>
-    <meta name="description" content="Meet the dedicated faculty at THP Coaching Classes - experienced educators committed to your academic success.">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    <meta name="description" content="Meet the experienced faculty at THP Coaching Classes. Our teachers are dedicated to your success.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
+    
     <style>
-        :root {
-            --navy: #0f1a3a;
-            --navy-light: #1a2f5a;
-            --gold: #b8860b;
-            --gold-light: #d4a853;
-            --cream: #fdf8f0;
-            --white: #ffffff;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --red: #dc2626;
-            --green: #16a34a;
-            --blue: #2563eb;
-            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.07), 0 4px 10px rgba(0, 0, 0, 0.04);
-            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        html {
-            scroll-behavior: smooth;
-        }
+
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--white);
-            color: var(--gray-800);
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ───────── TOP BAR ───────── */
+        /* ---------- TOP BAR ---------- */
         .top-bar {
-            background: var(--navy);
+            background: #0f172a;
             color: #cbd5e1;
             font-size: 0.8rem;
-            padding: 10px 0;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
             letter-spacing: 0.3px;
         }
-        .top-bar-inner {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
+        .top-bar i {
+            color: #f59e0b;
+            margin-right: 6px;
         }
-        .top-bar-inner .contact-info {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-        .top-bar-inner .contact-info span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .top-bar-inner .contact-info i {
-            color: var(--gold-light);
-            font-size: 0.75rem;
-        }
-        .top-bar-inner .admission-badge {
-            background: var(--gold);
-            color: white;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.75rem;
+        .top-bar a {
+            color: #f59e0b;
             text-decoration: none;
-            transition: var(--transition);
-        }
-        .top-bar-inner .admission-badge:hover {
-            background: var(--gold-light);
-            transform: translateY(-1px);
+            font-weight: 600;
         }
 
-        /* ───────── NAVBAR ───────── */
+        /* ---------- NAVBAR ---------- */
         .navbar {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--gray-200);
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
+            padding: 0 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
         .navbar-inner {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 0 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 72px;
+            height: 68px;
         }
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
-            color: var(--navy);
-            font-weight: 800;
-            font-size: 1.3rem;
-            letter-spacing: -0.3px;
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 1.4rem;
         }
-        .logo .logo-img {
-            width: 42px;
-            height: 42px;
-            background: var(--navy);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
+        .logo img {
+            height: 38px;
         }
         .logo span {
-            color: var(--gold);
+            color: #b45309;
         }
         .nav-links {
             display: flex;
-            gap: 4px;
-            align-items: center;
+            gap: 8px;
         }
         .nav-links a {
-            color: var(--gray-600);
+            color: #4b5563;
             text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
             font-weight: 500;
             font-size: 0.9rem;
-            transition: var(--transition);
+            transition: all 0.2s;
         }
-        .nav-links a:hover {
-            background: var(--gray-100);
-            color: var(--navy);
-        }
+        .nav-links a:hover,
         .nav-links a.active {
-            background: var(--navy);
-            color: white;
-            font-weight: 600;
+            background-color: #f3f4f6;
+            color: #111827;
         }
-        .mobile-toggle {
+        .mobile-menu {
             display: none;
             background: none;
             border: none;
             font-size: 1.5rem;
-            color: var(--navy);
-            cursor: pointer;
+            color: #111827;
         }
 
-        /* ───────── HERO ───────── */
+        /* ---------- HERO ---------- */
         .hero {
-            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-            padding: 70px 24px 60px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            padding: 60px 20px;
             text-align: center;
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 1px solid #e5e7eb;
         }
-        .hero .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-xs);
-        }
-        .hero .badge .dot {
-            width: 7px;
-            height: 7px;
-            background: var(--green);
-            border-radius: 50%;
+        .hero-badge {
             display: inline-block;
+            background: white;
+            border: 1px solid #d1d5db;
+            color: #1e3a8a;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
         .hero h1 {
-            font-family: 'Merriweather', Georgia, serif;
-            font-size: clamp(2rem, 4vw, 2.8rem);
-            color: var(--navy);
-            margin-bottom: 14px;
-            line-height: 1.25;
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            color: #0f172a;
+            margin-bottom: 12px;
         }
-        .hero h1 .highlight {
-            color: var(--gold);
-            position: relative;
-        }
-        .hero h1 .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: rgba(184, 134, 11, 0.15);
-            border-radius: 4px;
+        .hero h1 span {
+            color: #b45309;
+            border-bottom: 4px solid #fde68a;
         }
         .hero p {
-            max-width: 600px;
-            margin: 0 auto 32px;
-            color: var(--gray-500);
+            max-width: 640px;
+            margin: 0 auto 30px;
+            color: #6b7280;
             font-size: 1.05rem;
-            line-height: 1.7;
         }
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 36px;
+            gap: 40px;
             flex-wrap: wrap;
-            align-items: center;
         }
-        .hero-stats .stat {
+        .hero-stat {
             text-align: center;
         }
-        .hero-stats .stat .num {
-            font-weight: 900;
-            font-size: 2rem;
-            color: var(--navy);
-            letter-spacing: -0.5px;
+        .hero-stat .number {
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: #1e3a8a;
         }
-        .hero-stats .stat .lbl {
-            font-size: 0.78rem;
-            color: var(--gray-400);
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .hero-stats .divider {
-            width: 1px;
-            height: 40px;
-            background: var(--gray-200);
+            letter-spacing: 0.5px;
         }
 
-        /* ───────── TOOLBAR ───────── */
+        /* ---------- SEARCH & FILTER ---------- */
         .toolbar {
-            max-width: 860px;
-            margin: -22px auto 44px;
-            padding: 0 24px;
+            max-width: 800px;
+            margin: -24px auto 40px;
+            padding: 0 20px;
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
-            position: relative;
-            z-index: 10;
         }
-        .search-wrap {
+        .search-box {
             flex: 1;
-            min-width: 240px;
+            min-width: 250px;
             position: relative;
         }
-        .search-wrap input {
+        .search-box input {
             width: 100%;
-            padding: 15px 20px 15px 50px;
-            border: 1.5px solid var(--gray-200);
-            border-radius: 50px;
+            padding: 14px 20px 14px 48px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
-            background: var(--white);
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: 0.2s;
         }
-        .search-wrap input:focus {
-            border-color: var(--navy);
-            box-shadow: 0 0 0 3px rgba(15, 26, 58, 0.06);
+        .search-box input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
             outline: none;
         }
-        .search-wrap i {
+        .search-box i {
             position: absolute;
-            left: 18px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--gray-400);
-            font-size: 1.1rem;
+            color: #9ca3af;
         }
         .filter-select {
-            padding: 15px 24px;
-            border: 1.5px solid var(--gray-200);
-            border-radius: 50px;
+            padding: 14px 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
             font-size: 0.9rem;
             font-family: 'Inter', sans-serif;
-            background: var(--white);
+            background: white;
             cursor: pointer;
-            box-shadow: var(--shadow-sm);
-            min-width: 170px;
-            transition: var(--transition);
-        }
-        .filter-select:focus {
-            border-color: var(--navy);
-            outline: none;
+            min-width: 160px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
-        /* ───────── GRID ───────── */
+        /* ---------- FACULTY GRID ---------- */
         .faculty-grid {
             max-width: 1280px;
-            margin: 0 auto 70px;
-            padding: 0 24px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 30px;
+            gap: 28px;
         }
 
-        /* ───────── CARD ───────── */
         .faculty-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-xl);
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
             overflow: hidden;
+            transition: all 0.3s ease;
             cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             display: flex;
             flex-direction: column;
         }
         .faculty-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--gray-300);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            border-color: #cbd5e1;
         }
-        .card-img-area {
+
+        .card-photo {
             height: 240px;
-            background: var(--gray-100);
+            background: #f3f4f6;
             position: relative;
             overflow: hidden;
         }
-        .card-img-area img {
+        .card-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.4s;
         }
-        .faculty-card:hover .card-img-area img {
-            transform: scale(1.04);
+        .faculty-card:hover .card-photo img {
+            transform: scale(1.03);
         }
-        .img-verified {
+        .photo-badge {
             position: absolute;
-            top: 14px;
-            left: 14px;
-            background: var(--green);
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.65);
             color: white;
-            width: 30px;
-            height: 30px;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .photo-badge i {
+            margin-right: 4px;
+        }
+        .verified-tick {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #10b981;
+            color: white;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75rem;
-            box-shadow: 0 2px 10px rgba(22, 163, 74, 0.3);
+            font-size: 0.8rem;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.3);
         }
-        .img-count {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(6px);
-            color: white;
-            font-size: 0.7rem;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
+
         .card-body {
-            padding: 20px 22px 24px;
+            padding: 20px 20px 24px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
         .card-body .name {
             font-weight: 700;
-            font-size: 1.15rem;
-            color: var(--gray-900);
+            font-size: 1.2rem;
+            color: #111827;
             margin-bottom: 2px;
         }
-        .card-body .desig {
-            font-size: 0.84rem;
-            color: var(--navy);
+        .card-body .designation {
+            font-size: 0.85rem;
+            color: #2563eb;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-        .card-body .tags {
+        .card-body .subjects {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
             margin-bottom: 14px;
         }
-        .card-body .tag {
-            background: var(--gray-100);
-            padding: 5px 14px;
+        .card-body .subject-tag {
+            background: #f3f4f6;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.72rem;
-            color: var(--gray-600);
+            color: #4b5563;
             font-weight: 500;
         }
-        .card-body .meta-row {
+        .card-body .details-row {
             display: flex;
             justify-content: space-around;
-            padding: 14px 0;
-            border-top: 1px solid var(--gray-100);
-            border-bottom: 1px solid var(--gray-100);
-            margin-bottom: 14px;
+            margin-bottom: 16px;
+            padding: 12px 0;
+            border-top: 1px solid #f3f4f6;
+            border-bottom: 1px solid #f3f4f6;
         }
-        .card-body .meta-row .meta {
+        .detail-item {
             text-align: center;
         }
-        .card-body .meta-row .meta .m-val {
+        .detail-item .val {
             font-weight: 700;
-            color: var(--gray-800);
-            font-size: 0.9rem;
+            color: #111827;
         }
-        .card-body .meta-row .meta .m-lbl {
-            font-size: 0.68rem;
-            color: var(--gray-400);
+        .detail-item .lbl {
+            font-size: 0.7rem;
+            color: #9ca3af;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
-        .card-body .bio-snippet {
-            font-size: 0.83rem;
-            color: var(--gray-500);
-            line-height: 1.55;
-            margin-bottom: 14px;
+        .card-body .bio-excerpt {
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 16px;
             flex: 1;
         }
-        .social-mini {
+        .social-row {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 14px;
         }
-        .social-mini a {
+        .social-row a {
+            color: #6b7280;
+            background: #f9fafb;
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: var(--gray-50);
-            color: var(--gray-500);
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: 0.2s;
             text-decoration: none;
-            transition: var(--transition);
-            font-size: 0.82rem;
         }
-        .social-mini a:hover {
-            background: var(--navy);
+        .social-row a:hover {
+            background: #1e3a8a;
             color: white;
         }
-        .btn-view {
+        .view-profile-btn {
             width: 100%;
             padding: 12px;
-            background: var(--white);
-            border: 1.5px solid var(--gray-200);
+            background: white;
+            border: 1.5px solid #d1d5db;
             border-radius: 10px;
             font-weight: 600;
-            font-size: 0.88rem;
-            color: var(--navy);
+            color: #1e3a8a;
             cursor: pointer;
-            transition: var(--transition);
+            transition: 0.2s;
             font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
         }
-        .btn-view:hover {
-            background: var(--navy);
+        .view-profile-btn:hover {
+            background: #1e3a8a;
             color: white;
-            border-color: var(--navy);
+            border-color: #1e3a8a;
         }
 
-        /* ───────── MODAL ───────── */
+        /* ---------- MODAL ---------- */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(6px);
-            z-index: 5000;
+            z-index: 1000;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 20px;
         }
         .modal-overlay.active {
             display: flex;
-            animation: fadeIn 0.25s ease;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
         }
         .modal-dialog {
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            max-width: 720px;
+            background: white;
+            border-radius: 20px;
+            max-width: 700px;
             width: 100%;
-            max-height: 92vh;
+            max-height: 90vh;
             overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-            animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            animation: modalPop 0.3s ease;
         }
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .modal-close {
             position: sticky;
             top: 16px;
             float: right;
             margin-right: 16px;
-            width: 38px;
-            height: 38px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: var(--white);
-            border: 1px solid var(--gray-200);
             cursor: pointer;
             z-index: 10;
+            font-size: 1rem;
+            transition: 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
         }
         .modal-close:hover {
-            background: var(--red);
+            background: #ef4444;
             color: white;
-            border-color: var(--red);
+            border-color: #ef4444;
         }
         .modal-swiper {
             height: 380px;
-            background: var(--gray-100);
+            background: #f3f4f6;
         }
         .modal-swiper .swiper-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .modal-swiper .swiper-pagination-bullet-active {
-            background: var(--gold);
-        }
-        .modal-swiper .swiper-button-next,
-        .modal-swiper .swiper-button-prev {
-            color: white;
-            background: rgba(0, 0, 0, 0.35);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-        }
-        .modal-swiper .swiper-button-next:after,
-        .modal-swiper .swiper-button-prev:after {
-            font-size: 0.9rem;
-        }
         .modal-content {
             padding: 28px;
         }
         .modal-content h2 {
-            font-weight: 800;
             font-size: 1.6rem;
+            font-weight: 700;
             text-align: center;
             margin-bottom: 4px;
-            color: var(--gray-900);
         }
-        .modal-content .role-line {
+        .modal-content .role {
             text-align: center;
-            color: var(--navy);
+            color: #2563eb;
             font-weight: 600;
-            margin-bottom: 22px;
-            font-size: 0.95rem;
+            margin-bottom: 20px;
         }
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
-        .info-grid .info-tile {
-            background: var(--gray-50);
-            border-radius: var(--radius);
+        .info-card {
+            background: #f9fafb;
+            border-radius: 12px;
             padding: 16px;
             text-align: center;
-            border: 1px solid var(--gray-100);
         }
-        .info-grid .info-tile .t-val {
+        .info-card .ic-val {
             font-weight: 700;
             font-size: 0.95rem;
-            color: var(--gray-800);
         }
-        .info-grid .info-tile .t-lbl {
+        .info-card .ic-lbl {
             font-size: 0.7rem;
-            color: var(--gray-400);
+            color: #9ca3af;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         .bio-block {
-            background: var(--cream);
-            border-left: 4px solid var(--gold);
-            padding: 18px 20px;
-            border-radius: 0 var(--radius) var(--radius) 0;
-            margin-bottom: 22px;
-            font-size: 0.9rem;
-            color: var(--gray-700);
-            line-height: 1.7;
+            background: #f9fafb;
+            border-left: 4px solid #b45309;
+            padding: 18px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 20px;
         }
-        .bio-block strong {
-            display: block;
-            margin-bottom: 6px;
-            color: var(--navy);
-        }
-        .modal-social-links {
+        .modal-social {
             display: flex;
             gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
         }
-        .modal-social-links a {
-            padding: 10px 22px;
+        .modal-social a {
+            padding: 10px 20px;
             border-radius: 30px;
             color: white;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.85rem;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: var(--transition);
         }
-        .modal-social-links a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        .soc-yt {
-            background: #ef4444;
-        }
-        .soc-ig {
-            background: #e4405f;
-        }
-        .soc-fb {
-            background: #2563eb;
-        }
-        .soc-web {
-            background: var(--navy);
-        }
+        .social-yt { background: #ef4444; }
+        .social-ig { background: #e4405f; }
+        .social-fb { background: #2563eb; }
+        .social-web { background: #1e3a8a; }
 
-        /* ───────── EMPTY & LOADING ───────── */
         .no-results {
             grid-column: 1 / -1;
             text-align: center;
             padding: 60px 20px;
-            color: var(--gray-400);
+            color: #9ca3af;
         }
-        .no-results i {
-            font-size: 3.5rem;
-            opacity: 0.3;
-            display: block;
-            margin-bottom: 14px;
-        }
+
         .spinner {
-            width: 42px;
-            height: 42px;
-            border: 3px solid var(--gray-200);
-            border-top-color: var(--navy);
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #2563eb;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 60px auto;
         }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* ───────── FOOTER ───────── */
-        .footer {
-            background: var(--navy);
-            color: #cbd5e1;
-            padding: 40px 24px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        .footer .f-title {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 8px;
-        }
-        .footer .f-links {
-            display: flex;
-            gap: 18px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
-        }
-        .footer .f-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        .footer .f-links a:hover {
-            color: var(--gold-light);
-        }
-        .footer .f-social {
-            display: flex;
-            gap: 14px;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .footer .f-social a {
-            color: #94a3b8;
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-        .footer .f-social a:hover {
-            color: var(--gold-light);
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .mobile-toggle {
-                display: block;
-            }
-            .nav-links.show {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 72px;
-                left: 0;
-                width: 100%;
-                background: white;
-                padding: 16px;
-                border-bottom: 1px solid var(--gray-200);
-                box-shadow: var(--shadow-md);
-                gap: 2px;
-            }
-            .hero h1 {
-                font-size: 1.7rem;
-            }
-            .faculty-grid {
-                grid-template-columns: 1fr;
-            }
-            .modal-swiper {
-                height: 250px;
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            .hero-stats {
-                gap: 18px;
-            }
-            .hero-stats .divider {
-                display: none;
-            }
-            .top-bar-inner {
-                justify-content: center;
-                text-align: center;
-            }
+            .nav-links { display: none; }
+            .mobile-menu { display: block; }
+            .hero h1 { font-size: 1.8rem; }
+            .faculty-grid { grid-template-columns: 1fr; }
+            .modal-swiper { height: 240px; }
+            .info-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ══════════ TOP BAR ══════════ -->
+    <!-- TOP BAR -->
     <div class="top-bar">
-        <div class="top-bar-inner">
-            <div class="contact-info">
-                <span><i class="fas fa-phone-alt"></i> +91-98765 43210</span>
-                <span><i class="fas fa-envelope"></i> info@thpcoaching.com</span>
-                <span><i class="fas fa-map-marker-alt"></i> Delhi, India</span>
-            </div>
-            <a href="#" class="admission-badge">Admissions Open 2024-25</a>
-        </div>
+        <span><i class="fas fa-phone-alt"></i> +91-98765 43210</span>
+        <span><i class="fas fa-envelope"></i> info@thpcoaching.com</span>
+        <span><a href="#">Admissions Open 2024-25</a></span>
     </div>
 
-    <!-- ══════════ NAVBAR ══════════ -->
+    <!-- NAVBAR -->
     <header class="navbar">
         <div class="navbar-inner">
             <a href="#" class="logo">
-                <div class="logo-img">🎓</div>
-                THP<span>Coaching</span>
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%231e3a8a'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='20' font-weight='bold' font-family='Arial'%3E🎓%3C/text%3E%3C/svg%3E" alt="THP">
+                <span>THP</span> Coaching
             </a>
-            <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('show')">
-                <i class="fas fa-bars"></i>
-            </button>
+            <button class="mobile-menu" onclick="document.getElementById('navLinks').classList.toggle('show')"><i class="fas fa-bars"></i></button>
             <div class="nav-links" id="navLinks">
                 <a href="#">Home</a>
-                <a href="#" class="active">Our Faculty</a>
+                <a href="#" class="active">Faculty</a>
                 <a href="#">Courses</a>
                 <a href="#">Results</a>
-                <a href="#">Testimonials</a>
-                <a href="#">Contact Us</a>
+                <a href="#">Contact</a>
             </div>
         </div>
     </header>
 
-    <!-- ══════════ HERO ══════════ -->
+    <!-- HERO -->
     <section class="hero">
-        <div class="badge"><span class="dot"></span> Trusted by 10,000+ Students &amp; Parents</div>
-        <h1>Learn from <span class="highlight">Exceptional</span> Teachers</h1>
-        <p>Every faculty member at THP is handpicked for their deep subject knowledge, teaching experience, and genuine commitment to student success.</p>
+        <div class="hero-badge">⭐ Trusted by 10,000+ Students</div>
+        <h1>Meet Our <span>Expert Faculty</span></h1>
+        <p></p>
         <div class="hero-stats">
-            <div class="stat"><div class="num" id="facultyCount">0</div><div class="lbl">Faculty Members</div></div>
-            <div class="divider"></div>
-            <div class="stat"><div class="num">15+</div><div class="lbl">Years Legacy</div></div>
-            <div class="divider"></div>
-            <div class="stat"><div class="num">10K+</div><div class="lbl">Students Mentored</div></div>
-            <div class="divider"></div>
-            <div class="stat"><div class="num">4.9 ★</div><div class="lbl">Parent Rating</div></div>
-        </div>
-    </section>
+            <div class="hero-stat"><div class="number" id="facultyCount">0</div><div class="label">Faculty Members</div></div>
+            <
 
-    <!-- ══════════ TOOLBAR ══════════ -->
+    <!-- TOOLBAR -->
     <div class="toolbar">
-        <div class="search-wrap">
+        <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Search by name, subject, or expertise..." oninput="renderFaculty()">
+            <input type="text" id="searchInput" placeholder="Search by name, subject, expertise..." oninput="renderFaculty()">
         </div>
         <select class="filter-select" id="subjectFilter" onchange="renderFaculty()">
             <option value="all">📚 All Subjects</option>
         </select>
     </div>
 
-    <!-- ══════════ FACULTY GRID ══════════ -->
+    <!-- FACULTY GRID -->
     <div class="faculty-grid" id="facultyGrid">
         <div class="spinner"></div>
     </div>
 
-    <!-- ══════════ MODAL ══════════ -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
         <div class="modal-dialog" id="modalDialog"></div>
     </div>
 
-    <!-- ══════════ FOOTER ══════════ -->
-    <footer class="footer">
-        <div class="f-title">THP Coaching Classes</div>
-        <div class="f-links">
-            <a href="#">About Us</a><a href="#">Faculty</a><a href="#">Courses</a>
-            <a href="#">Results</a><a href="#">Testimonials</a><a href="#">Privacy Policy</a>
-        </div>
-        <div class="f-social">
-            <a href="#"><i class="fab fa-youtube"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-telegram-plane"></i></a>
-        </div>
-        <p style="font-size:0.8rem;opacity:0.6;">&copy; 2024 THP Coaching Classes. All rights reserved.</p>
-    </footer>
-
     <script>
-        // ───────── FIREBASE CONFIG ─────────
         const firebaseConfig = {
             apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
             authDomain: "starlet-registor.firebaseapp.com",
@@ -896,114 +609,89 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const DB_PATH = 'thp-faculty';
-
         let allFaculty = [];
 
-        // ───────── LOAD FROM FIREBASE ─────────
         function loadFaculty() {
-            db.ref(DB_PATH).on('value', function(snap) {
+            db.ref(DB_PATH).on('value', snap => {
                 allFaculty = [];
                 const subjects = new Set();
                 if (snap.exists()) {
-                    snap.forEach(function(child) {
-                        const d = Object.assign({ id: child.key }, child.val());
-                        if (!d.images || !Array.isArray(d.images)) {
-                            d.images = d.image ? [d.image] : [];
-                        }
+                    snap.forEach(child => {
+                        const d = { id: child.key, ...child.val() };
+                        if (!d.images || !Array.isArray(d.images)) d.images = d.image ? [d.image] : [];
                         allFaculty.push(d);
                         if (d.subject) subjects.add(d.subject);
                     });
-                    allFaculty.sort(function(a, b) { return (a.order || 0) - (b.order || 0); });
+                    allFaculty.sort((a,b) => (a.order||0)-(b.order||0));
                 }
-                // Update faculty count
                 document.getElementById('facultyCount').textContent = allFaculty.length;
-                // Populate subject filter
                 const filter = document.getElementById('subjectFilter');
                 filter.innerHTML = '<option value="all">📚 All Subjects</option>';
-                Array.from(subjects).sort().forEach(function(s) {
-                    filter.innerHTML += '<option value="' + s + '">📖 ' + s + '</option>';
+                [...subjects].sort().forEach(s => {
+                    filter.innerHTML += `<option value="${s}">📖 ${s}</option>`;
                 });
                 renderFaculty();
             });
         }
 
-        // ───────── RENDER CARDS ─────────
         function renderFaculty() {
             const grid = document.getElementById('facultyGrid');
-            const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            const subjFilter = document.getElementById('subjectFilter')?.value || 'all';
-
-            let filtered = allFaculty.filter(function(f) {
-                const matchSearch = !query ||
-                    (f.name || '').toLowerCase().indexOf(query) > -1 ||
-                    (f.subject || '').toLowerCase().indexOf(query) > -1 ||
-                    (f.designation || '').toLowerCase().indexOf(query) > -1 ||
-                    (f.bio || '').toLowerCase().indexOf(query) > -1;
-                const matchSubject = subjFilter === 'all' || f.subject === subjFilter;
+            const q = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const subj = document.getElementById('subjectFilter')?.value || 'all';
+            let filtered = allFaculty.filter(f => {
+                const matchSearch = !q || (f.name||'').toLowerCase().includes(q) || (f.subject||'').toLowerCase().includes(q) || (f.designation||'').toLowerCase().includes(q) || (f.bio||'').toLowerCase().includes(q);
+                const matchSubject = subj === 'all' || f.subject === subj;
                 return matchSearch && matchSubject;
             });
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div class="no-results"><i class="fas fa-user-slash"></i><h3>No faculty members found</h3><p style="color:var(--gray-400);">Try adjusting your search or filter</p></div>';
+            if (!filtered.length) {
+                grid.innerHTML = '<div class="no-results"><i class="fas fa-user-slash" style="font-size:3rem;opacity:0.3;"></i><h3>No faculty found</h3></div>';
                 return;
             }
-
-            grid.innerHTML = filtered.map(function(f) {
-                const mainImg = (f.images && f.images.length > 0) ? f.images[0] :
-                    (f.image || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(f.name || 'F') +
-                        '&size=400&background=0f1a3a&color=fff&bold=true');
+            grid.innerHTML = filtered.map(f => {
+                const mainImg = (f.images && f.images.length) ? f.images[0] : (f.image || 'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=400&background=1e3a8a&color=fff');
                 const imgCount = (f.images && f.images.length) || (f.image ? 1 : 0);
-                const soc = f.social || {};
-                const bioExcerpt = (f.bio || 'A dedicated educator with a passion for teaching and mentoring students.').substring(0,
-                    110);
-
+                const s = f.social || {};
                 return `
                 <div class="faculty-card" onclick="openModal('${f.id}')">
-                    <div class="card-img-area">
+                    <div class="card-photo">
                         <img src="${mainImg}" alt="${escapeHTML(f.name)}" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop'">
-                        <div class="img-verified"><i class="fas fa-check"></i></div>
-                        ${imgCount > 1 ? '<div class="img-count"><i class="fas fa-images"></i> ' + imgCount + ' photos</div>' : ''}
+                        <div class="verified-tick"><i class="fas fa-check"></i></div>
+                        ${imgCount > 1 ? `<div class="photo-badge"><i class="fas fa-images"></i> ${imgCount} photos</div>` : ''}
                     </div>
                     <div class="card-body">
                         <div class="name">${escapeHTML(f.name)}</div>
-                        <div class="desig">${escapeHTML(f.designation || 'Senior Faculty')}</div>
-                        <div class="tags">
-                            <span class="tag">${escapeHTML(f.subject || 'Various Subjects')}</span>
+                        <div class="designation">${escapeHTML(f.designation || 'Senior Faculty')}</div>
+                        <div class="subjects">
+                            <span class="subject-tag">${escapeHTML(f.subject)}</span>
                         </div>
-                        <div class="meta-row">
-                            <div class="meta"><div class="m-val">${escapeHTML(f.experience || '5+ yrs')}</div><div class="m-lbl">Experience</div></div>
-                            <div class="meta"><div class="m-val">${escapeHTML(f.qualification || 'MA/BEd')}</div><div class="m-lbl">Qualification</div></div>
+                        <div class="details-row">
+                            <div class="detail-item"><div class="val">${escapeHTML(f.experience || '5+ yrs')}</div><div class="lbl">Experience</div></div>
+                            <div class="detail-item"><div class="val">${escapeHTML(f.qualification || 'MA/BEd')}</div><div class="lbl">Qualification</div></div>
                         </div>
-                        <div class="bio-snippet">${escapeHTML(bioExcerpt)}...</div>
-                        <div class="social-mini">
-                            ${soc.youtube ? '<a href="' + soc.youtube + '" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-youtube"></i></a>' : ''}
-                            ${soc.instagram ? '<a href="' + soc.instagram + '" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-instagram"></i></a>' : ''}
-                            ${soc.facebook ? '<a href="' + soc.facebook + '" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-facebook-f"></i></a>' : ''}
-                            ${soc.website ? '<a href="' + soc.website + '" target="_blank" onclick="event.stopPropagation()"><i class="fas fa-globe"></i></a>' : ''}
+                        <div class="bio-excerpt">${escapeHTML((f.bio || '').substring(0,100))}...</div>
+                        <div class="social-row">
+                            ${s.youtube ? `<a href="${s.youtube}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-youtube"></i></a>` : ''}
+                            ${s.instagram ? `<a href="${s.instagram}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-instagram"></i></a>` : ''}
+                            ${s.facebook ? `<a href="${s.facebook}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-facebook-f"></i></a>` : ''}
+                            ${s.website ? `<a href="${s.website}" target="_blank" onclick="event.stopPropagation()"><i class="fas fa-globe"></i></a>` : ''}
                         </div>
-                        <button class="btn-view">View Full Profile →</button>
+                        <button class="view-profile-btn">View Full Profile</button>
                     </div>
                 </div>`;
             }).join('');
         }
 
-        // ───────── MODAL WITH SWIPER ─────────
         function openModal(fid) {
-            const f = allFaculty.find(function(x) { return x.id === fid; });
+            const f = allFaculty.find(x => x.id === fid);
             if (!f) return;
-            const allImgs = (f.images && f.images.length > 0) ? f.images : (f.image ? [f.image] : [
-                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop'
-            ]);
-            const soc = f.social || {};
-
+            const allImgs = (f.images && f.images.length) ? f.images : (f.image ? [f.image] : []);
+            const s = f.social || {};
             document.getElementById('modalDialog').innerHTML = `
                 <button class="modal-close" onclick="closeModal()">✕</button>
                 <div class="modal-swiper">
                     <div class="swiper modalSwiperInst">
                         <div class="swiper-wrapper">
-                            ${allImgs.map(function(img) {
-                                return '<div class="swiper-slide"><img src="' + img + '" onerror="this.src=\'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop\'" alt="' + escapeHTML(f.name) + '"></div>';
-                            }).join('')}
+                            ${allImgs.length ? allImgs.map(img => `<div class="swiper-slide"><img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop'"></div>`).join('') : '<div class="swiper-slide"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop"></div>'}
                         </div>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
@@ -1012,29 +700,27 @@
                 </div>
                 <div class="modal-content">
                     <h2>${escapeHTML(f.name)}</h2>
-                    <p class="role-line">${escapeHTML(f.designation || 'Faculty')} &bull; ${escapeHTML(f.subject || '')}</p>
+                    <p class="role">${escapeHTML(f.designation)} | ${escapeHTML(f.subject)}</p>
                     <div class="info-grid">
-                        <div class="info-tile"><div class="t-val">${escapeHTML(f.experience || 'N/A')}</div><div class="t-lbl">Experience</div></div>
-                        <div class="info-tile"><div class="t-val">${escapeHTML(f.qualification || 'N/A')}</div><div class="t-lbl">Qualification</div></div>
-                        <div class="info-tile"><div class="t-val">${escapeHTML(f.subject || 'N/A')}</div><div class="t-lbl">Specialization</div></div>
-                        <div class="info-tile"><div class="t-val">THP Coaching</div><div class="t-lbl">Institute</div></div>
+                        <div class="info-card"><div class="ic-val">${escapeHTML(f.experience||'N/A')}</div><div class="ic-lbl">Experience</div></div>
+                        <div class="info-card"><div class="ic-val">${escapeHTML(f.qualification||'N/A')}</div><div class="ic-lbl">Qualification</div></div>
+                        <div class="info-card"><div class="ic-val">${escapeHTML(f.subject)}</div><div class="ic-lbl">Specialization</div></div>
+                        <div class="info-card"><div class="ic-val">THP Coaching</div><div class="ic-lbl">Institute</div></div>
                     </div>
                     <div class="bio-block">
-                        <strong>📝 About ${escapeHTML(f.name)}</strong>
-                        ${escapeHTML(f.bio || 'A dedicated educator with a proven track record of helping students excel in their academic pursuits through clear instruction and personalized mentorship.')}
+                        <strong style="display:block;margin-bottom:8px;">📝 About ${escapeHTML(f.name)}</strong>
+                        ${escapeHTML(f.bio || 'A dedicated educator with a proven track record of helping students excel in their academic pursuits.')}
                     </div>
-                    <div class="modal-social-links">
-                        ${soc.youtube ? '<a href="' + soc.youtube + '" target="_blank" class="soc-yt"><i class="fab fa-youtube"></i> YouTube</a>' : ''}
-                        ${soc.instagram ? '<a href="' + soc.instagram + '" target="_blank" class="soc-ig"><i class="fab fa-instagram"></i> Instagram</a>' : ''}
-                        ${soc.facebook ? '<a href="' + soc.facebook + '" target="_blank" class="soc-fb"><i class="fab fa-facebook"></i> Facebook</a>' : ''}
-                        ${soc.website ? '<a href="' + soc.website + '" target="_blank" class="soc-web"><i class="fas fa-globe"></i> Website</a>' : ''}
+                    <div class="modal-social">
+                        ${s.youtube?`<a href="${s.youtube}" target="_blank" class="social-yt"><i class="fab fa-youtube"></i> YouTube</a>`:''}
+                        ${s.instagram?`<a href="${s.instagram}" target="_blank" class="social-ig"><i class="fab fa-instagram"></i> Instagram</a>`:''}
+                        ${s.facebook?`<a href="${s.facebook}" target="_blank" class="social-fb"><i class="fab fa-facebook"></i> Facebook</a>`:''}
+                        ${s.website?`<a href="${s.website}" target="_blank" class="social-web"><i class="fas fa-globe"></i> Website</a>`:''}
                     </div>
                 </div>`;
-
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
-
-            setTimeout(function() {
+            setTimeout(() => {
                 new Swiper('.modalSwiperInst', {
                     slidesPerView: 1,
                     loop: allImgs.length > 1,
@@ -1042,33 +728,19 @@
                     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
                     keyboard: { enabled: true }
                 });
-            }, 150);
+            }, 100);
         }
 
         function closeModal() {
             document.getElementById('modalOverlay').classList.remove('active');
             document.body.style.overflow = '';
-            document.querySelectorAll('.modalSwiperInst').forEach(function(el) {
-                if (el.swiper) el.swiper.destroy();
-            });
+            document.querySelectorAll('.modalSwiperInst').forEach(el => { if(el.swiper) el.swiper.destroy(); });
         }
+        function closeModalOutside(e) { if(e.target === e.currentTarget) closeModal(); }
+        document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
 
-        function closeModalOutside(e) {
-            if (e.target === e.currentTarget) closeModal();
-        }
+        function escapeHTML(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        function escapeHTML(str) {
-            if (!str) return '';
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-        // ───────── INIT ─────────
         document.addEventListener('DOMContentLoaded', loadFaculty);
     </script>
 </body>
