@@ -3,260 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THP Faculty Admin | Premium Dashboard</title>
-
+    <title>THP Faculty Admin | Manage Teachers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            --bg: #f8fafc; --sidebar-bg: #1e3a5f; --primary: #2563eb; --primary-hover: #1d4ed8;
-            --danger: #ef4444; --success: #10b981; --text: #1a1a2e; --text-light: #64748b;
-            --card: #ffffff; --border: #e8ecf1; --radius: 14px; --radius-lg: 20px;
-            --shadow: 0 4px 20px rgba(0,0,0,0.06); --transition: 0.25s ease;
+            --navy: #0f1a3a;
+            --gold: #b8860b;
+            --bg: #f8fafc;
+            --card: #fff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
-        
-        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; position: fixed; height: 100vh; top:0; left:0; z-index:100; }
-        .sidebar .logo { padding: 24px; font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
-        .sidebar .logo i { color: #f0c76e; }
-        .sidebar nav { flex:1; padding: 12px 0; }
-        .sidebar nav a { display: flex; align-items: center; gap: 12px; padding: 13px 24px; color: rgba(255,255,255,0.6); text-decoration: none; font-weight: 500; font-size: 0.9rem; border-left: 3px solid transparent; transition: var(--transition); }
-        .sidebar nav a:hover, .sidebar nav a.active { background: rgba(255,255,255,0.05); color: white; border-left-color: #f0c76e; }
-        .sidebar nav a i { width: 22px; }
-        .sidebar nav a .badge { margin-left: auto; background: rgba(255,255,255,0.1); padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; }
-        
-        .main { margin-left: 280px; flex:1; padding: 32px; max-width: calc(100vw - 280px); }
-        .page-header { margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-        .page-header h2 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; }
-        
-        .card { background: var(--card); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-        .card h3 { font-family: 'Outfit', sans-serif; margin-bottom: 24px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
-        
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-        .form-group { margin-bottom: 16px; }
-        .form-group.full { grid-column: 1 / -1; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
-        label .req { color: var(--danger); }
-        input, textarea, select { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: 0.9rem; font-family: inherit; transition: var(--transition); background: #fafbfc; }
-        input:focus, textarea:focus, select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,0.06); background: white; }
-        textarea { resize: vertical; min-height: 80px; }
-        
-        .image-upload-area { border: 2px dashed var(--border); border-radius: var(--radius); padding: 24px; text-align: center; cursor: pointer; transition: var(--transition); background: #fafbfc; position: relative; }
-        .image-upload-area:hover { border-color: var(--primary); background: #f0f6ff; }
-        .image-upload-area i { font-size: 2rem; color: var(--primary); margin-bottom: 8px; }
-        .image-upload-area input { position: absolute; inset:0; opacity:0; cursor: pointer; }
-        .image-previews { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
-        .image-previews .preview-item { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; border: 2px solid var(--border); }
-        .image-previews .preview-item img { width: 100%; height: 100%; object-fit: cover; }
-        .image-previews .preview-item .remove-btn { position: absolute; top: 2px; right: 2px; width: 22px; height: 22px; border-radius: 50%; background: var(--danger); color: white; border: none; cursor: pointer; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; }
-        
-        .btn { padding: 12px 24px; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; transition: var(--transition); }
-        .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-outline { background: white; border: 2px solid var(--primary); color: var(--primary); }
-        .btn-xs { padding: 5px 10px; font-size: 0.72rem; border-radius: 8px; }
-        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        
-        .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 32px; max-width: 1200px; margin: auto; }
+        h1 { font-size: 2rem; margin-bottom: 24px; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+        h1 i { color: var(--gold); }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--navy); color: white; } .btn-primary:hover { filter: brightness(1.2); }
+        .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { opacity: 0.9; }
+        .btn-outline { background: white; border: 2px solid var(--navy); color: var(--navy); } .btn-outline:hover { background: var(--navy); color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        .card { background: var(--card); border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group textarea { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .img-upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .img-upload-area:hover { border-color: var(--navy); background: #f1f5f9; }
+        .img-upload-area i { font-size: 2rem; color: var(--navy); margin-bottom: 8px; }
+        .img-upload-area input { display: none; }
+        .image-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .preview-item { position: relative; width: 90px; height: 90px; border-radius: 10px; overflow: hidden; border: 2px solid var(--border); }
+        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-item .remove-btn { position: absolute; top: 4px; right: 4px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .table-wrap { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 16px 14px; border-bottom: 1px solid var(--border); text-align: left; font-size: 0.85rem; }
-        th { background: #f8fafc; font-weight: 600; color: var(--text-light); font-size: 0.75rem; text-transform: uppercase; }
-        tr:hover td { background: #fafbfc; }
-        .img-thumb { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
-        .tag { display: inline-flex; padding: 4px 12px; border-radius: 15px; font-size: 0.72rem; font-weight: 600; }
-        .tag-subject { background: #eff6ff; color: var(--primary); }
-        
-        .alert { padding: 16px 20px; border-radius: var(--radius); margin-bottom: 20px; font-weight: 500; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
-        .alert-success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-        .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-        
-        .progress-wrap { margin: 16px 0; display: none; }
-        .progress-wrap.active { display: block; }
-        .progress-bar { background: var(--border); border-radius: 10px; height: 8px; overflow: hidden; }
-        .progress-fill { background: var(--primary); height: 100%; border-radius: 10px; transition: width 0.3s; width: 0%; }
-        
-        .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        @media (max-width:1024px) { .sidebar { width: 70px; } .sidebar .logo span, .sidebar nav a span, .badge { display:none; } .sidebar nav a { justify-content:center; } .main { margin-left:70px; } }
+        th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { background: #f1f5f9; font-weight: 600; color: var(--text-light); }
+        .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+        .alert { padding: 12px 20px; border-radius: 8px; margin-bottom: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+        .alert-success { background: #dcfce7; color: #166534; }
+        .alert-error { background: #fee2e2; color: #991b1b; }
+        .progress { display: none; height: 6px; background: var(--border); border-radius: 4px; margin-top: 12px; }
+        .progress-bar { height: 100%; background: var(--navy); border-radius: 4px; width: 0%; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="logo"><i class="fas fa-graduation-cap"></i><span>THP Admin</span></div>
-        <nav>
-            <a href="#" class="active"><i class="fas fa-users"></i><span>Faculty</span><span class="badge" id="navCount">0</span></a>
-            <a href="#" onclick="exportData()"><i class="fas fa-download"></i><span>Export</span></a>
-            <a href="#" onclick="location.reload()"><i class="fas fa-sync-alt"></i><span>Refresh</span></a>
-        </nav>
-    </div>
+    <h1><i class="fas fa-users-cog"></i> THP Faculty Admin Panel</h1>
 
-    <div class="main">
-        <div id="alertContainer"></div>
-        <div class="page-header"><h2>👨‍🏫 Faculty Management</h2><button class="btn btn-primary" onclick="scrollToForm()"><i class="fas fa-plus"></i> Add Faculty</button></div>
+    <div id="alertBox"></div>
 
-        <div class="card" id="formCard">
-            <h3 id="formTitle"><i class="fas fa-user-plus"></i> Add New Faculty</h3>
-            <input type="hidden" id="facultyId">
-            <div class="form-grid">
-                <div class="form-group"><label>Full Name <span class="req">*</span></label><input type="text" id="facName" placeholder="e.g., Dr. Sharma"></div>
-                <div class="form-group"><label>Designation</label><input type="text" id="facDesignation" placeholder="e.g., Head of Department"></div>
-                <div class="form-group"><label>Subject <span class="req">*</span></label><input type="text" id="facSubject" placeholder="e.g., Physics"></div>
-                <div class="form-group"><label>Experience</label><input type="text" id="facExperience" placeholder="e.g., 12+ Years"></div>
-                <div class="form-group"><label>Qualification</label><input type="text" id="facQualification" placeholder="e.g., Ph.D., M.Tech"></div>
-                <div class="form-group"><label>Display Order</label><input type="number" id="facOrder" value="1" min="1"></div>
-                <div class="form-group full"><label>Bio</label><textarea id="facBio" placeholder="Professional bio..."></textarea></div>
-                
-                <!-- Multi-Image Upload -->
-                <div class="form-group full">
-                    <label>📸 Profile Images (Upload multiple)</label>
-                    <div class="image-upload-area" id="imageUploadArea">
-                        <input type="file" id="imageFiles" accept="image/*" multiple onchange="handleMultipleImages(this)">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Click or drag to upload images</p>
-                        <small style="color:var(--text-light);">You can select multiple images</small>
-                    </div>
-                    <div class="image-previews" id="imagePreviews"></div>
-                    <div class="progress-wrap" id="progressWrap"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
-                </div>
-                
-                <!-- Social Links -->
-                <div class="form-group full"><h4 style="margin:8px 0;color:var(--text-light);">🔗 Social Links</h4></div>
-                <div class="form-group"><label><i class="fab fa-youtube" style="color:#ff0000;"></i> YouTube</label><input type="url" id="facYoutube" placeholder="Channel URL"></div>
-                <div class="form-group"><label><i class="fab fa-instagram" style="color:#e4405f;"></i> Instagram</label><input type="url" id="facInstagram" placeholder="Profile URL"></div>
-                <div class="form-group"><label><i class="fab fa-facebook" style="color:#1877f2;"></i> Facebook</label><input type="url" id="facFacebook" placeholder="Profile URL"></div>
-                <div class="form-group"><label><i class="fas fa-globe"></i> Website</label><input type="url" id="facWebsite" placeholder="Website URL"></div>
+    <!-- FORM CARD -->
+    <div class="card">
+        <h2 id="formTitle" style="margin-bottom:20px;"><i class="fas fa-user-plus"></i> Add New Faculty</h2>
+        <input type="hidden" id="facultyId">
+        <div class="form-grid">
+            <div class="form-group"><label>Full Name *</label><input type="text" id="name" placeholder="e.g., Dr. Anil Sharma"></div>
+            <div class="form-group"><label>Designation</label><input type="text" id="designation" placeholder="Head of Department"></div>
+            <div class="form-group"><label>Subject *</label><input type="text" id="subject" placeholder="Physics"></div>
+            <div class="form-group"><label>Experience</label><input type="text" id="experience" placeholder="12+ Years"></div>
+            <div class="form-group"><label>Qualification</label><input type="text" id="qualification" placeholder="Ph.D., M.Sc."></div>
+            <div class="form-group"><label>Display Order</label><input type="number" id="order" value="1" min="1"></div>
+        </div>
+        <div class="form-group" style="margin-top:12px;"><label>Short Bio</label><textarea id="bio" placeholder="Write a brief professional bio..."></textarea></div>
+
+        <!-- Multi-Image Upload -->
+        <div class="form-group" style="margin-top:16px;">
+            <label>📸 Photos (Multiple)</label>
+            <div class="img-upload-area" onclick="document.getElementById('imageInput').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Click to upload images (multiple allowed)</p>
+                <input type="file" id="imageInput" accept="image/*" multiple onchange="handleImageSelect(this)">
             </div>
-            <div class="btn-group" style="margin-top:20px;">
-                <button class="btn btn-primary" id="saveBtn" onclick="saveFaculty()"><i class="fas fa-save"></i> Save Faculty</button>
-                <button class="btn btn-outline" id="cancelBtn" style="display:none;" onclick="resetForm()"><i class="fas fa-times"></i> Cancel</button>
-            </div>
+            <div class="image-previews" id="imagePreviews"></div>
+            <div class="progress" id="progressBar"><div class="progress-bar" id="progressFill"></div></div>
         </div>
 
-        <div class="card">
-            <h3><i class="fas fa-list"></i> All Faculty</h3>
-            <div class="table-wrap"><table><thead><tr><th>#</th><th>Photo</th><th>Name</th><th>Subject</th><th>Designation</th><th>Exp</th><th>Images</th><th>Actions</th></tr></thead><tbody id="facultyTableBody"></tbody></table></div>
+        <!-- Social Links -->
+        <div style="margin:20px 0 10px;"><strong>🔗 Social Links</strong></div>
+        <div class="form-grid">
+            <div class="form-group"><label>YouTube URL</label><input type="url" id="youtube" placeholder="https://youtube.com/@..."></div>
+            <div class="form-group"><label>Instagram URL</label><input type="url" id="instagram" placeholder="https://instagram.com/..."></div>
+            <div class="form-group"><label>Facebook URL</label><input type="url" id="facebook" placeholder="https://facebook.com/..."></div>
+            <div class="form-group"><label>Website</label><input type="url" id="website" placeholder="https://..."></div>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top:24px;">
+            <button class="btn btn-primary" onclick="saveFaculty()"><i class="fas fa-save"></i> Save Faculty</button>
+            <button class="btn btn-outline" id="cancelBtn" style="display:none;" onclick="resetForm()"><i class="fas fa-times"></i> Cancel</button>
+        </div>
+    </div>
+
+    <!-- FACULTY LIST -->
+    <div class="card">
+        <h2 style="margin-bottom:20px;"><i class="fas fa-list-ul"></i> All Faculty Members</h2>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Photo</th><th>Name</th><th>Subject</th><th>Designation</th><th>Exp</th><th>Images</th><th>Actions</th></tr></thead>
+                <tbody id="facultyTableBody"></tbody>
+            </table>
         </div>
     </div>
 
     <script>
+        // Firebase config
         const firebaseConfig = {
-            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
-            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
-            storageBucket: "starlet-registor.firebasestorage.app", messagingSenderId: "904193225045",
+            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
+            authDomain: "starlet-registor.firebaseapp.com",
+            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com",
+            projectId: "starlet-registor",
+            storageBucket: "starlet-registor.firebasestorage.app",
+            messagingSenderId: "904193225045",
             appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        const IMGBB_KEY = "53fb01955a45c5462724b8f7d238500a";
         const DB_PATH = 'thp-faculty';
-        
-        let selectedFiles = [];
-        let uploadedUrls = [];
+        const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
 
-        function showAlert(m, t='success') {
-            const c = document.getElementById('alertContainer'); c.querySelectorAll('.alert').forEach(a=>a.remove());
-            const d = document.createElement('div'); d.className=`alert alert-${t}`;
-            d.innerHTML=`<i class="fas fa-${t==='success'?'check-circle':'exclamation-circle'}"></i> ${m}`;
-            c.appendChild(d); setTimeout(()=>d.remove(), 4000);
+        let selectedFiles = [];            // New files to upload
+        let existingImageUrls = [];       // Already saved URLs (when editing)
+
+        function showAlert(msg, type='success') {
+            const box = document.getElementById('alertBox');
+            box.innerHTML = `<div class="alert alert-${type}"><i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i> ${msg}</div>`;
+            setTimeout(() => box.innerHTML = '', 4000);
         }
 
-        function escapeHTML(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-        function scrollToForm() { document.getElementById('formCard').scrollIntoView({behavior:'smooth'}); resetForm(); }
+        function handleImageSelect(input) {
+            selectedFiles = Array.from(input.files);
+            renderPreviews();
+        }
 
-        function handleMultipleImages(input) {
-            const files = Array.from(input.files);
-            selectedFiles = files;
-            const previews = document.getElementById('imagePreviews');
-            previews.innerHTML = '';
-            files.forEach((f, i) => {
+        function renderPreviews() {
+            const container = document.getElementById('imagePreviews');
+            container.innerHTML = '';
+            // Show existing URLs first
+            existingImageUrls.forEach((url, idx) => {
+                container.innerHTML += `<div class="preview-item"><img src="${url}"><button class="remove-btn" onclick="removeExistingImage(${idx})">✕</button></div>`;
+            });
+            // Show new file previews
+            selectedFiles.forEach((file, idx) => {
                 const reader = new FileReader();
                 reader.onload = e => {
-                    previews.innerHTML += `<div class="preview-item"><img src="${e.target.result}"><button class="remove-btn" onclick="removeImage(${i})">✕</button></div>`;
+                    container.innerHTML += `<div class="preview-item"><img src="${e.target.result}"><button class="remove-btn" onclick="removeNewImage(${idx})">✕</button></div>`;
                 };
-                reader.readAsDataURL(f);
+                reader.readAsDataURL(file);
             });
         }
 
-        function removeImage(index) {
+        function removeExistingImage(index) {
+            existingImageUrls.splice(index, 1);
+            renderPreviews();
+        }
+
+        function removeNewImage(index) {
             selectedFiles.splice(index, 1);
+            // update file input
             const dt = new DataTransfer();
             selectedFiles.forEach(f => dt.items.add(f));
-            document.getElementById('imageFiles').files = dt.files;
-            handleMultipleImages({ files: dt.files });
+            document.getElementById('imageInput').files = dt.files;
+            renderPreviews();
         }
 
         async function saveFaculty() {
             const id = document.getElementById('facultyId').value;
-            const name = document.getElementById('facName').value.trim();
-            const subject = document.getElementById('facSubject').value.trim();
-            if(!name || !subject) return showAlert('Name and Subject required!', 'error');
-            
-            const btn = document.getElementById('saveBtn'), orig = btn.innerHTML;
-            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving...';
-            
+            const name = document.getElementById('name').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            if(!name || !subject) return showAlert('Name and Subject are required!', 'error');
+
+            const btn = document.querySelector('.btn-primary');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            const progressWrap = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+
             try {
-                let allImageUrls = [...uploadedUrls]; // Keep existing URLs when editing
-                
-                // Upload new images if selected
+                // Upload new images if any
+                const newUrls = [];
                 if(selectedFiles.length > 0) {
-                    const pw = document.getElementById('progressWrap'); pw.classList.add('active');
-                    for(let i = 0; i < selectedFiles.length; i++) {
-                        const progress = Math.round(((i + 1) / selectedFiles.length) * 100);
-                        document.getElementById('progressFill').style.width = progress + '%';
-                        
-                        const fd = new FormData();
-                        fd.append('image', selectedFiles[i]);
-                        fd.append('key', IMGBB_KEY);
-                        
-                        const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
-                        const data = await res.json();
-                        if(!data.success) throw new Error(data.error?.message || 'Upload failed');
-                        allImageUrls.push(data.data.url);
+                    progressWrap.style.display = 'block';
+                    for(let i=0; i<selectedFiles.length; i++) {
+                        const formData = new FormData();
+                        formData.append('image', selectedFiles[i]);
+                        formData.append('key', IMGBB_API_KEY);
+                        const resp = await fetch('https://api.imgbb.com/1/upload', { method:'POST', body:formData });
+                        const data = await resp.json();
+                        if(!data.success) throw new Error('Image upload failed');
+                        newUrls.push(data.data.url);
+                        progressFill.style.width = ((i+1)/selectedFiles.length * 100) + '%';
                     }
-                    pw.classList.remove('active');
+                    progressWrap.style.display = 'none';
                 }
-                
+
+                // Combine existing + new URLs
+                const allImages = [...existingImageUrls, ...newUrls];
+
+                // Social object
                 const social = {};
-                ['youtube','instagram','facebook','website'].forEach(k => {
-                    const v = document.getElementById('fac'+k.charAt(0).toUpperCase()+k.slice(1)).value.trim();
-                    if(v) social[k] = v;
-                });
-                
+                const yt = document.getElementById('youtube').value.trim();
+                const ig = document.getElementById('instagram').value.trim();
+                const fb = document.getElementById('facebook').value.trim();
+                const web = document.getElementById('website').value.trim();
+                if(yt) social.youtube = yt;
+                if(ig) social.instagram = ig;
+                if(fb) social.facebook = fb;
+                if(web) social.website = web;
+
                 const facultyData = {
-                    name, designation: document.getElementById('facDesignation').value.trim(),
-                    subject, experience: document.getElementById('facExperience').value.trim(),
-                    qualification: document.getElementById('facQualification').value.trim(),
-                    bio: document.getElementById('facBio').value.trim(),
-                    order: parseInt(document.getElementById('facOrder').value) || 1,
-                    images: allImageUrls,
-                    image: allImageUrls.length > 0 ? allImageUrls[0] : null,
+                    name,
+                    designation: document.getElementById('designation').value.trim(),
+                    subject,
+                    experience: document.getElementById('experience').value.trim(),
+                    qualification: document.getElementById('qualification').value.trim(),
+                    bio: document.getElementById('bio').value.trim(),
+                    order: parseInt(document.getElementById('order').value) || 1,
+                    images: allImages,
+                    image: allImages.length > 0 ? allImages[0] : null,
                     social: Object.keys(social).length ? social : null,
                     updatedAt: firebase.database.ServerValue.TIMESTAMP
                 };
-                
-                if(id) await db.ref(`${DB_PATH}/${id}`).update(facultyData);
-                else await db.ref(DB_PATH).push({...facultyData, createdAt: firebase.database.ServerValue.TIMESTAMP});
-                
-                showAlert(id ? 'Updated! ✅' : 'Added! 🎉');
-                resetForm(); loadTable();
-            } catch(e) { showAlert('Error: ' + e.message, 'error'); }
-            finally { btn.disabled = false; btn.innerHTML = orig; }
+
+                if(id) {
+                    await db.ref(`${DB_PATH}/${id}`).update(facultyData);
+                } else {
+                    await db.ref(DB_PATH).push({...facultyData, createdAt: firebase.database.ServerValue.TIMESTAMP});
+                }
+                showAlert(id ? 'Faculty updated successfully!' : 'Faculty added successfully!');
+                resetForm();
+                loadFacultyTable();
+            } catch(e) {
+                showAlert('Error: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Faculty';
+                progressWrap.style.display = 'none';
+                progressFill.style.width = '0%';
+            }
         }
 
         function resetForm() {
             document.getElementById('facultyId').value = '';
-            ['facName','facDesignation','facSubject','facExperience','facQualification','facBio','facYoutube','facInstagram','facFacebook','facWebsite'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('facOrder').value = '1';
-            document.getElementById('imageFiles').value = '';
+            ['name','designation','subject','experience','qualification','bio','youtube','instagram','facebook','website'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('order').value = '1';
+            document.getElementById('imageInput').value = '';
+            selectedFiles = [];
+            existingImageUrls = [];
             document.getElementById('imagePreviews').innerHTML = '';
-            selectedFiles = []; uploadedUrls = [];
             document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-plus"></i> Add New Faculty';
             document.getElementById('cancelBtn').style.display = 'none';
         }
@@ -266,70 +269,85 @@
                 if(!snap.exists()) return;
                 const f = snap.val();
                 document.getElementById('facultyId').value = id;
-                document.getElementById('facName').value = f.name || '';
-                document.getElementById('facDesignation').value = f.designation || '';
-                document.getElementById('facSubject').value = f.subject || '';
-                document.getElementById('facExperience').value = f.experience || '';
-                document.getElementById('facQualification').value = f.qualification || '';
-                document.getElementById('facBio').value = f.bio || '';
-                document.getElementById('facOrder').value = f.order || 1;
-                if(f.social) {
-                    document.getElementById('facYoutube').value = f.social.youtube || '';
-                    document.getElementById('facInstagram').value = f.social.instagram || '';
-                    document.getElementById('facFacebook').value = f.social.facebook || '';
-                    document.getElementById('facWebsite').value = f.social.website || '';
-                }
-                uploadedUrls = f.images || (f.image ? [f.image] : []);
-                // Show existing images
-                const previews = document.getElementById('imagePreviews');
-                previews.innerHTML = uploadedUrls.map((url, i) => `<div class="preview-item"><img src="${url}"><button class="remove-btn" onclick="removeExistingImage(${i})">✕</button></div>`).join('');
+                document.getElementById('name').value = f.name || '';
+                document.getElementById('designation').value = f.designation || '';
+                document.getElementById('subject').value = f.subject || '';
+                document.getElementById('experience').value = f.experience || '';
+                document.getElementById('qualification').value = f.qualification || '';
+                document.getElementById('bio').value = f.bio || '';
+                document.getElementById('order').value = f.order || 1;
+                document.getElementById('youtube').value = (f.social && f.social.youtube) || '';
+                document.getElementById('instagram').value = (f.social && f.social.instagram) || '';
+                document.getElementById('facebook').value = (f.social && f.social.facebook) || '';
+                document.getElementById('website').value = (f.social && f.social.website) || '';
+
+                existingImageUrls = f.images || (f.image ? [f.image] : []);
+                selectedFiles = [];
+                document.getElementById('imageInput').value = '';
+                renderPreviews();
+
                 document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-edit"></i> Edit Faculty';
                 document.getElementById('cancelBtn').style.display = 'inline-flex';
-                scrollToForm();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         };
-
-        function removeExistingImage(index) {
-            uploadedUrls.splice(index, 1);
-            const previews = document.getElementById('imagePreviews');
-            previews.innerHTML = uploadedUrls.map((url, i) => `<div class="preview-item"><img src="${url}"><button class="remove-btn" onclick="removeExistingImage(${i})">✕</button></div>`).join('');
-        }
 
         window.deleteFaculty = function(id) {
-            if(confirm('Delete this faculty member?')) db.ref(`${DB_PATH}/${id}`).remove().then(()=>showAlert('Deleted!')).catch(e=>showAlert(e.message,'error'));
+            if(confirm('Are you sure you want to delete this faculty member?')) {
+                db.ref(`${DB_PATH}/${id}`).remove()
+                    .then(() => showAlert('Faculty deleted.'))
+                    .catch(e => showAlert('Error: ' + e.message, 'error'));
+            }
         };
 
-        function loadTable() {
-            const tb = document.getElementById('facultyTableBody');
-            tb.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;">Loading...</td></tr>';
+        function loadFacultyTable() {
+            const tbody = document.getElementById('facultyTableBody');
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;">Loading...</td></tr>';
             db.ref(DB_PATH).on('value', snap => {
-                tb.innerHTML = '';
+                tbody.innerHTML = '';
                 if(snap.exists()) {
-                    const list = []; snap.forEach(c => list.push({id:c.key,...c.val()}));
+                    const list = [];
+                    snap.forEach(child => list.push({ id: child.key, ...child.val() }));
                     list.sort((a,b) => (a.order||0)-(b.order||0));
                     list.forEach(f => {
+                        const mainImg = (f.images && f.images.length) ? f.images[0] : (f.image || 'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=44&background=0f1a3a&color=fff');
                         const imgCount = (f.images && f.images.length) || (f.image ? 1 : 0);
-                        const mainImg = (f.images && f.images.length > 0) ? f.images[0] : (f.image || 'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=48');
-                        tb.innerHTML += `<tr><td>${f.order||'-'}</td><td><img src="${mainImg}" class="img-thumb" onerror="this.src='https://via.placeholder.com/48'"></td><td><strong>${escapeHTML(f.name)}</strong></td><td><span class="tag tag-subject">${escapeHTML(f.subject)}</span></td><td>${escapeHTML(f.designation||'-')}</td><td>${escapeHTML(f.experience||'-')}</td><td>📸 ${imgCount}</td><td><div class="btn-group" style="gap:6px;"><button class="btn btn-primary btn-xs" onclick="editFaculty('${f.id}')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-xs" onclick="deleteFaculty('${f.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`;
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><img src="${mainImg}" class="avatar" onerror="this.src='https://via.placeholder.com/44'"></td>
+                                <td><strong>${escapeHTML(f.name)}</strong></td>
+                                <td>${escapeHTML(f.subject)}</td>
+                                <td>${escapeHTML(f.designation || '-')}</td>
+                                <td>${escapeHTML(f.experience || '-')}</td>
+                                <td>📸 ${imgCount}</td>
+                                <td style="display:flex; gap:8px;">
+                                    <button class="btn btn-sm btn-outline" onclick="editFaculty('${f.id}')"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteFaculty('${f.id}')"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>`;
                     });
-                    document.getElementById('navCount').textContent = list.length;
-                } else { tb.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;">No faculty added</td></tr>'; document.getElementById('navCount').textContent = '0'; }
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-light);">No faculty members found.</td></tr>';
+                }
             });
         }
 
-        function exportData() {
-            db.ref(DB_PATH).once('value', snap => {
-                const data = snap.exists() ? snap.val() : {};
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a'); a.href = url;
-                a.download = `thp-faculty-${new Date().toISOString().slice(0,10)}.json`; a.click();
-                URL.revokeObjectURL(url); showAlert('Exported! 📥');
-            });
+        function escapeHTML(str) {
+            if(!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
         }
 
-        document.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key==='s') { e.preventDefault(); saveFaculty(); } });
-        document.addEventListener('DOMContentLoaded', () => { loadTable(); });
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadFacultyTable);
+        // Ctrl+S shortcut
+        document.addEventListener('keydown', e => {
+            if((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                saveFaculty();
+            }
+        });
     </script>
 </body>
 </html>
