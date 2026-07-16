@@ -4,69 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THP Faculty Admin | Manage Teachers</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    
     <style>
         :root {
-            --navy: #0f1a3a;
-            --gold: #b8860b;
-            --bg: #f8fafc;
-            --card: #fff;
-            --border: #e2e8f0;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --danger: #ef4444;
-            --success: #10b981;
-            --radius: 12px;
-            --shadow: 0 4px 12px rgba(0,0,0,0.04);
+            --navy: #0f1a3a; --gold: #b8860b; --bg: #f8fafc; --card: #fff;
+            --border: #e2e8f0; --text: #1e293b; --text-light: #64748b;
+            --danger: #ef4444; --success: #10b981; --radius: 12px; --shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 32px; max-width: 1200px; margin: auto; }
+        
         h1 { font-size: 2rem; margin-bottom: 24px; color: var(--navy); display: flex; align-items: center; gap: 10px; }
         h1 i { color: var(--gold); }
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        h2 { margin-bottom: 20px; display: flex; align-items: center; gap: 8px; color: var(--navy); }
+        
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; }
         .btn-primary { background: var(--navy); color: white; } .btn-primary:hover { filter: brightness(1.2); }
         .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { opacity: 0.9; }
+        .btn-success { background: var(--success); color: white; } .btn-success:hover { filter: brightness(1.1); }
         .btn-outline { background: white; border: 2px solid var(--navy); color: var(--navy); } .btn-outline:hover { background: var(--navy); color: white; }
         .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        .btn-xs { padding: 4px 8px; font-size: 0.72rem; }
+        
         .card { background: var(--card); border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 16px; }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-weight: 600; font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group label { font-weight: 600; font-size: 0.82rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
         .form-group input, .form-group textarea { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
         .form-group textarea { resize: vertical; min-height: 80px; }
+        
+        /* Image Upload Area */
         .img-upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: 0.2s; }
         .img-upload-area:hover { border-color: var(--navy); background: #f1f5f9; }
         .img-upload-area i { font-size: 2rem; color: var(--navy); margin-bottom: 8px; }
         .img-upload-area input { display: none; }
+        
+        /* Image Previews */
         .image-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
         .preview-item { position: relative; width: 90px; height: 90px; border-radius: 10px; overflow: hidden; border: 2px solid var(--border); }
         .preview-item img { width: 100%; height: 100%; object-fit: cover; }
         .preview-item .remove-btn { position: absolute; top: 4px; right: 4px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .preview-item .crop-badge { position: absolute; bottom: 4px; left: 4px; background: var(--success); color: white; font-size: 0.55rem; padding: 2px 6px; border-radius: 8px; }
+        
+        /* CROP MODAL */
+        .crop-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .crop-modal-overlay.active { display: flex; }
+        .crop-modal { background: white; border-radius: 20px; max-width: 900px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; }
+        .crop-modal-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .crop-modal-header h3 { font-size: 1.1rem; }
+        .crop-modal-body { padding: 16px; flex: 1; display: flex; align-items: center; justify-content: center; background: #f1f5f9; min-height: 400px; }
+        .crop-modal-body img { max-width: 100%; max-height: 60vh; display: block; }
+        .crop-modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 12px; justify-content: flex-end; }
+        .crop-info { padding: 8px 16px; background: #fef3c7; border-radius: 8px; font-size: 0.8rem; color: #92400e; margin: 8px 0; display: flex; align-items: center; gap: 6px; }
+        .aspect-ratio-btns { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .aspect-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; background: white; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
+        .aspect-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+        
+        /* Table */
         .table-wrap { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         th { background: #f1f5f9; font-weight: 600; color: var(--text-light); }
-        .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+        .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+        
         .alert { padding: 12px 20px; border-radius: 8px; margin-bottom: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
         .alert-success { background: #dcfce7; color: #166534; }
         .alert-error { background: #fee2e2; color: #991b1b; }
+        
         .progress { display: none; height: 6px; background: var(--border); border-radius: 4px; margin-top: 12px; }
-        .progress-bar { height: 100%; background: var(--navy); border-radius: 4px; width: 0%; }
+        .progress-bar { height: 100%; background: var(--navy); border-radius: 4px; width: 0%; transition: width 0.3s; }
+        
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .crop-modal-body { min-height: 300px; }
+        }
     </style>
 </head>
 <body>
 
     <h1><i class="fas fa-users-cog"></i> THP Faculty Admin Panel</h1>
-
     <div id="alertBox"></div>
 
-    <!-- FORM CARD -->
+    <!-- ========== FORM CARD ========== -->
     <div class="card">
-        <h2 id="formTitle" style="margin-bottom:20px;"><i class="fas fa-user-plus"></i> Add New Faculty</h2>
+        <h2 id="formTitle"><i class="fas fa-user-plus"></i> Add New Faculty</h2>
         <input type="hidden" id="facultyId">
+        
         <div class="form-grid">
             <div class="form-group"><label>Full Name *</label><input type="text" id="name" placeholder="e.g., Dr. Anil Sharma"></div>
             <div class="form-group"><label>Designation</label><input type="text" id="designation" placeholder="Head of Department"></div>
@@ -77,15 +109,19 @@
         </div>
         <div class="form-group" style="margin-top:12px;"><label>Short Bio</label><textarea id="bio" placeholder="Write a brief professional bio..."></textarea></div>
 
-        <!-- Multi-Image Upload -->
+        <!-- Multi-Image Upload with Crop -->
         <div class="form-group" style="margin-top:16px;">
-            <label>📸 Photos (Multiple)</label>
+            <label>📸 Photos (Multiple - Each will be cropped to fit)</label>
             <div class="img-upload-area" onclick="document.getElementById('imageInput').click()">
                 <i class="fas fa-cloud-upload-alt"></i>
-                <p>Click to upload images (multiple allowed)</p>
+                <p>Click to select images (multiple allowed)</p>
+                <small style="color:var(--text-light);">Recommended: Square photos work best</small>
                 <input type="file" id="imageInput" accept="image/*" multiple onchange="handleImageSelect(this)">
             </div>
             <div class="image-previews" id="imagePreviews"></div>
+            <div class="crop-info" id="cropInfo" style="display:none;">
+                <i class="fas fa-info-circle"></i> <span id="cropInfoText"></span>
+            </div>
             <div class="progress" id="progressBar"><div class="progress-bar" id="progressFill"></div></div>
         </div>
 
@@ -104,9 +140,9 @@
         </div>
     </div>
 
-    <!-- FACULTY LIST -->
+    <!-- ========== FACULTY LIST ========== -->
     <div class="card">
-        <h2 style="margin-bottom:20px;"><i class="fas fa-list-ul"></i> All Faculty Members</h2>
+        <h2><i class="fas fa-list-ul"></i> All Faculty Members</h2>
         <div class="table-wrap">
             <table>
                 <thead><tr><th>Photo</th><th>Name</th><th>Subject</th><th>Designation</th><th>Exp</th><th>Images</th><th>Actions</th></tr></thead>
@@ -115,8 +151,36 @@
         </div>
     </div>
 
+    <!-- ========== CROP MODAL ========== -->
+    <div class="crop-modal-overlay" id="cropModal">
+        <div class="crop-modal">
+            <div class="crop-modal-header">
+                <h3><i class="fas fa-crop-alt"></i> Crop Image to Fit</h3>
+                <button class="btn btn-sm btn-outline" onclick="closeCropModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div style="padding: 8px 16px;">
+                <div class="aspect-ratio-btns">
+                    <span style="font-size:0.8rem;color:var(--text-light);margin-right:8px;">Aspect Ratio:</span>
+                    <button class="aspect-btn active" onclick="setAspectRatio(1/1, this)">1:1 (Square)</button>
+                    <button class="aspect-btn" onclick="setAspectRatio(4/5, this)">4:5 (Portrait)</button>
+                    <button class="aspect-btn" onclick="setAspectRatio(3/4, this)">3:4</button>
+                    <button class="aspect-btn" onclick="setAspectRatio(null, this)">Free</button>
+                </div>
+            </div>
+            <div class="crop-modal-body">
+                <img id="cropImage" src="" alt="Crop preview">
+            </div>
+            <div class="crop-modal-footer">
+                <button class="btn btn-outline" onclick="rotateCrop(-90)"><i class="fas fa-undo"></i> Rotate Left</button>
+                <button class="btn btn-outline" onclick="rotateCrop(90)"><i class="fas fa-redo"></i> Rotate Right</button>
+                <button class="btn btn-outline" onclick="resetCrop()"><i class="fas fa-sync-alt"></i> Reset</button>
+                <button class="btn btn-success" onclick="confirmCrop()"><i class="fas fa-check"></i> Crop & Save</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Firebase config
+        // Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
             authDomain: "starlet-registor.firebaseapp.com",
@@ -131,8 +195,14 @@
         const DB_PATH = 'thp-faculty';
         const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
 
-        let selectedFiles = [];            // New files to upload
-        let existingImageUrls = [];       // Already saved URLs (when editing)
+        // State
+        let selectedFiles = [];
+        let existingImageUrls = [];
+        let croppedImages = {}; // { index: base64DataUrl }
+        
+        // Cropper
+        let cropper = null;
+        let currentCropIndex = -1;
 
         function showAlert(msg, type='success') {
             const box = document.getElementById('alertBox');
@@ -140,25 +210,43 @@
             setTimeout(() => box.innerHTML = '', 4000);
         }
 
+        // ========== IMAGE HANDLING ==========
         function handleImageSelect(input) {
-            selectedFiles = Array.from(input.files);
+            const newFiles = Array.from(input.files);
+            newFiles.forEach((file, i) => {
+                const actualIndex = selectedFiles.length + i;
+                selectedFiles.push(file);
+                // Auto-open cropper for each new image
+                setTimeout(() => openCropper(actualIndex), 200 * (i + 1));
+            });
+            document.getElementById('cropInfo').style.display = 'flex';
+            document.getElementById('cropInfoText').textContent = `${selectedFiles.length} image(s) selected. Each will be cropped before upload.`;
             renderPreviews();
         }
 
         function renderPreviews() {
             const container = document.getElementById('imagePreviews');
             container.innerHTML = '';
-            // Show existing URLs first
+            
+            // Existing URLs
             existingImageUrls.forEach((url, idx) => {
-                container.innerHTML += `<div class="preview-item"><img src="${url}"><button class="remove-btn" onclick="removeExistingImage(${idx})">✕</button></div>`;
+                container.innerHTML += `
+                    <div class="preview-item">
+                        <img src="${url}" alt="Existing">
+                        <button class="remove-btn" onclick="removeExistingImage(${idx})">✕</button>
+                    </div>`;
             });
-            // Show new file previews
+            
+            // New files (show cropped version if available, else original)
             selectedFiles.forEach((file, idx) => {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    container.innerHTML += `<div class="preview-item"><img src="${e.target.result}"><button class="remove-btn" onclick="removeNewImage(${idx})">✕</button></div>`;
-                };
-                reader.readAsDataURL(file);
+                const src = croppedImages[idx] || URL.createObjectURL(file);
+                const isCropped = !!croppedImages[idx];
+                container.innerHTML += `
+                    <div class="preview-item" onclick="openCropper(${idx})" style="cursor:pointer;" title="Click to crop">
+                        <img src="${src}" alt="New">
+                        <button class="remove-btn" onclick="event.stopPropagation(); removeNewImage(${idx})">✕</button>
+                        ${isCropped ? '<span class="crop-badge">✓ Cropped</span>' : '<span class="crop-badge" style="background:#f59e0b;">Click to crop</span>'}
+                    </div>`;
             });
         }
 
@@ -169,13 +257,102 @@
 
         function removeNewImage(index) {
             selectedFiles.splice(index, 1);
-            // update file input
+            delete croppedImages[index];
+            // Re-index croppedImages
+            const newCropped = {};
+            Object.keys(croppedImages).forEach(k => {
+                const num = parseInt(k);
+                if (num > index) newCropped[num - 1] = croppedImages[k];
+                else if (num < index) newCropped[num] = croppedImages[k];
+            });
+            croppedImages = newCropped;
+            
             const dt = new DataTransfer();
             selectedFiles.forEach(f => dt.items.add(f));
             document.getElementById('imageInput').files = dt.files;
+            
+            if (selectedFiles.length === 0) {
+                document.getElementById('cropInfo').style.display = 'none';
+            } else {
+                document.getElementById('cropInfoText').textContent = `${selectedFiles.length} image(s) selected.`;
+            }
             renderPreviews();
         }
 
+        // ========== CROPPER ==========
+        function openCropper(index) {
+            if (index >= selectedFiles.length) return;
+            currentCropIndex = index;
+            const file = selectedFiles[index];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('cropImage').src = e.target.result;
+                document.getElementById('cropModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Initialize cropper
+                setTimeout(() => {
+                    if (cropper) cropper.destroy();
+                    const img = document.getElementById('cropImage');
+                    cropper = new Cropper(img, {
+                        aspectRatio: 1 / 1, // Default square
+                        viewMode: 1,
+                        autoCropArea: 0.9,
+                        responsive: true,
+                        background: false,
+                        guides: true,
+                        highlight: true,
+                    });
+                }, 100);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function closeCropModal() {
+            document.getElementById('cropModal').classList.remove('active');
+            document.body.style.overflow = '';
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            currentCropIndex = -1;
+        }
+
+        function setAspectRatio(ratio, btn) {
+            if (cropper) {
+                cropper.setAspectRatio(ratio);
+            }
+            document.querySelectorAll('.aspect-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
+        function rotateCrop(deg) {
+            if (cropper) cropper.rotate(deg);
+        }
+
+        function resetCrop() {
+            if (cropper) cropper.reset();
+        }
+
+        function confirmCrop() {
+            if (!cropper || currentCropIndex < 0) return;
+            
+            const canvas = cropper.getCroppedCanvas({
+                width: 800,
+                height: 800,
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high',
+            });
+            
+            const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            croppedImages[currentCropIndex] = croppedDataUrl;
+            
+            closeCropModal();
+            renderPreviews();
+            showAlert('Image cropped successfully! ✅');
+        }
+
+        // ========== SAVE FACULTY ==========
         async function saveFaculty() {
             const id = document.getElementById('facultyId').value;
             const name = document.getElementById('name').value.trim();
@@ -183,42 +360,52 @@
             if(!name || !subject) return showAlert('Name and Subject are required!', 'error');
 
             const btn = document.querySelector('.btn-primary');
+            const origHTML = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            
             const progressWrap = document.getElementById('progressBar');
             const progressFill = document.getElementById('progressFill');
 
             try {
-                // Upload new images if any
+                // Upload cropped/new images
                 const newUrls = [];
-                if(selectedFiles.length > 0) {
+                if (selectedFiles.length > 0) {
                     progressWrap.style.display = 'block';
-                    for(let i=0; i<selectedFiles.length; i++) {
+                    for (let i = 0; i < selectedFiles.length; i++) {
+                        const progress = Math.round(((i + 1) / selectedFiles.length) * 100);
+                        progressFill.style.width = progress + '%';
+                        
+                        // Use cropped version if available, else original
+                        let blob;
+                        if (croppedImages[i]) {
+                            // Convert base64 to blob
+                            const resp = await fetch(croppedImages[i]);
+                            blob = await resp.blob();
+                        } else {
+                            blob = selectedFiles[i];
+                        }
+                        
                         const formData = new FormData();
-                        formData.append('image', selectedFiles[i]);
+                        formData.append('image', blob, 'faculty-' + Date.now() + '.jpg');
                         formData.append('key', IMGBB_API_KEY);
-                        const resp = await fetch('https://api.imgbb.com/1/upload', { method:'POST', body:formData });
+                        
+                        const resp = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: formData });
                         const data = await resp.json();
-                        if(!data.success) throw new Error('Image upload failed');
+                        if (!data.success) throw new Error('Image upload failed');
                         newUrls.push(data.data.url);
-                        progressFill.style.width = ((i+1)/selectedFiles.length * 100) + '%';
                     }
                     progressWrap.style.display = 'none';
+                    progressFill.style.width = '0%';
                 }
 
-                // Combine existing + new URLs
                 const allImages = [...existingImageUrls, ...newUrls];
-
-                // Social object
+                
                 const social = {};
-                const yt = document.getElementById('youtube').value.trim();
-                const ig = document.getElementById('instagram').value.trim();
-                const fb = document.getElementById('facebook').value.trim();
-                const web = document.getElementById('website').value.trim();
-                if(yt) social.youtube = yt;
-                if(ig) social.instagram = ig;
-                if(fb) social.facebook = fb;
-                if(web) social.website = web;
+                ['youtube','instagram','facebook','website'].forEach(k => {
+                    const v = document.getElementById(k).value.trim();
+                    if(v) social[k] = v;
+                });
 
                 const facultyData = {
                     name,
@@ -234,21 +421,20 @@
                     updatedAt: firebase.database.ServerValue.TIMESTAMP
                 };
 
-                if(id) {
+                if (id) {
                     await db.ref(`${DB_PATH}/${id}`).update(facultyData);
                 } else {
                     await db.ref(DB_PATH).push({...facultyData, createdAt: firebase.database.ServerValue.TIMESTAMP});
                 }
-                showAlert(id ? 'Faculty updated successfully!' : 'Faculty added successfully!');
+                showAlert(id ? 'Faculty updated!' : 'Faculty added!');
                 resetForm();
                 loadFacultyTable();
             } catch(e) {
                 showAlert('Error: ' + e.message, 'error');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-save"></i> Save Faculty';
+                btn.innerHTML = origHTML;
                 progressWrap.style.display = 'none';
-                progressFill.style.width = '0%';
             }
         }
 
@@ -259,11 +445,14 @@
             document.getElementById('imageInput').value = '';
             selectedFiles = [];
             existingImageUrls = [];
+            croppedImages = {};
             document.getElementById('imagePreviews').innerHTML = '';
+            document.getElementById('cropInfo').style.display = 'none';
             document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-plus"></i> Add New Faculty';
             document.getElementById('cancelBtn').style.display = 'none';
         }
 
+        // ========== EDIT ==========
         window.editFaculty = function(id) {
             db.ref(`${DB_PATH}/${id}`).once('value', snap => {
                 if(!snap.exists()) return;
@@ -283,7 +472,9 @@
 
                 existingImageUrls = f.images || (f.image ? [f.image] : []);
                 selectedFiles = [];
+                croppedImages = {};
                 document.getElementById('imageInput').value = '';
+                document.getElementById('cropInfo').style.display = 'none';
                 renderPreviews();
 
                 document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-edit"></i> Edit Faculty';
@@ -292,6 +483,7 @@
             });
         };
 
+        // ========== DELETE ==========
         window.deleteFaculty = function(id) {
             if(confirm('Are you sure you want to delete this faculty member?')) {
                 db.ref(`${DB_PATH}/${id}`).remove()
@@ -300,6 +492,7 @@
             }
         };
 
+        // ========== TABLE ==========
         function loadFacultyTable() {
             const tbody = document.getElementById('facultyTableBody');
             tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;">Loading...</td></tr>';
@@ -320,7 +513,7 @@
                                 <td>${escapeHTML(f.designation || '-')}</td>
                                 <td>${escapeHTML(f.experience || '-')}</td>
                                 <td>📸 ${imgCount}</td>
-                                <td style="display:flex; gap:8px;">
+                                <td style="display:flex; gap:6px;">
                                     <button class="btn btn-sm btn-outline" onclick="editFaculty('${f.id}')"><i class="fas fa-edit"></i></button>
                                     <button class="btn btn-sm btn-danger" onclick="deleteFaculty('${f.id}')"><i class="fas fa-trash"></i></button>
                                 </td>
@@ -339,14 +532,11 @@
             return div.innerHTML;
         }
 
-        // Initialize
+        // Init
         document.addEventListener('DOMContentLoaded', loadFacultyTable);
-        // Ctrl+S shortcut
         document.addEventListener('keydown', e => {
-            if((e.ctrlKey || e.metaKey) && e.key === 's') {
-                e.preventDefault();
-                saveFaculty();
-            }
+            if((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveFaculty(); }
+            if(e.key === 'Escape') closeCropModal();
         });
     </script>
 </body>
