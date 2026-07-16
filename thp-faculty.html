@@ -1,175 +1,429 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meet Our Faculty</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Faculty Admin Panel | Starlet Institute</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-        }
-
-        .navbar {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar a {
-            color: #333;
-            padding: 15px;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .navbar a:hover {
-            color: #007BFF;
-        }
-
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        footer a {
-            color: #f1c40f;
-            margin: 0 10px;
-        }
-
-        footer a:hover {
-            color: #fff;
-        }
+        :root { --bg: #f1f5f9; --sidebar-bg: #1e293b; --primary: #3b82f6; --primary-hover: #2563eb; --danger: #ef4444; --success: #10b981; --text: #1e293b; --card: #ffffff; --border: #e2e8f0; --radius: 10px; --radius-lg: 14px; --transition: 0.2s ease; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; min-height: 100vh; }
+        
+        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 0; display: flex; flex-direction: column; position: fixed; height: 100vh; top: 0; left: 0; z-index: 100; }
+        .sidebar .logo { padding: 24px; font-size: 1.3rem; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 12px; }
+        .sidebar .logo i { color: var(--primary); }
+        .sidebar nav { flex: 1; padding: 8px 0; }
+        .sidebar nav a { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: rgba(255,255,255,0.55); text-decoration: none; transition: var(--transition); font-weight: 500; font-size: 0.88rem; border-left: 3px solid transparent; }
+        .sidebar nav a:hover, .sidebar nav a.active { background: rgba(59,130,246,0.1); color: white; border-left-color: var(--primary); }
+        .sidebar nav a i { width: 22px; text-align: center; }
+        .sidebar nav a .count-badge { margin-left: auto; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
+        
+        .main { margin-left: 280px; flex: 1; padding: 32px; max-width: calc(100vw - 280px); }
+        .page-header { margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .page-header h2 { color: var(--text); font-weight: 700; font-size: 1.6rem; }
+        
+        .card { background: var(--card); border-radius: var(--radius-lg); padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); margin-bottom: 24px; border: 1px solid var(--border); }
+        .card h3 { margin-bottom: 20px; color: var(--text); font-weight: 700; }
+        
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.82rem; }
+        label .required { color: var(--danger); }
+        input, textarea, select { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: 0.9rem; font-family: inherit; background: #fafbfc; }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,0.08); background: white; }
+        textarea { resize: vertical; min-height: 80px; }
+        
+        .btn { padding: 10px 20px; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 7px; }
+        .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: var(--primary-hover); }
+        .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { opacity: 0.9; }
+        .btn-outline { background: white; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-sm { padding: 6px 12px; font-size: 0.75rem; }
+        .btn-xs { padding: 4px 8px; font-size: 0.7rem; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
+        .file-input-wrapper input[type=file] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .file-input-display { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 2px dashed var(--border); border-radius: var(--radius); cursor: pointer; background: #fafbfc; }
+        .file-input-display:hover { border-color: var(--primary); }
+        .file-input-display i { font-size: 1.5rem; color: var(--primary); }
+        .file-selected { border-color: var(--success); background: #f0fdf4; }
+        
+        .table-wrapper { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 14px 12px; border-bottom: 1px solid var(--border); text-align: left; font-size: 0.84rem; }
+        th { background: #f8fafc; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; }
+        tr:hover td { background: #f8fafc; }
+        .img-thumb { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+        
+        .alert { padding: 14px 20px; border-radius: var(--radius); margin-bottom: 20px; font-weight: 500; font-size: 0.9rem; animation: slideDown 0.3s ease; display: flex; align-items: center; gap: 10px; }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+        .alert-success { background: #dbeafe; color: #1e40af; border-left: 4px solid var(--primary); }
+        .alert-error { background: #fee2e2; color: #991b1b; border-left: 4px solid var(--danger); }
+        
+        .progress-wrapper { margin: 16px 0; display: none; }
+        .progress-wrapper.active { display: block; }
+        .progress-bar { background: #e2e8f0; border-radius: 10px; height: 10px; overflow: hidden; }
+        .progress-fill { background: var(--primary); height: 100%; border-radius: 10px; transition: width 0.3s; width: 0%; }
+        
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (max-width:1024px) { .sidebar { width: 70px; } .sidebar .logo span, .sidebar nav a span, .count-badge { display: none; } .sidebar nav a { justify-content: center; } .main { margin-left: 70px; } }
     </style>
 </head>
-
 <body>
-  
-<!-- Faculty Section -->
-<section class="my-16 px-8">
-  <div class="max-w-7xl mx-auto text-center">
-    <h2 class="text-3xl font-bold text-gray-800 tracking-wide uppercase">Meet Our Faculty</h2>
-    <p class="text-sm text-gray-500 mt-2">A team of dedicated experts guiding your success</p>
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      
-      <!-- Shivam Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-shivam-sir-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Shivam Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Maths Expert</p>
-      </div>
 
-      <!-- Kajal Ma'am -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="5.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Kajal Ma'am</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Maths Expert</p>
-      </div>
-
-      <!-- Satyam Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="1.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Satyam Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Hindi & English Expert</p>
-      </div>
-
-      <!-- Sundaram Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="4.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Sundaram Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Science Expert</p>
-      </div>
-
-      <!-- Priyanka Ma'am -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-priyanka-maam-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Priyanka Ma'am</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Biology Expert</p>
-      </div>
-
-      <!-- Gautam Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-gautam-sir-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Gautam Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Maths & Physics Expert</p>
-      </div>
-
-      <!-- Saurabh Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-saurabh-sir-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Saurabh Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">G.S. Expert</p>
-      </div>
-
-      <!-- Shashi Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-shashi-sir-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Shashi Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">G.S. & Current Affairs Expert</p>
-      </div>
-
-      <!-- Amit Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-amit-sir-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Amit Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Exam Strategy Expert</p>
-      </div>
-
-            <!-- Sachin Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-sachin-sir-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Sachin Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">English Expert</p>
-      </div>
-
-      <!-- Gaurav Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-gaurav-sir-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Gaurav Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Maths Expert</p>
-      </div>
-
-      <!-- Rohit Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="2.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Rohit Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">SST Expert</p>
-      </div>
-
-      <!-- Mohit Sir -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="3.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Mohit Sir</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Science Expert</p>
-      </div>
-
-      <!-- Ayushi Ma'am -->
-      <div class="relative group p-6 rounded-xl bg-gradient-to-br from-sky-200 to-blue-300 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-        <a href="path-to-ayushi-maam-photo.jpg" target="_blank" class="block text-center">
-          <h3 class="text-lg font-semibold text-gray-700 group-hover:text-blue-800 transition-colors">Ayushi Ma'am</h3>
-        </a>
-        <p class="text-gray-600 mt-1 text-sm">Science Expert</p>
-      </div>
-
-      
+    <div class="sidebar">
+        <div class="logo"><i class="fas fa-users"></i><span>Faculty Admin</span></div>
+        <nav>
+            <a href="#" data-page="list" class="active"><i class="fas fa-list"></i><span>All Faculty</span><span class="count-badge" id="navFacultyCount">0</span></a>
+            <a href="#" onclick="exportData()"><i class="fas fa-download"></i><span>Export Data</span></a>
+        </nav>
     </div>
-  </div>
-</section>
+
+    <div class="main" id="mainContent">
+        <div id="alertContainer"></div>
+
+        <!-- Faculty List & Form -->
+        <div class="page active" id="page-list">
+            <div class="page-header">
+                <h2><i class="fas fa-users"></i> Manage Faculty</h2>
+                <button class="btn btn-primary" onclick="scrollToForm()"><i class="fas fa-plus"></i> Add Faculty</button>
+            </div>
+            
+            <!-- Form Card -->
+            <div class="card" id="facultyFormCard">
+                <h3 id="formTitle"><i class="fas fa-user-plus"></i> Add New Faculty</h3>
+                <input type="hidden" id="facultyId">
+                
+                <div class="form-row">
+                    <div class="form-group"><label>Name <span class="required">*</span></label><input type="text" id="facName" placeholder="e.g., Shivam Sir"></div>
+                    <div class="form-group"><label>Designation</label><input type="text" id="facDesignation" placeholder="e.g., Senior Faculty"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Subject <span class="required">*</span></label><input type="text" id="facSubject" placeholder="e.g., Mathematics"></div>
+                    <div class="form-group"><label>Experience</label><input type="text" id="facExperience" placeholder="e.g., 8+ Years"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Qualification</label><input type="text" id="facQualification" placeholder="e.g., M.Sc. Mathematics"></div>
+                    <div class="form-group"><label>Order</label><input type="number" id="facOrder" value="1" min="1"></div>
+                </div>
+                <div class="form-group"><label>Bio / Description</label><textarea id="facBio" placeholder="Brief bio about the faculty..."></textarea></div>
+                
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label>Profile Image</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="facImageFile" accept="image/*" onchange="handleImageSelect(this)">
+                        <div class="file-input-display" id="imageFileDisplay">
+                            <i class="fas fa-camera"></i>
+                            <span>Click to upload profile photo</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <img id="imagePreview" src="" style="max-width:100px;max-height:100px;border-radius:50%;display:none;border:3px solid var(--primary);">
+                    </div>
+                    <p style="font-size:0.75rem;color:#64748b;margin-top:4px;">OR paste image URL below</p>
+                    <input type="url" id="facImageUrl" placeholder="https://i.ibb.co/... (ImgBB URL)" style="margin-top:4px;">
+                </div>
+
+                <!-- Social Links -->
+                <h4 style="margin:16px 0 12px;color:var(--text);">🔗 Social Links (Optional)</h4>
+                <div class="form-row">
+                    <div class="form-group"><label><i class="fab fa-youtube" style="color:#ff0000;"></i> YouTube</label><input type="url" id="facYoutube" placeholder="https://youtube.com/@..."></div>
+                    <div class="form-group"><label><i class="fab fa-instagram" style="color:#e4405f;"></i> Instagram</label><input type="url" id="facInstagram" placeholder="https://instagram.com/..."></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label><i class="fab fa-facebook" style="color:#1877f2;"></i> Facebook</label><input type="url" id="facFacebook" placeholder="https://facebook.com/..."></div>
+                    <div class="form-group"><label><i class="fas fa-globe" style="color:var(--primary);"></i> Website</label><input type="url" id="facWebsite" placeholder="https://..."></div>
+                </div>
+
+                <div class="progress-wrapper" id="imageProgressWrapper">
+                    <div class="progress-bar"><div class="progress-fill" id="imageProgressFill"></div></div>
+                </div>
+
+                <div class="btn-group" style="margin-top:16px;">
+                    <button class="btn btn-primary" onclick="saveFaculty()"><i class="fas fa-save"></i> Save Faculty</button>
+                    <button class="btn btn-outline" id="cancelBtn" style="display:none;" onclick="resetForm()"><i class="fas fa-times"></i> Cancel</button>
+                </div>
+            </div>
+
+            <!-- Faculty Table -->
+            <div class="card">
+                <h3><i class="fas fa-list"></i> All Faculty Members</h3>
+                <div class="table-wrapper">
+                    <table id="facultyTable">
+                        <thead><tr><th>#</th><th>Image</th><th>Name</th><th>Subject</th><th>Designation</th><th>Exp</th><th>Actions</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
+            authDomain: "starlet-registor.firebaseapp.com",
+            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com",
+            projectId: "starlet-registor",
+            storageBucket: "starlet-registor.firebasestorage.app",
+            messagingSenderId: "904193225045",
+            appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
+        const DB_PATH = 'faculty';
+        
+        let selectedImageFile = null;
+
+        function showAlert(msg, type='success') {
+            const c = document.getElementById('alertContainer');
+            c.querySelectorAll('.alert').forEach(a => a.remove());
+            const d = document.createElement('div');
+            d.className = `alert alert-${type}`;
+            d.innerHTML = `<i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i> ${msg}`;
+            c.appendChild(d);
+            setTimeout(() => d.remove(), 4000);
+        }
+
+        function escapeHTML(str) {
+            if(!str) return '';
+            const d = document.createElement('div'); d.textContent = str; return d.innerHTML;
+        }
+
+        function scrollToForm() {
+            document.getElementById('facultyFormCard').scrollIntoView({ behavior: 'smooth' });
+            resetForm();
+        }
+
+        function handleImageSelect(input) {
+            const file = input.files[0];
+            const display = document.getElementById('imageFileDisplay');
+            const preview = document.getElementById('imagePreview');
+            if(file) {
+                selectedImageFile = file;
+                display.classList.add('file-selected');
+                display.querySelector('span').textContent = file.name;
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = (e) => { preview.src = e.target.result; preview.style.display = 'block'; };
+                reader.readAsDataURL(file);
+            } else {
+                selectedImageFile = null;
+                display.classList.remove('file-selected');
+                display.querySelector('span').textContent = 'Click to upload profile photo';
+                preview.style.display = 'none';
+            }
+        }
+
+        // ============ SAVE FACULTY ============
+        window.saveFaculty = async function() {
+            const id = document.getElementById('facultyId').value;
+            const name = document.getElementById('facName').value.trim();
+            const subject = document.getElementById('facSubject').value.trim();
+            
+            if(!name || !subject) return showAlert('Name and Subject are required!', 'error');
+            
+            const btn = document.querySelector('#facultyFormCard .btn-primary');
+            const orig = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Saving...';
+            
+            try {
+                let imageUrl = document.getElementById('facImageUrl').value.trim();
+                
+                // Upload image if selected
+                if(selectedImageFile) {
+                    const pw = document.getElementById('imageProgressWrapper');
+                    pw.classList.add('active');
+                    document.getElementById('imageProgressFill').style.width = '50%';
+                    
+                    const fd = new FormData();
+                    fd.append('image', selectedImageFile);
+                    fd.append('key', IMGBB_API_KEY);
+                    
+                    const res = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd });
+                    const data = await res.json();
+                    
+                    if(!data.success) throw new Error(data.error?.message || 'Image upload failed');
+                    
+                    imageUrl = data.data.url;
+                    document.getElementById('imageProgressFill').style.width = '100%';
+                    pw.classList.remove('active');
+                }
+                
+                const social = {};
+                const yt = document.getElementById('facYoutube').value.trim();
+                const ig = document.getElementById('facInstagram').value.trim();
+                const fb = document.getElementById('facFacebook').value.trim();
+                const web = document.getElementById('facWebsite').value.trim();
+                if(yt) social.youtube = yt;
+                if(ig) social.instagram = ig;
+                if(fb) social.facebook = fb;
+                if(web) social.website = web;
+                
+                const facultyData = {
+                    name,
+                    designation: document.getElementById('facDesignation').value.trim(),
+                    subject,
+                    experience: document.getElementById('facExperience').value.trim(),
+                    qualification: document.getElementById('facQualification').value.trim(),
+                    bio: document.getElementById('facBio').value.trim(),
+                    order: parseInt(document.getElementById('facOrder').value) || 1,
+                    image: imageUrl,
+                    social: Object.keys(social).length > 0 ? social : null,
+                    updatedAt: firebase.database.ServerValue.TIMESTAMP
+                };
+                
+                if(id) {
+                    await db.ref(`${DB_PATH}/${id}`).update(facultyData);
+                } else {
+                    await db.ref(DB_PATH).push({ ...facultyData, createdAt: firebase.database.ServerValue.TIMESTAMP });
+                }
+                
+                showAlert(id ? 'Faculty updated! ✅' : 'Faculty added! 🎉');
+                resetForm();
+                loadFacultyTable();
+            } catch(e) {
+                showAlert('Error: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = orig;
+                document.getElementById('imageProgressWrapper').classList.remove('active');
+            }
+        };
+
+        function resetForm() {
+            document.getElementById('facultyId').value = '';
+            document.getElementById('facName').value = '';
+            document.getElementById('facDesignation').value = '';
+            document.getElementById('facSubject').value = '';
+            document.getElementById('facExperience').value = '';
+            document.getElementById('facQualification').value = '';
+            document.getElementById('facBio').value = '';
+            document.getElementById('facOrder').value = '1';
+            document.getElementById('facImageUrl').value = '';
+            document.getElementById('facImageFile').value = '';
+            document.getElementById('facYoutube').value = '';
+            document.getElementById('facInstagram').value = '';
+            document.getElementById('facFacebook').value = '';
+            document.getElementById('facWebsite').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('imageFileDisplay').classList.remove('file-selected');
+            document.getElementById('imageFileDisplay').querySelector('span').textContent = 'Click to upload profile photo';
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-plus"></i> Add New Faculty';
+            document.getElementById('cancelBtn').style.display = 'none';
+            selectedImageFile = null;
+        }
+
+        // ============ LOAD TABLE ============
+        function loadFacultyTable() {
+            const tbody = document.querySelector('#facultyTable tbody');
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;">Loading...</td></tr>';
+            
+            db.ref(DB_PATH).on('value', snap => {
+                tbody.innerHTML = '';
+                if(snap.exists()) {
+                    const faculty = [];
+                    snap.forEach(c => faculty.push({ id: c.key, ...c.val() }));
+                    faculty.sort((a, b) => (a.order || 0) - (b.order || 0));
+                    
+                    faculty.forEach(f => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${f.order || '-'}</td>
+                                <td><img src="${f.image || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(f.name) + '&size=50'}" class="img-thumb" onerror="this.src='https://via.placeholder.com/50'"></td>
+                                <td><strong>${escapeHTML(f.name)}</strong></td>
+                                <td><span style="background:#dbeafe;color:#1e40af;padding:3px 10px;border-radius:12px;font-size:0.75rem;">${escapeHTML(f.subject)}</span></td>
+                                <td>${escapeHTML(f.designation || '-')}</td>
+                                <td>${escapeHTML(f.experience || '-')}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-xs" onclick="editFaculty('${f.id}')"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger btn-xs" onclick="deleteFaculty('${f.id}')"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>`;
+                    });
+                    
+                    document.getElementById('navFacultyCount').textContent = faculty.length;
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#94a3b8;">No faculty added yet</td></tr>';
+                    document.getElementById('navFacultyCount').textContent = '0';
+                }
+            });
+        }
+
+        window.editFaculty = function(id) {
+            db.ref(`${DB_PATH}/${id}`).once('value', snap => {
+                if(!snap.exists()) return;
+                const f = snap.val();
+                document.getElementById('facultyId').value = id;
+                document.getElementById('facName').value = f.name || '';
+                document.getElementById('facDesignation').value = f.designation || '';
+                document.getElementById('facSubject').value = f.subject || '';
+                document.getElementById('facExperience').value = f.experience || '';
+                document.getElementById('facQualification').value = f.qualification || '';
+                document.getElementById('facBio').value = f.bio || '';
+                document.getElementById('facOrder').value = f.order || 1;
+                document.getElementById('facImageUrl').value = f.image || '';
+                
+                if(f.social) {
+                    document.getElementById('facYoutube').value = f.social.youtube || '';
+                    document.getElementById('facInstagram').value = f.social.instagram || '';
+                    document.getElementById('facFacebook').value = f.social.facebook || '';
+                    document.getElementById('facWebsite').value = f.social.website || '';
+                }
+                
+                if(f.image) {
+                    document.getElementById('imagePreview').src = f.image;
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+                
+                document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-edit"></i> Edit Faculty';
+                document.getElementById('cancelBtn').style.display = 'inline-flex';
+                scrollToForm();
+            });
+        };
+
+        window.deleteFaculty = function(id) {
+            if(confirm('Delete this faculty member?')) {
+                db.ref(`${DB_PATH}/${id}`).remove()
+                    .then(() => showAlert('Faculty deleted!'))
+                    .catch(e => showAlert('Error: ' + e.message, 'error'));
+            }
+        };
+
+        function exportData() {
+            db.ref(DB_PATH).once('value', snap => {
+                const data = snap.exists() ? snap.val() : {};
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `faculty-backup-${new Date().toISOString().slice(0,10)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showAlert('Data exported! 📥');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFacultyTable();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                saveFaculty();
+            }
+        });
+    </script>
+</body>
+</html>
