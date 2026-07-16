@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Faculty Admin | Advanced Dashboard</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0f172a; --sidebar-bg: #1e293b; --primary: #6366f1; --primary-hover: #4f46e5;
+            --danger: #ef4444; --success: #10b981; --text: #f1f5f9; --text-light: #94a3b8;
+            --card: #1e293b; --border: rgba(255,255,255,0.08); --radius: 14px; --radius-lg: 20px;
+            --glass: rgba(255,255,255,0.03); --transition: 0.25s ease;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 280px; background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; height: 100vh; top:0; left:0; z-index:100; }
+        .sidebar .logo { padding: 24px; font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+        .sidebar .logo i { color: var(--primary); }
+        .sidebar nav { flex:1; padding: 12px 0; }
+        .sidebar nav a { display: flex; align-items: center; gap: 12px; padding: 13px 24px; color: var(--text-light); text-decoration: none; font-weight: 500; font-size: 0.9rem; border-left: 3px solid transparent; transition: var(--transition); }
+        .sidebar nav a:hover, .sidebar nav a.active { background: rgba(99,102,241,0.08); color: white; border-left-color: var(--primary); }
+        .sidebar nav a i { width: 22px; text-align: center; }
+        .sidebar nav a .badge { margin-left: auto; background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; }
+        .sidebar-footer { padding: 20px 24px; border-top: 1px solid var(--border); }
+        
+        /* Main */
+        .main { margin-left: 280px; flex:1; padding: 32px; max-width: calc(100vw - 280px); }
+        .page-header { margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .page-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; }
+        
+        /* Cards */
+        .card { background: var(--card); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 24px; border: 1px solid var(--border); }
+        .card h3 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 24px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+        .card h3 i { color: var(--primary); }
+        
+        /* Form */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group.full { grid-column: 1 / -1; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.82rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        label .req { color: var(--danger); }
+        input, textarea, select { width: 100%; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: white; font-size: 0.9rem; font-family: inherit; transition: var(--transition); }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+        textarea { resize: vertical; min-height: 90px; }
+        
+        /* File Upload */
+        .file-upload { position: relative; }
+        .file-upload input[type=file] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .file-upload .upload-area { display: flex; align-items: center; gap: 12px; padding: 16px; border: 2px dashed var(--border); border-radius: var(--radius); cursor: pointer; transition: var(--transition); }
+        .file-upload .upload-area:hover { border-color: var(--primary); background: rgba(99,102,241,0.05); }
+        .file-upload .upload-area i { font-size: 1.5rem; color: var(--primary); }
+        .file-upload .upload-area.selected { border-color: var(--success); background: rgba(16,185,129,0.05); }
+        #imagePreview { max-width: 120px; max-height: 120px; border-radius: 50%; margin-top: 10px; display: none; border: 3px solid var(--primary); }
+        
+        /* Buttons */
+        .btn { padding: 12px 24px; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; font-family: inherit; transition: var(--transition); }
+        .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 8px 25px rgba(99,102,241,0.3); }
+        .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { opacity: 0.9; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); } .btn-outline:hover { background: var(--primary); color: white; }
+        .btn-xs { padding: 5px 10px; font-size: 0.72rem; border-radius: 8px; }
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        
+        /* Table */
+        .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 16px 14px; border-bottom: 1px solid var(--border); text-align: left; font-size: 0.85rem; }
+        th { background: rgba(255,255,255,0.02); font-weight: 600; color: var(--text-light); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        .img-thumb { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+        .tag { display: inline-flex; padding: 4px 12px; border-radius: 15px; font-size: 0.72rem; font-weight: 600; }
+        .tag-subject { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+        
+        /* Alert */
+        .alert { padding: 16px 20px; border-radius: var(--radius); margin-bottom: 20px; font-weight: 500; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+        .alert-success { background: rgba(16,185,129,0.1); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+        .alert-error { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+        
+        /* Progress */
+        .progress-wrap { margin: 16px 0; display: none; }
+        .progress-wrap.active { display: block; }
+        .progress-bar { background: var(--border); border-radius: 10px; height: 8px; overflow: hidden; }
+        .progress-fill { background: var(--primary); height: 100%; border-radius: 10px; transition: width 0.3s; width: 0%; }
+        
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (max-width:1024px) { .sidebar { width: 70px; } .sidebar .logo span, .sidebar nav a span, .badge, .sidebar-footer { display:none; } .sidebar nav a { justify-content:center; padding:14px; } .main { margin-left:70px; } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo"><i class="fas fa-graduation-cap"></i><span>THP Admin</span></div>
+        <nav>
+            <a href="#" class="active"><i class="fas fa-users"></i><span>Faculty</span><span class="badge" id="navCount">0</span></a>
+            <a href="#" onclick="exportData()"><i class="fas fa-download"></i><span>Export Data</span></a>
+            <a href="#" onclick="location.reload()"><i class="fas fa-sync-alt"></i><span>Refresh</span></a>
+        </nav>
+        <div class="sidebar-footer"><p style="color:var(--text-light);font-size:0.8rem;">THP Coaching Classes</p></div>
+    </div>
+
+    <div class="main">
+        <div id="alertContainer"></div>
+        
+        <div class="page-header">
+            <h2>👨‍🏫 Faculty Management</h2>
+            <button class="btn btn-primary" onclick="scrollToForm()"><i class="fas fa-plus"></i> Add Faculty</button>
+        </div>
+
+        <!-- Form -->
+        <div class="card" id="formCard">
+            <h3 id="formTitle"><i class="fas fa-user-plus"></i> Add New Faculty</h3>
+            <input type="hidden" id="facultyId">
+            
+            <div class="form-grid">
+                <div class="form-group"><label>Full Name <span class="req">*</span></label><input type="text" id="facName" placeholder="e.g., Shivam Sir"></div>
+                <div class="form-group"><label>Designation</label><input type="text" id="facDesignation" placeholder="e.g., Senior Faculty"></div>
+                <div class="form-group"><label>Subject <span class="req">*</span></label><input type="text" id="facSubject" placeholder="e.g., Mathematics"></div>
+                <div class="form-group"><label>Experience</label><input type="text" id="facExperience" placeholder="e.g., 8+ Years"></div>
+                <div class="form-group"><label>Qualification</label><input type="text" id="facQualification" placeholder="e.g., M.Sc. Mathematics"></div>
+                <div class="form-group"><label>Display Order</label><input type="number" id="facOrder" value="1" min="1"></div>
+                <div class="form-group full"><label>Bio / Description</label><textarea id="facBio" placeholder="Write a brief bio..."></textarea></div>
+                
+                <!-- Image -->
+                <div class="form-group">
+                    <label>Profile Photo</label>
+                    <div class="file-upload">
+                        <input type="file" id="facImageFile" accept="image/*" onchange="handleImage(this)">
+                        <div class="upload-area" id="uploadArea"><i class="fas fa-cloud-upload-alt"></i><span>Click to upload photo</span></div>
+                    </div>
+                    <img id="imagePreview" src="" alt="Preview">
+                    <input type="url" id="facImageUrl" placeholder="Or paste ImgBB URL" style="margin-top:8px;">
+                </div>
+                
+                <!-- Social -->
+                <div class="form-group full"><h4 style="margin-bottom:12px;color:var(--text-light);">🔗 Social Links</h4></div>
+                <div class="form-group"><label><i class="fab fa-youtube" style="color:#ff0000;"></i> YouTube</label><input type="url" id="facYoutube" placeholder="Channel URL"></div>
+                <div class="form-group"><label><i class="fab fa-instagram" style="color:#e4405f;"></i> Instagram</label><input type="url" id="facInstagram" placeholder="Profile URL"></div>
+                <div class="form-group"><label><i class="fab fa-facebook" style="color:#1877f2;"></i> Facebook</label><input type="url" id="facFacebook" placeholder="Profile URL"></div>
+                <div class="form-group"><label><i class="fas fa-globe" style="color:var(--primary);"></i> Website</label><input type="url" id="facWebsite" placeholder="Website URL"></div>
+            </div>
+
+            <div class="progress-wrap" id="progressWrap">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            </div>
+
+            <div class="btn-group" style="margin-top:20px;">
+                <button class="btn btn-primary" id="saveBtn" onclick="saveFaculty()"><i class="fas fa-save"></i> Save Faculty</button>
+                <button class="btn btn-outline" id="cancelBtn" style="display:none;" onclick="resetForm()"><i class="fas fa-times"></i> Cancel</button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card">
+            <h3><i class="fas fa-list"></i> All Faculty Members</h3>
+            <div class="table-wrap">
+                <table><thead><tr><th>#</th><th>Photo</th><th>Name</th><th>Subject</th><th>Designation</th><th>Exp</th><th>Qual</th><th>Actions</th></tr></thead><tbody id="facultyTableBody"></tbody></table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
+            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
+            storageBucket: "starlet-registor.firebasestorage.app", messagingSenderId: "904193225045",
+            appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const IMGBB_KEY = "53fb01955a45c5462724b8f7d238500a";
+        const DB_PATH = 'thp-faculty';
+        let selectedFile = null;
+
+        function showAlert(m,t='success') {
+            const c=document.getElementById('alertContainer');c.querySelectorAll('.alert').forEach(a=>a.remove());
+            const d=document.createElement('div');d.className=`alert alert-${t}`;
+            d.innerHTML=`<i class="fas fa-${t==='success'?'check-circle':'exclamation-circle'}"></i> ${m}`;
+            c.appendChild(d);setTimeout(()=>d.remove(),4000);
+        }
+
+        function escapeHTML(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+        function scrollToForm(){document.getElementById('formCard').scrollIntoView({behavior:'smooth'});resetForm();}
+
+        function handleImage(input){
+            const f=input.files[0], area=document.getElementById('uploadArea'), prev=document.getElementById('imagePreview');
+            if(f){selectedFile=f;area.classList.add('selected');area.querySelector('span').textContent=f.name;
+                const r=new FileReader();r.onload=e=>{prev.src=e.target.result;prev.style.display='block';};r.readAsDataURL(f);}
+            else{selectedFile=null;area.classList.remove('selected');area.querySelector('span').textContent='Click to upload photo';prev.style.display='none';}
+        }
+
+        async function saveFaculty(){
+            const id=document.getElementById('facultyId').value, name=document.getElementById('facName').value.trim(), subject=document.getElementById('facSubject').value.trim();
+            if(!name||!subject) return showAlert('Name and Subject required!','error');
+            const btn=document.getElementById('saveBtn'), orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Saving...';
+            try{
+                let imgUrl=document.getElementById('facImageUrl').value.trim();
+                if(selectedFile){
+                    const pw=document.getElementById('progressWrap');pw.classList.add('active');document.getElementById('progressFill').style.width='50%';
+                    const fd=new FormData();fd.append('image',selectedFile);fd.append('key',IMGBB_KEY);
+                    const res=await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:fd});const data=await res.json();
+                    if(!data.success) throw new Error(data.error?.message||'Upload failed');
+                    imgUrl=data.data.url;document.getElementById('progressFill').style.width='100%';pw.classList.remove('active');
+                }
+                const social={},yt=document.getElementById('facYoutube').value.trim(),ig=document.getElementById('facInstagram').value.trim(),fb=document.getElementById('facFacebook').value.trim(),web=document.getElementById('facWebsite').value.trim();
+                if(yt)social.youtube=yt;if(ig)social.instagram=ig;if(fb)social.facebook=fb;if(web)social.website=web;
+                const facultyData={name,designation:document.getElementById('facDesignation').value.trim(),subject,experience:document.getElementById('facExperience').value.trim(),qualification:document.getElementById('facQualification').value.trim(),bio:document.getElementById('facBio').value.trim(),order:parseInt(document.getElementById('facOrder').value)||1,image:imgUrl,social:Object.keys(social).length?social:null,updatedAt:firebase.database.ServerValue.TIMESTAMP};
+                if(id) await db.ref(`${DB_PATH}/${id}`).update(facultyData);
+                else await db.ref(DB_PATH).push({...facultyData,createdAt:firebase.database.ServerValue.TIMESTAMP});
+                showAlert(id?'Updated! ✅':'Added! 🎉');resetForm();loadTable();
+            }catch(e){showAlert('Error: '+e.message,'error');}
+            finally{btn.disabled=false;btn.innerHTML=orig;document.getElementById('progressWrap').classList.remove('active');}
+        }
+
+        function resetForm(){
+            document.getElementById('facultyId').value='';['facName','facDesignation','facSubject','facExperience','facQualification','facBio','facImageUrl','facYoutube','facInstagram','facFacebook','facWebsite'].forEach(id=>document.getElementById(id).value='');
+            document.getElementById('facOrder').value='1';document.getElementById('facImageFile').value='';selectedFile=null;
+            document.getElementById('uploadArea').classList.remove('selected');document.getElementById('uploadArea').querySelector('span').textContent='Click to upload photo';
+            document.getElementById('imagePreview').style.display='none';document.getElementById('formTitle').innerHTML='<i class="fas fa-user-plus"></i> Add New Faculty';
+            document.getElementById('cancelBtn').style.display='none';
+        }
+
+        function loadTable(){
+            const tb=document.getElementById('facultyTableBody');tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;">Loading...</td></tr>';
+            db.ref(DB_PATH).on('value',snap=>{
+                tb.innerHTML='';
+                if(snap.exists()){
+                    const list=[];snap.forEach(c=>list.push({id:c.key,...c.val()}));list.sort((a,b)=>(a.order||0)-(b.order||0));
+                    list.forEach(f=>{
+                        tb.innerHTML+=`<tr><td>${f.order||'-'}</td><td><img src="${f.image||'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=48'}" class="img-thumb" onerror="this.src='https://via.placeholder.com/48'"></td><td><strong>${escapeHTML(f.name)}</strong></td><td><span class="tag tag-subject">${escapeHTML(f.subject)}</span></td><td>${escapeHTML(f.designation||'-')}</td><td>${escapeHTML(f.experience||'-')}</td><td>${escapeHTML(f.qualification||'-')}</td><td><div class="btn-group" style="gap:6px;"><button class="btn btn-primary btn-xs" onclick="editFaculty('${f.id}')"><i class="fas fa-edit"></i></button><button class="btn btn-danger btn-xs" onclick="deleteFaculty('${f.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`;
+                    });
+                    document.getElementById('navCount').textContent=list.length;
+                }else{tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-light);">No faculty added</td></tr>';document.getElementById('navCount').textContent='0';}
+            });
+        }
+
+        window.editFaculty=function(id){
+            db.ref(`${DB_PATH}/${id}`).once('value',snap=>{if(!snap.exists())return;const f=snap.val();
+                document.getElementById('facultyId').value=id;document.getElementById('facName').value=f.name||'';document.getElementById('facDesignation').value=f.designation||'';
+                document.getElementById('facSubject').value=f.subject||'';document.getElementById('facExperience').value=f.experience||'';document.getElementById('facQualification').value=f.qualification||'';
+                document.getElementById('facBio').value=f.bio||'';document.getElementById('facOrder').value=f.order||1;document.getElementById('facImageUrl').value=f.image||'';
+                if(f.social){document.getElementById('facYoutube').value=f.social.youtube||'';document.getElementById('facInstagram').value=f.social.instagram||'';document.getElementById('facFacebook').value=f.social.facebook||'';document.getElementById('facWebsite').value=f.social.website||'';}
+                if(f.image){document.getElementById('imagePreview').src=f.image;document.getElementById('imagePreview').style.display='block';}
+                document.getElementById('formTitle').innerHTML='<i class="fas fa-user-edit"></i> Edit Faculty';document.getElementById('cancelBtn').style.display='inline-flex';scrollToForm();
+            });
+        };
+
+        window.deleteFaculty=function(id){if(confirm('Delete this faculty member?')) db.ref(`${DB_PATH}/${id}`).remove().then(()=>showAlert('Deleted!')).catch(e=>showAlert(e.message,'error'));};
+
+        function exportData(){
+            db.ref(DB_PATH).once('value',snap=>{const data=snap.exists()?snap.val():{};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`thp-faculty-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);showAlert('Exported! 📥');});
+        }
+
+        document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveFaculty();}});
+        document.addEventListener('DOMContentLoaded',()=>{loadTable();});
+    </script>
+</body>
+</html>
