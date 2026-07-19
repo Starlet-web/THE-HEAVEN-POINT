@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>THP Admin · Dual Batch Rooms</title>
+  <title>THP Admin · Batch Rooms</title>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
@@ -211,7 +211,7 @@
     </div>
   </div>
 
-  <!-- STUDENTS TAB (Two batch toggles) -->
+  <!-- STUDENTS TAB -->
   <div id="tab-students" class="tab-content" style="display:none">
     <div class="card">
       <div class="card-head"><h3 class="card-title"><i class="fas fa-users" style="color:var(--p)"></i> All Students</h3><span class="badge bg-p" id="stuCount">0</span></div>
@@ -228,7 +228,7 @@
     </div>
   </div>
 
-  <!-- ATTENDANCE TAB (Action column first, two toggles) -->
+  <!-- ATTENDANCE TAB -->
   <div id="tab-attendance" class="tab-content" style="display:none">
     <div class="card">
       <div class="card-head">
@@ -251,7 +251,7 @@
     <div class="modal-head"><h2>➕ Add Student</h2><button class="modal-close" onclick="closeMod('addModal')">✕</button></div>
     <form id="addForm">
       <div class="form-row"><div class="form-group"><label>Roll No*</label><input type="number" id="addRN" required></div><div class="form-group"><label>Name*</label><input type="text" id="addNm" required></div></div>
-      <div class="form-row"><div class="form-group"><label>Class*</label><select id="addCl" required><option value="">Select Class</option></select></div><div class="form-group"><label>Batch & Room*</label><select id="addRoom" required><option value="">Select Room</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label>Class*</label><select id="addCl" required><option value="">Select Class</option></select></div><div class="form-group"><label>Room*</label><select id="addRoom" required><option value="">Select Room</option></select></div></div>
       <div class="form-row"><div class="form-group"><label>Phone*</label><input type="tel" id="addPh" required maxlength="10"></div><div class="form-group"><label>Email</label><input type="email" id="addEm"></div></div>
       <div class="form-group"><label>Password</label><input type="text" id="addPw" value="12345678"></div>
       <button type="submit" class="btn btn-g" style="width:100%;margin-top:8px">Add Student</button>
@@ -266,7 +266,7 @@
     <form id="editForm">
       <input type="hidden" id="editID">
       <div class="form-row"><div class="form-group"><label>Roll No*</label><input type="number" id="editRN" required></div><div class="form-group"><label>Name*</label><input type="text" id="editNm" required></div></div>
-      <div class="form-row"><div class="form-group"><label>Class*</label><select id="editCl" required><option value="">Select Class</option></select></div><div class="form-group"><label>Batch & Room*</label><select id="editRoom" required><option value="">Select Room</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label>Class*</label><select id="editCl" required><option value="">Select Class</option></select></div><div class="form-group"><label>Room*</label><select id="editRoom" required><option value="">Select Room</option></select></div></div>
       <div class="form-row"><div class="form-group"><label>Phone*</label><input type="tel" id="editPh" required maxlength="10"></div><div class="form-group"><label>Email</label><input type="email" id="editEm"></div></div>
       <div class="form-row"><div class="form-group"><label>Father</label><input type="text" id="editFa"></div><div class="form-group"><label>Mother</label><input type="text" id="editMo"></div></div>
       <div class="form-group"><label>Password</label><input type="text" id="editPw"></div>
@@ -290,9 +290,24 @@
     const db = firebase.firestore();
     emailjs.init("AylbjsNiCx8ji5dWH");
 
-    // First Batch Rooms 1-6, Second Batch Rooms 1-6
-    const FIRST_BATCH = ["F1","F2","F3","F4","F5","F6"];
-    const SECOND_BATCH = ["S1","S2","S3","S4","S5","S6"];
+    // First Batch Rooms
+    const FIRST_BATCH = [
+      "Class 8 Sohika",
+      "Class 7 Asad",
+      "Class 5th",
+      "Class KG-4",
+      "Class 9th",
+      "Class 11"
+    ];
+    
+    // Second Batch Rooms
+    const SECOND_BATCH = [
+      "Class 10th",
+      "Class 12th",
+      "6-8 Boys",
+      "6-8 Girls"
+    ];
+    
     const ALL_ROOMS = [...FIRST_BATCH, ...SECOND_BATCH];
     const CLASS_OPTIONS = ["1","2","3","4","5","6","7","8","9","10","11","12","L.K.C.","N/A"];
 
@@ -342,7 +357,7 @@
         const snap=await db.collection('students').orderBy('rollNo','asc').get();
         allStu=[];snap.forEach(d=>{
           let data = d.data();
-          if (!data.room) data.room = 'F1';
+          if (!data.room) data.room = FIRST_BATCH[0];
           if (!data.class) data.class = 'N/A';
           allStu.push({id:d.id, ...data});
         });
@@ -365,7 +380,6 @@
 
     window.showNotif = function(){updateStats();document.getElementById('notifPanel').classList.add('show');document.getElementById('notifPanel').scrollIntoView({behavior:'smooth'})};
 
-    // Batch change updates room dropdown
     window.onBatchChange = function() {
       const batch = document.getElementById('batchFil').value;
       const roomSel = document.getElementById('roomFil');
@@ -420,7 +434,7 @@
             <td><span class="badge bg-r">${s.rollNo||'--'}</span></td>
             <td><strong>${s.name||'N/A'}</strong></td>
             <td><span class="badge bg-p">Class ${s.class||'N/A'}</span></td>
-            <td><span class="badge bg-g">${s.room||'F1'}</span></td>
+            <td><span class="badge bg-g">${s.room||FIRST_BATCH[0]}</span></td>
             <td>${s.phone||'N/A'}</td>
             <td><span class="badge ${attP>=75?'bg-g':attP>=50?'bg-w':'bg-d'}">${attP}%</span></td>
             <td>
@@ -493,7 +507,7 @@
       document.getElementById('editRN').value = s.rollNo||'';
       document.getElementById('editNm').value = s.name||'';
       document.getElementById('editCl').value = s.class||'';
-      document.getElementById('editRoom').value = s.room||'F1';
+      document.getElementById('editRoom').value = s.room||FIRST_BATCH[0];
       document.getElementById('editPh').value = s.phone||'';
       document.getElementById('editEm').value = s.email||'';
       document.getElementById('editPw').value = s.password||'';
@@ -550,7 +564,7 @@
           <td><span class="badge bg-r">${s.rollNo}</span></td>
           <td><strong>${s.name}</strong></td>
           <td>Class ${s.class||'N/A'}</td>
-          <td>${s.room||'F1'}</td>
+          <td>${s.room||FIRST_BATCH[0]}</td>
           <td><span class="badge ${st==='present'?'bg-g':st==='absent'?'bg-d':'bg-w'}">${st.toUpperCase()}</span></td>
         </tr>`;
       }).join('')}</tbody></table>`;
@@ -607,7 +621,7 @@
     window.renderCharts = function(){
       const c1 = document.getElementById('classChart')?.getContext('2d');
       if(c1) {
-        const rc = {}; allStu.forEach(s=>{ const r = s.room||'F1'; rc[r] = (rc[r]||0)+1; });
+        const rc = {}; allStu.forEach(s=>{ const r = s.room||FIRST_BATCH[0]; rc[r] = (rc[r]||0)+1; });
         const lb = Object.keys(rc).sort();
         if(classCtx) classCtx.destroy();
         classCtx = new Chart(c1, {type:'bar', data:{labels:lb, datasets:[{label:'Students',data:lb.map(l=>rc[l]),backgroundColor:lb.map((_,i)=>`hsl(${i*30},70%,60%)`),borderRadius:9}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
