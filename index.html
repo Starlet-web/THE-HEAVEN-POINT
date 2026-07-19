@@ -60,7 +60,7 @@
             box-sizing: border-box;
         }
         html {
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
             overflow-x: hidden;
         }
         body {
@@ -705,13 +705,14 @@
             margin-top: 3px;
         }
 
-        /* ─── DEMO ─── */
+        /* ─── DEMO (NO AUTOPLAY - THUMBNAIL ONLY) ─── */
         .video-wrap {
             border-radius: var(--radius-lg);
             overflow: hidden;
             box-shadow: var(--shadow-md);
             aspect-ratio: 16/9;
             background: #000;
+            position: relative;
         }
         .video-wrap iframe {
             width: 100%;
@@ -1201,11 +1202,11 @@
                     </div>
                 </section>
 
-                <!-- DEMO LECTURE (NO AUTOPLAY) -->
+                <!-- DEMO LECTURE (COMPLETELY DISABLED AUTOPLAY & AUTOFOCUS) -->
                 <section id="demo">
                     <h2 class="section-title"><i class="fas fa-play-circle"></i> Demo Lecture</h2>
                     <div class="video-wrap">
-                        <iframe src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&rel=0" allowfullscreen loading="lazy"></iframe>
+                        <iframe src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&rel=0&autoplay=0&mute=0&playsinline=1" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"></iframe>
                     </div>
                     <p style="text-align:center;color:var(--gray-500);font-size:0.82rem;margin-top:10px;">Shivam Sir · Mathematics Expert (7+ Years Experience)</p>
                     <div style="text-align:center;margin-top:10px;">
@@ -1265,7 +1266,7 @@
             <!-- SIDEBAR -->
             <aside class="sidebar" id="contact">
                 <div class="map-card" style="margin-bottom:16px;">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3602.7467754021797!2d81.8666!3d25.4467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399acb0e7a2c1e2d%3A0x4e7b6a5f3c8d9e1f!2sShahganj%2C%20Prayagraj%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1690000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3602.7467754021797!2d81.8666!3d25.4467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399acb0e7a2c1e2d%3A0x4e7b6a5f3c8d9e1f!2sShahganj%2C%20Prayagraj%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1690000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
                     <div class="map-info">
                         <strong><i class="fas fa-map-marker-alt" style="color:var(--red);"></i> Shahganj, Prayagraj</strong>
                         <a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank">Open in Google Maps <i class="fas fa-external-link-alt"></i></a>
@@ -1481,16 +1482,39 @@
 
         document.addEventListener('DOMContentLoaded', () => { loadGallery(); });
 
-        // ─── PREVENT AUTO-SCROLL TO IFRAME ───
-        window.addEventListener('load', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // ─── ABSOLUTELY PREVENT AUTO-SCROLL ───
+        // Store scroll position before page fully loads
+        let savedScrollY = 0;
+        window.addEventListener('beforeunload', () => {
+            savedScrollY = window.scrollY;
         });
-        // Force scroll to top after a small delay (catches late iframe focus)
-        setTimeout(() => {
-            if (window.scrollY > 100) {
+        // Force scroll to top on load
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        });
+        // Keep checking for 3 seconds to prevent any delayed scroll
+        let checkCount = 0;
+        const scrollGuard = setInterval(() => {
+            checkCount++;
+            if (window.scrollY > 50) {
                 window.scrollTo({ top: 0, behavior: 'instant' });
             }
-        }, 500);
+            if (checkCount > 30) {
+                clearInterval(scrollGuard);
+            }
+        }, 100);
+        // Disable smooth scroll that might cause issues
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === "#") return;
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    window.scrollTo({ top: target.offsetTop - 100, behavior: 'instant' });
+                }
+            });
+        });
     </script>
 </body>
 </html>
