@@ -1,543 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THP Faculty Admin | Manage Teachers</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-    
-    <style>
-        :root {
-            --navy: #0f1a3a; --gold: #b8860b; --bg: #f8fafc; --card: #fff;
-            --border: #e2e8f0; --text: #1e293b; --text-light: #64748b;
-            --danger: #ef4444; --success: #10b981; --radius: 12px; --shadow: 0 4px 12px rgba(0,0,0,0.04);
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 32px; max-width: 1200px; margin: auto; }
-        
-        h1 { font-size: 2rem; margin-bottom: 24px; color: var(--navy); display: flex; align-items: center; gap: 10px; }
-        h1 i { color: var(--gold); }
-        h2 { margin-bottom: 20px; display: flex; align-items: center; gap: 8px; color: var(--navy); }
-        
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; }
-        .btn-primary { background: var(--navy); color: white; } .btn-primary:hover { filter: brightness(1.2); }
-        .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { opacity: 0.9; }
-        .btn-success { background: var(--success); color: white; } .btn-success:hover { filter: brightness(1.1); }
-        .btn-outline { background: white; border: 2px solid var(--navy); color: var(--navy); } .btn-outline:hover { background: var(--navy); color: white; }
-        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
-        .btn-xs { padding: 4px 8px; font-size: 0.72rem; }
-        
-        .card { background: var(--card); border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
-        
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 16px; }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-weight: 600; font-size: 0.82rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-group input, .form-group textarea { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
-        .form-group textarea { resize: vertical; min-height: 80px; }
-        
-        /* Image Upload Area */
-        .img-upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .img-upload-area:hover { border-color: var(--navy); background: #f1f5f9; }
-        .img-upload-area i { font-size: 2rem; color: var(--navy); margin-bottom: 8px; }
-        .img-upload-area input { display: none; }
-        
-        /* Image Previews */
-        .image-previews { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-        .preview-item { position: relative; width: 90px; height: 90px; border-radius: 10px; overflow: hidden; border: 2px solid var(--border); }
-        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
-        .preview-item .remove-btn { position: absolute; top: 4px; right: 4px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .preview-item .crop-badge { position: absolute; bottom: 4px; left: 4px; background: var(--success); color: white; font-size: 0.55rem; padding: 2px 6px; border-radius: 8px; }
-        
-        /* CROP MODAL */
-        .crop-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .crop-modal-overlay.active { display: flex; }
-        .crop-modal { background: white; border-radius: 20px; max-width: 900px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; }
-        .crop-modal-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-        .crop-modal-header h3 { font-size: 1.1rem; }
-        .crop-modal-body { padding: 16px; flex: 1; display: flex; align-items: center; justify-content: center; background: #f1f5f9; min-height: 400px; }
-        .crop-modal-body img { max-width: 100%; max-height: 60vh; display: block; }
-        .crop-modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 12px; justify-content: flex-end; }
-        .crop-info { padding: 8px 16px; background: #fef3c7; border-radius: 8px; font-size: 0.8rem; color: #92400e; margin: 8px 0; display: flex; align-items: center; gap: 6px; }
-        .aspect-ratio-btns { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-        .aspect-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; background: white; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
-        .aspect-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
-        
-        /* Table */
-        .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        th { background: #f1f5f9; font-weight: 600; color: var(--text-light); }
-        .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
-        
-        .alert { padding: 12px 20px; border-radius: 8px; margin-bottom: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
-        .alert-success { background: #dcfce7; color: #166534; }
-        .alert-error { background: #fee2e2; color: #991b1b; }
-        
-        .progress { display: none; height: 6px; background: var(--border); border-radius: 4px; margin-top: 12px; }
-        .progress-bar { height: 100%; background: var(--navy); border-radius: 4px; width: 0%; transition: width 0.3s; }
-        
-        @media (max-width: 768px) {
-            body { padding: 16px; }
-            .form-grid { grid-template-columns: 1fr; }
-            .crop-modal-body { min-height: 300px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>THP Admin Panel • Faculty & Gallery Manager</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="channels4_profile.jpg" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+  <style>
+    :root {
+      --navy: #1a2a4a; --blue: #1e5fbb; --gold: #b8860b; --white: #fff; --gray-50: #f8f9fa;
+      --gray-100: #f1f3f5; --gray-200: #e9ecef; --gray-300: #dee2e3; --gray-500: #6c757d;
+      --gray-700: #343a40; --green: #2b8a3e; --red: #c92a2a; --orange: #e67700;
+      --shadow: 0 1px 3px rgba(0,0,0,0.07); --shadow-lg: 0 8px 25px rgba(0,0,0,0.12);
+      --radius: 8px; --radius-lg: 14px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#f4f6fb; color:var(--gray-700); min-height:100vh; }
+    .admin-header {
+      background:var(--navy); color:white; padding:16px 24px; display:flex; align-items:center;
+      justify-content:space-between; flex-wrap:wrap; gap:12px; border-bottom:3px solid var(--gold);
+    }
+    .admin-header h1 { font-size:1.3rem; font-weight:700; display:flex; align-items:center; gap:10px; }
+    .admin-header h1 img { height:38px; border-radius:6px; }
+    .logout-btn { background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.25); padding:8px 18px; border-radius:20px; cursor:pointer; font-weight:600; font-size:0.8rem; transition:0.3s; }
+    .logout-btn:hover { background:var(--red); border-color:var(--red); }
+    .container { max-width:1300px; margin:0 auto; padding:24px 20px; }
+    .tabs { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+    .tab-btn {
+      padding:11px 26px; border-radius:30px; border:2px solid var(--gray-200); background:white;
+      font-weight:700; font-size:0.85rem; cursor:pointer; transition:0.3s; color:var(--gray-700);
+      display:flex; align-items:center; gap:7px;
+    }
+    .tab-btn.active { background:var(--blue); color:white; border-color:var(--blue); box-shadow:0 6px 18px rgba(30,95,187,0.3); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+    .card { background:white; border-radius:var(--radius-lg); padding:24px; box-shadow:var(--shadow); margin-bottom:22px; border:1px solid var(--gray-200); }
+    .card h3 { font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:18px; display:flex; align-items:center; gap:8px; }
+    .form-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:16px; }
+    .form-group { display:flex; flex-direction:column; gap:5px; }
+    .form-group label { font-weight:600; font-size:0.78rem; color:var(--navy); }
+    .form-group input, .form-group textarea, .form-group select {
+      padding:10px 14px; border:1.5px solid var(--gray-200); border-radius:var(--radius);
+      font-family:inherit; font-size:0.82rem; transition:0.3s; background:var(--gray-50);
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color:var(--blue); outline:none; box-shadow:0 0 0 3px rgba(30,95,187,0.08); }
+    .btn {
+      padding:11px 24px; border-radius:var(--radius); font-weight:700; font-size:0.82rem;
+      cursor:pointer; border:2px solid transparent; transition:0.3s; display:inline-flex; align-items:center; gap:7px;
+    }
+    .btn-primary { background:var(--blue); color:white; } .btn-primary:hover { background:#174a9e; }
+    .btn-gold { background:var(--gold); color:white; } .btn-gold:hover { background:#9a6b0a; }
+    .btn-outline { background:transparent; color:var(--navy); border-color:var(--gray-300); }
+    .btn-danger { background:var(--red); color:white; } .btn-danger:hover { background:#a12222; }
+    .btn-sm { padding:7px 14px; font-size:0.72rem; }
+    .upload-preview { width:100px; height:100px; border-radius:10px; object-fit:cover; border:2px dashed var(--gray-300); margin-top:6px; display:none; }
+    .table-wrap { overflow-x:auto; border-radius:var(--radius); border:1px solid var(--gray-200); }
+    table { width:100%; border-collapse:collapse; font-size:0.78rem; min-width:700px; }
+    table th { background:var(--navy); color:white; padding:12px; text-align:left; font-weight:600; font-size:0.7rem; }
+    table td { padding:10px 12px; border-bottom:1px solid var(--gray-200); }
+    table tbody tr:hover { background:var(--gray-50); }
+    .status-badge { padding:3px 10px; border-radius:12px; font-size:0.65rem; font-weight:700; }
+    .status-published { background:#ebfbee; color:var(--green); }
+    .toast {
+      position:fixed; bottom:24px; right:24px; background:var(--navy); color:white; padding:14px 24px;
+      border-radius:30px; font-weight:600; font-size:0.82rem; z-index:9999; box-shadow:var(--shadow-lg);
+      animation:slideUp 0.4s ease; display:none;
+    }
+    @keyframes slideUp { from{transform:translateY(40px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+    .login-overlay {
+      position:fixed; inset:0; background:rgba(26,42,74,0.96); z-index:10000;
+      display:flex; align-items:center; justify-content:center; flex-direction:column;
+    }
+    .login-card {
+      background:white; padding:36px 30px; border-radius:20px; text-align:center;
+      box-shadow:0 30px 60px rgba(0,0,0,0.4); width:90%; max-width:380px;
+    }
+    .login-card h2 { color:var(--navy); margin-bottom:20px; }
+    .login-card input { width:100%; padding:12px; border-radius:var(--radius); border:2px solid var(--gray-200); margin-bottom:14px; font-size:0.9rem; }
+    @media (max-width:600px) {
+      .admin-header h1 { font-size:1rem; }
+      .tabs { gap:4px; } .tab-btn { padding:9px 16px; font-size:0.72rem; }
+    }
+  </style>
 </head>
 <body>
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <h2><i class="fas fa-lock" style="color:var(--gold);"></i> Admin Login</h2>
+      <input type="password" id="adminPassword" placeholder="Enter admin password">
+      <button class="btn btn-primary" onclick="attemptLogin()" style="width:100%;justify-content:center;">Unlock Panel</button>
+      <p style="font-size:0.7rem;color:var(--gray-500);margin-top:10px;">Default: <strong>admin123</strong></p>
+    </div>
+  </div>
 
-    <h1><i class="fas fa-users-cog"></i> THP Faculty Admin Panel</h1>
-    <div id="alertBox"></div>
+  <div id="adminContent" style="display:none;">
+    <header class="admin-header">
+      <h1><img src="channels4_profile.jpg" alt="THP"> The Heaven Point • Admin Panel</h1>
+      <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </header>
+    <div class="container">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('faculty')"><i class="fas fa-chalkboard-teacher"></i> Faculty</button>
+        <button class="tab-btn" onclick="switchTab('gallery')"><i class="fas fa-images"></i> Gallery</button>
+      </div>
 
-    <!-- ========== FORM CARD ========== -->
-    <div class="card">
-        <h2 id="formTitle"><i class="fas fa-user-plus"></i> Add New Faculty</h2>
-        <input type="hidden" id="facultyId">
-        
-        <div class="form-grid">
-            <div class="form-group"><label>Full Name *</label><input type="text" id="name" placeholder="e.g., Dr. Anil Sharma"></div>
-            <div class="form-group"><label>Designation</label><input type="text" id="designation" placeholder="Head of Department"></div>
-            <div class="form-group"><label>Subject *</label><input type="text" id="subject" placeholder="Physics"></div>
-            <div class="form-group"><label>Experience</label><input type="text" id="experience" placeholder="12+ Years"></div>
-            <div class="form-group"><label>Qualification</label><input type="text" id="qualification" placeholder="Ph.D., M.Sc."></div>
-            <div class="form-group"><label>Display Order</label><input type="number" id="order" value="1" min="1"></div>
-        </div>
-        <div class="form-group" style="margin-top:12px;"><label>Short Bio</label><textarea id="bio" placeholder="Write a brief professional bio..."></textarea></div>
-
-        <!-- Multi-Image Upload with Crop -->
-        <div class="form-group" style="margin-top:16px;">
-            <label>📸 Photos (Multiple - Each will be cropped to fit)</label>
-            <div class="img-upload-area" onclick="document.getElementById('imageInput').click()">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <p>Click to select images (multiple allowed)</p>
-                <small style="color:var(--text-light);">Recommended: Square photos work best</small>
-                <input type="file" id="imageInput" accept="image/*" multiple onchange="handleImageSelect(this)">
-            </div>
-            <div class="image-previews" id="imagePreviews"></div>
-            <div class="crop-info" id="cropInfo" style="display:none;">
-                <i class="fas fa-info-circle"></i> <span id="cropInfoText"></span>
-            </div>
-            <div class="progress" id="progressBar"><div class="progress-bar" id="progressFill"></div></div>
-        </div>
-
-        <!-- Social Links -->
-        <div style="margin:20px 0 10px;"><strong>🔗 Social Links</strong></div>
-        <div class="form-grid">
-            <div class="form-group"><label>YouTube URL</label><input type="url" id="youtube" placeholder="https://youtube.com/@..."></div>
-            <div class="form-group"><label>Instagram URL</label><input type="url" id="instagram" placeholder="https://instagram.com/..."></div>
-            <div class="form-group"><label>Facebook URL</label><input type="url" id="facebook" placeholder="https://facebook.com/..."></div>
-            <div class="form-group"><label>Website</label><input type="url" id="website" placeholder="https://..."></div>
-        </div>
-
-        <div style="display:flex; gap:12px; margin-top:24px;">
+      <!-- FACULTY TAB -->
+      <div class="tab-panel active" id="tab-faculty">
+        <div class="card">
+          <h3><i class="fas fa-plus-circle"></i> <span id="facultyFormTitle">Add New Faculty</span></h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Full Name *</label><input type="text" id="fName" placeholder="Dr. Arjun Sharma"></div>
+            <div class="form-group"><label>Designation *</label><input type="text" id="fDesignation" placeholder="Director & HOD Physics"></div>
+            <div class="form-group"><label>Subject</label><input type="text" id="fSubject" placeholder="Physics, JEE Advanced"></div>
+            <div class="form-group"><label>Experience</label><input type="text" id="fExperience" placeholder="15+ years"></div>
+            <div class="form-group"><label>Students Trained</label><input type="text" id="fStudents" placeholder="5000+"></div>
+            <div class="form-group"><label>Display Order</label><input type="number" id="fOrder" placeholder="1" value="1" min="1"></div>
+            <div class="form-group"><label>Profile Photo</label><input type="file" id="fPhoto" accept="image/*" onchange="previewFacultyPhoto()"><img id="fPhotoPreview" class="upload-preview"></div>
+          </div>
+          <input type="hidden" id="fEditId">
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
             <button class="btn btn-primary" onclick="saveFaculty()"><i class="fas fa-save"></i> Save Faculty</button>
-            <button class="btn btn-outline" id="cancelBtn" style="display:none;" onclick="resetForm()"><i class="fas fa-times"></i> Cancel</button>
+            <button class="btn btn-outline" onclick="resetFacultyForm()"><i class="fas fa-times"></i> Clear Form</button>
+          </div>
         </div>
-    </div>
-
-    <!-- ========== FACULTY LIST ========== -->
-    <div class="card">
-        <h2><i class="fas fa-list-ul"></i> All Faculty Members</h2>
-        <div class="table-wrap">
-            <table>
-                <thead><tr><th>Photo</th><th>Name</th><th>Subject</th><th>Designation</th><th>Exp</th><th>Images</th><th>Actions</th></tr></thead>
-                <tbody id="facultyTableBody"></tbody>
-            </table>
+        <div class="card">
+          <h3><i class="fas fa-list"></i> Faculty List (<span id="facultyCount">0</span>)</h3>
+          <div class="table-wrap">
+            <table><thead><tr><th>Photo</th><th>Name</th><th>Designation</th><th>Subject</th><th>Order</th><th>Actions</th></tr></thead><tbody id="facultyTableBody"></tbody></table>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- ========== CROP MODAL ========== -->
-    <div class="crop-modal-overlay" id="cropModal">
-        <div class="crop-modal">
-            <div class="crop-modal-header">
-                <h3><i class="fas fa-crop-alt"></i> Crop Image to Fit</h3>
-                <button class="btn btn-sm btn-outline" onclick="closeCropModal()"><i class="fas fa-times"></i></button>
-            </div>
-            <div style="padding: 8px 16px;">
-                <div class="aspect-ratio-btns">
-                    <span style="font-size:0.8rem;color:var(--text-light);margin-right:8px;">Aspect Ratio:</span>
-                    <button class="aspect-btn active" onclick="setAspectRatio(1/1, this)">1:1 (Square)</button>
-                    <button class="aspect-btn" onclick="setAspectRatio(4/5, this)">4:5 (Portrait)</button>
-                    <button class="aspect-btn" onclick="setAspectRatio(3/4, this)">3:4</button>
-                    <button class="aspect-btn" onclick="setAspectRatio(null, this)">Free</button>
-                </div>
-            </div>
-            <div class="crop-modal-body">
-                <img id="cropImage" src="" alt="Crop preview">
-            </div>
-            <div class="crop-modal-footer">
-                <button class="btn btn-outline" onclick="rotateCrop(-90)"><i class="fas fa-undo"></i> Rotate Left</button>
-                <button class="btn btn-outline" onclick="rotateCrop(90)"><i class="fas fa-redo"></i> Rotate Right</button>
-                <button class="btn btn-outline" onclick="resetCrop()"><i class="fas fa-sync-alt"></i> Reset</button>
-                <button class="btn btn-success" onclick="confirmCrop()"><i class="fas fa-check"></i> Crop & Save</button>
-            </div>
+      <!-- GALLERY TAB -->
+      <div class="tab-panel" id="tab-gallery">
+        <div class="card">
+          <h3><i class="fas fa-cloud-upload-alt"></i> Upload Gallery Image</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Select Image *</label><input type="file" id="gPhoto" accept="image/*" onchange="previewGalleryPhoto()"><img id="gPhotoPreview" class="upload-preview"></div>
+          </div>
+          <div style="margin-top:14px;">
+            <button class="btn btn-gold" onclick="uploadGallery()"><i class="fas fa-upload"></i> Upload to Gallery</button>
+          </div>
         </div>
+        <div class="card">
+          <h3><i class="fas fa-images"></i> Gallery Images (<span id="galleryCount">0</span>)</h3>
+          <div class="table-wrap">
+            <table><thead><tr><th>Preview</th><th>URL</th><th>Actions</th></tr></thead><tbody id="galleryTableBody"></tbody></table>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
-            authDomain: "starlet-registor.firebaseapp.com",
-            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com",
-            projectId: "starlet-registor",
-            storageBucket: "starlet-registor.firebasestorage.app",
-            messagingSenderId: "904193225045",
-            appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const DB_PATH = 'thp-faculty';
-        const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
+  <div class="toast" id="toast"></div>
 
-        // State
-        let selectedFiles = [];
-        let existingImageUrls = [];
-        let croppedImages = {}; // { index: base64DataUrl }
-        
-        // Cropper
-        let cropper = null;
-        let currentCropIndex = -1;
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
+      databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
+      storageBucket: "starlet-registor.firebasestorage.app", messagingSenderId: "904193225045",
+      appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
 
-        function showAlert(msg, type='success') {
-            const box = document.getElementById('alertBox');
-            box.innerHTML = `<div class="alert alert-${type}"><i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i> ${msg}</div>`;
-            setTimeout(() => box.innerHTML = '', 4000);
+    const ADMIN_PASSWORD = "admin123";
+    let currentTab = 'faculty';
+
+    // ─── AUTH ───
+    function attemptLogin() {
+      const pass = document.getElementById('adminPassword').value;
+      if(pass === ADMIN_PASSWORD) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        loadFacultyList();
+        loadGalleryList();
+        showToast('✅ Welcome Admin!');
+      } else {
+        showToast('❌ Incorrect password');
+      }
+    }
+    function logout() {
+      document.getElementById('loginOverlay').style.display = 'flex';
+      document.getElementById('adminContent').style.display = 'none';
+      document.getElementById('adminPassword').value = '';
+    }
+
+    // ─── TOAST ───
+    function showToast(msg) {
+      const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block';
+      setTimeout(()=> t.style.display = 'none', 2800);
+    }
+
+    // ─── TAB SWITCH ───
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector(`.tab-btn:has(i.fa-${tab==='faculty'?'chalkboard-teacher':'images'})`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+    }
+
+    // ══════════ FACULTY ══════════
+    function previewFacultyPhoto() {
+      const file = document.getElementById('fPhoto').files[0];
+      const preview = document.getElementById('fPhotoPreview');
+      if(file) { preview.src = URL.createObjectURL(file); preview.style.display = 'block'; }
+    }
+    function resetFacultyForm() {
+      document.getElementById('fName').value = '';
+      document.getElementById('fDesignation').value = '';
+      document.getElementById('fSubject').value = '';
+      document.getElementById('fExperience').value = '';
+      document.getElementById('fStudents').value = '';
+      document.getElementById('fOrder').value = '1';
+      document.getElementById('fPhoto').value = '';
+      document.getElementById('fPhotoPreview').style.display = 'none';
+      document.getElementById('fEditId').value = '';
+      document.getElementById('facultyFormTitle').textContent = 'Add New Faculty';
+    }
+
+    async function saveFaculty() {
+      const name = document.getElementById('fName').value.trim();
+      const designation = document.getElementById('fDesignation').value.trim();
+      if(!name || !designation) { showToast('⚠️ Name and Designation required'); return; }
+      const editId = document.getElementById('fEditId').value;
+      const file = document.getElementById('fPhoto').files[0];
+      const facultyData = {
+        name, designation,
+        subject: document.getElementById('fSubject').value.trim(),
+        experience: document.getElementById('fExperience').value.trim(),
+        students: document.getElementById('fStudents').value.trim(),
+        order: parseInt(document.getElementById('fOrder').value) || 1
+      };
+
+      try {
+        if(file) {
+          const ext = file.name.split('.').pop();
+          const path = `thp-faculty/${Date.now()}_${Math.random().toString(36).substr(2,6)}.${ext}`;
+          const snap = await storage.ref(path).put(file);
+          facultyData.image = await snap.ref.getDownloadURL();
+          facultyData.images = [facultyData.image];
         }
-
-        // ========== IMAGE HANDLING ==========
-        function handleImageSelect(input) {
-            const newFiles = Array.from(input.files);
-            newFiles.forEach((file, i) => {
-                const actualIndex = selectedFiles.length + i;
-                selectedFiles.push(file);
-                // Auto-open cropper for each new image
-                setTimeout(() => openCropper(actualIndex), 200 * (i + 1));
-            });
-            document.getElementById('cropInfo').style.display = 'flex';
-            document.getElementById('cropInfoText').textContent = `${selectedFiles.length} image(s) selected. Each will be cropped before upload.`;
-            renderPreviews();
+        if(editId) {
+          const existingSnap = await db.ref(`thp-faculty/${editId}`).once('value');
+          const existing = existingSnap.val() || {};
+          if(!file && existing.image) facultyData.image = existing.image;
+          if(!file && existing.images) facultyData.images = existing.images;
+          await db.ref(`thp-faculty/${editId}`).update(facultyData);
+          showToast('✅ Faculty updated!');
+        } else {
+          await db.ref('thp-faculty').push(facultyData);
+          showToast('✅ Faculty added!');
         }
+        resetFacultyForm();
+        loadFacultyList();
+      } catch(e) { showToast('❌ Error: '+e.message); }
+    }
 
-        function renderPreviews() {
-            const container = document.getElementById('imagePreviews');
-            container.innerHTML = '';
-            
-            // Existing URLs
-            existingImageUrls.forEach((url, idx) => {
-                container.innerHTML += `
-                    <div class="preview-item">
-                        <img src="${url}" alt="Existing">
-                        <button class="remove-btn" onclick="removeExistingImage(${idx})">✕</button>
-                    </div>`;
-            });
-            
-            // New files (show cropped version if available, else original)
-            selectedFiles.forEach((file, idx) => {
-                const src = croppedImages[idx] || URL.createObjectURL(file);
-                const isCropped = !!croppedImages[idx];
-                container.innerHTML += `
-                    <div class="preview-item" onclick="openCropper(${idx})" style="cursor:pointer;" title="Click to crop">
-                        <img src="${src}" alt="New">
-                        <button class="remove-btn" onclick="event.stopPropagation(); removeNewImage(${idx})">✕</button>
-                        ${isCropped ? '<span class="crop-badge">✓ Cropped</span>' : '<span class="crop-badge" style="background:#f59e0b;">Click to crop</span>'}
-                    </div>`;
-            });
-        }
+    function loadFacultyList() {
+      db.ref('thp-faculty').on('value', snap => {
+        const tbody = document.getElementById('facultyTableBody');
+        const countSpan = document.getElementById('facultyCount');
+        tbody.innerHTML = ''; let count = 0;
+        if(snap.exists()) {
+          const list = []; snap.forEach(c => { list.push(Object.assign({id:c.key}, c.val())); });
+          list.sort((a,b)=>(a.order||0)-(b.order||0));
+          count = list.length;
+          list.forEach(f => {
+            const img = f.image || (f.images&&f.images.length?f.images[0]:'https://ui-avatars.com/api/?name=NA&size=80&background=ccc&color=fff');
+            tbody.innerHTML += `<tr>
+              <td><img src="${img}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;" onerror="this.style.display='none'"></td>
+              <td><strong>${f.name}</strong></td><td>${f.designation||''}</td><td>${f.subject||''}</td><td>${f.order||''}</td>
+              <td>
+                <button class="btn btn-outline btn-sm" onclick='editFaculty(${JSON.stringify(f).replace(/'/g,"&#39;")})'><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteFaculty('${f.id}')"><i class="fas fa-trash"></i></button>
+              </td></tr>`;
+          });
+        } else { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray-500);">No faculty added yet.</td></tr>'; }
+        countSpan.textContent = count;
+      });
+    }
 
-        function removeExistingImage(index) {
-            existingImageUrls.splice(index, 1);
-            renderPreviews();
-        }
+    function editFaculty(f) {
+      document.getElementById('fName').value = f.name || '';
+      document.getElementById('fDesignation').value = f.designation || '';
+      document.getElementById('fSubject').value = f.subject || '';
+      document.getElementById('fExperience').value = f.experience || '';
+      document.getElementById('fStudents').value = f.students || '';
+      document.getElementById('fOrder').value = f.order || 1;
+      document.getElementById('fEditId').value = f.id;
+      document.getElementById('facultyFormTitle').textContent = 'Edit Faculty';
+      const preview = document.getElementById('fPhotoPreview');
+      const imgSrc = f.image || (f.images&&f.images.length?f.images[0]:'');
+      if(imgSrc) { preview.src = imgSrc; preview.style.display = 'block'; }
+      else { preview.style.display = 'none'; }
+      document.getElementById('tab-faculty').scrollIntoView({behavior:'smooth'});
+    }
 
-        function removeNewImage(index) {
-            selectedFiles.splice(index, 1);
-            delete croppedImages[index];
-            // Re-index croppedImages
-            const newCropped = {};
-            Object.keys(croppedImages).forEach(k => {
-                const num = parseInt(k);
-                if (num > index) newCropped[num - 1] = croppedImages[k];
-                else if (num < index) newCropped[num] = croppedImages[k];
-            });
-            croppedImages = newCropped;
-            
-            const dt = new DataTransfer();
-            selectedFiles.forEach(f => dt.items.add(f));
-            document.getElementById('imageInput').files = dt.files;
-            
-            if (selectedFiles.length === 0) {
-                document.getElementById('cropInfo').style.display = 'none';
-            } else {
-                document.getElementById('cropInfoText').textContent = `${selectedFiles.length} image(s) selected.`;
-            }
-            renderPreviews();
-        }
+    async function deleteFaculty(id) {
+      if(!confirm('Delete this faculty member?')) return;
+      await db.ref(`thp-faculty/${id}`).remove();
+      showToast('🗑️ Faculty deleted');
+      loadFacultyList();
+    }
 
-        // ========== CROPPER ==========
-        function openCropper(index) {
-            if (index >= selectedFiles.length) return;
-            currentCropIndex = index;
-            const file = selectedFiles[index];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('cropImage').src = e.target.result;
-                document.getElementById('cropModal').classList.add('active');
-                document.body.style.overflow = 'hidden';
-                
-                // Initialize cropper
-                setTimeout(() => {
-                    if (cropper) cropper.destroy();
-                    const img = document.getElementById('cropImage');
-                    cropper = new Cropper(img, {
-                        aspectRatio: 1 / 1, // Default square
-                        viewMode: 1,
-                        autoCropArea: 0.9,
-                        responsive: true,
-                        background: false,
-                        guides: true,
-                        highlight: true,
-                    });
-                }, 100);
-            };
-            reader.readAsDataURL(file);
-        }
+    // ══════════ GALLERY ══════════
+    function previewGalleryPhoto() {
+      const file = document.getElementById('gPhoto').files[0];
+      const preview = document.getElementById('gPhotoPreview');
+      if(file) { preview.src = URL.createObjectURL(file); preview.style.display = 'block'; }
+    }
+    async function uploadGallery() {
+      const file = document.getElementById('gPhoto').files[0];
+      if(!file) { showToast('⚠️ Please select an image'); return; }
+      try {
+        const ext = file.name.split('.').pop();
+        const path = `thp-gallery/${Date.now()}_${Math.random().toString(36).substr(2,6)}.${ext}`;
+        const snap = await storage.ref(path).put(file);
+        const url = await snap.ref.getDownloadURL();
+        await db.ref('thp-gallery').push({ url, uploadedAt: Date.now() });
+        showToast('🖼️ Image uploaded!');
+        document.getElementById('gPhoto').value = '';
+        document.getElementById('gPhotoPreview').style.display = 'none';
+        loadGalleryList();
+      } catch(e) { showToast('❌ Upload failed: '+e.message); }
+    }
+    function loadGalleryList() {
+      db.ref('thp-gallery').on('value', snap => {
+        const tbody = document.getElementById('galleryTableBody');
+        const countSpan = document.getElementById('galleryCount');
+        tbody.innerHTML = ''; let count = 0;
+        if(snap.exists()) {
+          const list = []; snap.forEach(c => { list.push(Object.assign({id:c.key}, c.val())); });
+          count = list.length;
+          list.forEach(g => {
+            tbody.innerHTML += `<tr>
+              <td><img src="${g.url}" style="width:60px;height:45px;border-radius:6px;object-fit:cover;" onerror="this.style.display='none'"></td>
+              <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${g.url}</td>
+              <td><button class="btn btn-danger btn-sm" onclick="deleteGallery('${g.id}')"><i class="fas fa-trash"></i></button></td></tr>`;
+          });
+        } else { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--gray-500);">No gallery images.</td></tr>'; }
+        countSpan.textContent = count;
+      });
+    }
+    async function deleteGallery(id) {
+      if(!confirm('Delete this gallery image?')) return;
+      await db.ref(`thp-gallery/${id}`).remove();
+      showToast('🗑️ Image deleted');
+      loadGalleryList();
+    }
 
-        function closeCropModal() {
-            document.getElementById('cropModal').classList.remove('active');
-            document.body.style.overflow = '';
-            if (cropper) {
-                cropper.destroy();
-                cropper = null;
-            }
-            currentCropIndex = -1;
-        }
-
-        function setAspectRatio(ratio, btn) {
-            if (cropper) {
-                cropper.setAspectRatio(ratio);
-            }
-            document.querySelectorAll('.aspect-btn').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-        }
-
-        function rotateCrop(deg) {
-            if (cropper) cropper.rotate(deg);
-        }
-
-        function resetCrop() {
-            if (cropper) cropper.reset();
-        }
-
-        function confirmCrop() {
-            if (!cropper || currentCropIndex < 0) return;
-            
-            const canvas = cropper.getCroppedCanvas({
-                width: 800,
-                height: 800,
-                imageSmoothingEnabled: true,
-                imageSmoothingQuality: 'high',
-            });
-            
-            const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.9);
-            croppedImages[currentCropIndex] = croppedDataUrl;
-            
-            closeCropModal();
-            renderPreviews();
-            showAlert('Image cropped successfully! ✅');
-        }
-
-        // ========== SAVE FACULTY ==========
-        async function saveFaculty() {
-            const id = document.getElementById('facultyId').value;
-            const name = document.getElementById('name').value.trim();
-            const subject = document.getElementById('subject').value.trim();
-            if(!name || !subject) return showAlert('Name and Subject are required!', 'error');
-
-            const btn = document.querySelector('.btn-primary');
-            const origHTML = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-            
-            const progressWrap = document.getElementById('progressBar');
-            const progressFill = document.getElementById('progressFill');
-
-            try {
-                // Upload cropped/new images
-                const newUrls = [];
-                if (selectedFiles.length > 0) {
-                    progressWrap.style.display = 'block';
-                    for (let i = 0; i < selectedFiles.length; i++) {
-                        const progress = Math.round(((i + 1) / selectedFiles.length) * 100);
-                        progressFill.style.width = progress + '%';
-                        
-                        // Use cropped version if available, else original
-                        let blob;
-                        if (croppedImages[i]) {
-                            // Convert base64 to blob
-                            const resp = await fetch(croppedImages[i]);
-                            blob = await resp.blob();
-                        } else {
-                            blob = selectedFiles[i];
-                        }
-                        
-                        const formData = new FormData();
-                        formData.append('image', blob, 'faculty-' + Date.now() + '.jpg');
-                        formData.append('key', IMGBB_API_KEY);
-                        
-                        const resp = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: formData });
-                        const data = await resp.json();
-                        if (!data.success) throw new Error('Image upload failed');
-                        newUrls.push(data.data.url);
-                    }
-                    progressWrap.style.display = 'none';
-                    progressFill.style.width = '0%';
-                }
-
-                const allImages = [...existingImageUrls, ...newUrls];
-                
-                const social = {};
-                ['youtube','instagram','facebook','website'].forEach(k => {
-                    const v = document.getElementById(k).value.trim();
-                    if(v) social[k] = v;
-                });
-
-                const facultyData = {
-                    name,
-                    designation: document.getElementById('designation').value.trim(),
-                    subject,
-                    experience: document.getElementById('experience').value.trim(),
-                    qualification: document.getElementById('qualification').value.trim(),
-                    bio: document.getElementById('bio').value.trim(),
-                    order: parseInt(document.getElementById('order').value) || 1,
-                    images: allImages,
-                    image: allImages.length > 0 ? allImages[0] : null,
-                    social: Object.keys(social).length ? social : null,
-                    updatedAt: firebase.database.ServerValue.TIMESTAMP
-                };
-
-                if (id) {
-                    await db.ref(`${DB_PATH}/${id}`).update(facultyData);
-                } else {
-                    await db.ref(DB_PATH).push({...facultyData, createdAt: firebase.database.ServerValue.TIMESTAMP});
-                }
-                showAlert(id ? 'Faculty updated!' : 'Faculty added!');
-                resetForm();
-                loadFacultyTable();
-            } catch(e) {
-                showAlert('Error: ' + e.message, 'error');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = origHTML;
-                progressWrap.style.display = 'none';
-            }
-        }
-
-        function resetForm() {
-            document.getElementById('facultyId').value = '';
-            ['name','designation','subject','experience','qualification','bio','youtube','instagram','facebook','website'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('order').value = '1';
-            document.getElementById('imageInput').value = '';
-            selectedFiles = [];
-            existingImageUrls = [];
-            croppedImages = {};
-            document.getElementById('imagePreviews').innerHTML = '';
-            document.getElementById('cropInfo').style.display = 'none';
-            document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-plus"></i> Add New Faculty';
-            document.getElementById('cancelBtn').style.display = 'none';
-        }
-
-        // ========== EDIT ==========
-        window.editFaculty = function(id) {
-            db.ref(`${DB_PATH}/${id}`).once('value', snap => {
-                if(!snap.exists()) return;
-                const f = snap.val();
-                document.getElementById('facultyId').value = id;
-                document.getElementById('name').value = f.name || '';
-                document.getElementById('designation').value = f.designation || '';
-                document.getElementById('subject').value = f.subject || '';
-                document.getElementById('experience').value = f.experience || '';
-                document.getElementById('qualification').value = f.qualification || '';
-                document.getElementById('bio').value = f.bio || '';
-                document.getElementById('order').value = f.order || 1;
-                document.getElementById('youtube').value = (f.social && f.social.youtube) || '';
-                document.getElementById('instagram').value = (f.social && f.social.instagram) || '';
-                document.getElementById('facebook').value = (f.social && f.social.facebook) || '';
-                document.getElementById('website').value = (f.social && f.social.website) || '';
-
-                existingImageUrls = f.images || (f.image ? [f.image] : []);
-                selectedFiles = [];
-                croppedImages = {};
-                document.getElementById('imageInput').value = '';
-                document.getElementById('cropInfo').style.display = 'none';
-                renderPreviews();
-
-                document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-edit"></i> Edit Faculty';
-                document.getElementById('cancelBtn').style.display = 'inline-flex';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        };
-
-        // ========== DELETE ==========
-        window.deleteFaculty = function(id) {
-            if(confirm('Are you sure you want to delete this faculty member?')) {
-                db.ref(`${DB_PATH}/${id}`).remove()
-                    .then(() => showAlert('Faculty deleted.'))
-                    .catch(e => showAlert('Error: ' + e.message, 'error'));
-            }
-        };
-
-        // ========== TABLE ==========
-        function loadFacultyTable() {
-            const tbody = document.getElementById('facultyTableBody');
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;">Loading...</td></tr>';
-            db.ref(DB_PATH).on('value', snap => {
-                tbody.innerHTML = '';
-                if(snap.exists()) {
-                    const list = [];
-                    snap.forEach(child => list.push({ id: child.key, ...child.val() }));
-                    list.sort((a,b) => (a.order||0)-(b.order||0));
-                    list.forEach(f => {
-                        const mainImg = (f.images && f.images.length) ? f.images[0] : (f.image || 'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=44&background=0f1a3a&color=fff');
-                        const imgCount = (f.images && f.images.length) || (f.image ? 1 : 0);
-                        tbody.innerHTML += `
-                            <tr>
-                                <td><img src="${mainImg}" class="avatar" onerror="this.src='https://via.placeholder.com/44'"></td>
-                                <td><strong>${escapeHTML(f.name)}</strong></td>
-                                <td>${escapeHTML(f.subject)}</td>
-                                <td>${escapeHTML(f.designation || '-')}</td>
-                                <td>${escapeHTML(f.experience || '-')}</td>
-                                <td>📸 ${imgCount}</td>
-                                <td style="display:flex; gap:6px;">
-                                    <button class="btn btn-sm btn-outline" onclick="editFaculty('${f.id}')"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger" onclick="deleteFaculty('${f.id}')"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-light);">No faculty members found.</td></tr>';
-                }
-            });
-        }
-
-        function escapeHTML(str) {
-            if(!str) return '';
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-        // Init
-        document.addEventListener('DOMContentLoaded', loadFacultyTable);
-        document.addEventListener('keydown', e => {
-            if((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveFaculty(); }
-            if(e.key === 'Escape') closeCropModal();
-        });
-    </script>
+    // ─── INIT ───
+    document.addEventListener('DOMContentLoaded', ()=> {
+      document.getElementById('adminPassword').addEventListener('keypress', e => { if(e.key==='Enter') attemptLogin(); });
+    });
+  </script>
 </body>
 </html>
