@@ -1,414 +1,578 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>The Heaven Point • Shine Brighter</title>
-  <meta property="og:title" content="The Heaven Point">
-  <meta property="og:description" content="Premium coaching for CUET, NEET, IIT-JEE, School courses (3rd–12th) and more. Expert faculty, proven results.">
-  <meta property="og:image" content="channels4_profile.jpg">
-  <meta property="og:image:alt" content="The Heaven Point">
-  <meta property="og:url" content="https://starlet-web.github.io/THE-HEAVEN-POINT/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="google-site-verification" content="mA9aIn22KO_fawtHBnRUcy2Xj29t8lT1LdbtQx34-P4">
-  <link rel="icon" href="channels4_profile.jpg" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Heaven Point • Shine Brighter | Premium Coaching Institute</title>
+    <meta name="description" content="The Heaven Point - Premium coaching for CUET, NEET, IIT-JEE, SSC, Bank, Railway & School courses (3rd-12th). Expert faculty, proven results.">
+    <meta property="og:title" content="The Heaven Point - Premium Coaching Institute">
+    <meta property="og:description" content="Expert coaching for CUET, NEET, IIT-JEE & School courses.">
+    <meta property="og:image" content="channels4_profile.jpg">
+    <link rel="icon" href="channels4_profile.jpg" type="image/png">
 
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
-  <!-- Tailwind via CDN + custom config -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            display: ['Outfit', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-              800: '#3730a3',
-              900: '#312e81',
-            },
-            accent: {
-              500: '#10b981',
-              600: '#059669',
-            },
-            surface: '#f9fafb',
-            dark: '#0f172a',
-          },
-          animation: {
-            'float': 'float 7s ease-in-out infinite',
-            'pulse-soft': 'pulseSoft 4s ease-in-out infinite',
-            'wave': 'wave 2.2s ease-in-out infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-              '50%': { transform: 'translateY(-18px) rotate(1deg)' },
-            },
-            pulseSoft: {
-              '0%, 100%': { opacity: '0.5', transform: 'scale(0.95)' },
-              '50%': { opacity: '0.25', transform: 'scale(1.05)' },
-            },
-            wave: {
-              '0%, 100%': { transform: 'rotate(0deg)' },
-              '20%': { transform: 'rotate(16deg)' },
-              '40%': { transform: 'rotate(-10deg)' },
-              '60%': { transform: 'rotate(12deg)' },
-              '80%': { transform: 'rotate(-6deg)' },
-            },
-          }
+    <style>
+        :root {
+            --navy: #1a2a4a; --blue: #1e5fbb; --blue-light: #e8f0fe; --gold: #b8860b;
+            --gold-light: #fef3c7; --white: #fff; --gray-50: #f8f9fa; --gray-100: #f1f3f5;
+            --gray-200: #e9ecef; --gray-300: #dee2e3; --gray-400: #adb5bd; --gray-500: #6c757d;
+            --gray-600: #495057; --gray-700: #343a40; --gray-800: #212529; --green: #2b8a3e;
+            --green-light: #ebfbee; --orange: #e67700; --orange-light: #fff4e6;
+            --red: #c92a2a; --red-light: #fff5f5;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04); --shadow: 0 1px 3px rgba(0,0,0,0.07);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.06); --radius: 6px; --radius-lg: 10px;
+            --radius-xl: 14px; --transition: 0.2s ease;
         }
-      }
-    }
-  </script>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            font-family: 'Noto Sans', 'Inter', sans-serif; background: var(--gray-50);
+            color: var(--gray-800); line-height: 1.6; -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; max-width: 100vw;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: var(--blue); text-decoration: none; transition: var(--transition); }
+        a:hover { text-decoration: underline; }
 
-  <style>
-    body {
-      background: #f8fafc;
-      font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-      scroll-behavior: smooth;
-      -webkit-tap-highlight-color: transparent;
-    }
-    /* Modern glass & depth */
-    .glass-header {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,255,255,0.6);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-    }
-    .card-premium {
-      background: white;
-      border-radius: 2rem;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08);
-      transition: all 0.3s ease;
-      border: 1px solid rgba(0,0,0,0.02);
-    }
-    .card-premium:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 35px 60px -15px rgba(99,102,241,0.2);
-      border-color: rgba(99,102,241,0.2);
-    }
-    .hero-gradient {
-      background: radial-gradient(circle at 70% 30%, #e0e7ff, #c7d2fe 80%);
-    }
-    .text-gradient {
-      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 80%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .nav-dot.active {
-      background: #4f46e5;
-      box-shadow: 0 0 0 4px rgba(99,102,241,0.3);
-    }
-    .mobile-menu {
-      transition: opacity 0.35s ease, visibility 0.35s;
-    }
-    .mobile-menu.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    /* smooth appearance */
-    @media (prefers-reduced-motion: no-preference) {
-      .animate-in {
-        animation: fadeUp 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      @keyframes fadeUp {
-        to { opacity: 1; transform: translateY(0); }
-      }
-    }
-  </style>
+        .container { max-width: 1250px; margin: 0 auto; padding: 0 20px; }
+
+        /* ─── TOP BAR ─── */
+        .top-bar { background: var(--navy); color: rgba(255,255,255,0.85); font-size: 0.75rem; padding: 6px 0; border-bottom: 2px solid var(--gold); }
+        .top-bar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .top-bar .contact { display: flex; gap: 14px; flex-wrap: wrap; }
+        .top-bar .contact span { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+        .top-bar .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .top-bar .actions a { color: rgba(255,255,255,0.7); font-size: 0.7rem; white-space: nowrap; }
+        .top-bar .actions a:hover { color: white; text-decoration: none; }
+        .skip-link { background: var(--gold); color: var(--navy); padding: 3px 12px; border-radius: 3px; font-weight: 700; font-size: 0.7rem; }
+
+        /* ─── HEADER ─── */
+        .header { background: var(--white); border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
+        .header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; padding-bottom: 12px; gap: 14px; }
+        .header .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+        .header .logo img { height: 52px; width: 52px; border-radius: 8px; object-fit: cover; border: 2px solid var(--gray-200); flex-shrink: 0; }
+        .header .logo h1 { font-size: 1.2rem; font-weight: 700; color: var(--navy); line-height: 1.2; }
+        .header .logo .sub { font-size: 0.65rem; color: var(--gray-500); font-weight: 500; letter-spacing: 0.3px; }
+        .header .header-right { text-align: right; font-size: 0.7rem; flex-shrink: 0; }
+        .header .header-right .cert { font-weight: 600; color: var(--navy); }
+        .mobile-menu-btn { background: none; border: none; font-size: 1.6rem; color: var(--navy); cursor: pointer; padding: 8px; display: block; }
+        @media (min-width: 950px) { .mobile-menu-btn { display: none; } }
+
+        /* ─── NAVIGATION ─── */
+        .main-nav { background: var(--navy); border-bottom: 3px solid var(--gold); }
+        .main-nav .container { padding-top: 0; padding-bottom: 0; }
+        .nav-links { display: none; flex-direction: column; }
+        .nav-links.show { display: flex; }
+        .nav-links a { color: rgba(255,255,255,0.9); padding: 12px 16px; font-size: 0.82rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.06); text-decoration: none; display: block; transition: var(--transition); }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.08); color: white; text-decoration: none; }
+        @media (min-width: 950px) {
+            .nav-links { display: flex; flex-direction: row; flex-wrap: wrap; }
+            .nav-links a { border-bottom: none; padding: 14px 18px; font-size: 0.8rem; }
+            .nav-links a:hover, .nav-links a.active { border-bottom: 3px solid var(--gold); margin-bottom: -3px; background: rgba(255,255,255,0.06); }
+        }
+
+        /* ─── NOTICE ─── */
+        .notice-bar { background: var(--orange-light); border-bottom: 1px solid #ffd8a8; padding: 7px 0; overflow: hidden; }
+        .notice-bar .container { display: flex; align-items: center; gap: 12px; font-size: 0.74rem; }
+        .notice-tag { background: var(--orange); color: white; padding: 4px 12px; border-radius: 3px; font-weight: 600; font-size: 0.68rem; white-space: nowrap; flex-shrink: 0; }
+        .marquee-wrap { overflow: hidden; white-space: nowrap; flex: 1; min-width: 0; }
+        .marquee-wrap span { display: inline-block; animation: marquee 20s linear infinite; color: var(--gray-700); font-size: 0.7rem; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* ─── HERO ─── */
+        .hero { background: linear-gradient(160deg, #e8f0fe 0%, #f8f9fa 50%, #fff4e6 100%); padding: 45px 0; border-bottom: 1px solid var(--gray-200); }
+        .hero .container { display: flex; align-items: center; gap: 35px; flex-wrap: wrap; }
+        .hero-content { flex: 1; min-width: 270px; }
+        .hero-content .badge { display: inline-block; background: var(--blue-light); color: var(--blue); padding: 5px 14px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; margin-bottom: 14px; }
+        .hero-content h2 { font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 12px; }
+        .hero-content h2 .hl { color: var(--gold); border-bottom: 2px solid var(--gold-light); }
+        .hero-content p { color: var(--gray-600); font-size: 0.88rem; max-width: 520px; margin-bottom: 20px; line-height: 1.65; }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; border-radius: var(--radius); font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: var(--transition); border: 2px solid transparent; font-family: inherit; text-decoration: none; white-space: nowrap; }
+        .btn-primary { background: var(--blue); color: white; border-color: var(--blue); } .btn-primary:hover { background: #1a4fa0; text-decoration: none; }
+        .btn-gold { background: var(--gold); color: white; border-color: var(--gold); } .btn-gold:hover { background: #9a6b0a; text-decoration: none; }
+        .btn-outline { background: transparent; color: var(--navy); border-color: var(--gray-300); } .btn-outline:hover { background: var(--gray-100); text-decoration: none; }
+        .btn-sm { padding: 8px 14px; font-size: 0.74rem; }
+        .btn-xs { padding: 6px 12px; font-size: 0.68rem; border-radius: 4px; }
+        .hero-stats { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 20px; }
+        .hero-stat { text-align: center; padding: 14px 18px; background: white; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--gray-200); min-width: 75px; }
+        .hero-stat .num { font-size: 1.4rem; font-weight: 700; color: var(--navy); }
+        .hero-stat .lbl { font-size: 0.62rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.3px; }
+        .hero-logo { flex-shrink: 0; text-align: center; }
+        .hero-logo img { width: 140px; border-radius: 10px; box-shadow: var(--shadow-md); border: 3px solid white; }
+        .hero-logo .est { margin-top: 6px; font-size: 0.72rem; color: var(--gray-600); font-weight: 600; }
+        @media (max-width: 767px) {
+            .hero { padding: 30px 0; }
+            .hero-content h2 { font-size: 1.35rem; }
+            .hero-content p { font-size: 0.8rem; }
+            .hero-logo img { width: 90px; }
+            .hero-stats { gap: 8px; }
+            .hero-stat { padding: 10px 12px; min-width: 65px; }
+            .hero-stat .num { font-size: 1.1rem; }
+            .btn { padding: 9px 16px; font-size: 0.75rem; }
+        }
+
+        /* ─── SECTION ─── */
+        section { padding: 30px 0; }
+        @media (min-width: 768px) { section { padding: 40px 0; } }
+        .section-title { font-size: 1.25rem; font-weight: 700; color: var(--navy); padding-bottom: 12px; border-bottom: 2px solid var(--gray-200); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+        .section-title i { color: var(--gold); font-size: 1.05rem; }
+        @media (min-width: 768px) { .section-title { font-size: 1.4rem; } }
+
+        /* ─── CARDS ─── */
+        .card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
+        @media (min-width: 768px) { .card { padding: 24px; } }
+        .card-header { font-weight: 600; font-size: 0.92rem; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+
+        /* ─── TABLE ─── */
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--gray-200); }
+        table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 0.78rem; }
+        table th { background: var(--navy); color: white; padding: 12px 14px; text-align: left; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.3px; white-space: nowrap; }
+        table td { padding: 12px 14px; border-bottom: 1px solid var(--gray-200); white-space: nowrap; }
+        table tbody tr:hover { background: var(--gray-50); }
+        table tbody tr:nth-child(even) { background: #fafbfc; }
+        .status-open { color: var(--green); font-weight: 600; font-size: 0.72rem; } .status-open::before { content: '● '; font-size: 0.45rem; }
+
+        /* ─── COURSES GRID ─── */
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+        @media (max-width: 500px) { .courses-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        .course-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .course-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .course-card img { width: 100%; height: 140px; object-fit: cover; }
+        @media (max-width: 500px) { .course-card img { height: 100px; } }
+        .course-card .info { padding: 16px; }
+        .course-card .info h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); }
+        .course-card .info p { font-size: 0.74rem; color: var(--gray-500); margin: 4px 0 10px; }
+        .course-card .info .price { font-weight: 700; color: var(--blue); font-size: 0.88rem; }
+
+        /* ─── FACULTY ─── */
+        .faculty-swiper { padding: 8px 0 35px; }
+        .faculty-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .faculty-card:hover { box-shadow: var(--shadow-md); }
+        .faculty-card img { width: 100%; height: 220px; object-fit: cover; border-bottom: 3px solid var(--blue); }
+        @media (max-width: 500px) { .faculty-card img { height: 170px; } }
+        .faculty-card .info { padding: 16px; text-align: center; }
+        .faculty-card .info h4 { font-size: 0.9rem; font-weight: 600; color: var(--navy); }
+        .faculty-card .info .role { font-size: 0.74rem; color: var(--blue); font-weight: 500; }
+        .faculty-card .info .subj { font-size: 0.68rem; color: var(--gray-500); margin-top: 3px; }
+
+        /* ─── DEMO ─── */
+        .video-wrap { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); aspect-ratio: 16/9; }
+        .video-wrap iframe { width: 100%; height: 100%; border: none; }
+
+        /* ─── GALLERY ─── */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+        @media (max-width: 500px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; } }
+        .gallery-item { border-radius: var(--radius); overflow: hidden; border: 2px solid transparent; transition: var(--transition); aspect-ratio: 4/3; cursor: pointer; }
+        .gallery-item:hover { border-color: var(--blue); box-shadow: var(--shadow-md); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ─── STEPS ─── */
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+        @media (max-width: 500px) { .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        .step-card { text-align: center; padding: 22px 16px; border-radius: var(--radius-lg); }
+        .step-card .step-num { font-size: 2rem; font-weight: 800; }
+        .step-card .step-title { font-weight: 600; color: var(--navy); font-size: 0.9rem; margin: 4px 0; }
+        .step-card .step-desc { font-size: 0.7rem; color: var(--gray-500); }
+        .step-blue { background: var(--blue-light); } .step-blue .step-num { color: var(--blue); }
+        .step-green { background: var(--green-light); } .step-green .step-num { color: var(--green); }
+        .step-orange { background: var(--orange-light); } .step-orange .step-num { color: var(--orange); }
+        .step-gray { background: var(--gray-100); } .step-gray .step-num { color: var(--gray-600); }
+
+        /* ─── MAIN LAYOUT ─── */
+        .main-layout { display: flex; gap: 28px; flex-wrap: wrap; }
+        .content-area { flex: 1; min-width: 0; }
+        .sidebar { width: 100%; }
+        @media (min-width: 950px) { .sidebar { width: 300px; flex-shrink: 0; } }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar .quick-link { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: var(--radius); color: var(--gray-700); font-size: 0.8rem; transition: var(--transition); border: 1px solid transparent; margin-bottom: 3px; text-decoration: none; }
+        .sidebar .quick-link:hover { background: var(--blue-light); color: var(--blue); text-decoration: none; border-color: #c5d9f8; }
+        .sidebar .quick-link i { width: 18px; text-align: center; color: var(--blue); font-size: 0.78rem; }
+        .info-list { list-style: none; padding: 0; }
+        .info-list li { padding: 8px 0; border-bottom: 1px solid var(--gray-100); font-size: 0.78rem; display: flex; gap: 8px; color: var(--gray-600); align-items: flex-start; }
+        .info-list li:last-child { border-bottom: none; }
+        .info-list li i { color: var(--blue); width: 16px; margin-top: 3px; font-size: 0.72rem; }
+        .social-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .social-row a { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; text-decoration: none; transition: var(--transition); }
+        .social-row a:hover { transform: scale(1.1); text-decoration: none; }
+
+        /* ─── FOOTER ─── */
+        .footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 35px 0 20px; font-size: 0.78rem; border-top: 4px solid var(--gold); margin-top: 30px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
+        @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 16px; } }
+        .footer h4 { color: white; font-size: 0.85rem; margin-bottom: 12px; font-weight: 600; }
+        .footer a { color: rgba(255,255,255,0.5); text-decoration: none; display: block; padding: 3px 0; font-size: 0.72rem; transition: var(--transition); }
+        .footer a:hover { color: var(--gold); text-decoration: none; }
+        .footer-bottom { margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); text-align: center; font-size: 0.68rem; color: rgba(255,255,255,0.35); }
+
+        /* ─── FLOATING ─── */
+        .whatsapp-float { position: fixed; bottom: 80px; right: 16px; width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 18px rgba(37,211,102,0.4); z-index: 999; text-decoration: none; transition: var(--transition); }
+        .whatsapp-float:hover { transform: scale(1.08); text-decoration: none; }
+        @media (min-width: 950px) { .whatsapp-float { bottom: 28px; right: 28px; } }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; padding: 8px 0 10px; z-index: 998; box-shadow: 0 -2px 12px rgba(0,0,0,0.05); }
+        .bottom-nav a { display: flex; flex-direction: column; align-items: center; color: var(--gray-500); text-decoration: none; font-size: 0.64rem; gap: 3px; }
+        .bottom-nav a i { font-size: 1.1rem; }
+        .bottom-nav a.active { color: var(--blue); }
+        @media (min-width: 950px) { .bottom-nav { display: none; } }
+        body { padding-bottom: 65px; }
+        @media (min-width: 950px) { body { padding-bottom: 0; } }
+    </style>
 </head>
-<body class="font-sans text-gray-800 antialiased">
+<body>
 
-<!-- Main App Container -->
-<div class="max-w-7xl mx-auto relative bg-white/60 min-h-screen shadow-2xl">
-
-  <!-- Header -->
-  <header class="glass-header sticky top-0 z-50 flex items-center justify-between px-5 md:px-10 py-4">
-    <div class="flex items-center gap-3">
-      <img src="channels4_profile.jpg" alt="THP Logo" class="w-11 h-11 rounded-2xl shadow-md border-2 border-white">
-      <div>
-        <h1 class="text-xl md:text-2xl font-display font-bold tracking-tight text-gray-900">The Heaven Point</h1>
-        <span class="text-xs text-brand-600 font-medium tracking-wide">Shine Brighter</span>
-      </div>
-    </div>
-
-    <div class="flex items-center gap-3 md:gap-5">
-      
-      <button id="notifBtn" class="text-gray-600 hover:text-brand-600 relative p-2" aria-label="Notifications">
-        <i class="far fa-bell text-xl"></i>
-        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
-      </button>
-      <button id="mobileMenuBtn" class="md:hidden text-gray-700 hover:text-brand-700 p-2">
-        <i class="fas fa-bars text-2xl"></i>
-      </button>
-    </div>
-  </header>
-
-  <!-- Mobile Menu Overlay -->
-  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/95 backdrop-blur-xl hidden">
-    <button id="closeMobileMenu" class="absolute top-6 right-6 text-gray-600 hover:text-brand-700">
-      <i class="fas fa-times text-3xl"></i>
-    </button>
-    <nav class="flex flex-col items-center gap-8 text-2xl font-display font-semibold text-gray-800">
-      <a href="#" class="hover:text-brand-600 transition">Home</a>
-      <a href="#batches" class="hover:text-brand-600">Courses</a>
-      <a href="#" onclick="openNotes()" class="hover:text-brand-600">Notes</a>
-      <a href="#" onclick="openLecture()" class="hover:text-brand-600">Lectures</a>
-      <a href="thp-faculty.html" class="hover:text-brand-600">Faculty</a>
-      <a href="#contact" class="hover:text-brand-600">Contact</a>
-      <div class="flex gap-5 mt-6">
-        <a href="https://api.whatsapp.com/send?text=Check%20The%20Heaven%20Point:%20https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view" target="_blank" class="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg flex items-center gap-2"><i class="fab fa-whatsapp"></i> Share</a>
-        <a href="https://drive.google.com/file/d/1gCq1I3cJNuom8OkQ-FH_S0D78lqoGDqo/view" target="_blank" class="bg-brand-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg">Download App</a>
-      </div>
-    </nav>
-  </div>
-
-  <!-- Main Content -->
-  <main class="px-4 md:px-8 pt-8 pb-28 space-y-14">
-
-    <!-- Hero Section -->
-    <section class="relative rounded-[2.5rem] overflow-hidden p-6 md:p-12 flex items-center min-h-[340px] md:min-h-[420px] hero-gradient shadow-lg">
-      <div class="relative z-10 max-w-xl animate-in">
-        <span class="bg-white/70 text-brand-700 text-sm font-semibold px-4 py-1.5 rounded-full inline-block mb-4 backdrop-blur-sm">🎓 New batch starts soon</span>
-        <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-gray-900 leading-tight">
-          Choose to <span class="text-gradient">shine</span>
-        </h2>
-        <p class="text-gray-700 text-lg md:text-xl mt-4 max-w-md">Expert coaching for CUET, NEET, IIT-JEE & School (3rd–12th). Your future starts here.</p>
-        <div class="flex flex-wrap gap-4 mt-8">
-          <a href="#batches" class="bg-gray-900 text-white px-7 py-3.5 rounded-full font-semibold hover:bg-gray-800 transition shadow-xl">Explore Courses</a>
-          <a href="tel:9648837922" class="bg-white/80 backdrop-blur-md text-gray-900 px-7 py-3.5 rounded-full font-semibold hover:bg-white transition shadow-md flex items-center gap-2"><i class="fas fa-phone-alt"></i> Call Now</a>
-        </div>
-      </div>
-      <div class="absolute right-0 top-0 w-1/2 h-full opacity-20 md:opacity-30">
-        <div class="absolute -right-10 top-10 w-72 h-72 bg-brand-500 rounded-full blur-3xl animate-pulse-soft"></div>
-        <div class="absolute right-20 bottom-10 w-56 h-56 bg-purple-400 rounded-full blur-3xl animate-float"></div>
-      </div>
-    </section>
-
-    <!-- Quick Actions Grid -->
-    <div class="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-5">
-      <a href="#batches" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2">
-        <div class="w-11 h-11 bg-indigo-100 rounded-2xl flex items-center justify-center text-brand-600"><i class="fas fa-book-open text-xl"></i></div>
-        <span class="text-xs font-semibold">Courses</span>
-      </a>
-      <a href="#" onclick="openNotes()" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2">
-        <div class="w-11 h-11 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600"><i class="fas fa-file-alt text-xl"></i></div>
-        <span class="text-xs font-semibold">Notes</span>
-      </a>
-      <a href="#" onclick="openLecture()" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2">
-        <div class="w-11 h-11 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600"><i class="fas fa-video text-xl"></i></div>
-        <span class="text-xs font-semibold">Lectures</span>
-      </a>
-      <a href="thp-faculty.html" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2">
-        <div class="w-11 h-11 bg-teal-100 rounded-2xl flex items-center justify-center text-teal-600"><i class="fas fa-chalkboard-teacher text-xl"></i></div>
-        <span class="text-xs font-semibold">Faculty</span>
-      </a>
-      <a href="#admission" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2 hidden md:flex">
-        <div class="w-11 h-11 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600"><i class="fas fa-user-graduate text-xl"></i></div>
-        <span class="text-xs font-semibold">Admission</span>
-      </a>
-      <a href="#gallery" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2 hidden md:flex">
-        <div class="w-11 h-11 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600"><i class="fas fa-images text-xl"></i></div>
-        <span class="text-xs font-semibold">Gallery</span>
-      </a>
-      <a href="#about-us" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2 hidden md:flex">
-        <div class="w-11 h-11 bg-rose-100 rounded-2xl flex items-center justify-center text-rose-600"><i class="fas fa-info-circle text-xl"></i></div>
-        <span class="text-xs font-semibold">About</span>
-      </a>
-      <a href="#contact" class="flex flex-col items-center bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition gap-2 hidden md:flex">
-        <div class="w-11 h-11 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-600"><i class="fas fa-envelope text-xl"></i></div>
-        <span class="text-xs font-semibold">Contact</span>
-      </a>
-    </div>
-
-    <!-- Featured Course Section -->
-    <section>
-      <div class="flex justify-between items-end mb-6">
-        <h3 class="text-2xl md:text-3xl font-display font-bold text-gray-900">⭐ Featured Course</h3>
-        <a href="#batches" class="text-brand-600 font-semibold text-sm hover:underline">View all →</a>
-      </div>
-      <div class="card-premium p-5 md:p-7 flex flex-col md:flex-row gap-6 items-center bg-gradient-to-br from-indigo-50 to-white">
-        <img src="https://i.ibb.co/4wrtJTbw/file-00000000156061f5b89e4f5e05b6f71f.png" alt="SSC Course" class="w-36 h-36 rounded-2xl object-cover shadow-lg">
-        <div class="flex-1">
-          <span class="bg-brand-100 text-brand-700 text-xs font-bold px-3 py-1 rounded-full">POPULAR</span>
-          <h4 class="text-2xl font-bold mt-2">SSC, Bank, Railway</h4>
-          <p class="text-gray-600 mt-1">Complete competitive prep with mock tests & daily practice.</p>
-          <div class="flex items-center gap-4 mt-4 flex-wrap">
-            <span class="text-2xl font-extrabold text-gray-900">₹1,500<span class="text-sm font-medium text-gray-500">/mo</span></span>
-            <span class="text-sm line-through text-gray-400">₹2,000</span>
-            <span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full">33% off</span>
-            <a href="formTHPSsc.html" class="ml-auto bg-brand-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-brand-700 transition">Enroll Now</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Demo Lecture -->
-    <section>
-      <h3 class="text-2xl md:text-3xl font-display font-bold text-gray-900 mb-5">🎬 </h3>
-      <div class="rounded-3xl overflow-hidden shadow-2xl relative" style="padding-bottom: 56.25%;">
-        <iframe src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&controls=0&rel=0&autoplay=1&mute=1" class="absolute inset-0 w-full h-full" allowfullscreen loading="lazy"></iframe>
-      </div>
-      <p class="text-center text-gray-600 mt-4">Shivam Sir · Math Expert (7+ years)</p>
-      <div class="flex justify-center mt-3">
-        <a href="#" onclick="openLecture()" class="bg-brand-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-brand-700 transition">More Lectures</a>
-      </div>
-    </section>
-
-    <!-- Premium Batches Grid -->
-    <section id="batches">
-      <h3 class="text-2xl md:text-3xl font-display font-bold text-gray-900 mb-7">📚 Premium Batches</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-        <!-- CUET -->
-        <div class="card-premium p-4 flex flex-col">
-          <img src="https://i.ibb.co/4wXc33T0/828aed35-38f7-4097-9751-0ef7957f76e9-thumbnail.webp" class="w-full h-36 object-cover rounded-2xl mb-4">
-          <h4 class="font-bold text-lg">CUET</h4>
-          <p class="text-sm text-gray-500 flex-1">University entrance expert guidance.</p>
-          <span class="font-bold text-brand-600">₹2,000/m</span>
-          <a href="fromTHP.html" class="mt-3 bg-gray-100 hover:bg-brand-100 text-center py-2 rounded-xl font-medium text-sm transition">Enroll</a>
-        </div>
-        <!-- NEET -->
-        <div class="card-premium p-4 flex flex-col">
-          <img src="https://i.ibb.co/1JL6h6NC/5f89c41f-0897-4c04-99cd-3a66bbe89b26.png" class="w-full h-36 object-cover rounded-2xl mb-4">
-          <h4 class="font-bold text-lg">NEET</h4>
-          <p class="text-sm text-gray-500 flex-1">Medical prep with top faculty.</p>
-          <span class="font-bold text-brand-600">₹2,000/m</span>
-          <a href="fromTHP.html" class="mt-3 bg-gray-100 hover:bg-brand-100 text-center py-2 rounded-xl font-medium text-sm transition">Enroll</a>
-        </div>
-        <!-- IIT-JEE -->
-        <div class="card-premium p-4 flex flex-col">
-          <img src="https://i.ibb.co/7NyBDHSM/2f91edf2-41ad-4f3d-b079-4e452f2d2fee-3.png" class="w-full h-36 object-cover rounded-2xl mb-4">
-          <h4 class="font-bold text-lg">IIT-JEE</h4>
-          <p class="text-sm text-gray-500 flex-1">Engineering dream launchpad.</p>
-          <span class="font-bold text-brand-600">₹2,000/m</span>
-          <a href="fromTHP.html" class="mt-3 bg-gray-100 hover:bg-brand-100 text-center py-2 rounded-xl font-medium text-sm transition">Enroll</a>
-        </div>
-        <!-- Class 3-12 -->
-        <div class="card-premium p-4 flex flex-col">
-          <img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" class="w-full h-36 object-cover rounded-2xl mb-4">
-          <h4 class="font-bold text-lg">Class 3-12</h4>
-          <p class="text-sm text-gray-500 flex-1">All boards, all subjects.</p>
-          <span class="font-bold text-brand-600">₹1,000-2,500</span>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="mt-3 bg-gray-100 hover:bg-brand-100 text-center py-2 rounded-xl font-medium text-sm transition">Enroll</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- About Us + Gallery compact -->
-    <section id="about-us" class="grid md:grid-cols-2 gap-8">
-      <div class="card-premium p-6">
-        <h3 class="text-2xl font-display font-bold mb-4">🌟 About THP</h3>
-        <div class="flex items-start gap-4">
-          <img src="channels4_profile.jpg" class="w-20 h-20 rounded-full border-4 border-indigo-100">
-          <p class="text-gray-700 text-sm leading-relaxed">We offer Commerce, Maths, Physics, Chemistry, Biology, English & more. Specialized courses for CUET, NEET, IIT-JEE with regular tests and study materials.</p>
-        </div>
-        <div class="flex flex-wrap gap-2 mt-4">
-          <span class="bg-indigo-50 text-indigo-700 text-xs px-3 py-1 rounded-full">Expert Faculty</span>
-          <span class="bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full">Small Batches</span>
-          <span class="bg-emerald-50 text-emerald-700 text-xs px-3 py-1 rounded-full">Affordable Fees</span>
-        </div>
-      </div>
-    <div id="gallery" class="card-premium p-5">
-  <h3 class="text-2xl font-display font-bold mb-3">🖼️ Gallery</h3>
-  <div class="grid grid-cols-2 gap-3">
-    <img src="gallarymini1.jpg" class="rounded-xl h-28 object-cover hover:scale-105 transition">
-    <img src="gallarymini2.jpg" class="rounded-xl h-28 object-cover hover:scale-105 transition">
-    <img src="WhatsApp Image 2025-01-08 at 22.36.38.jpeg" class="rounded-xl h-28 object-cover hover:scale-105 transition">
-    <img src="cuet.jpg" class="rounded-xl h-28 object-cover hover:scale-105 transition">
-    <img src="https://i.ibb.co/WN8Cz7Tm/IMG20260502163511.avif" class="rounded-xl h-28 object-cover hover:scale-105 transition">
-    <img src="https://i.ibb.co/Hpk0cNc5/IMG20260502160220.avif" class="rounded-xl h-28 object-cover hover:scale-105 transition">
-  </div>
-</div>
-    </section>
-
-    <!-- Admission + Contact hybrid -->
-    <section id="admission" class="card-premium p-6 md:p-8">
-      <div class="grid md:grid-cols-2 gap-8">
-        <div>
-          <h3 class="text-2xl font-display font-bold mb-5">📝 Join Us</h3>
-          <ol class="space-y-4">
-            <li class="flex gap-3"><span class="bg-brand-100 text-brand-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm">1</span> Fill online form</li>
-            <li class="flex gap-3"><span class="bg-brand-100 text-brand-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm">2</span> Upload documents</li>
-            <li class="flex gap-3"><span class="bg-brand-100 text-brand-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm">3</span> Entrance test (if any)</li>
-            <li class="flex gap-3"><span class="bg-brand-100 text-brand-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm">4</span> Pay fee & confirm seat</li>
-          </ol>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="inline-block mt-6 bg-brand-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-brand-700">Start Application</a>
-        </div>
-        <div id="contact">
-          <h3 class="text-2xl font-display font-bold mb-5">📞 Contact</h3>
-          <div class="space-y-3 text-sm">
-            <p><i class="fas fa-envelope text-brand-500 w-5"></i> theheavenpoint@gmail.com</p>
-            <p><i class="fas fa-phone-alt text-brand-500"></i> 9648837922</p>
-            <p><i class="fas fa-map-marker-alt text-brand-500"></i> Heaven Point Coaching</p>
-            <div class="flex gap-4 mt-4 text-xl">
-              <a href="https://t.me/heavenpoint" class="text-indigo-500"><i class="fab fa-telegram"></i></a>
-              <a href="https://www.instagram.com/theheavenpoint/" class="text-pink-500"><i class="fab fa-instagram"></i></a>
-              <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" class="text-red-500"><i class="fab fa-youtube"></i></a>
-              <a href="#" id="whatsappBtn2" class="text-green-500"><i class="fab fa-whatsapp"></i></a>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact">
+                <span>📞 9648837922</span><span>|</span><span>✉️ theheavenpoint@gmail.com</span><span>|</span><span>📍 Delhi, India</span>
             </div>
-          </div>
+            <div class="actions">
+                <a href="#main-content" class="skip-link">Skip to Main Content</a>
+                <a href="#">Screen Reader</a>
+                <a href="#">हिन्दी</a>
+            </div>
         </div>
-      </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="channels4_profile.jpg" alt="THP Logo">
+                <div>
+                    <h1>The Heaven Point</h1>
+                    <div class="sub">Shine Brighter ✦ Premium Coaching Institute</div>
+                </div>
+            </a>
+            <div class="header-right">
+                <div class="cert">ISO 9001:2015 Certified</div>
+                <div style="font-size:0.62rem;color:var(--gray-500);">Affiliated to CBSE / State Board</div>
+            </div>
+            <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('show')">☰</button>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="nav-links" id="navLinks">
+                <a href="#" class="active">Home</a>
+                <a href="#courses">Courses</a>
+                <a href="#featured">Featured Course</a>
+                <a href="#faculty">Faculty</a>
+                <a href="#demo">Demo Lecture</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#admission">Admission</a>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#" onclick="openNotes()">📝 Study Material</a>
+                <a href="#" onclick="openLecture()">🎬 Video Lectures</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- NOTICE -->
+    <div class="notice-bar">
+        <div class="container">
+            <span class="notice-tag">NOTICE</span>
+            <div class="marquee-wrap"><span>📢 Admissions Open for 2025-26 Academic Session | New Batches Starting July 2025 | CUET • NEET • IIT-JEE • SSC/Bank/Railway • School (3rd-12th) | Limited Seats Available! | Contact: 9648837922 | Free Demo Classes Available</span></div>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero" id="main-content">
+        <div class="container">
+            <div class="hero-content">
+                <span class="badge">📌 Accredited Coaching Institute Since 2010</span>
+                <h2>Welcome to <span class="hl">The Heaven Point</span></h2>
+                <p>Expert coaching for <strong>CUET, NEET, IIT‑JEE, SSC, Bank, Railway</strong> & <strong>School Courses (Class 3rd to 12th)</strong>. We provide quality education through experienced faculty, regular mock tests, and personalized mentorship to help every student achieve their academic goals.</p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <a href="#courses" class="btn btn-primary">View Courses <i class="fas fa-arrow-right"></i></a>
+                    <a href="#admission" class="btn btn-gold">Apply for Admission</a>
+                    <a href="tel:9648837922" class="btn btn-outline"><i class="fas fa-phone"></i> Call Now</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat"><div class="num">15+</div><div class="lbl">Years Legacy</div></div>
+                    <div class="hero-stat"><div class="num">10K+</div><div class="lbl">Students Trained</div></div>
+                    <div class="hero-stat"><div class="num" id="facultyCount">0</div><div class="lbl">Expert Faculty</div></div>
+                    <div class="hero-stat"><div class="num">4.9 ★</div><div class="lbl">Parent Rating</div></div>
+                </div>
+            </div>
+            <div class="hero-logo">
+                <img src="channels4_profile.jpg" alt="The Heaven Point">
+                <div class="est">Established 2010</div>
+            </div>
+        </div>
     </section>
-  </main>
 
-  <!-- Mobile Bottom Nav -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t flex justify-around py-3 z-40">
-    <a href="#" class="flex flex-col items-center text-brand-600"><i class="fas fa-home text-xl"></i><span class="text-xs">Home</span></a>
-    <a href="#batches" class="flex flex-col items-center text-gray-500"><i class="fas fa-book"></i><span class="text-xs">Courses</span></a>
-    <a href="#" onclick="openNotes()" class="flex flex-col items-center text-gray-500"><i class="fas fa-file-alt"></i><span class="text-xs">Notes</span></a>
-    <a href="resistor.html" class="flex flex-col items-center text-gray-500"><i class="fas fa-user"></i><span class="text-xs">Profile</span></a>
-  </nav>
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <div class="main-layout">
+            <div class="content-area">
 
-  <!-- Floating WhatsApp -->
-  <button id="whatsappBtn" class="fixed bottom-24 right-5 w-14 h-14 bg-emerald-500 rounded-full shadow-2xl flex items-center justify-center text-white text-2xl z-30 hover:scale-110 transition">
-    <i class="fab fa-whatsapp"></i>
-  </button>
-</div>
+                <!-- FEATURED COURSE -->
+                <section id="featured" style="padding-top:20px;">
+                    <h2 class="section-title"><i class="fas fa-star"></i> Featured Course</h2>
+                    <div class="card" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+                        <img src="https://i.ibb.co/4wrtJTbw/file-00000000156061f5b89e4f5e05b6f71f.png" alt="SSC Course" style="width:100px;height:100px;border-radius:10px;object-fit:cover;box-shadow:var(--shadow);flex-shrink:0;">
+                        <div style="flex:1;min-width:220px;">
+                            <span style="background:var(--red-light);color:var(--red);font-size:0.64rem;font-weight:700;padding:3px 10px;border-radius:3px;">🔥 MOST POPULAR</span>
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--navy);margin:6px 0;">SSC, Bank, Railway</h3>
+                            <p style="font-size:0.8rem;color:var(--gray-600);margin-bottom:10px;">Complete competitive exam preparation with daily mock tests, live classes & expert mentorship from experienced faculty.</p>
+                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                                <span style="font-size:1.3rem;font-weight:800;color:var(--navy);">₹1,500<span style="font-size:0.66rem;color:var(--gray-500);">/mo</span></span>
+                                <span style="font-size:0.72rem;text-decoration:line-through;color:var(--gray-400);">₹2,000</span>
+                                <span style="background:var(--green-light);color:var(--green);font-size:0.62rem;font-weight:600;padding:3px 8px;border-radius:3px;">33% OFF</span>
+                                <a href="formTHPSsc.html" class="btn btn-primary btn-sm">Enroll Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-<script>
-  function openNotes(){ window.open('thp-special-notes.html', '_blank'); }
-  function openLecture(){ window.open('thp-online-lecture.html', '_blank'); }
+                <!-- COURSES -->
+                <section id="courses">
+                    <h2 class="section-title"><i class="fas fa-graduation-cap"></i> All Courses & Batches</h2>
+                    <div class="table-wrap" style="margin-bottom:22px;">
+                        <table>
+                            <thead><tr><th>S.No.</th><th>Course Name</th><th>Duration</th><th>Eligibility</th><th>Fee (Monthly)</th><th>Status</th><th>Action</th></tr></thead>
+                            <tbody>
+                                <tr><td>1</td><td><strong>SSC, Bank, Railway</strong></td><td>6 Months</td><td>Graduate</td><td>₹1,500</td><td><span class="status-open">Open</span></td><td><a href="formTHPSsc.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+                                <tr><td>2</td><td><strong>CUET (UG)</strong></td><td>1 Year</td><td>12th Pass</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+                                <tr><td>3</td><td><strong>NEET (Medical)</strong></td><td>2 Years</td><td>12th (PCB)</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+                                <tr><td>4</td><td><strong>IIT-JEE (Engineering)</strong></td><td>2 Years</td><td>12th (PCM)</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+                                <tr><td>5</td><td><strong>Class 3rd - 8th</strong></td><td>Academic Year</td><td>Respective Class</td><td>₹1,000</td><td><span class="status-open">Open</span></td><td><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+                                <tr><td>6</td><td><strong>Class 9th - 12th</strong></td><td>Academic Year</td><td>Respective Class</td><td>₹1,500-2,500</td><td><span class="status-open">Open</span></td><td><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-  const whatsappMsg = encodeURIComponent("Hello, I'm interested in The Heaven Point Coaching.");
-  document.getElementById("whatsappBtn").onclick = () => window.open(`https://wa.me/919648837922?text=${whatsappMsg}`, '_blank');
-  document.getElementById("whatsappBtn2").onclick = () => window.open(`https://wa.me/919648837922?text=${whatsappMsg}`, '_blank');
+                    <h3 style="font-size:1.05rem;font-weight:600;color:var(--navy);margin-bottom:14px;">📚 Premium Batches</h3>
+                    <div class="courses-grid">
+                        <div class="course-card"><img src="https://i.ibb.co/4wXc33T0/828aed35-38f7-4097-9751-0ef7957f76e9-thumbnail.webp" alt="CUET"><div class="info"><h4>CUET</h4><p>University entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
+                        <div class="course-card"><img src="https://i.ibb.co/1JL6h6NC/5f89c41f-0897-4c04-99cd-3a66bbe89b26.png" alt="NEET"><div class="info"><h4>NEET</h4><p>Medical entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
+                        <div class="course-card"><img src="https://i.ibb.co/7NyBDHSM/2f91edf2-41ad-4f3d-b079-4e452f2d2fee-3.png" alt="IIT-JEE"><div class="info"><h4>IIT-JEE</h4><p>Engineering entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
+                        <div class="course-card"><img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="School"><div class="info"><h4>Class 3-12</h4><p>All boards, all subjects covered</p><div class="price">₹1,000-2,500</div><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
+                    </div>
+                </section>
 
-  // Mobile menu
-  const menu = document.getElementById("mobileMenu");
-  document.getElementById("mobileMenuBtn").onclick = () => menu.classList.remove("hidden");
-  document.getElementById("closeMobileMenu").onclick = () => menu.classList.add("hidden");
-  menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => menu.classList.add('hidden')));
+                <!-- FACULTY -->
+                <section id="faculty">
+                    <h2 class="section-title"><i class="fas fa-chalkboard-teacher"></i> Our Distinguished Faculty</h2>
+                    <div class="faculty-swiper swiper">
+                        <div class="swiper-wrapper" id="facultyWrapper"><div class="swiper-slide"><div class="card" style="text-align:center;padding:40px;color:var(--gray-500);">Loading faculty data...</div></div></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </section>
 
-  document.getElementById('notifBtn').addEventListener('click', ()=> window.location.href='notification.html');
+                <!-- DEMO LECTURE -->
+                <section id="demo">
+                    <h2 class="section-title"><i class="fas fa-play-circle"></i> Demo Lecture</h2>
+                    <div class="video-wrap">
+                        <iframe src="https://www.youtube.com/embed/kD2CA6rAaKA?modestbranding=1&rel=0&autoplay=1&mute=1" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                    <p style="text-align:center;color:var(--gray-500);font-size:0.82rem;margin-top:10px;">Shivam Sir · Mathematics Expert (7+ Years Experience)</p>
+                    <div style="text-align:center;margin-top:10px;">
+                        <a href="#" onclick="openLecture()" class="btn btn-primary btn-sm">More Lectures <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </section>
 
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      if(href === "#") return;
-      const target = document.querySelector(href);
-      if(target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
-    });
-  });
-</script>
+                <!-- GALLERY -->
+                <section id="gallery">
+                    <h2 class="section-title"><i class="fas fa-images"></i> Photo Gallery</h2>
+                    <div class="gallery-grid" id="galleryGrid"></div>
+                </section>
+
+                <!-- ADMISSION -->
+                <section id="admission">
+                    <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Admission Process</h2>
+                    <div class="card">
+                        <div class="steps-grid">
+                            <div class="step-card step-blue"><div class="step-num">01</div><div class="step-title">Fill Application</div><div class="step-desc">Online or Offline Form</div></div>
+                            <div class="step-card step-green"><div class="step-num">02</div><div class="step-title">Submit Documents</div><div class="step-desc">ID Proof & Marksheets</div></div>
+                            <div class="step-card step-orange"><div class="step-num">03</div><div class="step-title">Entrance Test</div><div class="step-desc">If Applicable</div></div>
+                            <div class="step-card step-gray"><div class="step-num">04</div><div class="step-title">Pay Fee & Confirm</div><div class="step-desc">Secure Your Seat</div></div>
+                        </div>
+                        <div style="text-align:center;margin-top:22px;">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" class="btn btn-gold">Apply Now for Admission <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ABOUT -->
+                <section id="about">
+                    <h2 class="section-title"><i class="fas fa-info-circle"></i> About The Heaven Point</h2>
+                    <div class="card" style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;">
+                        <img src="channels4_profile.jpg" alt="THP" style="width:80px;height:80px;border-radius:10px;object-fit:cover;border:2px solid var(--gray-200);flex-shrink:0;">
+                        <div style="flex:1;min-width:220px;">
+                            <p style="font-size:0.84rem;color:var(--gray-600);line-height:1.7;">We offer <strong>Commerce, Maths, Physics, Chemistry, Biology, English</strong> & more. Specialized courses for <strong>CUET, NEET, IIT-JEE</strong> with regular tests, premium study materials, and personalized mentorship. Our faculty consists of experienced educators dedicated to student success.</p>
+                            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
+                                <span style="background:var(--blue-light);color:var(--blue);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Expert Faculty</span>
+                                <span style="background:var(--green-light);color:var(--green);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Small Batches</span>
+                                <span style="background:var(--orange-light);color:var(--orange);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Mock Tests</span>
+                                <span style="background:var(--gold-light);color:var(--gold);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Affordable Fees</span>
+                                <span style="background:var(--gray-100);color:var(--gray-600);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Doubt Sessions</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar" id="contact">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-link"></i> Quick Links</div>
+                    <a href="#courses" class="quick-link"><i class="fas fa-chevron-right"></i> Available Courses</a>
+                    <a href="#featured" class="quick-link"><i class="fas fa-chevron-right"></i> Featured Course (SSC)</a>
+                    <a href="#admission" class="quick-link"><i class="fas fa-chevron-right"></i> Admission 2025-26</a>
+                    <a href="#" onclick="openNotes()" class="quick-link"><i class="fas fa-chevron-right"></i> Study Material / Notes</a>
+                    <a href="#" onclick="openLecture()" class="quick-link"><i class="fas fa-chevron-right"></i> Video Lectures</a>
+                    <a href="#faculty" class="quick-link"><i class="fas fa-chevron-right"></i> Our Faculty</a>
+                    <a href="#gallery" class="quick-link"><i class="fas fa-chevron-right"></i> Photo Gallery</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-phone"></i> Contact Information</div>
+                    <ul class="info-list">
+                        <li><i class="fas fa-phone"></i> <span><strong>9648837922</strong></span></li>
+                        <li><i class="fas fa-envelope"></i> <span>theheavenpoint@gmail.com</span></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <span>Heaven Point Coaching, Delhi, India</span></li>
+                        <li><i class="fas fa-clock"></i> <span>Monday - Saturday: 7:00 AM to 8:00 PM</span></li>
+                        <li><i class="fas fa-calendar"></i> <span>Sunday: By Appointment Only</span></li>
+                    </ul>
+                    <div class="social-row" style="margin-top:12px;">
+                        <a href="https://t.me/heavenpoint" target="_blank" style="background:#0088cc;"><i class="fab fa-telegram"></i></a>
+                        <a href="https://www.instagram.com/theheavenpoint/" target="_blank" style="background:#e4405f;"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" style="background:#ff0000;"><i class="fab fa-youtube"></i></a>
+                        <a href="https://wa.me/919648837922" target="_blank" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://facebook.com" target="_blank" style="background:#1877f2;"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-check-circle"></i> Why Choose Us</div>
+                    <ul class="info-list">
+                        <li><i class="fas fa-check" style="color:var(--green);"></i> 15+ Years of Excellence</li>
+                        <li><i class="fas fa-check" style="color:var(--green);"></i> Highly Qualified Faculty</li>
+                        <li><i class="fas fa-check" style="color:var(--green);"></i> Small Batch Size (Max 30)</li>
+                        <li><i class="fas fa-check" style="color:var(--green);"></i> Regular Mock Tests & Analysis</li>
+                        <li><i class="fas fa-check" style="color:var(--green);"></i> Affordable Fee Structure</li>
+                        <li><i class="fas fa-check" style="color:var(--green);"></i> Dedicated Doubt Sessions</li>
+                        <li><i class="fas fa-check" style="color:var(--green);"></i> Free Premium Study Material</li>
+                        <li><i class="fas fa-check" style="color:var(--green);"></i> Parent-Teacher Meetings</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>The Heaven Point</h4>
+                    <p style="font-size:0.72rem;">Premium coaching institute dedicated to nurturing students for competitive exams and academic excellence since 2010.</p>
+                    <p style="font-size:0.68rem;margin-top:6px;">ISO 9001:2015 Certified Institute</p>
+                    <p style="font-size:0.68rem;">Registered under Govt. of India</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <a href="#">Home</a><a href="#courses">Courses</a><a href="#faculty">Faculty</a>
+                    <a href="#gallery">Gallery</a><a href="#admission">Admission</a><a href="#about">About Us</a>
+                    <a href="#contact">Contact</a><a href="#">Sitemap</a>
+                </div>
+                <div>
+                    <h4>Our Courses</h4>
+                    <a href="#">CUET (UG Entrance)</a><a href="#">NEET (Medical)</a>
+                    <a href="#">IIT-JEE (Engineering)</a><a href="#">SSC / Bank / Railway</a>
+                    <a href="#">Class 3rd - 8th</a><a href="#">Class 9th - 12th</a>
+                    <a href="#">Crash Courses</a><a href="#">Test Series</a>
+                </div>
+                <div>
+                    <h4>Contact Us</h4>
+                    <p style="font-size:0.72rem;">📞 9648837922</p>
+                    <p style="font-size:0.72rem;">✉️ theheavenpoint@gmail.com</p>
+                    <p style="font-size:0.72rem;">📍 Heaven Point Coaching, Delhi, India</p>
+                    <p style="font-size:0.72rem;margin-top:6px;">🕐 Mon-Sat: 7AM-8PM</p>
+                    <div class="social-row" style="margin-top:10px;">
+                        <a href="#" style="background:#1877f2;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" style="background:#e4405f;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="background:#ff0000;"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 The Heaven Point. All Rights Reserved. | Terms & Conditions | Privacy Policy | Disclaimer | Sitemap</p>
+                <p style="margin-top:4px;">Best viewed in Chrome 90+, Firefox 88+, Safari 14+ at 1024x768 resolution | Last Updated: June 2025</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <div class="bottom-nav">
+        <a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="#courses"><i class="fas fa-book"></i><span>Courses</span></a>
+        <a href="#faculty"><i class="fas fa-users"></i><span>Faculty</span></a>
+        <a href="#contact"><i class="fas fa-phone"></i><span>Contact</span></a>
+    </div>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/919648837922" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
+            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
+            storageBucket: "starlet-registor.firebasestorage.app", messagingSenderId: "904193225045",
+            appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        function openNotes() { window.open('thp-special-notes.html', '_blank'); }
+        function openLecture() { window.open('thp-online-lecture.html', '_blank'); }
+
+        let fSwiper = null;
+        db.ref('thp-faculty').on('value', snap => {
+            const w = document.getElementById('facultyWrapper'); w.innerHTML = '';
+            const list = [];
+            if(snap.exists()) {
+                snap.forEach(c => {
+                    const f = Object.assign({id:c.key}, c.val());
+                    if(!f.images||!Array.isArray(f.images)) f.images = f.image?[f.image]:[];
+                    list.push(f);
+                });
+                list.sort((a,b)=>(a.order||0)-(b.order||0));
+            }
+            document.getElementById('facultyCount').textContent = list.length;
+            if(!list.length) { w.innerHTML = '<div class="swiper-slide"><div class="card" style="text-align:center;padding:30px;color:var(--gray-500);">Faculty details will be updated soon.</div></div>'; }
+            else {
+                list.forEach(f => {
+                    const img = (f.images&&f.images.length)?f.images[0]:(f.image||`https://ui-avatars.com/api/?name=${encodeURIComponent(f.name)}&size=300&background=1a2a4a&color=fff`);
+                    w.innerHTML += `<div class="swiper-slide"><div class="faculty-card"><img src="${img}" alt="${f.name}" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&fit=crop'"><div class="info"><h4>${f.name}</h4><div class="role">${f.designation||'Faculty'}</div><div class="subj">${f.subject||''}</div></div></div></div>`;
+                });
+            }
+            if(fSwiper) fSwiper.destroy();
+            fSwiper = new Swiper('.faculty-swiper', { slidesPerView:1, spaceBetween:16, pagination:{el:'.faculty-swiper .swiper-pagination',clickable:true}, breakpoints:{500:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}} });
+        });
+
+        const staticImgs = ['gallarymini1.jpg','gallarymini2.jpg','WhatsApp Image 2025-01-08 at 22.36.38.jpeg','cuet.jpg','https://i.ibb.co/WN8Cz7Tm/IMG20260502163511.avif','https://i.ibb.co/Hpk0cNc5/IMG20260502160220.avif'];
+        db.ref('thp-gallery').once('value').then(snap => {
+            let all = [...staticImgs];
+            if(snap.exists()) snap.forEach(c => { if(c.val().url) all.push(c.val().url); });
+            document.getElementById('galleryGrid').innerHTML = [...new Set(all)].map(i => `<div class="gallery-item"><img src="${i}" alt="Gallery" onerror="this.style.display='none'"></div>`).join('');
+        });
+
+        document.querySelectorAll('#navLinks a').forEach(a => {
+            a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('show'));
+        });
+    </script>
 </body>
 </html>
