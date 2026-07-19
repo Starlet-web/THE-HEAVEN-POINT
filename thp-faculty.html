@@ -1,168 +1,823 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Faculty | THP Coaching</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:#f8fafc; color:#0f172a; line-height:1.6; }
-        .top-bar { background:#0f172a; color:#cbd5e1; font-size:0.8rem; padding:8px 20px; display:flex; justify-content:center; gap:24px; flex-wrap:wrap; }
-        .top-bar i { color:#f59e0b; margin-right:6px; }
-        .navbar { background:white; border-bottom:1px solid #e2e8f0; position:sticky; top:0; z-index:100; padding:0 24px; box-shadow:0 1px 3px rgba(0,0,0,0.02); }
-        .navbar-inner { max-width:1280px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:68px; }
-        .logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:#0f172a; font-weight:700; font-size:1.4rem; }
-        .logo img { height:38px; } .logo span { color:#b45309; }
-        .nav-links { display:flex; gap:8px; } .nav-links a { color:#475569; text-decoration:none; padding:8px 16px; border-radius:6px; font-weight:500; transition:0.2s; }
-        .nav-links a:hover, .nav-links a.active { background:#f1f5f9; color:#0f172a; }
-        .mobile-menu { display:none; background:none; border:none; font-size:1.5rem; }
-        .hero { background:linear-gradient(135deg,#eff6ff,#ffffff); padding:60px 20px; text-align:center; border-bottom:1px solid #e2e8f0; }
-        .hero-badge { display:inline-block; background:white; border:1px solid #cbd5e1; padding:6px 18px; border-radius:30px; font-size:0.8rem; font-weight:600; color:#1e3a8a; margin-bottom:16px; }
-        .hero h1 { font-family:'Merriweather',serif; font-size:2.5rem; margin-bottom:12px; }
-        .hero h1 span { color:#b45309; border-bottom:4px solid #fde68a; }
-        .hero p { max-width:640px; margin:0 auto 30px; color:#475569; }
-        .hero-stats { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; }
-        .hero-stat .number { font-weight:800; font-size:1.8rem; color:#1e3a8a; } .hero-stat .label { font-size:0.8rem; color:#64748b; }
-        .toolbar { max-width:800px; margin:-24px auto 40px; padding:0 20px; display:flex; gap:12px; flex-wrap:wrap; }
-        .search-box { flex:1; min-width:250px; position:relative; }
-        .search-box input { width:100%; padding:14px 20px 14px 48px; border:1px solid #cbd5e1; border-radius:12px; font-size:0.95rem; background:white; transition:0.2s; }
-        .search-box input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,0.1); outline:none; }
-        .search-box i { position:absolute; left:16px; top:50%; transform:translateY(-50%); color:#94a3b8; }
-        .filter-select { padding:14px 20px; border:1px solid #cbd5e1; border-radius:12px; background:white; min-width:160px; }
-        .faculty-grid { max-width:1280px; margin:0 auto 60px; padding:0 20px; display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:28px; }
-        .card { background:white; border:1px solid #e2e8f0; border-radius:16px; overflow:hidden; transition:0.3s; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-        .card:hover { transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,0.08); }
-        .card-photo { height:240px; background:#f1f5f9; position:relative; overflow:hidden; }
-        .card-photo .swiper { width:100%; height:100%; }
-        .card-photo .swiper-slide img { width:100%; height:100%; object-fit:cover; }
-        .photo-badge { position:absolute; bottom:12px; right:12px; background:rgba(0,0,0,0.65); color:white; font-size:0.7rem; padding:4px 10px; border-radius:20px; z-index:2; }
-        .verified-tick { position:absolute; top:12px; left:12px; background:#10b981; color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; z-index:2; }
-        .card-body { padding:20px; }
-        .name { font-weight:700; font-size:1.2rem; margin-bottom:2px; }
-        .designation { color:#2563eb; font-weight:600; font-size:0.85rem; margin-bottom:8px; }
-        .subjects { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
-        .subject-tag { background:#f1f5f9; padding:4px 12px; border-radius:20px; font-size:0.72rem; }
-        .details-row { display:flex; justify-content:space-around; margin-bottom:16px; padding:12px 0; border-top:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9; }
-        .detail-item .val { font-weight:700; } .detail-item .lbl { font-size:0.7rem; color:#94a3b8; }
-        .bio-excerpt { font-size:0.85rem; color:#475569; margin-bottom:16px; }
-        .social-row { display:flex; gap:10px; margin-bottom:14px; }
-        .social-row a { color:#64748b; background:#f8fafc; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:0.2s; text-decoration:none; }
-        .social-row a:hover { background:#1e3a8a; color:white; }
-        .view-btn { width:100%; padding:12px; background:white; border:1.5px solid #cbd5e1; border-radius:10px; font-weight:600; color:#1e3a8a; cursor:pointer; transition:0.2s; }
-        .view-btn:hover { background:#1e3a8a; color:white; }
-        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
-        .modal-overlay.active { display:flex; }
-        .modal-dialog { background:white; border-radius:20px; max-width:700px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 25px 60px rgba(0,0,0,0.15); }
-        .modal-close { position:sticky; top:16px; float:right; margin-right:16px; background:white; border:1px solid #e2e8f0; width:36px; height:36px; border-radius:50%; cursor:pointer; z-index:10; display:flex; align-items:center; justify-content:center; }
-        .modal-swiper { height:380px; background:#f1f5f9; }
-        .modal-swiper .swiper-slide img { width:100%; height:100%; object-fit:cover; }
-        .modal-content { padding:28px; }
-        .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
-        .info-card { background:#f8fafc; border-radius:12px; padding:16px; text-align:center; }
-        .bio-block { background:#f8fafc; border-left:4px solid #b45309; padding:18px; border-radius:0 10px 10px 0; margin-bottom:20px; }
-        .modal-social { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-        .modal-social a { padding:10px 20px; border-radius:30px; color:white; text-decoration:none; font-weight:600; font-size:0.85rem; }
-        .social-yt { background:#ef4444; } .social-ig { background:#e4405f; } .social-fb { background:#2563eb; } .social-web { background:#1e3a8a; }
-        .no-results { grid-column:1/-1; text-align:center; padding:60px; color:#94a3b8; }
-        .skeleton { background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:8px; }
-        @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
-        @media (max-width:768px) { .nav-links { display:none; } .mobile-menu { display:block; } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Our Faculty | THP Coaching</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+
+    /* top bar */
+    .top-bar {
+      background: #0f172a;
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      padding: 8px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .top-bar i {
+      color: #f59e0b;
+      margin-right: 5px;
+    }
+
+    /* navbar */
+    .navbar {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      padding: 0 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .navbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+    .logo img {
+      height: 36px;
+    }
+    .logo span {
+      color: #b45309;
+    }
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+    .nav-links a {
+      color: #334155;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 600;
+    }
+    .mobile-menu {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      color: #0f172a;
+    }
+
+    /* hero */
+    .hero {
+      background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+      padding: 45px 20px 40px;
+      text-align: center;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 5px 18px;
+      border-radius: 24px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1e3a8a;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 2.4rem;
+      margin-bottom: 8px;
+    }
+    .hero h1 span {
+      color: #b45309;
+      border-bottom: 3px solid #fde68a;
+    }
+    .hero p {
+      max-width: 550px;
+      margin: 0 auto 24px;
+      color: #475569;
+      font-size: 1rem;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero-stat .number {
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: #1e3a8a;
+    }
+    .hero-stat .label {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    /* toolbar */
+    .toolbar {
+      max-width: 800px;
+      margin: -24px auto 35px;
+      padding: 0 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 10;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 13px 18px 13px 44px;
+      border: 1px solid #cbd5e1;
+      border-radius: 32px;
+      font-size: 0.9rem;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      transition: 0.2s;
+    }
+    .search-box input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+      outline: none;
+    }
+    .search-box i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
+    .filter-select {
+      padding: 13px 20px;
+      border: 1px solid #cbd5e1;
+      border-radius: 32px;
+      background: white;
+      min-width: 150px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      cursor: pointer;
+    }
+
+    /* faculty grid – aur chhote cards */
+    .faculty-grid {
+      max-width: 1100px;
+      margin: 0 auto 50px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    /* card – compact size, A4 photo maintained */
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      max-width: 300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.07);
+    }
+
+    /* A4 proportion photo container */
+    .card-photo {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      background: #f1f5f9;
+      padding-bottom: 141.4%; /* A4 ratio */
+    }
+    .card-photo .swiper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .card-photo .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      border-radius: 16px;
+      z-index: 5;
+      backdrop-filter: blur(4px);
+    }
+    .verified-tick {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #10b981;
+      color: white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      z-index: 5;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .card-body {
+      padding: 14px 12px 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+    .designation {
+      color: #2563eb;
+      font-weight: 600;
+      font-size: 0.75rem;
+      margin-bottom: 6px;
+    }
+    .subjects {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .subject-tag {
+      background: #f1f5f9;
+      padding: 3px 10px;
+      border-radius: 16px;
+      font-size: 0.68rem;
+      font-weight: 500;
+    }
+    .details-row {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 12px;
+      padding: 10px 0;
+      border-top: 1px solid #f1f5f9;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .detail-item .val {
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+    .detail-item .lbl {
+      font-size: 0.62rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+    .bio-excerpt {
+      font-size: 0.75rem;
+      color: #475569;
+      margin-bottom: 12px;
+      line-height: 1.4;
+      flex: 1;
+    }
+    .social-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .social-row a {
+      color: #64748b;
+      background: #f8fafc;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      text-decoration: none;
+      font-size: 0.75rem;
+    }
+    .social-row a:hover {
+      background: #1e3a8a;
+      color: white;
+    }
+    .view-btn {
+      width: 100%;
+      padding: 9px;
+      background: white;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 24px;
+      font-weight: 600;
+      color: #1e3a8a;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.8rem;
+      margin-top: auto;
+    }
+    .view-btn:hover {
+      background: #1e3a8a;
+      color: white;
+      border-color: #1e3a8a;
+    }
+
+    /* modal – A4 image fit in screen */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-dialog {
+      background: white;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .modal-close {
+      position: sticky;
+      top: 12px;
+      float: right;
+      margin-right: 12px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    /* modal image container – A4 proportion and max-height to fit screen */
+    .modal-swiper {
+      width: 100%;
+      background: #f1f5f9;
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1 / 1.414;
+      max-height: 65vh;
+    }
+    .modal-swiper .swiper {
+      width: 100%;
+      height: 100%;
+    }
+    .modal-swiper .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .modal-content {
+      padding: 20px 20px 24px;
+    }
+    .modal-content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .role {
+      color: #2563eb;
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .info-card {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .ic-val {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .ic-lbl {
+      font-size: 0.68rem;
+      color: #64748b;
+    }
+    .bio-block {
+      background: #f8fafc;
+      border-left: 4px solid #b45309;
+      padding: 16px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+    .modal-social {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .modal-social a {
+      padding: 8px 18px;
+      border-radius: 24px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .social-yt { background: #ef4444; }
+    .social-ig { background: #e4405f; }
+    .social-fb { background: #2563eb; }
+    .social-web { background: #1e3a8a; }
+
+    .no-results {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 60px;
+      color: #94a3b8;
+    }
+    .skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        background: white;
+        width: 100%;
+        flex-direction: column;
+        padding: 16px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+      }
+      .nav-links.show {
+        display: flex;
+      }
+      .mobile-menu {
+        display: block;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .faculty-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      }
+      .modal-swiper {
+        max-height: 50vh;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="top-bar"><span><i class="fas fa-phone-alt"></i> +91-98765 43210</span><span><i class="fas fa-envelope"></i> info@thpcoaching.com</span></div>
-    <header class="navbar">
-        <div class="navbar-inner">
-            <a href="#" class="logo"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' rx='10' fill='%231e3a8a'/%3E%3Ctext x='20' y='26' text-anchor='middle' fill='white' font-size='18'%3E🎓%3C/text%3E%3C/svg%3E"> <span>THP</span> Coaching</a>
-            <button class="mobile-menu" onclick="document.getElementById('navLinks').classList.toggle('show')"><i class="fas fa-bars"></i></button>
-            <div class="nav-links" id="navLinks"><a href="#">Home</a><a href="#" class="active">Faculty</a><a href="#">Courses</a><a href="#">Contact</a></div>
-        </div>
-    </header>
-    <section class="hero"><div class="hero-badge">⭐ Trusted by 10,000+ Students</div><h1>Meet Our <span>Expert Faculty</span></h1><p>Passionate educators with proven results</p><div class="hero-stats"><div class="hero-stat"><div class="number" id="facultyCount">0</div><div class="label">Faculty</div></div><div class="hero-stat"><div class="number">15+</div><div class="label">Years</div></div><div class="hero-stat"><div class="number">10K+</div><div class="label">Students</div></div></div></section>
-    <div class="toolbar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search faculty..." oninput="renderFaculty()"></div><select class="filter-select" id="subjectFilter" onchange="renderFaculty()"><option value="all">📚 All Subjects</option></select></div>
-    <div class="faculty-grid" id="facultyGrid"></div>
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)"><div class="modal-dialog" id="modalDialog"></div></div>
+  <div class="top-bar">
+    <span><i class="fas fa-phone-alt"></i> +91-98765 43210</span>
+    <span><i class="fas fa-envelope"></i> info@thpcoaching.com</span>
+  </div>
 
-    <script>
-        const firebaseConfig = { apiKey:"AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain:"starlet-registor.firebaseapp.com", databaseURL:"https://starlet-registor-default-rtdb.firebaseio.com", projectId:"starlet-registor", storageBucket:"starlet-registor.firebasestorage.app", messagingSenderId:"904193225045", appId:"1:904193225045:web:0c9ed3f3d7251862ff7fdc" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database(), DB_PATH='thp-faculty';
-        let allFaculty=[], cardSwipers={};
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="logo">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%231e3a8a'/%3E%3Ctext x='20' y='27' text-anchor='middle' fill='white' font-size='20' font-family='Arial'%3E🎓%3C/text%3E%3C/svg%3E" alt="logo">
+        <span>THP</span> Coaching
+      </a>
+      <button class="mobile-menu" id="mobileMenuBtn" aria-label="menu"><i class="fas fa-bars"></i></button>
+      <div class="nav-links" id="navLinks">
+        <a href="#">Home</a>
+        <a href="#" class="active">Faculty</a>
+        <a href="#">Courses</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </header>
 
-        function loadFaculty(){
-            document.getElementById('facultyGrid').innerHTML = Array(3).fill('<div class="card"><div class="card-photo skeleton" style="height:240px;"></div><div class="card-body"><div class="skeleton" style="height:24px;width:70%;margin-bottom:8px;"></div><div class="skeleton" style="height:16px;width:40%;"></div></div></div>').join('');
-            db.ref(DB_PATH).on('value', snap => {
-                allFaculty=[]; const subjects=new Set();
-                if(snap.exists()) snap.forEach(c=>{ const d={id:c.key,...c.val()}; if(!d.images)d.images=d.image?[d.image]:[]; allFaculty.push(d); if(d.subject)subjects.add(d.subject); });
-                allFaculty.sort((a,b)=>(a.order||0)-(b.order||0));
-                document.getElementById('facultyCount').textContent=allFaculty.length;
-                const filter=document.getElementById('subjectFilter'); filter.innerHTML='<option value="all">📚 All Subjects</option>';
-                [...subjects].sort().forEach(s=>filter.innerHTML+=`<option value="${s}">📖 ${s}</option>`);
-                renderFaculty();
+  <section class="hero">
+    <div class="hero-badge">⭐ Trusted by 10,000+ Students</div>
+    <h1>Meet Our <span>Expert Faculty</span></h1>
+    <p>Passionate educators dedicated to your success</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="number" id="facultyCount">0</div><div class="label">Faculty</div></div>
+      <div class="hero-stat"><div class="number">15+</div><div class="label">Years</div></div>
+      <div class="hero-stat"><div class="number">10K+</div><div class="label">Students</div></div>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search by name, subject..." oninput="renderFaculty()">
+    </div>
+    <select class="filter-select" id="subjectFilter" onchange="renderFaculty()">
+      <option value="all">📚 All Subjects</option>
+    </select>
+  </div>
+
+  <div class="faculty-grid" id="facultyGrid"></div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+    <div class="modal-dialog" id="modalDialog"></div>
+  </div>
+
+  <!-- Firebase + Swiper -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <script>
+    (function() {
+      const firebaseConfig = {
+        apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s",
+        authDomain: "starlet-registor.firebaseapp.com",
+        databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com",
+        projectId: "starlet-registor",
+        storageBucket: "starlet-registor.firebasestorage.app",
+        messagingSenderId: "904193225045",
+        appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
+      const DB_PATH = 'thp-faculty';
+
+      let allFaculty = [];
+      let cardSwipers = {};
+
+      document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+        document.getElementById('navLinks').classList.toggle('show');
+      });
+
+      function loadFaculty() {
+        const grid = document.getElementById('facultyGrid');
+        grid.innerHTML = Array(3).fill(`
+          <div class="card">
+            <div class="card-photo skeleton" style="padding-bottom:141.4%;"></div>
+            <div class="card-body">
+              <div class="skeleton" style="height:20px; width:70%; margin-bottom:6px;"></div>
+              <div class="skeleton" style="height:12px; width:40%;"></div>
+            </div>
+          </div>`).join('');
+
+        db.ref(DB_PATH).on('value', snap => {
+          allFaculty = [];
+          const subjectsSet = new Set();
+          if (snap.exists()) {
+            snap.forEach(child => {
+              const data = { id: child.key, ...child.val() };
+              if (!data.images) {
+                data.images = data.image ? [data.image] : [];
+              }
+              allFaculty.push(data);
+              if (data.subject) subjectsSet.add(data.subject);
             });
+          }
+          allFaculty.sort((a, b) => (a.order || 0) - (b.order || 0));
+          document.getElementById('facultyCount').textContent = allFaculty.length;
+
+          const filterSelect = document.getElementById('subjectFilter');
+          filterSelect.innerHTML = '<option value="all">📚 All Subjects</option>';
+          [...subjectsSet].sort().forEach(sub => {
+            filterSelect.innerHTML += `<option value="${sub}">📖 ${sub}</option>`;
+          });
+          renderFaculty();
+        });
+      }
+
+      function destroyCardSwipers() {
+        Object.values(cardSwipers).forEach(sw => {
+          if (sw && sw.destroy) sw.destroy(true, true);
+        });
+        cardSwipers = {};
+      }
+
+      function renderFaculty() {
+        const grid = document.getElementById('facultyGrid');
+        const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+        const subjectFilter = document.getElementById('subjectFilter')?.value || 'all';
+
+        let filtered = allFaculty.filter(f => {
+          const matchSearch = !query || 
+            (f.name || '').toLowerCase().includes(query) ||
+            (f.subject || '').toLowerCase().includes(query) ||
+            (f.designation || '').toLowerCase().includes(query) ||
+            (f.bio || '').toLowerCase().includes(query);
+          return matchSearch && (subjectFilter === 'all' || f.subject === subjectFilter);
+        });
+
+        if (!filtered.length) {
+          grid.innerHTML = `<div class="no-results"><i class="fas fa-user-slash" style="font-size:3rem;opacity:0.3;"></i><h3>No faculty found</h3></div>`;
+          destroyCardSwipers();
+          return;
         }
 
-        function renderFaculty(){
-            const grid=document.getElementById('facultyGrid');
-            const q=(document.getElementById('searchInput')?.value||'').toLowerCase();
-            const subj=document.getElementById('subjectFilter')?.value||'all';
-            let filtered=allFaculty.filter(f=>{
-                const ms=!q||(f.name||'').toLowerCase().includes(q)||(f.subject||'').toLowerCase().includes(q)||(f.designation||'').toLowerCase().includes(q)||(f.bio||'').toLowerCase().includes(q);
-                return ms && (subj==='all'||f.subject===subj);
-            });
-            if(!filtered.length){ grid.innerHTML='<div class="no-results"><i class="fas fa-user-slash" style="font-size:3rem;opacity:0.3;"></i><h3>No faculty found</h3></div>'; return; }
-            grid.innerHTML=filtered.map(f=>{
-                const imgs=f.images.length?f.images:(f.image?[f.image]:[]);
-                const s=f.social||{};
-                return `<div class="card" onclick="openModal('${f.id}')">
-                    <div class="card-photo" id="cardSwiper-${f.id}">
-                        <div class="swiper"><div class="swiper-wrapper">${imgs.map(img=>`<div class="swiper-slide"><img src="${img}" onerror="this.style.display='none'"></div>`).join('')||'<div class="swiper-slide"><img src="https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=400&background=1e3a8a&color=fff"></div>'}</div></div>
-                        <div class="verified-tick"><i class="fas fa-check"></i></div>
-                        ${imgs.length>1?`<div class="photo-badge"><i class="fas fa-images"></i> ${imgs.length}</div>`:''}
-                    </div>
-                    <div class="card-body">
-                        <div class="name">${escapeHTML(f.name)}</div>
-                        <div class="designation">${escapeHTML(f.designation||'Senior Faculty')}</div>
-                        <div class="subjects"><span class="subject-tag">${escapeHTML(f.subject)}</span></div>
-                        <div class="details-row"><div class="detail-item"><div class="val">${escapeHTML(f.experience||'5+ yrs')}</div><div class="lbl">Experience</div></div><div class="detail-item"><div class="val">${escapeHTML(f.qualification||'MA/BEd')}</div><div class="lbl">Qualification</div></div></div>
-                        <div class="bio-excerpt">${escapeHTML((f.bio||'').substring(0,100))}...</div>
-                        <div class="social-row">${s.youtube?`<a href="${s.youtube}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-youtube"></i></a>`:''}${s.instagram?`<a href="${s.instagram}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-instagram"></i></a>`:''}${s.facebook?`<a href="${s.facebook}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-facebook-f"></i></a>`:''}${s.website?`<a href="${s.website}" target="_blank" onclick="event.stopPropagation()"><i class="fas fa-globe"></i></a>`:''}</div>
-                        <button class="view-btn">View Full Profile</button>
-                    </div>
-                </div>`;
-            }).join('');
-            // Initialize card swipers after render
-            filtered.forEach(f=>{
-                const el=document.getElementById('cardSwiper-'+f.id);
-                if(el) new Swiper(el.querySelector('.swiper'),{slidesPerView:1,loop:false,autoplay:{delay:3000},pagination:{el:null}});
-            });
-        }
+        destroyCardSwipers();
 
-        function openModal(fid){
-            const f=allFaculty.find(x=>x.id===fid); if(!f)return;
-            const imgs=f.images.length?f.images:(f.image?[f.image]:[]);
-            const s=f.social||{};
-            document.getElementById('modalDialog').innerHTML=`
-                <button class="modal-close" onclick="closeModal()">✕</button>
-                <div class="modal-swiper"><div class="swiper modalSwiperInst"><div class="swiper-wrapper">${imgs.length?imgs.map(img=>`<div class="swiper-slide"><img src="${img}"></div>`).join(''):'<div class="swiper-slide"><img src="https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=800&background=1e3a8a&color=fff"></div>'}</div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div></div>
-                <div class="modal-content"><h2>${escapeHTML(f.name)}</h2><p class="role">${escapeHTML(f.designation)} | ${escapeHTML(f.subject)}</p>
-                <div class="info-grid"><div class="info-card"><div class="ic-val">${escapeHTML(f.experience||'N/A')}</div><div class="ic-lbl">Experience</div></div><div class="info-card"><div class="ic-val">${escapeHTML(f.qualification||'N/A')}</div><div class="ic-lbl">Qualification</div></div><div class="info-card"><div class="ic-val">${escapeHTML(f.subject)}</div><div class="ic-lbl">Specialization</div></div><div class="info-card"><div class="ic-val">THP Coaching</div><div class="ic-lbl">Institute</div></div></div>
-                <div class="bio-block"><strong>📝 About ${escapeHTML(f.name)}</strong><br>${escapeHTML(f.bio||'Dedicated educator with a proven track record.')}</div>
-                <div class="modal-social">${s.youtube?`<a href="${s.youtube}" target="_blank" class="social-yt"><i class="fab fa-youtube"></i> YouTube</a>`:''}${s.instagram?`<a href="${s.instagram}" target="_blank" class="social-ig"><i class="fab fa-instagram"></i> Instagram</a>`:''}${s.facebook?`<a href="${s.facebook}" target="_blank" class="social-fb"><i class="fab fa-facebook"></i> Facebook</a>`:''}${s.website?`<a href="${s.website}" target="_blank" class="social-web"><i class="fas fa-globe"></i> Website</a>`:''}</div></div>`;
-            document.getElementById('modalOverlay').classList.add('active'); document.body.style.overflow='hidden';
-            setTimeout(()=>{ new Swiper('.modalSwiperInst',{slidesPerView:1,loop:imgs.length>1,pagination:{el:'.swiper-pagination',clickable:true},navigation:{nextEl:'.swiper-button-next',prevEl:'.swiper-button-prev'},keyboard:{enabled:true}}); },100);
-        }
-        function closeModal(){ document.getElementById('modalOverlay').classList.remove('active'); document.body.style.overflow=''; }
-        function closeModalOutside(e){ if(e.target===e.currentTarget) closeModal(); }
-        function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
-        document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
-        document.addEventListener('DOMContentLoaded',loadFaculty);
-    </script>
+        grid.innerHTML = filtered.map(f => {
+          const imgs = (f.images && f.images.length) ? f.images : (f.image ? [f.image] : []);
+          const social = f.social || {};
+          const cardId = `card-${f.id}`;
+          
+          return `
+          <div class="card" onclick="window.openModal('${f.id}')">
+            <div class="card-photo" id="${cardId}">
+              <div class="swiper">
+                <div class="swiper-wrapper">
+                  ${imgs.length ? imgs.map(img => `<div class="swiper-slide"><img src="${img}" alt="${escapeHTML(f.name)}" onerror="this.style.display='none';"></div>`).join('') 
+                  : `<div class="swiper-slide"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(f.name)}&size=400&background=1e3a8a&color=fff&format=svg" alt="${escapeHTML(f.name)}"></div>`}
+                </div>
+              </div>
+              <div class="verified-tick"><i class="fas fa-check"></i></div>
+              ${imgs.length > 1 ? `<div class="photo-badge"><i class="fas fa-images"></i> ${imgs.length}</div>` : ''}
+            </div>
+            <div class="card-body">
+              <div class="name">${escapeHTML(f.name)}</div>
+              <div class="designation">${escapeHTML(f.designation || 'Senior Faculty')}</div>
+              <div class="subjects"><span class="subject-tag">${escapeHTML(f.subject || 'General')}</span></div>
+              <div class="details-row">
+                <div class="detail-item"><div class="val">${escapeHTML(f.experience || '5+ yrs')}</div><div class="lbl">Experience</div></div>
+                <div class="detail-item"><div class="val">${escapeHTML(f.qualification || 'MA/BEd')}</div><div class="lbl">Qualification</div></div>
+              </div>
+              <div class="bio-excerpt">${escapeHTML((f.bio || '').substring(0, 90))}...</div>
+              <div class="social-row">
+                ${social.youtube ? `<a href="${social.youtube}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-youtube"></i></a>` : ''}
+                ${social.instagram ? `<a href="${social.instagram}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-instagram"></i></a>` : ''}
+                ${social.facebook ? `<a href="${social.facebook}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-facebook-f"></i></a>` : ''}
+                ${social.website ? `<a href="${social.website}" target="_blank" onclick="event.stopPropagation()"><i class="fas fa-globe"></i></a>` : ''}
+              </div>
+              <button class="view-btn">View Full Profile</button>
+            </div>
+          </div>`;
+        }).join('');
+
+        filtered.forEach(f => {
+          const container = document.getElementById(`card-${f.id}`);
+          if (container) {
+            const swiperEl = container.querySelector('.swiper');
+            if (swiperEl) {
+              const swiperInstance = new Swiper(swiperEl, {
+                slidesPerView: 1,
+                loop: false,
+                autoplay: { delay: 3500, disableOnInteraction: false },
+                grabCursor: true,
+              });
+              cardSwipers[`card-${f.id}`] = swiperInstance;
+            }
+          }
+        });
+      }
+
+      window.openModal = function(fid) {
+        const f = allFaculty.find(x => x.id === fid);
+        if (!f) return;
+        const imgs = (f.images && f.images.length) ? f.images : (f.image ? [f.image] : []);
+        const social = f.social || {};
+        
+        document.getElementById('modalDialog').innerHTML = `
+          <button class="modal-close" onclick="window.closeModal()">✕</button>
+          <div class="modal-swiper">
+            <div class="swiper modalSwiperInstance">
+              <div class="swiper-wrapper">
+                ${imgs.length ? imgs.map(img => `<div class="swiper-slide"><img src="${img}" alt="${escapeHTML(f.name)}"></div>`).join('') 
+                : `<div class="swiper-slide"><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(f.name)}&size=800&background=1e3a8a&color=fff" alt="${escapeHTML(f.name)}"></div>`}
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+          </div>
+          <div class="modal-content">
+            <h2>${escapeHTML(f.name)}</h2>
+            <p class="role">${escapeHTML(f.designation || 'Faculty')} | ${escapeHTML(f.subject || '')}</p>
+            <div class="info-grid">
+              <div class="info-card"><div class="ic-val">${escapeHTML(f.experience || 'N/A')}</div><div class="ic-lbl">Experience</div></div>
+              <div class="info-card"><div class="ic-val">${escapeHTML(f.qualification || 'N/A')}</div><div class="ic-lbl">Qualification</div></div>
+              <div class="info-card"><div class="ic-val">${escapeHTML(f.subject || 'General')}</div><div class="ic-lbl">Specialization</div></div>
+              <div class="info-card"><div class="ic-val">THP Coaching</div><div class="ic-lbl">Institute</div></div>
+            </div>
+            <div class="bio-block">
+              <strong>📝 About ${escapeHTML(f.name)}</strong><br>
+              ${escapeHTML(f.bio || 'A dedicated educator with a passion for teaching and mentoring students.')}
+            </div>
+            <div class="modal-social">
+              ${social.youtube ? `<a href="${social.youtube}" target="_blank" class="social-yt"><i class="fab fa-youtube"></i> YouTube</a>` : ''}
+              ${social.instagram ? `<a href="${social.instagram}" target="_blank" class="social-ig"><i class="fab fa-instagram"></i> Instagram</a>` : ''}
+              ${social.facebook ? `<a href="${social.facebook}" target="_blank" class="social-fb"><i class="fab fa-facebook-f"></i> Facebook</a>` : ''}
+              ${social.website ? `<a href="${social.website}" target="_blank" class="social-web"><i class="fas fa-globe"></i> Website</a>` : ''}
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('modalOverlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        setTimeout(() => {
+          new Swiper('.modalSwiperInstance', {
+            slidesPerView: 1,
+            loop: imgs.length > 1,
+            pagination: { el: '.swiper-pagination', clickable: true },
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            keyboard: { enabled: true },
+            observer: true,
+            observeParents: true,
+          });
+        }, 150);
+      };
+
+      window.closeModal = function() {
+        document.getElementById('modalOverlay').classList.remove('active');
+        document.body.style.overflow = '';
+      };
+      window.closeModalOutside = function(e) {
+        if (e.target === e.currentTarget) window.closeModal();
+      };
+
+      function escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+      }
+      window.escapeHTML = escapeHTML;
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') window.closeModal();
+      });
+
+      document.addEventListener('DOMContentLoaded', loadFaculty);
+    })();
+  </script>
 </body>
 </html>
