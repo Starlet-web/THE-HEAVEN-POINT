@@ -1,554 +1,588 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Heaven Point • Shine Brighter | Premium Coaching Institute</title>
-    <meta name="description" content="The Heaven Point - Premium coaching for CUET, NEET, IIT-JEE, SSC, Bank, Railway & School courses (3rd-12th). Located in Shahganj, Prayagraj. Expert faculty, proven results.">
-    <meta property="og:title" content="The Heaven Point - Premium Coaching Institute, Prayagraj">
-    <meta property="og:description" content="Expert coaching for CUET, NEET, IIT-JEE & School courses in Shahganj, Prayagraj.">
-    <meta property="og:image" content="channels4_profile.jpg">
-    <link rel="icon" href="channels4_profile.jpg" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>The Heaven Point • Shine Brighter | Premium Coaching Institute</title>
+  <meta name="description" content="The Heaven Point - Premium coaching for CUET, NEET, IIT-JEE, SSC, Bank, Railway & School courses (3rd-12th). Shahganj, Prayagraj.">
+  <meta property="og:title" content="The Heaven Point - Premium Coaching Institute, Prayagraj">
+  <meta property="og:description" content="Expert coaching for CUET, NEET, IIT-JEE & School courses in Shahganj, Prayagraj.">
+  <meta property="og:image" content="channels4_profile.jpg">
+  <link rel="icon" href="channels4_profile.jpg" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <style>
+    :root {
+      --navy: #1a2a4a; --blue: #1e5fbb; --blue-light: #e8f0fe; --gold: #b8860b;
+      --gold-light: #fef3c7; --white: #fff; --gray-50: #f8f9fa; --gray-100: #f1f3f5;
+      --gray-200: #e9ecef; --gray-300: #dee2e3; --gray-400: #adb5bd; --gray-500: #6c757d;
+      --gray-600: #495057; --gray-700: #343a40; --gray-800: #212529; --green: #2b8a3e;
+      --green-light: #ebfbee; --orange: #e67700; --orange-light: #fff4e6;
+      --red: #c92a2a; --red-light: #fff5f5;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04); --shadow: 0 1px 3px rgba(0,0,0,0.07);
+      --shadow-md: 0 4px 8px rgba(0,0,0,0.06); --shadow-lg: 0 8px 25px rgba(0,0,0,0.1);
+      --radius: 6px; --radius-lg: 10px; --radius-xl: 14px; --transition: 0.25s ease;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { overflow-x: hidden; scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans', 'Inter', sans-serif; background: var(--gray-50);
+      color: var(--gray-800); line-height: 1.6; -webkit-font-smoothing: antialiased;
+      overflow-x: hidden; max-width: 100vw;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: var(--blue); text-decoration: none; transition: var(--transition); }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 1250px; margin: 0 auto; padding: 0 20px; }
+    .top-bar { background: var(--navy); color: rgba(255,255,255,0.85); font-size: 0.75rem; padding: 6px 0; border-bottom: 2px solid var(--gold); }
+    .top-bar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .top-bar .contact { display: flex; gap: 14px; flex-wrap: wrap; }
+    .top-bar .contact span { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .header { background: var(--white); border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
+    .header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; padding-bottom: 12px; gap: 14px; }
+    .header .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+    .header .logo img { height: 52px; width: 52px; border-radius: 8px; object-fit: cover; border: 2px solid var(--gray-200); flex-shrink: 0; }
+    .header .logo h1 { font-size: 1.2rem; font-weight: 700; color: var(--navy); line-height: 1.2; }
+    .header .logo .sub { font-size: 0.65rem; color: var(--gray-500); font-weight: 500; letter-spacing: 0.3px; }
+    .header .header-right { display: flex; align-items: center; gap: 16px; }
+    .profile-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 1.1rem; cursor: pointer; transition: var(--transition); text-decoration: none; flex-shrink: 0; }
+    .profile-icon:hover { background: var(--blue); color: white; text-decoration: none; }
+    .mobile-menu-btn { background: none; border: none; font-size: 1.6rem; color: var(--navy); cursor: pointer; padding: 8px; display: block; }
+    @media (min-width: 950px) { .mobile-menu-btn { display: none; } }
+    .main-nav { background: var(--navy); border-bottom: 3px solid var(--gold); }
+    .main-nav .container { padding-top: 0; padding-bottom: 0; }
+    .nav-links { display: none; flex-direction: column; }
+    .nav-links.show { display: flex; }
+    .nav-links a { color: rgba(255,255,255,0.9); padding: 12px 16px; font-size: 0.82rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.06); text-decoration: none; display: block; transition: var(--transition); }
+    .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.08); color: white; text-decoration: none; }
+    @media (min-width: 950px) {
+      .nav-links { display: flex; flex-direction: row; flex-wrap: wrap; }
+      .nav-links a { border-bottom: none; padding: 14px 18px; font-size: 0.8rem; }
+      .nav-links a:hover, .nav-links a.active { border-bottom: 3px solid var(--gold); margin-bottom: -3px; background: rgba(255,255,255,0.06); }
+    }
+    .notice-bar { background: var(--orange-light); border-bottom: 1px solid #ffd8a8; padding: 7px 0; overflow: hidden; }
+    .notice-bar .container { display: flex; align-items: center; gap: 12px; font-size: 0.74rem; }
+    .notice-tag { background: var(--orange); color: white; padding: 4px 12px; border-radius: 3px; font-weight: 600; font-size: 0.68rem; white-space: nowrap; flex-shrink: 0; }
+    .marquee-wrap { overflow: hidden; white-space: nowrap; flex: 1; min-width: 0; }
+    .marquee-wrap span { display: inline-block; animation: marquee 20s linear infinite; color: var(--gray-700); font-size: 0.7rem; }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .hero { background: linear-gradient(160deg, #e8f0fe 0%, #f8f9fa 50%, #fff4e6 100%); padding: 45px 0; border-bottom: 1px solid var(--gray-200); }
+    .hero .container { display: flex; align-items: center; gap: 35px; flex-wrap: wrap; }
+    .hero-content { flex: 1; min-width: 270px; }
+    .hero-content .badge { display: inline-block; background: var(--blue-light); color: var(--blue); padding: 5px 14px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; margin-bottom: 14px; }
+    .hero-content h2 { font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 12px; }
+    .hero-content h2 .hl { color: var(--gold); border-bottom: 2px solid var(--gold-light); }
+    .hero-content p { color: var(--gray-600); font-size: 0.88rem; max-width: 520px; margin-bottom: 20px; line-height: 1.65; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; border-radius: var(--radius); font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: var(--transition); border: 2px solid transparent; font-family: inherit; text-decoration: none; white-space: nowrap; }
+    .btn-primary { background: var(--blue); color: white; border-color: var(--blue); } .btn-primary:hover { background: #1a4fa0; text-decoration: none; }
+    .btn-gold { background: var(--gold); color: white; border-color: var(--gold); } .btn-gold:hover { background: #9a6b0a; text-decoration: none; }
+    .btn-outline { background: transparent; color: var(--navy); border-color: var(--gray-300); } .btn-outline:hover { background: var(--gray-100); text-decoration: none; }
+    .btn-sm { padding: 8px 14px; font-size: 0.74rem; } .btn-xs { padding: 6px 12px; font-size: 0.68rem; border-radius: 4px; }
+    .hero-logo { flex-shrink: 0; text-align: center; }
+    .hero-logo img { width: 140px; border-radius: 10px; box-shadow: var(--shadow-md); border: 3px solid white; }
+    .hero-logo .est { margin-top: 6px; font-size: 0.72rem; color: var(--gray-600); font-weight: 600; }
+    @media (max-width: 767px) {
+      .hero { padding: 30px 0; } .hero-content h2 { font-size: 1.35rem; } .hero-content p { font-size: 0.8rem; }
+      .hero-logo img { width: 90px; } .btn { padding: 9px 16px; font-size: 0.75rem; }
+    }
+    section { padding: 30px 0; }
+    @media (min-width: 768px) { section { padding: 40px 0; } }
+    .section-title { font-size: 1.25rem; font-weight: 700; color: var(--navy); padding-bottom: 12px; border-bottom: 2px solid var(--gray-200); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .section-title i { color: var(--gold); font-size: 1.05rem; }
+    @media (min-width: 768px) { .section-title { font-size: 1.4rem; } }
+    .card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
+    @media (min-width: 768px) { .card { padding: 24px; } }
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--gray-200); }
+    table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 0.78rem; }
+    table th { background: var(--navy); color: white; padding: 12px 14px; text-align: left; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.3px; white-space: nowrap; }
+    table td { padding: 12px 14px; border-bottom: 1px solid var(--gray-200); white-space: nowrap; }
+    table tbody tr:hover { background: var(--gray-50); } table tbody tr:nth-child(even) { background: #fafbfc; }
+    .status-open { color: var(--green); font-weight: 600; font-size: 0.72rem; } .status-open::before { content: '● '; font-size: 0.45rem; }
+    .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+    @media (max-width: 500px) { .courses-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+    .course-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
+    .course-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .course-card .img-wrap { aspect-ratio: 1/1.414; overflow: hidden; }
+    .course-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .course-card:hover .img-wrap img { transform: scale(1.04); }
+    .course-card .info { padding: 16px; }
+    .course-card .info h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); }
+    .course-card .info p { font-size: 0.74rem; color: var(--gray-500); margin: 4px 0 10px; }
+    .course-card .info .price { font-weight: 700; color: var(--blue); font-size: 0.88rem; }
+    .main-layout { display: flex; gap: 28px; flex-wrap: wrap; }
+    .content-area { flex: 1; min-width: 0; }
+    .sidebar { width: 100%; }
+    @media (min-width: 950px) { .sidebar { width: 300px; flex-shrink: 0; } }
+    .sidebar .quick-link { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: var(--radius); color: var(--gray-700); font-size: 0.8rem; transition: var(--transition); border: 1px solid transparent; margin-bottom: 3px; text-decoration: none; }
+    .sidebar .quick-link:hover { background: var(--blue-light); color: var(--blue); text-decoration: none; border-color: #c5d9f8; }
+    .sidebar .quick-link i { width: 18px; text-align: center; color: var(--blue); font-size: 0.78rem; }
+    .info-list { list-style: none; padding: 0; }
+    .info-list li { padding: 8px 0; border-bottom: 1px solid var(--gray-100); font-size: 0.78rem; display: flex; gap: 8px; color: var(--gray-600); align-items: flex-start; }
+    .info-list li:last-child { border-bottom: none; }
+    .info-list li i { color: var(--blue); width: 16px; margin-top: 3px; font-size: 0.72rem; }
+    .social-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .social-row a { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; text-decoration: none; transition: var(--transition); }
+    .social-row a:hover { transform: scale(1.1); text-decoration: none; }
+    .map-card { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--gray-200); }
+    .map-card iframe { width: 100%; height: 200px; border: none; display: block; }
+    .map-card .map-info { padding: 12px 14px; background: white; font-size: 0.75rem; }
+    .map-card .map-info a { color: var(--blue); font-weight: 600; }
+    .footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 35px 0 20px; font-size: 0.78rem; border-top: 4px solid var(--gold); margin-top: 30px; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
+    @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 16px; } }
+    .footer h4 { color: white; font-size: 0.85rem; margin-bottom: 12px; font-weight: 600; }
+    .footer a { color: rgba(255,255,255,0.5); text-decoration: none; display: block; padding: 3px 0; font-size: 0.72rem; transition: var(--transition); }
+    .footer a:hover { color: var(--gold); text-decoration: none; }
+    .footer-bottom { margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); text-align: center; font-size: 0.68rem; color: rgba(255,255,255,0.35); }
+    .whatsapp-float { position: fixed; bottom: 80px; right: 16px; width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 18px rgba(37,211,102,0.4); z-index: 999; text-decoration: none; transition: var(--transition); }
+    .whatsapp-float:hover { transform: scale(1.08); text-decoration: none; }
+    @media (min-width: 950px) { .whatsapp-float { bottom: 28px; right: 28px; } }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; padding: 8px 0 10px; z-index: 998; box-shadow: 0 -2px 12px rgba(0,0,0,0.05); }
+    .bottom-nav a { display: flex; flex-direction: column; align-items: center; color: var(--gray-500); text-decoration: none; font-size: 0.64rem; gap: 3px; }
+    .bottom-nav a i { font-size: 1.1rem; }
+    .bottom-nav a.active { color: var(--blue); }
+    @media (min-width: 950px) { .bottom-nav { display: none; } }
+    body { padding-bottom: 65px; }
+    @media (min-width: 950px) { body { padding-bottom: 0; } }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    /* Ultra Advanced Faculty & Gallery */
+    .faculty-swiper { padding: 10px 0 45px; }
+    .faculty-card {
+      background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px -8px rgba(0,0,0,0.08);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1); border: 1px solid rgba(0,0,0,0.02);
+      backdrop-filter: blur(0); display: flex; flex-direction: column; height: 100%;
+    }
+    .faculty-card:hover {
+      transform: translateY(-8px); box-shadow: 0 25px 35px -12px rgba(26,42,74,0.25);
+      border-color: rgba(184,134,11,0.25);
+    }
+    .faculty-card .img-wrap {
+      aspect-ratio: 1/1.2; overflow: hidden; position: relative;
+    }
+    .faculty-card .img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease;
+    }
+    .faculty-card:hover .img-wrap img { transform: scale(1.07); }
+    .faculty-card .img-wrap .overlay {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+      background: linear-gradient(transparent, rgba(26,42,74,0.7));
+      pointer-events: none; z-index: 2;
+    }
+    .faculty-badge {
+      position: absolute; top: 12px; right: 12px; background: var(--gold); color: white;
+      padding: 4px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 700;
+      z-index: 3; box-shadow: 0 4px 10px rgba(0,0,0,0.2); letter-spacing: 0.3px;
+    }
+    .faculty-card .info {
+      padding: 20px 16px; text-align: center; position: relative; flex:1;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .faculty-card .info h4 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .faculty-card .info .role { font-size: 0.8rem; color: var(--blue); font-weight: 600; }
+    .faculty-card .info .subj { font-size: 0.72rem; color: var(--gray-500); margin: 6px 0 10px; }
+    .faculty-meta {
+      display: flex; justify-content: center; gap: 14px; font-size: 0.68rem;
+      color: var(--gray-600); margin-top: 8px; border-top: 1px solid var(--gray-100); padding-top: 12px;
+    }
+    .faculty-meta span { display: flex; align-items: center; gap: 4px; }
+    .trust-stamp {
+      background: #f0f6ff; border-radius: 30px; padding: 6px 14px; font-size: 0.65rem;
+      font-weight: 600; color: var(--navy); display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 10px; border:1px solid #d4e2fc;
+    }
 
-    <style>
-        :root {
-            --navy: #1a2a4a; --blue: #1e5fbb; --blue-light: #e8f0fe; --gold: #b8860b;
-            --gold-light: #fef3c7; --white: #fff; --gray-50: #f8f9fa; --gray-100: #f1f3f5;
-            --gray-200: #e9ecef; --gray-300: #dee2e3; --gray-400: #adb5bd; --gray-500: #6c757d;
-            --gray-600: #495057; --gray-700: #343a40; --gray-800: #212529; --green: #2b8a3e;
-            --green-light: #ebfbee; --orange: #e67700; --orange-light: #fff4e6;
-            --red: #c92a2a; --red-light: #fff5f5;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04); --shadow: 0 1px 3px rgba(0,0,0,0.07);
-            --shadow-md: 0 4px 8px rgba(0,0,0,0.06); --shadow-lg: 0 8px 25px rgba(0,0,0,0.1);
-            --radius: 6px; --radius-lg: 10px; --radius-xl: 14px; --transition: 0.25s ease;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        html { overflow-x: hidden; scroll-behavior: smooth; }
-        body {
-            font-family: 'Noto Sans', 'Inter', sans-serif; background: var(--gray-50);
-            color: var(--gray-800); line-height: 1.6; -webkit-font-smoothing: antialiased;
-            overflow-x: hidden; max-width: 100vw;
-        }
-        img { max-width: 100%; height: auto; display: block; }
-        a { color: var(--blue); text-decoration: none; transition: var(--transition); }
-        a:hover { text-decoration: underline; }
-
-        .container { max-width: 1250px; margin: 0 auto; padding: 0 20px; }
-
-        .top-bar { background: var(--navy); color: rgba(255,255,255,0.85); font-size: 0.75rem; padding: 6px 0; border-bottom: 2px solid var(--gold); }
-        .top-bar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-        .top-bar .contact { display: flex; gap: 14px; flex-wrap: wrap; }
-        .top-bar .contact span { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
-
-        .header { background: var(--white); border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
-        .header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; padding-bottom: 12px; gap: 14px; }
-        .header .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
-        .header .logo img { height: 52px; width: 52px; border-radius: 8px; object-fit: cover; border: 2px solid var(--gray-200); flex-shrink: 0; }
-        .header .logo h1 { font-size: 1.2rem; font-weight: 700; color: var(--navy); line-height: 1.2; }
-        .header .logo .sub { font-size: 0.65rem; color: var(--gray-500); font-weight: 500; letter-spacing: 0.3px; }
-        .header .header-right { display: flex; align-items: center; gap: 16px; }
-        .profile-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 1.1rem; cursor: pointer; transition: var(--transition); text-decoration: none; flex-shrink: 0; }
-        .profile-icon:hover { background: var(--blue); color: white; text-decoration: none; }
-        .mobile-menu-btn { background: none; border: none; font-size: 1.6rem; color: var(--navy); cursor: pointer; padding: 8px; display: block; }
-        @media (min-width: 950px) { .mobile-menu-btn { display: none; } }
-
-        .main-nav { background: var(--navy); border-bottom: 3px solid var(--gold); }
-        .main-nav .container { padding-top: 0; padding-bottom: 0; }
-        .nav-links { display: none; flex-direction: column; }
-        .nav-links.show { display: flex; }
-        .nav-links a { color: rgba(255,255,255,0.9); padding: 12px 16px; font-size: 0.82rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.06); text-decoration: none; display: block; transition: var(--transition); }
-        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.08); color: white; text-decoration: none; }
-        @media (min-width: 950px) {
-            .nav-links { display: flex; flex-direction: row; flex-wrap: wrap; }
-            .nav-links a { border-bottom: none; padding: 14px 18px; font-size: 0.8rem; }
-            .nav-links a:hover, .nav-links a.active { border-bottom: 3px solid var(--gold); margin-bottom: -3px; background: rgba(255,255,255,0.06); }
-        }
-
-        .notice-bar { background: var(--orange-light); border-bottom: 1px solid #ffd8a8; padding: 7px 0; overflow: hidden; }
-        .notice-bar .container { display: flex; align-items: center; gap: 12px; font-size: 0.74rem; }
-        .notice-tag { background: var(--orange); color: white; padding: 4px 12px; border-radius: 3px; font-weight: 600; font-size: 0.68rem; white-space: nowrap; flex-shrink: 0; }
-        .marquee-wrap { overflow: hidden; white-space: nowrap; flex: 1; min-width: 0; }
-        .marquee-wrap span { display: inline-block; animation: marquee 20s linear infinite; color: var(--gray-700); font-size: 0.7rem; }
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-        .hero { background: linear-gradient(160deg, #e8f0fe 0%, #f8f9fa 50%, #fff4e6 100%); padding: 45px 0; border-bottom: 1px solid var(--gray-200); }
-        .hero .container { display: flex; align-items: center; gap: 35px; flex-wrap: wrap; }
-        .hero-content { flex: 1; min-width: 270px; }
-        .hero-content .badge { display: inline-block; background: var(--blue-light); color: var(--blue); padding: 5px 14px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; margin-bottom: 14px; }
-        .hero-content h2 { font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 12px; }
-        .hero-content h2 .hl { color: var(--gold); border-bottom: 2px solid var(--gold-light); }
-        .hero-content p { color: var(--gray-600); font-size: 0.88rem; max-width: 520px; margin-bottom: 20px; line-height: 1.65; }
-        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; border-radius: var(--radius); font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: var(--transition); border: 2px solid transparent; font-family: inherit; text-decoration: none; white-space: nowrap; }
-        .btn-primary { background: var(--blue); color: white; border-color: var(--blue); } .btn-primary:hover { background: #1a4fa0; text-decoration: none; }
-        .btn-gold { background: var(--gold); color: white; border-color: var(--gold); } .btn-gold:hover { background: #9a6b0a; text-decoration: none; }
-        .btn-outline { background: transparent; color: var(--navy); border-color: var(--gray-300); } .btn-outline:hover { background: var(--gray-100); text-decoration: none; }
-        .btn-sm { padding: 8px 14px; font-size: 0.74rem; } .btn-xs { padding: 6px 12px; font-size: 0.68rem; border-radius: 4px; }
-        .hero-logo { flex-shrink: 0; text-align: center; }
-        .hero-logo img { width: 140px; border-radius: 10px; box-shadow: var(--shadow-md); border: 3px solid white; }
-        .hero-logo .est { margin-top: 6px; font-size: 0.72rem; color: var(--gray-600); font-weight: 600; }
-        @media (max-width: 767px) {
-            .hero { padding: 30px 0; } .hero-content h2 { font-size: 1.35rem; } .hero-content p { font-size: 0.8rem; }
-            .hero-logo img { width: 90px; } .btn { padding: 9px 16px; font-size: 0.75rem; }
-        }
-
-        section { padding: 30px 0; }
-        @media (min-width: 768px) { section { padding: 40px 0; } }
-        .section-title { font-size: 1.25rem; font-weight: 700; color: var(--navy); padding-bottom: 12px; border-bottom: 2px solid var(--gray-200); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
-        .section-title i { color: var(--gold); font-size: 1.05rem; }
-        @media (min-width: 768px) { .section-title { font-size: 1.4rem; } }
-
-        .card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
-        @media (min-width: 768px) { .card { padding: 24px; } }
-
-        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--gray-200); }
-        table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 0.78rem; }
-        table th { background: var(--navy); color: white; padding: 12px 14px; text-align: left; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.3px; white-space: nowrap; }
-        table td { padding: 12px 14px; border-bottom: 1px solid var(--gray-200); white-space: nowrap; }
-        table tbody tr:hover { background: var(--gray-50); } table tbody tr:nth-child(even) { background: #fafbfc; }
-        .status-open { color: var(--green); font-weight: 600; font-size: 0.72rem; } .status-open::before { content: '● '; font-size: 0.45rem; }
-
-        .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
-        @media (max-width: 500px) { .courses-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
-        .course-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
-        .course-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-        .course-card .img-wrap { aspect-ratio: 1/1.414; overflow: hidden; }
-        .course-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-        .course-card:hover .img-wrap img { transform: scale(1.04); }
-        .course-card .info { padding: 16px; }
-        .course-card .info h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); }
-        .course-card .info p { font-size: 0.74rem; color: var(--gray-500); margin: 4px 0 10px; }
-        .course-card .info .price { font-weight: 700; color: var(--blue); font-size: 0.88rem; }
-
-        .faculty-swiper { padding: 8px 0 40px; min-height: 380px; }
-        .faculty-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
-        .faculty-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-        .faculty-card .img-wrap { aspect-ratio: 1/1.414; overflow: hidden; position: relative; }
-        .faculty-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .faculty-card:hover .img-wrap img { transform: scale(1.05); }
-        .faculty-card .img-wrap .overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(transparent, rgba(0,0,0,0.5)); pointer-events: none; }
-        .faculty-card .info { padding: 16px; text-align: center; }
-        .faculty-card .info h4 { font-size: 0.9rem; font-weight: 600; color: var(--navy); }
-        .faculty-card .info .role { font-size: 0.74rem; color: var(--blue); font-weight: 500; }
-        .faculty-card .info .subj { font-size: 0.68rem; color: var(--gray-500); margin-top: 3px; }
-
-        .gallery-main-wrap { position: relative; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); margin-bottom: 14px; min-height: 350px; }
-        .gallery-swiper { aspect-ratio: 1/1.414; }
-        .gallery-swiper .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .gallery-swiper .swiper-button-next, .gallery-swiper .swiper-button-prev { color: white; background: rgba(0,0,0,0.3); width: 40px; height: 40px; border-radius: 50%; }
-        .gallery-swiper .swiper-button-next:after, .gallery-swiper .swiper-button-prev:after { font-size: 1rem; }
-        .gallery-swiper .swiper-pagination-bullet-active { background: var(--gold); }
-        .gallery-thumbs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }
-        .gallery-thumbs .thumb { width: 60px; height: 45px; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; opacity: 0.6; transition: var(--transition); aspect-ratio: 4/3; }
-        .gallery-thumbs .thumb.active { border-color: var(--blue); opacity: 1; }
-        .gallery-thumbs .thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
-        @media (max-width: 500px) { .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
-        .step-card { text-align: center; padding: 22px 16px; border-radius: var(--radius-lg); }
-        .step-card .step-num { font-size: 2rem; font-weight: 800; } .step-card .step-title { font-weight: 600; color: var(--navy); font-size: 0.9rem; margin: 4px 0; }
-        .step-card .step-desc { font-size: 0.7rem; color: var(--gray-500); }
-        .step-blue { background: var(--blue-light); } .step-blue .step-num { color: var(--blue); }
-        .step-green { background: var(--green-light); } .step-green .step-num { color: var(--green); }
-        .step-orange { background: var(--orange-light); } .step-orange .step-num { color: var(--orange); }
-        .step-gray { background: var(--gray-100); } .step-gray .step-num { color: var(--gray-600); }
-
-        .main-layout { display: flex; gap: 28px; flex-wrap: wrap; }
-        .content-area { flex: 1; min-width: 0; }
-        .sidebar { width: 100%; }
-        @media (min-width: 950px) { .sidebar { width: 300px; flex-shrink: 0; } }
-
-        .sidebar .quick-link { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: var(--radius); color: var(--gray-700); font-size: 0.8rem; transition: var(--transition); border: 1px solid transparent; margin-bottom: 3px; text-decoration: none; }
-        .sidebar .quick-link:hover { background: var(--blue-light); color: var(--blue); text-decoration: none; border-color: #c5d9f8; }
-        .sidebar .quick-link i { width: 18px; text-align: center; color: var(--blue); font-size: 0.78rem; }
-        .info-list { list-style: none; padding: 0; }
-        .info-list li { padding: 8px 0; border-bottom: 1px solid var(--gray-100); font-size: 0.78rem; display: flex; gap: 8px; color: var(--gray-600); align-items: flex-start; }
-        .info-list li:last-child { border-bottom: none; }
-        .info-list li i { color: var(--blue); width: 16px; margin-top: 3px; font-size: 0.72rem; }
-        .social-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .social-row a { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; text-decoration: none; transition: var(--transition); }
-        .social-row a:hover { transform: scale(1.1); text-decoration: none; }
-        .map-card { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--gray-200); }
-        .map-card iframe { width: 100%; height: 200px; border: none; display: block; }
-        .map-card .map-info { padding: 12px 14px; background: white; font-size: 0.75rem; }
-        .map-card .map-info a { color: var(--blue); font-weight: 600; }
-
-        .footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 35px 0 20px; font-size: 0.78rem; border-top: 4px solid var(--gold); margin-top: 30px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
-        @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 16px; } }
-        .footer h4 { color: white; font-size: 0.85rem; margin-bottom: 12px; font-weight: 600; }
-        .footer a { color: rgba(255,255,255,0.5); text-decoration: none; display: block; padding: 3px 0; font-size: 0.72rem; transition: var(--transition); }
-        .footer a:hover { color: var(--gold); text-decoration: none; }
-        .footer-bottom { margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); text-align: center; font-size: 0.68rem; color: rgba(255,255,255,0.35); }
-
-        .whatsapp-float { position: fixed; bottom: 80px; right: 16px; width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 18px rgba(37,211,102,0.4); z-index: 999; text-decoration: none; transition: var(--transition); }
-        .whatsapp-float:hover { transform: scale(1.08); text-decoration: none; }
-        @media (min-width: 950px) { .whatsapp-float { bottom: 28px; right: 28px; } }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; padding: 8px 0 10px; z-index: 998; box-shadow: 0 -2px 12px rgba(0,0,0,0.05); }
-        .bottom-nav a { display: flex; flex-direction: column; align-items: center; color: var(--gray-500); text-decoration: none; font-size: 0.64rem; gap: 3px; }
-        .bottom-nav a i { font-size: 1.1rem; }
-        .bottom-nav a.active { color: var(--blue); }
-        @media (min-width: 950px) { .bottom-nav { display: none; } }
-        body { padding-bottom: 65px; }
-        @media (min-width: 950px) { body { padding-bottom: 0; } }
-    </style>
+    .gallery-main-wrap {
+      position: relative; border-radius: 28px; overflow: hidden;
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.2); margin-bottom: 18px;
+      background: #000;
+    }
+    .gallery-swiper { aspect-ratio: 1/1.3; }
+    .gallery-swiper .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-swiper .swiper-button-next, .gallery-swiper .swiper-button-prev {
+      color: white; background: rgba(0,0,0,0.5); width: 42px; height: 42px; border-radius: 50%;
+      backdrop-filter: blur(8px); transition: 0.3s;
+    }
+    .gallery-swiper .swiper-button-next:after, .gallery-swiper .swiper-button-prev:after { font-size: 1.1rem; font-weight: bold; }
+    .gallery-swiper .swiper-pagination-bullet { background: white; opacity: 0.6; width: 10px; height: 10px; }
+    .gallery-swiper .swiper-pagination-bullet-active { background: var(--gold); opacity: 1; transform: scale(1.2); }
+    .gallery-thumbs {
+      display: flex; gap: 10px; overflow-x: auto; padding: 8px 0 6px;
+      scrollbar-width: thin; scrollbar-color: var(--gray-300) transparent;
+    }
+    .gallery-thumbs::-webkit-scrollbar { height: 4px; }
+    .gallery-thumbs::-webkit-scrollbar-thumb { background: var(--gray-400); border-radius: 4px; }
+    .gallery-thumbs .thumb {
+      width: 70px; height: 55px; border-radius: 12px; overflow: hidden; cursor: pointer;
+      border: 2px solid transparent; flex-shrink: 0; opacity: 0.65; transition: 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .gallery-thumbs .thumb.active { border-color: var(--gold); opacity: 1; transform: scale(1.05); box-shadow: 0 6px 14px rgba(184,134,11,0.3); }
+    .gallery-thumbs .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    @media (max-width: 500px) { .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+    .step-card { text-align: center; padding: 22px 16px; border-radius: var(--radius-lg); }
+    .step-card .step-num { font-size: 2rem; font-weight: 800; } .step-card .step-title { font-weight: 600; color: var(--navy); font-size: 0.9rem; margin: 4px 0; }
+    .step-card .step-desc { font-size: 0.7rem; color: var(--gray-500); }
+    .step-blue { background: var(--blue-light); } .step-blue .step-num { color: var(--blue); }
+    .step-green { background: var(--green-light); } .step-green .step-num { color: var(--green); }
+    .step-orange { background: var(--orange-light); } .step-orange .step-num { color: var(--orange); }
+    .step-gray { background: var(--gray-100); } .step-gray .step-num { color: var(--gray-600); }
+  </style>
 </head>
 <body>
-
-    <!-- TOP BAR -->
-    <div class="top-bar">
-        <div class="container">
-            <div class="contact">
-                <span>📞 9044034585</span><span>|</span><span>✉️ theheavenpoint@gmail.com</span><span>|</span><span>📍 Shahganj, Prayagraj</span>
-            </div>
-        </div>
+<div class="top-bar">
+  <div class="container">
+    <div class="contact">
+      <span>📞 9044034585</span><span>|</span><span>✉️ theheavenpoint@gmail.com</span><span>|</span><span>📍 Shahganj, Prayagraj</span>
     </div>
-
-    <!-- HEADER -->
-    <header class="header">
-        <div class="container">
-            <a href="#" class="logo">
-                <img src="channels4_profile.jpg" alt="THP Logo">
-                <div><h1>The Heaven Point</h1><div class="sub"> ✦ Choose To shine</div></div>
-            </a>
-            <div class="header-right">
-                <a href="resistor.html" class="profile-icon" title="My Profile"><i class="fas fa-user"></i></a>
-                <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('show')">☰</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- NAVIGATION -->
-    <nav class="main-nav">
-        <div class="container">
-            <div class="nav-links" id="navLinks">
-                <a href="#" class="active">Home</a>
-                <a href="#courses">Courses</a>
-                <a href="#featured">Featured Course</a>
-                <a href="#faculty">Faculty</a>
-                <a href="#gallery">Gallery</a>
-                <a href="#admission">Admission</a>
-                <a href="#about">About Us</a>
-                <a href="#contact">Contact</a>
-                <a href="javascript:void(0)" onclick="openNotes()">📝 Study Material</a>
-                <a href="javascript:void(0)" onclick="openLecture()">🎬 Video Lectures</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- NOTICE -->
-    <div class="notice-bar">
-        <div class="container">
-            <span class="notice-tag">NOTICE</span>
-            <div class="marquee-wrap"><span>📢 Admissions Open 2025-26 | CUET • NEET • IIT-JEE • SSC/Bank/Railway • School (3rd-12th) | Shahganj, Prayagraj | Contact: 9044034585 | Free Demo Classes Available</span></div>
-        </div>
+  </div>
+</div>
+<header class="header">
+  <div class="container">
+    <a href="#" class="logo">
+      <img src="channels4_profile.jpg" alt="THP Logo">
+      <div><h1>The Heaven Point</h1><div class="sub"> ✦ Choose To shine</div></div>
+    </a>
+    <div class="header-right">
+      <a href="resistor.html" class="profile-icon" title="My Profile"><i class="fas fa-user"></i></a>
+      <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('show')">☰</button>
     </div>
-
-    <!-- HERO -->
-    <section class="hero" id="main-content">
-        <div class="container">
-            <div class="hero-content">
-                <span class="badge">📌 Accredited Coaching Institute Since 2010</span>
-                <h2>Welcome to <span class="hl">The Heaven Point</span></h2>
-                <p>Expert coaching for <strong>CUET, NEET, IIT‑JEE, SSC, Bank, Railway</strong> & <strong>School Courses (Class 3rd to 12th)</strong>. Located in the heart of <strong>Shahganj, Prayagraj</strong>, we provide quality education through experienced faculty, regular mock tests, and personalized mentorship.</p>
-                <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                    <a href="#courses" class="btn btn-primary">View Courses <i class="fas fa-arrow-right"></i></a>
-                    <a href="#admission" class="btn btn-gold">Apply for Admission</a>
-                    <a href="tel:9044034585" class="btn btn-outline"><i class="fas fa-phone"></i> Call Now</a>
-                </div>
-            </div>
-            <div class="hero-logo">
-                <img src="channels4_profile.jpg" alt="The Heaven Point">
-                <div class="est">Established 2010<br>Shahganj, Prayagraj</div>
-            </div>
-        </div>
-    </section>
-
-    <div class="container">
-        <div class="main-layout">
-            <div class="content-area">
-
-                <section id="featured" style="padding-top:20px;">
-                    <h2 class="section-title"><i class="fas fa-star"></i> Featured Course</h2>
-                    <div class="card" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
-                        <img src="https://i.ibb.co/4wrtJTbw/file-00000000156061f5b89e4f5e05b6f71f.png" alt="SSC Course" style="width:100px;height:100px;border-radius:10px;object-fit:cover;box-shadow:var(--shadow);flex-shrink:0;">
-                        <div style="flex:1;min-width:220px;">
-                            <span style="background:var(--red-light);color:var(--red);font-size:0.64rem;font-weight:700;padding:3px 10px;border-radius:3px;">🔥 MOST POPULAR</span>
-                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--navy);margin:6px 0;">SSC, Bank, Railway</h3>
-                            <p style="font-size:0.8rem;color:var(--gray-600);margin-bottom:10px;">Complete competitive exam preparation with daily mock tests, live classes & expert mentorship.</p>
-                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                                <span style="font-size:1.3rem;font-weight:800;color:var(--navy);">₹1,500<span style="font-size:0.66rem;color:var(--gray-500);">/mo</span></span>
-                                <span style="font-size:0.72rem;text-decoration:line-through;color:var(--gray-400);">₹2,000</span>
-                                <span style="background:var(--green-light);color:var(--green);font-size:0.62rem;font-weight:600;padding:3px 8px;border-radius:3px;">33% OFF</span>
-                                <a href="formTHPSsc.html" class="btn btn-primary btn-sm">Enroll Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="courses">
-                    <h2 class="section-title"><i class="fas fa-graduation-cap"></i> All Courses & Batches</h2>
-                    <div class="table-wrap" style="margin-bottom:22px;">
-                        <table>
-                            <thead><tr><th>S.No.</th><th>Course Name</th><th>Duration</th><th>Eligibility</th><th>Fee (Monthly)</th><th>Status</th><th>Action</th></tr></thead>
-                            <tbody>
-                                <tr><td>1</td><td><strong>SSC, Bank, Railway</strong></td><td>6 Months</td><td>Graduate</td><td>₹1,500</td><td><span class="status-open">Open</span></td><td><a href="formTHPSsc.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
-                                <tr><td>2</td><td><strong>CUET (UG)</strong></td><td>1 Year</td><td>12th Pass</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
-                                <tr><td>3</td><td><strong>NEET (Medical)</strong></td><td>2 Years</td><td>12th (PCB)</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
-                                <tr><td>4</td><td><strong>IIT-JEE (Engineering)</strong></td><td>2 Years</td><td>12th (PCM)</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
-                                <tr><td>5</td><td><strong>Class 3rd - 8th</strong></td><td>Academic Year</td><td>Respective Class</td><td>₹1,000</td><td><span class="status-open">Open</span></td><td><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-primary btn-xs">Enroll</a></td></tr>
-                                <tr><td>6</td><td><strong>Class 9th - 12th</strong></td><td>Academic Year</td><td>Respective Class</td><td>₹1,500-2,500</td><td><span class="status-open">Open</span></td><td><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-primary btn-xs">Enroll</a></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h3 style="font-size:1.05rem;font-weight:600;color:var(--navy);margin-bottom:14px;">📚 Premium Batches</h3>
-                    <div class="courses-grid">
-                        <div class="course-card"><div class="img-wrap"><img src="https://i.ibb.co/4wXc33T0/828aed35-38f7-4097-9751-0ef7957f76e9-thumbnail.webp" alt="CUET"></div><div class="info"><h4>CUET</h4><p>University entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
-                        <div class="course-card"><div class="img-wrap"><img src="https://i.ibb.co/1JL6h6NC/5f89c41f-0897-4c04-99cd-3a66bbe89b26.png" alt="NEET"></div><div class="info"><h4>NEET</h4><p>Medical entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
-                        <div class="course-card"><div class="img-wrap"><img src="https://i.ibb.co/7NyBDHSM/2f91edf2-41ad-4f3d-b079-4e452f2d2fee-3.png" alt="IIT-JEE"></div><div class="info"><h4>IIT-JEE</h4><p>Engineering entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
-                        <div class="course-card"><div class="img-wrap"><img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="School"></div><div class="info"><h4>Class 3-12</h4><p>All boards, all subjects</p><div class="price">₹1,000-2,500</div><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
-                    </div>
-                </section>
-
-                <section id="faculty">
-                    <h2 class="section-title"><i class="fas fa-chalkboard-teacher"></i> Our Distinguished Faculty</h2>
-                    <div class="faculty-swiper swiper">
-                        <div class="swiper-wrapper" id="facultyWrapper"><div class="swiper-slide"><div class="card" style="text-align:center;padding:40px;color:var(--gray-500);">Loading faculty data...</div></div></div>
-                        <div class="swiper-pagination"></div>
-                    </div>
-                </section>
-
-                <section id="gallery">
-                    <h2 class="section-title"><i class="fas fa-images"></i> Campus Gallery</h2>
-                    <div class="gallery-main-wrap">
-                        <div class="gallery-swiper swiper" id="galleryMainSwiper">
-                            <div class="swiper-wrapper" id="galleryWrapper"></div>
-                            <div class="swiper-pagination"></div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                    </div>
-                    <div class="gallery-thumbs" id="galleryThumbs"></div>
-                </section>
-
-                <section id="admission">
-                    <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Admission Process</h2>
-                    <div class="card">
-                        <div class="steps-grid">
-                            <div class="step-card step-blue"><div class="step-num">01</div><div class="step-title">Fill Application</div><div class="step-desc">Online or Offline Form</div></div>
-                            <div class="step-card step-green"><div class="step-num">02</div><div class="step-title">Submit Documents</div><div class="step-desc">ID Proof & Marksheets</div></div>
-                            <div class="step-card step-orange"><div class="step-num">03</div><div class="step-title">Entrance Test</div><div class="step-desc">If Applicable</div></div>
-                            <div class="step-card step-gray"><div class="step-num">04</div><div class="step-title">Pay Fee & Confirm</div><div class="step-desc">Secure Your Seat</div></div>
-                        </div>
-                        <div style="text-align:center;margin-top:22px;">
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" class="btn btn-gold">Apply Now for Admission <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="about">
-                    <h2 class="section-title"><i class="fas fa-info-circle"></i> About The Heaven Point</h2>
-                    <div class="card" style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;">
-                        <img src="channels4_profile.jpg" alt="THP" style="width:80px;height:80px;border-radius:10px;object-fit:cover;border:2px solid var(--gray-200);flex-shrink:0;">
-                        <div style="flex:1;min-width:220px;">
-                            <p style="font-size:0.84rem;color:var(--gray-600);line-height:1.7;">We offer <strong>Commerce, Maths, Physics, Chemistry, Biology, English</strong> & more. Specialized courses for <strong>CUET, NEET, IIT-JEE</strong> with regular tests, premium study materials, and personalized mentorship. Located in <strong>Shahganj, Prayagraj</strong>, our institute is easily accessible for students across the city.</p>
-                            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
-                                <span style="background:var(--blue-light);color:var(--blue);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Expert Faculty</span>
-                                <span style="background:var(--green-light);color:var(--green);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Small Batches</span>
-                                <span style="background:var(--orange-light);color:var(--orange);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Mock Tests</span>
-                                <span style="background:var(--gold-light);color:var(--gold);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Affordable Fees</span>
-                                <span style="background:var(--gray-100);color:var(--gray-600);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Doubt Sessions</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <aside class="sidebar" id="contact">
-                <div class="map-card" style="margin-bottom:16px;">
-                    <iframe src="" data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3602.7467754021797!2d81.8666!3d25.4467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399acb0e7a2c1e2d%3A0x4e7b6a5f3c8d9e1f!2sShahganj%2C%20Prayagraj%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1690000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="background:#f1f3f5;width:100%;height:200px;border:none;display:block;"></iframe>
-                    <div class="map-info">
-                        <strong><i class="fas fa-map-marker-alt" style="color:var(--red);"></i> Shahganj, Prayagraj</strong>
-                        <a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank">Open in Google Maps <i class="fas fa-external-link-alt"></i></a>
-                    </div>
-                </div>
-
-                <div class="card"><div class="card-header"><i class="fas fa-link"></i> Quick Links</div>
-                    <a href="#courses" class="quick-link"><i class="fas fa-chevron-right"></i> Available Courses</a>
-                    <a href="#featured" class="quick-link"><i class="fas fa-chevron-right"></i> Featured Course (SSC)</a>
-                    <a href="#admission" class="quick-link"><i class="fas fa-chevron-right"></i> Admission 2025-26</a>
-                    <a href="javascript:void(0)" onclick="openNotes()" class="quick-link"><i class="fas fa-chevron-right"></i> Study Material / Notes</a>
-                    <a href="javascript:void(0)" onclick="openLecture()" class="quick-link"><i class="fas fa-chevron-right"></i> Video Lectures</a>
-                    <a href="#faculty" class="quick-link"><i class="fas fa-chevron-right"></i> Our Faculty</a>
-                    <a href="#gallery" class="quick-link"><i class="fas fa-chevron-right"></i> Campus Gallery</a>
-                </div>
-                <div class="card"><div class="card-header"><i class="fas fa-phone"></i> Contact Information</div>
-                    <ul class="info-list">
-                        <li><i class="fas fa-phone"></i> <span><strong>9044034585</strong></span></li>
-                        <li><i class="fas fa-envelope"></i> <span>theheavenpoint@gmail.com</span></li>
-                        <li><i class="fas fa-map-marker-alt"></i> <span>Shahganj, Prayagraj,<br>Uttar Pradesh, India</span></li>
-                        <li><i class="fas fa-clock"></i> <span>Monday - Saturday: 7AM-8PM</span></li>
-                        <li><i class="fas fa-calendar"></i> <span>Sunday: By Appointment</span></li>
-                    </ul>
-                    <div class="social-row" style="margin-top:12px;">
-                        <a href="https://t.me/heavenpoint" target="_blank" style="background:#0088cc;"><i class="fab fa-telegram"></i></a>
-                        <a href="https://www.instagram.com/theheavenpoint/" target="_blank" style="background:#e4405f;"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" style="background:#ff0000;"><i class="fab fa-youtube"></i></a>
-                        <a href="https://wa.me/919044034585" target="_blank" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                <div class="card"><div class="card-header"><i class="fas fa-check-circle"></i> Why Choose Us</div>
-                    <ul class="info-list">
-                        <li><i class="fas fa-check" style="color:var(--green);"></i> 15+ Years of Excellence</li>
-                        <li><i class="fas fa-check" style="color:var(--green);"></i> Highly Qualified Faculty</li>
-                        <li><i class="fas fa-check" style="color:var(--green);"></i> Small Batch Size (Max 30)</li>
-                        <li><i class="fas fa-check" style="color:var(--green);"></i> Regular Mock Tests & Analysis</li>
-                        <li><i class="fas fa-check" style="color:var(--green);"></i> Affordable Fee Structure</li>
-                        <li><i class="fas fa-check" style="color:var(--green);"></i> Dedicated Doubt Sessions</li>
-                        <li><i class="fas fa-check" style="color:var(--green);"></i> Free Premium Study Material</li>
-                        <li><i class="fas fa-check" style="color:var(--green);"></i> Prime Location in Prayagraj</li>
-                    </ul>
-                </div>
-            </aside>
-        </div>
+  </div>
+</header>
+<nav class="main-nav">
+  <div class="container">
+    <div class="nav-links" id="navLinks">
+      <a href="#" class="active">Home</a>
+      <a href="#courses">Courses</a>
+      <a href="#featured">Featured Course</a>
+      <a href="#faculty">Faculty</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#admission">Admission</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact</a>
+      <a href="javascript:void(0)" onclick="openNotes()">📝 Study Material</a>
+      <a href="javascript:void(0)" onclick="openLecture()">🎬 Video Lectures</a>
     </div>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div><h4>The Heaven Point</h4><p style="font-size:0.72rem;">Premium coaching institute in Shahganj, Prayagraj. Nurturing students for competitive exams and academic excellence since 2010.</p><p style="font-size:0.68rem;margin-top:6px;">ISO 9001:2015 Certified Institute</p><a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank" style="color:var(--gold);font-size:0.7rem;margin-top:4px;display:inline-block;">📍 View on Google Maps</a></div>
-                <div><h4>Quick Links</h4><a href="#">Home</a><a href="#courses">Courses</a><a href="#faculty">Faculty</a><a href="#gallery">Gallery</a><a href="#admission">Admission</a><a href="#about">About Us</a><a href="#contact">Contact</a></div>
-                <div><h4>Our Courses</h4><a href="#">CUET (UG Entrance)</a><a href="#">NEET (Medical)</a><a href="#">IIT-JEE (Engineering)</a><a href="#">SSC / Bank / Railway</a><a href="#">Class 3rd - 8th</a><a href="#">Class 9th - 12th</a><a href="#">Crash Courses</a><a href="#">Test Series</a></div>
-                <div><h4>Contact Us</h4><p style="font-size:0.72rem;">📞 9044034585</p><p style="font-size:0.72rem;">✉️ theheavenpoint@gmail.com</p><p style="font-size:0.72rem;">📍 Shahganj, Prayagraj, UP</p><p style="font-size:0.72rem;margin-top:6px;">🕐 Mon-Sat: 7AM-8PM</p></div>
-            </div>
-            <div class="footer-bottom"><p>© 2025 The Heaven Point, Shahganj, Prayagraj. All Rights Reserved. | Terms & Conditions | Privacy Policy</p><p style="margin-top:4px;">Best viewed in Chrome 90+, Firefox 88+, Safari 14+ | Last Updated: July 2025</p></div>
-        </div>
-    </footer>
-
-    <div class="bottom-nav">
-        <a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="#courses"><i class="fas fa-book"></i><span>Courses</span></a>
-        <a href="#faculty"><i class="fas fa-users"></i><span>Faculty</span></a>
-        <a href="#contact"><i class="fas fa-phone"></i><span>Contact</span></a>
+  </div>
+</nav>
+<div class="notice-bar">
+  <div class="container">
+    <span class="notice-tag">NOTICE</span>
+    <div class="marquee-wrap"><span>📢 Admissions Open 2025-26 | CUET • NEET • IIT-JEE • SSC/Bank/Railway • School (3rd-12th) | Shahganj, Prayagraj | Contact: 9044034585 | Free Demo Classes Available</span></div>
+  </div>
+</div>
+<section class="hero" id="main-content">
+  <div class="container">
+    <div class="hero-content">
+      <span class="badge">📌 Accredited Coaching Institute Since 2010</span>
+      <h2>Welcome to <span class="hl">The Heaven Point</span></h2>
+      <p>Expert coaching for <strong>CUET, NEET, IIT‑JEE, SSC, Bank, Railway</strong> & <strong>School Courses (Class 3rd to 12th)</strong>. Located in the heart of <strong>Shahganj, Prayagraj</strong>, we provide quality education through experienced faculty, regular mock tests, and personalized mentorship.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="#courses" class="btn btn-primary">View Courses <i class="fas fa-arrow-right"></i></a>
+        <a href="#admission" class="btn btn-gold">Apply for Admission</a>
+        <a href="tel:9044034585" class="btn btn-outline"><i class="fas fa-phone"></i> Call Now</a>
+      </div>
     </div>
+    <div class="hero-logo">
+      <img src="channels4_profile.jpg" alt="The Heaven Point">
+      <div class="est">Established 2010<br>Shahganj, Prayagraj</div>
+    </div>
+  </div>
+</section>
+<div class="container">
+  <div class="main-layout">
+    <div class="content-area">
+      <section id="featured" style="padding-top:20px;">
+        <h2 class="section-title"><i class="fas fa-star"></i> Featured Course</h2>
+        <div class="card" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+          <img src="https://i.ibb.co/4wrtJTbw/file-00000000156061f5b89e4f5e05b6f71f.png" alt="SSC Course" style="width:100px;height:100px;border-radius:10px;object-fit:cover;box-shadow:var(--shadow);flex-shrink:0;">
+          <div style="flex:1;min-width:220px;">
+            <span style="background:var(--red-light);color:var(--red);font-size:0.64rem;font-weight:700;padding:3px 10px;border-radius:3px;">🔥 MOST POPULAR</span>
+            <h3 style="font-size:1.15rem;font-weight:700;color:var(--navy);margin:6px 0;">SSC, Bank, Railway</h3>
+            <p style="font-size:0.8rem;color:var(--gray-600);margin-bottom:10px;">Complete competitive exam preparation with daily mock tests, live classes & expert mentorship.</p>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <span style="font-size:1.3rem;font-weight:800;color:var(--navy);">₹1,500<span style="font-size:0.66rem;color:var(--gray-500);">/mo</span></span>
+              <span style="font-size:0.72rem;text-decoration:line-through;color:var(--gray-400);">₹2,000</span>
+              <span style="background:var(--green-light);color:var(--green);font-size:0.62rem;font-weight:600;padding:3px 8px;border-radius:3px;">33% OFF</span>
+              <a href="formTHPSsc.html" class="btn btn-primary btn-sm">Enroll Now</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="courses">
+        <h2 class="section-title"><i class="fas fa-graduation-cap"></i> All Courses & Batches</h2>
+        <div class="table-wrap" style="margin-bottom:22px;">
+          <table>
+            <thead><tr><th>S.No.</th><th>Course Name</th><th>Duration</th><th>Eligibility</th><th>Fee (Monthly)</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><strong>SSC, Bank, Railway</strong></td><td>6 Months</td><td>Graduate</td><td>₹1,500</td><td><span class="status-open">Open</span></td><td><a href="formTHPSsc.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+              <tr><td>2</td><td><strong>CUET (UG)</strong></td><td>1 Year</td><td>12th Pass</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+              <tr><td>3</td><td><strong>NEET (Medical)</strong></td><td>2 Years</td><td>12th (PCB)</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+              <tr><td>4</td><td><strong>IIT-JEE (Engineering)</strong></td><td>2 Years</td><td>12th (PCM)</td><td>₹2,000</td><td><span class="status-open">Open</span></td><td><a href="fromTHP.html" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+              <tr><td>5</td><td><strong>Class 3rd - 8th</strong></td><td>Academic Year</td><td>Respective Class</td><td>₹1,000</td><td><span class="status-open">Open</span></td><td><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+              <tr><td>6</td><td><strong>Class 9th - 12th</strong></td><td>Academic Year</td><td>Respective Class</td><td>₹1,500-2,500</td><td><span class="status-open">Open</span></td><td><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-primary btn-xs">Enroll</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 style="font-size:1.05rem;font-weight:600;color:var(--navy);margin-bottom:14px;">📚 Premium Batches</h3>
+        <div class="courses-grid">
+          <div class="course-card"><div class="img-wrap"><img src="https://i.ibb.co/4wXc33T0/828aed35-38f7-4097-9751-0ef7957f76e9-thumbnail.webp" alt="CUET"></div><div class="info"><h4>CUET</h4><p>University entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
+          <div class="course-card"><div class="img-wrap"><img src="https://i.ibb.co/1JL6h6NC/5f89c41f-0897-4c04-99cd-3a66bbe89b26.png" alt="NEET"></div><div class="info"><h4>NEET</h4><p>Medical entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
+          <div class="course-card"><div class="img-wrap"><img src="https://i.ibb.co/7NyBDHSM/2f91edf2-41ad-4f3d-b079-4e452f2d2fee-3.png" alt="IIT-JEE"></div><div class="info"><h4>IIT-JEE</h4><p>Engineering entrance preparation</p><div class="price">₹2,000/mo</div><a href="fromTHP.html" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
+          <div class="course-card"><div class="img-wrap"><img src="ceb5eec1-6d3d-454e-9f84-43b4125f7580.jpg" alt="School"></div><div class="info"><h4>Class 3-12</h4><p>All boards, all subjects</p><div class="price">₹1,000-2,500</div><a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" class="btn btn-outline btn-xs" style="margin-top:8px;">Enroll →</a></div></div>
+        </div>
+      </section>
 
-    <a href="https://wa.me/919044034585" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+      <!-- ULTRA ADVANCED FACULTY SECTION -->
+      <section id="faculty">
+        <h2 class="section-title"><i class="fas fa-chalkboard-teacher"></i> Our Distinguished Faculty</h2>
+        <div class="faculty-swiper swiper">
+          <div class="swiper-wrapper" id="facultyWrapper">
+            <div class="swiper-slide"><div class="card" style="text-align:center;padding:40px;color:var(--gray-500);">Loading faculty data...</div></div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </section>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
-            databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
-            storageBucket: "starlet-registor.firebasestorage.app", messagingSenderId: "904193225045",
-            appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        function openNotes() { window.open('thp-special-notes.html', '_blank'); }
-        function openLecture() { window.open('thp-online-lecture.html', '_blank'); }
+      <!-- ULTRA ADVANCED GALLERY SECTION -->
+      <section id="gallery">
+        <h2 class="section-title"><i class="fas fa-images"></i> Campus Gallery</h2>
+        <div class="gallery-main-wrap">
+          <div class="gallery-swiper swiper" id="galleryMainSwiper">
+            <div class="swiper-wrapper" id="galleryWrapper"></div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+          </div>
+        </div>
+        <div class="gallery-thumbs" id="galleryThumbs"></div>
+      </section>
 
-        // ─── LAZY LOAD MAP ───
-        setTimeout(function() {
-            var mapIframe = document.querySelector('.map-card iframe');
-            if(mapIframe && mapIframe.getAttribute('data-src')) {
-                mapIframe.src = mapIframe.getAttribute('data-src');
-            }
-        }, 2000);
+      <section id="admission">
+        <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Admission Process</h2>
+        <div class="card">
+          <div class="steps-grid">
+            <div class="step-card step-blue"><div class="step-num">01</div><div class="step-title">Fill Application</div><div class="step-desc">Online or Offline Form</div></div>
+            <div class="step-card step-green"><div class="step-num">02</div><div class="step-title">Submit Documents</div><div class="step-desc">ID Proof & Marksheets</div></div>
+            <div class="step-card step-orange"><div class="step-num">03</div><div class="step-title">Entrance Test</div><div class="step-desc">If Applicable</div></div>
+            <div class="step-card step-gray"><div class="step-num">04</div><div class="step-title">Pay Fee & Confirm</div><div class="step-desc">Secure Your Seat</div></div>
+          </div>
+          <div style="text-align:center;margin-top:22px;">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" class="btn btn-gold">Apply Now for Admission <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </section>
+      <section id="about">
+        <h2 class="section-title"><i class="fas fa-info-circle"></i> About The Heaven Point</h2>
+        <div class="card" style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;">
+          <img src="channels4_profile.jpg" alt="THP" style="width:80px;height:80px;border-radius:10px;object-fit:cover;border:2px solid var(--gray-200);flex-shrink:0;">
+          <div style="flex:1;min-width:220px;">
+            <p style="font-size:0.84rem;color:var(--gray-600);line-height:1.7;">We offer <strong>Commerce, Maths, Physics, Chemistry, Biology, English</strong> & more. Specialized courses for <strong>CUET, NEET, IIT-JEE</strong> with regular tests, premium study materials, and personalized mentorship. Located in <strong>Shahganj, Prayagraj</strong>, our institute is easily accessible for students across the city.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
+              <span style="background:var(--blue-light);color:var(--blue);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Expert Faculty</span>
+              <span style="background:var(--green-light);color:var(--green);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Small Batches</span>
+              <span style="background:var(--orange-light);color:var(--orange);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Mock Tests</span>
+              <span style="background:var(--gold-light);color:var(--gold);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Affordable Fees</span>
+              <span style="background:var(--gray-100);color:var(--gray-600);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Doubt Sessions</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <aside class="sidebar" id="contact">
+      <div class="map-card" style="margin-bottom:16px;">
+        <iframe src="" data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3602.7467754021797!2d81.8666!3d25.4467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399acb0e7a2c1e2d%3A0x4e7b6a5f3c8d9e1f!2sShahganj%2C%20Prayagraj%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1690000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="background:#f1f3f5;width:100%;height:200px;border:none;display:block;"></iframe>
+        <div class="map-info">
+          <strong><i class="fas fa-map-marker-alt" style="color:var(--red);"></i> Shahganj, Prayagraj</strong>
+          <a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank">Open in Google Maps <i class="fas fa-external-link-alt"></i></a>
+        </div>
+      </div>
+      <div class="card"><div class="card-header"><i class="fas fa-link"></i> Quick Links</div>
+        <a href="#courses" class="quick-link"><i class="fas fa-chevron-right"></i> Available Courses</a>
+        <a href="#featured" class="quick-link"><i class="fas fa-chevron-right"></i> Featured Course (SSC)</a>
+        <a href="#admission" class="quick-link"><i class="fas fa-chevron-right"></i> Admission 2025-26</a>
+        <a href="javascript:void(0)" onclick="openNotes()" class="quick-link"><i class="fas fa-chevron-right"></i> Study Material / Notes</a>
+        <a href="javascript:void(0)" onclick="openLecture()" class="quick-link"><i class="fas fa-chevron-right"></i> Video Lectures</a>
+        <a href="#faculty" class="quick-link"><i class="fas fa-chevron-right"></i> Our Faculty</a>
+        <a href="#gallery" class="quick-link"><i class="fas fa-chevron-right"></i> Campus Gallery</a>
+      </div>
+      <div class="card"><div class="card-header"><i class="fas fa-phone"></i> Contact Information</div>
+        <ul class="info-list">
+          <li><i class="fas fa-phone"></i> <span><strong>9044034585</strong></span></li>
+          <li><i class="fas fa-envelope"></i> <span>theheavenpoint@gmail.com</span></li>
+          <li><i class="fas fa-map-marker-alt"></i> <span>Shahganj, Prayagraj,<br>Uttar Pradesh, India</span></li>
+          <li><i class="fas fa-clock"></i> <span>Monday - Saturday: 7AM-8PM</span></li>
+          <li><i class="fas fa-calendar"></i> <span>Sunday: By Appointment</span></li>
+        </ul>
+        <div class="social-row" style="margin-top:12px;">
+          <a href="https://t.me/heavenpoint" target="_blank" style="background:#0088cc;"><i class="fab fa-telegram"></i></a>
+          <a href="https://www.instagram.com/theheavenpoint/" target="_blank" style="background:#e4405f;"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" style="background:#ff0000;"><i class="fab fa-youtube"></i></a>
+          <a href="https://wa.me/919044034585" target="_blank" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="card"><div class="card-header"><i class="fas fa-check-circle"></i> Why Choose Us</div>
+        <ul class="info-list">
+          <li><i class="fas fa-check" style="color:var(--green);"></i> 15+ Years of Excellence</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Highly Qualified Faculty</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Small Batch Size (Max 30)</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Regular Mock Tests & Analysis</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Affordable Fee Structure</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Dedicated Doubt Sessions</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Free Premium Study Material</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Prime Location in Prayagraj</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><h4>The Heaven Point</h4><p style="font-size:0.72rem;">Premium coaching institute in Shahganj, Prayagraj. Nurturing students for competitive exams and academic excellence since 2010.</p><p style="font-size:0.68rem;margin-top:6px;">ISO 9001:2015 Certified Institute</p><a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank" style="color:var(--gold);font-size:0.7rem;margin-top:4px;display:inline-block;">📍 View on Google Maps</a></div>
+      <div><h4>Quick Links</h4><a href="#">Home</a><a href="#courses">Courses</a><a href="#faculty">Faculty</a><a href="#gallery">Gallery</a><a href="#admission">Admission</a><a href="#about">About Us</a><a href="#contact">Contact</a></div>
+      <div><h4>Our Courses</h4><a href="#">CUET (UG Entrance)</a><a href="#">NEET (Medical)</a><a href="#">IIT-JEE (Engineering)</a><a href="#">SSC / Bank / Railway</a><a href="#">Class 3rd - 8th</a><a href="#">Class 9th - 12th</a><a href="#">Crash Courses</a><a href="#">Test Series</a></div>
+      <div><h4>Contact Us</h4><p style="font-size:0.72rem;">📞 9044034585</p><p style="font-size:0.72rem;">✉️ theheavenpoint@gmail.com</p><p style="font-size:0.72rem;">📍 Shahganj, Prayagraj, UP</p><p style="font-size:0.72rem;margin-top:6px;">🕐 Mon-Sat: 7AM-8PM</p></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 The Heaven Point, Shahganj, Prayagraj. All Rights Reserved. | Terms & Conditions | Privacy Policy</p><p style="margin-top:4px;">Best viewed in Chrome 90+, Firefox 88+, Safari 14+ | Last Updated: July 2025</p></div>
+  </div>
+</footer>
+<div class="bottom-nav">
+  <a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+  <a href="#courses"><i class="fas fa-book"></i><span>Courses</span></a>
+  <a href="#faculty"><i class="fas fa-users"></i><span>Faculty</span></a>
+  <a href="#contact"><i class="fas fa-phone"></i><span>Contact</span></a>
+</div>
+<a href="https://wa.me/919044034585" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
+    databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
+    storageBucket: "starlet-registor.firebasestorage.app", messagingSenderId: "904193225045",
+    appId: "1:904193225045:web:0c9ed3f3d7251862ff7fdc"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  function openNotes() { window.open('thp-special-notes.html', '_blank'); }
+  function openLecture() { window.open('thp-online-lecture.html', '_blank'); }
 
-        // ─── FACULTY SWIPER ───
-        let fSwiper = null;
-        setTimeout(function() {
-            db.ref('thp-faculty').on('value', snap => {
-                const w = document.getElementById('facultyWrapper'); w.innerHTML = '';
-                const list = [];
-                if(snap.exists()) {
-                    snap.forEach(c => {
-                        const f = Object.assign({id:c.key}, c.val());
-                        if(!f.images||!Array.isArray(f.images)) f.images = f.image?[f.image]:[];
-                        list.push(f);
-                    });
-                    list.sort((a,b)=>(a.order||0)-(b.order||0));
-                }
-                if(!list.length) { w.innerHTML = '<div class="swiper-slide"><div class="card" style="text-align:center;padding:30px;">Faculty coming soon.</div></div>'; }
-                else {
-                    list.forEach(f => {
-                        const img = (f.images&&f.images.length)?f.images[0]:(f.image||'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=400&background=1a2a4a&color=fff');
-                        w.innerHTML += '<div class="swiper-slide"><div class="faculty-card"><div class="img-wrap"><img src="'+img+'" alt="'+f.name+'" onerror="this.src=\'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=566&fit=crop\'"><div class="overlay"></div></div><div class="info"><h4>'+f.name+'</h4><div class="role">'+(f.designation||'Faculty')+'</div><div class="subj">'+(f.subject||'')+'</div></div></div></div>';
-                    });
-                }
-                if(fSwiper) fSwiper.destroy();
-                setTimeout(function() {
-                    fSwiper = new Swiper('.faculty-swiper', { 
-                        slidesPerView:1, 
-                        spaceBetween:16, 
-                        pagination:{el:'.faculty-swiper .swiper-pagination',clickable:true}, 
-                        breakpoints:{500:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}},
-                        observer: true, 
-                        observeParents: true 
-                    });
-                }, 100);
-            });
-        }, 800);
+  setTimeout(function() {
+    var mapIframe = document.querySelector('.map-card iframe');
+    if(mapIframe && mapIframe.getAttribute('data-src')) {
+      mapIframe.src = mapIframe.getAttribute('data-src');
+    }
+  }, 2000);
 
-        // ─── GALLERY SWIPER ───
-        let gallerySwiper = null;
-        function loadGallery() {
-            setTimeout(function() {
-                db.ref('thp-gallery').on('value', snap => {
-                    const wrapper = document.getElementById('galleryWrapper');
-                    const thumbs = document.getElementById('galleryThumbs');
-                    wrapper.innerHTML = ''; thumbs.innerHTML = '';
-                    const images = [];
-                    if(snap.exists()) { snap.forEach(c => { const d = c.val(); if(d.url) images.push(d.url); }); }
-                    if(images.length === 0) {
-                        wrapper.innerHTML = '<div class="swiper-slide"><div style="aspect-ratio:1/1.414;background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-500);">Gallery coming soon</div></div>';
-                    } else {
-                        images.forEach((img, i) => {
-                            wrapper.innerHTML += '<div class="swiper-slide"><img src="'+img+'" alt="Gallery" onerror="this.style.display=\'none\'"></div>';
-                            thumbs.innerHTML += '<div class="thumb" data-index="'+i+'"><img src="'+img+'" alt="Thumb" onerror="this.style.display=\'none\'"></div>';
-                        });
-                        const ft = thumbs.querySelector('.thumb'); if(ft) ft.classList.add('active');
-                    }
-                    if(gallerySwiper) gallerySwiper.destroy();
-                    setTimeout(function() {
-                        gallerySwiper = new Swiper('#galleryMainSwiper', {
-                            slidesPerView:1, spaceBetween:0, loop:images.length>1,
-                            autoplay:images.length>1?{delay:3500,disableOnInteraction:false}:false,
-                            pagination:{el:'#galleryMainSwiper .swiper-pagination',clickable:true},
-                            navigation:{nextEl:'#galleryMainSwiper .swiper-button-next',prevEl:'#galleryMainSwiper .swiper-button-prev'},
-                            observer: true, 
-                            observeParents: true,
-                            on: {
-                                slideChange: function() {
-                                    const idx = this.realIndex;
-                                    document.querySelectorAll('.gallery-thumbs .thumb').forEach((t, i) => {
-                                        t.classList.toggle('active', i === idx);
-                                        // CRITICAL FIX: Only scroll the container, NOT the whole page
-                                        if(i === idx) {
-                                            const container = t.parentElement;
-                                            const scrollTarget = t.offsetLeft - (container.offsetWidth / 2) + (t.offsetWidth / 2);
-                                            container.scrollTo({ left: scrollTarget, behavior: 'smooth' });
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }, 100);
-                    document.querySelectorAll('.gallery-thumbs .thumb').forEach(t=>{t.addEventListener('click',function(){gallerySwiper.slideToLoop(parseInt(this.dataset.index));});});
-                });
-            }, 800);
+  let fSwiper = null;
+  setTimeout(function() {
+    db.ref('thp-faculty').on('value', snap => {
+      const w = document.getElementById('facultyWrapper'); w.innerHTML = '';
+      const list = [];
+      if(snap.exists()) {
+        snap.forEach(c => {
+          const f = Object.assign({id:c.key}, c.val());
+          if(!f.images||!Array.isArray(f.images)) f.images = f.image?[f.image]:[];
+          list.push(f);
+        });
+        list.sort((a,b)=>(a.order||0)-(b.order||0));
+      }
+      if(!list.length) { 
+        w.innerHTML = '<div class="swiper-slide"><div class="card" style="text-align:center;padding:30px;">Faculty coming soon.</div></div>'; 
+      } else {
+        list.forEach(f => {
+          const img = (f.images&&f.images.length)?f.images[0]:(f.image||'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=400&background=1a2a4a&color=fff');
+          const experience = f.experience || '8+ years';
+          const students = f.students || '1500+';
+          w.innerHTML += `
+            <div class="swiper-slide">
+              <div class="faculty-card">
+                <div class="img-wrap">
+                  <img src="${img}" alt="${f.name}" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=566&fit=crop'">
+                  <div class="overlay"></div>
+                  <span class="faculty-badge"><i class="fas fa-star"></i> Top Rated</span>
+                </div>
+                <div class="info">
+                  <h4>${f.name}</h4>
+                  <div class="role">${f.designation || 'Senior Faculty'}</div>
+                  <div class="subj">📘 ${f.subject || 'Multiple Subjects'}</div>
+                  <div class="faculty-meta">
+                    <span><i class="fas fa-briefcase"></i> ${experience}</span>
+                    <span><i class="fas fa-user-graduate"></i> ${students}</span>
+                  </div>
+                  <div class="trust-stamp">
+                    <i class="fas fa-shield-alt"></i> Verified & Trusted
+                  </div>
+                </div>
+              </div>
+            </div>`;
+        });
+      }
+      if(fSwiper) fSwiper.destroy();
+      setTimeout(function() {
+        fSwiper = new Swiper('.faculty-swiper', { 
+          slidesPerView:1, spaceBetween:20, pagination:{el:'.faculty-swiper .swiper-pagination',clickable:true}, 
+          breakpoints:{500:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}},
+          observer: true, observeParents: true 
+        });
+      }, 100);
+    });
+  }, 800);
+
+  let gallerySwiper = null;
+  function loadGallery() {
+    setTimeout(function() {
+      db.ref('thp-gallery').on('value', snap => {
+        const wrapper = document.getElementById('galleryWrapper');
+        const thumbs = document.getElementById('galleryThumbs');
+        wrapper.innerHTML = ''; thumbs.innerHTML = '';
+        const images = [];
+        if(snap.exists()) { snap.forEach(c => { const d = c.val(); if(d.url) images.push(d.url); }); }
+        if(images.length === 0) {
+          wrapper.innerHTML = '<div class="swiper-slide"><div style="aspect-ratio:1/1.3;background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-500);">Gallery coming soon</div></div>';
+        } else {
+          images.forEach((img, i) => {
+            wrapper.innerHTML += '<div class="swiper-slide"><img src="'+img+'" alt="Gallery" onerror="this.style.display=\'none\'"></div>';
+            thumbs.innerHTML += '<div class="thumb" data-index="'+i+'"><img src="'+img+'" alt="Thumb" onerror="this.style.display=\'none\'"></div>';
+          });
+          const ft = thumbs.querySelector('.thumb'); if(ft) ft.classList.add('active');
         }
+        if(gallerySwiper) gallerySwiper.destroy();
+        setTimeout(function() {
+          gallerySwiper = new Swiper('#galleryMainSwiper', {
+            slidesPerView:1, spaceBetween:0, loop:images.length>1,
+            autoplay:images.length>1?{delay:3500,disableOnInteraction:false}:false,
+            pagination:{el:'#galleryMainSwiper .swiper-pagination',clickable:true},
+            navigation:{nextEl:'#galleryMainSwiper .swiper-button-next',prevEl:'#galleryMainSwiper .swiper-button-prev'},
+            observer: true, observeParents: true,
+            on: {
+              slideChange: function() {
+                const idx = this.realIndex;
+                document.querySelectorAll('.gallery-thumbs .thumb').forEach((t, i) => {
+                  t.classList.toggle('active', i === idx);
+                  if(i === idx && t.parentElement) {
+                    const container = t.parentElement;
+                    container.scrollTo({ left: t.offsetLeft - (container.offsetWidth/2) + (t.offsetWidth/2), behavior: 'smooth' });
+                  }
+                });
+              }
+            }
+          });
+        }, 100);
+        document.querySelectorAll('.gallery-thumbs .thumb').forEach(t=>{
+          t.addEventListener('click',function(){ gallerySwiper.slideToLoop(parseInt(this.dataset.index)); });
+        });
+      });
+    }, 800);
+  }
 
-        document.querySelectorAll('#navLinks a').forEach(a=>{a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('show'));});
-        document.addEventListener('DOMContentLoaded',()=>{loadGallery();});
-    </script>
+  document.querySelectorAll('#navLinks a').forEach(a=>{a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('show'));});
+  document.addEventListener('DOMContentLoaded',()=>{loadGallery();});
+</script>
 </body>
 </html>
