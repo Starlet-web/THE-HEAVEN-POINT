@@ -11,7 +11,7 @@
   <link rel="icon" href="channels4_profile.jpg" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -20,31 +20,36 @@
   <style>
     :root {
       --navy: #1a2a4a; --blue: #1e5fbb; --blue-light: #e8f0fe; --gold: #b8860b;
-      --gold-light: #fef3c7; --white: #fff; --gray-50: #f8f9fa; --gray-100: #f1f3f5;
-      --gray-200: #e9ecef; --gray-300: #dee2e3; --gray-400: #adb5bd; --gray-500: #6c757d;
-      --gray-600: #495057; --gray-700: #343a40; --gray-800: #212529; --green: #2b8a3e;
-      --green-light: #ebfbee; --orange: #e67700; --orange-light: #fff4e6;
+      --gold-light: #fef3c7; --gold-dark: #8b6914; --white: #fff; --gray-50: #f8f9fa;
+      --gray-100: #f1f3f5; --gray-200: #e9ecef; --gray-300: #dee2e3; --gray-400: #adb5bd;
+      --gray-500: #6c757d; --gray-600: #495057; --gray-700: #343a40; --gray-800: #212529;
+      --green: #2b8a3e; --green-light: #ebfbee; --orange: #e67700; --orange-light: #fff4e6;
       --red: #c92a2a; --red-light: #fff5f5;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.04); --shadow: 0 1px 3px rgba(0,0,0,0.07);
       --shadow-md: 0 4px 8px rgba(0,0,0,0.06); --shadow-lg: 0 8px 25px rgba(0,0,0,0.1);
-      --shadow-xl: 0 20px 35px -12px rgba(0,0,0,0.2);
-      --radius: 6px; --radius-lg: 10px; --radius-xl: 14px; --radius-2xl: 20px; --transition: 0.25s ease;
+      --shadow-xl: 0 20px 50px rgba(0,0,0,0.15); --shadow-2xl: 0 30px 60px rgba(0,0,0,0.2);
+      --radius: 6px; --radius-lg: 10px; --radius-xl: 14px; --radius-2xl: 20px;
+      --transition: 0.25s ease; --transition-slow: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     html { overflow-x: hidden; scroll-behavior: smooth; }
     body {
       font-family: 'Noto Sans', 'Inter', sans-serif; background: var(--gray-50);
       color: var(--gray-800); line-height: 1.6; -webkit-font-smoothing: antialiased;
-      overflow-x: hidden; max-width: 100vw; padding-bottom: 65px;
+      overflow-x: hidden; max-width: 100vw;
     }
     img { max-width: 100%; height: auto; display: block; }
     a { color: var(--blue); text-decoration: none; transition: var(--transition); }
-    a:hover { text-decoration: none; }
+    a:hover { text-decoration: underline; }
     .container { max-width: 1250px; margin: 0 auto; padding: 0 20px; }
+    
+    /* Top Bar */
     .top-bar { background: var(--navy); color: rgba(255,255,255,0.85); font-size: 0.75rem; padding: 6px 0; border-bottom: 2px solid var(--gold); }
     .top-bar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
     .top-bar .contact { display: flex; gap: 14px; flex-wrap: wrap; }
     .top-bar .contact span { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+    
+    /* Header */
     .header { background: var(--white); border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
     .header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; padding-bottom: 12px; gap: 14px; }
     .header .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
@@ -53,26 +58,32 @@
     .header .logo .sub { font-size: 0.65rem; color: var(--gray-500); font-weight: 500; letter-spacing: 0.3px; }
     .header .header-right { display: flex; align-items: center; gap: 16px; }
     .profile-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 1.1rem; cursor: pointer; transition: var(--transition); text-decoration: none; flex-shrink: 0; }
-    .profile-icon:hover { background: var(--blue); color: white; }
+    .profile-icon:hover { background: var(--blue); color: white; text-decoration: none; }
     .mobile-menu-btn { background: none; border: none; font-size: 1.6rem; color: var(--navy); cursor: pointer; padding: 8px; display: block; }
     @media (min-width: 950px) { .mobile-menu-btn { display: none; } }
+    
+    /* Navigation */
     .main-nav { background: var(--navy); border-bottom: 3px solid var(--gold); }
     .main-nav .container { padding-top: 0; padding-bottom: 0; }
     .nav-links { display: none; flex-direction: column; }
     .nav-links.show { display: flex; }
     .nav-links a { color: rgba(255,255,255,0.9); padding: 12px 16px; font-size: 0.82rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.06); text-decoration: none; display: block; transition: var(--transition); }
-    .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.08); color: white; }
+    .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.08); color: white; text-decoration: none; }
     @media (min-width: 950px) {
       .nav-links { display: flex; flex-direction: row; flex-wrap: wrap; }
       .nav-links a { border-bottom: none; padding: 14px 18px; font-size: 0.8rem; }
       .nav-links a:hover, .nav-links a.active { border-bottom: 3px solid var(--gold); margin-bottom: -3px; background: rgba(255,255,255,0.06); }
     }
+    
+    /* Notice Bar */
     .notice-bar { background: var(--orange-light); border-bottom: 1px solid #ffd8a8; padding: 7px 0; overflow: hidden; }
     .notice-bar .container { display: flex; align-items: center; gap: 12px; font-size: 0.74rem; }
     .notice-tag { background: var(--orange); color: white; padding: 4px 12px; border-radius: 3px; font-weight: 600; font-size: 0.68rem; white-space: nowrap; flex-shrink: 0; }
     .marquee-wrap { overflow: hidden; white-space: nowrap; flex: 1; min-width: 0; }
     .marquee-wrap span { display: inline-block; animation: marquee 20s linear infinite; color: var(--gray-700); font-size: 0.7rem; }
     @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    
+    /* Hero */
     .hero { background: linear-gradient(160deg, #e8f0fe 0%, #f8f9fa 50%, #fff4e6 100%); padding: 45px 0; border-bottom: 1px solid var(--gray-200); }
     .hero .container { display: flex; align-items: center; gap: 35px; flex-wrap: wrap; }
     .hero-content { flex: 1; min-width: 270px; }
@@ -80,11 +91,15 @@
     .hero-content h2 { font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 12px; }
     .hero-content h2 .hl { color: var(--gold); border-bottom: 2px solid var(--gold-light); }
     .hero-content p { color: var(--gray-600); font-size: 0.88rem; max-width: 520px; margin-bottom: 20px; line-height: 1.65; }
+    
+    /* Buttons */
     .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; border-radius: var(--radius); font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: var(--transition); border: 2px solid transparent; font-family: inherit; text-decoration: none; white-space: nowrap; }
-    .btn-primary { background: var(--blue); color: white; border-color: var(--blue); } .btn-primary:hover { background: #1a4fa0; }
-    .btn-gold { background: var(--gold); color: white; border-color: var(--gold); } .btn-gold:hover { background: #9a6b0a; }
-    .btn-outline { background: transparent; color: var(--navy); border-color: var(--gray-300); } .btn-outline:hover { background: var(--gray-100); }
+    .btn-primary { background: var(--blue); color: white; border-color: var(--blue); } .btn-primary:hover { background: #1a4fa0; text-decoration: none; }
+    .btn-gold { background: var(--gold); color: white; border-color: var(--gold); } .btn-gold:hover { background: #9a6b0a; text-decoration: none; }
+    .btn-outline { background: transparent; color: var(--navy); border-color: var(--gray-300); } .btn-outline:hover { background: var(--gray-100); text-decoration: none; }
     .btn-sm { padding: 8px 14px; font-size: 0.74rem; } .btn-xs { padding: 6px 12px; font-size: 0.68rem; border-radius: 4px; }
+    
+    /* Hero Logo */
     .hero-logo { flex-shrink: 0; text-align: center; }
     .hero-logo img { width: 140px; border-radius: 10px; box-shadow: var(--shadow-md); border: 3px solid white; }
     .hero-logo .est { margin-top: 6px; font-size: 0.72rem; color: var(--gray-600); font-weight: 600; }
@@ -92,19 +107,27 @@
       .hero { padding: 30px 0; } .hero-content h2 { font-size: 1.35rem; } .hero-content p { font-size: 0.8rem; }
       .hero-logo img { width: 90px; } .btn { padding: 9px 16px; font-size: 0.75rem; }
     }
+    
+    /* Sections */
     section { padding: 30px 0; }
     @media (min-width: 768px) { section { padding: 40px 0; } }
     .section-title { font-size: 1.25rem; font-weight: 700; color: var(--navy); padding-bottom: 12px; border-bottom: 2px solid var(--gray-200); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
     .section-title i { color: var(--gold); font-size: 1.05rem; }
     @media (min-width: 768px) { .section-title { font-size: 1.4rem; } }
+    
+    /* Cards */
     .card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
     @media (min-width: 768px) { .card { padding: 24px; } }
+    
+    /* Tables */
     .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); border: 1px solid var(--gray-200); }
     table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 0.78rem; }
     table th { background: var(--navy); color: white; padding: 12px 14px; text-align: left; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.3px; white-space: nowrap; }
     table td { padding: 12px 14px; border-bottom: 1px solid var(--gray-200); white-space: nowrap; }
     table tbody tr:hover { background: var(--gray-50); } table tbody tr:nth-child(even) { background: #fafbfc; }
     .status-open { color: var(--green); font-weight: 600; font-size: 0.72rem; } .status-open::before { content: '● '; font-size: 0.45rem; }
+    
+    /* Course Grid */
     .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
     @media (max-width: 500px) { .courses-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
     .course-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); }
@@ -116,12 +139,16 @@
     .course-card .info h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); }
     .course-card .info p { font-size: 0.74rem; color: var(--gray-500); margin: 4px 0 10px; }
     .course-card .info .price { font-weight: 700; color: var(--blue); font-size: 0.88rem; }
+    
+    /* Layout */
     .main-layout { display: flex; gap: 28px; flex-wrap: wrap; }
     .content-area { flex: 1; min-width: 0; }
     .sidebar { width: 100%; }
     @media (min-width: 950px) { .sidebar { width: 300px; flex-shrink: 0; } }
+    
+    /* Sidebar */
     .sidebar .quick-link { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: var(--radius); color: var(--gray-700); font-size: 0.8rem; transition: var(--transition); border: 1px solid transparent; margin-bottom: 3px; text-decoration: none; }
-    .sidebar .quick-link:hover { background: var(--blue-light); color: var(--blue); border-color: #c5d9f8; }
+    .sidebar .quick-link:hover { background: var(--blue-light); color: var(--blue); text-decoration: none; border-color: #c5d9f8; }
     .sidebar .quick-link i { width: 18px; text-align: center; color: var(--blue); font-size: 0.78rem; }
     .info-list { list-style: none; padding: 0; }
     .info-list li { padding: 8px 0; border-bottom: 1px solid var(--gray-100); font-size: 0.78rem; display: flex; gap: 8px; color: var(--gray-600); align-items: flex-start; }
@@ -129,100 +156,449 @@
     .info-list li i { color: var(--blue); width: 16px; margin-top: 3px; font-size: 0.72rem; }
     .social-row { display: flex; gap: 10px; flex-wrap: wrap; }
     .social-row a { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; text-decoration: none; transition: var(--transition); }
-    .social-row a:hover { transform: scale(1.1); }
+    .social-row a:hover { transform: scale(1.1); text-decoration: none; }
+    
+    /* Map */
     .map-card { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--gray-200); }
     .map-card iframe { width: 100%; height: 200px; border: none; display: block; }
     .map-card .map-info { padding: 12px 14px; background: white; font-size: 0.75rem; }
     .map-card .map-info a { color: var(--blue); font-weight: 600; }
+    
+    /* Footer */
     .footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 35px 0 20px; font-size: 0.78rem; border-top: 4px solid var(--gold); margin-top: 30px; }
     .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
     @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 16px; } }
     .footer h4 { color: white; font-size: 0.85rem; margin-bottom: 12px; font-weight: 600; }
     .footer a { color: rgba(255,255,255,0.5); text-decoration: none; display: block; padding: 3px 0; font-size: 0.72rem; transition: var(--transition); }
-    .footer a:hover { color: var(--gold); }
+    .footer a:hover { color: var(--gold); text-decoration: none; }
     .footer-bottom { margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); text-align: center; font-size: 0.68rem; color: rgba(255,255,255,0.35); }
+    
+    /* WhatsApp Float */
     .whatsapp-float { position: fixed; bottom: 80px; right: 16px; width: 50px; height: 50px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 4px 18px rgba(37,211,102,0.4); z-index: 999; text-decoration: none; transition: var(--transition); }
-    .whatsapp-float:hover { transform: scale(1.08); }
-    @media (min-width: 950px) { .whatsapp-float { bottom: 28px; right: 28px; } body { padding-bottom: 0; } }
+    .whatsapp-float:hover { transform: scale(1.08); text-decoration: none; }
+    @media (min-width: 950px) { .whatsapp-float { bottom: 28px; right: 28px; } }
+    
+    /* Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-around; padding: 8px 0 10px; z-index: 998; box-shadow: 0 -2px 12px rgba(0,0,0,0.05); }
     .bottom-nav a { display: flex; flex-direction: column; align-items: center; color: var(--gray-500); text-decoration: none; font-size: 0.64rem; gap: 3px; }
     .bottom-nav a i { font-size: 1.1rem; }
     .bottom-nav a.active { color: var(--blue); }
     @media (min-width: 950px) { .bottom-nav { display: none; } }
+    body { padding-bottom: 65px; }
+    @media (min-width: 950px) { body { padding-bottom: 0; } }
 
-    /* Stylish Poster Frame */
-    .poster-section { margin: 25px 0 20px; }
+    /* ⭐ ULTRA PREMIUM POSTER FRAME */
+    .poster-section {
+      margin: 30px 0 35px;
+      position: relative;
+    }
     .poster-frame {
-      background: white; border-radius: 28px; padding: 12px;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25), inset 0 1px 0 white;
-      border: 1px solid rgba(184,134,11,0.3); position: relative;
-      background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+      position: relative;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 30%, #e8ecf1 100%);
+      box-shadow: 
+        0 0 0 2px rgba(184,134,11,0.15),
+        0 0 0 5px white,
+        0 0 0 7px rgba(184,134,11,0.2),
+        0 25px 50px -20px rgba(26,42,74,0.35),
+        0 10px 30px -10px rgba(0,0,0,0.15),
+        inset 0 1px 0 white;
+      padding: 20px;
+      transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1);
+      overflow: visible;
+    }
+    .poster-frame::before {
+      content: '';
+      position: absolute;
+      top: -3px; left: -3px; right: -3px; bottom: -3px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, var(--gold), #d4a017, var(--gold-dark), #d4a017, var(--gold));
+      background-size: 400% 400%;
+      animation: shimmer 3s ease-in-out infinite;
+      z-index: -1;
+      opacity: 0.3;
+    }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .poster-frame:hover {
+      transform: translateY(-8px);
+      box-shadow: 
+        0 0 0 2px var(--gold),
+        0 0 0 5px white,
+        0 0 0 8px rgba(184,134,11,0.25),
+        0 35px 60px -20px rgba(26,42,74,0.45),
+        0 15px 35px -10px rgba(0,0,0,0.2);
+    }
+    .poster-frame:hover::before {
+      opacity: 0.6;
     }
     .poster-inner {
-      border-radius: 20px; overflow: hidden; position: relative;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
-      border: 2px solid var(--gold-light);
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #1a2a4a;
+      box-shadow: 
+        inset 0 2px 10px rgba(0,0,0,0.1),
+        0 10px 30px rgba(0,0,0,0.15);
     }
-    .poster-img-wrap {
-      aspect-ratio: 16 / 9; width: 100%; background: var(--gray-100);
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
+    .poster-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.2, 0.9, 0.4, 1), filter 0.6s;
     }
-    .poster-img-wrap img {
-      width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
-    }
-    .poster-frame:hover .poster-img-wrap img { transform: scale(1.03); }
-    .poster-caption {
-      text-align: center; padding: 10px 15px 5px; font-weight: 600;
-      color: var(--navy); font-size: 0.9rem; display: flex;
-      align-items: center; justify-content: center; gap: 6px;
-    }
-    .frame-decor {
-      position: absolute; top: -4px; left: 30px; right: 30px; height: 4px;
-      background: linear-gradient(90deg, var(--gold), #f0c14a, var(--gold));
-      border-radius: 0 0 8px 8px; z-index: 2;
+    .poster-frame:hover .poster-inner img {
+      transform: scale(1.05);
+      filter: brightness(1.05);
     }
     .poster-badge {
-      background: var(--gold); color: white; font-size: 0.7rem; font-weight: 700;
-      padding: 4px 14px; border-radius: 30px; display: inline-block; margin-bottom: 8px;
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      background: linear-gradient(135deg, rgba(26,42,74,0.95), rgba(26,42,74,0.85));
+      backdrop-filter: blur(15px);
+      color: var(--gold-light);
+      padding: 8px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.8px;
+      z-index: 3;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      animation: fadeInUp 0.8s ease;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .poster-badge i {
+      color: var(--gold);
+      font-size: 0.85rem;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    .poster-frame .corner-ornament {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--gold);
+      opacity: 0.4;
+      z-index: 2;
+      pointer-events: none;
+      transition: all 0.4s;
+    }
+    .poster-frame:hover .corner-ornament {
+      opacity: 0.8;
+      border-width: 4px;
+    }
+    .corner-tl { top: 24px; left: 24px; border-right: none; border-bottom: none; border-radius: 16px 0 0 0; }
+    .corner-br { bottom: 24px; right: 24px; border-left: none; border-top: none; border-radius: 0 0 16px 0; }
+    .poster-frame .dot-pattern {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background-image: radial-gradient(circle, var(--gold) 1.5px, transparent 1.5px);
+      background-size: 10px 10px;
+      opacity: 0.3;
+      z-index: 1;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      .poster-frame { padding: 12px; border-radius: 20px; }
+      .poster-badge { top: 14px; left: 14px; font-size: 0.65rem; padding: 5px 14px; }
+      .corner-tl { top: 16px; left: 16px; width: 40px; height: 40px; }
+      .corner-br { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
 
-    /* Advanced Compact Gallery */
-    .gallery-compact {
-      background: white; border-radius: 24px; padding: 16px;
-      box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.04);
-      margin: 18px 0;
+    /* ✨ ULTRA ADVANCED COMPACT GALLERY WITH LIGHTBOX */
+    .gallery-advanced-wrap {
+      background: white;
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.03);
+      border: 1px solid rgba(184,134,11,0.08);
+      margin-top: 8px;
+      transition: var(--transition-slow);
     }
-    .gallery-header {
-      display: flex; align-items: center; justify-content: space-between;
+    .gallery-advanced-wrap:hover {
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 0 0 1px rgba(184,134,11,0.15);
+    }
+    .gallery-main-compact {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
       margin-bottom: 14px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      cursor: pointer;
     }
-    .gallery-main-swiper {
-      border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md);
-      aspect-ratio: 16 / 9; background: #000;
+    .compact-swiper {
+      aspect-ratio: 16 / 10;
+      background: #0a0f1a;
     }
-    .gallery-main-swiper .swiper-slide img {
-      width: 100%; height: 100%; object-fit: cover;
+    .compact-swiper .swiper-slide {
+      position: relative;
     }
-    .gallery-thumbs-row {
-      display: flex; gap: 10px; margin-top: 12px; overflow-x: auto;
-      padding-bottom: 6px; scrollbar-width: thin;
+    .compact-swiper .swiper-slide::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40%;
+      background: linear-gradient(transparent, rgba(0,0,0,0.3));
+      pointer-events: none;
     }
-    .gallery-thumbs-row::-webkit-scrollbar { height: 4px; }
-    .gallery-thumbs-row::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
-    .thumb-item {
-      width: 70px; height: 50px; border-radius: 10px; overflow: hidden;
-      flex-shrink: 0; cursor: pointer; border: 2px solid transparent;
-      opacity: 0.7; transition: 0.2s; box-shadow: var(--shadow-sm);
+    .compact-swiper .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s;
     }
-    .thumb-item.active { border-color: var(--gold); opacity: 1; transform: scale(1.05); }
-    .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
-    .gallery-nav-btn {
-      background: var(--navy); color: white; width: 32px; height: 32px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-      border: none; font-size: 0.9rem; transition: 0.2s; box-shadow: var(--shadow);
+    .compact-swiper .swiper-slide:hover img {
+      transform: scale(1.02);
     }
-    .gallery-nav-btn:hover { background: var(--gold); }
+    .compact-swiper .swiper-button-next,
+    .compact-swiper .swiper-button-prev {
+      color: white;
+      background: rgba(0,0,0,0.6);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .compact-swiper .swiper-button-next:hover,
+    .compact-swiper .swiper-button-prev:hover {
+      background: rgba(184,134,11,0.8);
+      border-color: var(--gold);
+    }
+    .compact-swiper .swiper-button-next:after,
+    .compact-swiper .swiper-button-prev:after {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+    .compact-swiper .swiper-pagination-bullet {
+      background: white;
+      opacity: 0.6;
+      width: 8px;
+      height: 8px;
+      transition: 0.3s;
+    }
+    .compact-swiper .swiper-pagination-bullet-active {
+      background: var(--gold);
+      opacity: 1;
+      transform: scale(1.4);
+      box-shadow: 0 0 10px rgba(184,134,11,0.5);
+    }
+    
+    /* Gallery Strip */
+    .gallery-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 6px 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gray-300) transparent;
+      scroll-behavior: smooth;
+    }
+    .gallery-strip::-webkit-scrollbar {
+      height: 4px;
+    }
+    .gallery-strip::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+      border-radius: 10px;
+    }
+    .strip-thumb {
+      width: 65px;
+      height: 50px;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+      opacity: 0.65;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .strip-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+      pointer-events: none;
+    }
+    .strip-thumb.active {
+      border-color: var(--gold);
+      opacity: 1;
+      transform: scale(1.08);
+      box-shadow: 0 8px 20px rgba(184,134,11,0.35);
+      z-index: 2;
+    }
+    .strip-thumb:hover {
+      opacity: 0.9;
+      transform: translateY(-3px);
+    }
+    .strip-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Lightbox */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(15px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
+      cursor: zoom-out;
+    }
+    .lightbox-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .lightbox-content {
+      max-width: 90vw;
+      max-height: 85vh;
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      border: 3px solid rgba(184,134,11,0.3);
+    }
+    .lightbox-overlay.active .lightbox-content {
+      transform: scale(1);
+    }
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 2.5rem;
+      cursor: pointer;
+      z-index: 10000;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-close:hover {
+      background: rgba(184,134,11,0.8);
+      transform: rotate(90deg);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      z-index: 10000;
+      background: rgba(0,0,0,0.5);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lightbox-nav:hover {
+      background: rgba(184,134,11,0.8);
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    /* Faculty (unchanged from original) */
+    .faculty-swiper { padding: 10px 0 45px; }
+    .faculty-card {
+      background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px -8px rgba(0,0,0,0.08);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1); border: 1px solid rgba(0,0,0,0.02);
+      backdrop-filter: blur(0); display: flex; flex-direction: column; height: 100%;
+    }
+    .faculty-card:hover {
+      transform: translateY(-8px); box-shadow: 0 25px 35px -12px rgba(26,42,74,0.25);
+      border-color: rgba(184,134,11,0.25);
+    }
+    .faculty-card .img-wrap {
+      aspect-ratio: 1/1.2; overflow: hidden; position: relative;
+    }
+    .faculty-card .img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease;
+    }
+    .faculty-card:hover .img-wrap img { transform: scale(1.07); }
+    .faculty-card .img-wrap .overlay {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+      background: linear-gradient(transparent, rgba(26,42,74,0.7));
+      pointer-events: none; z-index: 2;
+    }
+    .faculty-badge {
+      position: absolute; top: 12px; right: 12px; background: var(--gold); color: white;
+      padding: 4px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 700;
+      z-index: 3; box-shadow: 0 4px 10px rgba(0,0,0,0.2); letter-spacing: 0.3px;
+    }
+    .faculty-card .info {
+      padding: 20px 16px; text-align: center; position: relative; flex:1;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .faculty-card .info h4 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .faculty-card .info .role { font-size: 0.8rem; color: var(--blue); font-weight: 600; }
+    .faculty-card .info .subj { font-size: 0.72rem; color: var(--gray-500); margin: 6px 0 10px; }
+    .faculty-meta {
+      display: flex; justify-content: center; gap: 14px; font-size: 0.68rem;
+      color: var(--gray-600); margin-top: 8px; border-top: 1px solid var(--gray-100); padding-top: 12px;
+    }
+    .faculty-meta span { display: flex; align-items: center; gap: 4px; }
+    .trust-stamp {
+      background: #f0f6ff; border-radius: 30px; padding: 6px 14px; font-size: 0.65rem;
+      font-weight: 600; color: var(--navy); display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 10px; border:1px solid #d4e2fc;
+    }
+
+    /* Steps */
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    @media (max-width: 500px) { .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+    .step-card { text-align: center; padding: 22px 16px; border-radius: var(--radius-lg); }
+    .step-card .step-num { font-size: 2rem; font-weight: 800; } .step-card .step-title { font-weight: 600; color: var(--navy); font-size: 0.9rem; margin: 4px 0; }
+    .step-card .step-desc { font-size: 0.7rem; color: var(--gray-500); }
+    .step-blue { background: var(--blue-light); } .step-blue .step-num { color: var(--blue); }
+    .step-green { background: var(--green-light); } .step-green .step-num { color: var(--green); }
+    .step-orange { background: var(--orange-light); } .step-orange .step-num { color: var(--orange); }
+    .step-gray { background: var(--gray-100); } .step-gray .step-num { color: var(--gray-600); }
   </style>
 </head>
 <body>
@@ -250,15 +626,14 @@
     <div class="nav-links" id="navLinks">
       <a href="#" class="active">Home</a>
       <a href="#courses">Courses</a>
-      <a href="#featured">Featured</a>
-      <a href="#posterSection">Poster</a>
+      <a href="#featured">Featured Course</a>
       <a href="#faculty">Faculty</a>
       <a href="#gallery">Gallery</a>
       <a href="#admission">Admission</a>
-      <a href="#about">About</a>
+      <a href="#about">About Us</a>
       <a href="#contact">Contact</a>
-      <a href="javascript:void(0)" onclick="openNotes()">📝 Notes</a>
-      <a href="javascript:void(0)" onclick="openLecture()">🎬 Lectures</a>
+      <a href="javascript:void(0)" onclick="openNotes()">📝 Study Material</a>
+      <a href="javascript:void(0)" onclick="openLecture()">🎬 Video Lectures</a>
     </div>
   </div>
 </nav>
@@ -307,23 +682,18 @@
         </div>
       </section>
 
-      <!-- STYLISH 16:9 POSTER FRAME (Firebase powered) -->
-      <section id="posterSection" class="poster-section">
+      <!-- 🔥 ULTRA PREMIUM 16:9 POSTER FRAME -->
+      <div class="poster-section" id="posterSection">
         <div class="poster-frame">
-          <div class="frame-decor"></div>
+          <div class="corner-ornament corner-tl"></div>
+          <div class="corner-ornament corner-br"></div>
+          <div class="dot-pattern"></div>
+          <span class="poster-badge"><i class="fas fa-crown"></i> Premium Update</span>
           <div class="poster-inner" id="posterContainer">
-            <div class="poster-img-wrap">
-              <img src="https://placehold.co/1280x720/1a2a4a/gold?text=The+Heaven+Point+Poster" alt="Institute Poster" id="posterImage">
-            </div>
-            <div class="poster-caption">
-              <i class="fas fa-bullhorn" style="color:var(--gold);"></i> <span id="posterTitle">Premium Coaching 2025-26</span>
-            </div>
-          </div>
-          <div style="text-align:center; margin-top: 5px;">
-            <span class="poster-badge"><i class="far fa-clock"></i> Limited Seats</span>
+            <img src="https://placehold.co/1280x720/1a2a4a/gold?text=The+Heaven+Point+Poster" alt="Institute Poster" id="posterImage">
           </div>
         </div>
-      </section>
+      </div>
 
       <section id="courses">
         <h2 class="section-title"><i class="fas fa-graduation-cap"></i> All Courses & Batches</h2>
@@ -349,43 +719,40 @@
         </div>
       </section>
 
-      <!-- Faculty Section (kept as before) -->
       <section id="faculty">
         <h2 class="section-title"><i class="fas fa-chalkboard-teacher"></i> Our Distinguished Faculty</h2>
-        <div class="faculty-swiper swiper" style="padding:10px 0 45px;">
+        <div class="faculty-swiper swiper">
           <div class="swiper-wrapper" id="facultyWrapper">
-            <div class="swiper-slide"><div class="card" style="text-align:center;padding:40px;">Loading faculty...</div></div>
+            <div class="swiper-slide"><div class="card" style="text-align:center;padding:40px;color:var(--gray-500);">Loading faculty data...</div></div>
           </div>
           <div class="swiper-pagination"></div>
         </div>
       </section>
 
-      <!-- ADVANCED COMPACT GALLERY (Firebase powered) -->
+      <!-- ✨ ULTRA ADVANCED COMPACT GALLERY -->
       <section id="gallery">
         <h2 class="section-title"><i class="fas fa-images"></i> Campus Gallery</h2>
-        <div class="gallery-compact">
-          <div class="gallery-header">
-            <span style="font-weight:600; color:var(--navy);"><i class="fas fa-camera-retro" style="color:var(--gold);"></i> Explore Our Campus</span>
-            <div style="display:flex; gap:8px;">
-              <button class="gallery-nav-btn" id="galleryPrevBtn"><i class="fas fa-chevron-left"></i></button>
-              <button class="gallery-nav-btn" id="galleryNextBtn"><i class="fas fa-chevron-right"></i></button>
+        <div class="gallery-advanced-wrap">
+          <div class="gallery-main-compact" id="galleryMainClick">
+            <div class="compact-swiper swiper" id="galleryCompactSwiper">
+              <div class="swiper-wrapper" id="galleryCompactWrapper"></div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
             </div>
           </div>
-          <div class="gallery-main-swiper swiper" id="galleryMainSwiper">
-            <div class="swiper-wrapper" id="galleryWrapper"></div>
-          </div>
-          <div class="gallery-thumbs-row" id="galleryThumbsContainer"></div>
+          <div class="gallery-strip" id="galleryCompactThumbs"></div>
         </div>
       </section>
 
       <section id="admission">
         <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Admission Process</h2>
         <div class="card">
-          <div class="steps-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:14px;">
-            <div class="step-card step-blue" style="text-align:center; padding:20px; border-radius:12px;"><div style="font-size:2rem; font-weight:800; color:var(--blue);">01</div><div style="font-weight:600;">Fill Application</div><div style="font-size:0.7rem; color:var(--gray-500);">Online or Offline</div></div>
-            <div class="step-card step-green" style="text-align:center; padding:20px; border-radius:12px;"><div style="font-size:2rem; font-weight:800; color:var(--green);">02</div><div style="font-weight:600;">Submit Documents</div><div style="font-size:0.7rem; color:var(--gray-500);">ID & Marksheets</div></div>
-            <div class="step-card step-orange" style="text-align:center; padding:20px; border-radius:12px;"><div style="font-size:2rem; font-weight:800; color:var(--orange);">03</div><div style="font-weight:600;">Entrance Test</div><div style="font-size:0.7rem; color:var(--gray-500);">If Applicable</div></div>
-            <div class="step-card step-gray" style="text-align:center; padding:20px; border-radius:12px;"><div style="font-size:2rem; font-weight:800; color:var(--gray-600);">04</div><div style="font-weight:600;">Pay Fee & Confirm</div><div style="font-size:0.7rem; color:var(--gray-500);">Secure Seat</div></div>
+          <div class="steps-grid">
+            <div class="step-card step-blue"><div class="step-num">01</div><div class="step-title">Fill Application</div><div class="step-desc">Online or Offline Form</div></div>
+            <div class="step-card step-green"><div class="step-num">02</div><div class="step-title">Submit Documents</div><div class="step-desc">ID Proof & Marksheets</div></div>
+            <div class="step-card step-orange"><div class="step-num">03</div><div class="step-title">Entrance Test</div><div class="step-desc">If Applicable</div></div>
+            <div class="step-card step-gray"><div class="step-num">04</div><div class="step-title">Pay Fee & Confirm</div><div class="step-desc">Secure Your Seat</div></div>
           </div>
           <div style="text-align:center;margin-top:22px;">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" class="btn btn-gold">Apply Now for Admission <i class="fas fa-arrow-right"></i></a>
@@ -397,11 +764,13 @@
         <div class="card" style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;">
           <img src="channels4_profile.jpg" alt="THP" style="width:80px;height:80px;border-radius:10px;object-fit:cover;border:2px solid var(--gray-200);flex-shrink:0;">
           <div style="flex:1;min-width:220px;">
-            <p style="font-size:0.84rem;color:var(--gray-600);line-height:1.7;">We offer <strong>Commerce, Maths, Physics, Chemistry, Biology, English</strong> & more. Specialized courses for <strong>CUET, NEET, IIT-JEE</strong> with regular tests, premium study materials, and personalized mentorship.</p>
+            <p style="font-size:0.84rem;color:var(--gray-600);line-height:1.7;">We offer <strong>Commerce, Maths, Physics, Chemistry, Biology, English</strong> & more. Specialized courses for <strong>CUET, NEET, IIT-JEE</strong> with regular tests, premium study materials, and personalized mentorship. Located in <strong>Shahganj, Prayagraj</strong>, our institute is easily accessible for students across the city.</p>
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
-              <span style="background:var(--blue-light);color:var(--blue);font-size:0.68rem;padding:4px 12px;border-radius:4px;">Expert Faculty</span>
-              <span style="background:var(--green-light);color:var(--green);font-size:0.68rem;padding:4px 12px;border-radius:4px;">Small Batches</span>
-              <span style="background:var(--orange-light);color:var(--orange);font-size:0.68rem;padding:4px 12px;border-radius:4px;">Mock Tests</span>
+              <span style="background:var(--blue-light);color:var(--blue);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Expert Faculty</span>
+              <span style="background:var(--green-light);color:var(--green);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Small Batches</span>
+              <span style="background:var(--orange-light);color:var(--orange);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Mock Tests</span>
+              <span style="background:var(--gold-light);color:var(--gold);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Affordable Fees</span>
+              <span style="background:var(--gray-100);color:var(--gray-600);font-size:0.68rem;padding:4px 12px;border-radius:4px;font-weight:500;">Doubt Sessions</span>
             </div>
           </div>
         </div>
@@ -409,8 +778,11 @@
     </div>
     <aside class="sidebar" id="contact">
       <div class="map-card" style="margin-bottom:16px;">
-        <iframe src="" data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3602.7467754021797!2d81.8666!3d25.4467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399acb0e7a2c1e2d%3A0x4e7b6a5f3c8d9e1f!2sShahganj%2C%20Prayagraj%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1690000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="background:#f1f3f5;"></iframe>
-        <div class="map-info"><strong><i class="fas fa-map-marker-alt" style="color:var(--red);"></i> Shahganj, Prayagraj</strong> <a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank">Open in Maps</a></div>
+        <iframe src="" data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3602.7467754021797!2d81.8666!3d25.4467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399acb0e7a2c1e2d%3A0x4e7b6a5f3c8d9e1f!2sShahganj%2C%20Prayagraj%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1690000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="background:#f1f3f5;width:100%;height:200px;border:none;display:block;"></iframe>
+        <div class="map-info">
+          <strong><i class="fas fa-map-marker-alt" style="color:var(--red);"></i> Shahganj, Prayagraj</strong>
+          <a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank">Open in Google Maps <i class="fas fa-external-link-alt"></i></a>
+        </div>
       </div>
       <div class="card"><div class="card-header"><i class="fas fa-link"></i> Quick Links</div>
         <a href="#courses" class="quick-link"><i class="fas fa-chevron-right"></i> Available Courses</a>
@@ -418,12 +790,16 @@
         <a href="#admission" class="quick-link"><i class="fas fa-chevron-right"></i> Admission 2025-26</a>
         <a href="javascript:void(0)" onclick="openNotes()" class="quick-link"><i class="fas fa-chevron-right"></i> Study Material / Notes</a>
         <a href="javascript:void(0)" onclick="openLecture()" class="quick-link"><i class="fas fa-chevron-right"></i> Video Lectures</a>
+        <a href="#faculty" class="quick-link"><i class="fas fa-chevron-right"></i> Our Faculty</a>
+        <a href="#gallery" class="quick-link"><i class="fas fa-chevron-right"></i> Campus Gallery</a>
       </div>
-      <div class="card"><div class="card-header"><i class="fas fa-phone"></i> Contact</div>
+      <div class="card"><div class="card-header"><i class="fas fa-phone"></i> Contact Information</div>
         <ul class="info-list">
           <li><i class="fas fa-phone"></i> <span><strong>9044034585</strong></span></li>
           <li><i class="fas fa-envelope"></i> <span>theheavenpoint@gmail.com</span></li>
-          <li><i class="fas fa-map-marker-alt"></i> <span>Shahganj, Prayagraj, UP</span></li>
+          <li><i class="fas fa-map-marker-alt"></i> <span>Shahganj, Prayagraj,<br>Uttar Pradesh, India</span></li>
+          <li><i class="fas fa-clock"></i> <span>Monday - Saturday: 7AM-8PM</span></li>
+          <li><i class="fas fa-calendar"></i> <span>Sunday: By Appointment</span></li>
         </ul>
         <div class="social-row" style="margin-top:12px;">
           <a href="https://t.me/heavenpoint" target="_blank" style="background:#0088cc;"><i class="fab fa-telegram"></i></a>
@@ -432,18 +808,30 @@
           <a href="https://wa.me/919044034585" target="_blank" style="background:#25d366;"><i class="fab fa-whatsapp"></i></a>
         </div>
       </div>
+      <div class="card"><div class="card-header"><i class="fas fa-check-circle"></i> Why Choose Us</div>
+        <ul class="info-list">
+          <li><i class="fas fa-check" style="color:var(--green);"></i> 15+ Years of Excellence</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Highly Qualified Faculty</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Small Batch Size (Max 30)</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Regular Mock Tests & Analysis</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Affordable Fee Structure</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Dedicated Doubt Sessions</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Free Premium Study Material</li>
+          <li><i class="fas fa-check" style="color:var(--green);"></i> Prime Location in Prayagraj</li>
+        </ul>
+      </div>
     </aside>
   </div>
 </div>
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
-      <div><h4>The Heaven Point</h4><p style="font-size:0.72rem;">Premium coaching in Shahganj, Prayagraj since 2010.</p></div>
-      <div><h4>Quick Links</h4><a href="#">Home</a><a href="#courses">Courses</a><a href="#gallery">Gallery</a></div>
-      <div><h4>Courses</h4><a href="#">CUET</a><a href="#">NEET</a><a href="#">IIT-JEE</a></div>
-      <div><h4>Contact</h4><p style="font-size:0.72rem;">📞 9044034585</p></div>
+      <div><h4>The Heaven Point</h4><p style="font-size:0.72rem;">Premium coaching institute in Shahganj, Prayagraj. Nurturing students for competitive exams and academic excellence since 2010.</p><p style="font-size:0.68rem;margin-top:6px;">ISO 9001:2015 Certified Institute</p><a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank" style="color:var(--gold);font-size:0.7rem;margin-top:4px;display:inline-block;">📍 View on Google Maps</a></div>
+      <div><h4>Quick Links</h4><a href="#">Home</a><a href="#courses">Courses</a><a href="thp-faculty.html">Faculty</a><a href="#gallery">Gallery</a><a href="#admission">Admission</a><a href="#about">About Us</a><a href="#contact">Contact</a></div>
+      <div><h4>Our Courses</h4><a href="#">CUET (UG Entrance)</a><a href="#">NEET (Medical)</a><a href="#">IIT-JEE (Engineering)</a><a href="#">SSC / Bank / Railway</a><a href="#">Class 3rd - 8th</a><a href="#">Class 9th - 12th</a><a href="#">Crash Courses</a><a href="#">Test Series</a></div>
+      <div><h4>Contact Us</h4><p style="font-size:0.72rem;">📞 9044034585</p><p style="font-size:0.72rem;">✉️ theheavenpoint@gmail.com</p><p style="font-size:0.72rem;">📍 Shahganj, Prayagraj, UP</p><p style="font-size:0.72rem;margin-top:6px;">🕐 Mon-Sat: 7AM-8PM</p></div>
     </div>
-    <div class="footer-bottom"><p>© 2025 The Heaven Point. All rights reserved.</p></div>
+    <div class="footer-bottom"><p>© 2025 The Heaven Point, Shahganj, Prayagraj. All Rights Reserved. | Terms & Conditions | Privacy Policy</p><p style="margin-top:4px;">Best viewed in Chrome 90+, Firefox 88+, Safari 14+ | Last Updated: July 2025</p></div>
   </div>
 </footer>
 <div class="bottom-nav">
@@ -454,6 +842,16 @@
 </div>
 <a href="https://wa.me/919044034585" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
 
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <span class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></span>
+  <span class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></span>
+  <div class="lightbox-content" id="lightboxContent">
+    <img src="" alt="Gallery" id="lightboxImage">
+  </div>
+</div>
+
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
@@ -463,7 +861,6 @@
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
-
   function openNotes() { window.open('thp-special-notes.html', '_blank'); }
   function openLecture() { window.open('thp-online-lecture.html', '_blank'); }
 
@@ -474,114 +871,203 @@
     }
   }, 2000);
 
-  // Load Poster from Firebase (node: thp-poster)
+  // Load premium poster from Firebase
   function loadPoster() {
-    db.ref('thp-poster').on('value', snap => {
+    db.ref('thp-posters').orderByChild('timestamp').limitToLast(1).on('value', snap => {
       const posterImg = document.getElementById('posterImage');
-      const posterTitle = document.getElementById('posterTitle');
-      if(snap.exists()) {
-        const data = snap.val();
-        if(data.url) posterImg.src = data.url;
-        if(data.title) posterTitle.textContent = data.title;
-        if(data.url) posterImg.onerror = function(){ this.src = 'https://placehold.co/1280x720/1a2a4a/gold?text=Poster'; };
+      if (snap.exists()) {
+        snap.forEach(child => {
+          const data = child.val();
+          if (data.url && posterImg) {
+            posterImg.src = data.url;
+            posterImg.alt = data.title || 'Institute Poster';
+          }
+        });
+      } else {
+        if (posterImg) posterImg.src = 'https://placehold.co/1280x720/1a2a4a/gold?text=The+Heaven+Point+Poster';
       }
     });
   }
 
-  // Faculty Swiper (unchanged logic)
+  // Faculty Swiper
   let fSwiper = null;
-  function loadFaculty() {
-    setTimeout(function() {
-      db.ref('thp-faculty').on('value', snap => {
-        const w = document.getElementById('facultyWrapper'); w.innerHTML = '';
-        const list = [];
-        if(snap.exists()) {
-          snap.forEach(c => {
-            const f = Object.assign({id:c.key}, c.val());
-            if(!f.images||!Array.isArray(f.images)) f.images = f.image?[f.image]:[];
-            list.push(f);
-          });
-          list.sort((a,b)=>(a.order||0)-(b.order||0));
-        }
-        if(!list.length) { 
-          w.innerHTML = '<div class="swiper-slide"><div class="card" style="text-align:center;padding:30px;">Faculty coming soon.</div></div>'; 
-        } else {
-          list.forEach(f => {
-            const img = (f.images&&f.images.length)?f.images[0]:(f.image||'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=400&background=1a2a4a&color=fff');
-            w.innerHTML += `
-              <div class="swiper-slide">
-                <div class="faculty-card" style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 10px 25px -8px rgba(0,0,0,0.08);">
-                  <div style="aspect-ratio:1/1.2; overflow:hidden;"><img src="${img}" alt="${f.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=566&fit=crop'"></div>
-                  <div style="padding:16px; text-align:center;"><h4 style="color:var(--navy);">${f.name}</h4><div style="color:var(--blue); font-weight:600;">${f.designation || 'Faculty'}</div><div style="font-size:0.75rem; color:var(--gray-500);">${f.subject || ''}</div></div>
+  setTimeout(function() {
+    db.ref('thp-faculty').on('value', snap => {
+      const w = document.getElementById('facultyWrapper'); w.innerHTML = '';
+      const list = [];
+      if(snap.exists()) {
+        snap.forEach(c => {
+          const f = Object.assign({id:c.key}, c.val());
+          if(!f.images||!Array.isArray(f.images)) f.images = f.image?[f.image]:[];
+          list.push(f);
+        });
+        list.sort((a,b)=>(a.order||0)-(b.order||0));
+      }
+      if(!list.length) { 
+        w.innerHTML = '<div class="swiper-slide"><div class="card" style="text-align:center;padding:30px;">Faculty coming soon.</div></div>'; 
+      } else {
+        list.forEach(f => {
+          const img = (f.images&&f.images.length)?f.images[0]:(f.image||'https://ui-avatars.com/api/?name='+encodeURIComponent(f.name)+'&size=400&background=1a2a4a&color=fff');
+          const experience = f.experience || '8+ years';
+          const students = f.students || '1500+';
+          w.innerHTML += `
+            <div class="swiper-slide">
+              <div class="faculty-card">
+                <div class="img-wrap">
+                  <img src="${img}" alt="${f.name}" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=566&fit=crop'">
+                  <div class="overlay"></div>
+                  <span class="faculty-badge"><i class="fas fa-star"></i> Top Rated</span>
                 </div>
-              </div>`;
-          });
+                <div class="info">
+                  <h4>${f.name}</h4>
+                  <div class="role">${f.designation || 'Senior Faculty'}</div>
+                  <div class="subj">📘 ${f.subject || 'Multiple Subjects'}</div>
+                  <div class="faculty-meta">
+                    <span><i class="fas fa-briefcase"></i> ${experience}</span>
+                    <span><i class="fas fa-user-graduate"></i> ${students}</span>
+                  </div>
+                  <div class="trust-stamp">
+                    <i class="fas fa-shield-alt"></i> Verified & Trusted
+                  </div>
+                </div>
+              </div>
+            </div>`;
+        });
+      }
+      if(fSwiper) fSwiper.destroy();
+      setTimeout(function() {
+        fSwiper = new Swiper('.faculty-swiper', { 
+          slidesPerView:1, spaceBetween:20, pagination:{el:'.faculty-swiper .swiper-pagination',clickable:true}, 
+          breakpoints:{500:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}},
+          observer: true, observeParents: true 
+        });
+      }, 100);
+    });
+  }, 800);
+
+  // Advanced Compact Gallery with Lightbox
+  let compactGallerySwiper = null;
+  let galleryImages = [];
+  
+  function loadCompactGallery() {
+    setTimeout(function() {
+      db.ref('thp-gallery').on('value', snap => {
+        const wrapper = document.getElementById('galleryCompactWrapper');
+        const thumbsContainer = document.getElementById('galleryCompactThumbs');
+        wrapper.innerHTML = ''; 
+        thumbsContainer.innerHTML = '';
+        galleryImages = [];
+        if(snap.exists()) { 
+          snap.forEach(c => { const d = c.val(); if(d.url) galleryImages.push(d.url); }); 
         }
-        if(fSwiper) fSwiper.destroy();
-        setTimeout(function() {
-          fSwiper = new Swiper('.faculty-swiper', { 
-            slidesPerView:1, spaceBetween:20, pagination:{el:'.faculty-swiper .swiper-pagination',clickable:true}, 
-            breakpoints:{500:{slidesPerView:2},768:{slidesPerView:3},1024:{slidesPerView:4}}
+        if(galleryImages.length === 0) {
+          wrapper.innerHTML = '<div class="swiper-slide"><div style="aspect-ratio:16/10;background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-500);">Gallery coming soon</div></div>';
+        } else {
+          galleryImages.forEach((img, i) => {
+            wrapper.innerHTML += '<div class="swiper-slide"><img src="'+img+'" alt="Gallery image" onerror="this.style.display=\'none\'"></div>';
+            thumbsContainer.innerHTML += '<div class="strip-thumb" data-index="'+i+'"><img src="'+img+'" alt="thumb" onerror="this.style.display=\'none\'"></div>';
           });
-        }, 100);
+          const firstThumb = thumbsContainer.querySelector('.strip-thumb');
+          if(firstThumb) firstThumb.classList.add('active');
+        }
+        if(compactGallerySwiper) compactGallerySwiper.destroy();
+        setTimeout(function() {
+          compactGallerySwiper = new Swiper('#galleryCompactSwiper', {
+            slidesPerView:1, spaceBetween:0, loop: galleryImages.length > 1,
+            autoplay: galleryImages.length > 1 ? {delay: 3500, disableOnInteraction: false} : false,
+            pagination: { el: '#galleryCompactSwiper .swiper-pagination', clickable: true },
+            navigation: { nextEl: '#galleryCompactSwiper .swiper-button-next', prevEl: '#galleryCompactSwiper .swiper-button-prev' },
+            observer: true, observeParents: true,
+            on: {
+              slideChange: function() {
+                const idx = this.realIndex;
+                document.querySelectorAll('.strip-thumb').forEach((t, i) => {
+                  t.classList.toggle('active', i === idx);
+                  if(i === idx && t.parentElement) {
+                    t.parentElement.scrollTo({ left: t.offsetLeft - 80, behavior: 'smooth' });
+                  }
+                });
+              }
+            }
+          });
+        }, 120);
+        document.querySelectorAll('.strip-thumb').forEach(t => {
+          t.addEventListener('click', function() {
+            if(compactGallerySwiper) compactGallerySwiper.slideToLoop(parseInt(this.dataset.index));
+          });
+        });
       });
     }, 800);
   }
 
-  // Advanced Compact Gallery with Firebase
-  let gallerySwiperInstance = null;
-  function loadGallery() {
-    db.ref('thp-gallery').on('value', snap => {
-      const wrapper = document.getElementById('galleryWrapper');
-      const thumbsContainer = document.getElementById('galleryThumbsContainer');
-      wrapper.innerHTML = ''; thumbsContainer.innerHTML = '';
-      const images = [];
-      if(snap.exists()) { snap.forEach(c => { const d = c.val(); if(d.url) images.push(d.url); }); }
-      
-      if(images.length === 0) {
-        wrapper.innerHTML = '<div class="swiper-slide"><div style="aspect-ratio:16/9; background:var(--gray-100); display:flex; align-items:center; justify-content:center; color:var(--gray-500);">Gallery images will appear here</div></div>';
-      } else {
-        images.forEach((img, i) => {
-          wrapper.innerHTML += `<div class="swiper-slide"><img src="${img}" alt="Campus" onerror="this.style.display='none'"></div>`;
-          thumbsContainer.innerHTML += `<div class="thumb-item" data-index="${i}"><img src="${img}" alt="thumb" onerror="this.style.display='none'"></div>`;
-        });
-        const firstThumb = thumbsContainer.querySelector('.thumb-item');
-        if(firstThumb) firstThumb.classList.add('active');
-      }
+  // Lightbox functionality
+  let currentLightboxIndex = 0;
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+  const lightboxContent = document.getElementById('lightboxContent');
 
-      if(gallerySwiperInstance) gallerySwiperInstance.destroy();
-      setTimeout(() => {
-        gallerySwiperInstance = new Swiper('#galleryMainSwiper', {
-          slidesPerView: 1, spaceBetween: 0, loop: images.length > 1,
-          autoplay: images.length > 1 ? { delay: 3000 } : false,
-          on: {
-            slideChange: function() {
-              const idx = this.realIndex;
-              document.querySelectorAll('#galleryThumbsContainer .thumb-item').forEach((t, i) => {
-                t.classList.toggle('active', i === idx);
-              });
-            }
-          }
-        });
-        // Thumb click
-        document.querySelectorAll('#galleryThumbsContainer .thumb-item').forEach(t => {
-          t.addEventListener('click', function() {
-            const index = parseInt(this.dataset.index);
-            if(gallerySwiperInstance) gallerySwiperInstance.slideToLoop(index);
-          });
-        });
-        // Custom nav buttons
-        document.getElementById('galleryPrevBtn').onclick = () => gallerySwiperInstance?.slidePrev();
-        document.getElementById('galleryNextBtn').onclick = () => gallerySwiperInstance?.slideNext();
-      }, 100);
-    });
+  function openLightbox(index) {
+    if (galleryImages.length === 0) return;
+    currentLightboxIndex = index;
+    lightboxImage.src = galleryImages[currentLightboxIndex];
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
 
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function nextLightbox() {
+    if (galleryImages.length === 0) return;
+    currentLightboxIndex = (currentLightboxIndex + 1) % galleryImages.length;
+    lightboxImage.src = galleryImages[currentLightboxIndex];
+  }
+
+  function prevLightbox() {
+    if (galleryImages.length === 0) return;
+    currentLightboxIndex = (currentLightboxIndex - 1 + galleryImages.length) % galleryImages.length;
+    lightboxImage.src = galleryImages[currentLightboxIndex];
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+  lightboxNext.addEventListener('click', function(e) {
+    e.stopPropagation();
+    nextLightbox();
+  });
+  lightboxPrev.addEventListener('click', function(e) {
+    e.stopPropagation();
+    prevLightbox();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextLightbox();
+    if (e.key === 'ArrowLeft') prevLightbox();
+  });
+
+  // Click on main gallery to open lightbox
+  document.getElementById('galleryMainClick').addEventListener('click', function() {
+    if (compactGallerySwiper && galleryImages.length > 0) {
+      openLightbox(compactGallerySwiper.realIndex);
+    }
+  });
+
+  // Mobile menu
   document.querySelectorAll('#navLinks a').forEach(a=>{a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('show'));});
-  document.addEventListener('DOMContentLoaded', () => {
+  
+  // Initialize
+  document.addEventListener('DOMContentLoaded', ()=>{
+    loadCompactGallery();
     loadPoster();
-    loadFaculty();
-    loadGallery();
   });
 </script>
 </body>
