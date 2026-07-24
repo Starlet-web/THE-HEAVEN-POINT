@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ऊतक - जीवविज्ञान अध्ययन सामग्री</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f9f9f9;
+            --dark: #333;
+            --gray: #eee;
+            --text: #444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fafafa;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "THP";
+            position: fixed;
+            opacity: 0.03;
+            font-size: 40vw;
+            font-weight: 900;
+            color: var(--primary);
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin: 1rem 0 0.5rem;
+        }
+        
+        .subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .content-section {
+            margin: 3rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-title {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .section-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            border-radius: 5px;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .content-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .content-card h3 i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .styled-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        
+        .styled-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 0.8rem;
+        }
+        
+        .styled-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .styled-table thead tr {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            text-align: left;
+        }
+        
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
+        
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+        
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .styled-table tbody tr:hover {
+            background-color: rgba(106, 48, 147, 0.1);
+        }
+        
+        .info-box {
+            background: rgba(255, 126, 95, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .info-box i {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .formula-box {
+            background: rgba(106, 48, 147, 0.1);
+            border: 1px solid rgba(106, 48, 147, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .image-container {
+            margin: 1.5rem auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.1);
+            max-width: 800px;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .image-caption {
+            background: linear-gradient(to right, rgba(106, 48, 147, 0.1), rgba(160, 68, 255, 0.1));
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: var(--dark);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            h3 {
+                font-size: 1.3rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .content-card {
+                padding: 1rem;
+            }
+            
+            .styled-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .image-container {
+                max-width: 100%;
+            }
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(160, 68, 255, 0.1);
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        
+        strong {
+            color: var(--primary);
+        }
+        
+        .chapter-header {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: linear-gradient(to right, rgba(106, 48, 147, 0.1), rgba(160, 68, 255, 0.1));
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ऊतक (Tissues)</h1>
+            <p class="subtitle">मोहित सर [एम.एस.सी.] द्वारा नोट्स</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="chapter-header">
+            <h2>पादप ऊतकों का परिचय</h2>
+        </div>
+        
+        <div class="content-card">
+            <p><strong>ऊतक</strong> पादप कोशिकाओं का एक समूह है जिनकी उत्पत्ति, संरचना और कार्य समान होते हैं।</p>
+            <p>एककोशिकीय जीवों में, एकल कोशिका सभी कार्य करती है, जबकि बहुकोशिकीय जीवों में, कोशिकाएँ विभिन्न ऊतकों का निर्माण करने के लिए विशिष्ट होती हैं [श्रम विभाजन]।</p>
+        </div>
+        
+        <div class="chapter-header">
+            <h2>पादप ऊतकों के प्रकार</h2>
+        </div>
+        
+        <section id="meristematic" class="content-section">
+            <h2 class="section-title"><i class="fas fa-seedling"></i>विभज्योतक ऊतक (Meristematic Tissue)</h2>
+            <div class="content-card">
+                <p>विभज्योतक ऊतक पौधे के बढ़ते हुए भागों में पाए जाते हैं। ये अपरिपक्व कोशिकाओं के समूह हैं जो विभाजन में सक्षम हैं।</p>
+                
+                <div class="image-container">
+                    <img src="https://dcx0p3on5z8dw.cloudfront.net/Aakash/s3fs-public/inline-images/c_1.png?v3OwEoQP3bpp9SkQ5Yak3t6WXQDGlkkx" alt="पौधों में विभज्योतक ऊतकों के स्थान">
+                    <div class="image-caption">पौधों में विभज्योतक ऊतकों के स्थान</div>
+                </div>
+                
+                <h3><i class="fas fa-table"></i>विभज्योतक ऊतक तीन प्रकार के होते हैं:</h3>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>विभज्योतक ऊतक</th>
+                            <th>स्थान</th>
+                            <th>कार्य</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>शीर्षस्थ विभज्योतक</td>
+                            <td>तनों और जड़ों के बढ़ते सिरों पर उपस्थित</td>
+                            <td>तनों और जड़ों की लंबाई बढ़ाना</td>
+                        </tr>
+                        <tr>
+                            <td>अंतर्वेशी विभज्योतक</td>
+                            <td>पत्तियों के आधार या पर्वसंधियों पर उपस्थित</td>
+                            <td>पौधों की अनुदैर्ध्य वृद्धि के लिए</td>
+                        </tr>
+                        <tr>
+                            <td>पार्श्व विभज्योतक</td>
+                            <td>तनों और जड़ों के पार्श्व भागों पर उपस्थित</td>
+                            <td>तनों और जड़ों की मोटाई बढ़ाना</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section id="permanent-tissues" class="content-section">
+            <h2 class="section-title"><i class="fas fa-leaf"></i>स्थायी ऊतक (Permanent Tissues)</h2>
+            <div class="content-card">
+                <p>यह विभज्योतक ऊतकों से बनता है। कोशिका विभाजन की क्षमता खो देती है। स्थायी ऊतकों को दो श्रेणियों में विभाजित किया गया है:</p>
+                <ul class="styled-list">
+                    <li><strong>सरल स्थायी</strong> - केवल एक प्रकार की कोशिकाओं से मिलकर बनता है जो समान कार्य करती हैं।</li>
+                    <li><strong>सरल स्थायी ऊतकों के प्रकार</strong>: मृदूतक (Parenchyma), स्थूलकोण ऊतक (Collenchyma) और दृढ़ोतक (Sclerenchyma)</li>
+                </ul>
+                
+                <div class="info-box">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <h3>मुख्य बिंदु</h3>
+                        <p><strong>मृदूतक (Parenchyma)</strong> - अविशेषीकृत, शिथिल रूप से व्यवस्थित जीवित कोशिकाओं से बना होता है जिनमें अपेक्षाकृत पतली कोशिका भित्ति और बड़े अंतराकोशिकीय स्थान होते हैं।</p>
+                        <ul class="styled-list">
+                            <li><strong>हरित ऊतक (Chlorenchyma):</strong> मृदूतक जिसमें क्लोरोप्लास्ट होता है और प्रकाश संश्लेषण करता है, हरित ऊतक कहलाता है।</li>
+                            <li><strong>वातोतक (Aerenchyma):</strong> मृदूतक जिसमें बड़ी वायु गुहाएँ होती हैं, वातोतक कहलाता है। ये बड़ी वायु गुहाएँ जलीय पौधों को उत्प्लावकता प्रदान करती हैं।</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <ul class="styled-list">
+                    <li><strong>स्थूलकोण ऊतक (Collenchyma)</strong> - जीवित और लम्बी कोशिकाओं से बना होता है जिनकी कोशिका भित्ति कोनों पर अनियमित रूप से मोटी होती है; इनमें बहुत कम अंतराकोशिकीय स्थान होते हैं; पौधों के विभिन्न भागों को लचीलापन और यांत्रिक सहारा प्रदान करते हैं। ये एपिडर्मिस के ठीक नीचे पत्ती के डंठलों में पाए जाते हैं।</li>
+                    <li><strong>दृढ़ोतक (Sclerenchyma)</strong> - लंबी, संकरी और लिग्निन जमा मोटी भित्ति वाली कोशिकाओं से बना होता है। यह ऊतक मृत कोशिकाओं से बना होता है और इसमें कोई अंतराकोशिकीय स्थान नहीं होते हैं। उदाहरण के लिए, नारियल का छिलका।</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="protective-tissues" class="content-section">
+            <h2 class="section-title"><i class="fas fa-shield-alt"></i>सुरक्षात्मक ऊतक (Protective Tissues)</h2>
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li>पौधे के विभिन्न भागों जैसे तना, जड़ें, फूल और पत्तियों की सबसे बाहरी परत, सुरक्षात्मक ऊतकों में रूपांतरित हो जाती है।</li>
+                    <li>दो प्रकार के सुरक्षात्मक ऊतक एपिडर्मिस और कॉर्क हैं।</li>
+                </ul>
+                
+                <h3><i class="fas fa-layer-group"></i>एपिडर्मिस (Epidermis)</h3>
+                <ul class="styled-list">
+                    <li>यह पूरे पादप शरीर की बाहरी सतह पर उपस्थित होता है।</li>
+                    <li>एपिडर्मल ऊतक की कोशिकाएँ बिना किसी अंतराकोशिकीय स्थान के एक सतत परत बनाती हैं।</li>
+                    <li>एपिडर्मिस में पत्तियों में सूक्ष्म छिद्र होते हैं। इन छिद्रों को रंध्र (stomata) कहा जाता है।</li>
+                    <li>प्रत्येक रंध्र दो वृक्काकार कोशिकाओं से घिरा होता है जिन्हें द्वार कोशिकाएँ (guard cells) कहा जाता है।</li>
+                    <li>वाष्पोत्सर्जन भी रंध्रों के माध्यम से होता है।</li>
+                    <li>एपिडर्मिस आमतौर पर एक कोशिका मोटी होती है और क्यूटिकल नामक जलरोधी परत से ढकी होती है।</li>
+                </ul>
+                
+                <h3><i class="fas fa-check-circle"></i>एपिडर्मिस के कार्य</h3>
+                <ul class="styled-list">
+                    <li>यह पादप शरीर का एक सुरक्षात्मक ऊतक है।</li>
+                    <li>यह पौधे को यांत्रिक चोट से बचाता है।</li>
+                    <li>यह रंध्रों के माध्यम से गैसों के आदान-प्रदान की अनुमति देता है।</li>
+                    <li>क्यूटिकल पानी के वाष्पीकरण को कम करने में मदद करता है।</li>
+                </ul>
+                
+                <h3><i class="fas fa-tree"></i>कॉर्क (Cork)</h3>
+                <ul class="styled-list">
+                    <li>किसी पेड़ की बाहरी सुरक्षात्मक परत या छाल को कॉर्क के रूप में जाना जाता है। यह मृत कोशिकाओं से बना होता है।</li>
+                </ul>
+                
+                <h3><i class="fas fa-check-circle"></i>कॉर्क के कार्य</h3>
+                <ul class="styled-list">
+                    <li>यह वाष्पीकरण द्वारा पानी की हानि को रोकता है।</li>
+                    <li>यह पौधे को यांत्रिक चोट, तापमान चरम सीमाओं आदि से बचाता है।</li>
+                </ul>
+            </div>
+        </section>
+        
+        <div class="image-container">
+            <img src="https://www.sciencefacts.net/wp-content/uploads/2022/05/Dermal-Tissue-768x774.jpg" alt="पादप त्वचीय ऊतक संरचना">
+            <div class="image-caption">पादप त्वचीय ऊतकों की संरचना</div>
+        </div>
+        
+        <section id="complex-permanent" class="content-section">
+            <h2 class="section-title"><i class="fas fa-network-wired"></i>जटिल स्थायी ऊतक (Complex Permanent Tissues)</h2>
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li>एक से अधिक प्रकार की कोशिका से मिलकर बना होता है। ये ऊतक संवहन बंडल बनाते हैं।</li>
+                    <li>जटिल स्थायी ऊतकों के प्रकार हैं:</li>
+                </ul>
+                
+                <h3><i class="fas fa-water"></i>जाइलम (Xylem)</h3>
+                <ul class="styled-list">
+                    <li>जड़ों से पौधे के विभिन्न भागों तक पानी और खनिजों का संवहन करता है</li>
+                    <li>चार विभिन्न प्रकार की कोशिकाओं से मिलकर बना होता है - ट्रैकिड्स, वाहिकाएँ, जाइलम मृदूतक और जाइलम रेशे। जाइलम मृदूतक को छोड़कर अन्य सभी जाइलम तत्व निर्जीव होते हैं।</li>
+                </ul>
+                
+                <h3><i class="fas fa-leaf"></i>फ्लोएम (Phloem)</h3>
+                <ul class="styled-list">
+                    <li>पत्तियों से पौधे के विभिन्न भागों तक भोजन सामग्री का संवहन करता है</li>
+                    <li>चार विभिन्न प्रकार की कोशिकाओं से मिलकर बना होता है - चालनी नलिकाएँ, सहचर कोशिकाएँ, फ्लोएम मृदूतक और फ्लोएम रेशे। फ्लोएम रेशों को छोड़कर, अन्य सभी फ्लोएम कोशिकाएँ जीवित होती हैं।</li>
+                </ul>
+            </div>
+        </section>
+        
+        <div class="chapter-header">
+            <h2>जंतु ऊतक (Animal Tissues)</h2>
+        </div>
+        
+        <section id="animal-tissues" class="content-section">
+            <h2 class="section-title"><i class="fas fa-paw"></i>जंतु ऊतक</h2>
+            <div class="content-card">
+                <p>जंतु ऊतकों को उनके द्वारा किए जाने वाले कार्यों के आधार पर चार प्रकारों में वर्गीकृत किया जाता है: उपकला, संयोजी, पेशीय और तंत्रिका ऊतक।</p>
+             <div class="image-container">
+                    <img src="https://images.nagwa.com/figures/explainers/578126727416/2.svg" alt="जंतु ऊतक">
+                    <div class="image-caption">जंतु ऊतकों के प्रकार</div>
+                </div>   
+                <h3><i class="fas fa-border-all"></i>उपकला ऊतक (Epithelial Tissues)</h3>
+                <ul class="styled-list">
+                    <li>लगभग कोई अंतराकोशिकीय स्थान नहीं के साथ कसकर व्यवस्थित कोशिकाएँ। यह बाहरी सतहों, आंतरिक गुहाओं और जंतु शरीर के अंगों का आवरण बनाती हैं।</li>
+                    <li>विभिन्न प्रकार के उपकला ऊतक:</li>
+                </ul>
+                
+                <h4><i class="fas fa-square"></i>शल्की उपकला (Squamous Epithelium)</h4>
+                <ul class="styled-list">
+                    <li>अत्यंत पतली और चपटी कोशिकाओं की एकल परत को सरल शल्की उपकला कहा जाता है जबकि बहुस्तरीय कोशिकाएँ घिसावट को रोकने के लिए स्तरित शल्की उपकला बनाती हैं।</li>
+                    <li><strong>मानव शरीर में स्थान</strong>:</li>
+                    <ul class="styled-list">
+                        <li>सरल शल्की उपकला - मुख, ग्रासनली, फेफड़ों की कूपिकाओं आदि की परत।</li>
+                        <li>स्तरित शल्की उपकला – त्वचा</li>
+                    </ul>
+                </ul>
+                
+                <h4><i class="fas fa-cube"></i>घनाकार उपकला (Cuboidal Epithelium)</h4>
+                <ul class="styled-list">
+                    <li>घन जैसी कोशिकाओं से मिलकर बनती है जो यांत्रिक सहारा प्रदान करती हैं।</li>
+                    <li><strong>मानव शरीर में स्थान</strong>: वृक्क नलिकाओं और लार ग्रंथियों की वाहिनियों की परत।</li>
+                </ul>
+                
+                <h4><i class="fas fa-columns"></i>स्तंभाकार उपकला (Columnar Epithelium)</h4>
+                <ul class="styled-list">
+                    <li>उपकला अवरोधों के पार गति को सुगम बनाने के लिए लम्बी या स्तंभ जैसी कोशिकाओं से मिलकर बनती है।</li>
+                    <li><strong>मानव शरीर में स्थान</strong>: आंत और आहार नाल की आंतरिक परत।</li>
+                </ul>
+                
+                <h4><i class="fas fa-grip-horizontal"></i>ग्रंथिल उपकला (Glandular Epithelium)</h4>
+                <ul class="styled-list">
+                    <li>बहुकोशिकीय ग्रंथियों से मिलकर बनती है।</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="connective-tissues" class="content-section">
+            <h2 class="section-title"><i class="fas fa-link"></i>संयोजी ऊतक (Connective Tissues)</h2>
+            <div class="content-card">
+                <p>विभिन्न शारीरिक अंगों को जोड़ने के लिए विशिष्ट। विभिन्न प्रकार के संयोजी ऊतक हैं:</p>
+                
+                <h3><i class="fas fa-expand"></i>शिथिल संयोजी ऊतक (Loose Connective Tissue)</h3>
+                <p>इसमें एरिओलर और वसा संयोजी ऊतक शामिल हैं।</p>
+                
+                <h4><i class="fas fa-spa"></i>एरिओलर ऊतक (Areolar Tissue)</h4>
+                <ul class="styled-list">
+                    <li>यह आंतरिक अंगों को सहारा प्रदान करता है और ऊतकों की मरम्मत में मदद करता है।</li>
+                    <li>त्वचा और मांसपेशियों में, रक्त वाहिकाओं, तंत्रिकाओं आदि के आसपास पाया जाता है।</li>
+                </ul>
+                
+                <h4><i class="fas fa-weight"></i>वसा ऊतक (Adipose Tissue)</h4>
+                <ul class="styled-list">
+                    <li>वसा के भंडारण स्थल के रूप में कार्य करता है; आंतरिक अंगों के बीच और त्वचा के नीचे पाया जाता है; शरीर के लिए एक कुचालक के रूप में कार्य करता है।</li>
+                </ul>
+                
+                <h3><i class="fas fa-bone"></i>सघन नियमित संयोजी ऊतक (Dense Regular Connective Tissue)</h3>
+                <p>मुख्य घटक कंडराएँ और स्नायु हैं।</p>
+                <ul class="styled-list">
+                    <li><strong>स्नायु (Ligaments)</strong> – संयोजी ऊतक जो एक हड्डी को दूसरी हड्डी से जोड़ते हैं। यह बहुत लचीला होता है।</li>
+                    <li><strong>कंडराएँ (Tendons)</strong> – संयोजी ऊतक जो एक हड्डी को मांसपेशी से जोड़ते हैं। इसमें सीमित लचीलापन होता है।</li>
+                </ul>
+                
+                <h3><i class="fas fa-star"></i>विशिष्ट संयोजी ऊतक (Specialized Connective Tissue)</h3>
+                <p>इसमें कंकालीय ऊतक जैसे उपास्थि और अस्थि शामिल हैं।</p>
+                
+                <h3><i class="fas fa-tint"></i>तरल संयोजी ऊतक (Fluid Connective Tissue)</h3>
+                <ul class="styled-list">
+                    <li>रक्त जंतुओं में पाया जाने वाला विशेष संयोजी ऊतक है जो विभिन्न पदार्थों के परिवहन में मदद करता है। यह प्लाज्मा, लाल रक्त कोशिकाओं (RBC), श्वेत रक्त कोशिकाओं (WBC) और प्लेटलेट्स से बना होता है।</li>
+                    <li><strong>लसीका (Lymph)</strong>- यह हमारे शरीर के अंतराकोशिकीय स्थानों में स्थित एक पारदर्शी, हल्का पीला तरल पदार्थ है। यह शरीर की रक्षा तंत्र का हिस्सा है और ऊतकों और कोशिकाओं तक पोषक तत्व पहुँचाने में भी मदद करता है। यह आंत से पचे हुए वसा को ले जाने में भी मदद करता है।</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="muscular-tissues" class="content-section">
+            <h2 class="section-title"><i class="fas fa-running"></i>पेशीय ऊतक (Muscular Tissues)</h2>
+            <div class="content-card">
+                <p>पेशीय ऊतकों से बनी मांसपेशियाँ, शरीर के विभिन्न अंगों की गति को संभव बनाती हैं।</p>
+                <p>पेशीय ऊतकों को तीन श्रेणियों में वर्गीकृत किया जा सकता है:</p>
+                
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>रेखित (Striated)</th>
+                            <th>चिकनी (Smooth)</th>
+                            <th>हृदय (Cardiac)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ऐच्छिक, रेखित</td>
+                            <td>अनैच्छिक, अरेखित</td>
+                            <td>अनैच्छिक, रेखित</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3><i class="fas fa-dumbbell"></i>रेखित मांसपेशियाँ (Striated Muscles)</h3>
+                <ul class="styled-list">
+                    <li>उपयुक्त रूप से अभिरंजित करने पर रेखित मांसपेशियाँ बारी-बारी से हल्की और गहरी पट्टियाँ या रेखाएँ दिखाती हैं।</li>
+                    <li>इन्हें <strong>कंकाल मांसपेशियाँ</strong> भी कहा जाता है क्योंकि ये कंकाल बनाने वाली हड्डियों से जुड़ी पाई जाती हैं।</li>
+                    <li>ये ऐच्छिक मांसपेशियाँ हैं।</li>
+                    <li>रेखित पेशीय ऊतकों की कोशिकाएँ लंबी, बेलनाकार, अशाखित और बहुकेंद्रकी (यानी, कई केंद्रक वाली) होती हैं।</li>
+                    <li>ये शरीर की भित्ति, जीभ, अंगों और ग्रसनी में स्थित होती हैं।</li>
+                </ul>
+                
+                <h3><i class="fas fa-sync-alt"></i>चिकनी मांसपेशियाँ (Smooth Muscles)</h3>
+                <ul class="styled-list">
+                    <li>अरेखित या चिकनी मांसपेशियाँ कोई बारी-बारी से हल्की और गहरी पट्टियाँ नहीं दिखाती हैं।</li>
+                    <li>ये अनैच्छिक मांसपेशियाँ हैं क्योंकि ये शरीर की अनैच्छिक क्रियाओं में शामिल होती हैं।</li>
+                    <li>चिकनी पेशीय ऊतकों की कोशिकाएँ नुकीले सिरों वाली लंबी (या तर्कुरूप) और एककेंद्रकी होती हैं।</li>
+                    <li>चिकनी मांसपेशियाँ आहार नाल, मूत्राशय, रक्त वाहिकाओं और ग्रंथियों की वाहिनियों में स्थित होती हैं।</li>
+                </ul>
+                
+                <h3><i class="fas fa-heart"></i>हृदय मांसपेशियाँ (Cardiac Muscles)</h3>
+                <ul class="styled-list">
+                    <li>हृदय की मांसपेशियाँ हृदय की पेशियाँ हैं।</li>
+                    <li>ये रेखित होती हैं, लेकिन कार्य में अनैच्छिक होती हैं।</li>
+                    <li>ये जीवन भर लयबद्ध संकुचन और शिथिलन दिखाती हैं।</li>
+                    <li>हृदय पेशीय ऊतकों की कोशिकाएँ बेलनाकार, शाखित और एककेंद्रकी होती हैं।</li>
+                    <li>हृदय मांसपेशियाँ विशेष रूप से हृदय में उपस्थित होती हैं। ये हृदय की लयबद्ध धड़कन को नियंत्रित करती हैं।</li>
+                </ul>
+                
+                <div class="image-container">
+                    <img src="https://www.visiblebody.com/hs-fs/hubfs/Learn%20Articles/Muscular%20System/Types%20of%20Muscle%20Tissue/muscle-tissue-types-1.jpg?width=600&name=muscle-tissue-types-1.jpg" alt="पेशी ऊतकों के प्रकार">
+                    <div class="image-caption">तीन प्रकार के पेशी ऊतक</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="nervous-tissues" class="content-section">
+            <h2 class="section-title"><i class="fas fa-brain"></i>तंत्रिका ऊतक (Nervous Tissues)</h2>
+            <div class="content-card">
+                <ul class="styled-list">
+                    <li>मस्तिष्क, रीढ़ की हड्डी और तंत्रिकाओं में उपस्थित अत्यधिक विशिष्ट ऊतक।</li>
+                </ul>
+                
+                <h3><i class="fas fa-microchip"></i>न्यूरॉन्स (Neurons)</h3>
+                <p>तंत्रिका तंत्र की मूलभूत इकाई तंत्रिका कोशिका है।<br>न्यूरॉन के भाग:</p>
+                <ul class="styled-list">
+                    <li><strong>डेंड्राइट</strong>: यह आसन्न न्यूरॉन के एक्सॉन से सूचना प्राप्त करता है और इसे कोशिका काय की ओर संचालित करता है।</li>
+                    <li><strong>एक्सॉन</strong>: यह कोशिका काय से दूर संदेशों का संचालन करता है।</li>
+                    <li><strong>कोशिका काय</strong>: इसमें केंद्रक, माइटोकॉन्ड्रिया और अन्य अंगक होते हैं। यह कोशिका के रखरखाव और विकास से संबंधित है।</li>
+                </ul>
+                
+              <p>श्वान कोशिकाओं में वसा होती है जो माइलिन आवरण बनाती है, जो न्यूरॉन्स को विद्युतरोधी करती है और संकेत संचरण को गति देती है। आवरण में अंतराल, जिन्हें रैनवियर के नोड्स कहा जाता है, एक्सॉन के कुछ हिस्सों को उजागर करते हैं।</p>
+
+<p>सिनेप्स पर, एक न्यूरॉन के एक्सॉन अंत अगले न्यूरॉन से शिथिल रूप से जुड़ते हैं। यहाँ मुक्त होने वाले न्यूरोट्रांसमीटर आवेग को अंतराल के पार ले जाते हैं, अगले न्यूरॉन में एक नया आवेग उत्पन्न करते हैं और मस्तिष्क तक संकेत जारी रखते हैं।</p>
+
+   
+
+<h3><i class="fas fa-hands-helping"></i> ग्लियल कोशिकाएँ (Glial Cells)</h3>
+<p>ये तंत्रिका ऊतक में सहायक गैर-संवाहक कोशिकाएँ हैं, जिन्हें न्यूरोग्लियल कोशिकाएँ भी कहा जाता है।</p>
+
+<h3><i class="fas fa-project-diagram"></i> तंत्रिकाएँ (Nerves)</h3>
+<ul class="styled-list">
+    <li>एक आवरण में बंद एक्सॉन के बंडल।</li>
+    <li>प्रकार: संवेदी, प्रेरक और मिश्रित।</li>
+</ul>
+
+<div class="image-container">
+    <img src="https://www.simplypsychology.org/wp-content/uploads/Neuron.jpg" alt="न्यूरॉन संरचना">
+    <div class="image-caption">एक विशिष्ट न्यूरॉन की संरचना</div>
+</div>
+
+            </div>
+        </section>
+    </div>
+    
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2023 THP जीवविज्ञान अध्ययन सामग्री। सर्वाधिकार सुरक्षित।</p>
+        </div>
+    </footer>
+    
+    <script>
+        (function() {
+            // Animation for floating circles
+            function createFloatingElements() {
+                const colors = ['rgba(106, 48, 147, 0.1)', 'rgba(160, 68, 255, 0.1)', 'rgba(255, 126, 95, 0.1)'];
+                const body = document.body;
+                
+                for (let i = 0; i < 5; i++) {
+                    const circle = document.createElement('div');
+                    circle.classList.add('circle');
+                    
+                    const size = Math.random() * 200 + 50;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    circle.style.width = `${size}px`;
+                    circle.style.height = `${size}px`;
+                    circle.style.background = color;
+                    circle.style.top = `${Math.random() * 100}%`;
+                    circle.style.left = `${Math.random() * 100}%`;
+                    circle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                    circle.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    body.appendChild(circle);
+                }
+            }
+            
+            // Scroll animation for sections
+            function animateOnScroll() {
+                const sections = document.querySelectorAll('.content-section');
+                
+                sections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (sectionTop < windowHeight - 100) {
+                        section.classList.add('visible');
+                    }
+                });
+            }
+            
+            // Back to top button
+            function handleBackToTop() {
+                const backToTop = document.querySelector('.back-to-top');
+                
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) {
+                        backToTop.classList.add('visible');
+                    } else {
+                        backToTop.classList.remove('visible');
+                    }
+                });
+                
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // Initialize all functions after DOM is ready
+            document.addEventListener('DOMContentLoaded', () => {
+                createFloatingElements();
+                handleBackToTop();
+                
+                // Initial check for visible sections
+                animateOnScroll();
+                
+                // Check on scroll
+                window.addEventListener('scroll', animateOnScroll);
+            });
+        })();
+    </script>
+</body>
+</html>
