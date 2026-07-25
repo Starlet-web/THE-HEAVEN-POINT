@@ -1,148 +1,381 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 9 Notes</title>
+    <title>Class 9 Notes · slim</title>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background: radial-gradient(circle, #f3e7e9, #e3eeff);
-            color: #333;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 30%, #f3e7e9, #e3eeff);
+            min-height: 100vh;
+            padding: 30px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
-            font-size: 2.5rem;
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 20px;
+            font-size: 2.4rem;
+            font-weight: 500;
+            color: #1e2b3a;
+            letter-spacing: -0.3px;
+            margin-bottom: 24px;
+            border-bottom: 3px solid #8dc26f;
+            display: inline-block;
+            padding-bottom: 6px;
         }
 
         .container {
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 960px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(2px);
+            padding: 20px 24px 24px;
+            border-radius: 36px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* subject card – slim */
+        .subject-wrapper {
+            margin-bottom: 12px;
+            border-radius: 40px;
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 20, 10, 0.04);
+            transition: 0.15s;
+            overflow: hidden;
+            border: 1px solid #eaf3e5;
         }
 
         .subject {
             background: linear-gradient(135deg, #76b852, #8dc26f);
             color: white;
-            padding: 15px 20px;
-            font-size: 1.2rem;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            letter-spacing: 0.2px;
+            transition: 0.2s;
+            border: none;
+            width: 100%;
+            text-align: left;
         }
 
         .subject:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 10px 25px rgba(76, 184, 82, 0.5);
+            background: linear-gradient(135deg, #66a84a, #7db85e);
+            transform: scale(1.005);
         }
 
+        .subject::after {
+            content: "▾";
+            font-size: 1.2rem;
+            opacity: 0.7;
+            transition: 0.2s;
+        }
+
+        .subject.open::after {
+            transform: rotate(180deg);
+        }
+
+        /* chapters panel – slim */
         .chapters {
             display: none;
-            margin-top: 10px;
-            padding: 15px;
-            border: 1px solid #8dc26f;
-            border-radius: 10px;
-            background: #f9f9f9;
+            padding: 10px 16px 14px 16px;
+            background: #fafcfa;
+            border-top: 1px solid #dce8d4;
         }
 
-        .chapters a {
+        .chapters.show {
             display: block;
-            color: #555;
+        }
+
+        .chapter-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .chapter-grid a {
+            display: block;
+            color: #1e3a2a;
             text-decoration: none;
-            padding: 5px 0;
-            transition: color 0.3s ease;
+            padding: 5px 14px;
+            border-radius: 30px;
+            background: #f0f7ee;
+            margin: 2px 0;
+            font-weight: 400;
+            font-size: 0.92rem;
+            transition: 0.12s;
+            border-left: 3px solid transparent;
         }
 
-        .chapters a:hover {
-            color: #76b852;
+        .chapter-grid a:hover {
+            background: #dcefd6;
+            border-left: 3px solid #76b852;
+            padding-left: 20px;
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
+        /* ----- science toggle (slim) ----- */
+        .science-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            background: #eaf3e5;
+            padding: 4px 14px 4px 18px;
+            border-radius: 40px;
+            width: fit-content;
+            border: 1px solid #c4ddb8;
+        }
 
-            .subject {
-                font-size: 1rem;
-            }
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            padding: 5px 16px;
+            border-radius: 40px;
+            font-weight: 450;
+            font-size: 0.85rem;
+            color: #1f4529;
+            cursor: pointer;
+            transition: 0.15s;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .toggle-btn.active {
+            background: #2d6b3a;
+            color: white;
+            box-shadow: 0 2px 8px rgba(45, 107, 58, 0.2);
+        }
+
+        .toggle-btn:hover:not(.active) {
+            background: #c7dfbe;
+        }
+
+        .science-chapter-container {
+            margin-top: 4px;
+        }
+
+        .old-chapters, .new-chapters {
+            display: none;
+        }
+
+        .old-chapters.show, .new-chapters.show {
+            display: block;
+        }
+
+        .subhead {
+            font-weight: 400;
+            color: #2b4f33;
+            margin: 8px 0 4px 0;
+            font-size: 0.85rem;
+            border-bottom: 1px dashed #b3cfaa;
+            padding-bottom: 4px;
+        }
+
+        /* extra slim for mobile */
+        @media (max-width: 650px) {
+            h1 { font-size: 1.8rem; }
+            .container { padding: 14px 14px 18px; }
+            .subject { font-size: 1rem; padding: 8px 16px; }
+            .science-toggle { padding: 4px 10px; gap: 4px; }
+            .toggle-btn { padding: 4px 12px; font-size: 0.78rem; }
+            .chapter-grid a { font-size: 0.85rem; padding: 4px 12px; }
         }
     </style>
 </head>
 <body>
-    <h1>Class 9 Notes</h1>
+
+    <h1>📘 Class 9 Notes</h1>
     <div class="container">
-        <!-- Science -->
-        <div>
-            <div class="subject" onclick="toggleChapters('science')">Science</div>
-            <div id="science" class="chapters">
-                <a href="9chap1.html" target="_blank">Chapter 1: Matter in Our Surroundings</a>
-                <a href="9chap2.html" target="_blank">Chapter 2: Is Matter Around Us Pure?</a>
-                <a href="9chap3.html" target="_blank">Chapter 3: Atoms and Molecules</a>
-                <a href="9chap4.html" target="_blank">Chapter 4: Structure of the Atom</a>
-                <a href="9chap5.html" target="_blank">Chapter 5: The Fundamental Unit of Life</a>
-                <a href="9chap6.html" target="_blank">Chapter 6: Tissues</a>
-                <a href="9chap7.html" target="_blank">Chapter 7: Diversity in Living Organisms</a>
-                <a href="9chap8.html" target="_blank">Chapter 8: Motion</a>
-                <a href="9chap9.html" target="_blank">Chapter 9: Force and Laws of Motion</a>
-                <a href="9chap10.html" target="_blank">Chapter 10: Gravitation</a>
-                <a href="9chap11.html" target="_blank">Chapter 11: Work and Energy</a>
-                <a href="9chap12.html" target="_blank">Chapter 12: Sound</a>
+
+        <!-- ===== SCIENCE (slim toggle) ===== -->
+        <div class="subject-wrapper">
+            <div class="subject" onclick="toggleSciencePanel()">
+                <span>🧪 Science</span>
+            </div>
+
+            <div id="scienceChapters" class="chapters show">
+                <!-- toggle old / new – slim -->
+                <div class="science-toggle">
+                    <button id="oldScienceBtn" class="toggle-btn active" onclick="switchScience('old')">📖 Old</button>
+                    <button id="newScienceBtn" class="toggle-btn" onclick="switchScience('new')">✨ New (NEP)</button>
+                </div>
+
+                <!-- old science -->
+                <div id="oldScience" class="old-chapters show">
+                    <div class="chapter-grid">
+                        <a href="9chap1.html" target="_blank">Chapter 1: Matter in Our Surroundings</a>
+                        <a href="9chap2.html" target="_blank">Chapter 2: Is Matter Around Us Pure?</a>
+                        <a href="9chap3.html" target="_blank">Chapter 3: Atoms and Molecules</a>
+                        <a href="9chap4.html" target="_blank">Chapter 4: Structure of the Atom</a>
+                        <a href="9chap5.html" target="_blank">Chapter 5: The Fundamental Unit of Life</a>
+                        <a href="9chap6.html" target="_blank">Chapter 6: Tissues</a>
+                        <a href="9chap7.html" target="_blank">Chapter 7: Diversity in Living Organisms</a>
+                        <a href="9chap8.html" target="_blank">Chapter 8: Motion</a>
+                        <a href="9chap9.html" target="_blank">Chapter 9: Force and Laws of Motion</a>
+                        <a href="9chap10.html" target="_blank">Chapter 10: Gravitation</a>
+                        <a href="9chap11.html" target="_blank">Chapter 11: Work and Energy</a>
+                        <a href="9chap12.html" target="_blank">Chapter 12: Sound</a>
+                    </div>
+                </div>
+
+                <!-- NEW science (NEP) – exactly as image -->
+                <div id="newScience" class="new-chapters">
+                    <div class="chapter-grid">
+                        <a href="NEP/Class9/Science/Chapter1.html" target="_blank">Chapter 1: Exploration: Entering the World of Secondary Science</a>
+                        <a href="NEP/Class9/Science/Chapter2.html" target="_blank">Chapter 2: Cell: The Building Block of Life</a>
+                        <a href="NEP/Class9/Science/Chapter3.html" target="_blank">Chapter 3: Tissues in Action</a>
+                        <a href="NEP/Class9/Science/Chapter4.html" target="_blank">Chapter 4: Describing Motion Around Us</a>
+                        <a href="NEP/Class9/Science/Chapter5.html" target="_blank">Chapter 5: Exploring Mixtures and Their Separation</a>
+                        <a href="NEP/Class9/Science/Chapter6.html" target="_blank">Chapter 6: How Forces Affect Motion</a>
+                        <a href="NEP/Class9/Science/Chapter7.html" target="_blank">Chapter 7: Work, Energy and Simple Machines</a>
+                        <a href="NEP/Class9/Science/Chapter8.html" target="_blank">Chapter 8: Journey Inside the Atom</a>
+                        <a href="NEP/Class9/Science/Chapter9.html" target="_blank">Chapter 9: Atomic Foundations of Matter</a>
+                        <a href="NEP/Class9/Science/Chapter10.html" target="_blank">Chapter 10: Sound Waves: Characteristics and Applications</a>
+                        <a href="NEP/Class9/Science/Chapter11.html" target="_blank">Chapter 11: Reproduction: How Life Continues</a>
+                        <a href="NEP/Class9/Science/Chapter12.html" target="_blank">Chapter 12: Patterns in Life – Diversity and Classification</a>
+                        <a href="NEP/Class9/Science/Chapter13.html" target="_blank">Chapter 13: Earth as a System: Energy, Matter, and Life</a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Mathematics -->
-        <div>
-            <div class="subject" onclick="toggleChapters('math')">Mathematics</div>
-            <div id="math" class="chapters">
-                <a href="pdfs/9/math/Chapter1.pdf" target="_blank">Chapter 1: Number Systems</a>
-                <a href="pdfs/9/math/Chapter2.pdf" target="_blank">Chapter 2: Polynomials</a>
-                <a href="pdfs/9/math/Chapter3.pdf" target="_blank">Chapter 3: Coordinate Geometry</a>
-                <a href="pdfs/9/math/Chapter4.pdf" target="_blank">Chapter 4: Linear Equations in Two Variables</a>
-                <a href="pdfs/9/math/Chapter5.pdf" target="_blank">Chapter 5: Introduction to Euclid's Geometry</a>
-                <a href="pdfs/9/math/Chapter6.pdf" target="_blank">Chapter 6: Lines and Angles</a>
-                <a href="pdfs/9/math/Chapter7.pdf" target="_blank">Chapter 7: Triangles</a>
+        <!-- ===== MATHEMATICS ===== -->
+        <div class="subject-wrapper">
+            <div class="subject" onclick="toggleChapters('mathChapters')">
+                <span>📐 Mathematics</span>
+            </div>
+            <div id="mathChapters" class="chapters">
+                <div class="chapter-grid">
+                    <a href="pdfs/9/math/Chapter1.pdf" target="_blank">Chapter 1: Number Systems</a>
+                    <a href="pdfs/9/math/Chapter2.pdf" target="_blank">Chapter 2: Polynomials</a>
+                    <a href="pdfs/9/math/Chapter3.pdf" target="_blank">Chapter 3: Coordinate Geometry</a>
+                    <a href="pdfs/9/math/Chapter4.pdf" target="_blank">Chapter 4: Linear Equations in Two Variables</a>
+                    <a href="pdfs/9/math/Chapter5.pdf" target="_blank">Chapter 5: Introduction to Euclid's Geometry</a>
+                    <a href="pdfs/9/math/Chapter6.pdf" target="_blank">Chapter 6: Lines and Angles</a>
+                    <a href="pdfs/9/math/Chapter7.pdf" target="_blank">Chapter 7: Triangles</a>
+                </div>
             </div>
         </div>
 
-        <!-- Social Science -->
-        <div>
-            <div class="subject" onclick="toggleChapters('social')">Social Science</div>
-            <div id="social" class="chapters">
-                <a href="pdfs/9/social/Chapter1.pdf" target="_blank">Chapter 1: The French Revolution</a>
-                <a href="pdfs/9/social/Chapter2.pdf" target="_blank">Chapter 2: Socialism in Europe</a>
-                <a href="pdfs/9/social/Chapter3.pdf" target="_blank">Chapter 3: Climate</a>
-                <a href="pdfs/9/social/Chapter4.pdf" target="_blank">Chapter 4: Electoral Politics</a>
-                <a href="pdfs/9/social/Chapter5.pdf" target="_blank">Chapter 5: Nazism and the Rise of Hitler</a>
+        <!-- ===== SOCIAL SCIENCE ===== -->
+        <div class="subject-wrapper">
+            <div class="subject" onclick="toggleChapters('socialChapters')">
+                <span>🌍 Social Science</span>
+            </div>
+            <div id="socialChapters" class="chapters">
+                <div class="chapter-grid">
+                    <a href="pdfs/9/social/Chapter1.pdf" target="_blank">Chapter 1: The French Revolution</a>
+                    <a href="pdfs/9/social/Chapter2.pdf" target="_blank">Chapter 2: Socialism in Europe</a>
+                    <a href="pdfs/9/social/Chapter3.pdf" target="_blank">Chapter 3: Climate</a>
+                    <a href="pdfs/9/social/Chapter4.pdf" target="_blank">Chapter 4: Electoral Politics</a>
+                    <a href="pdfs/9/social/Chapter5.pdf" target="_blank">Chapter 5: Nazism and the Rise of Hitler</a>
+                </div>
             </div>
         </div>
 
-        <!-- English -->
-        <div>
-            <div class="subject" onclick="toggleChapters('english')">English</div>
-            <div id="english" class="chapters">
-                <a href="pdfs/9/english/Chapter1.pdf" target="_blank">Chapter 1: The Fun They Had</a>
-                <a href="pdfs/9/english/Chapter2.pdf" target="_blank">Chapter 2: The Sound of Music</a>
-                <a href="pdfs/9/english/Chapter3.pdf" target="_blank">Chapter 3: The Little Girl</a>
-                <a href="pdfs/9/english/Chapter4.pdf" target="_blank">Chapter 4: A Truly Beautiful Mind</a>
-                <a href="pdfs/9/english/Chapter5.pdf" target="_blank">Chapter 5: The Snake and the Mirror</a>
+        <!-- ===== ENGLISH ===== -->
+        <div class="subject-wrapper">
+            <div class="subject" onclick="toggleChapters('englishChapters')">
+                <span>📖 English</span>
+            </div>
+            <div id="englishChapters" class="chapters">
+                <div class="chapter-grid">
+                    <a href="pdfs/9/english/Chapter1.pdf" target="_blank">Chapter 1: The Fun They Had</a>
+                    <a href="pdfs/9/english/Chapter2.pdf" target="_blank">Chapter 2: The Sound of Music</a>
+                    <a href="pdfs/9/english/Chapter3.pdf" target="_blank">Chapter 3: The Little Girl</a>
+                    <a href="pdfs/9/english/Chapter4.pdf" target="_blank">Chapter 4: A Truly Beautiful Mind</a>
+                    <a href="pdfs/9/english/Chapter5.pdf" target="_blank">Chapter 5: The Snake and the Mirror</a>
+                </div>
             </div>
         </div>
-    </div>
+
+    </div> <!-- end container -->
 
     <script>
-        function toggleChapters(subjectId) {
-            const chapters = document.getElementById(subjectId);
-            chapters.style.display = chapters.style.display === 'block' ? 'none' : 'block';
+        // ---------- toggle for subject chapters (arrow sync) ----------
+        function toggleChapters(id) {
+            const panel = document.getElementById(id);
+            if (!panel) return;
+            panel.classList.toggle('show');
+            const wrapper = panel.closest('.subject-wrapper');
+            if (wrapper) {
+                const subjectDiv = wrapper.querySelector('.subject');
+                if (subjectDiv) subjectDiv.classList.toggle('open');
+            }
         }
+
+        // ---------- science: open/close ----------
+        function toggleSciencePanel() {
+            const panel = document.getElementById('scienceChapters');
+            panel.classList.toggle('show');
+            const wrapper = panel.closest('.subject-wrapper');
+            if (wrapper) {
+                const subjectDiv = wrapper.querySelector('.subject');
+                if (subjectDiv) subjectDiv.classList.toggle('open');
+            }
+        }
+
+        // ---------- switch old / new science ----------
+        function switchScience(version) {
+            const oldPanel = document.getElementById('oldScience');
+            const newPanel = document.getElementById('newScience');
+            const oldBtn = document.getElementById('oldScienceBtn');
+            const newBtn = document.getElementById('newScienceBtn');
+
+            if (version === 'old') {
+                oldPanel.classList.add('show');
+                newPanel.classList.remove('show');
+                oldBtn.classList.add('active');
+                newBtn.classList.remove('active');
+            } else {
+                newPanel.classList.add('show');
+                oldPanel.classList.remove('show');
+                newBtn.classList.add('active');
+                oldBtn.classList.remove('active');
+            }
+        }
+
+        // ensure science panel open by default & arrow state
+        document.addEventListener('DOMContentLoaded', function() {
+            const sciencePanel = document.getElementById('scienceChapters');
+            if (sciencePanel && sciencePanel.classList.contains('show')) {
+                const wrapper = sciencePanel.closest('.subject-wrapper');
+                if (wrapper) {
+                    const subj = wrapper.querySelector('.subject');
+                    if (subj) subj.classList.add('open');
+                }
+            }
+            // default old visible
+            const oldSci = document.getElementById('oldScience');
+            const newSci = document.getElementById('newScience');
+            if (oldSci) oldSci.classList.add('show');
+            if (newSci) newSci.classList.remove('show');
+        });
+
+        // sync arrow for non-science subjects when clicked via .subject
+        document.querySelectorAll('.subject').forEach(el => {
+            el.addEventListener('click', function(e) {
+                const parent = this.closest('.subject-wrapper');
+                if (!parent) return;
+                const panel = parent.querySelector('.chapters');
+                if (!panel) return;
+                if (panel.id === 'scienceChapters') return; 
+                this.classList.toggle('open');
+            });
+        });
     </script>
+
 </body>
 </html>
