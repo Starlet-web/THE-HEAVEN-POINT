@@ -8,10 +8,130 @@
     OneSignalDeferred.push(function(OneSignal) {
       OneSignal.init({
         appId: "6c4d198d-ae7f-4750-acfb-16b18b622139",
+        notifyButton: {
+          enable: true,
+        },
+        autoResubscribe: true,
+        promptOptions: {
+          slidedown: {
+            prompts: [
+              {
+                type: "push",
+                autoPrompt: true,
+                text: {
+                  actionMessage: "🔔 Updates ke liye Allow karo!",
+                  acceptButton: "Ha, Allow Karo 👍",
+                  cancelButton: "Abhi Nahi 😢",
+                },
+                delay: {
+                  pageViews: 1,
+                  timeDelay: 3
+                }
+              }
+            ]
+          }
+        },
+        allowLocalhostAsSecureOrigin: true,
       });
     });
   </script>
-  
+
+  <!-- 🚨 FORCE SUBSCRIBE POPUP STYLES -->
+  <style>
+    .force-subscribe-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .force-subscribe-box {
+      background: linear-gradient(135deg, #1a2a4a, #2a3a5a);
+      border: 3px solid #b8860b;
+      border-radius: 25px;
+      padding: 30px 25px;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 0 60px rgba(184,134,11,0.5), 0 20px 40px rgba(0,0,0,0.5);
+      animation: bounceIn 0.5s cubic-bezier(0.2, 0.9, 0.4, 1);
+      position: relative;
+      overflow: visible;
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .force-subscribe-box .bell-anim {
+      font-size: 70px;
+      animation: ring 1s ease-in-out infinite;
+      display: block;
+      margin-bottom: 15px;
+    }
+    @keyframes ring {
+      0%, 100% { transform: rotate(0); }
+      10%, 30% { transform: rotate(-15deg); }
+      20%, 40% { transform: rotate(15deg); }
+      50% { transform: rotate(0); }
+    }
+    .force-subscribe-box h3 {
+      color: #fef3c7;
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .force-subscribe-box p {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .force-subscribe-box .btn-allow {
+      background: linear-gradient(135deg, #b8860b, #d4a017);
+      color: white;
+      border: none;
+      padding: 15px 35px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(184,134,11,0.5);
+      transition: all 0.3s;
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      font-family: inherit;
+    }
+    .force-subscribe-box .btn-allow:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(184,134,11,0.7);
+    }
+    .force-subscribe-box .btn-skip {
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 10px 25px;
+      font-size: 0.85rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .force-subscribe-box .btn-skip:hover {
+      color: white;
+      border-color: rgba(255,255,255,0.5);
+    }
+  </style>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>The Heaven Point • Shine Brighter | Premium Coaching Institute</title>
@@ -353,6 +473,22 @@
   </style>
 </head>
 <body>
+
+<!-- 🚨 FORCE SUBSCRIBE POPUP -->
+<div id="forceSubscribeOverlay" class="force-subscribe-overlay" style="display:none;">
+  <div class="force-subscribe-box">
+    <span class="bell-anim">🔔</span>
+    <h3>📢 Important Updates!</h3>
+    <p>New batches, exam tips & exclusive offers ke liye <strong>Allow Notifications</strong> karo!</p>
+    <button class="btn-allow" onclick="requestNotification()">
+      🔔 Ha, Allow Karo!
+    </button>
+    <button class="btn-skip" onclick="skipForNow()">
+      Abhi Nahi
+    </button>
+  </div>
+</div>
+
 <div class="top-bar">
   <div class="container">
     <div class="contact">
@@ -601,6 +737,46 @@
 </div>
 
 <script>
+  // 🚨 FORCE SUBSCRIBE LOGIC
+  let skipCount = 0;
+  const maxSkip = 3;
+
+  function showForcePopup() {
+    if (skipCount >= maxSkip) return;
+    if ('Notification' in window && Notification.permission === 'granted') {
+      document.getElementById('forceSubscribeOverlay').style.display = 'none';
+      return;
+    }
+    document.getElementById('forceSubscribeOverlay').style.display = 'flex';
+  }
+
+  function requestNotification() {
+    if ('Notification' in window) {
+      Notification.requestPermission().then(function(permission) {
+        document.getElementById('forceSubscribeOverlay').style.display = 'none';
+        if (permission === 'granted') {
+          alert('🎉 Thank you! Ab aapko sabhi important updates milengi!');
+          location.reload();
+        }
+      });
+    }
+  }
+
+  function skipForNow() {
+    skipCount++;
+    document.getElementById('forceSubscribeOverlay').style.display = 'none';
+    if (skipCount < maxSkip) {
+      setTimeout(function() {
+        showForcePopup();
+      }, 10000);
+    }
+  }
+
+  setTimeout(function() {
+    showForcePopup();
+  }, 3000);
+
+  // FIREBASE & REST
   const firebaseConfig = {
     apiKey: "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s", authDomain: "starlet-registor.firebaseapp.com",
     databaseURL: "https://starlet-registor-default-rtdb.firebaseio.com", projectId: "starlet-registor",
@@ -751,7 +927,6 @@
   const lightboxClose = document.getElementById('lightboxClose');
   const lightboxPrev = document.getElementById('lightboxPrev');
   const lightboxNext = document.getElementById('lightboxNext');
-  const lightboxContent = document.getElementById('lightboxContent');
 
   function openLightbox(index) {
     if (galleryImages.length === 0) return;
@@ -779,17 +954,9 @@
   }
 
   lightboxClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', function(e) {
-    if (e.target === lightbox) closeLightbox();
-  });
-  lightboxNext.addEventListener('click', function(e) {
-    e.stopPropagation();
-    nextLightbox();
-  });
-  lightboxPrev.addEventListener('click', function(e) {
-    e.stopPropagation();
-    prevLightbox();
-  });
+  lightbox.addEventListener('click', function(e) { if (e.target === lightbox) closeLightbox(); });
+  lightboxNext.addEventListener('click', function(e) { e.stopPropagation(); nextLightbox(); });
+  lightboxPrev.addEventListener('click', function(e) { e.stopPropagation(); prevLightbox(); });
 
   document.addEventListener('keydown', function(e) {
     if (!lightbox.classList.contains('active')) return;
