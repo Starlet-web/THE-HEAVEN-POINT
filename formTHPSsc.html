@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <meta name="description" content="SYF - Secure Your Future | Premium CBT Exam Preparation with ₹20 Registration">
   <meta name="theme-color" content="#000000">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SYF – Premium Neural Adaptive Prep | ₹20 Registration</title>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -82,11 +80,8 @@
       transition: background var(--transition-smooth), color var(--transition-smooth);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       letter-spacing: -0.01em;
-      background-image:
-        radial-gradient(ellipse at 5% 15%, rgba(0, 113, 227, 0.04) 0%, transparent 55%),
-        radial-gradient(ellipse at 92% 80%, rgba(52, 199, 89, 0.04) 0%, transparent 55%);
+      background-image: radial-gradient(ellipse at 5% 15%, rgba(0, 113, 227, 0.04) 0%, transparent 55%), radial-gradient(ellipse at 92% 80%, rgba(52, 199, 89, 0.04) 0%, transparent 55%);
     }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -143,7 +138,6 @@
     .btn-outline { background: transparent; border: 1.5px solid var(--border-medium); color: var(--text-primary); }
     .btn-sm { padding: 6px 16px; font-size: 0.78rem; }
     .btn-back { background: transparent; border: 1.5px solid var(--border-medium); color: var(--text-secondary); }
-    .btn-danger { background: var(--accent-rose); color: #fff; }
     .btn-emerald { background: var(--accent-emerald); color: #fff; }
 
     .hero-section { padding: 56px 0 40px; text-align: center; }
@@ -176,7 +170,6 @@
 
     .section-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.25rem; letter-spacing: -0.03em; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
     
-    /* ========== NEW THUMBNAIL CARDS ========== */
     .subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
     .subject-card {
       background: var(--bg-card);
@@ -351,10 +344,10 @@
       </a>
       <nav class="nav-links" id="mainNav">
         <a class="nav-link active" href="index.html">Home</a>
-        <a class="nav-link locked" href="#" id="navMath" onclick="SYF.navigateTo('mathematics.html'); return false;">Mathematics</a>
-        <a class="nav-link locked" href="#" id="navReason" onclick="SYF.navigateTo('reasoning.html'); return false;">Reasoning</a>
-        <a class="nav-link locked" href="#" id="navEnglish" onclick="SYF.navigateTo('english.html'); return false;">English</a>
-        <a class="nav-link locked" href="#" id="navGK" onclick="SYF.navigateTo('gk.html'); return false;">GK/GS</a>
+        <a class="nav-link locked" href="mathematics.html" id="navMath">Mathematics</a>
+        <a class="nav-link locked" href="reasoning.html" id="navReason">Reasoning</a>
+        <a class="nav-link locked" href="english.html" id="navEnglish">English</a>
+        <a class="nav-link locked" href="gk.html" id="navGK">GK/GS</a>
         <a class="nav-link" href="#" id="navCBT" onclick="SYF.openCBT(); return false;">CBT Mock</a>
       </nav>
       <div class="header-actions">
@@ -428,9 +421,9 @@
 
     <section class="animate-in delay-5">
       <div class="section-title">Core Subjects</div>
-      <div class="subject-grid">
+      <div class="subject-grid" id="subjectGrid">
         <!-- Mathematics Card -->
-        <a class="subject-card locked" href="#" id="cardMath" onclick="return SYF.handleSubjectClick('mathematics.html', event)">
+        <div class="subject-card locked" data-subject="mathematics">
           <div class="card-thumbnail">
             <img src="https://i.ibb.co/xt7mYYBs/file-000000002fcc7207b8b433ab7215535e.png" alt="Mathematics" loading="lazy">
             <div class="card-lock-badge">🔒 Premium</div>
@@ -445,10 +438,10 @@
             <div class="progress-bar-wrap"><div class="progress-bar-fill fill-math"></div></div>
             <div class="subj-meta"><span>72% Complete</span><span class="badge-difficulty badge-medium">Medium</span></div>
           </div>
-        </a>
+        </div>
 
         <!-- Reasoning Card -->
-        <a class="subject-card locked" href="#" id="cardReason" onclick="return SYF.handleSubjectClick('reasoning.html', event)">
+        <div class="subject-card locked" data-subject="reasoning">
           <div class="card-thumbnail">
             <img src="https://i.ibb.co/d01VX9wV/file-000000007a4472078026e857a3deee23.png" alt="Reasoning" loading="lazy">
             <div class="card-lock-badge">🔒 Premium</div>
@@ -463,10 +456,10 @@
             <div class="progress-bar-wrap"><div class="progress-bar-fill fill-reason"></div></div>
             <div class="subj-meta"><span>58% Complete</span><span class="badge-difficulty badge-easy">Easy</span></div>
           </div>
-        </a>
+        </div>
 
         <!-- English Card -->
-        <a class="subject-card locked" href="#" id="cardEnglish" onclick="return SYF.handleSubjectClick('english.html', event)">
+        <div class="subject-card locked" data-subject="english">
           <div class="card-thumbnail">
             <img src="https://i.ibb.co/3y7fQJDh/file-00000000909072078968a679d3f8cf52.png" alt="English" loading="lazy">
             <div class="card-lock-badge">🔒 Premium</div>
@@ -481,10 +474,10 @@
             <div class="progress-bar-wrap"><div class="progress-bar-fill fill-english"></div></div>
             <div class="subj-meta"><span>45% Complete</span><span class="badge-difficulty badge-medium">Medium</span></div>
           </div>
-        </a>
+        </div>
 
         <!-- GK/GS Card -->
-        <a class="subject-card locked" href="#" id="cardGK" onclick="return SYF.handleSubjectClick('gk.html', event)">
+        <div class="subject-card locked" data-subject="gk">
           <div class="card-thumbnail">
             <img src="https://i.ibb.co/Qv2WQnTn/file-00000000ce4c71fa8ca621e3d060cb0d.png" alt="GK/GS" loading="lazy">
             <div class="card-lock-badge">🔒 Premium</div>
@@ -499,7 +492,7 @@
             <div class="progress-bar-wrap"><div class="progress-bar-fill fill-gk"></div></div>
             <div class="subj-meta"><span>34% Complete</span><span class="badge-difficulty badge-hard">Hard</span></div>
           </div>
-        </a>
+        </div>
       </div>
     </section>
   </main>
@@ -608,6 +601,14 @@
       let regPhotoFile = null;
       let currentReferralValid = false;
 
+      // Subject URL mapping
+      const subjectUrls = {
+        'mathematics': 'mathematics.html',
+        'reasoning': 'reasoning.html',
+        'english': 'english.html',
+        'gk': 'gk.html'
+      };
+
       function showToast(msg, type = 'info') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div'); toast.className = 'toast';
@@ -618,25 +619,77 @@
 
       function initTheme() {
         const toggle = document.getElementById('themeToggle');
-        const saved = localStorage.getItem('syf-theme-v10') || 'light';
+        const saved = localStorage.getItem('syf-theme-v11') || 'light';
         document.documentElement.setAttribute('data-theme', saved);
         if (toggle) {
           toggle.innerHTML = saved === 'dark' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
           toggle.addEventListener('click', () => {
             const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('syf-theme-v10', next);
+            localStorage.setItem('syf-theme-v11', next);
             initTheme();
           });
         }
       }
 
+      // 🔧 FIX: Attach click handlers to all subject cards
+      function attachSubjectCardHandlers() {
+        document.querySelectorAll('.subject-card').forEach(card => {
+          // Remove old handler by cloning
+          const newCard = card.cloneNode(true);
+          card.parentNode.replaceChild(newCard, card);
+          
+          newCard.addEventListener('click', function(e) {
+            const subject = this.getAttribute('data-subject');
+            if (!subject) return;
+            
+            if (!currentUser || userProfile.paymentStatus !== 'paid') {
+              e.preventDefault();
+              e.stopPropagation();
+              showToast('🔒 Please register (₹20) to unlock all subjects', 'warning');
+              SYF.openAuthModal();
+              return false;
+            }
+            
+            const url = subjectUrls[subject];
+            if (url) {
+              window.location.href = url;
+            }
+          });
+        });
+      }
+
       function unlockAllSubjects() {
+        // Remove locked class from all elements
         document.querySelectorAll('.locked').forEach(el => {
           el.classList.remove('locked');
-          if (el.tagName === 'A') { el.onclick = null; el.style.cursor = 'pointer'; }
         });
+        
+        // Re-attach handlers so cards become clickable
+        attachSubjectCardHandlers();
+        
+        // Show premium badge
         document.getElementById('premiumBadge').style.display = 'inline-flex';
+        
+        // Update nav links to be clickable
+        ['navMath', 'navReason', 'navEnglish', 'navGK'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.classList.remove('locked');
+            el.style.pointerEvents = 'auto';
+            el.style.opacity = '1';
+          }
+        });
+        
+        // Update bottom nav
+        ['bottomMath', 'bottomReason'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.classList.remove('locked');
+            el.style.pointerEvents = 'auto';
+            el.style.opacity = '1';
+          }
+        });
       }
 
       function updateUI() {
@@ -657,7 +710,6 @@
         document.getElementById('perfWeak').textContent = Math.max(1, Math.floor((100 - userProfile.accuracy) / 8));
         if (userProfile.paymentStatus === 'paid') {
           unlockAllSubjects();
-          document.getElementById('premiumBadge').style.display = 'inline-flex';
         }
         renderTodayTarget();
       }
@@ -729,7 +781,17 @@
           document.getElementById('premiumBadge').style.display = 'none';
           userProfile = { name: 'Guest User', email: '', avatar: '', streak: 0, questionsSolved: 0, accuracy: 50, rank: '#---', paymentStatus: 'pending', phone: '', lastActiveDate: '' };
           updateUI();
-          document.querySelectorAll('.subject-card, .nav-link.locked, .bottom-nav-item.locked').forEach(c => c.classList.add('locked'));
+          // Re-lock everything
+          document.querySelectorAll('.subject-card').forEach(c => c.classList.add('locked'));
+          ['navMath', 'navReason', 'navEnglish', 'navGK'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.classList.add('locked'); el.style.pointerEvents = 'none'; el.style.opacity = '0.5'; }
+          });
+          ['bottomMath', 'bottomReason'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.classList.add('locked'); el.style.pointerEvents = 'none'; el.style.opacity = '0.5'; }
+          });
+          attachSubjectCardHandlers();
         }
       });
 
@@ -869,17 +931,6 @@
         rzp.open();
       }
 
-      function handleSubjectClick(url, event) {
-        if (!currentUser || userProfile.paymentStatus !== 'paid') {
-          event.preventDefault();
-          showToast('🔒 Please register (₹20) to unlock all subjects', 'warning');
-          SYF.openAuthModal();
-          return false;
-        }
-        window.location.href = url;
-        return false;
-      }
-
       function navigateTo(url) {
         if (!currentUser || userProfile.paymentStatus !== 'paid') {
           showToast('🔒 Please register (₹20) to unlock all subjects', 'warning');
@@ -944,7 +995,7 @@
         openAuthModal: () => { document.getElementById('authModal').classList.add('active'); document.body.style.overflow = 'hidden'; switchAuthTab('signin'); },
         closeAuthModal: () => { document.getElementById('authModal').classList.remove('active'); document.body.style.overflow = ''; },
         switchAuthTab, handleSignIn, handleLogout, updateReferralBadge,
-        previewRegPhoto, initiatePayment, handleSubjectClick, navigateTo, openCBT,
+        previewRegPhoto, initiatePayment, navigateTo, openCBT,
         openEditProfileModal, closeEditProfileModal, previewEditPhoto, saveProfileChanges,
         checkPasswordStrength, checkPasswordMatch,
         registration: {
@@ -961,13 +1012,17 @@
         }
       };
 
+      // Initialize
       document.addEventListener('click', (e) => { if (e.target.classList.contains('skill-tag')) e.target.classList.toggle('selected'); });
       document.getElementById('authModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) SYF.closeAuthModal(); });
       document.getElementById('editProfileModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) SYF.closeEditProfileModal(); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { SYF.closeAuthModal(); SYF.closeEditProfileModal(); } });
 
-      initTheme(); updateUI(); renderTodayTarget();
-      console.log('🚀 SYF Premium v10 — 16:9 Thumbnail Cards Ready');
+      initTheme();
+      attachSubjectCardHandlers(); // Attach handlers on load
+      updateUI();
+      renderTodayTarget();
+      console.log('🚀 SYF Premium v11 — Click Fixed & Working');
     })();
   </script>
 </body>
