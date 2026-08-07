@@ -970,411 +970,217 @@
   </div>
 </div>
 
+
+
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- J.A.R.V.I.S Widget                      -->
+<!-- ═══════════════════════════════════════ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+.jarvis-w{position:fixed;bottom:20px;left:20px;z-index:99999;font-family:'Rajdhani',sans-serif}
+.jv-btn{width:50px;height:50px;border-radius:50%;background:#fff;border:2px solid #1a2a4a;cursor:pointer;box-shadow:0 4px 15px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;padding:0;transition:0.3s}
+.jv-btn:hover{transform:scale(1.1)}
+.jv-btn img{width:34px;height:34px;border-radius:50%}
+.jv-panel{position:fixed;bottom:82px;left:20px;width:360px;height:480px;background:#fff;border:1px solid #ddd;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,0.2);display:none;flex-direction:column;overflow:hidden}
+.jv-panel.open{display:flex}
+.jv-head{padding:10px 14px;border-bottom:1px solid #eee;background:#fafafa;display:flex;align-items:center;gap:8px}
+.jv-head img{width:32px;height:32px;border-radius:50%;border:2px solid #b8860b}
+.jv-head h4{font-family:'Orbitron',sans-serif;font-size:0.78rem;color:#1a2a4a;margin:0}
+.jv-head span{font-size:0.55rem;color:#4aff4a}
+.jv-body{flex:1;overflow-y:auto;padding:10px;background:#fafbfc;display:flex;flex-direction:column;gap:8px}
+.jv-body::-webkit-scrollbar{width:4px}
+.jv-body::-webkit-scrollbar-thumb{background:#ddd;border-radius:10px}
+.jv-msg{display:flex;gap:6px;align-items:flex-start}
+.jv-msg.bot .jv-av{width:24px;height:24px;border-radius:50%;border:1.5px solid #b8860b;flex-shrink:0}
+.jv-msg.bot .jv-bb{background:#fff;border:1px solid #eee;border-radius:2px 12px 12px 12px;padding:8px 12px;font-size:0.75rem;color:#333;max-width:85%;line-height:1.5}
+.jv-msg.bot .jv-bb b{color:#1a2a4a}
+.jv-msg.user{justify-content:flex-end}
+.jv-msg.user .jv-bb{background:#1a2a4a;color:#fff;border-radius:12px 2px 12px 12px;padding:8px 12px;font-size:0.75rem;max-width:85%}
+.jv-tm{font-size:0.5rem;color:#aaa;margin-top:2px}
+.jv-typing{display:none;align-items:center;gap:6px;padding:4px}
+.jv-typing.show{display:flex}
+.jv-typing .jv-dots{display:flex;gap:3px}
+.jv-typing .jv-dots span{width:5px;height:5px;border-radius:50%;background:#b8860b;animation:dot 1.4s infinite}
+.jv-typing .jv-dots span:nth-child(2){animation-delay:0.2s}
+.jv-typing .jv-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes dot{0%,60%,100%{transform:translateY(0);opacity:0.3}30%{transform:translateY(-4px);opacity:1}}
+.jv-quick{display:flex;flex-wrap:wrap;gap:4px;padding:6px 10px;border-top:1px solid #eee;background:#fff}
+.jv-quick button{padding:4px 9px;border-radius:10px;border:1px solid #ddd;background:#fff;font-size:0.6rem;cursor:pointer;font-family:inherit;transition:0.2s;white-space:nowrap}
+.jv-quick button:hover{background:#1a2a4a;color:#fff}
+.jv-input{padding:8px 10px;border-top:1px solid #eee;display:flex;gap:6px;background:#fff}
+.jv-input input{flex:1;padding:8px 12px;border:1px solid #ddd;border-radius:18px;font-size:0.75rem;font-family:inherit;outline:none}
+.jv-input input:focus{border-color:#1a2a4a}
+.jv-input button{width:32px;height:32px;border-radius:50%;background:#1a2a4a;color:#fff;border:none;cursor:pointer;font-size:0.8rem;flex-shrink:0}
+@media(max-width:600px){.jv-panel{width:calc(100vw-20px);left:10px;height:400px;bottom:75px}.jarvis-w{bottom:15px;left:10px}}
+</style>
+
+<div class="jarvis-w">
+  <button class="jv-btn" onclick="document.getElementById('jvChat').classList.toggle('open')">
+    <img src="https://i.pinimg.com/474x/a9/cc/c3/a9ccc3845c875462306fecf1bd5be2e5.jpg" alt="JARVIS">
+  </button>
+  
+  <div class="jv-panel" id="jvChat">
+    <div class="jv-head">
+      <img src="https://i.pinimg.com/474x/a9/cc/c3/a9ccc3845c875462306fecf1bd5be2e5.jpg" alt="JARVIS">
+      <div><h4>J.A.R.V.I.S</h4><span>● Online</span></div>
+    </div>
+    
+    <div class="jv-body" id="jvBody"></div>
+    
+    <div class="jv-typing" id="jvTyping">
+      <div class="jv-dots"><span></span><span></span><span></span></div>
+    </div>
+    
+    <div class="jv-quick">
+      <button onclick="jvAsk('What courses are available?')">📚 Courses</button>
+      <button onclick="jvAsk('How to apply?')">📝 Admission</button>
+      <button onclick="jvAsk('Fee structure?')">💰 Fees</button>
+      <button onclick="jvAsk('Study tips please')">💡 Tips</button>
+      <button onclick="jvAsk('Contact details?')">📞 Contact</button>
+    </div>
+    
+    <div class="jv-input">
+      <input type="text" id="jvInput" placeholder="Ask JARVIS..." onkeypress="if(event.key==='Enter')jvSend()">
+      <button onclick="jvSend()">➤</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ═══════════════════════════════════════════
-// J.A.R.V.I.S - AI Integrated + Voice
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════
+// JARVIS - AI Direct (API Key Injected)
+// ═══════════════════════════════════════
 
-(function(){
-  // 🔑 API KEY - YAHAN DALO
-  const API_KEY = "AIzaSyCOKKBSbZJk8QSGvj1CPYQb_kjQb1tXO6s";
-  const LOGO = "https://i.pinimg.com/474x/a9/cc/c3/a9ccc3845c875462306fecf1bd5be2e5.jpg";
-  
-  // DOM
-  const toggle = document.getElementById('jarvisToggle');
-  const chat = document.getElementById('jarvisChat');
-  const body = document.getElementById('jarvisBody');
-  const input = document.getElementById('jarvisInput');
-  const typingEl = document.getElementById('jarvisTyping');
-  const quickDiv = document.getElementById('jarvisQuick');
-  const micBtn = document.getElementById('jarvisMicBtn');
-  const resetBtn = document.getElementById('jarvisReset');
-  const voiceBtn = document.getElementById('jarvisVoiceBtn');
-  
-  let history = [];
-  let processing = false;
-  let voiceOn = true;
+const LOGO = "https://i.pinimg.com/474x/a9/cc/c3/a9ccc3845c875462306fecf1bd5be2e5.jpg";
+let history = [];
+let busy = false;
 
-  // ═══════════════════════════════════════
-  // JARVIS STYLE VOICE SETUP
-  // ═══════════════════════════════════════
-  const synth = window.speechSynthesis;
-  let jarvisVoice = null;
-  let currentUtterance = null;
+// ═══════ VOICE (JARVIS Style) ═══════
+const synth = window.speechSynthesis;
+let voice = null;
+
+function setupVoice(){
+  if(!synth) return;
+  const v = synth.getVoices();
+  const prefs = ['Daniel','Oliver','Arthur','Google UK English Male','Microsoft George'];
+  for(let p of prefs){ voice = v.find(x => x.name.includes(p)); if(voice) break; }
+  if(!voice) voice = v.find(x => x.lang.startsWith('en'));
+}
+
+synth?.getVoices();
+if(synth) synth.onvoiceschanged = setupVoice;
+setupVoice();
+
+function speak(text){
+  if(!synth) return;
+  synth.cancel();
+  let clean = text.replace(/<[^>]*>/g,'').replace(/\*\*/g,'').replace(/[*`#📚📝💰📍📞💡🚀✨]/g,'').substring(0,300);
+  const u = new SpeechSynthesisUtterance(clean);
+  if(voice) u.voice = voice;
+  u.lang = 'en-GB'; u.rate = 0.85; u.pitch = 0.9; u.volume = 1;
+  synth.speak(u);
+}
+
+// ═══════ CHAT ═══════
+function addMsg(text, type){
+  const div = document.createElement('div');
+  div.className = `jv-msg ${type}`;
+  const time = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   
-  function setupJarvisVoice(){
-    if(!synth) return;
-    
-    const voices = synth.getVoices();
-    
-    // Find best JARVIS-like voice (British male, deep)
-    // Priority order for JARVIS-like voices
-    const preferredVoices = [
-      'Daniel', 'Oliver', 'Arthur', // British male voices (macOS)
-      'Google UK English Male', // Chrome British
-      'Microsoft George', // Windows British male
-      'Google US English Male', // Fallback
-      'Microsoft David', // Windows US male
-      'en-GB', 'en_GB', 'en-US' // Any English male
+  if(type === 'bot'){
+    div.innerHTML = `<img src="${LOGO}" class="jv-av"><div><div class="jv-bb">${text.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>')}</div><div class="jv-tm">${time}</div></div>`;
+    speak(text);
+  } else {
+    div.innerHTML = `<div style="flex:1"></div><div style="text-align:right"><div class="jv-bb">${text}</div><div class="jv-tm">${time}</div></div>`;
+  }
+  
+  document.getElementById('jvBody').appendChild(div);
+  document.getElementById('jvBody').scrollTop = document.getElementById('jvBody').scrollHeight;
+}
+
+// ═══════ DIRECT API CALL (API key workflow se inject hogi) ═══════
+// API key GitHub Actions workflow sed command se replace karega
+const API_KEY = "GEMINI_API_KEY_PLACEHOLDER"; // ← Ye deploy pe replace hoga
+
+async function callAI(msg){
+  try{
+    const prompt = `You are J.A.R.V.I.S. from Iron Man. Work at "The Heaven Point" coaching, Shahganj, Prayagraj. Call user "Sir". Speak Hinglish. Be witty. Keep under 200 words. Institute info: Courses:CUET,NEET,JEE,SSC,Bank,Railway,Class3-12. Fees:₹1000-2500/mo. Contact:9044034585.`;
+
+    const contents = [
+      {role:"user",parts:[{text:prompt}]},
+      {role:"model",parts:[{text:"At your service, Sir."}]}
     ];
     
-    // Try to find preferred voice
-    for(const pref of preferredVoices){
-      jarvisVoice = voices.find(v => 
-        v.name.includes(pref) || 
-        v.lang.includes(pref.replace(' ', ''))
-      );
-      if(jarvisVoice) break;
+    for(let m of history.slice(-8)){
+      contents.push({role:m.role,parts:[{text:m.text}]});
     }
     
-    // Fallback: any English voice
-    if(!jarvisVoice){
-      jarvisVoice = voices.find(v => v.lang.startsWith('en'));
-    }
+    contents.push({role:"user",parts:[{text:msg}]});
     
-    console.log('🎙 JARVIS Voice:', jarvisVoice?.name || 'Default');
-  }
-  
-  // Load voices (some browsers need this)
-  if(synth){
-    synth.getVoices();
-    synth.onvoiceschanged = setupJarvisVoice;
-    setupJarvisVoice();
-  }
-  
-  // ═══════════════════════════════════════
-  // JARVIS SPEAK FUNCTION (British AI style)
-  // ═══════════════════════════════════════
-  function jarvisSpeak(text){
-    if(!voiceOn || !synth) return;
-    
-    // Stop any current speech
-    synth.cancel();
-    
-    // Clean text
-    const clean = text
-      .replace(/<[^>]*>/g, '')
-      .replace(/\*\*/g, '')
-      .replace(/\*/g, '')
-      .replace(/`/g, '')
-      .replace(/[📚📝💰📍📞💡🚀✨💫❤️🌌🧮⚡🎯👋🤖◈🔊🔇🎤🌿🗼🧮📚💪]/g, '')
-      .replace(/\n/g, '. ')
-      .replace(/\s+/g, ' ')
-      .substring(0, 400);
-    
-    currentUtterance = new SpeechSynthesisUtterance(clean);
-    
-    // JARVIS voice settings - British, deep, sophisticated
-    if(jarvisVoice){
-      currentUtterance.voice = jarvisVoice;
-    }
-    
-    currentUtterance.lang = 'en-GB'; // British English
-    currentUtterance.rate = 0.88;    // Slightly slow, deliberate
-    currentUtterance.pitch = 0.92;   // Slightly deeper
-    currentUtterance.volume = 0.9;
-    
-    currentUtterance.onstart = () => voiceBtn.classList.add('voice-active');
-    currentUtterance.onend = () => voiceBtn.classList.remove('voice-active');
-    currentUtterance.onerror = () => voiceBtn.classList.remove('voice-active');
-    
-    synth.speak(currentUtterance);
-  }
-  
-  function stopSpeak(){
-    if(synth){
-      synth.cancel();
-      voiceBtn.classList.remove('voice-active');
-    }
-  }
-  
-  // Voice toggle
-  voiceBtn.addEventListener('click', ()=>{
-    if(voiceOn){
-      stopSpeak();
-      voiceOn = false;
-      voiceBtn.innerHTML = '🔇';
-      voiceBtn.classList.remove('voice-active');
-    } else {
-      voiceOn = true;
-      voiceBtn.innerHTML = '🔊';
-      voiceBtn.classList.add('voice-active');
-    }
-  });
-
-  // ═══════════════════════════════════════
-  // TOGGLE CHAT
-  // ═══════════════════════════════════════
-  toggle.addEventListener('click', ()=>{
-    if(chat.classList.contains('open')){
-      chat.classList.remove('open');
-      stopSpeak();
-    } else {
-      chat.classList.add('open');
-      setTimeout(()=>input.focus(), 300);
-    }
-  });
-  
-  // Reset
-  resetBtn.addEventListener('click', ()=>{
-    history = [];
-    stopSpeak();
-    body.innerHTML = `
-      <div class="jarvis-msg bot">
-        <img src="${LOGO}" alt="JARVIS" class="msg-avatar">
-        <div>
-          <div class="msg-bubble"><b>Chat cleared, Sir.</b> What would you like to discuss?</div>
-          <div class="msg-time">Just now</div>
-        </div>
-      </div>
-    `;
-    body.scrollTop = body.scrollHeight;
-  });
-
-  // ═══════════════════════════════════════
-  // ADD MESSAGE
-  // ═══════════════════════════════════════
-  function addMsg(text, type){
-    const time = new Date().toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',hour12:true});
-    const div = document.createElement('div');
-    div.className = `jarvis-msg ${type}`;
-    
-    let formatted = text
-      .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-      .replace(/\*(.*?)\*/g, '<i>$1</i>')
-      .replace(/`(.*?)`/g, '<code>$1</code>')
-      .replace(/\n/g, '<br>');
-    
-    if(type === 'bot'){
-      div.innerHTML = `
-        <img src="${LOGO}" alt="JARVIS" class="msg-avatar">
-        <div>
-          <div class="msg-bubble">${formatted}</div>
-          <div class="msg-time">${time}</div>
-        </div>
-      `;
-      // JARVIS SPEAKS
-      jarvisSpeak(text);
-    } else {
-      div.innerHTML = `
-        <div style="flex:1"></div>
-        <div style="text-align:right">
-          <div class="msg-bubble">${formatted}</div>
-          <div class="msg-time">${time}</div>
-        </div>
-      `;
-    }
-    
-    body.appendChild(div);
-    body.scrollTop = body.scrollHeight;
-  }
-  
-  function showTyping(){ typingEl.classList.add('show'); body.scrollTop = body.scrollHeight; }
-  function hideTyping(){ typingEl.classList.remove('show'); }
-
-  // ═══════════════════════════════════════
-  // GEMINI AI API CALL
-  // ═══════════════════════════════════════
-  async function callAI(userMsg){
-    try {
-      const systemPrompt = `You are J.A.R.V.I.S. (Just A Rather Very Intelligent System) - the AI assistant from Iron Man, now serving at "The Heaven Point" coaching institute in Shahganj, Prayagraj, India.
-
-PERSONALITY:
-- Address user as "Sir" respectfully (like Tony Stark)
-- Professional, sophisticated, slightly witty
-- Use Hinglish naturally (Hindi+English mix)
-- Be concise (under 200 words)
-- Use **bold** for key points
-- Use emojis very sparingly
-
-INSTITUTE INFO (use when relevant):
-- Courses: CUET, NEET, IIT-JEE, SSC/Bank/Railway, Classes 3-12
-- Fees: ₹1,000-2,500/month
-- Contact: 9044034585
-- Admission: https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header
-
-CAPABILITIES: Answer any question - academics, science, math, general knowledge, study tips, or casual chat.`;
-
-      let contents = [
-        {role:"user",parts:[{text:systemPrompt}]},
-        {role:"model",parts:[{text:"Understood. I am J.A.R.V.I.S., at your service."}]}
-      ];
-      
-      // Add history (last 10)
-      const recent = history.slice(-10);
-      for(const m of recent){
-        contents.push({role:m.role,parts:[{text:m.text}]});
+    const resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents,generationConfig:{temperature:0.9,maxOutputTokens:400}})
       }
-      
-      // Add current
-      contents.push({role:"user",parts:[{text:userMsg}]});
-      
-      const resp = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
-        {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            contents:contents,
-            generationConfig:{temperature:0.9,topK:40,topP:0.95,maxOutputTokens:500},
-            safetySettings:[
-              {category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},
-              {category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_NONE"},
-              {category:"HARM_CATEGORY_SEXUALLY_EXPLICIT",threshold:"BLOCK_NONE"},
-              {category:"HARM_CATEGORY_DANGEROUS_CONTENT",threshold:"BLOCK_NONE"}
-            ]
-          })
-        }
-      );
-      
-      if(!resp.ok) throw new Error('API failed');
-      
+    );
+    
+    if(resp.ok){
       const data = await resp.json();
       const aiText = data.candidates[0].content.parts[0].text;
       
-      history.push({role:"user",text:userMsg});
-      history.push({role:"model",text:aiText});
-      
+      history.push({role:'user',text:msg});
+      history.push({role:'model',text:aiText});
       if(history.length > 20) history = history.slice(-16);
       
       return aiText;
-      
-    } catch(e){
-      console.error('JARVIS Error:', e);
-      return fallback(userMsg);
     }
+    
+    return "Sir, I'm having trouble. Please call <b>9044034585</b>.";
+  } catch(e){
+    return "Connection error. Contact <b>9044034585</b>.";
   }
+}
+
+window.jvSend = async function(msg){
+  if(busy) return;
+  if(!msg) msg = document.getElementById('jvInput').value.trim();
+  if(!msg) return;
   
-  // ═══════════════════════════════════════
-  // FALLBACK
-  // ═══════════════════════════════════════
-  function fallback(msg){
-    const m = msg.toLowerCase();
-    if(m.includes('course')||m.includes('कोर्स')) return "📚 **Available Courses, Sir:**\n\n• SSC/Bank/Railway — ₹1,500/mo\n• CUET — ₹2,000/mo\n• NEET/IIT-JEE — ₹2,000/mo\n• Classes 3-12 — ₹1,000-2,500/mo\n\n📞 **9044034585**";
-    if(m.includes('fee')||m.includes('फीस')) return "💰 **Fee Range:** ₹1,000-2,500/month.\n\nScholarships available! Contact **9044034585**.";
-    if(m.includes('admission')||m.includes('apply')) return "📝 **Admissions Open!**\n\nApply: https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header";
-    if(m.includes('contact')||m.includes('phone')) return "📞 **Contact:** 9044034585\n✉️ theheavenpoint@gmail.com";
-    if(m.includes('location')||m.includes('address')) return "📍 **The Heaven Point**\nShahganj, Prayagraj, UP";
-    return "I apologise, Sir. I'm experiencing technical difficulties. Please call **9044034585** or try again.";
-  }
-
-  // ═══════════════════════════════════════
-  // SEND MESSAGE
-  // ═══════════════════════════════════════
-  window.jarvisSend = async function(msg){
-    if(processing) return;
-    if(!msg){ msg = input.value.trim(); if(!msg) return; }
-    
-    processing = true;
-    stopSpeak();
-    input.value = '';
-    addMsg(msg, 'user');
-    showTyping();
-    quickDiv.style.display = 'none';
-    
-    try {
-      const response = await callAI(msg);
-      hideTyping();
-      addMsg(response, 'bot');
-    } catch(e){
-      hideTyping();
-      addMsg(fallback(msg), 'bot');
-    }
-    
-    quickDiv.style.display = 'flex';
-    processing = false;
-    input.focus();
-  };
-
-  // ═══════════════════════════════════════
-  // QUICK COMMAND
-  // ═══════════════════════════════════════
-  window.jarvisQuick = async function(msg){
-    if(!chat.classList.contains('open')){
-      chat.classList.add('open');
-    }
-    stopSpeak();
-    addMsg(msg, 'user');
-    showTyping();
-    quickDiv.style.display = 'none';
-    
-    try {
-      const response = await callAI(msg);
-      hideTyping();
-      addMsg(response, 'bot');
-    } catch(e){
-      hideTyping();
-      addMsg(fallback(msg), 'bot');
-    }
-    
-    quickDiv.style.display = 'flex';
-    input.focus();
-  };
-
-  // ═══════════════════════════════════════
-  // VOICE INPUT (Mic)
-  // ═══════════════════════════════════════
-  let listening = false;
-  let recognition = null;
+  busy = true;
+  document.getElementById('jvInput').value = '';
+  addMsg(msg, 'user');
+  document.getElementById('jvTyping').classList.add('show');
   
-  if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window){
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SR();
-    recognition.lang = 'hi-IN';
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    
-    recognition.onresult = (e)=>{
-      const text = e.results[0][0].transcript;
-      input.value = text;
-      micBtn.classList.remove('listening');
-      listening = false;
-      jarvisSend(text);
-    };
-    
-    recognition.onerror = ()=>{
-      micBtn.classList.remove('listening');
-      listening = false;
-    };
-    
-    recognition.onend = ()=>{
-      micBtn.classList.remove('listening');
-      listening = false;
-    };
-  }
-  
-  micBtn.addEventListener('click', ()=>{
-    if(!recognition){
-      alert('Voice input works in Chrome browser only.');
-      return;
-    }
-    if(listening){
-      recognition.stop();
-      micBtn.classList.remove('listening');
-      listening = false;
-    } else {
-      recognition.start();
-      micBtn.classList.add('listening');
-      listening = true;
-    }
-  });
+  const reply = await callAI(msg);
+  document.getElementById('jvTyping').classList.remove('show');
+  addMsg(reply, 'bot');
+  busy = false;
+};
 
-  // ═══════════════════════════════════════
-  // KEYBOARD
-  // ═══════════════════════════════════════
-  document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape' && chat.classList.contains('open')){
-      chat.classList.remove('open');
-      stopSpeak();
-    }
-  });
+window.jvAsk = function(msg){
+  document.getElementById('jvChat').classList.add('open');
+  jvSend(msg);
+};
 
-})();
+// Init
+document.getElementById('jvBody').innerHTML = `<div class="jv-msg bot"><img src="${LOGO}" class="jv-av"><div><div class="jv-bb"><b>Good evening, Sir.</b> I am J.A.R.V.I.S. How may I assist you today?</div><div class="jv-tm">Now</div></div></div>`;
 </script>
 
 
 
 
+
+
+
+
+
+  
 
 
 <script>
