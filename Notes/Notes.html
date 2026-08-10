@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THP Digital Notes Library</title>
+    
+    <!-- PDF.js -->
+    <script type="module">
+        import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+        window.pdfjsLib = pdfjsLib;
+        window.dispatchEvent(new Event("pdfjsready"));
+    </script>
+    
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: var(--transition);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 2rem;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-text small {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-icon {
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .btn-icon:hover {
+            background: var(--border);
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        /* ========== SEARCH ========== */
+        .search-container {
+            max-width: 640px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 8px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-icon {
+            padding: 12px;
+            color: var(--muted);
+            font-size: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 12px 8px;
+            font-size: 16px;
+            color: var(--text);
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: var(--muted);
+        }
+
+        .search-shortcut {
+            padding: 6px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--muted);
+            margin-right: 4px;
+        }
+
+        /* ========== STATS ========== */
+        .stats {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* ========== FILTERS ========== */
+        .filters-section {
+            padding: 1rem 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filters-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 8px 0;
+            scrollbar-width: none;
+        }
+
+        .filters-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .filter-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-size: 12px;
+        }
+
+        .active .filter-count {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* ========== NOTES GRID ========== */
+        .notes-section {
+            padding: 0 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .sort-select {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .note-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .note-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .note-card:hover::before {
+            opacity: 1;
+        }
+
+        .note-icon {
+            width: 56px;
+            height: 64px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+
+        .icon-biology { background: #fee2e2; }
+        .icon-chemistry { background: #dbeafe; }
+        .icon-physics { background: #fef3c7; }
+        .icon-mathematics { background: #d1fae5; }
+        .icon-english { background: #e0e7ff; }
+
+        .note-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .note-description {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .note-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .meta-tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--bg);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .read-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .read-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        /* ========== PDF VIEWER ========== */
+        .viewer-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .viewer-header {
+            height: 60px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: white;
+        }
+
+        .viewer-title {
+            font-weight: 600;
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .viewer-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .viewer-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: #334155;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+            display: grid;
+            place-items: center;
+        }
+
+        .viewer-btn:hover {
+            background: #475569;
+        }
+
+        .page-info {
+            font-size: 14px;
+            margin: 0 8px;
+        }
+
+        .viewer-content {
+            height: calc(100vh - 60px);
+            overflow: auto;
+            background: #525659;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        canvas {
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            z-index: 2001;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #475569;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+
+            .brand-text h2 {
+                font-size: 16px;
+            }
+
+            .hero {
+                padding: 3rem 1rem 2rem;
+            }
+
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .notes-section {
+                padding: 0 1rem 3rem;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                min-width: 120px;
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-actions .btn span {
+                display: none;
+            }
+
+            .search-shortcut {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar">
+    <a href="/" class="brand">
+        <div class="logo">THP</div>
+        <div class="brand-text">
+            <h2>THE HEAVEN POINT</h2>
+            <small>Digital Notes Library</small>
+        </div>
+    </a>
+    
+    <div class="nav-actions">
+        <a href="admin.html" class="btn btn-outline">
+            <span>👤</span> <span>Admin</span>
+        </a>
+        <button class="btn-icon" onclick="toggleTheme()" title="Toggle theme">
+            🌓
+        </button>
+    </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+    <div class="badge">📚 THP DIGITAL LIBRARY</div>
+    <h1>Study <span class="gradient-text">Smarter.</span><br>Learn Better.</h1>
+    <p>Access comprehensive digital notes for CBSE, ICSE & competitive exams. Read online anytime, anywhere.</p>
+    
+    <div class="search-container">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search notes by title, subject, or class..." oninput="filterNotes()">
+            <span class="search-shortcut">⌘K</span>
+        </div>
+    </div>
+</section>
+
+<!-- ========== STATS ========== -->
+<div class="stats" id="statsContainer">
+    <div class="stat-card">
+        <div class="stat-number" id="totalNotes">0</div>
+        <div class="stat-label">Total Notes</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number" id="totalSubjects">0</div>
+        <div class="stat-label">Subjects</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number" id="totalClasses">0</div>
+        <div class="stat-label">Classes</div>
+    </div>
+</div>
+
+<!-- ========== FILTERS ========== -->
+<section class="filters-section">
+    <div class="filters-scroll" id="filtersContainer">
+        <button class="filter-chip active" onclick="setFilter('all', this)">
+            📚 All <span class="filter-count" id="countAll">0</span>
+        </button>
+    </div>
+</section>
+
+<!-- ========== NOTES GRID ========== -->
+<section class="notes-section">
+    <div class="section-header">
+        <h2>📖 Available Notes</h2>
+        <select class="sort-select" onchange="sortNotes(this.value)">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="az">A to Z</option>
+            <option value="za">Z to A</option>
+        </select>
+    </div>
+    
+    <div class="notes-grid" id="notesGrid">
+        <!-- Dynamically loaded -->
+    </div>
+</section>
+
+<!-- ========== PDF VIEWER ========== -->
+<div class="viewer-overlay" id="pdfViewer">
+    <div class="viewer-header">
+        <span class="viewer-title" id="viewerTitle">PDF Notes</span>
+        <div class="viewer-controls">
+            <button class="viewer-btn" onclick="previousPage()">◀</button>
+            <span class="page-info">
+                <b id="currentPage">1</b> / <b id="totalPages">-</b>
+            </span>
+            <button class="viewer-btn" onclick="nextPage()">▶</button>
+            <button class="viewer-btn" onclick="zoomOut()">−</button>
+            <span class="page-info" id="zoomLevel">100%</span>
+            <button class="viewer-btn" onclick="zoomIn()">+</button>
+            <button class="viewer-btn" onclick="toggleFullscreen()">⛶</button>
+            <button class="viewer-btn" onclick="closeViewer()">✕</button>
+        </div>
+    </div>
+    <div class="viewer-content" id="viewerContent">
+        <canvas id="pdfCanvas"></canvas>
+    </div>
+    <div class="loader" id="pdfLoader">
+        <div class="spinner"></div>
+        <p>Loading PDF...</p>
+    </div>
+</div>
+
+<script>
+// ============================================
+// CONFIGURATION
+// ============================================
+const GITHUB_RAW = 'https://raw.githubusercontent.com/starlet-web/THE-HEAVEN-POINT/main';
+const NOTES_URL = `${GITHUB_RAW}/notes.json`;
+
+// ============================================
+// STATE
+// ============================================
+let allNotes = [];
+let currentFilter = 'all';
+let currentSort = 'newest';
+let pdfDoc = null;
+let currentPageNum = 1;
+let currentScale = 1.2;
+
+// ============================================
+// THEME
+// ============================================
+function toggleTheme() {
+    document.body.classList.toggle('dark');
+    localStorage.setItem('thp-theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+}
+
+// Load saved theme
+if (localStorage.getItem('thp-theme') === 'dark') {
+    document.body.classList.add('dark');
+}
+
+// ============================================
+// FETCH NOTES
+// ============================================
+async function fetchNotes() {
+    try {
+        const response = await fetch(NOTES_URL);
+        if (!response.ok) throw new Error('Failed to fetch notes');
+        allNotes = await response.json();
+        updateStats();
+        updateFilters();
+        filterNotes();
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('notesGrid').innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">📡</div>
+                <h3>Could not load notes</h3>
+                <p>Please check your connection and try again.</p>
+            </div>
+        `;
+    }
+}
+
+// ============================================
+// UPDATE STATS
+// ============================================
+function updateStats() {
+    document.getElementById('totalNotes').textContent = allNotes.length;
+    
+    const subjects = new Set(allNotes.map(n => n.subject));
+    document.getElementById('totalSubjects').textContent = subjects.size;
+    
+    const classes = new Set(allNotes.map(n => n.className));
+    document.getElementById('totalClasses').textContent = classes.size;
+}
+
+// ============================================
+// UPDATE FILTERS
+// ============================================
+function updateFilters() {
+    const subjects = {};
+    allNotes.forEach(note => {
+        subjects[note.subject] = (subjects[note.subject] || 0) + 1;
+    });
+    
+    let filtersHTML = `
+        <button class="filter-chip active" onclick="setFilter('all', this)">
+            📚 All <span class="filter-count" id="countAll">${allNotes.length}</span>
+        </button>
+    `;
+    
+    const icons = { biology: '🔬', chemistry: '🧪', physics: '⚡', mathematics: '📐', english: '📖' };
+    
+    for (const [subject, count] of Object.entries(subjects)) {
+        filtersHTML += `
+            <button class="filter-chip" onclick="setFilter('${subject}', this)">
+                ${icons[subject] || '📄'} ${subject.charAt(0).toUpperCase() + subject.slice(1)}
+                <span class="filter-count">${count}</span>
+            </button>
+        `;
+    }
+    
+    document.getElementById('filtersContainer').innerHTML = filtersHTML;
+}
+
+// ============================================
+// SET FILTER
+// ============================================
+function setFilter(filter, element) {
+    currentFilter = filter;
+    
+    document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+    element.classList.add('active');
+    
+    filterNotes();
+}
+
+// ============================================
+// SORT NOTES
+// ============================================
+function sortNotes(type) {
+    currentSort = type;
+    filterNotes();
+}
+
+// ============================================
+// FILTER & DISPLAY NOTES
+// ============================================
+function filterNotes() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    
+    let filtered = allNotes.filter(note => {
+        const matchFilter = currentFilter === 'all' || note.subject === currentFilter;
+        const searchText = `${note.title} ${note.subject} ${note.className} ${note.exam} ${note.description}`.toLowerCase();
+        const matchSearch = searchText.includes(searchTerm);
+        return matchFilter && matchSearch;
+    });
+    
+    // Sort
+    switch(currentSort) {
+        case 'newest':
+            filtered.sort((a, b) => new Date(b.uploadedAt || 0) - new Date(a.uploadedAt || 0));
+            break;
+        case 'oldest':
+            filtered.sort((a, b) => new Date(a.uploadedAt || 0) - new Date(b.uploadedAt || 0));
+            break;
+        case 'az':
+            filtered.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        case 'za':
+            filtered.sort((a, b) => b.title.localeCompare(a.title));
+            break;
+    }
+    
+    displayNotes(filtered);
+}
+
+// ============================================
+// DISPLAY NOTES
+// ============================================
+function displayNotes(notes) {
+    const grid = document.getElementById('notesGrid');
+    
+    if (notes.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">🔍</div>
+                <h3>No notes found</h3>
+                <p>Try adjusting your search or filter.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const iconClasses = {
+        biology: 'icon-biology',
+        chemistry: 'icon-chemistry',
+        physics: 'icon-physics',
+        mathematics: 'icon-mathematics',
+        english: 'icon-english'
+    };
+    
+    grid.innerHTML = notes.map((note, index) => `
+        <article class="note-card">
+            <div class="note-icon ${iconClasses[note.subject] || 'icon-biology'}">📕</div>
+            <h3 class="note-title">${note.title}</h3>
+            <p class="note-description">${note.description || 'No description available.'}</p>
+            <div class="note-meta">
+                <span class="meta-tag">📚 ${note.className}</span>
+                <span class="meta-tag">📋 ${note.exam}</span>
+                <span class="meta-tag">📖 ${note.subject}</span>
+            </div>
+            <button class="read-btn" onclick="openPDF('${GITHUB_RAW}/${note.file}', '${note.title.replace(/'/g, "\\'")}')">
+                📖 Read Online
+            </button>
+        </article>
+    `).join('');
+}
+
+// ============================================
+// PDF VIEWER
+// ============================================
+async function openPDF(url, title) {
+    const viewer = document.getElementById('pdfViewer');
+    const loader = document.getElementById('pdfLoader');
+    
+    viewer.style.display = 'block';
+    document.getElementById('viewerTitle').textContent = title;
+    loader.style.display = 'block';
+    
+    currentPageNum = 1;
+    currentScale = 1.2;
+    
+    try {
+        pdfDoc = await window.pdfjsLib.getDocument(url).promise;
+        document.getElementById('totalPages').textContent = pdfDoc.numPages;
+        await renderPage(currentPageNum);
+        loader.style.display = 'none';
+    } catch (error) {
+        console.error('PDF Error:', error);
+        loader.innerHTML = '<h3>⚠️ Failed to load PDF</h3><p>Please check the file.</p>';
+    }
+}
+
+async function renderPage(pageNum) {
+    if (!pdfDoc) return;
+    
+    const page = await pdfDoc.getPage(pageNum);
+    const viewport = page.getViewport({ scale: currentScale });
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    
+    document.getElementById('currentPage').textContent = pageNum;
+    document.getElementById('zoomLevel').textContent = Math.round(currentScale * 100) + '%';
+}
+
+function nextPage() {
+    if (!pdfDoc || currentPageNum >= pdfDoc.numPages) return;
+    currentPageNum++;
+    renderPage(currentPageNum);
+}
+
+function previousPage() {
+    if (!pdfDoc || currentPageNum <= 1) return;
+    currentPageNum--;
+    renderPage(currentPageNum);
+}
+
+function zoomIn() {
+    if (currentScale < 3) {
+        currentScale += 0.2;
+        renderPage(currentPageNum);
+    }
+}
+
+function zoomOut() {
+    if (currentScale > 0.6) {
+        currentScale -= 0.2;
+        renderPage(currentPageNum);
+    }
+}
+
+function toggleFullscreen() {
+    const viewer = document.getElementById('pdfViewer');
+    if (!document.fullscreenElement) {
+        viewer.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+function closeViewer() {
+    document.getElementById('pdfViewer').style.display = 'none';
+    pdfDoc = null;
+}
+
+// ============================================
+// KEYBOARD SHORTCUTS
+// ============================================
+document.addEventListener('keydown', (e) => {
+    // Ctrl+K or Cmd+K for search focus
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+    }
+    
+    // Escape to close PDF viewer
+    if (e.key === 'Escape') {
+        closeViewer();
+    }
+    
+    // Arrow keys for PDF navigation
+    if (pdfDoc) {
+        if (e.key === 'ArrowRight') nextPage();
+        if (e.key === 'ArrowLeft') previousPage();
+    }
+});
+
+// ============================================
+// INIT
+// ============================================
+window.addEventListener('pdfjsready', () => {
+    fetchNotes();
+});
+</script>
+
+</body>
+</html>
