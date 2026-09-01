@@ -877,624 +877,372 @@
     <img src="" alt="Gallery" id="lightboxImage">
   </div>
 </div>
-
 <!-- ============================================ -->
-<!-- J.A.R.V.I.S AI - Gemini 3.6 Flash Edition -->
+<!-- Home Tutor Widget - Simple Popup -->
 <!-- Paste BEFORE </body> in your HTML file -->
 <!-- ============================================ -->
 
 <style>
-  @keyframes jarvisSlideUp {
-    from { opacity: 0; transform: translateY(20px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+  @keyframes tutorPing {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
   }
 
-  @keyframes jarvisPing {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
-    50% { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+  @keyframes tutorPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
   }
 
-  @keyframes jarvisPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
-  @keyframes jarvisSpin {
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes jarvisMsgIn {
-    from { opacity: 0; transform: translateY(8px); }
+  @keyframes tutorSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .jarvis-widget-root {
+  .tutor-widget-root {
     position: fixed;
-    bottom: 80px;
-    left: 16px;
+    bottom: 20px;
+    right: 20px;
     z-index: 99999;
     font-family: 'Inter', 'Noto Sans', system-ui, -apple-system, sans-serif;
   }
 
-  @media (min-width: 640px) {
-    .jarvis-widget-root {
-      bottom: 24px;
-      left: 24px;
+  @media (max-width: 640px) {
+    .tutor-widget-root {
+      bottom: 16px;
+      right: 16px;
     }
   }
 
-  /* Floating Orb Button */
-  .jarvis-orb-btn {
-    width: 56px;
-    height: 56px;
+  /* Floating Button */
+  .tutor-orb-btn {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: #1a2a4a;
-    border: 2px solid #f59e0b;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: 3px solid white;
     cursor: pointer;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 0 25px rgba(245,158,11,0.2);
+    box-shadow: 0 8px 30px rgba(37,99,235,0.4), 0 0 20px rgba(59,130,246,0.3);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
     position: relative;
     padding: 0;
+    animation: tutorPulse 2s infinite;
   }
 
-  .jarvis-orb-btn:hover {
+  .tutor-orb-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.45), 0 0 40px rgba(245,158,11,0.4);
+    box-shadow: 0 12px 40px rgba(37,99,235,0.5), 0 0 40px rgba(59,130,246,0.5);
+    animation: none;
   }
 
-  .jarvis-orb-btn:active {
+  .tutor-orb-btn:active {
     transform: scale(0.95);
   }
 
-  .jarvis-orb-btn img {
-    width: 44px;
-    height: 44px;
+  .tutor-orb-btn img {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1.5px solid rgba(245,158,11,0.6);
+    border: 2px solid rgba(255,255,255,0.8);
   }
 
-  .jarvis-orb-status {
+  .tutor-orb-status {
     position: absolute;
     top: -2px;
     right: -2px;
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     background: #10b981;
     border: 2.5px solid white;
     border-radius: 50%;
-    animation: jarvisPing 2s infinite;
+    animation: tutorPing 2s infinite;
   }
 
-  .jarvis-orb-badge {
+  .tutor-orb-badge {
     position: absolute;
-    top: -10px;
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background: #f59e0b;
-    color: #1a2a4a;
-    font-weight: 800;
-    font-size: 8px;
-    padding: 2px 6px;
+    background: #2563eb;
+    color: white;
+    font-weight: 700;
+    font-size: 9px;
+    padding: 3px 8px;
     border-radius: 10px;
     white-space: nowrap;
     letter-spacing: 0.5px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   }
 
-  /* Chat Panel */
-  .jarvis-panel {
+  /* Modal Popup */
+  .tutor-modal {
     position: fixed;
-    bottom: 150px;
-    left: 16px;
-    width: calc(100vw - 32px);
-    max-width: 400px;
-    height: 520px;
-    max-height: calc(100vh - 190px);
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.3), 0 0 0 2px rgba(245,158,11,0.35);
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
     display: none;
-    flex-direction: column;
-    overflow: hidden;
-    animation: jarvisSlideUp 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+    align-items: center;
+    justify-content: center;
     z-index: 99998;
+    animation: tutorFadeIn 0.3s ease;
   }
 
-  .jarvis-panel.open {
+  @keyframes tutorFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .tutor-modal.open {
     display: flex;
   }
 
-  @media (min-width: 640px) {
-    .jarvis-panel {
-      bottom: 90px;
-      left: 24px;
-    }
+  .tutor-modal-content {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    height: 90vh;
+    max-height: 700px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: tutorSlideUp 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
   }
 
-  /* Panel Header */
-  .jarvis-panel-header {
-    background: #1a2a4a;
+  /* Modal Header */
+  .tutor-modal-header {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
-    padding: 14px 16px;
+    padding: 15px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid #f59e0b;
+    border-bottom: 3px solid #1d4ed8;
   }
 
-  .jarvis-header-left {
+  .tutor-header-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
-  .jarvis-header-avatar-wrap {
+  .tutor-header-avatar {
     position: relative;
   }
 
-  .jarvis-header-avatar-wrap img {
-    width: 34px;
-    height: 34px;
+  .tutor-header-avatar img {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 1.5px solid rgba(245,158,11,0.6);
+    border: 2px solid rgba(255,255,255,0.8);
     object-fit: cover;
   }
 
-  .jarvis-header-online-dot {
+  .tutor-header-online {
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background: #10b981;
     border-radius: 50%;
-    border: 2px solid #1a2a4a;
+    border: 2px solid #2563eb;
   }
 
-  .jarvis-header-info h4 {
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.5px;
+  .tutor-header-info h4 {
+    font-size: 1rem;
+    font-weight: 700;
     margin: 0;
     display: flex;
     align-items: center;
     gap: 5px;
-    color: #fcd34d;
   }
 
-  .jarvis-header-info h4 .sparkle-icon {
-    animation: jarvisPulse 1.5s infinite;
-    font-size: 0.7rem;
-  }
-
-  .jarvis-header-info p {
-    font-size: 0.63rem;
-    color: #10b981;
-    font-weight: 500;
+  .tutor-header-info p {
+    font-size: 0.75rem;
     margin: 2px 0 0;
+    opacity: 0.9;
     display: flex;
     align-items: center;
     gap: 4px;
   }
 
-  .jarvis-header-actions {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-
-  .jarvis-header-actions button {
-    padding: 6px;
-    border-radius: 6px;
+  .tutor-close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     border: none;
-    background: transparent;
-    color: #94a3b8;
+    background: rgba(255,255,255,0.2);
+    color: white;
     cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.2s;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
+    transition: all 0.2s;
   }
 
-  .jarvis-header-actions button:hover {
-    background: rgba(255,255,255,0.1);
-    color: #f59e0b;
+  .tutor-close-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: rotate(90deg);
   }
 
-  .jarvis-header-actions .speech-active {
-    color: #f59e0b;
-    background: rgba(255,255,255,0.08);
+  /* Modal Body */
+  .tutor-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* AI Banner */
-  .jarvis-ai-banner {
-    background: rgba(245,158,11,0.08);
-    border-bottom: 1px solid rgba(245,158,11,0.2);
-    padding: 6px 12px;
+  .tutor-loading {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: #6b7280;
+  }
+
+  .tutor-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    animation: tutorSpin 1s linear infinite;
+  }
+
+  @keyframes tutorSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  .tutor-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: none;
+  }
+
+  .tutor-iframe.loaded {
+    display: block;
+  }
+
+  /* Modal Footer */
+  .tutor-modal-footer {
+    padding: 12px 20px;
+    background: white;
+    border-top: 1px solid #e5e7eb;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.65rem;
-    color: #92400e;
-    font-weight: 500;
-  }
-
-  .jarvis-ai-banner span:first-child {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .jarvis-version-badge {
-    background: rgba(245,158,11,0.2);
-    color: #92400e;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.6rem;
-    font-weight: 700;
-  }
-
-  /* Messages */
-  .jarvis-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-    background: rgba(248,250,252,0.7);
-    display: flex;
-    flex-direction: column;
     gap: 10px;
-    scroll-behavior: smooth;
   }
 
-  .jarvis-messages::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .jarvis-messages::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
-  }
-
-  .jarvis-messages::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
-
-  .jarvis-msg {
-    display: flex;
-    gap: 8px;
-    animation: jarvisMsgIn 0.3s ease;
-  }
-
-  .jarvis-msg.user {
-    flex-direction: row-reverse;
-  }
-
-  .jarvis-msg-avatar {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
+  .tutor-footer-text {
+    font-size: 0.7rem;
+    color: #6b7280;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 0.7rem;
-    margin-top: 2px;
+    gap: 5px;
   }
 
-  .jarvis-msg.bot .jarvis-msg-avatar {
-    background: #1a2a4a;
-    color: #f59e0b;
-    border: 1px solid rgba(245,158,11,0.4);
-  }
-
-  .jarvis-msg.user .jarvis-msg-avatar {
-    background: #f59e0b;
-    color: #1a2a4a;
-    font-weight: bold;
-  }
-
-  .jarvis-msg-bubble {
-    max-width: 84%;
-    padding: 10px 14px;
-    border-radius: 16px;
-    font-size: 0.76rem;
-    line-height: 1.55;
-    word-wrap: break-word;
-  }
-
-  .jarvis-msg.bot .jarvis-msg-bubble {
-    background: white;
-    color: #1e293b;
-    border: 1px solid #e2e8f0;
-    border-top-left-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-
-  .jarvis-msg.user .jarvis-msg-bubble {
-    background: #1a2a4a;
+  .tutor-open-external {
+    padding: 8px 16px;
+    background: #3b82f6;
     color: white;
-    border-top-right-radius: 4px;
-  }
-
-  .jarvis-msg.bot.error .jarvis-msg-bubble {
-    background: #fef2f2;
-    color: #991b1b;
-    border-color: #fecaca;
-  }
-
-  .jarvis-msg-time {
-    font-size: 0.58rem;
-    color: #94a3b8;
-    margin-top: 3px;
-    text-align: right;
-    padding: 0 4px;
-    font-family: 'Courier New', monospace;
-  }
-
-  .jarvis-msg.user .jarvis-msg-time {
-    color: rgba(255,255,255,0.5);
-  }
-
-  /* Typing Indicator */
-  .jarvis-typing {
-    display: none;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 14px;
-    background: white;
-    border-radius: 12px;
-    border: 1px solid rgba(245,158,11,0.2);
-    font-size: 0.7rem;
-    color: #334155;
-    width: fit-content;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    font-weight: 500;
-  }
-
-  .jarvis-typing.show {
-    display: flex;
-  }
-
-  .jarvis-typing .spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid #fef3c7;
-    border-top: 2px solid #f59e0b;
-    border-radius: 50%;
-    animation: jarvisSpin 0.8s linear infinite;
-    flex-shrink: 0;
-  }
-
-  /* Quick Chips */
-  .jarvis-chips {
-    display: flex;
-    gap: 6px;
-    padding: 8px 12px;
-    overflow-x: auto;
-    background: white;
-    border-top: 1px solid #e2e8f0;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .jarvis-chips::-webkit-scrollbar {
-    display: none;
-  }
-
-  .jarvis-chips button {
-    padding: 6px 12px;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    background: #f8fafc;
-    color: #334155;
-    font-size: 0.67rem;
-    font-weight: 500;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     white-space: nowrap;
-    transition: all 0.2s;
-    font-family: inherit;
   }
 
-  .jarvis-chips button:hover {
-    background: #1a2a4a;
-    color: white;
-    border-color: #1a2a4a;
+  .tutor-open-external:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(37,99,235,0.3);
   }
 
-  .jarvis-chips .chip-highlight {
-    background: #fffbeb;
-    border-color: rgba(245,158,11,0.5);
-    color: #92400e;
-    font-weight: 600;
-  }
-
-  .jarvis-chips .chip-highlight:hover {
-    background: #1a2a4a;
-    color: white;
-    border-color: #1a2a4a;
-  }
-
-  .jarvis-chips .chip-green {
-    background: #ecfdf5;
-    border-color: rgba(16,185,129,0.4);
-    color: #065f46;
-    font-weight: 600;
-  }
-
-  .jarvis-chips .chip-green:hover {
-    background: #1a2a4a;
-    color: white;
-    border-color: #1a2a4a;
-  }
-
-  /* Input Row */
-  .jarvis-input-row {
-    display: flex;
-    gap: 8px;
-    padding: 10px 12px;
-    background: #f8fafc;
-    border-top: 1px solid #e2e8f0;
-  }
-
-  .jarvis-mic-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: none;
-    background: #e2e8f0;
-    color: #334155;
-    cursor: pointer;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s;
-  }
-
-  .jarvis-mic-btn:hover {
-    background: #fef3c7;
-  }
-
-  .jarvis-mic-btn.listening {
-    background: #ef4444;
-    color: white;
-    animation: jarvisPulse 1s infinite;
-  }
-
-  .jarvis-input-row input {
-    flex: 1;
-    padding: 10px 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 25px;
-    font-size: 0.76rem;
-    font-family: inherit;
-    outline: none;
-    transition: border 0.2s;
-    background: white;
-    color: #1e293b;
-  }
-
-  .jarvis-input-row input:focus {
-    border-color: #1a2a4a;
-    box-shadow: 0 0 0 2px rgba(26,42,74,0.1);
-  }
-
-  .jarvis-input-row input::placeholder {
-    color: #94a3b8;
-    font-size: 0.7rem;
-  }
-
-  .jarvis-send-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: none;
-    background: #1a2a4a;
-    color: #f59e0b;
-    cursor: pointer;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s;
-  }
-
-  .jarvis-send-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  .jarvis-send-btn:not(:disabled):hover {
-    background: #1e3a6e;
-    transform: scale(1.05);
-  }
-
-  /* Mobile tweaks */
-  @media (max-width: 400px) {
-    .jarvis-panel {
-      height: 460px;
-      bottom: 140px;
+  @media (max-width: 480px) {
+    .tutor-modal-content {
+      width: 95%;
+      height: 95vh;
     }
-    .jarvis-msg-bubble {
-      font-size: 0.73rem;
-      padding: 8px 10px;
+    
+    .tutor-orb-btn {
+      width: 52px;
+      height: 52px;
     }
-    .jarvis-chips button {
-      font-size: 0.62rem;
-      padding: 5px 8px;
+    
+    .tutor-orb-btn img {
+      width: 44px;
+      height: 44px;
     }
   }
 </style>
 
-<!-- JARVIS Widget HTML -->
-<div class="jarvis-widget-root" id="jarvisRoot">
-  <!-- Floating Orb Button -->
-  <button class="jarvis-orb-btn" id="jarvisOrb" title="J.A.R.V.I.S.">
-    <img src="https://i.pinimg.com/474x/a9/cc/c3/a9ccc3845c875462306fecf1bd5be2e5.jpg" alt="JARVIS AI" id="jarvisOrbImg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <span style="display:none; font-size:1.5rem;">🤖</span>
-    <span class="jarvis-orb-status"></span>
-    <span class="jarvis-orb-badge">AI Active</span>
+<!-- Home Tutor Widget HTML -->
+<div class="tutor-widget-root">
+  <!-- Floating Button -->
+  <button class="tutor-orb-btn" id="tutorOrb" title="Home Tutor">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE4aQlnkP1l5BjTboy6ERSBrc8-9h0pLlaAHzn19c34-dBKrtY9BNHfAZ2&s=10" alt="Home Tutor" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <span style="display:none; font-size:1.5rem;">👨‍🏫</span>
+    <span class="tutor-orb-status"></span>
+    <span class="tutor-orb-badge">Home Tutor</span>
   </button>
 
-  <!-- Chat Panel -->
-  <div class="jarvis-panel" id="jarvisPanel">
-    <!-- Header -->
-    <div class="jarvis-panel-header">
-      <div class="jarvis-header-left">
-        <div class="jarvis-header-avatar-wrap">
-          <img src="https://i.pinimg.com/474x/a9/cc/c3/a9ccc3845c875462306fecf1bd5be2e5.jpg" alt="JARVIS">
-          <span class="jarvis-header-online-dot"></span>
+  <!-- Modal Popup -->
+  <div class="tutor-modal" id="tutorModal">
+    <div class="tutor-modal-content">
+      <!-- Header -->
+      <div class="tutor-modal-header">
+        <div class="tutor-header-left">
+          <div class="tutor-header-avatar">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE4aQlnkP1l5BjTboy6ERSBrc8-9h0pLlaAHzn19c34-dBKrtY9BNHfAZ2&s=10" alt="Home Tutor Logo">
+            <span class="tutor-header-online"></span>
+          </div>
+          <div class="tutor-header-info">
+            <h4>Home Tutor</h4>
+            <p>👨‍🏫 Your Learning Partner</p>
+          </div>
         </div>
-        <div class="jarvis-header-info">
-          <h4>J.A.R.V.I.S. AI <span class="sparkle-icon">✨</span></h4>
-          <p>The Heaven Point</p>
+        <button class="tutor-close-btn" id="tutorCloseBtn" title="Close">✕</button>
+      </div>
+
+      <!-- Body -->
+      <div class="tutor-modal-body">
+        <div class="tutor-loading" id="tutorLoading">
+          <div class="tutor-spinner"></div>
+          <p>Loading Home Tutor services...</p>
         </div>
+        <iframe 
+          src="https://starlet-web.github.io/Tutor/" 
+          class="tutor-iframe" 
+          id="tutorIframe"
+          title="Home Tutor"
+          loading="lazy"
+        ></iframe>
       </div>
-      <div class="jarvis-header-actions">
-        <button id="jarvisClearBtn" title="Clear Chat">🗑️</button>
-        <button id="jarvisSpeechBtn" class="speech-active" title="Speech Output">🔊</button>
-        <button id="jarvisCloseBtn" title="Close">✕</button>
+
+      <!-- Footer -->
+      <div class="tutor-modal-footer">
+        <span class="tutor-footer-text">🔒 Secure Connection</span>
+        <button class="tutor-open-external" id="tutorOpenExternal">
+          Open in New Tab ↗
+        </button>
       </div>
-    </div>
-
-    <!-- AI Banner -->
-    <div class="jarvis-ai-banner">
-      <span>✨ Ask in English, Hindi, or Hinglish!</span>
-      <span class="jarvis-version-badge"></span>
-    </div>
-
-    <!-- Messages Container -->
-    <div class="jarvis-messages" id="jarvisMessages"></div>
-
-    <!-- Typing Indicator -->
-    <div class="jarvis-typing" id="jarvisTyping">
-      <div class="spinner"></div>
-      <span>J.A.R.V.I.S. is generating AI response...</span>
-    </div>
-
-    <!-- Quick Chips -->
-    <div class="jarvis-chips" id="jarvisChips">
-      <button data-query="Tell me about NEET & JEE coaching batches and fees" class="chip-highlight">🎯 NEET/JEE Batches</button>
-      <button data-query="What courses are available for Class 9th to 12th?">📚 School Classes</button>
-      <button data-query="How can I take a free demo class?" class="chip-green">✨ Free Demo Class</button>
-      <button data-query="What is the complete fee structure?">💰 Fees Structure</button>
-      <button data-query="Where is The Heaven Point located in Prayagraj?">📍 Location</button>
-    </div>
-
-    <!-- Input Row -->
-    <div class="jarvis-input-row">
-      <button class="jarvis-mic-btn" id="jarvisMicBtn" title="Voice Input">🎤</button>
-      <input type="text" id="jarvisInput" placeholder="Ask JARVIS (e.g. Hindi/English)...">
-      <button class="jarvis-send-btn" id="jarvisSendBtn" disabled>➤</button>
     </div>
   </div>
 </div>
@@ -1502,365 +1250,80 @@
 <script>
 (function() {
   // ==================== DOM ELEMENTS ====================
-  const orb = document.getElementById('jarvisOrb');
-  const panel = document.getElementById('jarvisPanel');
-  const messagesDiv = document.getElementById('jarvisMessages');
-  const typingDiv = document.getElementById('jarvisTyping');
-  const chipsDiv = document.getElementById('jarvisChips');
-  const input = document.getElementById('jarvisInput');
-  const sendBtn = document.getElementById('jarvisSendBtn');
-  const micBtn = document.getElementById('jarvisMicBtn');
-  const speechBtn = document.getElementById('jarvisSpeechBtn');
-  const clearBtn = document.getElementById('jarvisClearBtn');
-  const closeBtn = document.getElementById('jarvisCloseBtn');
+  const orb = document.getElementById('tutorOrb');
+  const modal = document.getElementById('tutorModal');
+  const closeBtn = document.getElementById('tutorCloseBtn');
+  const iframe = document.getElementById('tutorIframe');
+  const loading = document.getElementById('tutorLoading');
+  const openExternal = document.getElementById('tutorOpenExternal');
 
+  const TUTOR_URL = 'https://starlet-web.github.io/Tutor/';
   let isOpen = false;
-  let speechEnabled = true;
-  let isListening = false;
-  let isProcessing = false;
-  let recognition = null;
-  let messages = [];
 
-  // ==================== MEGA KNOWLEDGE BASE ====================
-  const knowledgeBase = {
-    neet_jee: {
-      keywords: ['neet', 'jee', 'iit', 'medical', 'engineering', 'neet batch', 'jee batch', 'neet coaching', 'jee coaching', 'neet fees', 'jee fees', 'neet course'],
-      response: `🎯 <b>NEET & JEE Coaching at The Heaven Point</b>\n\n<b>📌 NEET (Medical):</b>\n• Duration: 2 Years\n• Fee: <b>₹2,000/month</b> (Yearly: ₹20,000)\n• Eligibility: Class 12 (PCB)\n• Batch Size: Max 25 students\n• Includes: Study Material, Mock Tests, Doubt Sessions\n\n<b>📌 IIT-JEE (Engineering):</b>\n• Duration: 2 Years\n• Fee: <b>₹2,000/month</b> (Yearly: ₹20,000)\n• Eligibility: Class 12 (PCM)\n• Batch Size: Max 25 students\n• Includes: Advanced + Mains preparation\n\n<b>🎯 SPECIAL FEATURES:</b>\n• Expert faculty (IIT/NIT alumni)\n• Weekly mock tests with All India Ranking\n• Previous year papers (10 years)\n• Personal mentorship\n• Free study material\n\n📞 Call <b>9044034585</b> for demo class!\n<a href="fromTHP.html" target="_blank" style="color:#1e5fbb;">👉 Enroll Now</a>`
-    },
-    school: {
-      keywords: ['class 9', 'class 10', 'class 11', 'class 12', 'school', 'board', 'cbse', 'icse', 'up board', '9th', '10th', '11th', '12th'],
-      response: `📚 <b>School Courses (Class 9th - 12th)</b>\n\n<b>Class 9th - 10th:</b>\n• Fee: <b>₹1,500/month</b>\n• Subjects: Maths, Science, English, SST\n• Boards: CBSE, ICSE, UP Board\n• Special: Foundation for competitive exams\n\n<b>Class 11th - 12th:</b>\n• Fee: <b>₹2,000-2,500/month</b>\n• Streams: PCM, PCB, Commerce, Arts\n• Includes: Board + Competitive exam prep\n• Practical lab sessions\n\n<b>📌 WHY CHOOSE US?</b>\n• Small batches (Max 30)\n• Regular tests & parent meetings\n• Complete study material\n• Doubt clearing sessions\n• 100% board pass rate\n\n<a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" style="color:#1e5fbb;">👉 Apply for School Courses</a>`
-    },
-    demo: {
-      keywords: ['demo', 'trial', 'free class', 'sample', 'experience', 'try'],
-      response: `✨ <b>Free Demo Classes Available!</b>\n\nExperience our teaching quality before enrolling:\n\n📅 <b>3 Days Free Trial</b>\n👨‍🏫 All subjects available\n📚 Free study material included\n💬 Live doubt session included\n🏫 Visit our Shahganj campus\n\n<b>How to book:</b>\n1. Call <b>9044034585</b>\n2. Visit our center at Shahganj, Prayagraj\n3. Or fill the admission form and mention "Demo Class"\n\n<i>No payment required! Experience the difference.</i>\n\n<a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" style="color:#1e5fbb;">👉 Book Free Demo</a>`
-    },
-    fees: {
-      keywords: ['fee', 'fees', 'price', 'cost', 'payment', 'discount', 'offer', 'scholarship', 'structure'],
-      response: `💰 <b>Complete Fee Structure 2025-26</b>\n\n<b>🎯 COMPETITIVE EXAMS:</b>\n• SSC/Bank/Railway: <b>₹1,500/mo</b> <span style="color:#10b981;">(33% OFF)</span>\n• CUET (UG): <b>₹2,000/mo</b>\n• NEET: <b>₹2,000/mo</b>\n• IIT-JEE: <b>₹2,000/mo</b>\n\n<b>📚 SCHOOL COURSES:</b>\n• Class 3-8: <b>₹1,000/mo</b>\n• Class 9-10: <b>₹1,500/mo</b>\n• Class 11-12: <b>₹2,000-2,500/mo</b>\n\n<b>🎉 SPECIAL OFFERS:</b>\n• Early Bird: <b>20% OFF</b>\n• Sibling: <b>15% OFF</b>\n• Merit Scholarship: <b>Up to 50% OFF</b>\n• Referral Bonus: <b>₹500 per student</b>\n\n<b>Payment Options:</b> Monthly | Quarterly | Yearly\n<b>Mode:</b> Cash, UPI, Bank Transfer\n\n📞 Call <b>9044034585</b> for concessions.`
-    },
-    location: {
-      keywords: ['location', 'address', 'where', 'map', 'direction', 'contact', 'phone', 'email', 'timing', 'prayagraj', 'shahganj'],
-      response: `📍 <b>Our Location & Contact</b>\n\n🏫 <b>The Heaven Point</b>\nShahganj, Prayagraj\nUttar Pradesh - 211003\n\n📞 <b>Phone:</b> 9044034585\n✉️ <b>Email:</b> theheavenpoint@gmail.com\n💬 <b>WhatsApp:</b> <a href="https://wa.me/919044034585" target="_blank" style="color:#1e5fbb;">Chat Now</a>\n\n🕐 <b>Working Hours:</b>\nMonday - Saturday: 7 AM - 8 PM\nSunday: By Appointment\n\n<b>Landmarks:</b>\n• Near Shahganj Market\n• 5 mins from Railway Station\n\n<a href="https://maps.app.goo.gl/YvpoSV41KFkAnMwi7?g_st=ac" target="_blank" style="color:#1e5fbb;">🗺️ Open in Google Maps</a>`
-    },
-    courses: {
-      keywords: ['course', 'courses', 'subject', 'class', 'batch', 'available', 'teach'],
-      response: `📚 <b>All Courses at The Heaven Point</b>\n\n<b>🔹 COMPETITIVE EXAMS:</b>\n• SSC / Bank / Railway\n• CUET (UG Entrance)\n• NEET (Medical)\n• IIT-JEE (Engineering)\n\n<b>🔹 SCHOOL COURSES:</b>\n• Class 3rd - 5th (All subjects)\n• Class 6th - 8th (Maths, Science, English, SST)\n• Class 9th - 10th (CBSE/ICSE/UP Board)\n• Class 11th - 12th (PCM/PCB/Commerce/Arts)\n\n<b>🔹 SPECIAL BATCHES:</b>\n• Foundation Course (Class 8-10)\n• Crash Course (3 Months)\n• Test Series Only\n• Weekend Batches\n\n📌 All courses include study material, mock tests & doubt sessions!`
-    },
-    admission: {
-      keywords: ['admission', 'enroll', 'join', 'apply', 'form', 'register', 'process'],
-      response: `📝 <b>Admission Process 2025-26</b>\n\n<b>4 Simple Steps:</b>\n\n1️⃣ 📋 Fill Application Form (Online/Offline)\n2️⃣ 📄 Submit Documents (ID, Marksheet, Photos)\n3️⃣ ✍️ Entrance Test (for NEET/JEE batches)\n4️⃣ 💰 Pay Fee & Confirm Seat\n\n⚠️ <b>Limited seats!</b> Max 30 students per batch\n\n<a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" style="color:#1e5fbb;">👉 Apply Online Now</a>\n\n📞 Help: <b>9044034585</b>`
-    },
-    faculty: {
-      keywords: ['faculty', 'teacher', 'professor', 'instructor', 'mentor', 'staff', 'who teaches'],
-      response: `👨‍🏫 <b>Our Expert Faculty Team</b>\n\n• <b>Mr. Anand Sir</b> - Mathematics (15+ yrs, IIT Alumnus)\n• <b>Dr. Sunita Mam</b> - Biology/NEET (12+ yrs, PhD)\n• <b>Mr. Rajesh Sir</b> - Physics/IIT-JEE (10+ yrs, NIT)\n• <b>Mr. Vikas Sir</b> - Chemistry (8+ yrs)\n• <b>Mr. Sanjay Sir</b> - English/SSC (12+ yrs, 8000+ selections)\n• <b>Ms. Priya Mam</b> - Commerce (7+ yrs, CA Inter)\n• <b>Mr. Deepak Sir</b> - Reasoning/Quant (10+ yrs)\n• <b>Ms. Neha Mam</b> - Primary Classes (8+ yrs)\n\n✅ All verified & regularly trained\n✅ Student-to-teacher ratio: 15:1\n✅ Regular performance reviews`
-    },
-    study: {
-      keywords: ['study', 'tip', 'prepare', 'exam', 'strategy', 'motivation', 'schedule', 'routine', 'guide'],
-      response: `💡 <b>JARVIS Study Guide</b>\n\n<b>📖 IDEAL DAILY ROUTINE:</b>\n• 6:00 AM - Wake up\n• 7:00-9:00 AM - Difficult subjects\n• 12:00-2:00 PM - Mock tests\n• 5:00-7:00 PM - Coaching classes\n• 8:00-9:30 PM - Revision\n• 10:30 PM - Sleep\n\n<b>🎯 TOP TECHNIQUES:</b>\n• <b>Pomodoro:</b> 25 min study, 5 min break\n• <b>Active Recall:</b> Test yourself\n• <b>Spaced Repetition:</b> Review on Day 1,3,7,30\n• <b>Feynman Method:</b> Teach concepts aloud\n\n😴 Sleep 7-8 hours\n📵 No phone during study\n\n<b>Consistency > Intensity!</b> 🚀`
-    },
-    results: {
-      keywords: ['result', 'achievement', 'success', 'topper', 'selection', 'rank', 'record'],
-      response: `🏆 <b>Our Results & Achievements</b>\n\n<b>2024 Highlights:</b>\n• NEET: <b>85% selection rate</b>\n• IIT-JEE: <b>12 qualified Advanced</b>\n• CUET: <b>92% success rate</b>\n• SSC CGL: <b>35+ selections</b>\n• Board Exams: <b>100% pass rate</b>\n\n<b>OUR LEGACY:</b>\n🎓 10,000+ Successful Students\n🏅 500+ Govt. Job Selections\n🏥 200+ Medical Selections\n🔬 150+ IIT/NIT Admissions\n📚 15+ Years of Excellence\n\n<i>Join the success story!</i> 🚀`
-    },
-    online: {
-      keywords: ['online', 'live', 'zoom', 'recorded', 'video', 'digital', 'remote', 'lecture'],
-      response: `💻 <b>Online Learning Options</b>\n\n🎥 Live Interactive Classes\n📹 Recorded Lectures (Lifetime Access)\n📱 Mobile App for Learning\n💬 Live Doubt Sessions\n📊 Online Mock Tests\n📚 Digital Study Material (PDF)\n\n💰 Fee: Same as regular batches\n\n<a href="thp-online-lecture.html" target="_blank" style="color:#1e5fbb;">🎬 Access Video Lectures</a>\n<a href="thp-special-notes.html" target="_blank" style="color:#1e5fbb;">📝 Download Study Notes</a>`
-    },
-    hostel: {
-      keywords: ['hostel', 'pg', 'accommodation', 'room', 'stay', 'living', 'residential'],
-      response: `🏠 <b>Hostel & PG Facility</b>\n\nSeparate for boys & girls:\n🛏️ Furnished Rooms\n🍽️ Mess (Breakfast, Lunch, Dinner)\n📶 Free WiFi\n🔒 24/7 Security\n🏥 Medical Assistance\n\n📍 Walking distance from institute\n💰 Starting from ₹4,000/month\n📞 Contact: <b>9044034585</b>`
-    },
-    testSeries: {
-      keywords: ['test', 'mock', 'practice', 'paper', 'sample', 'series', 'exam pattern'],
-      response: `📝 <b>Test Series Program</b>\n\n📋 Weekly Mock Tests (Every Sunday)\n📊 Detailed Performance Analysis\n🏆 All India Ranking\n📖 Chapter-wise Tests\n📑 Previous Year Papers (10 Years)\n💡 Solution Videos After Tests\n📈 Progress Dashboard\n\n💰 <b>Fee:</b> ₹500/month (Free for enrolled students)\n\n<a href="https://docs.google.com/forms/d/e/1FAIpQLScYpk6IF0x5GMrlPGVhvYmYwsOQQSH9EqYlf9TbfenqE97iiw/viewform?usp=header" target="_blank" style="color:#1e5fbb;">👉 Enroll for Test Series</a>`
-    },
-    social: {
-      keywords: ['social', 'youtube', 'instagram', 'telegram', 'whatsapp', 'follow', 'subscribe'],
-      response: `🌐 <b>Follow The Heaven Point</b>\n\n📢 <b>Telegram:</b> <a href="https://t.me/heavenpoint" target="_blank" style="color:#1e5fbb;">@heavenpoint</a> - Daily quizzes & updates\n📸 <b>Instagram:</b> <a href="https://www.instagram.com/theheavenpoint/" target="_blank" style="color:#1e5fbb;">@theheavenpoint</a>\n🎬 <b>YouTube:</b> <a href="https://www.youtube.com/channel/UCgsQvk9m09LgsumEFBjzNeA" target="_blank" style="color:#1e5fbb;">The Heaven Point</a> - Free lectures\n💬 <b>WhatsApp:</b> <a href="https://wa.me/919044034585" target="_blank" style="color:#1e5fbb;">Chat with Us</a>\n\nJoin Telegram for free daily study material!`
-    },
-    facilities: {
-      keywords: ['facility', 'library', 'lab', 'classroom', 'smart class', 'wifi', 'ac', 'infrastructure'],
-      response: `🏗️ <b>Campus Facilities</b>\n\n🖥️ Smart Classrooms with Digital Boards\n📚 Library (5000+ books)\n🔬 Science Lab (Physics, Chemistry, Biology)\n💻 Computer Lab with WiFi\n❄️ Fully AC Classrooms\n📹 CCTV Surveillance\n🚰 RO Water Facility\n🅿️ Parking Available\n🏥 First Aid On-site\n📡 Hybrid Mode Support\n\n<i>Best infrastructure in Shahganj area!</i>`
-    },
-    greetings: {
-      keywords: ['hello', 'hi', 'hey', 'namaste', 'good morning', 'good evening', 'how are you', 'kaise ho', 'help'],
-      response: `👋 <b>Good day, Sir! I'm J.A.R.V.I.S.!</b>\n\nYour AI assistant for <b>The Heaven Point</b>, Prayagraj's premium coaching institute since 2010.\n\n🧠 Powered by <b>Gemini 3.6 Flash</b>\n\nI can help with:\n🎯 NEET/JEE Coaching\n📚 School Courses (3-12)\n💰 Fees & Scholarships\n📝 Admission Process\n👨‍🏫 Faculty Profiles\n💡 Study Tips\n📍 Location & Contact\n✨ Free Demo Classes\n\n<b>Ask anything in English, Hindi, or Hinglish!</b> 🚀`
-    },
-    farewell: {
-      keywords: ['thank', 'thanks', 'bye', 'goodbye', 'see you', 'alvida', 'dhanyavad'],
-      response: `You're welcome, Sir! 🙏\n\n<b>J.A.R.V.I.S. signing off.</b>\n\n✦ "Choose to Shine Brighter" ✦\n\n📞 Need help? Call <b>9044034585</b>\n🚪 Click the orb to chat again!\n\n<i>JARVIS out! 🤖</i>`
-    }
-  };
-
-  // ==================== FIND BEST RESPONSE ====================
-  function findResponse(query) {
-    query = query.toLowerCase().trim();
-    let bestMatch = null;
-    let bestScore = 0;
-
-    for (const [key, data] of Object.entries(knowledgeBase)) {
-      let score = 0;
-      for (const kw of data.keywords) {
-        if (query.includes(kw)) score += kw.length;
-      }
-      if (score > bestScore) {
-        bestScore = score;
-        bestMatch = key;
-      }
-    }
-
-    if (bestMatch && bestScore > 0) {
-      return knowledgeBase[bestMatch].response;
-    }
-
-    return `I'm here to assist, Sir! 🚀\n\nYou can ask me about:\n🎯 NEET/JEE Coaching & Fees\n📚 School Courses (Class 3-12)\n💰 Complete Fee Structure\n📝 Admission Process\n👨‍🏫 Faculty Details\n💡 Study Tips & Strategies\n📍 Location & Contact\n✨ Free Demo Classes\n🏆 Results & Achievements\n\nOr call us directly: 📞 <b>9044034585</b>\nVisit: Shahganj, Prayagraj`
-  }
-
-  // ==================== SPEECH SYNTHESIS ====================
-  function speakText(text) {
-    if (!speechEnabled || !('speechSynthesis' in window)) return;
-    try {
-      window.speechSynthesis.cancel();
-      const clean = text
-        .replace(/<[^>]*>/g, '')
-        .replace(/\*\*/g, '')
-        .replace(/[*`#📚📝💰📍📞💡🚀✨🎁🏠💻🌐🏆🎯]/g, '')
-        .substring(0, 250);
-
-      const utterance = new SpeechSynthesisUtterance(clean);
-      utterance.rate = 0.95;
-      utterance.pitch = 0.9;
-
-      const voices = window.speechSynthesis.getVoices();
-      const pref = voices.find(v =>
-        v.name.includes('Daniel') ||
-        v.name.includes('Google UK English Male') ||
-        v.lang.startsWith('en') ||
-        v.lang.startsWith('hi')
-      );
-      if (pref) utterance.voice = pref;
-
-      window.speechSynthesis.speak(utterance);
-    } catch(e) {}
-  }
-
-  // ==================== VOICE INPUT ====================
-  function toggleVoiceInput() {
-    if (isListening) {
-      stopListening();
-      return;
-    }
-
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Voice input is not supported in your browser. Please use Chrome or type your query.');
-      return;
-    }
-
-    try {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.lang = 'hi-IN';
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.onstart = () => {
-        isListening = true;
-        micBtn.classList.add('listening');
-        micBtn.textContent = '🔴';
-        input.placeholder = 'Listening... Speak now...';
-      };
-
-      recognition.onend = () => stopListening();
-      recognition.onerror = () => stopListening();
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0]?.[0]?.transcript;
-        if (transcript) {
-          input.value = transcript;
-          handleSend(transcript);
-        }
-        stopListening();
-      };
-
-      recognition.start();
-    } catch(e) {
-      stopListening();
+  // ==================== FUNCTIONS ====================
+  function openModal() {
+    isOpen = true;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+    
+    // Show loading initially
+    loading.style.display = 'flex';
+    iframe.classList.remove('loaded');
+    
+    // Set iframe source if not already set
+    if (!iframe.src || iframe.src !== TUTOR_URL) {
+      iframe.src = TUTOR_URL;
     }
   }
 
-  function stopListening() {
-    isListening = false;
-    micBtn.classList.remove('listening');
-    micBtn.textContent = '🎤';
-    input.placeholder = 'Ask JARVIS (e.g. Hindi/English)...';
-    if (recognition) {
-      recognition.stop();
-      recognition = null;
-    }
+  function closeModal() {
+    isOpen = false;
+    modal.classList.remove('open');
+    document.body.style.overflow = ''; // Restore background scroll
   }
 
-  // ==================== UI HELPERS ====================
-  function addMessage(text, sender, isError = false) {
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const msgObj = { id: Date.now().toString(), sender, text, time, isError };
-    messages.push(msgObj);
-    renderMessage(msgObj);
-    if (sender === 'jarvis') speakText(text);
-  }
-
-  function renderMessage(m) {
-    const msgDiv = document.createElement('div');
-    msgDiv.className = `jarvis-msg ${m.sender}${m.isError ? ' error' : ''}`;
-
-    const avatarEmoji = m.sender === 'jarvis' ? '🤖' : '👤';
-    msgDiv.innerHTML = `
-      <div class="jarvis-msg-avatar">${avatarEmoji}</div>
-      <div>
-        <div class="jarvis-msg-bubble">${m.text.replace(/\n/g, '<br>')}</div>
-        <div class="jarvis-msg-time">${m.time}</div>
-      </div>
-    `;
-    messagesDiv.appendChild(msgDiv);
-    scrollToBottom();
-  }
-
-  function showTyping() {
-    typingDiv.classList.add('show');
-    scrollToBottom();
-  }
-
-  function hideTyping() {
-    typingDiv.classList.remove('show');
-  }
-
-  function scrollToBottom() {
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }
-
-  function updateSendBtn() {
-    sendBtn.disabled = !input.value.trim() || isProcessing;
-  }
-
-  function clearChat() {
-    messages = [];
-    messagesDiv.innerHTML = '';
-    const welcomeMsg = {
-      id: 'welcome-reset',
-      sender: 'jarvis',
-      text: 'Chat history cleared, Sir. J.A.R.V.I.S. is ready for your next query about The Heaven Point! 🚀',
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-    messages.push(welcomeMsg);
-    renderMessage(welcomeMsg);
-  }
-
-  // ==================== SEND MESSAGE ====================
-  function handleSend(customText) {
-    const text = customText || input.value.trim();
-    if (!text || isProcessing) return;
-
-    isProcessing = true;
-    if (!customText) input.value = '';
-    updateSendBtn();
-
-    addMessage(text, 'user');
-    showTyping();
-
-    setTimeout(() => {
-      hideTyping();
-      try {
-        const reply = findResponse(text);
-        addMessage(reply, 'jarvis');
-      } catch(e) {
-        addMessage('Sir, I encountered a minor signal delay. For immediate assistance, please call 📞 <b>9044034585</b> or visit our Shahganj, Prayagraj campus.', 'jarvis', true);
-      }
-      isProcessing = false;
-      updateSendBtn();
-    }, 800 + Math.random() * 700);
+  function openInNewTab() {
+    window.open(TUTOR_URL, '_blank');
   }
 
   // ==================== EVENT LISTENERS ====================
-  orb.addEventListener('click', () => {
-    isOpen = !isOpen;
-    if (isOpen) {
-      panel.classList.add('open');
-      setTimeout(() => input.focus(), 400);
-    } else {
-      panel.classList.remove('open');
+  orb.addEventListener('click', openModal);
+
+  closeBtn.addEventListener('click', closeModal);
+
+  openExternal.addEventListener('click', openInNewTab);
+
+  // Close on backdrop click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
     }
   });
 
-  closeBtn.addEventListener('click', () => {
-    isOpen = false;
-    panel.classList.remove('open');
-    stopListening();
-  });
-
-  clearBtn.addEventListener('click', clearChat);
-
-  speechBtn.addEventListener('click', () => {
-    speechEnabled = !speechEnabled;
-    if (speechEnabled) {
-      speechBtn.classList.add('speech-active');
-      speechBtn.textContent = '🔊';
-    } else {
-      speechBtn.classList.remove('speech-active');
-      speechBtn.textContent = '🔇';
-      window.speechSynthesis?.cancel();
-    }
-  });
-
-  micBtn.addEventListener('click', toggleVoiceInput);
-
-  input.addEventListener('input', updateSendBtn);
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') handleSend();
-  });
-
-  sendBtn.addEventListener('click', () => handleSend());
-
-  // Quick chips
-  chipsDiv.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const query = btn.dataset.query;
-      if (!isOpen) {
-        isOpen = true;
-        panel.classList.add('open');
-      }
-      handleSend(query);
-    });
-  });
-
-  // Close on Escape
+  // Close on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && isOpen) {
-      isOpen = false;
-      panel.classList.remove('open');
-      stopListening();
+      closeModal();
     }
   });
 
-  // ==================== INITIALIZATION ====================
-  function init() {
-    const welcomeMsg = {
-      id: 'welcome',
-      sender: 'jarvis',
-      text: `👋 <b>Good day, Sir!</b>\n\nI am <b>J.A.R.V.I.S.</b>, AI Assistant powered by <b></b> for <b>The Heaven Point</b>, Shahganj, Prayagraj.\n\nHow may I assist you with our courses, admissions, fees, or study guidance today? 🚀\n\n<i>Ask in English, Hindi, or Hinglish!</i>`,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-    messages.push(welcomeMsg);
-    renderMessage(welcomeMsg);
+  // Iframe load event
+  iframe.addEventListener('load', () => {
+    loading.style.display = 'none';
+    iframe.classList.add('loaded');
+  });
 
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.getVoices();
+  // Iframe load timeout (in case load event doesn't fire)
+  setTimeout(() => {
+    if (isOpen && loading.style.display !== 'none') {
+      loading.style.display = 'none';
+      iframe.classList.add('loaded');
     }
-  }
+  }, 5000);
 
-  init();
-  console.log('🤖 J.A.R.V.I.S. AI initialized - Gemini 3.6 Flash');
-  console.log('📍 The Heaven Point, Shahganj, Prayagraj');
-  console.log('📞 9044034585');
+  // ==================== INITIALIZATION ====================
+  console.log('👨‍🏫 Home Tutor Widget initialized');
+  console.log('🔗 Opening:', TUTOR_URL);
 })();
 </script>
 
