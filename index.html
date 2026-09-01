@@ -877,8 +877,43 @@
     <img src="" alt="Gallery" id="lightboxImage">
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- ============================================ -->
-<!-- Home Tutor Widget - Simple Popup -->
+<!-- Home Tutor Widget - New Tab on Click -->
 <!-- Paste BEFORE </body> in your HTML file -->
 <!-- ============================================ -->
 
@@ -893,15 +928,16 @@
     50% { transform: scale(1.05); }
   }
 
-  @keyframes tutorSlideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes tutorShake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
   }
 
   .tutor-widget-root {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     z-index: 99999;
     font-family: 'Inter', 'Noto Sans', system-ui, -apple-system, sans-serif;
   }
@@ -909,7 +945,7 @@
   @media (max-width: 640px) {
     .tutor-widget-root {
       bottom: 16px;
-      right: 16px;
+      left: 16px;
     }
   }
 
@@ -934,7 +970,7 @@
   .tutor-orb-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 12px 40px rgba(37,99,235,0.5), 0 0 40px rgba(59,130,246,0.5);
-    animation: none;
+    animation: tutorShake 0.5s ease-in-out;
   }
 
   .tutor-orb-btn:active {
@@ -977,210 +1013,41 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   }
 
-  /* Modal Popup */
-  .tutor-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(5px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 99998;
-    animation: tutorFadeIn 0.3s ease;
-  }
-
-  @keyframes tutorFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .tutor-modal.open {
-    display: flex;
-  }
-
-  .tutor-modal-content {
-    background: white;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 500px;
-    height: 90vh;
-    max-height: 700px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    animation: tutorSlideUp 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
-  }
-
-  /* Modal Header */
-  .tutor-modal-header {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 3px solid #1d4ed8;
-  }
-
-  .tutor-header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .tutor-header-avatar {
-    position: relative;
-  }
-
-  .tutor-header-avatar img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.8);
-    object-fit: cover;
-  }
-
-  .tutor-header-online {
+  /* Tooltip */
+  .tutor-tooltip {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 12px;
-    height: 12px;
-    background: #10b981;
-    border-radius: 50%;
-    border: 2px solid #2563eb;
-  }
-
-  .tutor-header-info h4 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .tutor-header-info p {
-    font-size: 0.75rem;
-    margin: 2px 0 0;
-    opacity: 0.9;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .tutor-close-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,0.2);
+    left: 70px;
+    bottom: 15px;
+    background: #1e293b;
     color: white;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .tutor-close-btn:hover {
-    background: rgba(255,255,255,0.3);
-    transform: rotate(90deg);
-  }
-
-  /* Modal Body */
-  .tutor-modal-body {
-    flex: 1;
-    overflow-y: auto;
-    background: #f8fafc;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tutor-loading {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    color: #6b7280;
-  }
-
-  .tutor-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #e5e7eb;
-    border-top: 3px solid #3b82f6;
-    border-radius: 50%;
-    animation: tutorSpin 1s linear infinite;
-  }
-
-  @keyframes tutorSpin {
-    to { transform: rotate(360deg); }
-  }
-
-  .tutor-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: none;
-  }
-
-  .tutor-iframe.loaded {
-    display: block;
-  }
-
-  /* Modal Footer */
-  .tutor-modal-footer {
-    padding: 12px 20px;
-    background: white;
-    border-top: 1px solid #e5e7eb;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .tutor-footer-text {
-    font-size: 0.7rem;
-    color: #6b7280;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .tutor-open-external {
-    padding: 8px 16px;
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 20px;
+    padding: 8px 12px;
+    border-radius: 8px;
     font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    font-weight: 500;
     white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
 
-  .tutor-open-external:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(37,99,235,0.3);
+  .tutor-tooltip::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #1e293b transparent transparent;
+  }
+
+  .tutor-orb-btn:hover .tutor-tooltip {
+    opacity: 1;
+    transform: translateX(5px);
   }
 
   @media (max-width: 480px) {
-    .tutor-modal-content {
-      width: 95%;
-      height: 95vh;
-    }
-    
     .tutor-orb-btn {
       width: 52px;
       height: 52px;
@@ -1190,52 +1057,68 @@
       width: 44px;
       height: 44px;
     }
+    
+    .tutor-tooltip {
+      display: none;
+    }
   }
 </style>
 
 <!-- Home Tutor Widget HTML -->
 <div class="tutor-widget-root">
   <!-- Floating Button -->
-  <button class="tutor-orb-btn" id="tutorOrb" title="Home Tutor">
+  <button class="tutor-orb-btn" id="tutorOrb" title="Open Home Tutor">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE4aQlnkP1l5BjTboy6ERSBrc8-9h0pLlaAHzn19c34-dBKrtY9BNHfAZ2&s=10" alt="Home Tutor" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
     <span style="display:none; font-size:1.5rem;">👨‍🏫</span>
     <span class="tutor-orb-status"></span>
     <span class="tutor-orb-badge">Home Tutor</span>
+    <span class="tutor-tooltip">👨‍🏫 Open Home Tutor</span>
   </button>
+</div>
 
-  <!-- Modal Popup -->
-  <div class="tutor-modal" id="tutorModal">
-    <div class="tutor-modal-content">
-      <!-- Header -->
-      <div class="tutor-modal-header">
-        <div class="tutor-header-left">
-          <div class="tutor-header-avatar">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE4aQlnkP1l5BjTboy6ERSBrc8-9h0pLlaAHzn19c34-dBKrtY9BNHfAZ2&s=10" alt="Home Tutor Logo">
-            <span class="tutor-header-online"></span>
-          </div>
-          <div class="tutor-header-info">
-            <h4>Home Tutor</h4>
-            <p>👨‍🏫 Your Learning Partner</p>
-          </div>
-        </div>
-        <button class="tutor-close-btn" id="tutorCloseBtn" title="Close">✕</button>
-      </div>
+<script>
+(function() {
+  // ==================== DOM ELEMENTS ====================
+  const orb = document.getElementById('tutorOrb');
 
-      <!-- Body -->
-      <div class="tutor-modal-body">
-        <div class="tutor-loading" id="tutorLoading">
-          <div class="tutor-spinner"></div>
-          <p>Loading Home Tutor services...</p>
-        </div>
-        <iframe 
-          src="https://starlet-web.github.io/Tutor/" 
-          class="tutor-iframe" 
-          id="tutorIframe"
-          title="Home Tutor"
-          loading="lazy"
-        ></iframe>
-      </div>
+  const TUTOR_URL = 'https://starlet-web.github.io/Tutor/';
 
+  // ==================== FUNCTIONS ====================
+  function openTutorWebsite() {
+    // Open in new tab
+    window.open(TUTOR_URL, '_blank', 'noopener,noreferrer');
+  }
+
+  // ==================== EVENT LISTENERS ====================
+  orb.addEventListener('click', openTutorWebsite);
+
+  // ==================== INITIALIZATION ====================
+  console.log('👨‍🏫 Home Tutor Widget initialized');
+  console.log('🔗 Will open in new tab:', TUTOR_URL);
+  console.log('📍 Position: Bottom Left');
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
       <!-- Footer -->
       <div class="tutor-modal-footer">
         <span class="tutor-footer-text">🔒 Secure Connection</span>
