@@ -2,16 +2,15 @@
 <html lang="en" class="h-full scroll-smooth" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="description" content="THP-STARLET NEET – Ultra Realistic Medical Coaching | Physics · Chemistry · Biology">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="description" content="THP-STARLET NEET – Medical Coaching">
   <meta name="theme-color" content="#064e3b">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>THP-STARLET NEET – Medical Coaching</title>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -37,7 +36,7 @@
             'float': 'float 8s ease-in-out infinite',
             'slide-up': 'slideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards',
             'fade-in': 'fadeIn 0.5s ease forwards',
-            'glow-soft': 'glowSoft 3s ease-in-out infinite alternate',
+            'shimmer': 'shimmer 2s linear infinite',
           },
           keyframes: {
             hb: { '0%,100%': { transform: 'scale(1)' }, '15%': { transform: 'scale(1.18)' }, '30%': { transform: 'scale(1)' }, '45%': { transform: 'scale(1.18)' }, '60%': { transform: 'scale(1)' } },
@@ -46,7 +45,7 @@
             float: { '0%,100%': { transform: 'translateY(0) rotate(0deg)' }, '25%': { transform: 'translateY(-8px) rotate(1deg)' }, '75%': { transform: 'translateY(4px) rotate(-1deg)' } },
             slideUp: { '0%': { transform: 'translateY(24px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
             fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-            glowSoft: { '0%': { boxShadow: '0 0 8px rgba(16,185,129,0.15)' }, '100%': { boxShadow: '0 0 24px rgba(16,185,129,0.35)' } },
+            shimmer: { '0%': { backgroundPosition: '-1000px 0' }, '100%': { backgroundPosition: '1000px 0' } },
           }
         }
       }
@@ -54,7 +53,6 @@
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -63,244 +61,167 @@
     html { font-size: 15px; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: #f8fafb;
-      color: #1a1f2e;
-      min-height: 100vh;
-      line-height: 1.45;
-      -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em;
+      background: #f8fafb; color: #1a1f2e; min-height: 100vh;
+      line-height: 1.45; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em;
       background-image: radial-gradient(ellipse at 10% 20%, rgba(5,150,105,0.03) 0%, transparent 50%),
                         radial-gradient(ellipse at 85% 70%, rgba(5,150,105,0.04) 0%, transparent 50%);
     }
-
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #059669, #10b981); border-radius: 10px; }
 
     .stethoscope-wrap {
-      position: fixed;
-      pointer-events: none;
-      z-index: 120;
+      position: fixed; pointer-events: none; z-index: 120;
       transition: all 5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       filter: drop-shadow(0 4px 12px rgba(5, 150, 105, 0.25)) drop-shadow(0 2px 4px rgba(0,0,0,0.15));
     }
     .stethoscope-wrap svg { width: 110px; height: auto; }
-
     .header-slim {
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      background: rgba(255,255,255,0.82);
-      border-bottom: 0.5px solid rgba(5,150,105,0.1);
+      backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(255,255,255,0.82); border-bottom: 0.5px solid rgba(5,150,105,0.1);
     }
-
-    .card-slim {
-      background: #fff;
-      border: 0.5px solid rgba(0,0,0,0.04);
-      transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-    .card-slim:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(5,150,105,0.08);
-      border-color: rgba(5,150,105,0.15);
-    }
+    .card-slim { background: #fff; border: 0.5px solid rgba(0,0,0,0.04); transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
+    .card-slim:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(5,150,105,0.08); border-color: rgba(5,150,105,0.15); }
 
     .monitor-screen {
       background: linear-gradient(180deg, #0a1929 0%, #0c1f35 100%);
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
+      border-radius: 16px; overflow: hidden; position: relative;
       border: 1px solid rgba(16,185,129,0.15);
       box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.03);
     }
     .monitor-screen::after {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(16,185,129,0.015) 2px, rgba(16,185,129,0.015) 4px);
-      pointer-events: none;
-      border-radius: 16px;
+      pointer-events: none; border-radius: 16px;
     }
     .scan-line {
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 2px;
+      position: absolute; left: 0; right: 0; height: 2px;
       background: linear-gradient(90deg, transparent, rgba(16,185,129,0.3), transparent);
       animation: scanMove 4s linear infinite;
     }
-    @keyframes scanMove {
-      0% { top: 0; }
-      100% { top: 100%; }
-    }
-
-    .mobile-drawer {
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
+    @keyframes scanMove { 0% { top: 0; } 100% { top: 100%; } }
+    .mobile-drawer { transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
     .mobile-drawer.open { transform: translateX(0); }
-
-    .modal-slim {
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
+    .modal-slim { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .modal-slim.active { opacity: 1; pointer-events: all; }
-
     .hb-pulse { animation: hb 1.2s ease-in-out infinite; }
     .ring-pulse { animation: pRing 2.5s cubic-bezier(0.4,0,0.6,1) infinite; }
     .toast-pop { animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
-    .badge-verified {
-      background: rgba(16,185,129,0.06);
-      color: #059669;
-      border: 0.5px solid rgba(16,185,129,0.15);
-    }
+    .badge-verified { background: rgba(16,185,129,0.06); color: #059669; border: 0.5px solid rgba(16,185,129,0.15); }
     .reveal { opacity: 0; transform: translateY(20px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-
     .pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
     @keyframes pulseGlow {
       0%, 100% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
       50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.7); }
     }
 
-    /* ===== ADMIN PANEL STYLES ===== */
-    .admin-modal {
-      background: linear-gradient(180deg, #0a1929 0%, #0c1f35 100%);
-      border: 1px solid rgba(16,185,129,0.2);
+    .profile-upload {
+      border: 2px dashed rgba(16,185,129,0.3); border-radius: 50%;
+      width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.3s ease; background: rgba(16,185,129,0.03);
+      overflow: hidden; position: relative; margin: 0 auto;
     }
+    .profile-upload:hover { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.06); }
+    .profile-upload img { width: 100%; height: 100%; object-fit: cover; }
+
+    .step-dot { width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; transition: all 0.4s ease; }
+    .step-dot.active { background: #10b981; box-shadow: 0 0 0 5px rgba(16,185,129,0.2); }
+    .step-dot.completed { background: #10b981; }
+    .reg-step { display: none; animation: fadeIn 0.4s ease; }
+    .reg-step.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .form-input {
+      width: 100%; padding: 11px 14px; border-radius: 12px;
+      border: 1.5px solid rgba(0,0,0,0.08); font-size: 13px;
+      font-family: inherit; transition: all 0.25s ease; background: #fff;
+    }
+    .form-input:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 4px rgba(16,185,129,0.1); }
+
+    .admin-modal { background: linear-gradient(180deg, #0a1929 0%, #0c1f35 100%); border: 1px solid rgba(16,185,129,0.2); }
     .admin-input {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(16,185,129,0.15);
-      color: #f0fdfa;
-      transition: all 0.25s ease;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(16,185,129,0.15);
+      color: #f0fdfa; transition: all 0.25s ease; padding: 10px 14px;
+      border-radius: 10px; font-size: 13px; width: 100%;
     }
-    .admin-input:focus {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(16,185,129,0.5);
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
-    }
+    .admin-input:focus { background: rgba(255,255,255,0.08); border-color: rgba(16,185,129,0.5); outline: none; box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
     .admin-input::placeholder { color: rgba(240, 253, 250, 0.3); }
 
     .thumb-upload-zone {
-      border: 2px dashed rgba(16,185,129,0.3);
-      border-radius: 14px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: rgba(16,185,129,0.03);
-      position: relative;
-      overflow: hidden;
+      border: 2px dashed rgba(16,185,129,0.3); border-radius: 14px;
+      cursor: pointer; transition: all 0.3s ease; background: rgba(16,185,129,0.03);
+      position: relative; overflow: hidden; padding: 16px;
     }
-    .thumb-upload-zone:hover {
-      border-color: rgba(16,185,129,0.6);
-      background: rgba(16,185,129,0.06);
+    .thumb-upload-zone:hover { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.06); }
+    .thumb-upload-zone.dragover { border-color: #10b981; background: rgba(16,185,129,0.1); transform: scale(1.01); }
+    .thumb-preview-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 10px; }
+    .upload-progress { height: 4px; background: rgba(16,185,129,0.15); border-radius: 3px; overflow: hidden; margin-top: 10px; }
+    .upload-progress-bar { height: 100%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 3px; width: 0%; transition: width 0.4s ease; }
+
+    .subject-card-loading {
+      background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
     }
-    .thumb-upload-zone.dragover {
-      border-color: #10b981;
-      background: rgba(16,185,129,0.1);
-      transform: scale(1.02);
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+    /* Discount Reveal Animation */
+    @keyframes discountPop {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
     }
-    .thumb-preview-img {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-    .subject-thumb {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      border-radius: 14px 14px 0 0;
-      background: linear-gradient(135deg, #0f766e, #059669);
-    }
-    .upload-progress {
-      height: 3px;
-      background: rgba(16,185,129,0.15);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-    .upload-progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #10b981, #34d399);
-      border-radius: 3px;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+    .discount-revealed { animation: discountPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
   </style>
 </head>
 <body class="flex flex-col">
 
-  <!-- ===== ULTRA-REALISTIC STETHOSCOPE ===== -->
+  <!-- STETHOSCOPE -->
   <div class="stethoscope-wrap" id="stethoscope">
     <svg viewBox="0 0 180 240" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="metalTube" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#64748b"/><stop offset="30%" stop-color="#94a3b8"/>
-          <stop offset="50%" stop-color="#cbd5e1"/><stop offset="70%" stop-color="#94a3b8"/>
-          <stop offset="100%" stop-color="#475569"/>
-        </linearGradient>
-        <linearGradient id="metalTubeV" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#64748b"/><stop offset="30%" stop-color="#94a3b8"/>
-          <stop offset="50%" stop-color="#cbd5e1"/><stop offset="70%" stop-color="#94a3b8"/>
-          <stop offset="100%" stop-color="#475569"/>
+          <stop offset="0%" stop-color="#64748b"/><stop offset="50%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#475569"/>
         </linearGradient>
         <radialGradient id="chestGrad" cx="40%" cy="35%">
-          <stop offset="0%" stop-color="#e2e8f0"/><stop offset="40%" stop-color="#94a3b8"/>
-          <stop offset="100%" stop-color="#334155"/>
+          <stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#334155"/>
         </radialGradient>
         <radialGradient id="bellInner" cx="45%" cy="40%">
-          <stop offset="0%" stop-color="#f8fafc"/><stop offset="60%" stop-color="#cbd5e1"/>
-          <stop offset="100%" stop-color="#64748b"/>
+          <stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#64748b"/>
         </radialGradient>
         <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
           <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.25"/>
         </filter>
-        <filter id="glowFilter">
-          <feGaussianBlur stdDeviation="3" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
+        <filter id="glowFilter"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
-
       <path d="M90 15 C90 15, 90 5, 100 0 C110 -5, 125 0, 128 12" fill="none" stroke="url(#metalTube)" stroke-width="5.5" stroke-linecap="round" filter="url(#shadow)"/>
       <path d="M90 15 C60 15, 20 50, 20 90 C20 130, 50 165, 90 165 C130 165, 160 130, 160 90" fill="none" stroke="url(#metalTube)" stroke-width="5.5" stroke-linecap="round" filter="url(#shadow)"/>
-      <path d="M90 15 C60 15, 22 50, 22 90 C22 128, 50 163, 90 163 C128 163, 158 128, 158 90" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round"/>
-      <path d="M90 15 C90 15, 88 22, 82 28" fill="none" stroke="url(#metalTubeV)" stroke-width="5" stroke-linecap="round"/>
-      <path d="M90 15 C90 15, 92 22, 98 28" fill="none" stroke="url(#metalTubeV)" stroke-width="4.5" stroke-linecap="round"/>
-
+      <path d="M90 15 C90 15, 88 22, 82 28" fill="none" stroke="url(#metalTube)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M90 15 C90 15, 92 22, 98 28" fill="none" stroke="url(#metalTube)" stroke-width="4.5" stroke-linecap="round"/>
       <ellipse cx="80" cy="30" rx="6" ry="8" fill="url(#metalTube)" transform="rotate(-15 80 30)" filter="url(#shadow)"/>
       <ellipse cx="100" cy="30" rx="6" ry="8" fill="url(#metalTube)" transform="rotate(15 100 30)" filter="url(#shadow)"/>
       <ellipse cx="77" cy="28" rx="4" ry="5.5" fill="#f87171" transform="rotate(-15 77 28)" opacity="0.9"/>
       <ellipse cx="103" cy="28" rx="4" ry="5.5" fill="#f87171" transform="rotate(15 103 28)" opacity="0.9"/>
-
       <circle cx="90" cy="17" r="6" fill="url(#metalTube)" filter="url(#shadow)"/>
       <circle cx="90" cy="17" r="3.5" fill="#475569"/>
-
-      <ellipse cx="90" cy="14" rx="5" ry="2" fill="#334155" opacity="0.5"/>
-      <ellipse cx="60" cy="15" rx="4" ry="1.5" fill="#334155" opacity="0.3" transform="rotate(-30 60 15)"/>
-      <ellipse cx="120" cy="15" rx="4" ry="1.5" fill="#334155" opacity="0.3" transform="rotate(30 120 15)"/>
-
       <rect x="156" y="80" width="8" height="20" rx="2" fill="url(#metalTube)"/>
-      
       <g transform="translate(160, 90)">
         <ellipse cx="0" cy="0" rx="18" ry="16" fill="url(#chestGrad)" filter="url(#shadow)"/>
         <ellipse cx="0" cy="0" rx="18" ry="16" fill="none" stroke="#64748b" stroke-width="1.5"/>
         <ellipse cx="0" cy="-1" rx="12" ry="10" fill="url(#bellInner)"/>
-        <ellipse cx="0" cy="-1" rx="10" ry="8" fill="none" stroke="#94a3b8" stroke-width="0.8"/>
         <ellipse cx="-3" cy="-3" rx="5" ry="3" fill="rgba(255,255,255,0.2)"/>
         <circle cx="0" cy="0" r="2.5" fill="#ef4444" filter="url(#glowFilter)" class="pulse-glow"/>
         <ellipse cx="0" cy="0" rx="20" ry="18" fill="none" stroke="rgba(16,185,129,0.5)" stroke-width="2" class="ring-pulse" style="animation-delay: 0s;"/>
         <ellipse cx="0" cy="0" rx="20" ry="18" fill="none" stroke="rgba(16,185,129,0.3)" stroke-width="1.5" class="ring-pulse" style="animation-delay: 0.7s;"/>
-        <ellipse cx="0" cy="0" rx="20" ry="18" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="1" class="ring-pulse" style="animation-delay: 1.4s;"/>
       </g>
     </svg>
   </div>
 
-  <!-- ===== SLIM HEADER ===== -->
+  <!-- HEADER -->
   <header class="header-slim fixed top-0 inset-x-0 z-50 px-4 py-2.5 flex items-center justify-between">
     <div class="flex items-center gap-2.5">
       <div class="relative hb-pulse">
-        <div class="w-9 h-9 bg-gradient-to-br from-med-600 to-med-700 rounded-xl flex items-center justify-center text-white text-sm shadow-md shadow-med-500/20">⚕</div>
+        <div class="w-9 h-9 bg-gradient-to-br from-med-600 to-med-700 rounded-xl flex items-center justify-center text-white text-sm shadow-md">⚕</div>
         <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white pulse-glow"></span>
       </div>
       <div class="leading-tight">
@@ -314,19 +235,21 @@
 
     <div class="hidden lg:flex items-center gap-1">
       <a href="#" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-med-50 text-med-700">Home</a>
-      <a href="#physics" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Physics</a>
-      <a href="#chemistry" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Chemistry</a>
-      <a href="#biology" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Biology</a>
+      <a href="#subjects" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Subjects</a>
       <a href="#tests" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Tests</a>
       <span class="w-px h-5 bg-gray-200 mx-1"></span>
-      <button onclick="App.openAdmin()" class="text-gray-400 hover:text-med-600 px-2 py-1.5 rounded-lg transition" title="Admin Panel">
-        <i class="fas fa-cog text-sm"></i>
+      
+      <button id="adminBtn" onclick="App.openAdmin()" class="hidden bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+        <i class="fas fa-cog text-[10px]"></i>Admin
       </button>
-      <button id="authBtn" onclick="App.openAuth()" class="bg-med-600 hover:bg-med-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-md shadow-med-500/15 transition flex items-center gap-1.5">
+      
+      <button onclick="App.openAuth()" id="enrollBtn" class="bg-med-600 hover:bg-med-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-md transition flex items-center gap-1.5">
         <i class="fas fa-user-md text-[10px]"></i>Enroll
       </button>
       <div id="userMenu" class="hidden items-center gap-2">
+        <img id="headerAvatar" class="w-8 h-8 rounded-full object-cover border-2 border-med-500 hidden" alt="Profile">
         <span id="userName" class="text-xs font-semibold text-med-700"></span>
+        <button onclick="App.openProfile()" class="text-[10px] bg-med-50 text-med-700 px-2.5 py-1 rounded-lg hover:bg-med-100 transition">Profile</button>
         <button onclick="App.logout()" class="text-[10px] bg-red-50 text-red-600 px-2.5 py-1 rounded-lg hover:bg-red-100 transition">Exit</button>
       </div>
     </div>
@@ -336,33 +259,31 @@
     </button>
   </header>
 
-  <!-- ===== MOBILE DRAWER ===== -->
+  <!-- MOBILE DRAWER -->
   <div id="mobileDrawer" class="mobile-drawer fixed inset-0 z-40 bg-white/96 backdrop-blur-xl lg:hidden flex flex-col p-6 pt-20">
     <button id="closeDrawer" class="absolute top-5 right-5 text-gray-400 hover:text-med-700 p-1"><i class="fas fa-times text-xl"></i></button>
     <nav class="flex flex-col gap-2">
       <a href="#" class="px-4 py-3 rounded-xl text-sm font-semibold bg-med-50 text-med-700">🏠 Home</a>
-      <a href="#physics" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">⚡ Physics</a>
-      <a href="#chemistry" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">🧪 Chemistry</a>
-      <a href="#biology" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">🧬 Biology</a>
+      <a href="#subjects" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">📚 Subjects</a>
       <a href="#tests" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">📋 Tests</a>
-      <button onclick="App.openAdmin()" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 text-left">⚙️ Admin Panel</button>
+      <button onclick="App.openAdmin()" id="mobileAdminBtn" class="hidden px-4 py-3 rounded-xl text-sm font-medium text-amber-700 bg-amber-50 text-left">⚙️ Admin Panel</button>
+      <button onclick="App.openProfile()" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 text-left">👤 My Profile</button>
       <div class="mt-4 pt-4 border-t border-gray-100">
-        <button onclick="App.openAuth()" class="w-full bg-med-600 text-white py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-med-500/15">
+        <button onclick="App.openAuth()" class="w-full bg-med-600 text-white py-3.5 rounded-xl font-semibold text-sm shadow-lg">
           <i class="fas fa-user-md mr-2"></i>Enroll for NEET
         </button>
       </div>
     </nav>
   </div>
 
-  <!-- ===== MAIN CONTENT ===== -->
   <main class="flex-1 mt-14 px-3 sm:px-4 md:px-6 pb-20 max-w-5xl mx-auto w-full space-y-10">
 
-    <!-- ===== HERO ===== -->
+    <!-- HERO -->
     <section class="relative rounded-2xl overflow-hidden" id="hero">
       <div class="absolute inset-0 bg-gradient-to-br from-med-900 via-med-800 to-med-950"></div>
       <div class="absolute inset-0 opacity-8">
         <svg class="w-full h-full" viewBox="0 0 1200 300" preserveAspectRatio="none">
-          <path d="M0 150 L80 150 L100 150 L110 110 L120 210 L130 150 L150 150 L160 150 L170 90 L180 240 L190 150 L210 150 L1200 150" fill="none" stroke="#34d399" stroke-width="1.5" class="ecg" stroke-dasharray="800" stroke-dashoffset="800"/>
+          <path d="M0 150 L80 150 L100 150 L110 110 L120 210 L130 150 L150 150 L160 150 L170 90 L180 240 L190 150 L210 150 L1200 150" fill="none" stroke="#34d399" stroke-width="1.5" class="ecg"/>
         </svg>
       </div>
       <div class="relative px-5 py-10 sm:px-8 sm:py-14 md:px-12 md:py-16 flex flex-col md:flex-row items-center gap-6 md:gap-10">
@@ -375,11 +296,11 @@
           </h1>
           <p class="text-white/65 text-sm mb-5 max-w-md mx-auto md:mx-0">Physics · Chemistry · Biology | AI Analytics | <span class="font-semibold text-emerald-300">By THP-STARLET</span></p>
           <div class="flex flex-wrap gap-3 justify-center md:justify-start">
-            <button onclick="App.openAuth()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-xl shadow-emerald-500/20 hover:scale-[1.03] transition flex items-center gap-2 animate-glow-soft">
+            <button onclick="App.openAuth()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-xl hover:scale-[1.03] transition flex items-center gap-2">
               <i class="fas fa-stethoscope"></i>Start Prep
             </button>
-            <a href="#demo" class="bg-white/8 text-white border border-white/15 px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-white/12 transition flex items-center gap-2">
-              <i class="fas fa-play-circle"></i>Demo
+            <a href="#subjects" class="bg-white/8 text-white border border-white/15 px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-white/12 transition flex items-center gap-2">
+              <i class="fas fa-play-circle"></i>Explore
             </a>
           </div>
         </div>
@@ -392,16 +313,14 @@
             <line x1="55" y1="110" x2="195" y2="110" stroke="#059669" stroke-width="2.5" opacity="0.5"/>
             <line x1="50" y1="160" x2="200" y2="160" stroke="#10b981" stroke-width="3" opacity="0.6"/>
             <line x1="55" y1="210" x2="195" y2="210" stroke="#059669" stroke-width="2.5" opacity="0.5"/>
-            <circle cx="50" cy="30" r="5" fill="#34d399"/><circle cx="200" cy="30" r="5" fill="#6ee7b7"/>
-            <circle cx="50" cy="250" r="5" fill="#34d399"/><circle cx="200" cy="250" r="5" fill="#6ee7b7"/>
             <circle cx="50" cy="160" r="7" fill="#34d399" class="animate-pulse"/><circle cx="200" cy="160" r="7" fill="#6ee7b7" class="animate-pulse"/>
           </svg>
         </div>
       </div>
     </section>
 
-    <!-- ===== VITAL STATS ===== -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 reveal" id="vitalStats">
+    <!-- VITAL STATS -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 reveal">
       <div class="card-slim rounded-xl p-3.5 text-center">
         <div class="text-[10px] text-gray-400 font-medium uppercase tracking-wider mb-1">Heart Rate</div>
         <div class="text-xl font-bold font-mono text-med-600" id="vitalHR">72</div>
@@ -424,8 +343,8 @@
       </div>
     </div>
 
-    <!-- ===== PATIENT MONITOR ===== -->
-    <div class="monitor-screen p-4 sm:p-5 reveal" id="ecgMonitor">
+    <!-- PATIENT MONITOR -->
+    <div class="monitor-screen p-4 sm:p-5 reveal">
       <div class="scan-line"></div>
       <div class="flex items-center justify-between mb-3 relative z-10">
         <div class="flex items-center gap-2">
@@ -462,53 +381,32 @@
       </div>
     </div>
 
-    <!-- ===== SUBJECT CARDS ===== -->
-    <section id="physics" class="reveal">
-      <div class="flex items-center justify-between mb-4">
+    <!-- DYNAMIC SUBJECT CARDS -->
+    <section id="subjects" class="reveal">
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
         <div>
           <div class="flex items-center gap-2 mb-1">
             <span class="hb-pulse text-sm">❤️</span>
             <span class="badge-verified text-[10px] font-semibold px-2 py-0.5 rounded-full">Stethoscope Verified</span>
           </div>
           <h2 class="text-xl font-bold font-display text-gray-900">Core Subjects</h2>
+          <p class="text-xs text-gray-400 mt-0.5">All NEET subjects · Live + Recorded</p>
         </div>
-        <span class="text-xs text-gray-400" id="subjectCount">3 Subjects</span>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="subjectsContainer">
-        <!-- Subjects loaded dynamically from Firestore -->
-      </div>
-    </section>
-
-    <!-- ===== TEST SERIES ===== -->
-    <section id="tests" class="bg-gradient-to-br from-med-900 to-med-950 rounded-2xl p-5 sm:p-7 text-white relative overflow-hidden reveal">
-      <div class="absolute inset-0 opacity-8"><div class="absolute top-5 left-5 w-48 h-48 bg-med-400 rounded-full blur-3xl"></div></div>
-      <div class="relative z-10">
-        <div class="text-center mb-5">
-          <span class="bg-white/6 text-[10px] font-semibold px-3 py-1 rounded-full inline-block mb-3 backdrop-blur-sm">📋 ALL INDIA TEST SERIES</span>
-          <h2 class="text-xl sm:text-2xl font-bold font-display mb-1">Mock Tests & Analytics</h2>
-          <p class="text-white/50 text-xs">Simulate real NEET exam environment</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
-          <div class="bg-white/4 backdrop-blur-sm rounded-xl p-4 text-center border border-white/5">
-            <div class="text-2xl mb-1">📝</div><div class="font-semibold text-sm">Full Syllabus</div><div class="text-emerald-400 font-bold text-lg">20+</div>
-          </div>
-          <div class="bg-white/4 backdrop-blur-sm rounded-xl p-4 text-center border border-white/5">
-            <div class="text-2xl mb-1">🎯</div><div class="font-semibold text-sm">Chapter-wise</div><div class="text-amber-400 font-bold text-lg">100+</div>
-          </div>
-          <div class="bg-white/4 backdrop-blur-sm rounded-xl p-4 text-center border border-white/5">
-            <div class="text-2xl mb-1">📊</div><div class="font-semibold text-sm">AI Analytics</div><div class="text-blue-400 font-bold text-lg">Real-time</div>
-          </div>
-        </div>
-        <div class="text-center">
-          <button onclick="App.openAuth()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm shadow-xl shadow-emerald-500/15 hover:scale-[1.02] transition inline-flex items-center gap-2">
-            <i class="fas fa-flask"></i>Start Free Test
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-400" id="subjectCount">Loading...</span>
+          <button onclick="App.openAdminSubjectModal()" id="addSubjectBtn" class="hidden bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
+            <i class="fas fa-plus"></i>Add Subject
           </button>
         </div>
       </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="subjectsContainer">
+        <div class="subject-card-loading h-64 rounded-2xl"></div>
+        <div class="subject-card-loading h-64 rounded-2xl"></div>
+        <div class="subject-card-loading h-64 rounded-2xl"></div>
+      </div>
     </section>
 
-    <!-- ===== WHY THP ===== -->
+    <!-- WHY THP -->
     <section class="reveal">
       <div class="card-slim rounded-2xl p-5 sm:p-6">
         <div class="sm:flex items-start gap-8">
@@ -520,11 +418,8 @@
               <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">Expert Medical Faculty & NEET Toppers</span></li>
               <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">AI-Powered Personalized Study Plans</span></li>
               <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">24/7 Instant Doubt Resolution</span></li>
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">Premium Coaching at ₹499/month</span></li>
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">Premium Coaching at ₹500 one-time</span></li>
             </ul>
-            <button onclick="App.openAuth()" class="mt-5 bg-med-600 hover:bg-med-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-med-500/15 transition flex items-center gap-2">
-              <i class="fas fa-user-md"></i>Enroll Now
-            </button>
           </div>
           <div class="hidden sm:block flex-shrink-0">
             <div class="bg-gradient-to-br from-med-50 to-emerald-50 rounded-2xl p-6 text-center">
@@ -534,18 +429,13 @@
               </div>
               <div class="text-3xl font-extrabold text-med-600">500+</div>
               <div class="text-xs text-gray-500 font-medium">NEET Selections 2024</div>
-              <div class="flex gap-1.5 mt-3 justify-center flex-wrap">
-                <span class="bg-med-50 text-med-700 text-[10px] px-2 py-0.5 rounded-full font-semibold">AIIMS</span>
-                <span class="bg-med-50 text-med-700 text-[10px] px-2 py-0.5 rounded-full font-semibold">JIPMER</span>
-                <span class="bg-med-50 text-med-700 text-[10px] px-2 py-0.5 rounded-full font-semibold">GMC</span>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== CONTACT ===== -->
+    <!-- CONTACT -->
     <section class="reveal">
       <div class="card-slim rounded-2xl p-5 sm:p-6">
         <div class="text-center mb-5">
@@ -557,19 +447,19 @@
             <div class="flex items-center gap-3"><div class="w-9 h-9 bg-med-50 rounded-lg flex items-center justify-center"><i class="fas fa-phone-alt text-med-600 text-sm"></i></div><div><div class="text-xs font-semibold">Phone</div><a href="tel:+919648837922" class="text-xs text-gray-500 hover:text-med-600">+91 96488 37922</a></div></div>
             <div class="flex items-center gap-3"><div class="w-9 h-9 bg-med-50 rounded-lg flex items-center justify-center"><i class="fas fa-envelope text-med-600 text-sm"></i></div><div><div class="text-xs font-semibold">Email</div><a href="mailto:neet@thpstarlet.com" class="text-xs text-gray-500 hover:text-med-600">neet@thpstarlet.com</a></div></div>
             <div class="flex gap-2 mt-3">
-              <a href="#" class="w-8 h-8 bg-med-600 rounded-lg flex items-center justify-center text-white text-xs hover:bg-med-700 transition"><i class="fab fa-youtube"></i></a>
-              <a href="#" class="w-8 h-8 bg-med-600 rounded-lg flex items-center justify-center text-white text-xs hover:bg-med-700 transition"><i class="fab fa-instagram"></i></a>
-              <a href="https://chat.whatsapp.com/HbSNkHQ3xAIF7SVk9VX4AJ" class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white text-xs hover:bg-green-600 transition"><i class="fab fa-whatsapp"></i></a>
+              <a href="#" class="w-8 h-8 bg-med-600 rounded-lg flex items-center justify-center text-white text-xs hover:bg-med-700"><i class="fab fa-youtube"></i></a>
+              <a href="#" class="w-8 h-8 bg-med-600 rounded-lg flex items-center justify-center text-white text-xs hover:bg-med-700"><i class="fab fa-instagram"></i></a>
+              <a href="https://chat.whatsapp.com/HbSNkHQ3xAIF7SVk9VX4AJ" class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white text-xs hover:bg-green-600"><i class="fab fa-whatsapp"></i></a>
             </div>
           </div>
           <div class="flex-1">
             <form class="space-y-2.5" onsubmit="return false;">
-              <input type="text" placeholder="Full Name" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100 transition">
-              <input type="text" placeholder="Mobile Number" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100 transition">
-              <select class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100 transition text-gray-500">
+              <input type="text" placeholder="Full Name" class="form-input">
+              <input type="text" placeholder="Mobile Number" class="form-input">
+              <select class="form-input text-gray-500">
                 <option>NEET 2026 Aspirant</option><option>NEET 2027 Aspirant</option><option>Dropper Batch</option>
               </select>
-              <button type="submit" class="w-full bg-med-600 hover:bg-med-700 text-white py-2.5 rounded-xl font-semibold text-xs shadow-md shadow-med-500/10 transition">Request Callback</button>
+              <button type="submit" class="w-full bg-med-600 hover:bg-med-700 text-white py-2.5 rounded-xl font-semibold text-xs shadow-md transition">Request Callback</button>
             </form>
           </div>
         </div>
@@ -577,47 +467,245 @@
     </section>
   </main>
 
-  <!-- ===== FLOATING BUTTONS ===== -->
+  <!-- FLOATING BUTTONS -->
   <div class="fixed right-3 sm:right-4 bottom-24 z-50 flex flex-col gap-2.5">
-    <a href="tel:+919648837922" class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all animate-glow-soft"><i class="fas fa-phone-alt text-sm"></i></a>
+    <a href="tel:+919648837922" class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fas fa-phone-alt text-sm"></i></a>
     <button onclick="window.open('https://wa.me/919648837922','_blank')" class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fab fa-whatsapp text-sm"></i></button>
   </div>
 
-  <!-- ===== AUTH MODAL ===== -->
-  <div class="modal-slim fixed inset-0 bg-black/55 backdrop-blur-sm z-[200] flex items-center justify-center p-4" id="authModal">
-    <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto">
-      <button class="absolute top-3 right-3 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition" onclick="App.closeAuth()"><i class="fas fa-times text-gray-400 text-sm"></i></button>
-      <div class="text-center mb-5">
-        <div class="w-12 h-12 bg-gradient-to-br from-med-500 to-med-600 rounded-xl flex items-center justify-center mx-auto mb-2 shadow-md relative">
-          <span class="text-2xl">⚕️</span>
-          <div class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full pulse-glow"></div>
+  <!-- ==================== AUTH + PROFILE + PAYMENT MODAL ==================== -->
+  <div class="modal-slim fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-4" id="authModal">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl relative max-h-[94vh] overflow-y-auto">
+      <button class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition z-20" onclick="App.closeAuth()">
+        <i class="fas fa-times text-gray-500 text-sm"></i>
+      </button>
+
+      <div class="pt-6 pb-3 flex justify-center gap-3" id="stepIndicator">
+        <div class="step-dot active" data-step="1"></div>
+        <div class="step-dot" data-step="2"></div>
+        <div class="step-dot" data-step="3"></div>
+      </div>
+
+      <div class="px-6 pb-6">
+
+        <!-- STEP 1: PROFILE -->
+        <div class="reg-step active" id="step1">
+          <div class="text-center mb-5">
+            <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+              <i class="fas fa-user-md text-white text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold font-display text-gray-900">Create Your Profile</h3>
+            <p class="text-xs text-gray-500 mt-1">Step 1 of 3 · Personal details</p>
+          </div>
+
+          <div class="mb-5">
+            <label class="block text-[11px] font-bold text-gray-600 mb-2 text-center uppercase tracking-wider">Profile Photo</label>
+            <div class="profile-upload" onclick="document.getElementById('profileInput').click()">
+              <img id="profilePreview" class="hidden" alt="Profile">
+              <div id="profilePlaceholder" class="text-center">
+                <i class="fas fa-camera text-med-500 text-2xl mb-1"></i>
+                <div class="text-[10px] text-gray-500 font-medium">Upload Photo</div>
+              </div>
+              <input type="file" id="profileInput" accept="image/*" class="hidden" onchange="App.handleProfileImage(event)">
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Full Name *</label>
+              <input type="text" id="regName" class="form-input" placeholder="e.g., Rahul Sharma">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Email *</label>
+              <input type="email" id="regEmail" class="form-input" placeholder="you@example.com">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Mobile *</label>
+                <input type="tel" id="regPhone" class="form-input" placeholder="9876543210" maxlength="10">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Class</label>
+                <select id="regClass" class="form-input text-gray-700">
+                  <option value="11th">11th</option>
+                  <option value="12th" selected>12th</option>
+                  <option value="Dropper">Dropper</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Target Year</label>
+              <select id="regTarget" class="form-input text-gray-700">
+                <option value="NEET 2026">NEET 2026</option>
+                <option value="NEET 2027">NEET 2027</option>
+              </select>
+            </div>
+          </div>
+
+          <button onclick="App.goToStep(2)" class="w-full mt-5 bg-gradient-to-r from-med-500 to-med-600 text-white py-3.5 rounded-xl font-bold text-sm shadow-lg transition flex items-center justify-center gap-2">
+            Continue <i class="fas fa-arrow-right text-xs"></i>
+          </button>
         </div>
-        <h3 class="text-lg font-bold font-display text-gray-900">Join NEET Prep</h3>
-        <p class="text-xs text-gray-500">Start your medical journey</p>
-      </div>
-      <div class="flex bg-gray-100 rounded-lg p-1 mb-5">
-        <button id="tabIn" class="flex-1 py-2 rounded-md text-xs font-semibold transition bg-med-600 text-white shadow-sm" onclick="App.switchTab('in')">Sign In</button>
-        <button id="tabUp" class="flex-1 py-2 rounded-md text-xs font-semibold transition text-gray-500" onclick="App.switchTab('up')">Register</button>
-      </div>
-      <div id="formIn" class="space-y-3">
-        <input type="email" id="inEmail" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Email">
-        <input type="password" id="inPass" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Password">
-        <button onclick="App.signIn()" class="w-full bg-med-600 text-white py-2.5 rounded-xl font-semibold text-xs shadow-md">Sign In</button>
-      </div>
-      <div id="formUp" class="space-y-3 hidden">
-        <input type="text" id="upName" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Full Name">
-        <input type="email" id="upEmail" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Email">
-        <input type="tel" id="upPhone" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Phone">
-        <input type="password" id="upPass" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Password (min 8 chars)">
-        <button onclick="App.register()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-2.5 rounded-xl font-semibold text-xs shadow-md">Register & Start</button>
+
+        <!-- STEP 2: PASSWORD + REFERRAL -->
+        <div class="reg-step" id="step2">
+          <div class="text-center mb-5">
+            <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+              <i class="fas fa-lock text-white text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold font-display text-gray-900">Secure Your Account</h3>
+            <p class="text-xs text-gray-500 mt-1">Step 2 of 3 · Password + Referral</p>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Password *</label>
+              <input type="password" id="regPassword" class="form-input" placeholder="Min 6 characters" oninput="App.checkStrength(this.value)">
+              <div class="flex gap-1 mt-2">
+                <div class="h-1 flex-1 bg-gray-200 rounded-full" id="strengthBar1"></div>
+                <div class="h-1 flex-1 bg-gray-200 rounded-full" id="strengthBar2"></div>
+                <div class="h-1 flex-1 bg-gray-200 rounded-full" id="strengthBar3"></div>
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Confirm Password *</label>
+              <input type="password" id="regPassword2" class="form-input" placeholder="Re-enter password" oninput="App.checkMatch()">
+              <div id="matchMsg" class="text-[11px] mt-1.5 font-semibold"></div>
+            </div>
+
+            <!-- REFERRAL CODE - SILENT FIELD -->
+            <div class="pt-3 border-t border-gray-100">
+              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">
+                Referral Code <span class="text-gray-400 font-normal normal-case">(optional)</span>
+              </label>
+              <input type="text" id="referralCode" class="form-input" placeholder="Enter if you have one" oninput="App.checkReferral()" autocomplete="off">
+              <div id="referralMsg" class="text-[11px] mt-1.5 font-semibold"></div>
+            </div>
+          </div>
+
+          <div class="flex gap-3 mt-5">
+            <button onclick="App.goToStep(1)" class="flex-1 py-3.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm transition">
+              <i class="fas fa-arrow-left mr-1"></i>Back
+            </button>
+            <button onclick="App.goToStep(3)" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-med-500 to-med-600 text-white font-bold text-sm shadow-lg transition">
+              Continue <i class="fas fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: PAYMENT -->
+        <div class="reg-step" id="step3">
+          <div class="text-center mb-5">
+            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+              <i class="fas fa-rupee-sign text-white text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold font-display text-gray-900">Complete Payment</h3>
+            <p class="text-xs text-gray-500 mt-1">Step 3 of 3 · Enrollment fee</p>
+          </div>
+
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 border border-emerald-100 mb-4">
+            <div class="flex items-center justify-between pb-3 border-b border-emerald-100 mb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                  <i class="fas fa-stethoscope text-med-600"></i>
+                </div>
+                <div>
+                  <div class="font-bold text-gray-900 text-sm">NEET Premium Access</div>
+                  <div class="text-[10px] text-gray-500">Full course · Live + Recorded</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div id="finalAmount" class="text-2xl font-extrabold font-display text-emerald-600">₹500</div>
+                <div id="originalAmount" class="text-[10px] text-gray-400 line-through hidden">₹500</div>
+                <div id="amountLabel" class="text-[10px] text-gray-400">one-time</div>
+              </div>
+            </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>All subjects unlocked</div>
+              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Live classes access</div>
+              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Recorded lectures library</div>
+              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Test series + analytics</div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 rounded-xl p-3 mb-4 flex items-center gap-3">
+            <div id="summaryAvatar" class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">?</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-bold text-gray-900 text-xs truncate" id="summaryName">—</div>
+              <div class="text-[10px] text-gray-500 truncate" id="summaryEmail">—</div>
+            </div>
+            <button onclick="App.goToStep(1)" class="text-[10px] text-med-600 font-bold">Edit</button>
+          </div>
+
+          <div class="flex gap-3">
+            <button onclick="App.goToStep(2)" class="flex-1 py-3.5 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm transition">
+              <i class="fas fa-arrow-left mr-1"></i>Back
+            </button>
+            <button id="payNowBtn" onclick="App.startPayment()" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm shadow-lg transition flex items-center justify-center gap-2">
+              <i class="fas fa-credit-card"></i>Pay ₹500
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== ADMIN PANEL MODAL ===== -->
-  <div class="modal-slim fixed inset-0 bg-black/70 backdrop-blur-md z-[250] flex items-center justify-center p-3 sm:p-4" id="adminModal">
-    <div class="admin-modal rounded-2xl w-full max-w-3xl shadow-2xl relative max-h-[92vh] overflow-y-auto">
-      <!-- Admin Header -->
+  <!-- PROFILE MODAL -->
+  <div class="modal-slim fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-4" id="profileModal">
+    <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl relative max-h-[92vh] overflow-y-auto">
+      <button class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition z-20" onclick="App.closeProfile()">
+        <i class="fas fa-times text-gray-500 text-sm"></i>
+      </button>
+      <div class="p-6">
+        <div class="text-center mb-5">
+          <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <i class="fas fa-user-circle text-white text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold font-display text-gray-900">My Profile</h3>
+        </div>
+        <div class="flex justify-center mb-5">
+          <div class="profile-upload" onclick="document.getElementById('editProfileInput').click()">
+            <img id="editProfilePreview" alt="Profile">
+            <input type="file" id="editProfileInput" accept="image/*" class="hidden" onchange="App.handleEditImage(event)">
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Full Name</label>
+            <input type="text" id="editName" class="form-input">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Mobile</label>
+            <input type="tel" id="editPhone" class="form-input" maxlength="10">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Class</label>
+            <select id="editClass" class="form-input text-gray-700">
+              <option value="11th">11th</option>
+              <option value="12th">12th</option>
+              <option value="Dropper">Dropper</option>
+            </select>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 flex items-center gap-3">
+            <div class="w-9 h-9 bg-emerald-500 rounded-lg flex items-center justify-center">
+              <i class="fas fa-check-circle text-white text-sm"></i>
+            </div>
+            <div class="flex-1">
+              <div class="font-bold text-emerald-700 text-xs">Premium Member</div>
+              <div class="text-[10px] text-emerald-600/70">Valid till NEET 2026</div>
+            </div>
+          </div>
+          <button onclick="App.saveProfile()" class="w-full bg-gradient-to-r from-med-500 to-med-600 text-white py-3.5 rounded-xl font-bold text-sm shadow-lg transition">
+            <i class="fas fa-save mr-1"></i>Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="modal-slim fixed inset-0 bg-black/70 backdrop-blur-md z-[250] flex items-center justify-center p-2 sm:p-4" id="adminModal">
+    <div class="admin-modal rounded-2xl w-full max-w-3xl shadow-2xl relative max-h-[94vh] overflow-y-auto">
       <div class="sticky top-0 z-10 bg-gradient-to-r from-med-900 to-med-950 px-5 py-4 rounded-t-2xl border-b border-med-500/20 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -625,346 +713,295 @@
           </div>
           <div>
             <h2 class="text-white font-bold font-display text-base">Admin Panel</h2>
-            <p class="text-med-300/60 text-[10px] tracking-wider uppercase">THP-STARLET NEET Control</p>
+            <p class="text-med-300/60 text-[10px] tracking-wider uppercase">Manage Subjects & Content</p>
           </div>
         </div>
-        <button class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" onclick="App.closeAdmin()">
+        <button class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center" onclick="App.closeAdmin()">
           <i class="fas fa-times text-med-300 text-sm"></i>
         </button>
       </div>
 
-      <!-- Admin Tabs -->
-      <div class="px-5 pt-5 flex gap-2 border-b border-med-500/10">
-        <button id="adminTabSubjects" class="px-4 py-2.5 text-xs font-semibold text-med-300 border-b-2 border-med-500 transition rounded-t-lg" onclick="App.adminTab('subjects')">
-          <i class="fas fa-book-medical mr-1.5"></i>Subjects
-        </button>
-        <button id="adminTabSettings" class="px-4 py-2.5 text-xs font-semibold text-med-300/50 border-b-2 border-transparent transition rounded-t-lg" onclick="App.adminTab('settings')">
-          <i class="fas fa-cog mr-1.5"></i>Settings
-        </button>
-      </div>
+      <div class="p-5 space-y-5">
+        <div class="bg-white/4 rounded-2xl p-5 border border-med-500/10">
+          <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+            <i class="fas fa-plus-circle text-med-400"></i>
+            <span id="adminFormTitle">Add / Update Subject</span>
+          </h3>
 
-      <!-- Admin Content -->
-      <div class="p-5">
-
-        <!-- ===== SUBJECTS TAB ===== -->
-        <div id="adminSubjectsTab">
-          <!-- Upload Form -->
-          <div class="bg-white/4 rounded-2xl p-5 border border-med-500/10 mb-5">
-            <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
-              <i class="fas fa-plus-circle text-med-400"></i>Add / Update Subject
-            </h3>
-            
-            <form id="subjectForm" class="space-y-4" onsubmit="return false;">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Subject Name -->
-                <div>
-                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Subject Name</label>
-                  <input type="text" id="subjName" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="e.g., Physics" required>
-                </div>
-                <!-- Difficulty -->
-                <div>
-                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Difficulty Level</label>
-                  <select id="subjDifficulty" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs appearance-none cursor-pointer">
-                    <option value="Easy">Easy</option>
-                    <option value="Medium" selected>Medium</option>
-                    <option value="Hard">Hard</option>
-                  </select>
-                </div>
-                <!-- Chapters -->
-                <div>
-                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Chapters</label>
-                  <input type="text" id="subjChapters" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="e.g., 28 Chapters" required>
-                </div>
-                <!-- Questions -->
-                <div>
-                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Total Questions</label>
-                  <input type="text" id="subjQuestions" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="e.g., 2,500+" required>
-                </div>
-                <!-- Progress -->
-                <div>
-                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Progress (%)</label>
-                  <input type="number" id="subjProgress" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="0-100" min="0" max="100" value="50" required>
-                </div>
-                <!-- Subject ID (for updates) -->
-                <div>
-                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Subject ID (auto for new)</label>
-                  <input type="text" id="subjId" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="Leave empty for new" readonly style="opacity:0.6;">
-                </div>
-              </div>
-
-              <!-- Thumbnail Upload -->
+          <form id="subjectForm" class="space-y-4" onsubmit="return false;">
+            <input type="hidden" id="subjId" value="">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Thumbnail Image (16:9 recommended)</label>
-                <div class="thumb-upload-zone p-4" id="thumbUploadZone" onclick="document.getElementById('thumbInput').click()">
-                  <input type="file" id="thumbInput" accept="image/*" class="hidden" onchange="App.handleThumbSelect(event)">
-                  <div id="thumbPlaceholder" class="text-center py-4">
-                    <div class="w-14 h-14 bg-med-500/10 rounded-xl flex items-center justify-center mx-auto mb-2">
-                      <i class="fas fa-cloud-upload-alt text-med-400 text-xl"></i>
-                    </div>
-                    <p class="text-med-200 text-xs font-medium mb-1">Click or drag to upload</p>
-                    <p class="text-med-300/50 text-[10px]">PNG, JPG up to 5MB · 16:9 ratio</p>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Subject Name *</label>
+                <input type="text" id="subjName" class="admin-input" placeholder="e.g., Physics" required>
+              </div>
+              <div>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Icon (Emoji)</label>
+                <input type="text" id="subjIcon" class="admin-input" placeholder="⚡" maxlength="4" value="📚">
+              </div>
+              <div>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Chapters *</label>
+                <input type="text" id="subjChapters" class="admin-input" placeholder="e.g., 28 Chapters" required>
+              </div>
+              <div>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Questions *</label>
+                <input type="text" id="subjQuestions" class="admin-input" placeholder="e.g., 2,500+" required>
+              </div>
+              <div>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Progress (%)</label>
+                <input type="number" id="subjProgress" class="admin-input" placeholder="0-100" min="0" max="100" value="50">
+              </div>
+              <div>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Difficulty</label>
+                <select id="subjDifficulty" class="admin-input cursor-pointer">
+                  <option value="Easy">Easy</option>
+                  <option value="Medium" selected>Medium</option>
+                  <option value="Hard">Hard</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Color Theme</label>
+                <select id="subjColor" class="admin-input cursor-pointer">
+                  <option value="blue">Blue</option>
+                  <option value="emerald" selected>Emerald</option>
+                  <option value="purple">Purple</option>
+                  <option value="amber">Amber</option>
+                  <option value="red">Red</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Display Order</label>
+                <input type="number" id="subjOrder" class="admin-input" placeholder="1, 2, 3..." value="1">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-med-300 text-[11px] font-medium mb-1.5">Description</label>
+              <textarea id="subjDescription" class="admin-input resize-none" rows="2" placeholder="Short description..."></textarea>
+            </div>
+
+            <div>
+              <label class="block text-med-300 text-[11px] font-medium mb-1.5">Thumbnail Image (16:9) *</label>
+              <div class="thumb-upload-zone" id="thumbZone" onclick="document.getElementById('thumbInput').click()">
+                <input type="file" id="thumbInput" accept="image/*" class="hidden" onchange="App.handleThumb(event)">
+                <div id="thumbPlaceholder" class="text-center py-4">
+                  <div class="w-14 h-14 bg-med-500/10 rounded-xl flex items-center justify-center mx-auto mb-2">
+                    <i class="fas fa-cloud-upload-alt text-med-400 text-xl"></i>
                   </div>
-                  <div id="thumbPreviewWrap" class="hidden">
-                    <img id="thumbPreview" class="thumb-preview-img" alt="Preview">
-                    <div class="flex items-center justify-between mt-2">
-                      <span id="thumbFileName" class="text-med-300 text-[10px] truncate flex-1 mr-2"></span>
-                      <button type="button" onclick="event.stopPropagation(); App.removeThumb()" class="text-red-400 hover:text-red-300 text-[10px] font-semibold">
-                        <i class="fas fa-trash mr-1"></i>Remove
-                      </button>
-                    </div>
-                  </div>
-                  <div class="upload-progress hidden" id="uploadProgress">
-                    <div class="upload-progress-bar" id="uploadProgressBar"></div>
+                  <p class="text-med-200 text-xs font-medium mb-1">Click or drag to upload</p>
+                  <p class="text-med-300/50 text-[10px]">PNG, JPG up to 5MB · 16:9</p>
+                </div>
+                <div id="thumbPreviewWrap" class="hidden">
+                  <img id="thumbPreview" class="thumb-preview-img" alt="Preview">
+                  <div class="flex items-center justify-between mt-2">
+                    <span id="thumbFileName" class="text-med-300 text-[10px] truncate flex-1 mr-2"></span>
+                    <button type="button" onclick="event.stopPropagation(); App.removeThumb()" class="text-red-400 hover:text-red-300 text-[10px] font-semibold">
+                      <i class="fas fa-trash mr-1"></i>Remove
+                    </button>
                   </div>
                 </div>
-                <input type="hidden" id="subjThumbUrl" value="">
+                <div class="upload-progress hidden" id="uploadProgress">
+                  <div class="upload-progress-bar" id="uploadProgressBar"></div>
+                </div>
               </div>
-
-              <!-- Action Buttons -->
-              <div class="flex gap-3 pt-2">
-                <button type="button" onclick="App.saveSubject()" class="flex-1 bg-gradient-to-r from-med-500 to-med-600 hover:from-med-600 hover:to-med-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-med-500/20 transition flex items-center justify-center gap-2">
-                  <i class="fas fa-save"></i><span id="saveBtnText">Save Subject</span>
-                </button>
-                <button type="button" onclick="App.resetSubjectForm()" class="px-4 bg-white/5 hover:bg-white/10 text-med-200 py-3 rounded-xl font-semibold text-xs transition">
-                  <i class="fas fa-undo"></i>
-                </button>
-              </div>
-            </form>
-          </div>
-
-          <!-- Existing Subjects List -->
-          <div>
-            <h3 class="text-white font-semibold text-sm mb-3 flex items-center gap-2">
-              <i class="fas fa-list text-med-400"></i>Existing Subjects
-              <span class="ml-auto text-[10px] text-med-300/60" id="adminSubjCount">0 subjects</span>
-            </h3>
-            <div id="adminSubjectsList" class="space-y-2">
-              <div class="text-center py-6 text-med-300/40 text-xs">Loading subjects...</div>
+              <input type="hidden" id="subjThumbUrl" value="">
             </div>
-          </div>
+
+            <div class="flex gap-3 pt-2">
+              <button type="button" onclick="App.saveSubject()" class="flex-1 bg-gradient-to-r from-med-500 to-med-600 text-white py-3 rounded-xl font-semibold text-xs shadow-lg transition flex items-center justify-center gap-2">
+                <i class="fas fa-save"></i><span id="saveBtnText">Save Subject</span>
+              </button>
+              <button type="button" onclick="App.resetSubjectForm()" class="px-4 bg-white/5 hover:bg-white/10 text-med-200 py-3 rounded-xl font-semibold text-xs transition">
+                <i class="fas fa-undo"></i>
+              </button>
+            </div>
+          </form>
         </div>
 
-        <!-- ===== SETTINGS TAB ===== -->
-        <div id="adminSettingsTab" class="hidden">
-          <div class="bg-white/4 rounded-2xl p-5 border border-med-500/10">
-            <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
-              <i class="fas fa-database text-med-400"></i>Firebase & ImgBB Info
-            </h3>
-            <div class="space-y-3 text-xs">
-              <div class="flex justify-between items-center py-2 border-b border-med-500/10">
-                <span class="text-med-300/60">Firebase Project</span>
-                <span class="text-med-200 font-mono">mine-a1e68</span>
-              </div>
-              <div class="flex justify-between items-center py-2 border-b border-med-500/10">
-                <span class="text-med-300/60">ImgBB API Key</span>
-                <span class="text-med-200 font-mono">53fb01...8500a</span>
-              </div>
-              <div class="flex justify-between items-center py-2">
-                <span class="text-med-300/60">Storage</span>
-                <span class="text-emerald-400 font-mono">ImgBB Cloud</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 mt-4">
-            <div class="flex gap-3">
-              <i class="fas fa-info-circle text-amber-400 mt-0.5"></i>
-              <div>
-                <h4 class="text-amber-300 font-semibold text-xs mb-1">How to add a subject</h4>
-                <ol class="text-amber-200/70 text-[11px] space-y-1 list-decimal list-inside">
-                  <li>Fill all fields above</li>
-                  <li>Upload a 16:9 thumbnail image</li>
-                  <li>Click Save Subject</li>
-                  <li>Image uploads to ImgBB automatically</li>
-                  <li>Subject appears on homepage instantly</li>
-                </ol>
-              </div>
-            </div>
+        <div>
+          <h3 class="text-white font-semibold text-sm mb-3 flex items-center gap-2">
+            <i class="fas fa-list text-med-400"></i>Existing Subjects
+            <span class="ml-auto text-[10px] text-med-300/60" id="adminSubjCount">0 subjects</span>
+          </h3>
+          <div id="adminSubjectsList" class="space-y-2">
+            <div class="text-center py-6 text-med-300/40 text-xs">Loading subjects...</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div class="fixed bottom-6 right-3 sm:right-5 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
+  <div class="fixed bottom-6 right-4 sm:right-6 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
 
   <script>
     (function() {
-      // ===== NEW FIREBASE CONFIG =====
-      const fb = {
-        apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
-        authDomain: "mine-a1e68.firebaseapp.com",
-        projectId: "mine-a1e68",
-        storageBucket: "mine-a1e68.appspot.com",
-        messagingSenderId: "48499757892",
-        appId: "1:48499757892:web:d0fd281ab0df945e893d11"
-      };
-      
+      // ========== CONFIG ==========
+      const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS';
       const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
-      
+      const ENROLLMENT_AMOUNT = 50000; // ₹500 in paise
+      const DISCOUNTED_AMOUNT = 1000; // ₹10 in paise (referral)
+      const REFERRAL_CODE = 'mg786'; // Hidden referral code
+      const ADMIN_EMAILS = ['mgbhaukali@gmail.com'];
+
+      // ========== FIREBASE ==========
+      const fb = {
+        apiKey: "AIzaSyASP6S4EE4p40LBrzrTW8CBcKRmPo-lrck",
+        authDomain: "neet-d6d95.firebaseapp.com",
+        projectId: "neet-d6d95",
+        storageBucket: "neet-d6d95.firebasestorage.app",
+        messagingSenderId: "54376928116",
+        appId: "1:54376928116:web:e29e44073162ec1c301221"
+      };
       firebase.initializeApp(fb);
       const auth = firebase.auth();
       const db = firebase.firestore();
-      let user = null;
+
+      // ========== STATE ==========
+      let currentUser = null;
+      let userProfile = null;
+      let isAdmin = false;
       let currentSubjects = [];
+      let editingSubjectId = null;
+      let selectedThumbFile = null;
+      let referralApplied = false;
+      let tempProfile = {
+        name: '', email: '', phone: '',
+        userClass: '12th', target: 'NEET 2026',
+        avatarFile: null, avatarUrl: '',
+        referralUsed: false
+      };
 
-      // ===== TOAST =====
-      function toast(m, t = 'info') {
+      // ========== TOAST ==========
+      function toast(msg, type = 'info') {
         const c = document.getElementById('toastContainer');
-        const i = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        const colors = { success: 'border-emerald-500', error: 'border-red-500', warning: 'border-amber-500', info: 'border-blue-500' };
         const d = document.createElement('div');
-        d.className = 'bg-white border-l-2 border-med-500 rounded-lg px-4 py-2.5 shadow-lg text-xs font-medium text-gray-800 toast-pop';
-        d.textContent = `${i[t]||i.info} ${m}`;
+        d.className = `bg-white border-l-4 ${colors[type]} rounded-xl px-4 py-3 shadow-xl text-sm font-medium text-gray-800 toast-pop flex items-center gap-2 max-w-xs`;
+        d.innerHTML = `<span>${icons[type]}</span><span class="flex-1">${msg}</span>`;
         c.appendChild(d);
-        setTimeout(() => { d.style.opacity = '0'; d.style.transform = 'translateY(-10px)'; d.style.transition = 'all 0.3s'; setTimeout(() => d.remove(), 300); }, 3000);
+        setTimeout(() => {
+          d.style.opacity = '0';
+          d.style.transform = 'translateX(60px)';
+          d.style.transition = 'all 0.35s';
+          setTimeout(() => d.remove(), 350);
+        }, 3200);
       }
 
-      // ===== IMGBB UPLOAD =====
+      // ========== IMGBB UPLOAD ==========
       async function uploadToImgBB(file) {
-        if (!file) return null;
-        if (file.size > 5 * 1024 * 1024) {
-          toast('Image too large (max 5MB)', 'error');
-          return null;
-        }
-        
-        const formData = new FormData();
-        formData.append('image', file);
-        
+        if (!file) return '';
+        if (file.size > 5 * 1024 * 1024) { toast('Image too large (max 5MB)', 'error'); return ''; }
+        const fd = new FormData();
+        fd.append('image', file);
         try {
-          const resp = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-            method: 'POST',
-            body: formData
-          });
-          const json = await resp.json();
-          if (json.success) {
-            return json.data.url;
-          } else {
-            throw new Error(json.error?.message || 'Upload failed');
-          }
-        } catch (e) {
-          console.error('ImgBB upload error:', e);
-          toast('Image upload failed: ' + e.message, 'error');
-          return null;
-        }
+          const r = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: fd });
+          const j = await r.json();
+          return j.success ? j.data.url : '';
+        } catch (e) { console.error('ImgBB error:', e); return ''; }
       }
 
-      // ===== LOAD SUBJECTS FROM FIRESTORE =====
+      // ========== AUTH STATE ==========
+      auth.onAuthStateChanged(async (user) => {
+        currentUser = user;
+        const enrollBtn = document.getElementById('enrollBtn');
+        const userMenu = document.getElementById('userMenu');
+        const adminBtn = document.getElementById('adminBtn');
+        const addSubjectBtn = document.getElementById('addSubjectBtn');
+        const mobileAdminBtn = document.getElementById('mobileAdminBtn');
+
+        if (user) {
+          if (enrollBtn) enrollBtn.style.display = 'none';
+          if (userMenu) { userMenu.classList.remove('hidden'); userMenu.classList.add('flex'); }
+          try {
+            const doc = await db.collection('users').doc(user.uid).get();
+            userProfile = doc.exists ? doc.data() : { name: user.displayName || 'Student', email: user.email };
+            document.getElementById('userName').textContent = userProfile.name || 'Student';
+            if (userProfile.avatar) {
+              const img = document.getElementById('headerAvatar');
+              img.src = userProfile.avatar;
+              img.classList.remove('hidden');
+            }
+          } catch (e) { console.error(e); }
+
+          isAdmin = ADMIN_EMAILS.includes(user.email);
+          if (isAdmin) {
+            adminBtn?.classList.remove('hidden');
+            mobileAdminBtn?.classList.remove('hidden');
+            addSubjectBtn?.classList.remove('hidden');
+          }
+        } else {
+          if (enrollBtn) enrollBtn.style.display = 'inline-flex';
+          if (userMenu) { userMenu.classList.add('hidden'); userMenu.classList.remove('flex'); }
+          isAdmin = false;
+          adminBtn?.classList.add('hidden');
+          mobileAdminBtn?.classList.add('hidden');
+          addSubjectBtn?.classList.add('hidden');
+        }
+      });
+
+      // ========== LOAD SUBJECTS ==========
       async function loadSubjects() {
         const container = document.getElementById('subjectsContainer');
-        const adminList = document.getElementById('adminSubjectsList');
-        if (!container) return;
-
         try {
-          // First check if subjects collection has data
-          const snapshot = await db.collection('subjects').orderBy('createdAt', 'desc').get();
-          
-          if (snapshot.empty) {
-            // Seed default subjects if empty
-            await seedDefaultSubjects();
+          const snap = await db.collection('subjects').orderBy('order', 'asc').get();
+          if (snap.empty) {
+            await seedDefaults();
             return loadSubjects();
           }
-
           currentSubjects = [];
-          snapshot.forEach(doc => {
-            currentSubjects.push({ id: doc.id, ...doc.data() });
-          });
-
-          renderSubjects(currentSubjects);
-          renderAdminList(currentSubjects);
-          
+          snap.forEach(doc => currentSubjects.push({ id: doc.id, ...doc.data() }));
           document.getElementById('subjectCount').textContent = `${currentSubjects.length} Subjects`;
           document.getElementById('adminSubjCount').textContent = `${currentSubjects.length} subjects`;
+          renderSubjects();
+          renderAdminList();
         } catch (e) {
-          console.error('Load subjects error:', e);
-          container.innerHTML = `<div class="col-span-3 text-center py-8 text-gray-400 text-xs">Error loading subjects</div>`;
+          console.error(e);
+          try {
+            const snap = await db.collection('subjects').get();
+            currentSubjects = [];
+            snap.forEach(doc => currentSubjects.push({ id: doc.id, ...doc.data() }));
+            renderSubjects();
+          } catch (err) {
+            container.innerHTML = `<div class="col-span-3 text-center py-8 text-gray-400 text-xs">Error loading</div>`;
+          }
         }
       }
 
-      // ===== SEED DEFAULT SUBJECTS =====
-      async function seedDefaultSubjects() {
+      async function seedDefaults() {
         const defaults = [
-          {
-            name: 'Physics',
-            slug: 'physics',
-            icon: '⚡',
-            chapters: '28 Chapters',
-            questions: '2,500+',
-            progress: 75,
-            difficulty: 'Medium',
-            thumbnail: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=600&h=400&fit=crop',
-            color: 'blue',
-            order: 1,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          },
-          {
-            name: 'Chemistry',
-            slug: 'chemistry',
-            icon: '🧪',
-            chapters: '24 Chapters',
-            questions: '2,100+',
-            progress: 62,
-            difficulty: 'Easy',
-            thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600&h=400&fit=crop',
-            color: 'emerald',
-            order: 2,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          },
-          {
-            name: 'Biology',
-            slug: 'biology',
-            icon: '🧬',
-            chapters: '32 Chapters',
-            questions: '3,200+',
-            progress: 48,
-            difficulty: 'Hard',
-            thumbnail: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop',
-            color: 'purple',
-            order: 3,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          }
+          { name: 'Physics', slug: 'physics', icon: '⚡', chapters: '28 Chapters', questions: '2,500+', progress: 75, difficulty: 'Medium', color: 'blue', order: 1, thumbnail: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=800&h=450&fit=crop', description: 'Complete NEET Physics', createdAt: firebase.firestore.FieldValue.serverTimestamp() },
+          { name: 'Chemistry', slug: 'chemistry', icon: '🧪', chapters: '24 Chapters', questions: '2,100+', progress: 62, difficulty: 'Easy', color: 'emerald', order: 2, thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop', description: 'Physical, Organic & Inorganic', createdAt: firebase.firestore.FieldValue.serverTimestamp() },
+          { name: 'Biology', slug: 'biology', icon: '🧬', chapters: '32 Chapters', questions: '3,200+', progress: 48, difficulty: 'Hard', color: 'purple', order: 3, thumbnail: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&h=450&fit=crop', description: 'Botany & Zoology', createdAt: firebase.firestore.FieldValue.serverTimestamp() }
         ];
-
         const batch = db.batch();
-        defaults.forEach(subj => {
-          const ref = db.collection('subjects').doc(subj.slug);
-          batch.set(ref, subj);
-        });
+        defaults.forEach(s => batch.set(db.collection('subjects').doc(s.slug), s));
         await batch.commit();
-        toast('Default subjects created', 'success');
       }
 
-      // ===== RENDER SUBJECT CARDS =====
-      function renderSubjects(subjects) {
+      function renderSubjects() {
         const container = document.getElementById('subjectsContainer');
-        if (!container) return;
-        
-        if (!subjects.length) {
-          container.innerHTML = `<div class="col-span-3 text-center py-8 text-gray-400 text-xs">No subjects yet</div>`;
+        const colorMap = {
+          blue: 'from-blue-500 to-cyan-500',
+          emerald: 'from-emerald-500 to-teal-500',
+          purple: 'from-purple-500 to-pink-500',
+          amber: 'from-amber-500 to-orange-500',
+          red: 'from-red-500 to-pink-500',
+        };
+        if (!currentSubjects.length) {
+          container.innerHTML = `<div class="col-span-3 text-center py-12 text-gray-400 text-sm">No subjects yet</div>`;
           return;
         }
-
-        const colorMap = {
-          blue: { grad: 'from-blue-500 to-cyan-500', badge: 'bg-amber-50 text-amber-700' },
-          emerald: { grad: 'from-emerald-500 to-teal-500', badge: 'bg-emerald-50 text-emerald-700' },
-          purple: { grad: 'from-purple-500 to-pink-500', badge: 'bg-red-50 text-red-700' },
-          amber: { grad: 'from-amber-500 to-orange-500', badge: 'bg-amber-50 text-amber-700' },
-          red: { grad: 'from-red-500 to-pink-500', badge: 'bg-red-50 text-red-700' },
-        };
-
-        container.innerHTML = subjects.map(subj => {
+        container.innerHTML = currentSubjects.map(subj => {
           const colors = colorMap[subj.color] || colorMap.blue;
           const badgeClass = subj.difficulty === 'Easy' ? 'bg-emerald-50 text-emerald-700' 
                             : subj.difficulty === 'Hard' ? 'bg-red-50 text-red-700' 
                             : 'bg-amber-50 text-amber-700';
-          
           return `
-            <div class="card-slim rounded-2xl overflow-hidden group cursor-pointer" onclick="App.subjectClick('${subj.slug}')">
+            <div class="card-slim rounded-2xl overflow-hidden group cursor-pointer" onclick="App.openSubject('${subj.slug}')">
               <div class="relative h-32 sm:h-36 overflow-hidden">
                 <img src="${subj.thumbnail || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop'}" 
-                     alt="${subj.name}" 
-                     class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
-                     onerror="this.src='https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop'">
+                     alt="${subj.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-med-900/70 to-transparent"></div>
                 <div class="absolute bottom-3 left-3 text-white">
                   <span class="text-lg">${subj.icon || '📚'}</span>
@@ -981,7 +1018,7 @@
                   <span class="${badgeClass} px-2 py-0.5 rounded-full font-semibold">${subj.difficulty}</span>
                 </div>
                 <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden mb-2">
-                  <div class="h-full bg-gradient-to-r ${colors.grad} rounded-full" style="width:${subj.progress}%"></div>
+                  <div class="h-full bg-gradient-to-r ${colors} rounded-full" style="width:${subj.progress}%"></div>
                 </div>
                 <div class="flex justify-between text-[10px] text-gray-400">
                   <span>${subj.questions} Qs</span>
@@ -993,28 +1030,25 @@
         }).join('');
       }
 
-      // ===== RENDER ADMIN LIST =====
-      function renderAdminList(subjects) {
+      function renderAdminList() {
         const list = document.getElementById('adminSubjectsList');
         if (!list) return;
-        
-        if (!subjects.length) {
-          list.innerHTML = `<div class="text-center py-6 text-med-300/40 text-xs">No subjects yet</div>`;
+        if (!currentSubjects.length) {
+          list.innerHTML = `<div class="text-center py-6 text-med-300/40 text-xs">No subjects</div>`;
           return;
         }
-
-        list.innerHTML = subjects.map(subj => `
+        list.innerHTML = currentSubjects.map(s => `
           <div class="flex items-center gap-3 bg-white/3 hover:bg-white/6 rounded-xl p-3 border border-med-500/10 transition">
-            <img src="${subj.thumbnail}" class="w-14 h-10 object-cover rounded-lg flex-shrink-0" onerror="this.src='https://via.placeholder.com/60x40/059669/ffffff?text=IMG'">
+            <img src="${s.thumbnail}" class="w-14 h-10 object-cover rounded-lg flex-shrink-0" onerror="this.src='https://via.placeholder.com/60x40/059669/ffffff?text=IMG'">
             <div class="flex-1 min-w-0">
-              <div class="text-med-100 text-xs font-semibold truncate">${subj.icon || '📚'} ${subj.name}</div>
-              <div class="text-med-300/50 text-[10px] truncate">${subj.chapters} · ${subj.questions} Qs · ${subj.progress}%</div>
+              <div class="text-med-100 text-xs font-semibold truncate">${s.icon || '📚'} ${s.name}</div>
+              <div class="text-med-300/50 text-[10px] truncate">${s.chapters} · ${s.questions} · ${s.progress}%</div>
             </div>
             <div class="flex gap-1.5">
-              <button onclick="App.editSubject('${subj.id}')" class="w-7 h-7 bg-med-500/15 hover:bg-med-500/25 rounded-lg flex items-center justify-center text-med-300 transition" title="Edit">
+              <button onclick="App.editSubject('${s.id}')" class="w-7 h-7 bg-med-500/15 hover:bg-med-500/25 rounded-lg flex items-center justify-center text-med-300 transition">
                 <i class="fas fa-edit text-[10px]"></i>
               </button>
-              <button onclick="App.deleteSubject('${subj.id}')" class="w-7 h-7 bg-red-500/15 hover:bg-red-500/25 rounded-lg flex items-center justify-center text-red-300 transition" title="Delete">
+              <button onclick="App.deleteSubject('${s.id}', '${s.name}')" class="w-7 h-7 bg-red-500/15 hover:bg-red-500/25 rounded-lg flex items-center justify-center text-red-300 transition">
                 <i class="fas fa-trash text-[10px]"></i>
               </button>
             </div>
@@ -1022,21 +1056,32 @@
         `).join('');
       }
 
-      // ===== ADMIN STATE =====
-      let editingSubjectId = null;
-      let selectedThumbFile = null;
+      // ========== ADMIN ==========
+      function openAdmin() {
+        if (!isAdmin) return toast('Admin access required', 'error');
+        document.getElementById('adminModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        loadSubjects();
+      }
+      function closeAdmin() {
+        document.getElementById('adminModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      function openAdminSubjectModal() {
+        if (!isAdmin) return toast('Admin access required', 'error');
+        openAdmin();
+        document.getElementById('subjectForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
 
-      function handleThumbSelect(event) {
-        const file = event.target.files[0];
+      function handleThumb(e) {
+        const file = e.target.files?.[0];
         if (!file) return;
-        if (file.size > 5 * 1024 * 1024) {
-          toast('Image too large (max 5MB)', 'error');
-          return;
-        }
+        if (file.size > 5 * 1024 * 1024) return toast('Image too large', 'error');
+        if (!file.type.startsWith('image/')) return toast('Select an image', 'error');
         selectedThumbFile = file;
         const reader = new FileReader();
-        reader.onload = (e) => {
-          document.getElementById('thumbPreview').src = e.target.result;
+        reader.onload = (ev) => {
+          document.getElementById('thumbPreview').src = ev.target.result;
           document.getElementById('thumbPreviewWrap').classList.remove('hidden');
           document.getElementById('thumbPlaceholder').classList.add('hidden');
           document.getElementById('thumbFileName').textContent = file.name;
@@ -1054,241 +1099,438 @@
 
       function resetSubjectForm() {
         document.getElementById('subjName').value = '';
+        document.getElementById('subjIcon').value = '📚';
         document.getElementById('subjChapters').value = '';
         document.getElementById('subjQuestions').value = '';
         document.getElementById('subjProgress').value = '50';
         document.getElementById('subjDifficulty').value = 'Medium';
+        document.getElementById('subjColor').value = 'emerald';
+        document.getElementById('subjOrder').value = currentSubjects.length + 1;
+        document.getElementById('subjDescription').value = '';
         document.getElementById('subjId').value = '';
         document.getElementById('saveBtnText').textContent = 'Save Subject';
+        document.getElementById('adminFormTitle').textContent = 'Add / Update Subject';
         editingSubjectId = null;
         removeThumb();
       }
 
       async function saveSubject() {
+        if (!isAdmin) return toast('Admin access required', 'error');
         const name = document.getElementById('subjName').value.trim();
+        const icon = document.getElementById('subjIcon').value.trim() || '📚';
         const chapters = document.getElementById('subjChapters').value.trim();
         const questions = document.getElementById('subjQuestions').value.trim();
-        const progress = parseInt(document.getElementById('subjProgress').value) || 50;
+        const progress = Math.min(100, Math.max(0, parseInt(document.getElementById('subjProgress').value) || 50));
         const difficulty = document.getElementById('subjDifficulty').value;
+        const color = document.getElementById('subjColor').value;
+        const order = parseInt(document.getElementById('subjOrder').value) || 1;
+        const description = document.getElementById('subjDescription').value.trim();
         let thumbUrl = document.getElementById('subjThumbUrl').value;
-        const iconMap = { 'Physics': '⚡', 'Chemistry': '🧪', 'Biology': '🧬', 'Mathematics': '📐', 'English': '📖', 'GK': '🌍' };
-        const colorMap = { 'Easy': 'emerald', 'Medium': 'amber', 'Hard': 'red' };
 
-        if (!name || !chapters || !questions) {
-          toast('Please fill all required fields', 'warning');
-          return;
-        }
+        if (!name || !chapters || !questions) return toast('Fill required fields', 'warning');
+        if (!thumbUrl && !selectedThumbFile && !editingSubjectId) return toast('Upload a thumbnail', 'warning');
 
-        const saveBtn = document.querySelector('#subjectForm button[onclick*="saveSubject"]');
-        const originalText = document.getElementById('saveBtnText').textContent;
+        const btn = document.querySelector('#subjectForm button[onclick*="saveSubject"]');
+        const origText = document.getElementById('saveBtnText').textContent;
+        btn.disabled = true;
         document.getElementById('saveBtnText').textContent = 'Saving...';
-        saveBtn.disabled = true;
 
         try {
-          // Upload new thumbnail if selected
           if (selectedThumbFile) {
             document.getElementById('uploadProgress').classList.remove('hidden');
             document.getElementById('uploadProgressBar').style.width = '30%';
-            toast('Uploading thumbnail to ImgBB...', 'info');
-            
+            toast('Uploading thumbnail...', 'info');
             thumbUrl = await uploadToImgBB(selectedThumbFile);
             document.getElementById('uploadProgressBar').style.width = '100%';
-            
-            if (!thumbUrl) {
-              throw new Error('Thumbnail upload failed');
-            }
+            if (!thumbUrl) throw new Error('Upload failed');
           }
-
           const slug = name.toLowerCase().replace(/\s+/g, '-');
-          const subjectData = {
-            name,
-            slug,
-            icon: iconMap[name] || '📚',
+          const data = {
+            name, slug, icon,
             chapters: chapters.includes('Chapter') ? chapters : `${chapters} Chapters`,
             questions: questions.includes('+') ? questions : `${questions}+`,
-            progress: Math.min(100, Math.max(0, progress)),
-            difficulty,
-            thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop',
-            color: colorMap[difficulty] || 'blue',
-            order: editingSubjectId ? undefined : Date.now(),
+            progress, difficulty, color, order, description,
+            thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&h=450&fit=crop',
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           };
-
           if (editingSubjectId) {
-            // Update existing
-            await db.collection('subjects').doc(editingSubjectId).update(subjectData);
+            await db.collection('subjects').doc(editingSubjectId).update(data);
             toast('Subject updated! ✅', 'success');
           } else {
-            // Create new
-            subjectData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-            await db.collection('subjects').doc(slug).set(subjectData);
-            toast('Subject added! ✅', 'success');
+            data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            await db.collection('subjects').doc(slug).set(data);
+            toast('Subject added! 🎉', 'success');
           }
-
           resetSubjectForm();
           await loadSubjects();
           document.getElementById('uploadProgress').classList.add('hidden');
         } catch (e) {
-          console.error('Save error:', e);
           toast('Error: ' + e.message, 'error');
         } finally {
-          document.getElementById('saveBtnText').textContent = originalText;
-          saveBtn.disabled = false;
+          btn.disabled = false;
+          document.getElementById('saveBtnText').textContent = origText;
         }
       }
 
       function editSubject(id) {
-        const subj = currentSubjects.find(s => s.id === id);
-        if (!subj) return;
-
+        const s = currentSubjects.find(x => x.id === id);
+        if (!s) return;
         editingSubjectId = id;
-        document.getElementById('subjName').value = subj.name || '';
-        document.getElementById('subjChapters').value = (subj.chapters || '').replace(' Chapters', '');
-        document.getElementById('subjQuestions').value = (subj.questions || '').replace('+', '').replace(' Qs', '');
-        document.getElementById('subjProgress').value = subj.progress || 50;
-        document.getElementById('subjDifficulty').value = subj.difficulty || 'Medium';
+        document.getElementById('subjName').value = s.name || '';
+        document.getElementById('subjIcon').value = s.icon || '📚';
+        document.getElementById('subjChapters').value = (s.chapters || '').replace(' Chapters', '');
+        document.getElementById('subjQuestions').value = (s.questions || '').replace('+', '');
+        document.getElementById('subjProgress').value = s.progress || 50;
+        document.getElementById('subjDifficulty').value = s.difficulty || 'Medium';
+        document.getElementById('subjColor').value = s.color || 'emerald';
+        document.getElementById('subjOrder').value = s.order || 1;
+        document.getElementById('subjDescription').value = s.description || '';
         document.getElementById('subjId').value = id;
         document.getElementById('saveBtnText').textContent = 'Update Subject';
-
-        // Show existing thumbnail
-        if (subj.thumbnail) {
-          document.getElementById('subjThumbUrl').value = subj.thumbnail;
-          document.getElementById('thumbPreview').src = subj.thumbnail;
+        document.getElementById('adminFormTitle').textContent = `Edit: ${s.name}`;
+        if (s.thumbnail) {
+          document.getElementById('subjThumbUrl').value = s.thumbnail;
+          document.getElementById('thumbPreview').src = s.thumbnail;
           document.getElementById('thumbPreviewWrap').classList.remove('hidden');
           document.getElementById('thumbPlaceholder').classList.add('hidden');
           document.getElementById('thumbFileName').textContent = 'Current image';
         }
-
-        // Scroll to form
         document.getElementById('subjectForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        toast('Editing: ' + subj.name, 'info');
       }
 
-      async function deleteSubject(id) {
-        const subj = currentSubjects.find(s => s.id === id);
-        if (!confirm(`Delete "${subj?.name}"? This cannot be undone.`)) return;
-        
+      async function deleteSubject(id, name) {
+        if (!isAdmin) return;
+        if (!confirm(`Delete "${name}"?`)) return;
         try {
           await db.collection('subjects').doc(id).delete();
           toast('Subject deleted', 'success');
           await loadSubjects();
-        } catch (e) {
-          toast('Delete failed: ' + e.message, 'error');
-        }
+        } catch (e) { toast('Delete failed', 'error'); }
       }
 
-      function adminTab(tab) {
-        const subjTab = document.getElementById('adminSubjectsTab');
-        const setTab = document.getElementById('adminSettingsTab');
-        const subjBtn = document.getElementById('adminTabSubjects');
-        const setBtn = document.getElementById('adminTabSettings');
+      // ========== REGISTRATION ==========
+      function handleProfileImage(e) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) return toast('Image too large', 'error');
+        tempProfile.avatarFile = file;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          document.getElementById('profilePreview').src = ev.target.result;
+          document.getElementById('profilePreview').classList.remove('hidden');
+          document.getElementById('profilePlaceholder').classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function handleEditImage(e) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          document.getElementById('editProfilePreview').src = ev.target.result;
+          document.getElementById('editProfilePreview').dataset.newImage = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // ⭐ REFERRAL CODE CHECK - Hidden logic ⭐
+      function checkReferral() {
+        const code = document.getElementById('referralCode').value.trim().toLowerCase();
+        const msg = document.getElementById('referralMsg');
         
-        if (tab === 'subjects') {
-          subjTab.classList.remove('hidden');
-          setTab.classList.add('hidden');
-          subjBtn.className = 'px-4 py-2.5 text-xs font-semibold text-med-300 border-b-2 border-med-500 transition rounded-t-lg';
-          setBtn.className = 'px-4 py-2.5 text-xs font-semibold text-med-300/50 border-b-2 border-transparent transition rounded-t-lg';
+        if (!code) {
+          msg.textContent = '';
+          referralApplied = false;
+          return;
+        }
+        
+        if (code === REFERRAL_CODE) {
+          referralApplied = true;
+          msg.innerHTML = '<span style="color:#10b981;">✓ Referral code applied successfully</span>';
+          msg.className = 'text-[11px] mt-1.5 font-semibold';
         } else {
-          subjTab.classList.add('hidden');
-          setTab.classList.remove('hidden');
-          setBtn.className = 'px-4 py-2.5 text-xs font-semibold text-med-300 border-b-2 border-med-500 transition rounded-t-lg';
-          subjBtn.className = 'px-4 py-2.5 text-xs font-semibold text-med-300/50 border-b-2 border-transparent transition rounded-t-lg';
+          referralApplied = false;
+          msg.innerHTML = '<span style="color:#ef4444;">✗ Invalid code</span>';
+          msg.className = 'text-[11px] mt-1.5 font-semibold';
         }
       }
 
-      // ===== AUTH =====
-      function switchTab(t) {
-        document.getElementById('formIn').classList.toggle('hidden', t !== 'in');
-        document.getElementById('formUp').classList.toggle('hidden', t !== 'up');
-        document.getElementById('tabIn').className = `flex-1 py-2 rounded-md text-xs font-semibold transition ${t==='in'?'bg-med-600 text-white shadow-sm':'text-gray-500'}`;
-        document.getElementById('tabUp').className = `flex-1 py-2 rounded-md text-xs font-semibold transition ${t==='up'?'bg-med-600 text-white shadow-sm':'text-gray-500'}`;
+      function goToStep(step) {
+        if (step === 2) {
+          const name = document.getElementById('regName').value.trim();
+          const email = document.getElementById('regEmail').value.trim();
+          const phone = document.getElementById('regPhone').value.trim();
+          if (!name) return toast('Enter your name', 'warning');
+          if (!email.includes('@')) return toast('Invalid email', 'warning');
+          if (phone.length !== 10) return toast('Enter 10-digit mobile', 'warning');
+          tempProfile.name = name;
+          tempProfile.email = email;
+          tempProfile.phone = phone;
+          tempProfile.userClass = document.getElementById('regClass').value;
+          tempProfile.target = document.getElementById('regTarget').value;
+        }
+        if (step === 3) {
+          const pw = document.getElementById('regPassword').value;
+          const pw2 = document.getElementById('regPassword2').value;
+          if (pw.length < 6) return toast('Password min 6 chars', 'warning');
+          if (pw !== pw2) return toast('Passwords do not match', 'warning');
+          
+          // 🎯 APPLY REFERRAL DISCOUNT
+          const finalAmountEl = document.getElementById('finalAmount');
+          const originalAmountEl = document.getElementById('originalAmount');
+          const amountLabelEl = document.getElementById('amountLabel');
+          const payBtn = document.getElementById('payNowBtn');
+          
+          if (referralApplied) {
+            finalAmountEl.textContent = '₹10';
+            originalAmountEl.classList.remove('hidden');
+            amountLabelEl.textContent = 'referral applied 🎉';
+            payBtn.innerHTML = '<i class="fas fa-credit-card"></i>Pay ₹10';
+            finalAmountEl.classList.add('discount-revealed');
+          } else {
+            finalAmountEl.textContent = '₹500';
+            originalAmountEl.classList.add('hidden');
+            amountLabelEl.textContent = 'one-time';
+            payBtn.innerHTML = '<i class="fas fa-credit-card"></i>Pay ₹500';
+          }
+          
+          document.getElementById('summaryName').textContent = tempProfile.name;
+          document.getElementById('summaryEmail').textContent = tempProfile.email;
+          const sumAv = document.getElementById('summaryAvatar');
+          if (!document.getElementById('profilePreview').classList.contains('hidden')) {
+            sumAv.style.backgroundImage = `url(${document.getElementById('profilePreview').src})`;
+            sumAv.style.backgroundSize = 'cover';
+            sumAv.textContent = '';
+          } else {
+            sumAv.textContent = tempProfile.name.charAt(0).toUpperCase();
+          }
+        }
+        document.querySelectorAll('.reg-step').forEach(s => s.classList.remove('active'));
+        document.getElementById(`step${step}`).classList.add('active');
+        document.querySelectorAll('.step-dot').forEach(d => {
+          const n = parseInt(d.dataset.step);
+          d.classList.remove('active', 'completed');
+          if (n < step) d.classList.add('completed');
+          if (n === step) d.classList.add('active');
+        });
       }
 
-      async function signIn() {
-        const e = document.getElementById('inEmail').value.trim();
-        const p = document.getElementById('inPass').value;
-        if (!e || !p) return toast('Fill all fields', 'warning');
-        try { await auth.signInWithEmailAndPassword(e, p); toast('Welcome back! 🩺', 'success'); closeAuth(); }
-        catch (err) { toast(err.message, 'error'); }
+      function checkStrength(pw) {
+        let s = 0;
+        if (pw.length >= 6) s++;
+        if (pw.length >= 10) s++;
+        if (/[A-Z]/.test(pw) && /[0-9]/.test(pw)) s++;
+        for (let i = 1; i <= 3; i++) {
+          const bar = document.getElementById(`strengthBar${i}`);
+          bar.className = 'h-1 flex-1 rounded-full ' + (i <= s ? (s === 1 ? 'bg-red-500' : s === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-gray-200');
+        }
       }
 
-      async function register() {
-        const n = document.getElementById('upName').value.trim();
-        const e = document.getElementById('upEmail').value.trim();
-        const ph = document.getElementById('upPhone').value.trim();
-        const p = document.getElementById('upPass').value;
-        if (!n || !e || !ph || p.length < 8) return toast('Fill correctly (password 8+ chars)', 'warning');
+      function checkMatch() {
+        const pw = document.getElementById('regPassword').value;
+        const pw2 = document.getElementById('regPassword2').value;
+        const msg = document.getElementById('matchMsg');
+        if (!pw2) { msg.textContent = ''; return; }
+        msg.textContent = pw === pw2 ? '✓ Passwords match' : '✗ Passwords do not match';
+        msg.style.color = pw === pw2 ? '#10b981' : '#ef4444';
+      }
+
+      // ========== PAYMENT ==========
+      async function startPayment() {
+        const pw = document.getElementById('regPassword').value;
+        if (pw.length < 6) return toast('Password too short', 'warning');
+
+        const btn = document.getElementById('payNowBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Processing...';
+
+        const amount = referralApplied ? DISCOUNTED_AMOUNT : ENROLLMENT_AMOUNT;
+        const amountINR = amount / 100;
+
         try {
-          const uc = await auth.createUserWithEmailAndPassword(e, p);
-          await uc.user.updateProfile({ displayName: n });
-          await db.collection('users').doc(uc.user.uid).set({ name: n, email: e, phone: ph, course: 'NEET UG', enrolledAt: firebase.firestore.FieldValue.serverTimestamp() });
-          toast('Registered! Welcome to THP-STARLET 🎉', 'success');
-          closeAuth();
-        } catch (err) { toast(err.message, 'error'); }
+          const options = {
+            key: RAZORPAY_KEY_ID,
+            amount: amount,
+            currency: 'INR',
+            name: 'THP-STARLET NEET',
+            description: referralApplied ? 'NEET Premium (Referral)' : 'NEET Premium Enrollment',
+            prefill: {
+              name: tempProfile.name,
+              email: tempProfile.email,
+              contact: tempProfile.phone
+            },
+            notes: {
+              userClass: tempProfile.userClass,
+              target: tempProfile.target,
+              referral: referralApplied ? 'mg786' : 'none'
+            },
+            theme: { color: '#059669' },
+            handler: async function(response) {
+              await completeRegistration(response, amountINR);
+            },
+            modal: {
+              ondismiss: () => {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay ₹${amountINR}`;
+                toast('Payment cancelled', 'info');
+              }
+            }
+          };
+          const rzp = new Razorpay(options);
+          rzp.on('payment.failed', (resp) => {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay ₹${amountINR}`;
+            toast('Payment failed: ' + resp.error.description, 'error');
+          });
+          rzp.open();
+        } catch (e) {
+          console.error(e);
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay ₹${amountINR}`;
+          toast('Error: ' + e.message, 'error');
+        }
       }
 
-      function logout() { auth.signOut().then(() => toast('Signed out', 'info')); }
+      async function completeRegistration(paymentResponse, amountPaid) {
+        const btn = document.getElementById('payNowBtn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Creating account...';
 
-      auth.onAuthStateChanged(u => {
-        user = u;
-        const authBtn = document.getElementById('authBtn');
-        if (authBtn) authBtn.style.display = u ? 'none' : 'inline-flex';
-        const um = document.getElementById('userMenu');
-        if (u) { um.classList.remove('hidden'); um.classList.add('flex'); document.getElementById('userName').textContent = u.displayName || u.email; }
-        else { um.classList.add('hidden'); um.classList.remove('flex'); }
-      });
+        try {
+          const pw = document.getElementById('regPassword').value;
+          let avatarUrl = '';
+          if (tempProfile.avatarFile) avatarUrl = await uploadToImgBB(tempProfile.avatarFile);
 
-      // ===== MODAL CONTROLS =====
+          const cred = await auth.createUserWithEmailAndPassword(tempProfile.email, pw);
+          const uid = cred.user.uid;
+          await cred.user.updateProfile({ displayName: tempProfile.name });
+
+          const userDoc = {
+            uid,
+            name: tempProfile.name,
+            email: tempProfile.email,
+            phone: tempProfile.phone,
+            userClass: tempProfile.userClass,
+            target: tempProfile.target,
+            avatar: avatarUrl,
+            role: 'student',
+            paymentStatus: 'paid',
+            paymentId: paymentResponse.razorpay_payment_id,
+            amount: amountPaid,
+            referralUsed: referralApplied,
+            referralCode: referralApplied ? 'mg786' : '',
+            enrollmentDate: new Date().toISOString(),
+            validTill: 'NEET 2026',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          await db.collection('users').doc(uid).set(userDoc);
+
+          toast('🎉 Welcome to THP-STARLET NEET!', 'success');
+          setTimeout(() => closeAuth(), 1200);
+        } catch (e) {
+          console.error('Registration error:', e);
+          if (e.code === 'auth/email-already-in-use') {
+            toast('Email already registered.', 'error');
+          } else {
+            toast('Error: ' + e.message, 'error');
+          }
+          const amount = referralApplied ? 10 : 500;
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay ₹${amount}`;
+        }
+      }
+
+      // ========== PROFILE ==========
+      function openProfile() {
+        if (!currentUser || !userProfile) return openAuth();
+        document.getElementById('editName').value = userProfile.name || '';
+        document.getElementById('editPhone').value = userProfile.phone || '';
+        document.getElementById('editClass').value = userProfile.userClass || '12th';
+        const editImg = document.getElementById('editProfilePreview');
+        editImg.src = userProfile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(userProfile.name || 'S')}&background=059669&color=fff`;
+        delete editImg.dataset.newImage;
+        document.getElementById('profileModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeProfile() {
+        document.getElementById('profileModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      async function saveProfile() {
+        if (!currentUser) return;
+        const name = document.getElementById('editName').value.trim();
+        const phone = document.getElementById('editPhone').value.trim();
+        const userClass = document.getElementById('editClass').value;
+        const editImg = document.getElementById('editProfilePreview');
+        const newImageData = editImg.dataset.newImage;
+        if (!name) return toast('Name required', 'warning');
+        try {
+          let avatarUrl = userProfile.avatar;
+          if (newImageData) {
+            const blob = await (await fetch(newImageData)).blob();
+            const file = new File([blob], 'avatar.jpg', { type: 'image/jpeg' });
+            avatarUrl = await uploadToImgBB(file);
+          }
+          await db.collection('users').doc(currentUser.uid).update({
+            name, phone, userClass,
+            ...(avatarUrl && { avatar: avatarUrl })
+          });
+          if (name !== userProfile.name) await currentUser.updateProfile({ displayName: name });
+          userProfile.name = name;
+          userProfile.phone = phone;
+          userProfile.userClass = userClass;
+          if (avatarUrl) userProfile.avatar = avatarUrl;
+          document.getElementById('userName').textContent = name;
+          if (avatarUrl) {
+            const img = document.getElementById('headerAvatar');
+            img.src = avatarUrl;
+            img.classList.remove('hidden');
+          }
+          toast('Profile updated! ✅', 'success');
+          closeProfile();
+        } catch (e) { toast('Error: ' + e.message, 'error'); }
+      }
+
+      // ========== AUTH ==========
       function openAuth() {
         document.getElementById('authModal').classList.add('active');
         document.body.style.overflow = 'hidden';
-        switchTab('in');
+        goToStep(1);
       }
       function closeAuth() {
         document.getElementById('authModal').classList.remove('active');
         document.body.style.overflow = '';
       }
-      function openAdmin() {
-        document.getElementById('adminModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-        adminTab('subjects');
-        loadSubjects();
-      }
-      function closeAdmin() {
-        document.getElementById('adminModal').classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      // ===== EVENT LISTENERS =====
-      document.getElementById('menuToggle').onclick = () => document.getElementById('mobileDrawer').classList.add('open');
-      document.getElementById('closeDrawer').onclick = () => document.getElementById('mobileDrawer').classList.remove('open');
-      document.querySelectorAll('#mobileDrawer a, #mobileDrawer button').forEach(el => el.addEventListener('click', () => document.getElementById('mobileDrawer').classList.remove('open')));
-
-      document.getElementById('authModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAuth(); });
-      document.getElementById('adminModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdmin(); });
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAuth(); closeAdmin(); } });
-
-      // Drag & drop for thumbnail
-      const uploadZone = document.getElementById('thumbUploadZone');
-      if (uploadZone) {
-        ['dragenter', 'dragover'].forEach(ev => {
-          uploadZone.addEventListener(ev, e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
-        });
-        ['dragleave', 'drop'].forEach(ev => {
-          uploadZone.addEventListener(ev, e => { e.preventDefault(); uploadZone.classList.remove('dragover'); });
-        });
-        uploadZone.addEventListener('drop', e => {
-          const file = e.dataTransfer.files[0];
-          if (file && file.type.startsWith('image/')) {
-            handleThumbSelect({ target: { files: [file] } });
-          }
+      function logout() {
+        auth.signOut().then(() => {
+          toast('Signed out', 'info');
+          setTimeout(() => location.reload(), 500);
         });
       }
 
-      // ===== STETHOSCOPE ANIMATION =====
+      // ========== OPEN SUBJECT ==========
+      function openSubject(slug) {
+        if (!currentUser) {
+          toast('Please register first', 'warning');
+          return openAuth();
+        }
+        if (userProfile?.paymentStatus !== 'paid') {
+          toast('Please complete payment', 'warning');
+          return openAuth();
+        }
+        const map = {
+          'physics': 'physics-student.html',
+          'chemistry': 'chemistry-student.html',
+          'biology': 'biology-student.html'
+        };
+        window.location.href = map[slug] || 'student.html';
+      }
+
+      // ========== ANIMATIONS ==========
       function animateStethoscope() {
         const s = document.getElementById('stethoscope');
-        const sections = document.querySelectorAll('section[id], div[id="vitalStats"], div[id="ecgMonitor"]');
+        const sections = document.querySelectorAll('section[id]');
         let i = 0;
         setInterval(() => {
           if (!sections.length) return;
@@ -1300,7 +1542,6 @@
           }
         }, 5000);
       }
-
       function animateVitals() {
         setInterval(() => {
           const hr = Math.floor(68 + Math.random() * 10);
@@ -1308,7 +1549,6 @@
           const m = document.getElementById('monHR'); if (m) m.textContent = hr;
         }, 2500);
       }
-
       function handleReveal() {
         document.querySelectorAll('.reveal').forEach(el => {
           const r = el.getBoundingClientRect();
@@ -1317,23 +1557,44 @@
       }
       window.addEventListener('scroll', handleReveal);
 
-      // ===== INIT =====
+      // ========== MOBILE ==========
+      document.getElementById('menuToggle').onclick = () => document.getElementById('mobileDrawer').classList.add('open');
+      document.getElementById('closeDrawer').onclick = () => document.getElementById('mobileDrawer').classList.remove('open');
+      document.querySelectorAll('#mobileDrawer a, #mobileDrawer button').forEach(el => el.addEventListener('click', () => document.getElementById('mobileDrawer').classList.remove('open')));
+
+      // ========== MODAL CLOSE ==========
+      document.getElementById('authModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAuth(); });
+      document.getElementById('profileModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeProfile(); });
+      document.getElementById('adminModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdmin(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAuth(); closeProfile(); closeAdmin(); } });
+
+      // ========== DRAG DROP ==========
+      const thumbZone = document.getElementById('thumbZone');
+      if (thumbZone) {
+        ['dragenter', 'dragover'].forEach(ev => thumbZone.addEventListener(ev, e => { e.preventDefault(); thumbZone.classList.add('dragover'); }));
+        ['dragleave', 'drop'].forEach(ev => thumbZone.addEventListener(ev, e => { e.preventDefault(); thumbZone.classList.remove('dragover'); }));
+        thumbZone.addEventListener('drop', e => {
+          const file = e.dataTransfer.files[0];
+          if (file && file.type.startsWith('image/')) handleThumb({ target: { files: [file] } });
+        });
+      }
+
+      // ========== EXPORT ==========
+      window.App = {
+        openAuth, closeAuth, openProfile, closeProfile, openAdmin, closeAdmin,
+        openAdminSubjectModal, logout, goToStep, checkStrength, checkMatch,
+        handleProfileImage, handleEditImage, startPayment, saveProfile,
+        openSubject, handleThumb, removeThumb, resetSubjectForm,
+        saveSubject, editSubject, deleteSubject, checkReferral
+      };
+
+      // ========== INIT ==========
       loadSubjects();
       animateVitals();
       animateStethoscope();
       setTimeout(handleReveal, 100);
 
-      // ===== EXPORT APP =====
-      window.App = {
-        openAuth, closeAuth, openAdmin, closeAdmin,
-        switchTab, signIn, register, logout, toast,
-        adminTab,
-        handleThumbSelect, removeThumb, resetSubjectForm,
-        saveSubject, editSubject, deleteSubject,
-        subjectClick: (slug) => { toast('Opening ' + slug + '...', 'info'); }
-      };
-
-      console.log('🩺 THP-STARLET NEET Admin — Firebase mine-a1e68 + ImgBB Ready');
+      console.log('🩺 THP-STARLET NEET Ready — Admin: mgbhaukali@gmail.com');
     })();
   </script>
 </body>
