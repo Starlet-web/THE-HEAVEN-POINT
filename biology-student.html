@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#059669">
+  <title>Biology · Student · THP-STARLET NEET</title>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f0f4f8; min-height: 100vh; }
+    .font-display { font-family: 'Outfit', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #059669, #10b981); border-radius: 10px; }
+    .live-badge { animation: pulseLive 1.5s ease-in-out infinite; }
+    @keyframes pulseLive { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(1.1); } }
+    .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .ecg { stroke-dasharray: 800; stroke-dashoffset: 800; animation: ecgMove 4s linear infinite; }
+    @keyframes ecgMove { to { stroke-dashoffset: 0; } }
+    .chat-bubble { animation: slideIn 0.3s ease-out; }
+    @keyframes slideIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+    .chat-scroll::-webkit-scrollbar { width: 4px; }
+    .chat-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .lecture-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(5,150,105,0.15); }
+    .lecture-card { transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-emerald-100 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="student.html" class="w-9 h-9 bg-gray-100 hover:bg-emerald-100 rounded-xl flex items-center justify-center transition">
+          <i class="fas fa-arrow-left text-gray-600 text-sm"></i>
+        </a>
+        <div class="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-xl flex items-center justify-center shadow-md">
+          <span class="text-white text-lg">🧬</span>
+        </div>
+        <div>
+          <h1 class="font-bold font-display text-gray-900 text-sm">Biology</h1>
+          <p class="text-[10px] text-gray-400 tracking-wider uppercase" id="studentLabel">Student View</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="hidden sm:flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-semibold">
+          <i class="fas fa-book"></i>NEET 2026
+        </span>
+        <button onclick="Student.toggleChat()" class="relative w-9 h-9 bg-gray-100 hover:bg-emerald-100 rounded-xl flex items-center justify-center transition">
+          <i class="fas fa-comments text-gray-600 text-sm"></i>
+          <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" id="chatNotifDot"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-5 space-y-6">
+
+    <!-- ====== LIVE CLASS CARD ====== -->
+    <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-3xl p-5 sm:p-7 text-white relative overflow-hidden shadow-2xl">
+      <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 1200 300" preserveAspectRatio="none">
+        <path d="M0 150 L80 150 L100 150 L110 110 L120 210 L130 150 L150 150 L160 150 L170 90 L180 240 L190 150 L210 150 L1200 150" 
+              fill="none" stroke="#34d399" stroke-width="2" class="ecg"/>
+      </svg>
+
+      <div class="relative z-10">
+        <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+          <div class="flex items-center gap-2">
+            <span class="live-badge bg-red-500 rounded-full px-3 py-1.5 flex items-center gap-2" id="statusBadgeWrap">
+              <span class="w-2 h-2 bg-white rounded-full"></span>
+              <span class="text-white text-xs font-bold tracking-wider" id="classStatusBadge">LIVE CLASS</span>
+            </span>
+            <span class="text-emerald-200/60 text-xs" id="classStatus">Live</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="bg-white/10 backdrop-blur rounded-full px-3 py-1.5 text-xs">
+              <i class="fas fa-users text-emerald-300"></i>
+              <span class="ml-1.5" id="studentCount">0</span> watching
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-full px-3 py-1.5 text-xs" id="timerWrap">
+              <i class="fas fa-clock text-emerald-300"></i>
+              <span class="ml-1.5" id="classTimer">00:00:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center gap-5">
+          <div class="flex items-center gap-4 flex-1">
+            <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center shadow-xl relative">
+              <i class="fas fa-chalkboard-teacher text-white text-2xl"></i>
+              <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-emerald-900" id="liveDot"></span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h2 class="font-bold font-display text-lg mb-1 truncate" id="classTitle">Loading class...</h2>
+              <p class="text-emerald-300/80 text-sm mb-2 truncate">
+                <span id="classTeacher">Prof. Mohit Sir</span> · Botany
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="bg-white/10 backdrop-blur text-white/80 text-[10px] font-medium px-2 py-0.5 rounded-full" id="classChapterTag">Chapter 5</span>
+                <span class="bg-white/10 backdrop-blur text-white/80 text-[10px] font-medium px-2 py-0.5 rounded-full">Biology</span>
+                <span class="bg-amber-400/20 text-amber-200 text-[10px] font-medium px-2 py-0.5 rounded-full" id="statusTag">🔴 LIVE NOW</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 w-full md:w-auto">
+            <a href="https://www.teachmint.com/student/class/4049435069" 
+               target="_blank"
+               class="bg-white hover:bg-emerald-50 text-emerald-700 px-6 py-3.5 rounded-xl font-bold text-sm shadow-xl transition flex items-center justify-center gap-2 whitespace-nowrap">
+              <i class="fas fa-sign-in-alt text-base"></i>
+              <span>Join Student Class</span>
+            </a>
+
+            <a href="https://video.teachmint.com/videoroom/teachmint::4049435069/69077ddd344669f2624f13f7/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb29tX2lkIjoidGVhY2htaW50Ojo0MDQ5NDM1MDY5IiwidWlkIjoiNjkwNzdkZGQzNDQ2NjlmMjYyNGYxM2Y3IiwidW5hbWUiOiJNb2hpdCBHdXB0YSIsInV0eXBlIjoxLCJleHAiOjE3ODkxMTIyODN9.jztphXXWpHOwTLuudpb3IWU4VEHJnAoaaHdWdvu_yU4" 
+               target="_blank"
+               class="bg-black/30 hover:bg-black/40 text-white border border-white/30 px-6 py-2.5 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-2">
+              <i class="fas fa-video text-sm"></i>
+              <span>Open Video Room</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mt-5 pt-5 border-t border-white/10">
+          <div class="text-center">
+            <div class="text-white font-bold font-mono text-sm sm:text-base" id="statStudents">42</div>
+            <div class="text-emerald-300/50 text-[10px]">Students Online</div>
+          </div>
+          <div class="text-center">
+            <div class="text-white font-bold font-mono text-sm sm:text-base" id="statLectures">0</div>
+            <div class="text-emerald-300/50 text-[10px]">Recorded Lectures</div>
+          </div>
+          <div class="text-center">
+            <div class="text-white font-bold font-mono text-sm sm:text-base">92%</div>
+            <div class="text-emerald-300/50 text-[10px]">Your Attendance</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== RECORDED LECTURES ====== -->
+    <section>
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <div>
+          <h2 class="font-bold font-display text-gray-900 text-lg">📹 Recorded Lectures</h2>
+          <p class="text-gray-400 text-xs mt-0.5">Watch anytime, learn at your own pace</p>
+        </div>
+        <select id="filterChapter" onchange="Student.filter()" 
+                class="text-xs bg-white border border-gray-200 rounded-lg px-3 py-2 focus:border-emerald-500 focus:outline-none">
+          <option value="">All Chapters</option>
+          <option>Cell Biology</option>
+          <option>Genetics</option>
+          <option>Human Physiology</option>
+          <option>Plant Kingdom</option>
+          <option>Ecology</option>
+          <option>Biomolecules</option>
+        </select>
+      </div>
+      <div id="lecturesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </section>
+  </main>
+
+  <!-- ========== PLAYER MODAL ========== -->
+  <div class="modal-overlay fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-2 sm:p-4" id="playerModal">
+    <div class="w-full max-w-5xl">
+      <div class="flex items-center justify-between mb-3 px-2">
+        <div class="text-white">
+          <div class="font-bold font-display text-base" id="playerTitle">Lecture</div>
+          <div class="text-white/60 text-xs" id="playerMeta">Chapter</div>
+        </div>
+        <button onclick="Student.closePlayer()" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition">
+          <i class="fas fa-times text-white"></i>
+        </button>
+      </div>
+      <div class="bg-black rounded-2xl overflow-hidden aspect-video">
+        <iframe id="playerFrame" class="w-full h-full" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+      <div class="flex items-center justify-between mt-3 px-2">
+        <a id="playerOpen" href="#" target="_blank" class="text-white/70 hover:text-white text-xs font-semibold">
+          <i class="fas fa-external-link-alt mr-1"></i>Open in Teachmint
+        </a>
+        <div class="text-white/60 text-xs"><i class="fas fa-eye mr-1"></i><span id="viewCount">0</span> views</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CHAT BOX ========== -->
+  <div id="chatBox" class="fixed bottom-4 right-4 w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 hidden flex-col" style="height: 500px; max-height: calc(100vh - 100px);">
+    <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-3 rounded-t-2xl flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="relative">
+          <div class="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center">
+            <i class="fas fa-comments text-white text-sm"></i>
+          </div>
+          <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-emerald-600 animate-pulse"></span>
+        </div>
+        <div>
+          <div class="text-white font-bold text-sm">Biology Class Chat</div>
+          <div class="text-white/70 text-[10px]"><span id="chatOnline">0</span> online</div>
+        </div>
+      </div>
+      <button onclick="Student.toggleChat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition">
+        <i class="fas fa-times text-white text-xs"></i>
+      </button>
+    </div>
+
+    <div id="chatMessages" class="flex-1 overflow-y-auto p-3 space-y-3 chat-scroll bg-gray-50"></div>
+
+    <form onsubmit="event.preventDefault(); Student.sendMessage();" class="p-3 border-t border-gray-100 flex-shrink-0 bg-white rounded-b-2xl">
+      <div class="flex items-center gap-2">
+        <input type="text" id="chatInput" placeholder="Ask a doubt..." 
+               class="flex-1 px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-emerald-500 focus:outline-none bg-gray-50">
+        <button type="submit" class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 rounded-xl flex items-center justify-center text-white shadow-lg transition">
+          <i class="fas fa-paper-plane text-sm"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <button onclick="Student.toggleChat()" class="fixed bottom-4 right-4 w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 rounded-full shadow-2xl z-40 flex items-center justify-center text-white transition-all hover:scale-110" id="chatFab">
+    <i class="fas fa-comments text-xl"></i>
+    <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center border-2 border-white hidden" id="unreadBadge">0</span>
+  </button>
+
+  <script>
+    // ===== FIREBASE CONFIG (NEET-D6D95) =====
+    const fb = {
+      apiKey: "AIzaSyASP6S4EE4p40LBrzrTW8CBcKRmPo-lrck",
+      authDomain: "neet-d6d95.firebaseapp.com",
+      projectId: "neet-d6d95",
+      storageBucket: "neet-d6d95.firebasestorage.app",
+      messagingSenderId: "54376928116",
+      appId: "1:54376928116:web:e29e44073162ec1c301221",
+      measurementId: "G-9BDF60GBR8"
+    };
+    firebase.initializeApp(fb);
+    const db = firebase.firestore();
+
+    // ===== STUDENT INFO =====
+    const STUDENT = {
+      id: 'student_' + Math.random().toString(36).substr(2, 9),
+      name: localStorage.getItem('studentName') || 'Student',
+      role: 'student',
+      avatar: 'S'
+    };
+
+    let state = {
+      lectures: [],
+      filtered: [],
+      chatMessages: [],
+      chatOpen: false,
+      unreadCount: 0,
+      classStartTime: Date.now(),
+      liveClassData: null
+    };
+
+    // ===== LOAD LIVE CLASS =====
+    function listenLiveClass() {
+      db.collection('liveClass').doc('biology').onSnapshot(doc => {
+        if (doc.exists) {
+          state.liveClassData = doc.data();
+          updateClassUI(state.liveClassData);
+        } else {
+          // Default view
+          const fallback = {
+            title: 'Biology Live Class',
+            chapter: 'Chapter 5 - Cell Biology',
+            teacher: 'Prof. Mohit Sir',
+            status: 'live'
+          };
+          updateClassUI(fallback);
+        }
+      }, err => console.error('Live class listen error:', err));
+    }
+
+    function updateClassUI(data) {
+      if (!data) return;
+      document.getElementById('classTitle').textContent = data.title || 'Biology Live Class';
+      document.getElementById('classChapterTag').textContent = data.chapter || 'Chapter 5';
+      document.getElementById('classTeacher').textContent = data.teacher || 'Prof. Mohit Sir';
+      document.getElementById('classStatus').textContent = data.status === 'live' ? 'Live Now' : data.status === 'scheduled' ? 'Scheduled' : 'Ended';
+      
+      const statusBadge = document.getElementById('classStatusBadge');
+      const statusTag = document.getElementById('statusTag');
+      const statusWrap = document.getElementById('statusBadgeWrap');
+      const liveDot = document.getElementById('liveDot');
+      const timerWrap = document.getElementById('timerWrap');
+      
+      if (data.status === 'live') {
+        statusBadge.textContent = 'LIVE CLASS';
+        statusWrap.className = 'live-badge bg-red-500 rounded-full px-3 py-1.5 flex items-center gap-2';
+        statusTag.textContent = '🔴 LIVE NOW';
+        statusTag.className = 'bg-amber-400/20 text-amber-200 text-[10px] font-medium px-2 py-0.5 rounded-full';
+        liveDot.style.display = 'block';
+        timerWrap.style.display = 'block';
+      } else if (data.status === 'scheduled') {
+        statusBadge.textContent = 'SCHEDULED';
+        statusWrap.className = 'bg-blue-500 rounded-full px-3 py-1.5 flex items-center gap-2';
+        statusTag.textContent = '📅 SCHEDULED';
+        statusTag.className = 'bg-blue-400/20 text-blue-200 text-[10px] font-medium px-2 py-0.5 rounded-full';
+        liveDot.style.display = 'none';
+        timerWrap.style.display = 'none';
+      } else {
+        statusBadge.textContent = 'ENDED';
+        statusWrap.className = 'bg-gray-500 rounded-full px-3 py-1.5 flex items-center gap-2';
+        statusTag.textContent = '✅ ENDED';
+        statusTag.className = 'bg-gray-400/20 text-gray-200 text-[10px] font-medium px-2 py-0.5 rounded-full';
+        liveDot.style.display = 'none';
+        timerWrap.style.display = 'none';
+      }
+    }
+
+    // ===== LOAD LECTURES =====
+    function listenLectures() {
+      db.collection('lectures').where('subject', '==', 'biology').onSnapshot(snap => {
+        state.lectures = [];
+        snap.forEach(doc => state.lectures.push({ id: doc.id, ...doc.data() }));
+        state.lectures.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+        state.filtered = [...state.lectures];
+        document.getElementById('statLectures').textContent = state.lectures.length;
+        renderLectures();
+      }, err => {
+        console.error('Lectures listen error:', err);
+      });
+    }
+
+    function renderLectures() {
+      const grid = document.getElementById('lecturesGrid');
+      if (!state.filtered.length) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl text-gray-400 text-sm">
+          <i class="fas fa-video-slash text-3xl mb-3 text-gray-300"></i>
+          <div>No lectures yet. Check back later!</div>
+        </div>`;
+        return;
+      }
+      grid.innerHTML = state.filtered.map(lec => `
+        <div class="lecture-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer" onclick="Student.play('${lec.id}')">
+          <div class="relative aspect-video bg-gray-900">
+            <img src="${lec.thumbnail || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=340&fit=crop'}" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition" style="background:rgba(0,0,0,0.3);">
+              <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl">
+                <i class="fas fa-play text-emerald-600 text-xl ml-1"></i>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/70 rounded px-2 py-0.5 text-white text-[10px] font-mono">${lec.duration || '45 min'}</div>
+            <div class="absolute top-2 left-2 bg-emerald-500/90 rounded px-2 py-0.5 text-white text-[10px] font-semibold">${lec.chapter || 'General'}</div>
+          </div>
+          <div class="p-3">
+            <h3 class="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">${lec.title}</h3>
+            <div class="flex items-center justify-between text-[11px] text-gray-500">
+              <span>${lec.teacher || 'Prof. Mohit Sir'}</span>
+              <span><i class="fas fa-eye"></i> ${lec.views || 0}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filter() {
+      const ch = document.getElementById('filterChapter').value;
+      state.filtered = ch ? state.lectures.filter(l => l.chapter === ch) : [...state.lectures];
+      renderLectures();
+    }
+
+    // ===== PLAY LECTURE =====
+    function play(id) {
+      const lec = state.lectures.find(l => l.id === id);
+      if (!lec) return;
+      document.getElementById('playerTitle').textContent = lec.title;
+      document.getElementById('playerMeta').textContent = `${lec.chapter} · ${lec.teacher}`;
+      document.getElementById('playerFrame').src = lec.url;
+      document.getElementById('playerOpen').href = lec.url;
+      document.getElementById('viewCount').textContent = lec.views || 0;
+      document.getElementById('playerModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      db.collection('lectures').doc(id).update({ views: firebase.firestore.FieldValue.increment(1) }).catch(() => {});
+    }
+
+    function closePlayer() {
+      document.getElementById('playerModal').classList.remove('active');
+      document.getElementById('playerFrame').src = '';
+      document.body.style.overflow = '';
+    }
+
+    // ===== CHAT =====
+    function toggleChat() {
+      state.chatOpen = !state.chatOpen;
+      const box = document.getElementById('chatBox');
+      const fab = document.getElementById('chatFab');
+      if (state.chatOpen) {
+        box.classList.remove('hidden');
+        box.classList.add('flex');
+        fab.classList.add('hidden');
+        state.unreadCount = 0;
+        const badge = document.getElementById('unreadBadge');
+        badge.textContent = '0';
+        badge.classList.add('hidden');
+        scrollChatToBottom();
+      } else {
+        box.classList.add('hidden');
+        box.classList.remove('flex');
+        fab.classList.remove('hidden');
+      }
+    }
+
+    function scrollChatToBottom() {
+      const el = document.getElementById('chatMessages');
+      if (el) el.scrollTop = el.scrollHeight;
+    }
+
+    function formatTime(ts) {
+      if (!ts) return '';
+      const date = ts.toDate ? ts.toDate() : new Date(ts.seconds * 1000);
+      return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      try {
+        await db.collection('chats').doc('biology').collection('messages').add({
+          text,
+          senderId: STUDENT.id,
+          senderName: STUDENT.name,
+          senderRole: STUDENT.role,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch (e) { console.error('Send error:', e); }
+    }
+
+    function listenChat() {
+      db.collection('chats').doc('biology').collection('messages')
+        .orderBy('createdAt', 'asc')
+        .limitToLast(100)
+        .onSnapshot(snap => {
+          const prevCount = state.chatMessages.length;
+          state.chatMessages = [];
+          snap.forEach(doc => state.chatMessages.push({ id: doc.id, ...doc.data() }));
+          renderChat();
+          
+          if (state.chatMessages.length > prevCount && !state.chatOpen && prevCount > 0) {
+            const newMsgs = state.chatMessages.slice(prevCount);
+            newMsgs.forEach(m => {
+              if (m.senderRole !== 'student') {
+                state.unreadCount++;
+                const badge = document.getElementById('unreadBadge');
+                badge.textContent = state.unreadCount;
+                badge.classList.remove('hidden');
+              }
+            });
+          }
+        });
+    }
+
+    function renderChat() {
+      const el = document.getElementById('chatMessages');
+      if (!el) return;
+      if (!state.chatMessages.length) {
+        el.innerHTML = `<div class="text-center text-gray-400 text-xs py-8">
+          <i class="fas fa-comments text-3xl mb-2 text-gray-300"></i>
+          <div>No messages yet. Say hi! 👋</div>
+        </div>`;
+        return;
+      }
+      el.innerHTML = state.chatMessages.map(msg => {
+        const isMe = msg.senderRole === 'student';
+        const isTeacher = msg.senderRole === 'teacher';
+        const initials = (msg.senderName || 'U').charAt(0).toUpperCase();
+        return `
+          <div class="flex gap-2 chat-bubble ${isMe ? 'flex-row-reverse' : ''}">
+            <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold ${isTeacher ? 'bg-gradient-to-br from-purple-500 to-indigo-600' : isMe ? 'bg-gradient-to-br from-emerald-500 to-teal-600' : 'bg-gray-400'}">
+              ${initials}
+            </div>
+            <div class="max-w-[75%] ${isMe ? 'items-end' : 'items-start'} flex flex-col">
+              <div class="text-[10px] text-gray-400 mb-0.5 px-1">
+                ${isMe ? 'You' : msg.senderName || 'Student'}${isTeacher ? ' 👨‍🏫' : ''} · ${formatTime(msg.createdAt)}
+              </div>
+              <div class="px-3 py-2 rounded-2xl text-sm ${isMe ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-tr-sm' : isTeacher ? 'bg-gradient-to-br from-purple-100 to-indigo-100 text-gray-800 rounded-tl-sm border border-purple-100' : 'bg-white text-gray-800 border border-gray-100 rounded-tl-sm shadow-sm'}">
+                ${escapeHtml(msg.text)}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      scrollChatToBottom();
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    // ===== TIMER =====
+    function startTimer() {
+      setInterval(() => {
+        const diff = Math.floor((Date.now() - state.classStartTime) / 1000);
+        const h = String(Math.floor(diff / 3600)).padStart(2, '0');
+        const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+        const s = String(diff % 60).padStart(2, '0');
+        const el = document.getElementById('classTimer');
+        if (el) el.textContent = `${h}:${m}:${s}`;
+      }, 1000);
+    }
+
+    // ===== EXPORT =====
+    window.Student = { toggleChat, sendMessage, play, closePlayer, filter };
+
+    // ===== INIT =====
+    listenLiveClass();
+    listenLectures();
+    listenChat();
+    startTimer();
+
+    document.getElementById('playerModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closePlayer(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePlayer(); });
+
+    console.log('🧬 Student View Ready — Firebase neet-d6d95');
+  </script>
+</body>
+</html>
