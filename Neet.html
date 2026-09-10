@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="THP-STARLET NEET – Ultra Realistic Medical Coaching | Physics · Chemistry · Biology">
+  <meta name="theme-color" content="#064e3b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>THP-STARLET NEET – Medical Coaching</title>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            med: {
+              50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7',
+              400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857',
+              800: '#065f46', 900: '#064e3b', 950: '#022c22',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Outfit', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          animation: {
+            'heartbeat': 'hb 1.2s ease-in-out infinite',
+            'pulse-ring': 'pRing 2.5s cubic-bezier(0.4,0,0.6,1) infinite',
+            'ecg': 'ecgLine 3s linear infinite',
+            'float': 'float 8s ease-in-out infinite',
+            'slide-up': 'slideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards',
+            'fade-in': 'fadeIn 0.5s ease forwards',
+            'glow-soft': 'glowSoft 3s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            hb: { '0%,100%': { transform: 'scale(1)' }, '15%': { transform: 'scale(1.18)' }, '30%': { transform: 'scale(1)' }, '45%': { transform: 'scale(1.18)' }, '60%': { transform: 'scale(1)' } },
+            pRing: { '0%': { transform: 'scale(0.6)', opacity: '1' }, '100%': { transform: 'scale(2.8)', opacity: '0' } },
+            ecgLine: { '0%': { strokeDashoffset: '800' }, '100%': { strokeDashoffset: '0' } },
+            float: { '0%,100%': { transform: 'translateY(0) rotate(0deg)' }, '25%': { transform: 'translateY(-8px) rotate(1deg)' }, '75%': { transform: 'translateY(4px) rotate(-1deg)' } },
+            slideUp: { '0%': { transform: 'translateY(24px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+            fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+            glowSoft: { '0%': { boxShadow: '0 0 8px rgba(16,185,129,0.15)' }, '100%': { boxShadow: '0 0 24px rgba(16,185,129,0.35)' } },
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f8fafb;
+      color: #1a1f2e;
+      min-height: 100vh;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+      background-image: radial-gradient(ellipse at 10% 20%, rgba(5,150,105,0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at 85% 70%, rgba(5,150,105,0.04) 0%, transparent 50%);
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #059669, #10b981); border-radius: 10px; }
+
+    .stethoscope-wrap {
+      position: fixed;
+      pointer-events: none;
+      z-index: 120;
+      transition: all 5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      filter: drop-shadow(0 4px 12px rgba(5, 150, 105, 0.25)) drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    }
+    .stethoscope-wrap svg { width: 110px; height: auto; }
+
+    .header-slim {
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(255,255,255,0.82);
+      border-bottom: 0.5px solid rgba(5,150,105,0.1);
+    }
+
+    .card-slim {
+      background: #fff;
+      border: 0.5px solid rgba(0,0,0,0.04);
+      transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .card-slim:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(5,150,105,0.08);
+      border-color: rgba(5,150,105,0.15);
+    }
+
+    .monitor-screen {
+      background: linear-gradient(180deg, #0a1929 0%, #0c1f35 100%);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(16,185,129,0.15);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+    .monitor-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(16,185,129,0.015) 2px, rgba(16,185,129,0.015) 4px);
+      pointer-events: none;
+      border-radius: 16px;
+    }
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(16,185,129,0.3), transparent);
+      animation: scanMove 4s linear infinite;
+    }
+    @keyframes scanMove {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+
+    .mobile-drawer {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+
+    .modal-slim {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-slim.active { opacity: 1; pointer-events: all; }
+
+    .hb-pulse { animation: hb 1.2s ease-in-out infinite; }
+    .ring-pulse { animation: pRing 2.5s cubic-bezier(0.4,0,0.6,1) infinite; }
+    .toast-pop { animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .badge-verified {
+      background: rgba(16,185,129,0.06);
+      color: #059669;
+      border: 0.5px solid rgba(16,185,129,0.15);
+    }
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+      50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.7); }
+    }
+
+    /* ===== ADMIN PANEL STYLES ===== */
+    .admin-modal {
+      background: linear-gradient(180deg, #0a1929 0%, #0c1f35 100%);
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+    .admin-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(16,185,129,0.15);
+      color: #f0fdfa;
+      transition: all 0.25s ease;
+    }
+    .admin-input:focus {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(16,185,129,0.5);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+    }
+    .admin-input::placeholder { color: rgba(240, 253, 250, 0.3); }
+
+    .thumb-upload-zone {
+      border: 2px dashed rgba(16,185,129,0.3);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(16,185,129,0.03);
+      position: relative;
+      overflow: hidden;
+    }
+    .thumb-upload-zone:hover {
+      border-color: rgba(16,185,129,0.6);
+      background: rgba(16,185,129,0.06);
+    }
+    .thumb-upload-zone.dragover {
+      border-color: #10b981;
+      background: rgba(16,185,129,0.1);
+      transform: scale(1.02);
+    }
+    .thumb-preview-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .subject-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 14px 14px 0 0;
+      background: linear-gradient(135deg, #0f766e, #059669);
+    }
+    .upload-progress {
+      height: 3px;
+      background: rgba(16,185,129,0.15);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .upload-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #34d399);
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body class="flex flex-col">
+
+  <!-- ===== ULTRA-REALISTIC STETHOSCOPE ===== -->
+  <div class="stethoscope-wrap" id="stethoscope">
+    <svg viewBox="0 0 180 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="metalTube" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#64748b"/><stop offset="30%" stop-color="#94a3b8"/>
+          <stop offset="50%" stop-color="#cbd5e1"/><stop offset="70%" stop-color="#94a3b8"/>
+          <stop offset="100%" stop-color="#475569"/>
+        </linearGradient>
+        <linearGradient id="metalTubeV" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#64748b"/><stop offset="30%" stop-color="#94a3b8"/>
+          <stop offset="50%" stop-color="#cbd5e1"/><stop offset="70%" stop-color="#94a3b8"/>
+          <stop offset="100%" stop-color="#475569"/>
+        </linearGradient>
+        <radialGradient id="chestGrad" cx="40%" cy="35%">
+          <stop offset="0%" stop-color="#e2e8f0"/><stop offset="40%" stop-color="#94a3b8"/>
+          <stop offset="100%" stop-color="#334155"/>
+        </radialGradient>
+        <radialGradient id="bellInner" cx="45%" cy="40%">
+          <stop offset="0%" stop-color="#f8fafc"/><stop offset="60%" stop-color="#cbd5e1"/>
+          <stop offset="100%" stop-color="#64748b"/>
+        </radialGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.25"/>
+        </filter>
+        <filter id="glowFilter">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <path d="M90 15 C90 15, 90 5, 100 0 C110 -5, 125 0, 128 12" fill="none" stroke="url(#metalTube)" stroke-width="5.5" stroke-linecap="round" filter="url(#shadow)"/>
+      <path d="M90 15 C60 15, 20 50, 20 90 C20 130, 50 165, 90 165 C130 165, 160 130, 160 90" fill="none" stroke="url(#metalTube)" stroke-width="5.5" stroke-linecap="round" filter="url(#shadow)"/>
+      <path d="M90 15 C60 15, 22 50, 22 90 C22 128, 50 163, 90 163 C128 163, 158 128, 158 90" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round"/>
+      <path d="M90 15 C90 15, 88 22, 82 28" fill="none" stroke="url(#metalTubeV)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M90 15 C90 15, 92 22, 98 28" fill="none" stroke="url(#metalTubeV)" stroke-width="4.5" stroke-linecap="round"/>
+
+      <ellipse cx="80" cy="30" rx="6" ry="8" fill="url(#metalTube)" transform="rotate(-15 80 30)" filter="url(#shadow)"/>
+      <ellipse cx="100" cy="30" rx="6" ry="8" fill="url(#metalTube)" transform="rotate(15 100 30)" filter="url(#shadow)"/>
+      <ellipse cx="77" cy="28" rx="4" ry="5.5" fill="#f87171" transform="rotate(-15 77 28)" opacity="0.9"/>
+      <ellipse cx="103" cy="28" rx="4" ry="5.5" fill="#f87171" transform="rotate(15 103 28)" opacity="0.9"/>
+
+      <circle cx="90" cy="17" r="6" fill="url(#metalTube)" filter="url(#shadow)"/>
+      <circle cx="90" cy="17" r="3.5" fill="#475569"/>
+
+      <ellipse cx="90" cy="14" rx="5" ry="2" fill="#334155" opacity="0.5"/>
+      <ellipse cx="60" cy="15" rx="4" ry="1.5" fill="#334155" opacity="0.3" transform="rotate(-30 60 15)"/>
+      <ellipse cx="120" cy="15" rx="4" ry="1.5" fill="#334155" opacity="0.3" transform="rotate(30 120 15)"/>
+
+      <rect x="156" y="80" width="8" height="20" rx="2" fill="url(#metalTube)"/>
+      
+      <g transform="translate(160, 90)">
+        <ellipse cx="0" cy="0" rx="18" ry="16" fill="url(#chestGrad)" filter="url(#shadow)"/>
+        <ellipse cx="0" cy="0" rx="18" ry="16" fill="none" stroke="#64748b" stroke-width="1.5"/>
+        <ellipse cx="0" cy="-1" rx="12" ry="10" fill="url(#bellInner)"/>
+        <ellipse cx="0" cy="-1" rx="10" ry="8" fill="none" stroke="#94a3b8" stroke-width="0.8"/>
+        <ellipse cx="-3" cy="-3" rx="5" ry="3" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="0" cy="0" r="2.5" fill="#ef4444" filter="url(#glowFilter)" class="pulse-glow"/>
+        <ellipse cx="0" cy="0" rx="20" ry="18" fill="none" stroke="rgba(16,185,129,0.5)" stroke-width="2" class="ring-pulse" style="animation-delay: 0s;"/>
+        <ellipse cx="0" cy="0" rx="20" ry="18" fill="none" stroke="rgba(16,185,129,0.3)" stroke-width="1.5" class="ring-pulse" style="animation-delay: 0.7s;"/>
+        <ellipse cx="0" cy="0" rx="20" ry="18" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="1" class="ring-pulse" style="animation-delay: 1.4s;"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ===== SLIM HEADER ===== -->
+  <header class="header-slim fixed top-0 inset-x-0 z-50 px-4 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="relative hb-pulse">
+        <div class="w-9 h-9 bg-gradient-to-br from-med-600 to-med-700 rounded-xl flex items-center justify-center text-white text-sm shadow-md shadow-med-500/20">⚕</div>
+        <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white pulse-glow"></span>
+      </div>
+      <div class="leading-tight">
+        <div class="text-sm font-bold font-display tracking-tight">
+          <span class="bg-gradient-to-r from-med-600 to-med-500 bg-clip-text text-transparent">THP-STARLET</span>
+          <span class="text-[10px] font-semibold bg-med-600 text-white px-1.5 py-0.5 rounded-md ml-1 align-middle">NEET</span>
+        </div>
+        <div class="text-[9px] text-med-700/50 tracking-widest uppercase hidden sm:block">Medical Coaching</div>
+      </div>
+    </div>
+
+    <div class="hidden lg:flex items-center gap-1">
+      <a href="#" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-med-50 text-med-700">Home</a>
+      <a href="#physics" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Physics</a>
+      <a href="#chemistry" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Chemistry</a>
+      <a href="#biology" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Biology</a>
+      <a href="#tests" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Tests</a>
+      <span class="w-px h-5 bg-gray-200 mx-1"></span>
+      <button onclick="App.openAdmin()" class="text-gray-400 hover:text-med-600 px-2 py-1.5 rounded-lg transition" title="Admin Panel">
+        <i class="fas fa-cog text-sm"></i>
+      </button>
+      <button id="authBtn" onclick="App.openAuth()" class="bg-med-600 hover:bg-med-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-md shadow-med-500/15 transition flex items-center gap-1.5">
+        <i class="fas fa-user-md text-[10px]"></i>Enroll
+      </button>
+      <div id="userMenu" class="hidden items-center gap-2">
+        <span id="userName" class="text-xs font-semibold text-med-700"></span>
+        <button onclick="App.logout()" class="text-[10px] bg-red-50 text-red-600 px-2.5 py-1 rounded-lg hover:bg-red-100 transition">Exit</button>
+      </div>
+    </div>
+
+    <button id="menuToggle" class="lg:hidden text-gray-500 hover:text-med-700 p-1">
+      <i class="fas fa-bars text-lg"></i>
+    </button>
+  </header>
+
+  <!-- ===== MOBILE DRAWER ===== -->
+  <div id="mobileDrawer" class="mobile-drawer fixed inset-0 z-40 bg-white/96 backdrop-blur-xl lg:hidden flex flex-col p-6 pt-20">
+    <button id="closeDrawer" class="absolute top-5 right-5 text-gray-400 hover:text-med-700 p-1"><i class="fas fa-times text-xl"></i></button>
+    <nav class="flex flex-col gap-2">
+      <a href="#" class="px-4 py-3 rounded-xl text-sm font-semibold bg-med-50 text-med-700">🏠 Home</a>
+      <a href="#physics" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">⚡ Physics</a>
+      <a href="#chemistry" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">🧪 Chemistry</a>
+      <a href="#biology" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">🧬 Biology</a>
+      <a href="#tests" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">📋 Tests</a>
+      <button onclick="App.openAdmin()" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 text-left">⚙️ Admin Panel</button>
+      <div class="mt-4 pt-4 border-t border-gray-100">
+        <button onclick="App.openAuth()" class="w-full bg-med-600 text-white py-3.5 rounded-xl font-semibold text-sm shadow-lg shadow-med-500/15">
+          <i class="fas fa-user-md mr-2"></i>Enroll for NEET
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="flex-1 mt-14 px-3 sm:px-4 md:px-6 pb-20 max-w-5xl mx-auto w-full space-y-10">
+
+    <!-- ===== HERO ===== -->
+    <section class="relative rounded-2xl overflow-hidden" id="hero">
+      <div class="absolute inset-0 bg-gradient-to-br from-med-900 via-med-800 to-med-950"></div>
+      <div class="absolute inset-0 opacity-8">
+        <svg class="w-full h-full" viewBox="0 0 1200 300" preserveAspectRatio="none">
+          <path d="M0 150 L80 150 L100 150 L110 110 L120 210 L130 150 L150 150 L160 150 L170 90 L180 240 L190 150 L210 150 L1200 150" fill="none" stroke="#34d399" stroke-width="1.5" class="ecg" stroke-dasharray="800" stroke-dashoffset="800"/>
+        </svg>
+      </div>
+      <div class="relative px-5 py-10 sm:px-8 sm:py-14 md:px-12 md:py-16 flex flex-col md:flex-row items-center gap-6 md:gap-10">
+        <div class="flex-1 text-center md:text-left">
+          <div class="inline-flex items-center gap-1.5 bg-white/8 backdrop-blur rounded-full px-3 py-1 mb-4 text-[11px] text-white/80 font-medium border border-white/10">
+            <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></span>NEET 2026 Admissions Open
+          </div>
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-white leading-tight mb-3">
+            Crack <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-200">NEET UG</span> with Precision
+          </h1>
+          <p class="text-white/65 text-sm mb-5 max-w-md mx-auto md:mx-0">Physics · Chemistry · Biology | AI Analytics | <span class="font-semibold text-emerald-300">By THP-STARLET</span></p>
+          <div class="flex flex-wrap gap-3 justify-center md:justify-start">
+            <button onclick="App.openAuth()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-xl shadow-emerald-500/20 hover:scale-[1.03] transition flex items-center gap-2 animate-glow-soft">
+              <i class="fas fa-stethoscope"></i>Start Prep
+            </button>
+            <a href="#demo" class="bg-white/8 text-white border border-white/15 px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-white/12 transition flex items-center gap-2">
+              <i class="fas fa-play-circle"></i>Demo
+            </a>
+          </div>
+        </div>
+        <div class="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 flex-shrink-0 animate-float">
+          <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg" class="w-full h-full opacity-90">
+            <defs><linearGradient id="dna1"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#059669"/></linearGradient></defs>
+            <path d="M50 30 Q130 140 50 250" fill="none" stroke="url(#dna1)" stroke-width="4" opacity="0.7"/>
+            <path d="M200 30 Q120 140 200 250" fill="none" stroke="#6ee7b7" stroke-width="4" opacity="0.7"/>
+            <line x1="65" y1="60" x2="185" y2="60" stroke="#34d399" stroke-width="2.5" opacity="0.5"/>
+            <line x1="55" y1="110" x2="195" y2="110" stroke="#059669" stroke-width="2.5" opacity="0.5"/>
+            <line x1="50" y1="160" x2="200" y2="160" stroke="#10b981" stroke-width="3" opacity="0.6"/>
+            <line x1="55" y1="210" x2="195" y2="210" stroke="#059669" stroke-width="2.5" opacity="0.5"/>
+            <circle cx="50" cy="30" r="5" fill="#34d399"/><circle cx="200" cy="30" r="5" fill="#6ee7b7"/>
+            <circle cx="50" cy="250" r="5" fill="#34d399"/><circle cx="200" cy="250" r="5" fill="#6ee7b7"/>
+            <circle cx="50" cy="160" r="7" fill="#34d399" class="animate-pulse"/><circle cx="200" cy="160" r="7" fill="#6ee7b7" class="animate-pulse"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VITAL STATS ===== -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 reveal" id="vitalStats">
+      <div class="card-slim rounded-xl p-3.5 text-center">
+        <div class="text-[10px] text-gray-400 font-medium uppercase tracking-wider mb-1">Heart Rate</div>
+        <div class="text-xl font-bold font-mono text-med-600" id="vitalHR">72</div>
+        <div class="text-[9px] text-gray-400">BPM</div>
+      </div>
+      <div class="card-slim rounded-xl p-3.5 text-center">
+        <div class="text-[10px] text-gray-400 font-medium uppercase tracking-wider mb-1">Accuracy</div>
+        <div class="text-xl font-bold font-mono text-amber-600">98.6</div>
+        <div class="text-[9px] text-gray-400">%</div>
+      </div>
+      <div class="card-slim rounded-xl p-3.5 text-center">
+        <div class="text-[10px] text-gray-400 font-medium uppercase tracking-wider mb-1">Students</div>
+        <div class="text-xl font-bold font-mono text-blue-600">15K+</div>
+        <div class="text-[9px] text-gray-400">Enrolled</div>
+      </div>
+      <div class="card-slim rounded-xl p-3.5 text-center">
+        <div class="text-[10px] text-gray-400 font-medium uppercase tracking-wider mb-1">Success</div>
+        <div class="text-xl font-bold font-mono text-purple-600">95%</div>
+        <div class="text-[9px] text-gray-400">Rate</div>
+      </div>
+    </div>
+
+    <!-- ===== PATIENT MONITOR ===== -->
+    <div class="monitor-screen p-4 sm:p-5 reveal" id="ecgMonitor">
+      <div class="scan-line"></div>
+      <div class="flex items-center justify-between mb-3 relative z-10">
+        <div class="flex items-center gap-2">
+          <div class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse pulse-glow"></div>
+          <span class="text-emerald-400 font-mono text-[10px] sm:text-xs tracking-wider">PATIENT MONITOR</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-gray-500 font-mono text-[10px]">LEAD II</span>
+          <span class="text-gray-500 font-mono text-[10px]">25 mm/s</span>
+        </div>
+      </div>
+      <div class="h-12 sm:h-14 overflow-hidden mb-3 relative z-10">
+        <svg class="w-[200%] h-full" viewBox="0 0 2000 60" preserveAspectRatio="none">
+          <path d="M0 30 L80 30 L110 30 L120 10 L130 55 L140 30 L160 30 L170 30 L180 5 L190 60 L200 30 L220 30 L300 30 L330 30 L340 10 L350 55 L360 30 L380 30 L390 30 L400 5 L410 60 L420 30 L440 30 L520 30 L550 30 L560 10 L570 55 L580 30 L600 30 L610 30 L620 5 L630 60 L640 30 L660 30 L740 30 L770 30 L780 10 L790 55 L800 30 L820 30 L830 30 L840 5 L850 60 L860 30 L880 30 L960 30 L990 30 L1000 10 L1010 55 L1020 30 L1040 30 L1050 30 L1060 5 L1070 60 L1080 30 L1100 30" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" opacity="0.9" class="ecg"/>
+        </svg>
+      </div>
+      <div class="grid grid-cols-4 gap-2 text-center relative z-10">
+        <div class="bg-white/4 rounded-lg py-2">
+          <div class="text-emerald-400 font-mono font-bold text-sm" id="monHR">72</div>
+          <div class="text-[9px] text-gray-500">HR (BPM)</div>
+        </div>
+        <div class="bg-white/4 rounded-lg py-2">
+          <div class="text-blue-400 font-mono font-bold text-sm">120/80</div>
+          <div class="text-[9px] text-gray-500">NIBP</div>
+        </div>
+        <div class="bg-white/4 rounded-lg py-2">
+          <div class="text-amber-400 font-mono font-bold text-sm">98</div>
+          <div class="text-[9px] text-gray-500">SpO2 (%)</div>
+        </div>
+        <div class="bg-white/4 rounded-lg py-2">
+          <div class="text-purple-400 font-mono font-bold text-sm">36.6</div>
+          <div class="text-[9px] text-gray-500">TEMP (°C)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SUBJECT CARDS ===== -->
+    <section id="physics" class="reveal">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="hb-pulse text-sm">❤️</span>
+            <span class="badge-verified text-[10px] font-semibold px-2 py-0.5 rounded-full">Stethoscope Verified</span>
+          </div>
+          <h2 class="text-xl font-bold font-display text-gray-900">Core Subjects</h2>
+        </div>
+        <span class="text-xs text-gray-400" id="subjectCount">3 Subjects</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="subjectsContainer">
+        <!-- Subjects loaded dynamically from Firestore -->
+      </div>
+    </section>
+
+    <!-- ===== TEST SERIES ===== -->
+    <section id="tests" class="bg-gradient-to-br from-med-900 to-med-950 rounded-2xl p-5 sm:p-7 text-white relative overflow-hidden reveal">
+      <div class="absolute inset-0 opacity-8"><div class="absolute top-5 left-5 w-48 h-48 bg-med-400 rounded-full blur-3xl"></div></div>
+      <div class="relative z-10">
+        <div class="text-center mb-5">
+          <span class="bg-white/6 text-[10px] font-semibold px-3 py-1 rounded-full inline-block mb-3 backdrop-blur-sm">📋 ALL INDIA TEST SERIES</span>
+          <h2 class="text-xl sm:text-2xl font-bold font-display mb-1">Mock Tests & Analytics</h2>
+          <p class="text-white/50 text-xs">Simulate real NEET exam environment</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          <div class="bg-white/4 backdrop-blur-sm rounded-xl p-4 text-center border border-white/5">
+            <div class="text-2xl mb-1">📝</div><div class="font-semibold text-sm">Full Syllabus</div><div class="text-emerald-400 font-bold text-lg">20+</div>
+          </div>
+          <div class="bg-white/4 backdrop-blur-sm rounded-xl p-4 text-center border border-white/5">
+            <div class="text-2xl mb-1">🎯</div><div class="font-semibold text-sm">Chapter-wise</div><div class="text-amber-400 font-bold text-lg">100+</div>
+          </div>
+          <div class="bg-white/4 backdrop-blur-sm rounded-xl p-4 text-center border border-white/5">
+            <div class="text-2xl mb-1">📊</div><div class="font-semibold text-sm">AI Analytics</div><div class="text-blue-400 font-bold text-lg">Real-time</div>
+          </div>
+        </div>
+        <div class="text-center">
+          <button onclick="App.openAuth()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm shadow-xl shadow-emerald-500/15 hover:scale-[1.02] transition inline-flex items-center gap-2">
+            <i class="fas fa-flask"></i>Start Free Test
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHY THP ===== -->
+    <section class="reveal">
+      <div class="card-slim rounded-2xl p-5 sm:p-6">
+        <div class="sm:flex items-start gap-8">
+          <div class="flex-1">
+            <span class="badge-verified text-[10px] font-semibold px-2.5 py-1 rounded-full inline-block mb-3">⭐ Trusted Platform</span>
+            <h2 class="text-xl font-bold font-display text-gray-900 mb-3">Why THP-STARLET for NEET?</h2>
+            <p class="text-sm text-gray-500 mb-4">Expert faculty with cutting-edge AI technology for unmatched preparation.</p>
+            <ul class="space-y-3 text-sm">
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">Expert Medical Faculty & NEET Toppers</span></li>
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">AI-Powered Personalized Study Plans</span></li>
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">24/7 Instant Doubt Resolution</span></li>
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">Premium Coaching at ₹499/month</span></li>
+            </ul>
+            <button onclick="App.openAuth()" class="mt-5 bg-med-600 hover:bg-med-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-med-500/15 transition flex items-center gap-2">
+              <i class="fas fa-user-md"></i>Enroll Now
+            </button>
+          </div>
+          <div class="hidden sm:block flex-shrink-0">
+            <div class="bg-gradient-to-br from-med-50 to-emerald-50 rounded-2xl p-6 text-center">
+              <div class="w-20 h-20 bg-med-100 rounded-full flex items-center justify-center mx-auto mb-3 animate-float relative">
+                <span class="text-3xl">⚕️</span>
+                <div class="absolute -top-1 -right-1 w-7 h-7 bg-red-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold pulse-glow">+</div>
+              </div>
+              <div class="text-3xl font-extrabold text-med-600">500+</div>
+              <div class="text-xs text-gray-500 font-medium">NEET Selections 2024</div>
+              <div class="flex gap-1.5 mt-3 justify-center flex-wrap">
+                <span class="bg-med-50 text-med-700 text-[10px] px-2 py-0.5 rounded-full font-semibold">AIIMS</span>
+                <span class="bg-med-50 text-med-700 text-[10px] px-2 py-0.5 rounded-full font-semibold">JIPMER</span>
+                <span class="bg-med-50 text-med-700 text-[10px] px-2 py-0.5 rounded-full font-semibold">GMC</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="reveal">
+      <div class="card-slim rounded-2xl p-5 sm:p-6">
+        <div class="text-center mb-5">
+          <h2 class="text-lg font-bold font-display text-gray-900">Contact Us</h2>
+          <p class="text-xs text-gray-500">Hosted by <span class="font-semibold text-med-700">THP-STARLET</span></p>
+        </div>
+        <div class="sm:flex gap-6">
+          <div class="flex-1 space-y-3 mb-4 sm:mb-0">
+            <div class="flex items-center gap-3"><div class="w-9 h-9 bg-med-50 rounded-lg flex items-center justify-center"><i class="fas fa-phone-alt text-med-600 text-sm"></i></div><div><div class="text-xs font-semibold">Phone</div><a href="tel:+919648837922" class="text-xs text-gray-500 hover:text-med-600">+91 96488 37922</a></div></div>
+            <div class="flex items-center gap-3"><div class="w-9 h-9 bg-med-50 rounded-lg flex items-center justify-center"><i class="fas fa-envelope text-med-600 text-sm"></i></div><div><div class="text-xs font-semibold">Email</div><a href="mailto:neet@thpstarlet.com" class="text-xs text-gray-500 hover:text-med-600">neet@thpstarlet.com</a></div></div>
+            <div class="flex gap-2 mt-3">
+              <a href="#" class="w-8 h-8 bg-med-600 rounded-lg flex items-center justify-center text-white text-xs hover:bg-med-700 transition"><i class="fab fa-youtube"></i></a>
+              <a href="#" class="w-8 h-8 bg-med-600 rounded-lg flex items-center justify-center text-white text-xs hover:bg-med-700 transition"><i class="fab fa-instagram"></i></a>
+              <a href="https://chat.whatsapp.com/HbSNkHQ3xAIF7SVk9VX4AJ" class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white text-xs hover:bg-green-600 transition"><i class="fab fa-whatsapp"></i></a>
+            </div>
+          </div>
+          <div class="flex-1">
+            <form class="space-y-2.5" onsubmit="return false;">
+              <input type="text" placeholder="Full Name" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100 transition">
+              <input type="text" placeholder="Mobile Number" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100 transition">
+              <select class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100 transition text-gray-500">
+                <option>NEET 2026 Aspirant</option><option>NEET 2027 Aspirant</option><option>Dropper Batch</option>
+              </select>
+              <button type="submit" class="w-full bg-med-600 hover:bg-med-700 text-white py-2.5 rounded-xl font-semibold text-xs shadow-md shadow-med-500/10 transition">Request Callback</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FLOATING BUTTONS ===== -->
+  <div class="fixed right-3 sm:right-4 bottom-24 z-50 flex flex-col gap-2.5">
+    <a href="tel:+919648837922" class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all animate-glow-soft"><i class="fas fa-phone-alt text-sm"></i></a>
+    <button onclick="window.open('https://wa.me/919648837922','_blank')" class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fab fa-whatsapp text-sm"></i></button>
+  </div>
+
+  <!-- ===== AUTH MODAL ===== -->
+  <div class="modal-slim fixed inset-0 bg-black/55 backdrop-blur-sm z-[200] flex items-center justify-center p-4" id="authModal">
+    <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto">
+      <button class="absolute top-3 right-3 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition" onclick="App.closeAuth()"><i class="fas fa-times text-gray-400 text-sm"></i></button>
+      <div class="text-center mb-5">
+        <div class="w-12 h-12 bg-gradient-to-br from-med-500 to-med-600 rounded-xl flex items-center justify-center mx-auto mb-2 shadow-md relative">
+          <span class="text-2xl">⚕️</span>
+          <div class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full pulse-glow"></div>
+        </div>
+        <h3 class="text-lg font-bold font-display text-gray-900">Join NEET Prep</h3>
+        <p class="text-xs text-gray-500">Start your medical journey</p>
+      </div>
+      <div class="flex bg-gray-100 rounded-lg p-1 mb-5">
+        <button id="tabIn" class="flex-1 py-2 rounded-md text-xs font-semibold transition bg-med-600 text-white shadow-sm" onclick="App.switchTab('in')">Sign In</button>
+        <button id="tabUp" class="flex-1 py-2 rounded-md text-xs font-semibold transition text-gray-500" onclick="App.switchTab('up')">Register</button>
+      </div>
+      <div id="formIn" class="space-y-3">
+        <input type="email" id="inEmail" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Email">
+        <input type="password" id="inPass" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Password">
+        <button onclick="App.signIn()" class="w-full bg-med-600 text-white py-2.5 rounded-xl font-semibold text-xs shadow-md">Sign In</button>
+      </div>
+      <div id="formUp" class="space-y-3 hidden">
+        <input type="text" id="upName" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Full Name">
+        <input type="email" id="upEmail" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Email">
+        <input type="tel" id="upPhone" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Phone">
+        <input type="password" id="upPass" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:border-med-500 focus:outline-none focus:ring-2 focus:ring-med-100" placeholder="Password (min 8 chars)">
+        <button onclick="App.register()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-2.5 rounded-xl font-semibold text-xs shadow-md">Register & Start</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN PANEL MODAL ===== -->
+  <div class="modal-slim fixed inset-0 bg-black/70 backdrop-blur-md z-[250] flex items-center justify-center p-3 sm:p-4" id="adminModal">
+    <div class="admin-modal rounded-2xl w-full max-w-3xl shadow-2xl relative max-h-[92vh] overflow-y-auto">
+      <!-- Admin Header -->
+      <div class="sticky top-0 z-10 bg-gradient-to-r from-med-900 to-med-950 px-5 py-4 rounded-t-2xl border-b border-med-500/20 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-xl flex items-center justify-center shadow-lg">
+            <i class="fas fa-cog text-white"></i>
+          </div>
+          <div>
+            <h2 class="text-white font-bold font-display text-base">Admin Panel</h2>
+            <p class="text-med-300/60 text-[10px] tracking-wider uppercase">THP-STARLET NEET Control</p>
+          </div>
+        </div>
+        <button class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition" onclick="App.closeAdmin()">
+          <i class="fas fa-times text-med-300 text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Admin Tabs -->
+      <div class="px-5 pt-5 flex gap-2 border-b border-med-500/10">
+        <button id="adminTabSubjects" class="px-4 py-2.5 text-xs font-semibold text-med-300 border-b-2 border-med-500 transition rounded-t-lg" onclick="App.adminTab('subjects')">
+          <i class="fas fa-book-medical mr-1.5"></i>Subjects
+        </button>
+        <button id="adminTabSettings" class="px-4 py-2.5 text-xs font-semibold text-med-300/50 border-b-2 border-transparent transition rounded-t-lg" onclick="App.adminTab('settings')">
+          <i class="fas fa-cog mr-1.5"></i>Settings
+        </button>
+      </div>
+
+      <!-- Admin Content -->
+      <div class="p-5">
+
+        <!-- ===== SUBJECTS TAB ===== -->
+        <div id="adminSubjectsTab">
+          <!-- Upload Form -->
+          <div class="bg-white/4 rounded-2xl p-5 border border-med-500/10 mb-5">
+            <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+              <i class="fas fa-plus-circle text-med-400"></i>Add / Update Subject
+            </h3>
+            
+            <form id="subjectForm" class="space-y-4" onsubmit="return false;">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Subject Name -->
+                <div>
+                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Subject Name</label>
+                  <input type="text" id="subjName" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="e.g., Physics" required>
+                </div>
+                <!-- Difficulty -->
+                <div>
+                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Difficulty Level</label>
+                  <select id="subjDifficulty" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs appearance-none cursor-pointer">
+                    <option value="Easy">Easy</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="Hard">Hard</option>
+                  </select>
+                </div>
+                <!-- Chapters -->
+                <div>
+                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Chapters</label>
+                  <input type="text" id="subjChapters" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="e.g., 28 Chapters" required>
+                </div>
+                <!-- Questions -->
+                <div>
+                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Total Questions</label>
+                  <input type="text" id="subjQuestions" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="e.g., 2,500+" required>
+                </div>
+                <!-- Progress -->
+                <div>
+                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Progress (%)</label>
+                  <input type="number" id="subjProgress" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="0-100" min="0" max="100" value="50" required>
+                </div>
+                <!-- Subject ID (for updates) -->
+                <div>
+                  <label class="block text-med-300 text-[11px] font-medium mb-1.5">Subject ID (auto for new)</label>
+                  <input type="text" id="subjId" class="admin-input w-full px-3.5 py-2.5 rounded-xl text-xs" placeholder="Leave empty for new" readonly style="opacity:0.6;">
+                </div>
+              </div>
+
+              <!-- Thumbnail Upload -->
+              <div>
+                <label class="block text-med-300 text-[11px] font-medium mb-1.5">Thumbnail Image (16:9 recommended)</label>
+                <div class="thumb-upload-zone p-4" id="thumbUploadZone" onclick="document.getElementById('thumbInput').click()">
+                  <input type="file" id="thumbInput" accept="image/*" class="hidden" onchange="App.handleThumbSelect(event)">
+                  <div id="thumbPlaceholder" class="text-center py-4">
+                    <div class="w-14 h-14 bg-med-500/10 rounded-xl flex items-center justify-center mx-auto mb-2">
+                      <i class="fas fa-cloud-upload-alt text-med-400 text-xl"></i>
+                    </div>
+                    <p class="text-med-200 text-xs font-medium mb-1">Click or drag to upload</p>
+                    <p class="text-med-300/50 text-[10px]">PNG, JPG up to 5MB · 16:9 ratio</p>
+                  </div>
+                  <div id="thumbPreviewWrap" class="hidden">
+                    <img id="thumbPreview" class="thumb-preview-img" alt="Preview">
+                    <div class="flex items-center justify-between mt-2">
+                      <span id="thumbFileName" class="text-med-300 text-[10px] truncate flex-1 mr-2"></span>
+                      <button type="button" onclick="event.stopPropagation(); App.removeThumb()" class="text-red-400 hover:text-red-300 text-[10px] font-semibold">
+                        <i class="fas fa-trash mr-1"></i>Remove
+                      </button>
+                    </div>
+                  </div>
+                  <div class="upload-progress hidden" id="uploadProgress">
+                    <div class="upload-progress-bar" id="uploadProgressBar"></div>
+                  </div>
+                </div>
+                <input type="hidden" id="subjThumbUrl" value="">
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex gap-3 pt-2">
+                <button type="button" onclick="App.saveSubject()" class="flex-1 bg-gradient-to-r from-med-500 to-med-600 hover:from-med-600 hover:to-med-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-med-500/20 transition flex items-center justify-center gap-2">
+                  <i class="fas fa-save"></i><span id="saveBtnText">Save Subject</span>
+                </button>
+                <button type="button" onclick="App.resetSubjectForm()" class="px-4 bg-white/5 hover:bg-white/10 text-med-200 py-3 rounded-xl font-semibold text-xs transition">
+                  <i class="fas fa-undo"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Existing Subjects List -->
+          <div>
+            <h3 class="text-white font-semibold text-sm mb-3 flex items-center gap-2">
+              <i class="fas fa-list text-med-400"></i>Existing Subjects
+              <span class="ml-auto text-[10px] text-med-300/60" id="adminSubjCount">0 subjects</span>
+            </h3>
+            <div id="adminSubjectsList" class="space-y-2">
+              <div class="text-center py-6 text-med-300/40 text-xs">Loading subjects...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SETTINGS TAB ===== -->
+        <div id="adminSettingsTab" class="hidden">
+          <div class="bg-white/4 rounded-2xl p-5 border border-med-500/10">
+            <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+              <i class="fas fa-database text-med-400"></i>Firebase & ImgBB Info
+            </h3>
+            <div class="space-y-3 text-xs">
+              <div class="flex justify-between items-center py-2 border-b border-med-500/10">
+                <span class="text-med-300/60">Firebase Project</span>
+                <span class="text-med-200 font-mono">mine-a1e68</span>
+              </div>
+              <div class="flex justify-between items-center py-2 border-b border-med-500/10">
+                <span class="text-med-300/60">ImgBB API Key</span>
+                <span class="text-med-200 font-mono">53fb01...8500a</span>
+              </div>
+              <div class="flex justify-between items-center py-2">
+                <span class="text-med-300/60">Storage</span>
+                <span class="text-emerald-400 font-mono">ImgBB Cloud</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 mt-4">
+            <div class="flex gap-3">
+              <i class="fas fa-info-circle text-amber-400 mt-0.5"></i>
+              <div>
+                <h4 class="text-amber-300 font-semibold text-xs mb-1">How to add a subject</h4>
+                <ol class="text-amber-200/70 text-[11px] space-y-1 list-decimal list-inside">
+                  <li>Fill all fields above</li>
+                  <li>Upload a 16:9 thumbnail image</li>
+                  <li>Click Save Subject</li>
+                  <li>Image uploads to ImgBB automatically</li>
+                  <li>Subject appears on homepage instantly</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="fixed bottom-6 right-3 sm:right-5 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
+
+  <script>
+    (function() {
+      // ===== NEW FIREBASE CONFIG =====
+      const fb = {
+        apiKey: "AIzaSyDS0rzCKglHblF2dlFEKE-ouV0yOu0z5UM",
+        authDomain: "mine-a1e68.firebaseapp.com",
+        projectId: "mine-a1e68",
+        storageBucket: "mine-a1e68.appspot.com",
+        messagingSenderId: "48499757892",
+        appId: "1:48499757892:web:d0fd281ab0df945e893d11"
+      };
+      
+      const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
+      
+      firebase.initializeApp(fb);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+      let user = null;
+      let currentSubjects = [];
+
+      // ===== TOAST =====
+      function toast(m, t = 'info') {
+        const c = document.getElementById('toastContainer');
+        const i = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        const d = document.createElement('div');
+        d.className = 'bg-white border-l-2 border-med-500 rounded-lg px-4 py-2.5 shadow-lg text-xs font-medium text-gray-800 toast-pop';
+        d.textContent = `${i[t]||i.info} ${m}`;
+        c.appendChild(d);
+        setTimeout(() => { d.style.opacity = '0'; d.style.transform = 'translateY(-10px)'; d.style.transition = 'all 0.3s'; setTimeout(() => d.remove(), 300); }, 3000);
+      }
+
+      // ===== IMGBB UPLOAD =====
+      async function uploadToImgBB(file) {
+        if (!file) return null;
+        if (file.size > 5 * 1024 * 1024) {
+          toast('Image too large (max 5MB)', 'error');
+          return null;
+        }
+        
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        try {
+          const resp = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+            method: 'POST',
+            body: formData
+          });
+          const json = await resp.json();
+          if (json.success) {
+            return json.data.url;
+          } else {
+            throw new Error(json.error?.message || 'Upload failed');
+          }
+        } catch (e) {
+          console.error('ImgBB upload error:', e);
+          toast('Image upload failed: ' + e.message, 'error');
+          return null;
+        }
+      }
+
+      // ===== LOAD SUBJECTS FROM FIRESTORE =====
+      async function loadSubjects() {
+        const container = document.getElementById('subjectsContainer');
+        const adminList = document.getElementById('adminSubjectsList');
+        if (!container) return;
+
+        try {
+          // First check if subjects collection has data
+          const snapshot = await db.collection('subjects').orderBy('createdAt', 'desc').get();
+          
+          if (snapshot.empty) {
+            // Seed default subjects if empty
+            await seedDefaultSubjects();
+            return loadSubjects();
+          }
+
+          currentSubjects = [];
+          snapshot.forEach(doc => {
+            currentSubjects.push({ id: doc.id, ...doc.data() });
+          });
+
+          renderSubjects(currentSubjects);
+          renderAdminList(currentSubjects);
+          
+          document.getElementById('subjectCount').textContent = `${currentSubjects.length} Subjects`;
+          document.getElementById('adminSubjCount').textContent = `${currentSubjects.length} subjects`;
+        } catch (e) {
+          console.error('Load subjects error:', e);
+          container.innerHTML = `<div class="col-span-3 text-center py-8 text-gray-400 text-xs">Error loading subjects</div>`;
+        }
+      }
+
+      // ===== SEED DEFAULT SUBJECTS =====
+      async function seedDefaultSubjects() {
+        const defaults = [
+          {
+            name: 'Physics',
+            slug: 'physics',
+            icon: '⚡',
+            chapters: '28 Chapters',
+            questions: '2,500+',
+            progress: 75,
+            difficulty: 'Medium',
+            thumbnail: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=600&h=400&fit=crop',
+            color: 'blue',
+            order: 1,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          },
+          {
+            name: 'Chemistry',
+            slug: 'chemistry',
+            icon: '🧪',
+            chapters: '24 Chapters',
+            questions: '2,100+',
+            progress: 62,
+            difficulty: 'Easy',
+            thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600&h=400&fit=crop',
+            color: 'emerald',
+            order: 2,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          },
+          {
+            name: 'Biology',
+            slug: 'biology',
+            icon: '🧬',
+            chapters: '32 Chapters',
+            questions: '3,200+',
+            progress: 48,
+            difficulty: 'Hard',
+            thumbnail: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop',
+            color: 'purple',
+            order: 3,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          }
+        ];
+
+        const batch = db.batch();
+        defaults.forEach(subj => {
+          const ref = db.collection('subjects').doc(subj.slug);
+          batch.set(ref, subj);
+        });
+        await batch.commit();
+        toast('Default subjects created', 'success');
+      }
+
+      // ===== RENDER SUBJECT CARDS =====
+      function renderSubjects(subjects) {
+        const container = document.getElementById('subjectsContainer');
+        if (!container) return;
+        
+        if (!subjects.length) {
+          container.innerHTML = `<div class="col-span-3 text-center py-8 text-gray-400 text-xs">No subjects yet</div>`;
+          return;
+        }
+
+        const colorMap = {
+          blue: { grad: 'from-blue-500 to-cyan-500', badge: 'bg-amber-50 text-amber-700' },
+          emerald: { grad: 'from-emerald-500 to-teal-500', badge: 'bg-emerald-50 text-emerald-700' },
+          purple: { grad: 'from-purple-500 to-pink-500', badge: 'bg-red-50 text-red-700' },
+          amber: { grad: 'from-amber-500 to-orange-500', badge: 'bg-amber-50 text-amber-700' },
+          red: { grad: 'from-red-500 to-pink-500', badge: 'bg-red-50 text-red-700' },
+        };
+
+        container.innerHTML = subjects.map(subj => {
+          const colors = colorMap[subj.color] || colorMap.blue;
+          const badgeClass = subj.difficulty === 'Easy' ? 'bg-emerald-50 text-emerald-700' 
+                            : subj.difficulty === 'Hard' ? 'bg-red-50 text-red-700' 
+                            : 'bg-amber-50 text-amber-700';
+          
+          return `
+            <div class="card-slim rounded-2xl overflow-hidden group cursor-pointer" onclick="App.subjectClick('${subj.slug}')">
+              <div class="relative h-32 sm:h-36 overflow-hidden">
+                <img src="${subj.thumbnail || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop'}" 
+                     alt="${subj.name}" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                     onerror="this.src='https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop'">
+                <div class="absolute inset-0 bg-gradient-to-t from-med-900/70 to-transparent"></div>
+                <div class="absolute bottom-3 left-3 text-white">
+                  <span class="text-lg">${subj.icon || '📚'}</span>
+                  <span class="font-bold font-display ml-1.5 text-sm">${subj.name}</span>
+                </div>
+                <div class="absolute top-2.5 right-2.5 badge-verified rounded-lg px-2 py-1 flex items-center gap-1 shadow-sm">
+                  <svg class="w-3.5 h-3.5 text-med-600 hb-pulse" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <span class="text-[9px] font-bold text-med-700">Verified</span>
+                </div>
+              </div>
+              <div class="p-3.5">
+                <div class="flex justify-between text-[11px] text-gray-500 mb-2">
+                  <span>${subj.chapters}</span>
+                  <span class="${badgeClass} px-2 py-0.5 rounded-full font-semibold">${subj.difficulty}</span>
+                </div>
+                <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden mb-2">
+                  <div class="h-full bg-gradient-to-r ${colors.grad} rounded-full" style="width:${subj.progress}%"></div>
+                </div>
+                <div class="flex justify-between text-[10px] text-gray-400">
+                  <span>${subj.questions} Qs</span>
+                  <span>${subj.progress}%</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // ===== RENDER ADMIN LIST =====
+      function renderAdminList(subjects) {
+        const list = document.getElementById('adminSubjectsList');
+        if (!list) return;
+        
+        if (!subjects.length) {
+          list.innerHTML = `<div class="text-center py-6 text-med-300/40 text-xs">No subjects yet</div>`;
+          return;
+        }
+
+        list.innerHTML = subjects.map(subj => `
+          <div class="flex items-center gap-3 bg-white/3 hover:bg-white/6 rounded-xl p-3 border border-med-500/10 transition">
+            <img src="${subj.thumbnail}" class="w-14 h-10 object-cover rounded-lg flex-shrink-0" onerror="this.src='https://via.placeholder.com/60x40/059669/ffffff?text=IMG'">
+            <div class="flex-1 min-w-0">
+              <div class="text-med-100 text-xs font-semibold truncate">${subj.icon || '📚'} ${subj.name}</div>
+              <div class="text-med-300/50 text-[10px] truncate">${subj.chapters} · ${subj.questions} Qs · ${subj.progress}%</div>
+            </div>
+            <div class="flex gap-1.5">
+              <button onclick="App.editSubject('${subj.id}')" class="w-7 h-7 bg-med-500/15 hover:bg-med-500/25 rounded-lg flex items-center justify-center text-med-300 transition" title="Edit">
+                <i class="fas fa-edit text-[10px]"></i>
+              </button>
+              <button onclick="App.deleteSubject('${subj.id}')" class="w-7 h-7 bg-red-500/15 hover:bg-red-500/25 rounded-lg flex items-center justify-center text-red-300 transition" title="Delete">
+                <i class="fas fa-trash text-[10px]"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // ===== ADMIN STATE =====
+      let editingSubjectId = null;
+      let selectedThumbFile = null;
+
+      function handleThumbSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+          toast('Image too large (max 5MB)', 'error');
+          return;
+        }
+        selectedThumbFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById('thumbPreview').src = e.target.result;
+          document.getElementById('thumbPreviewWrap').classList.remove('hidden');
+          document.getElementById('thumbPlaceholder').classList.add('hidden');
+          document.getElementById('thumbFileName').textContent = file.name;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function removeThumb() {
+        selectedThumbFile = null;
+        document.getElementById('thumbInput').value = '';
+        document.getElementById('thumbPreviewWrap').classList.add('hidden');
+        document.getElementById('thumbPlaceholder').classList.remove('hidden');
+        document.getElementById('subjThumbUrl').value = '';
+      }
+
+      function resetSubjectForm() {
+        document.getElementById('subjName').value = '';
+        document.getElementById('subjChapters').value = '';
+        document.getElementById('subjQuestions').value = '';
+        document.getElementById('subjProgress').value = '50';
+        document.getElementById('subjDifficulty').value = 'Medium';
+        document.getElementById('subjId').value = '';
+        document.getElementById('saveBtnText').textContent = 'Save Subject';
+        editingSubjectId = null;
+        removeThumb();
+      }
+
+      async function saveSubject() {
+        const name = document.getElementById('subjName').value.trim();
+        const chapters = document.getElementById('subjChapters').value.trim();
+        const questions = document.getElementById('subjQuestions').value.trim();
+        const progress = parseInt(document.getElementById('subjProgress').value) || 50;
+        const difficulty = document.getElementById('subjDifficulty').value;
+        let thumbUrl = document.getElementById('subjThumbUrl').value;
+        const iconMap = { 'Physics': '⚡', 'Chemistry': '🧪', 'Biology': '🧬', 'Mathematics': '📐', 'English': '📖', 'GK': '🌍' };
+        const colorMap = { 'Easy': 'emerald', 'Medium': 'amber', 'Hard': 'red' };
+
+        if (!name || !chapters || !questions) {
+          toast('Please fill all required fields', 'warning');
+          return;
+        }
+
+        const saveBtn = document.querySelector('#subjectForm button[onclick*="saveSubject"]');
+        const originalText = document.getElementById('saveBtnText').textContent;
+        document.getElementById('saveBtnText').textContent = 'Saving...';
+        saveBtn.disabled = true;
+
+        try {
+          // Upload new thumbnail if selected
+          if (selectedThumbFile) {
+            document.getElementById('uploadProgress').classList.remove('hidden');
+            document.getElementById('uploadProgressBar').style.width = '30%';
+            toast('Uploading thumbnail to ImgBB...', 'info');
+            
+            thumbUrl = await uploadToImgBB(selectedThumbFile);
+            document.getElementById('uploadProgressBar').style.width = '100%';
+            
+            if (!thumbUrl) {
+              throw new Error('Thumbnail upload failed');
+            }
+          }
+
+          const slug = name.toLowerCase().replace(/\s+/g, '-');
+          const subjectData = {
+            name,
+            slug,
+            icon: iconMap[name] || '📚',
+            chapters: chapters.includes('Chapter') ? chapters : `${chapters} Chapters`,
+            questions: questions.includes('+') ? questions : `${questions}+`,
+            progress: Math.min(100, Math.max(0, progress)),
+            difficulty,
+            thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop',
+            color: colorMap[difficulty] || 'blue',
+            order: editingSubjectId ? undefined : Date.now(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          if (editingSubjectId) {
+            // Update existing
+            await db.collection('subjects').doc(editingSubjectId).update(subjectData);
+            toast('Subject updated! ✅', 'success');
+          } else {
+            // Create new
+            subjectData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            await db.collection('subjects').doc(slug).set(subjectData);
+            toast('Subject added! ✅', 'success');
+          }
+
+          resetSubjectForm();
+          await loadSubjects();
+          document.getElementById('uploadProgress').classList.add('hidden');
+        } catch (e) {
+          console.error('Save error:', e);
+          toast('Error: ' + e.message, 'error');
+        } finally {
+          document.getElementById('saveBtnText').textContent = originalText;
+          saveBtn.disabled = false;
+        }
+      }
+
+      function editSubject(id) {
+        const subj = currentSubjects.find(s => s.id === id);
+        if (!subj) return;
+
+        editingSubjectId = id;
+        document.getElementById('subjName').value = subj.name || '';
+        document.getElementById('subjChapters').value = (subj.chapters || '').replace(' Chapters', '');
+        document.getElementById('subjQuestions').value = (subj.questions || '').replace('+', '').replace(' Qs', '');
+        document.getElementById('subjProgress').value = subj.progress || 50;
+        document.getElementById('subjDifficulty').value = subj.difficulty || 'Medium';
+        document.getElementById('subjId').value = id;
+        document.getElementById('saveBtnText').textContent = 'Update Subject';
+
+        // Show existing thumbnail
+        if (subj.thumbnail) {
+          document.getElementById('subjThumbUrl').value = subj.thumbnail;
+          document.getElementById('thumbPreview').src = subj.thumbnail;
+          document.getElementById('thumbPreviewWrap').classList.remove('hidden');
+          document.getElementById('thumbPlaceholder').classList.add('hidden');
+          document.getElementById('thumbFileName').textContent = 'Current image';
+        }
+
+        // Scroll to form
+        document.getElementById('subjectForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        toast('Editing: ' + subj.name, 'info');
+      }
+
+      async function deleteSubject(id) {
+        const subj = currentSubjects.find(s => s.id === id);
+        if (!confirm(`Delete "${subj?.name}"? This cannot be undone.`)) return;
+        
+        try {
+          await db.collection('subjects').doc(id).delete();
+          toast('Subject deleted', 'success');
+          await loadSubjects();
+        } catch (e) {
+          toast('Delete failed: ' + e.message, 'error');
+        }
+      }
+
+      function adminTab(tab) {
+        const subjTab = document.getElementById('adminSubjectsTab');
+        const setTab = document.getElementById('adminSettingsTab');
+        const subjBtn = document.getElementById('adminTabSubjects');
+        const setBtn = document.getElementById('adminTabSettings');
+        
+        if (tab === 'subjects') {
+          subjTab.classList.remove('hidden');
+          setTab.classList.add('hidden');
+          subjBtn.className = 'px-4 py-2.5 text-xs font-semibold text-med-300 border-b-2 border-med-500 transition rounded-t-lg';
+          setBtn.className = 'px-4 py-2.5 text-xs font-semibold text-med-300/50 border-b-2 border-transparent transition rounded-t-lg';
+        } else {
+          subjTab.classList.add('hidden');
+          setTab.classList.remove('hidden');
+          setBtn.className = 'px-4 py-2.5 text-xs font-semibold text-med-300 border-b-2 border-med-500 transition rounded-t-lg';
+          subjBtn.className = 'px-4 py-2.5 text-xs font-semibold text-med-300/50 border-b-2 border-transparent transition rounded-t-lg';
+        }
+      }
+
+      // ===== AUTH =====
+      function switchTab(t) {
+        document.getElementById('formIn').classList.toggle('hidden', t !== 'in');
+        document.getElementById('formUp').classList.toggle('hidden', t !== 'up');
+        document.getElementById('tabIn').className = `flex-1 py-2 rounded-md text-xs font-semibold transition ${t==='in'?'bg-med-600 text-white shadow-sm':'text-gray-500'}`;
+        document.getElementById('tabUp').className = `flex-1 py-2 rounded-md text-xs font-semibold transition ${t==='up'?'bg-med-600 text-white shadow-sm':'text-gray-500'}`;
+      }
+
+      async function signIn() {
+        const e = document.getElementById('inEmail').value.trim();
+        const p = document.getElementById('inPass').value;
+        if (!e || !p) return toast('Fill all fields', 'warning');
+        try { await auth.signInWithEmailAndPassword(e, p); toast('Welcome back! 🩺', 'success'); closeAuth(); }
+        catch (err) { toast(err.message, 'error'); }
+      }
+
+      async function register() {
+        const n = document.getElementById('upName').value.trim();
+        const e = document.getElementById('upEmail').value.trim();
+        const ph = document.getElementById('upPhone').value.trim();
+        const p = document.getElementById('upPass').value;
+        if (!n || !e || !ph || p.length < 8) return toast('Fill correctly (password 8+ chars)', 'warning');
+        try {
+          const uc = await auth.createUserWithEmailAndPassword(e, p);
+          await uc.user.updateProfile({ displayName: n });
+          await db.collection('users').doc(uc.user.uid).set({ name: n, email: e, phone: ph, course: 'NEET UG', enrolledAt: firebase.firestore.FieldValue.serverTimestamp() });
+          toast('Registered! Welcome to THP-STARLET 🎉', 'success');
+          closeAuth();
+        } catch (err) { toast(err.message, 'error'); }
+      }
+
+      function logout() { auth.signOut().then(() => toast('Signed out', 'info')); }
+
+      auth.onAuthStateChanged(u => {
+        user = u;
+        const authBtn = document.getElementById('authBtn');
+        if (authBtn) authBtn.style.display = u ? 'none' : 'inline-flex';
+        const um = document.getElementById('userMenu');
+        if (u) { um.classList.remove('hidden'); um.classList.add('flex'); document.getElementById('userName').textContent = u.displayName || u.email; }
+        else { um.classList.add('hidden'); um.classList.remove('flex'); }
+      });
+
+      // ===== MODAL CONTROLS =====
+      function openAuth() {
+        document.getElementById('authModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        switchTab('in');
+      }
+      function closeAuth() {
+        document.getElementById('authModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      function openAdmin() {
+        document.getElementById('adminModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        adminTab('subjects');
+        loadSubjects();
+      }
+      function closeAdmin() {
+        document.getElementById('adminModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // ===== EVENT LISTENERS =====
+      document.getElementById('menuToggle').onclick = () => document.getElementById('mobileDrawer').classList.add('open');
+      document.getElementById('closeDrawer').onclick = () => document.getElementById('mobileDrawer').classList.remove('open');
+      document.querySelectorAll('#mobileDrawer a, #mobileDrawer button').forEach(el => el.addEventListener('click', () => document.getElementById('mobileDrawer').classList.remove('open')));
+
+      document.getElementById('authModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAuth(); });
+      document.getElementById('adminModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdmin(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAuth(); closeAdmin(); } });
+
+      // Drag & drop for thumbnail
+      const uploadZone = document.getElementById('thumbUploadZone');
+      if (uploadZone) {
+        ['dragenter', 'dragover'].forEach(ev => {
+          uploadZone.addEventListener(ev, e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+        });
+        ['dragleave', 'drop'].forEach(ev => {
+          uploadZone.addEventListener(ev, e => { e.preventDefault(); uploadZone.classList.remove('dragover'); });
+        });
+        uploadZone.addEventListener('drop', e => {
+          const file = e.dataTransfer.files[0];
+          if (file && file.type.startsWith('image/')) {
+            handleThumbSelect({ target: { files: [file] } });
+          }
+        });
+      }
+
+      // ===== STETHOSCOPE ANIMATION =====
+      function animateStethoscope() {
+        const s = document.getElementById('stethoscope');
+        const sections = document.querySelectorAll('section[id], div[id="vitalStats"], div[id="ecgMonitor"]');
+        let i = 0;
+        setInterval(() => {
+          if (!sections.length) return;
+          i = (i + 1) % sections.length;
+          const r = sections[i].getBoundingClientRect();
+          if (r.top > -200 && r.top < window.innerHeight + 200) {
+            s.style.top = Math.max(80, r.top + r.height * 0.15) + 'px';
+            s.style.left = Math.min(window.innerWidth - 130, r.left + r.width * 0.55) + 'px';
+          }
+        }, 5000);
+      }
+
+      function animateVitals() {
+        setInterval(() => {
+          const hr = Math.floor(68 + Math.random() * 10);
+          const v = document.getElementById('vitalHR'); if (v) v.textContent = hr;
+          const m = document.getElementById('monHR'); if (m) m.textContent = hr;
+        }, 2500);
+      }
+
+      function handleReveal() {
+        document.querySelectorAll('.reveal').forEach(el => {
+          const r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight * 0.88) el.classList.add('visible');
+        });
+      }
+      window.addEventListener('scroll', handleReveal);
+
+      // ===== INIT =====
+      loadSubjects();
+      animateVitals();
+      animateStethoscope();
+      setTimeout(handleReveal, 100);
+
+      // ===== EXPORT APP =====
+      window.App = {
+        openAuth, closeAuth, openAdmin, closeAdmin,
+        switchTab, signIn, register, logout, toast,
+        adminTab,
+        handleThumbSelect, removeThumb, resetSubjectForm,
+        saveSubject, editSubject, deleteSubject,
+        subjectClick: (slug) => { toast('Opening ' + slug + '...', 'info'); }
+      };
+
+      console.log('🩺 THP-STARLET NEET Admin — Firebase mine-a1e68 + ImgBB Ready');
+    })();
+  </script>
+</body>
+</html>
