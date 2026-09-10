@@ -165,13 +165,31 @@
     }
     @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-    /* Discount Reveal Animation */
     @keyframes discountPop {
       0% { transform: scale(0.8); opacity: 0; }
       50% { transform: scale(1.15); }
       100% { transform: scale(1); opacity: 1; }
     }
     .discount-revealed { animation: discountPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }
+
+    /* Auth Tabs */
+    .auth-tab {
+      flex: 1;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+      background: transparent;
+      color: #64748b;
+    }
+    .auth-tab.active {
+      background: #059669;
+      color: white;
+      box-shadow: 0 4px 12px rgba(5,150,105,0.3);
+    }
   </style>
 </head>
 <body class="flex flex-col">
@@ -236,16 +254,20 @@
     <div class="hidden lg:flex items-center gap-1">
       <a href="#" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-med-50 text-med-700">Home</a>
       <a href="#subjects" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Subjects</a>
-      <a href="#tests" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Tests</a>
       <span class="w-px h-5 bg-gray-200 mx-1"></span>
       
       <button id="adminBtn" onclick="App.openAdmin()" class="hidden bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
         <i class="fas fa-cog text-[10px]"></i>Admin
       </button>
       
-      <button onclick="App.openAuth()" id="enrollBtn" class="bg-med-600 hover:bg-med-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-md transition flex items-center gap-1.5">
+      <button onclick="App.openAuth('signin')" id="signinBtn" class="border border-med-200 text-med-700 hover:bg-med-50 px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+        <i class="fas fa-sign-in-alt text-[10px]"></i>Sign In
+      </button>
+      
+      <button onclick="App.openAuth('signup')" id="enrollBtn" class="bg-med-600 hover:bg-med-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-md transition flex items-center gap-1.5">
         <i class="fas fa-user-md text-[10px]"></i>Enroll
       </button>
+      
       <div id="userMenu" class="hidden items-center gap-2">
         <img id="headerAvatar" class="w-8 h-8 rounded-full object-cover border-2 border-med-500 hidden" alt="Profile">
         <span id="userName" class="text-xs font-semibold text-med-700"></span>
@@ -265,12 +287,14 @@
     <nav class="flex flex-col gap-2">
       <a href="#" class="px-4 py-3 rounded-xl text-sm font-semibold bg-med-50 text-med-700">🏠 Home</a>
       <a href="#subjects" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">📚 Subjects</a>
-      <a href="#tests" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">📋 Tests</a>
       <button onclick="App.openAdmin()" id="mobileAdminBtn" class="hidden px-4 py-3 rounded-xl text-sm font-medium text-amber-700 bg-amber-50 text-left">⚙️ Admin Panel</button>
       <button onclick="App.openProfile()" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 text-left">👤 My Profile</button>
-      <div class="mt-4 pt-4 border-t border-gray-100">
-        <button onclick="App.openAuth()" class="w-full bg-med-600 text-white py-3.5 rounded-xl font-semibold text-sm shadow-lg">
+      <div class="mt-4 pt-4 border-t border-gray-100 space-y-2">
+        <button onclick="App.openAuth('signup')" class="w-full bg-med-600 text-white py-3.5 rounded-xl font-semibold text-sm shadow-lg">
           <i class="fas fa-user-md mr-2"></i>Enroll for NEET
+        </button>
+        <button onclick="App.openAuth('signin')" class="w-full border-2 border-med-200 text-med-700 py-3 rounded-xl font-semibold text-sm">
+          <i class="fas fa-sign-in-alt mr-2"></i>Sign In
         </button>
       </div>
     </nav>
@@ -296,7 +320,7 @@
           </h1>
           <p class="text-white/65 text-sm mb-5 max-w-md mx-auto md:mx-0">Physics · Chemistry · Biology | AI Analytics | <span class="font-semibold text-emerald-300">By THP-STARLET</span></p>
           <div class="flex flex-wrap gap-3 justify-center md:justify-start">
-            <button onclick="App.openAuth()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-xl hover:scale-[1.03] transition flex items-center gap-2">
+            <button onclick="App.openAuth('signup')" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-xl hover:scale-[1.03] transition flex items-center gap-2">
               <i class="fas fa-stethoscope"></i>Start Prep
             </button>
             <a href="#subjects" class="bg-white/8 text-white border border-white/15 px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-white/12 transition flex items-center gap-2">
@@ -381,7 +405,7 @@
       </div>
     </div>
 
-    <!-- DYNAMIC SUBJECT CARDS -->
+    <!-- SUBJECTS -->
     <section id="subjects" class="reveal">
       <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
         <div>
@@ -467,26 +491,70 @@
     </section>
   </main>
 
-  <!-- FLOATING BUTTONS -->
+  <!-- FLOATING -->
   <div class="fixed right-3 sm:right-4 bottom-24 z-50 flex flex-col gap-2.5">
     <a href="tel:+919648837922" class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fas fa-phone-alt text-sm"></i></a>
-    <button onclick="window.open('https://wa.me/919648837922','_blank')" class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fab fa-whatsapp text-sm"></i></button>
+    <button onclick="window.open('https://wa.me/919648837922','_blank')" class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fas fa-whatsapp text-sm"></i></button>
   </div>
 
-  <!-- ==================== AUTH + PROFILE + PAYMENT MODAL ==================== -->
+  <!-- ==================== AUTH MODAL (Sign In + Register) ==================== -->
   <div class="modal-slim fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-4" id="authModal">
     <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl relative max-h-[94vh] overflow-y-auto">
       <button class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition z-20" onclick="App.closeAuth()">
         <i class="fas fa-times text-gray-500 text-sm"></i>
       </button>
 
-      <div class="pt-6 pb-3 flex justify-center gap-3" id="stepIndicator">
-        <div class="step-dot active" data-step="1"></div>
-        <div class="step-dot" data-step="2"></div>
-        <div class="step-dot" data-step="3"></div>
+      <!-- ========== AUTH TABS ========== -->
+      <div class="pt-6 px-6 pb-3">
+        <div class="flex gap-2 bg-gray-100 rounded-2xl p-1.5 mb-1">
+          <button id="tabSignin" class="auth-tab" onclick="App.switchAuthTab('signin')">
+            <i class="fas fa-sign-in-alt mr-1.5"></i>Sign In
+          </button>
+          <button id="tabSignup" class="auth-tab active" onclick="App.switchAuthTab('signup')">
+            <i class="fas fa-user-plus mr-1.5"></i>Register
+          </button>
+        </div>
       </div>
 
-      <div class="px-6 pb-6">
+      <!-- ========== SIGN IN VIEW ========== -->
+      <div id="signinView" class="px-6 pb-6 hidden">
+        <div class="text-center mb-5">
+          <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <i class="fas fa-sign-in-alt text-white text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold font-display text-gray-900">Welcome Back</h3>
+          <p class="text-xs text-gray-500 mt-1">Sign in to continue learning</p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Email *</label>
+            <input type="email" id="signinEmail" class="form-input" placeholder="you@example.com">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Password *</label>
+            <input type="password" id="signinPassword" class="form-input" placeholder="Your password">
+          </div>
+        </div>
+
+        <button onclick="App.signIn()" id="signinSubmitBtn" class="w-full mt-5 bg-gradient-to-r from-med-500 to-med-600 text-white py-3.5 rounded-xl font-bold text-sm shadow-lg transition flex items-center justify-center gap-2">
+          <i class="fas fa-sign-in-alt"></i>Sign In
+        </button>
+
+        <div class="text-center mt-4">
+          <button onclick="App.switchAuthTab('signup')" class="text-xs text-med-600 font-semibold hover:text-med-700">
+            Don't have an account? Register →
+          </button>
+        </div>
+      </div>
+
+      <!-- ========== SIGN UP VIEW ========== -->
+      <div id="signupView" class="px-6 pb-6">
+        <div class="pt-3 pb-3 flex justify-center gap-3" id="stepIndicator">
+          <div class="step-dot active" data-step="1"></div>
+          <div class="step-dot" data-step="2"></div>
+          <div class="step-dot" data-step="3"></div>
+        </div>
 
         <!-- STEP 1: PROFILE -->
         <div class="reg-step active" id="step1">
@@ -547,7 +615,7 @@
           </button>
         </div>
 
-        <!-- STEP 2: PASSWORD + REFERRAL -->
+        <!-- STEP 2 -->
         <div class="reg-step" id="step2">
           <div class="text-center mb-5">
             <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
@@ -572,8 +640,6 @@
               <input type="password" id="regPassword2" class="form-input" placeholder="Re-enter password" oninput="App.checkMatch()">
               <div id="matchMsg" class="text-[11px] mt-1.5 font-semibold"></div>
             </div>
-
-            <!-- REFERRAL CODE - SILENT FIELD -->
             <div class="pt-3 border-t border-gray-100">
               <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">
                 Referral Code <span class="text-gray-400 font-normal normal-case">(optional)</span>
@@ -584,7 +650,7 @@
           </div>
 
           <div class="flex gap-3 mt-5">
-            <button onclick="App.goToStep(1)" class="flex-1 py-3.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm transition">
+            <button onclick="App.goToStep(1)" class="flex-1 py-3.5 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm transition">
               <i class="fas fa-arrow-left mr-1"></i>Back
             </button>
             <button onclick="App.goToStep(3)" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-med-500 to-med-600 text-white font-bold text-sm shadow-lg transition">
@@ -593,7 +659,7 @@
           </div>
         </div>
 
-        <!-- STEP 3: PAYMENT -->
+        <!-- STEP 3 -->
         <div class="reg-step" id="step3">
           <div class="text-center mb-5">
             <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
@@ -610,8 +676,8 @@
                   <i class="fas fa-stethoscope text-med-600"></i>
                 </div>
                 <div>
-                  <div class="font-bold text-gray-900 text-sm">NEET Premium Access</div>
-                  <div class="text-[10px] text-gray-500">Full course · Live + Recorded</div>
+                  <div class="font-bold text-gray-900 text-sm">NEET Premium</div>
+                  <div class="text-[10px] text-gray-500">Full course access</div>
                 </div>
               </div>
               <div class="text-right">
@@ -622,9 +688,8 @@
             </div>
             <div class="space-y-1.5 text-xs">
               <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>All subjects unlocked</div>
-              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Live classes access</div>
-              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Recorded lectures library</div>
-              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Test series + analytics</div>
+              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Live + Recorded</div>
+              <div class="flex items-center gap-2 text-gray-700"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Test series</div>
             </div>
           </div>
 
@@ -781,7 +846,7 @@
             </div>
 
             <div>
-              <label class="block text-med-300 text-[11px] font-medium mb-1.5">Thumbnail Image (16:9) *</label>
+              <label class="block text-med-300 text-[11px] font-medium mb-1.5">Thumbnail (16:9) *</label>
               <div class="thumb-upload-zone" id="thumbZone" onclick="document.getElementById('thumbInput').click()">
                 <input type="file" id="thumbInput" accept="image/*" class="hidden" onchange="App.handleThumb(event)">
                 <div id="thumbPlaceholder" class="text-center py-4">
@@ -789,7 +854,7 @@
                     <i class="fas fa-cloud-upload-alt text-med-400 text-xl"></i>
                   </div>
                   <p class="text-med-200 text-xs font-medium mb-1">Click or drag to upload</p>
-                  <p class="text-med-300/50 text-[10px]">PNG, JPG up to 5MB · 16:9</p>
+                  <p class="text-med-300/50 text-[10px]">PNG, JPG up to 5MB</p>
                 </div>
                 <div id="thumbPreviewWrap" class="hidden">
                   <img id="thumbPreview" class="thumb-preview-img" alt="Preview">
@@ -824,7 +889,7 @@
             <span class="ml-auto text-[10px] text-med-300/60" id="adminSubjCount">0 subjects</span>
           </h3>
           <div id="adminSubjectsList" class="space-y-2">
-            <div class="text-center py-6 text-med-300/40 text-xs">Loading subjects...</div>
+            <div class="text-center py-6 text-med-300/40 text-xs">Loading...</div>
           </div>
         </div>
       </div>
@@ -838,9 +903,9 @@
       // ========== CONFIG ==========
       const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS';
       const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
-      const ENROLLMENT_AMOUNT = 50000; // ₹500 in paise
-      const DISCOUNTED_AMOUNT = 1000; // ₹10 in paise (referral)
-      const REFERRAL_CODE = 'mg786'; // Hidden referral code
+      const ENROLLMENT_AMOUNT = 50000;
+      const DISCOUNTED_AMOUNT = 1000;
+      const REFERRAL_CODE = 'mg786';
       const ADMIN_EMAILS = ['mgbhaukali@gmail.com'];
 
       // ========== FIREBASE ==========
@@ -856,6 +921,9 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
 
+      // 🔥 Enable session persistence (stay logged in)
+      auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(e => console.error(e));
+
       // ========== STATE ==========
       let currentUser = null;
       let userProfile = null;
@@ -864,6 +932,8 @@
       let editingSubjectId = null;
       let selectedThumbFile = null;
       let referralApplied = false;
+      let authTab = 'signup';
+      let adminAutoOpened = false; // prevent opening multiple times
       let tempProfile = {
         name: '', email: '', phone: '',
         userClass: '12th', target: 'NEET 2026',
@@ -888,34 +958,43 @@
         }, 3200);
       }
 
-      // ========== IMGBB UPLOAD ==========
+      // ========== IMGBB ==========
       async function uploadToImgBB(file) {
         if (!file) return '';
-        if (file.size > 5 * 1024 * 1024) { toast('Image too large (max 5MB)', 'error'); return ''; }
+        if (file.size > 5 * 1024 * 1024) { toast('Image too large', 'error'); return ''; }
         const fd = new FormData();
         fd.append('image', file);
         try {
           const r = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: fd });
           const j = await r.json();
           return j.success ? j.data.url : '';
-        } catch (e) { console.error('ImgBB error:', e); return ''; }
+        } catch (e) { console.error(e); return ''; }
       }
 
-      // ========== AUTH STATE ==========
+      // ========== AUTH STATE LISTENER ==========
       auth.onAuthStateChanged(async (user) => {
         currentUser = user;
         const enrollBtn = document.getElementById('enrollBtn');
+        const signinBtn = document.getElementById('signinBtn');
         const userMenu = document.getElementById('userMenu');
         const adminBtn = document.getElementById('adminBtn');
         const addSubjectBtn = document.getElementById('addSubjectBtn');
         const mobileAdminBtn = document.getElementById('mobileAdminBtn');
 
         if (user) {
+          // 🔥 User is logged in
           if (enrollBtn) enrollBtn.style.display = 'none';
+          if (signinBtn) signinBtn.style.display = 'none';
           if (userMenu) { userMenu.classList.remove('hidden'); userMenu.classList.add('flex'); }
+
+          // Load profile
           try {
             const doc = await db.collection('users').doc(user.uid).get();
-            userProfile = doc.exists ? doc.data() : { name: user.displayName || 'Student', email: user.email };
+            if (doc.exists) {
+              userProfile = doc.data();
+            } else {
+              userProfile = { name: user.displayName || 'Student', email: user.email };
+            }
             document.getElementById('userName').textContent = userProfile.name || 'Student';
             if (userProfile.avatar) {
               const img = document.getElementById('headerAvatar');
@@ -924,21 +1003,92 @@
             }
           } catch (e) { console.error(e); }
 
+          // 🔥 Check admin
           isAdmin = ADMIN_EMAILS.includes(user.email);
           if (isAdmin) {
             adminBtn?.classList.remove('hidden');
             mobileAdminBtn?.classList.remove('hidden');
             addSubjectBtn?.classList.remove('hidden');
+            
+            // 🔥 AUTO OPEN ADMIN PANEL for admin login
+            closeAuth();
+            setTimeout(() => {
+              if (!adminAutoOpened) {
+                adminAutoOpened = true;
+                openAdmin();
+                toast('👨‍🏫 Welcome Admin! Panel opened.', 'success');
+              }
+            }, 600);
+          } else {
+            // Normal student - close auth modal, show welcome
+            closeAuth();
+            toast(`👋 Welcome back, ${userProfile.name || 'Student'}!`, 'success');
           }
         } else {
+          // 🔥 Not logged in
           if (enrollBtn) enrollBtn.style.display = 'inline-flex';
+          if (signinBtn) signinBtn.style.display = 'inline-flex';
           if (userMenu) { userMenu.classList.add('hidden'); userMenu.classList.remove('flex'); }
           isAdmin = false;
+          adminAutoOpened = false;
           adminBtn?.classList.add('hidden');
           mobileAdminBtn?.classList.add('hidden');
           addSubjectBtn?.classList.add('hidden');
         }
       });
+
+      // ========== AUTH TAB SWITCH ==========
+      function switchAuthTab(tab) {
+        authTab = tab;
+        const signinView = document.getElementById('signinView');
+        const signupView = document.getElementById('signupView');
+        const tabSignin = document.getElementById('tabSignin');
+        const tabSignup = document.getElementById('tabSignup');
+
+        if (tab === 'signin') {
+          signinView.classList.remove('hidden');
+          signupView.classList.add('hidden');
+          tabSignin.classList.add('active');
+          tabSignup.classList.remove('active');
+        } else {
+          signinView.classList.add('hidden');
+          signupView.classList.remove('hidden');
+          tabSignup.classList.add('active');
+          tabSignin.classList.remove('active');
+          goToStep(1);
+        }
+      }
+
+      // ========== SIGN IN ==========
+      async function signIn() {
+        const email = document.getElementById('signinEmail').value.trim();
+        const password = document.getElementById('signinPassword').value;
+        if (!email || !password) return toast('Enter email and password', 'warning');
+
+        const btn = document.getElementById('signinSubmitBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Signing in...';
+
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+          // Auth listener will handle UI updates
+          // Clear form
+          document.getElementById('signinEmail').value = '';
+          document.getElementById('signinPassword').value = '';
+        } catch (e) {
+          console.error(e);
+          let msg = 'Sign in failed';
+          if (e.code === 'auth/user-not-found') msg = 'No account found. Please register.';
+          else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
+          else if (e.code === 'auth/invalid-email') msg = 'Invalid email address.';
+          else if (e.code === 'auth/too-many-requests') msg = 'Too many attempts. Try again later.';
+          else msg = e.message;
+          toast(msg, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-sign-in-alt"></i>Sign In';
+        }
+      }
 
       // ========== LOAD SUBJECTS ==========
       async function loadSubjects() {
@@ -1070,7 +1220,9 @@
       function openAdminSubjectModal() {
         if (!isAdmin) return toast('Admin access required', 'error');
         openAdmin();
-        document.getElementById('subjectForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+          document.getElementById('subjectForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
       }
 
       function handleThumb(e) {
@@ -1234,25 +1386,16 @@
         reader.readAsDataURL(file);
       }
 
-      // ⭐ REFERRAL CODE CHECK - Hidden logic ⭐
       function checkReferral() {
         const code = document.getElementById('referralCode').value.trim().toLowerCase();
         const msg = document.getElementById('referralMsg');
-        
-        if (!code) {
-          msg.textContent = '';
-          referralApplied = false;
-          return;
-        }
-        
+        if (!code) { msg.textContent = ''; referralApplied = false; return; }
         if (code === REFERRAL_CODE) {
           referralApplied = true;
-          msg.innerHTML = '<span style="color:#10b981;">✓ Referral code applied successfully</span>';
-          msg.className = 'text-[11px] mt-1.5 font-semibold';
+          msg.innerHTML = '<span style="color:#10b981;">✓ Referral code applied</span>';
         } else {
           referralApplied = false;
           msg.innerHTML = '<span style="color:#ef4444;">✗ Invalid code</span>';
-          msg.className = 'text-[11px] mt-1.5 font-semibold';
         }
       }
 
@@ -1276,7 +1419,6 @@
           if (pw.length < 6) return toast('Password min 6 chars', 'warning');
           if (pw !== pw2) return toast('Passwords do not match', 'warning');
           
-          // 🎯 APPLY REFERRAL DISCOUNT
           const finalAmountEl = document.getElementById('finalAmount');
           const originalAmountEl = document.getElementById('originalAmount');
           const amountLabelEl = document.getElementById('amountLabel');
@@ -1426,11 +1568,11 @@
           await db.collection('users').doc(uid).set(userDoc);
 
           toast('🎉 Welcome to THP-STARLET NEET!', 'success');
-          setTimeout(() => closeAuth(), 1200);
+          // Auth listener will close the modal
         } catch (e) {
           console.error('Registration error:', e);
           if (e.code === 'auth/email-already-in-use') {
-            toast('Email already registered.', 'error');
+            toast('Email already registered. Please sign in.', 'error');
           } else {
             toast('Error: ' + e.message, 'error');
           }
@@ -1442,7 +1584,7 @@
 
       // ========== PROFILE ==========
       function openProfile() {
-        if (!currentUser || !userProfile) return openAuth();
+        if (!currentUser || !userProfile) return openAuth('signin');
         document.getElementById('editName').value = userProfile.name || '';
         document.getElementById('editPhone').value = userProfile.phone || '';
         document.getElementById('editClass').value = userProfile.userClass || '12th';
@@ -1492,11 +1634,11 @@
         } catch (e) { toast('Error: ' + e.message, 'error'); }
       }
 
-      // ========== AUTH ==========
-      function openAuth() {
+      // ========== AUTH MODAL ==========
+      function openAuth(tab = 'signup') {
         document.getElementById('authModal').classList.add('active');
         document.body.style.overflow = 'hidden';
-        goToStep(1);
+        switchAuthTab(tab);
       }
       function closeAuth() {
         document.getElementById('authModal').classList.remove('active');
@@ -1504,7 +1646,7 @@
       }
       function logout() {
         auth.signOut().then(() => {
-          toast('Signed out', 'info');
+          toast('Signed out successfully', 'info');
           setTimeout(() => location.reload(), 500);
         });
       }
@@ -1512,12 +1654,12 @@
       // ========== OPEN SUBJECT ==========
       function openSubject(slug) {
         if (!currentUser) {
-          toast('Please register first', 'warning');
-          return openAuth();
+          toast('Please register or sign in', 'warning');
+          return openAuth('signin');
         }
         if (userProfile?.paymentStatus !== 'paid') {
           toast('Please complete payment', 'warning');
-          return openAuth();
+          return openAuth('signup');
         }
         const map = {
           'physics': 'physics-student.html',
@@ -1585,7 +1727,8 @@
         openAdminSubjectModal, logout, goToStep, checkStrength, checkMatch,
         handleProfileImage, handleEditImage, startPayment, saveProfile,
         openSubject, handleThumb, removeThumb, resetSubjectForm,
-        saveSubject, editSubject, deleteSubject, checkReferral
+        saveSubject, editSubject, deleteSubject, checkReferral,
+        switchAuthTab, signIn
       };
 
       // ========== INIT ==========
