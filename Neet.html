@@ -163,7 +163,7 @@
       background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
       background-size: 200% 100%; animation: shimmer 1.5s infinite;
     }
-    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { backgroundPosition: 200% 0; } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
     @keyframes discountPop {
       0% { transform: scale(0.8); opacity: 0; }
@@ -482,7 +482,7 @@
   <!-- FLOATING -->
   <div class="fixed right-3 sm:right-4 bottom-24 z-50 flex flex-col gap-2.5">
     <a href="tel:+919648837922" class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fas fa-phone-alt text-sm"></i></a>
-    <button onclick="window.open('https://wa.me/919648837922','_blank')" class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fas fa-whatsapp text-sm"></i></button>
+    <button onclick="window.open('https://wa.me/919648837922','_blank')" class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all"><i class="fab fa-whatsapp text-sm"></i></button>
   </div>
 
   <!-- AUTH MODAL -->
@@ -828,16 +828,14 @@
               </div>
             </div>
 
-            <!-- 🌟 SUBJECT PAGE LINK -->
             <div>
               <label class="block text-med-300 text-[11px] font-medium mb-1.5">
                 <i class="fas fa-link text-med-400 mr-1"></i>
-                Page File Name * <span class="text-med-500/60">(kis HTML me open hoga)</span>
+                Student Page File * <span class="text-med-500/60">(student kis HTML me open hoga)</span>
               </label>
               <input type="text" id="subjPage" class="admin-input" placeholder="e.g., biology-student.html" value="biology-student.html" required>
               <p class="text-med-300/50 text-[10px] mt-1.5">
-                Subject card click karne pe ye file open hogi. Examples:
-                <code class="bg-white/10 px-1 rounded">biology-student.html</code>,
+                Examples: <code class="bg-white/10 px-1 rounded">biology-student.html</code>,
                 <code class="bg-white/10 px-1 rounded">physics-student.html</code>,
                 <code class="bg-white/10 px-1 rounded">chemistry-student.html</code>
               </p>
@@ -924,6 +922,11 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
 
+      // 🔥🔥🔥 SESSION PERSIST (ek baar login, bar bar nahi) 🔥🔥🔥
+      auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(() => console.log('✅ Session persistence enabled'))
+        .catch(e => console.error('Persistence error:', e));
+
       // ========== STATE ==========
       let currentUser = null;
       let userProfile = null;
@@ -958,7 +961,7 @@
         }, 3200);
       }
 
-      // ========== IMAGE RESIZE (AUTO ADJUST) ==========
+      // ========== IMAGE RESIZE ==========
       function resizeImage(file, maxSize = 400, quality = 0.85) {
         return new Promise((resolve) => {
           const reader = new FileReader();
@@ -966,24 +969,16 @@
             const img = new Image();
             img.onload = () => {
               const canvas = document.createElement('canvas');
-              let width = img.width;
-              let height = img.height;
-              
-              // Square crop for profile
-              const size = Math.min(width, height);
-              const offsetX = (width - size) / 2;
-              const offsetY = (height - size) / 2;
-              
+              const size = Math.min(img.width, img.height);
+              const offsetX = (img.width - size) / 2;
+              const offsetY = (img.height - size) / 2;
               canvas.width = maxSize;
               canvas.height = maxSize;
-              
               const ctx = canvas.getContext('2d');
               ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, maxSize, maxSize);
-              
               canvas.toBlob((blob) => {
                 const resizedFile = new File([blob], file.name.replace(/\.[^/.]+$/, '.jpg'), {
-                  type: 'image/jpeg',
-                  lastModified: Date.now()
+                  type: 'image/jpeg', lastModified: Date.now()
                 });
                 resolve(resizedFile);
               }, 'image/jpeg', quality);
@@ -1001,24 +996,18 @@
             const img = new Image();
             img.onload = () => {
               const canvas = document.createElement('canvas');
-              let width = img.width;
-              let height = img.height;
-              
+              let width = img.width, height = img.height;
               if (width > maxWidth) {
                 height = (maxWidth / width) * height;
                 width = maxWidth;
               }
-              
               canvas.width = width;
               canvas.height = height;
-              
               const ctx = canvas.getContext('2d');
               ctx.drawImage(img, 0, 0, width, height);
-              
               canvas.toBlob((blob) => {
                 const resizedFile = new File([blob], file.name.replace(/\.[^/.]+$/, '.jpg'), {
-                  type: 'image/jpeg',
-                  lastModified: Date.now()
+                  type: 'image/jpeg', lastModified: Date.now()
                 });
                 resolve(resizedFile);
               }, 'image/jpeg', quality);
@@ -1029,7 +1018,7 @@
         });
       }
 
-      // ========== IMGBB ==========
+      // ========== IMGBB UPLOAD ==========
       async function uploadToImgBB(file) {
         if (!file) return '';
         const fd = new FormData();
@@ -1058,11 +1047,8 @@
 
           try {
             const doc = await db.collection('users').doc(user.uid).get();
-            if (doc.exists) {
-              userProfile = doc.data();
-            } else {
-              userProfile = { name: user.displayName || 'Student', email: user.email };
-            }
+            if (doc.exists) userProfile = doc.data();
+            else userProfile = { name: user.displayName || 'Student', email: user.email };
             document.getElementById('userName').textContent = userProfile.name || 'Student';
             if (userProfile.avatar) {
               const img = document.getElementById('headerAvatar');
@@ -1110,7 +1096,6 @@
         const signupView = document.getElementById('signupView');
         const tabSignin = document.getElementById('tabSignin');
         const tabSignup = document.getElementById('tabSignup');
-
         if (tab === 'signin') {
           signinView.classList.remove('hidden');
           signupView.classList.add('hidden');
@@ -1142,10 +1127,10 @@
         } catch (e) {
           console.error(e);
           let msg = 'Sign in failed';
-          if (e.code === 'auth/user-not-found') msg = 'No account found. Please register.';
+          if (e.code === 'auth/user-not-found') msg = 'No account found. Register first.';
           else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
-          else if (e.code === 'auth/invalid-email') msg = 'Invalid email address.';
-          else if (e.code === 'auth/invalid-credential') msg = 'Invalid credentials. Try again.';
+          else if (e.code === 'auth/invalid-email') msg = 'Invalid email.';
+          else if (e.code === 'auth/invalid-credential') msg = 'Invalid credentials.';
           else msg = e.message;
           toast(msg, 'error');
         } finally {
@@ -1294,8 +1279,6 @@
         if (!file) return;
         if (file.size > 5 * 1024 * 1024) return toast('Image too large (max 5MB)', 'error');
         if (!file.type.startsWith('image/')) return toast('Select an image', 'error');
-        
-        // 🔥 AUTO RESIZE wide image
         try {
           const resized = await resizeWideImage(file, 1280, 0.85);
           selectedThumbFile = resized;
@@ -1440,8 +1423,6 @@
         const file = e.target.files?.[0];
         if (!file) return;
         if (file.size > 5 * 1024 * 1024) return toast('Image too large (max 5MB)', 'error');
-        
-        // 🔥 AUTO RESIZE to 400x400 square
         try {
           const resized = await resizeImage(file, 400, 0.85);
           tempProfile.avatarFile = resized;
@@ -1777,44 +1758,65 @@
         });
       }
 
-      // ========== 🔥 OPEN SUBJECT (FIXED) ==========
+      // =============================================
+      // 🔥🔥🔥 OPEN SUBJECT — Admin → Teacher, Student → Student 🔥🔥🔥
+      // =============================================
       async function openSubject(slug) {
         console.log('🔵 Opening subject:', slug);
         
         const user = auth.currentUser;
         
+        // Check 1: Login hai?
         if (!user) {
           toast('Please register or sign in first', 'warning');
           return openAuth('signin');
         }
         
         try {
+          // Check 2: Profile fetch
           const doc = await db.collection('users').doc(user.uid).get();
-          if (doc.exists) {
-            const profile = doc.data();
-            
-            if (profile.paymentStatus !== 'paid') {
-              toast('Please complete payment to access', 'warning');
-              return openAuth('signup');
-            }
-            
-            // 🔥 Get subject details including page field
-            const subjDoc = await db.collection('subjects').where('slug', '==', slug).limit(1).get();
-            if (subjDoc.empty) {
-              toast('Subject not found', 'error');
-              return;
-            }
-            
-            const subjData = subjDoc.docs[0].data();
-            const targetFile = subjData.page || `${slug}-student.html`;
-            
-            console.log('✅ Navigating to:', targetFile);
-            window.location.href = targetFile;
-            
-          } else {
-            toast('Profile not found. Please register again.', 'error');
+          
+          if (!doc.exists) {
+            toast('Profile not found. Please register.', 'error');
             return openAuth('signup');
           }
+          
+          const profile = doc.data();
+          const isAdminUser = ADMIN_EMAILS.includes(user.email);
+          
+          // 🔥🔥 ADMIN → TEACHER PAGE 🔥🔥
+          if (isAdminUser) {
+            const adminMap = {
+              'physics': 'physics-teacher.html',
+              'chemistry': 'chemistry-teacher.html',
+              'biology': 'biology-teacher.html'
+            };
+            const targetPage = adminMap[slug] || 'biology-teacher.html';
+            console.log('👨‍🏫 Admin navigating to:', targetPage);
+            toast('Opening teacher panel...', 'info');
+            setTimeout(() => window.location.href = targetPage, 500);
+            return;
+          }
+          
+          // 🔥🔥 STUDENT — Payment check 🔥🔥
+          if (profile.paymentStatus !== 'paid') {
+            toast('Please complete payment to access', 'warning');
+            return openAuth('signup');
+          }
+          
+          // 🔥🔥 STUDENT → STUDENT PAGE 🔥🔥
+          const subjectDoc = await db.collection('subjects')
+            .where('slug', '==', slug).limit(1).get();
+          
+          let targetPage = `${slug}-student.html`;
+          if (!subjectDoc.empty) {
+            const subjData = subjectDoc.docs[0].data();
+            targetPage = subjData.page || targetPage;
+          }
+          
+          console.log('👨‍🎓 Student navigating to:', targetPage);
+          window.location.href = targetPage;
+          
         } catch (e) {
           console.error('❌ Error opening subject:', e);
           toast('Error: ' + e.message, 'error');
