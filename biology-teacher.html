@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#7c3aed">
   <title>Biology · Teacher Panel · THP-STARLET NEET</title>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -14,84 +16,105 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: #f5f3ff; min-height: 100vh; }
+    body { font-family: 'Inter', sans-serif; background: #faf5ff; min-height: 100vh; }
     .font-display { font-family: 'Outfit', sans-serif; }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #a78bfa); border-radius: 10px; }
+    
     .live-badge { animation: pulseLive 1.5s ease-in-out infinite; }
     @keyframes pulseLive { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(1.1); } }
+    
+    .lecture-card { transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
+    .lecture-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(124,58,237,0.15); }
+    
     .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .ecg { stroke-dasharray: 800; stroke-dashoffset: 800; animation: ecgMove 4s linear infinite; }
-    @keyframes ecgMove { to { stroke-dashoffset: 0; } }
+    
     .chat-bubble { animation: slideIn 0.3s ease-out; }
     @keyframes slideIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
     .chat-scroll::-webkit-scrollbar { width: 4px; }
     .chat-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    .lecture-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(124,58,237,0.15); }
-    .lecture-card { transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
-    .toast-pop { animation: slideIn 0.4s ease-out; }
+    
+    .loading-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+      z-index: 9999; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 20px;
+    }
+    .loader { width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .toast-pop { animation: toastIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .thumb-upload {
+      border: 2px dashed rgba(124,58,237,0.3); border-radius: 14px;
+      cursor: pointer; transition: all 0.3s ease;
+      background: rgba(124,58,237,0.02); padding: 20px; text-align: center;
+    }
+    .thumb-upload:hover { border-color: rgba(124,58,237,0.6); background: rgba(124,58,237,0.05); }
   </style>
 </head>
 <body>
 
-  <!-- ========== HEADER ========== -->
-  <header class="bg-white/90 backdrop-blur-md border-b border-purple-100 sticky top-0 z-40">
+  <!-- LOADING SCREEN -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loader"></div>
+    <div style="color:white; font-family:Outfit,sans-serif; font-weight:600; letter-spacing:1px;">VERIFYING TEACHER ACCESS...</div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-purple-100 sticky top-0 z-40 hidden" id="mainHeader">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="teacher.html" class="w-9 h-9 bg-gray-100 hover:bg-purple-100 rounded-xl flex items-center justify-center transition">
+        <a href="index.html" class="w-9 h-9 bg-gray-100 hover:bg-purple-100 rounded-xl flex items-center justify-center transition">
           <i class="fas fa-arrow-left text-gray-600 text-sm"></i>
         </a>
         <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
           <i class="fas fa-chalkboard-teacher text-white"></i>
         </div>
         <div>
-          <h1 class="font-bold font-display text-gray-900 text-sm">Biology · Teaching Panel</h1>
-          <p class="text-[10px] text-gray-400 tracking-wider uppercase">Prof. Mohit Sir</p>
+          <h1 class="font-bold font-display text-gray-900 text-sm">Biology · Teacher Panel</h1>
+          <p class="text-[10px] text-gray-400 tracking-wider uppercase" id="headerRole">Teacher</p>
         </div>
       </div>
-
+      
       <div class="flex items-center gap-2">
-        <button onclick="Teacher.openEditClass()" class="hidden sm:flex items-center gap-1.5 bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-2 rounded-xl text-xs font-semibold transition">
-          <i class="fas fa-edit"></i>Edit Class Info
+        <div class="hidden sm:flex items-center gap-2 bg-purple-50 px-3 py-1.5 rounded-full">
+          <img id="headerAvatar" class="w-6 h-6 rounded-full object-cover border-2 border-purple-500" alt="Avatar">
+          <span id="headerName" class="text-xs font-semibold text-purple-700">Teacher</span>
+        </div>
+        <button onclick="openEditClass()" class="w-9 h-9 bg-amber-100 hover:bg-amber-200 rounded-xl flex items-center justify-center transition" title="Edit Class">
+          <i class="fas fa-edit text-amber-700 text-sm"></i>
         </button>
-        <button onclick="Teacher.openEditClass()" class="sm:hidden w-9 h-9 bg-amber-100 rounded-xl flex items-center justify-center text-amber-700">
-          <i class="fas fa-edit text-sm"></i>
-        </button>
-        <button onclick="Teacher.toggleChat()" class="relative w-9 h-9 bg-gray-100 hover:bg-purple-100 rounded-xl flex items-center justify-center transition">
+        <button onclick="toggleChat()" class="relative w-9 h-9 bg-gray-100 hover:bg-purple-100 rounded-xl flex items-center justify-center transition">
           <i class="fas fa-comments text-gray-600 text-sm"></i>
-          <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" id="chatNotifDot"></span>
+          <span id="unreadBadge" class="absolute -top-0.5 -right-0.5 w-5 h-5 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center border-2 border-white hidden">0</span>
+        </button>
+        <button onclick="handleLogout()" class="w-9 h-9 bg-red-50 hover:bg-red-100 rounded-xl flex items-center justify-center transition" title="Logout">
+          <i class="fas fa-sign-out-alt text-red-500 text-sm"></i>
         </button>
       </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 py-5 space-y-6">
+  <main class="max-w-6xl mx-auto px-4 py-5 space-y-6 hidden" id="mainContent">
 
-    <!-- ====== LIVE CLASS CARD ====== -->
+    <!-- LIVE CLASS BANNER -->
     <div class="bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 rounded-3xl p-5 sm:p-7 text-white relative overflow-hidden shadow-2xl">
-      <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 1200 300" preserveAspectRatio="none">
-        <path d="M0 150 L80 150 L100 150 L110 110 L120 210 L130 150 L150 150 L160 150 L170 90 L180 240 L190 150 L210 150 L1200 150" 
-              fill="none" stroke="#c4b5fd" stroke-width="2" class="ecg"/>
-      </svg>
-
       <div class="relative z-10">
         <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
           <div class="flex items-center gap-2">
-            <span class="live-badge bg-red-500 rounded-full px-3 py-1.5 flex items-center gap-2">
+            <span id="classStatusBadge" class="live-badge bg-red-500 rounded-full px-3 py-1.5 flex items-center gap-2">
               <span class="w-2 h-2 bg-white rounded-full"></span>
-              <span class="text-white text-xs font-bold tracking-wider" id="classStatusBadge">LIVE CLASS</span>
+              <span class="text-white text-xs font-bold tracking-wider">LIVE CLASS</span>
             </span>
-            <span class="text-purple-200/60 text-xs" id="classStatus">Live</span>
+            <span id="classStatus" class="text-purple-200/60 text-xs">Live</span>
           </div>
           <div class="flex items-center gap-2">
             <div class="bg-white/10 backdrop-blur rounded-full px-3 py-1.5 text-xs">
               <i class="fas fa-users text-purple-300"></i>
               <span class="ml-1.5" id="studentCount">0</span> students
-            </div>
-            <div class="bg-white/10 backdrop-blur rounded-full px-3 py-1.5 text-xs">
-              <i class="fas fa-clock text-purple-300"></i>
-              <span class="ml-1.5" id="classTimer">00:00:00</span>
             </div>
           </div>
         </div>
@@ -100,58 +123,31 @@
           <div class="flex items-center gap-4 flex-1">
             <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-indigo-600 rounded-2xl flex items-center justify-center shadow-xl relative">
               <i class="fas fa-chalkboard-teacher text-white text-2xl"></i>
-              <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-purple-900"></span>
+              <span id="liveDot" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-purple-900"></span>
             </div>
             <div class="flex-1 min-w-0">
-              <h2 class="font-bold font-display text-lg mb-1 truncate" id="classTitle">Loading...</h2>
-              <p class="text-purple-300/80 text-sm mb-2 truncate" id="classMeta">Biology · Live Class</p>
+              <h2 id="classTitle" class="font-bold font-display text-lg mb-1 truncate">Loading class...</h2>
+              <p class="text-purple-300/80 text-sm mb-2 truncate">
+                <span id="classChapter">Chapter 5</span>
+              </p>
               <div class="flex flex-wrap gap-1.5">
-                <span class="bg-white/10 backdrop-blur text-white/80 text-[10px] font-medium px-2 py-0.5 rounded-full" id="classChapterTag">Chapter 5</span>
                 <span class="bg-white/10 backdrop-blur text-white/80 text-[10px] font-medium px-2 py-0.5 rounded-full">Biology</span>
-                <span class="bg-amber-400/20 text-amber-200 text-[10px] font-medium px-2 py-0.5 rounded-full" id="statusTag">🔴 LIVE NOW</span>
+                <span class="bg-emerald-400/20 text-emerald-200 text-[10px] font-medium px-2 py-0.5 rounded-full">✅ Recording ON</span>
               </div>
             </div>
           </div>
 
-          <div class="flex flex-col gap-2 w-full md:w-auto">
-            <a href="https://www.teachmint.com/teacher/class/4049435069" 
-               target="_blank"
+          <div class="w-full md:w-auto flex flex-col gap-2">
+            <a href="https://www.teachmint.com/teacher/class/4049435069" target="_blank"
                class="bg-white hover:bg-purple-50 text-purple-700 px-6 py-3.5 rounded-xl font-bold text-sm shadow-xl transition flex items-center justify-center gap-2 whitespace-nowrap">
-              <i class="fas fa-chalkboard-teacher text-base"></i>
-              <span>Open My Teacher Class</span>
+              <i class="fas fa-chalkboard-teacher"></i>Open My Class
             </a>
-
-            <a href="https://video.teachmint.com/videoroom/teachmint::4049435069/69077ddd344669f2624f13f7/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb29tX2lkIjoidGVhY2htaW50Ojo0MDQ5NDM1MDY5IiwidWlkIjoiNjkwNzdkZGQzNDQ2NjlmMjYyNGYxM2Y3IiwidW5hbWUiOiJNb2hpdCBHdXB0YSIsInV0eXBlIjoxLCJleHAiOjE3ODkxMTIyODN9.jztphXXWpHOwTLuudpb3IWU4VEHJnAoaaHdWdvu_yU4" 
-               target="_blank"
-               class="bg-black/30 hover:bg-black/40 text-white border border-white/30 px-6 py-2.5 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-2">
-              <i class="fas fa-video text-sm"></i>
-              <span>Open Video Room</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-4 gap-2 mt-5 pt-5 border-t border-white/10">
-          <div class="text-center">
-            <div class="text-white font-bold font-mono text-sm sm:text-base" id="statStudents">0</div>
-            <div class="text-purple-300/50 text-[10px]">Students</div>
-          </div>
-          <div class="text-center">
-            <div class="text-white font-bold font-mono text-sm sm:text-base" id="statLectures">0</div>
-            <div class="text-purple-300/50 text-[10px]">Lectures</div>
-          </div>
-          <div class="text-center">
-            <div class="text-white font-bold font-mono text-sm sm:text-base">92%</div>
-            <div class="text-purple-300/50 text-[10px]">Attendance</div>
-          </div>
-          <div class="text-center">
-            <div class="text-white font-bold font-mono text-sm sm:text-base">4.8★</div>
-            <div class="text-purple-300/50 text-[10px]">Rating</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ====== QUICK ACTIONS ====== -->
+    <!-- QUICK ACTIONS -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <a href="https://www.teachmint.com/teacher/class/4049435069" target="_blank" 
          class="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1">
@@ -162,7 +158,7 @@
         <div class="text-white/80 text-xs">Open Teachmint</div>
       </a>
 
-      <button onclick="Teacher.openAddLecture()" 
+      <button onclick="openAddLecture()" 
               class="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1 text-left">
         <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
           <i class="fas fa-cloud-upload-alt text-xl"></i>
@@ -171,7 +167,7 @@
         <div class="text-white/80 text-xs">Add recording</div>
       </button>
 
-      <button onclick="Teacher.toggleChat()" 
+      <button onclick="toggleChat()" 
               class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1 text-left">
         <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
           <i class="fas fa-comments text-xl"></i>
@@ -180,7 +176,7 @@
         <div class="text-white/80 text-xs">Live messages</div>
       </button>
 
-      <button onclick="Teacher.openEditClass()" 
+      <button onclick="openEditClass()" 
               class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1 text-left">
         <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
           <i class="fas fa-edit text-xl"></i>
@@ -190,60 +186,23 @@
       </button>
     </div>
 
-    <!-- ====== MANAGE LECTURES ====== -->
-    <section>
+    <!-- MANAGE LECTURES -->
+    <div>
       <div class="flex items-center justify-between mb-4">
         <div>
           <h2 class="font-bold font-display text-gray-900 text-lg">📹 Manage Lectures</h2>
-          <p class="text-gray-400 text-xs mt-0.5">Add, edit, or delete recordings</p>
+          <p class="text-gray-400 text-xs mt-0.5">Add or delete recordings</p>
         </div>
-        <button onclick="Teacher.openAddLecture()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+        <button onclick="openAddLecture()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
           <i class="fas fa-plus"></i>Add Lecture
         </button>
       </div>
       <div id="lecturesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-    </section>
-  </main>
-
-  <!-- ========== CHAT BOX ========== -->
-  <div id="chatBox" class="fixed bottom-4 right-4 w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 hidden flex-col" style="height: 500px; max-height: calc(100vh - 100px);">
-    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-3 rounded-t-2xl flex items-center justify-between flex-shrink-0">
-      <div class="flex items-center gap-2.5">
-        <div class="relative">
-          <div class="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center">
-            <i class="fas fa-comments text-white text-sm"></i>
-          </div>
-          <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-purple-600 animate-pulse"></span>
-        </div>
-        <div>
-          <div class="text-white font-bold text-sm">Biology Class Chat</div>
-          <div class="text-white/70 text-[10px]"><span id="chatOnline">0</span> online</div>
-        </div>
-      </div>
-      <button onclick="Teacher.toggleChat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition">
-        <i class="fas fa-times text-white text-xs"></i>
-      </button>
     </div>
 
-    <div id="chatMessages" class="flex-1 overflow-y-auto p-3 space-y-3 chat-scroll bg-gray-50"></div>
+  </main>
 
-    <form onsubmit="event.preventDefault(); Teacher.sendMessage();" class="p-3 border-t border-gray-100 flex-shrink-0 bg-white rounded-b-2xl">
-      <div class="flex items-center gap-2">
-        <input type="text" id="chatInput" placeholder="Send message to students..." 
-               class="flex-1 px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-purple-500 focus:outline-none bg-gray-50">
-        <button type="submit" class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-xl flex items-center justify-center text-white shadow-lg transition">
-          <i class="fas fa-paper-plane text-sm"></i>
-        </button>
-      </div>
-    </form>
-  </div>
-
-  <button onclick="Teacher.toggleChat()" class="fixed bottom-4 right-4 w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-full shadow-2xl z-40 flex items-center justify-center text-white transition-all hover:scale-110" id="chatFab">
-    <i class="fas fa-comments text-xl"></i>
-    <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center border-2 border-white" id="unreadBadge">0</span>
-  </button>
-
-  <!-- ========== ADD LECTURE MODAL ========== -->
+  <!-- ADD LECTURE MODAL -->
   <div class="modal-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-3" id="addModal">
     <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto">
       <div class="sticky top-0 bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between rounded-t-2xl z-10">
@@ -253,14 +212,14 @@
           </div>
           <div>
             <h3 class="font-bold font-display text-gray-900 text-sm">Add Recorded Lecture</h3>
-            <p class="text-gray-400 text-[10px]">Paste Teachmint recording link</p>
+            <p class="text-gray-400 text-[10px]">Fill details and paste recording link</p>
           </div>
         </div>
-        <button onclick="Teacher.closeAddLecture()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+        <button onclick="closeAddLecture()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
           <i class="fas fa-times text-gray-500 text-xs"></i>
         </button>
       </div>
-      <form class="p-5 space-y-4" onsubmit="event.preventDefault(); Teacher.saveLecture();">
+      <form class="p-5 space-y-4" onsubmit="event.preventDefault(); saveLecture();">
         <div>
           <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Lecture Title *</label>
           <input type="text" id="lecTitle" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-purple-500 focus:outline-none" placeholder="e.g., Cell Structure - Part 1" required>
@@ -290,10 +249,10 @@
         </div>
         <div>
           <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Thumbnail URL (Optional)</label>
-          <input type="url" id="lecThumb" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm">
+          <input type="url" id="lecThumb" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm" placeholder="https://...">
         </div>
         <div class="flex gap-3 pt-2 border-t border-gray-100">
-          <button type="button" onclick="Teacher.closeAddLecture()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm">Cancel</button>
+          <button type="button" onclick="closeAddLecture()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm">Cancel</button>
           <button type="submit" id="saveBtn" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold text-sm shadow-lg">
             <i class="fas fa-save"></i>Save
           </button>
@@ -302,7 +261,7 @@
     </div>
   </div>
 
-  <!-- ========== EDIT CLASS MODAL ========== -->
+  <!-- EDIT CLASS MODAL -->
   <div class="modal-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-3" id="editClassModal">
     <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto">
       <div class="sticky top-0 bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between rounded-t-2xl z-10">
@@ -315,26 +274,22 @@
             <p class="text-gray-400 text-[10px]">Changes reflect instantly for students</p>
           </div>
         </div>
-        <button onclick="Teacher.closeEditClass()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+        <button onclick="closeEditClass()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
           <i class="fas fa-times text-gray-500 text-xs"></i>
         </button>
       </div>
-      <form class="p-5 space-y-4" onsubmit="event.preventDefault(); Teacher.saveClassInfo();">
+      <form class="p-5 space-y-4" onsubmit="event.preventDefault(); saveClassInfo();">
         <div>
           <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Class Title *</label>
-          <input type="text" id="editTitle" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-amber-500 focus:outline-none" placeholder="e.g., Cell Structure & Function" required>
+          <input type="text" id="editTitle" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm" required>
         </div>
         <div>
           <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Chapter / Topic</label>
-          <input type="text" id="editChapter" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm" placeholder="e.g., Chapter 5 - Cell Biology">
+          <input type="text" id="editChapter" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm">
         </div>
         <div>
           <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Teacher Name</label>
           <input type="text" id="editTeacher" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm" value="Prof. Mohit Sir">
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Description</label>
-          <textarea id="editDescription" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm resize-none" placeholder="Short description..."></textarea>
         </div>
         <div>
           <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Status</label>
@@ -344,12 +299,8 @@
             <option value="ended">✅ Ended</option>
           </select>
         </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Scheduled Time (if scheduled)</label>
-          <input type="datetime-local" id="editTime" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm">
-        </div>
         <div class="flex gap-3 pt-2 border-t border-gray-100">
-          <button type="button" onclick="Teacher.closeEditClass()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm">Cancel</button>
+          <button type="button" onclick="closeEditClass()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm">Cancel</button>
           <button type="submit" id="saveClassBtn" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-sm shadow-lg">
             <i class="fas fa-save"></i>Save Changes
           </button>
@@ -358,427 +309,476 @@
     </div>
   </div>
 
-  <script>
-    // ===== FIREBASE CONFIG (NEET-D6D95) =====
-    const fb = {
-      apiKey: "AIzaSyASP6S4EE4p40LBrzrTW8CBcKRmPo-lrck",
-      authDomain: "neet-d6d95.firebaseapp.com",
-      projectId: "neet-d6d95",
-      storageBucket: "neet-d6d95.firebasestorage.app",
-      messagingSenderId: "54376928116",
-      appId: "1:54376928116:web:e29e44073162ec1c301221",
-      measurementId: "G-9BDF60GBR8"
-    };
-    firebase.initializeApp(fb);
-    const db = firebase.firestore();
-
-    // ===== TEACHER INFO =====
-    const TEACHER = {
-      id: 'teacher_mohit_sir',
-      name: 'Prof. Mohit Sir',
-      role: 'teacher',
-      avatar: 'M'
-    };
-
-    let state = {
-      lectures: [],
-      chatMessages: [],
-      chatOpen: false,
-      unreadCount: 0,
-      classStartTime: Date.now(),
-      liveClassData: null
-    };
-
-    // ===== TOAST =====
-    function toast(msg, type = 'info') {
-      let c = document.getElementById('toastContainer');
-      if (!c) {
-        c = document.createElement('div');
-        c.id = 'toastContainer';
-        c.className = 'fixed bottom-24 right-4 sm:right-6 flex flex-col gap-2 z-[300]';
-        document.body.appendChild(c);
-      }
-      const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-      const colors = { success: 'border-emerald-500', error: 'border-red-500', warning: 'border-amber-500', info: 'border-blue-500' };
-      const d = document.createElement('div');
-      d.className = `bg-white border-l-4 ${colors[type]} rounded-xl px-4 py-3 shadow-xl text-sm font-medium text-gray-800 toast-pop flex items-center gap-2 max-w-xs`;
-      d.innerHTML = `<span>${icons[type]}</span><span class="flex-1">${msg}</span>`;
-      c.appendChild(d);
-      setTimeout(() => {
-        d.style.opacity = '0';
-        d.style.transform = 'translateX(60px)';
-        d.style.transition = 'all 0.35s';
-        setTimeout(() => d.remove(), 350);
-      }, 3000);
-    }
-
-    // ===== LOAD LIVE CLASS INFO =====
-    async function loadLiveClass() {
-      try {
-        const doc = await db.collection('liveClass').doc('biology').get();
-        if (doc.exists) {
-          state.liveClassData = doc.data();
-          updateClassUI(state.liveClassData);
-        } else {
-          // Initialize default class info
-          const defaultClass = {
-            title: 'Cell Structure & Function',
-            chapter: 'Chapter 5 - Cell Biology',
-            teacher: 'Prof. Mohit Sir',
-            description: 'Live NEET Biology session',
-            status: 'live',
-            subject: 'biology',
-            startTime: new Date().toISOString(),
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          };
-          await db.collection('liveClass').doc('biology').set(defaultClass);
-          state.liveClassData = defaultClass;
-          updateClassUI(defaultClass);
-        }
-      } catch (e) {
-        console.error('Load live class error:', e);
-      }
-    }
-
-    function updateClassUI(data) {
-      if (!data) return;
-      document.getElementById('classTitle').textContent = data.title || 'Biology Live Class';
-      document.getElementById('classChapterTag').textContent = data.chapter || 'Chapter 5';
-      document.getElementById('classMeta').textContent = `Biology · ${data.chapter || 'Live Class'}`;
-      
-      const statusText = data.status === 'live' ? 'Live Now' : data.status === 'scheduled' ? 'Scheduled' : 'Ended';
-      document.getElementById('classStatus').textContent = statusText;
-      
-      const statusBadge = document.getElementById('classStatusBadge');
-      const statusTag = document.getElementById('statusTag');
-      if (data.status === 'live') {
-        statusBadge.textContent = 'LIVE CLASS';
-        statusBadge.parentElement.className = 'live-badge bg-red-500 rounded-full px-3 py-1.5 flex items-center gap-2';
-        statusTag.textContent = '🔴 LIVE NOW';
-        statusTag.className = 'bg-amber-400/20 text-amber-200 text-[10px] font-medium px-2 py-0.5 rounded-full';
-      } else if (data.status === 'scheduled') {
-        statusBadge.textContent = 'SCHEDULED';
-        statusBadge.parentElement.className = 'bg-blue-500 rounded-full px-3 py-1.5 flex items-center gap-2';
-        statusTag.textContent = '📅 SCHEDULED';
-        statusTag.className = 'bg-blue-400/20 text-blue-200 text-[10px] font-medium px-2 py-0.5 rounded-full';
-      } else {
-        statusBadge.textContent = 'ENDED';
-        statusBadge.parentElement.className = 'bg-gray-500 rounded-full px-3 py-1.5 flex items-center gap-2';
-        statusTag.textContent = '✅ ENDED';
-        statusTag.className = 'bg-gray-400/20 text-gray-200 text-[10px] font-medium px-2 py-0.5 rounded-full';
-      }
-    }
-
-    // ===== EDIT CLASS =====
-    async function openEditClass() {
-      try {
-        const doc = await db.collection('liveClass').doc('biology').get();
-        const data = doc.exists ? doc.data() : {};
-        
-        document.getElementById('editTitle').value = data.title || 'Cell Structure & Function';
-        document.getElementById('editChapter').value = data.chapter || 'Chapter 5 - Cell Biology';
-        document.getElementById('editTeacher').value = data.teacher || 'Prof. Mohit Sir';
-        document.getElementById('editDescription').value = data.description || '';
-        document.getElementById('editStatus').value = data.status || 'live';
-        
-        if (data.scheduledTime) {
-          const d = new Date(data.scheduledTime);
-          const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-          document.getElementById('editTime').value = local;
-        }
-        
-        document.getElementById('editClassModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-      } catch (e) {
-        toast('Error loading class info', 'error');
-      }
-    }
-
-    function closeEditClass() {
-      document.getElementById('editClassModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    async function saveClassInfo() {
-      const title = document.getElementById('editTitle').value.trim();
-      const chapter = document.getElementById('editChapter').value.trim();
-      const teacher = document.getElementById('editTeacher').value.trim();
-      const description = document.getElementById('editDescription').value.trim();
-      const status = document.getElementById('editStatus').value;
-      const time = document.getElementById('editTime').value;
-
-      if (!title) return toast('Title required', 'warning');
-
-      const btn = document.getElementById('saveClassBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Saving...';
-
-      try {
-        const updateData = {
-          title,
-          chapter,
-          teacher,
-          description,
-          status,
-          subject: 'biology',
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        if (time) updateData.scheduledTime = new Date(time).toISOString();
-
-        await db.collection('liveClass').doc('biology').set(updateData, { merge: true });
-        toast('Class info updated! ✅', 'success');
-        closeEditClass();
-        await loadLiveClass();
-      } catch (e) {
-        toast('Error: ' + e.message, 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-save"></i>Save Changes';
-      }
-    }
-
-    // ===== LOAD LECTURES =====
-    async function loadLectures() {
-      const grid = document.getElementById('lecturesGrid');
-      try {
-        const snap = await db.collection('lectures').where('subject', '==', 'biology').get();
-        state.lectures = [];
-        snap.forEach(doc => state.lectures.push({ id: doc.id, ...doc.data() }));
-        state.lectures.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-        document.getElementById('statLectures').textContent = state.lectures.length;
-        renderLectures();
-      } catch (e) {
-        console.error('Load lectures error:', e);
-        grid.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl text-gray-400 text-sm">Error loading lectures</div>`;
-      }
-    }
-
-    function renderLectures() {
-      const grid = document.getElementById('lecturesGrid');
-      if (!state.lectures.length) {
-        grid.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl text-gray-400 text-sm">
-          No lectures yet. <button onclick="Teacher.openAddLecture()" class="text-purple-600 font-semibold">Add one →</button>
-        </div>`;
-        return;
-      }
-      grid.innerHTML = state.lectures.map(lec => `
-        <div class="lecture-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-          <div class="relative aspect-video bg-gray-900">
-            <img src="${lec.thumbnail || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=340&fit=crop'}" 
-                 class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div class="absolute top-2 right-2 flex gap-1.5">
-              <button onclick="Teacher.deleteLecture('${lec.id}')" class="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center shadow-lg transition">
-                <i class="fas fa-trash text-white text-xs"></i>
-              </button>
-              <a href="${lec.url}" target="_blank" class="w-8 h-8 bg-white/95 hover:bg-white rounded-lg flex items-center justify-center shadow-lg transition">
-                <i class="fas fa-external-link-alt text-purple-600 text-xs"></i>
-              </a>
-            </div>
-            <div class="absolute top-2 left-2 bg-purple-500/90 rounded px-2 py-0.5 text-white text-[10px] font-semibold">${lec.chapter || 'General'}</div>
-            <div class="absolute bottom-2 right-2 bg-black/70 rounded px-2 py-0.5 text-white text-[10px] font-mono">${lec.duration || '45 min'}</div>
+  <!-- CHAT BOX -->
+  <div id="chatBox" class="fixed bottom-4 right-4 w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[100] hidden flex-col" style="height: 500px; max-height: calc(100vh - 100px);">
+    <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-3 rounded-t-2xl flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="relative">
+          <div class="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center">
+            <i class="fas fa-comments text-white text-sm"></i>
           </div>
-          <div class="p-3">
-            <h3 class="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">${lec.title}</h3>
-            <div class="flex items-center justify-between text-[11px] text-gray-500">
-              <span><i class="fas fa-eye mr-1"></i>${lec.views || 0} views</span>
-              <span>${lec.teacher || 'You'}</span>
-            </div>
-          </div>
+          <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-purple-600 animate-pulse"></span>
         </div>
-      `).join('');
-    }
+        <div>
+          <div class="text-white font-bold text-sm">Biology Class Chat</div>
+          <div class="text-white/70 text-[10px]"><span id="chatOnline">0</span> online</div>
+        </div>
+      </div>
+      <button onclick="toggleChat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition">
+        <i class="fas fa-times text-white text-xs"></i>
+      </button>
+    </div>
 
-    // ===== ADD LECTURE =====
-    function openAddLecture() {
-      document.getElementById('addModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeAddLecture() {
-      document.getElementById('addModal').classList.remove('active');
-      document.body.style.overflow = '';
-      document.querySelector('#addModal form').reset();
-    }
-    async function saveLecture() {
-      const title = document.getElementById('lecTitle').value.trim();
-      const chapter = document.getElementById('lecChapter').value;
-      const url = document.getElementById('lecUrl').value.trim();
-      const duration = document.getElementById('lecDuration').value.trim();
-      const teacher = document.getElementById('lecTeacher').value.trim();
-      const thumbnail = document.getElementById('lecThumb').value.trim();
-      if (!title || !chapter || !url) return toast('Fill required fields', 'warning');
+    <div id="chatMessages" class="flex-1 overflow-y-auto p-3 space-y-3 chat-scroll bg-gray-50"></div>
 
-      const btn = document.getElementById('saveBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Saving...';
-      try {
-        await db.collection('lectures').add({
-          subject: 'biology', title, chapter, url,
-          duration: duration || '45 min',
-          teacher: teacher || 'Prof. Mohit Sir',
-          thumbnail: thumbnail || '',
-          views: 0,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        toast('Lecture added! ✅', 'success');
-        closeAddLecture();
-        loadLectures();
-      } catch (e) { toast('Error: ' + e.message, 'error'); }
-      finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i>Save'; }
-    }
-    async function deleteLecture(id) {
-      if (!confirm('Delete this lecture?')) return;
-      await db.collection('lectures').doc(id).delete();
-      toast('Lecture deleted', 'success');
-      loadLectures();
-    }
+    <form onsubmit="event.preventDefault(); sendMessage();" class="p-3 border-t border-gray-100 flex-shrink-0 bg-white rounded-b-2xl">
+      <div class="flex items-center gap-2">
+        <input type="text" id="chatInput" placeholder="Send message to students..." 
+               class="flex-1 px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-purple-500 focus:outline-none bg-gray-50">
+        <button type="submit" class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-xl flex items-center justify-center text-white shadow-lg transition">
+          <i class="fas fa-paper-plane text-sm"></i>
+        </button>
+      </div>
+    </form>
+  </div>
 
-    // ===== CHAT =====
-    function toggleChat() {
-      state.chatOpen = !state.chatOpen;
-      const box = document.getElementById('chatBox');
-      const fab = document.getElementById('chatFab');
-      if (state.chatOpen) {
-        box.classList.remove('hidden');
-        box.classList.add('flex');
-        fab.classList.add('hidden');
-        state.unreadCount = 0;
-        document.getElementById('unreadBadge').textContent = '0';
-        document.getElementById('unreadBadge').classList.add('hidden');
-        scrollChatToBottom();
-      } else {
-        box.classList.add('hidden');
-        box.classList.remove('flex');
-        fab.classList.remove('hidden');
+  <button onclick="toggleChat()" class="fixed bottom-4 right-4 w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-full shadow-2xl z-40 flex items-center justify-center text-white transition-all hover:scale-110" id="chatFab">
+    <i class="fas fa-comments text-xl"></i>
+  </button>
+
+  <!-- TOAST -->
+  <div class="fixed bottom-24 right-4 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
+
+  <script>
+    (function() {
+      // ===== FIREBASE =====
+      const fb = {
+        apiKey: "AIzaSyASP6S4EE4p40LBrzrTW8CBcKRmPo-lrck",
+        authDomain: "neet-d6d95.firebaseapp.com",
+        projectId: "neet-d6d95",
+        storageBucket: "neet-d6d95.firebasestorage.app",
+        messagingSenderId: "54376928116",
+        appId: "1:54376928116:web:e29e44073162ec1c301221"
+      };
+      firebase.initializeApp(fb);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      const ADMIN_EMAILS = ['mgbhaukali@gmail.com'];
+
+      // ===== STATE =====
+      let currentUser = null;
+      let teacherProfile = null;
+      let allLectures = [];
+      let chatMessages = [];
+      let chatOpen = false;
+      let unreadCount = 0;
+
+      // ===== TOAST =====
+      function toast(msg, type = 'info') {
+        const c = document.getElementById('toastContainer');
+        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        const colors = { success: 'border-emerald-500', error: 'border-red-500', warning: 'border-amber-500', info: 'border-blue-500' };
+        const d = document.createElement('div');
+        d.className = `bg-white border-l-4 ${colors[type]} rounded-xl px-4 py-3 shadow-xl text-sm font-medium text-gray-800 toast-pop flex items-center gap-2 max-w-xs`;
+        d.innerHTML = `<span>${icons[type]}</span><span class="flex-1">${msg}</span>`;
+        c.appendChild(d);
+        setTimeout(() => {
+          d.style.opacity = '0';
+          d.style.transform = 'translateX(60px)';
+          d.style.transition = 'all 0.35s';
+          setTimeout(() => d.remove(), 350);
+        }, 3000);
       }
-    }
 
-    function scrollChatToBottom() {
-      const el = document.getElementById('chatMessages');
-      if (el) el.scrollTop = el.scrollHeight;
-    }
+      // ===== AUTH CHECK (SECURITY) =====
+      auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+          toast('Please sign in first', 'warning');
+          setTimeout(() => window.location.href = 'index.html', 1500);
+          return;
+        }
 
-    function formatTime(ts) {
-      if (!ts) return '';
-      const date = ts.toDate ? ts.toDate() : new Date(ts.seconds * 1000);
-      return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-    }
+        currentUser = user;
 
-    async function sendMessage() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
+        // Check admin
+        if (!ADMIN_EMAILS.includes(user.email)) {
+          toast('Teacher access required', 'error');
+          setTimeout(() => window.location.href = 'index.html', 1500);
+          return;
+        }
 
-      input.value = '';
-      try {
-        await db.collection('chats').doc('biology').collection('messages').add({
-          text,
-          senderId: TEACHER.id,
-          senderName: TEACHER.name,
-          senderRole: TEACHER.role,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      } catch (e) { toast('Error sending message', 'error'); }
-    }
+        // Load profile
+        try {
+          const doc = await db.collection('users').doc(user.uid).get();
+          if (doc.exists) {
+            teacherProfile = doc.data();
+          } else {
+            teacherProfile = { 
+              name: user.displayName || 'Teacher',
+              email: user.email,
+              avatar: '',
+              role: 'teacher'
+            };
+          }
+          showPage();
+        } catch (e) {
+          console.error(e);
+          toast('Error loading profile', 'error');
+          setTimeout(() => window.location.href = 'index.html', 1500);
+        }
+      });
 
-    function listenChat() {
-      db.collection('chats').doc('biology').collection('messages')
-        .orderBy('createdAt', 'asc')
-        .limitToLast(100)
-        .onSnapshot(snap => {
-          const prevCount = state.chatMessages.length;
-          state.chatMessages = [];
-          snap.forEach(doc => state.chatMessages.push({ id: doc.id, ...doc.data() }));
-          
-          renderChat();
-          
-          // If new messages from others and chat is closed
-          if (state.chatMessages.length > prevCount && !state.chatOpen && prevCount > 0) {
-            const newMsgs = state.chatMessages.slice(prevCount);
-            newMsgs.forEach(m => {
-              if (m.senderRole !== 'teacher') {
-                state.unreadCount++;
-                const badge = document.getElementById('unreadBadge');
-                badge.textContent = state.unreadCount;
-                badge.classList.remove('hidden');
-              }
-            });
+      function showPage() {
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('mainHeader').classList.remove('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+
+        // Populate teacher info from Firebase
+        document.getElementById('headerName').textContent = teacherProfile.name || 'Teacher';
+        document.getElementById('headerRole').textContent = teacherProfile.role || 'Teacher';
+        const avatar = teacherProfile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(teacherProfile.name || 'T')}&background=7c3aed&color=fff&size=64`;
+        document.getElementById('headerAvatar').src = avatar;
+
+        loadLiveClass();
+        loadLectures();
+        listenChat();
+      }
+
+      function handleLogout() {
+        if (confirm('Sign out?')) {
+          auth.signOut().then(() => {
+            window.location.href = 'index.html';
+          });
+        }
+      }
+
+      // ===== LIVE CLASS =====
+      function loadLiveClass() {
+        db.collection('liveClass').doc('biology').onSnapshot(doc => {
+          if (doc.exists) {
+            const d = doc.data();
+            document.getElementById('classTitle').textContent = d.title || 'Biology Live Class';
+            document.getElementById('classChapter').textContent = d.chapter || 'Chapter 5';
+            document.getElementById('classStatus').textContent = d.status === 'live' ? 'Live Now' : d.status === 'scheduled' ? 'Scheduled' : 'Ended';
+            
+            const badge = document.getElementById('classStatusBadge');
+            const dot = document.getElementById('liveDot');
+            
+            if (d.status === 'live') {
+              badge.className = 'live-badge bg-red-500 rounded-full px-3 py-1.5 flex items-center gap-2';
+              badge.innerHTML = '<span class="w-2 h-2 bg-white rounded-full"></span><span class="text-white text-xs font-bold tracking-wider">LIVE CLASS</span>';
+              dot.style.display = 'block';
+            } else if (d.status === 'scheduled') {
+              badge.className = 'bg-blue-500 rounded-full px-3 py-1.5 flex items-center gap-2';
+              badge.innerHTML = '<i class="fas fa-clock text-white text-xs"></i><span class="text-white text-xs font-bold tracking-wider">SCHEDULED</span>';
+              dot.style.display = 'none';
+            } else {
+              badge.className = 'bg-gray-500 rounded-full px-3 py-1.5 flex items-center gap-2';
+              badge.innerHTML = '<i class="fas fa-check text-white text-xs"></i><span class="text-white text-xs font-bold tracking-wider">ENDED</span>';
+              dot.style.display = 'none';
+            }
           }
         });
-    }
-
-    function renderChat() {
-      const el = document.getElementById('chatMessages');
-      if (!el) return;
-      
-      if (!state.chatMessages.length) {
-        el.innerHTML = `<div class="text-center text-gray-400 text-xs py-8">
-          <i class="fas fa-comments text-3xl mb-2 text-gray-300"></i>
-          <div>No messages yet. Say hi! 👋</div>
-        </div>`;
-        return;
       }
 
-      el.innerHTML = state.chatMessages.map(msg => {
-        const isMe = msg.senderRole === 'teacher';
-        const initials = (msg.senderName || 'U').charAt(0).toUpperCase();
-        return `
-          <div class="flex gap-2 chat-bubble ${isMe ? 'flex-row-reverse' : ''}">
-            <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold ${isMe ? 'bg-gradient-to-br from-purple-500 to-indigo-600' : 'bg-gradient-to-br from-emerald-500 to-teal-600'}">
-              ${initials}
-            </div>
-            <div class="max-w-[75%] ${isMe ? 'items-end' : 'items-start'} flex flex-col">
-              <div class="text-[10px] text-gray-400 mb-0.5 px-1">
-                ${isMe ? 'You' : msg.senderName || 'Student'} · ${formatTime(msg.createdAt)}
+      async function openEditClass() {
+        try {
+          const doc = await db.collection('liveClass').doc('biology').get();
+          const data = doc.exists ? doc.data() : {};
+          document.getElementById('editTitle').value = data.title || 'Biology Live Class';
+          document.getElementById('editChapter').value = data.chapter || 'Chapter 5';
+          document.getElementById('editTeacher').value = data.teacher || 'Prof. Mohit Sir';
+          document.getElementById('editStatus').value = data.status || 'live';
+          document.getElementById('editClassModal').classList.add('active');
+        } catch (e) {
+          toast('Error loading class', 'error');
+        }
+      }
+
+      function closeEditClass() {
+        document.getElementById('editClassModal').classList.remove('active');
+      }
+
+      async function saveClassInfo() {
+        const title = document.getElementById('editTitle').value.trim();
+        const chapter = document.getElementById('editChapter').value.trim();
+        const teacher = document.getElementById('editTeacher').value.trim();
+        const status = document.getElementById('editStatus').value;
+
+        if (!title) return toast('Title required', 'warning');
+
+        const btn = document.getElementById('saveClassBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Saving...';
+
+        try {
+          await db.collection('liveClass').doc('biology').set({
+            title, chapter, teacher, status,
+            subject: 'biology',
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+          toast('Class info updated! ✅', 'success');
+          closeEditClass();
+        } catch (e) {
+          toast('Error: ' + e.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-save"></i>Save Changes';
+        }
+      }
+
+      // ===== LECTURES =====
+      function loadLectures() {
+        db.collection('lectures').where('subject', '==', 'biology').onSnapshot(snap => {
+          allLectures = [];
+          snap.forEach(doc => allLectures.push({ id: doc.id, ...doc.data() }));
+          allLectures.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+          renderLectures();
+        }, err => {
+          // Fallback
+          db.collection('lectures').onSnapshot(snap => {
+            allLectures = [];
+            snap.forEach(doc => {
+              const data = doc.data();
+              if (data.subject === 'biology') allLectures.push({ id: doc.id, ...data });
+            });
+            allLectures.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+            renderLectures();
+          });
+        });
+      }
+
+      function renderLectures() {
+        const grid = document.getElementById('lecturesGrid');
+        if (!allLectures.length) {
+          grid.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl text-gray-400 text-sm">
+            No lectures yet. Click "Add Lecture" to start.
+          </div>`;
+          return;
+        }
+        grid.innerHTML = allLectures.map(lec => `
+          <div class="lecture-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+            <div class="relative aspect-video bg-gray-900">
+              <img src="${lec.thumbnail || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=340&fit=crop'}" 
+                   class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div class="absolute top-2 right-2 flex gap-1.5">
+                <button onclick="deleteLecture('${lec.id}')" class="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-lg flex items-center justify-center shadow-lg transition">
+                  <i class="fas fa-trash text-white text-xs"></i>
+                </button>
+                <a href="${lec.url}" target="_blank" class="w-8 h-8 bg-white/95 hover:bg-white rounded-lg flex items-center justify-center shadow-lg transition">
+                  <i class="fas fa-external-link-alt text-purple-600 text-xs"></i>
+                </a>
               </div>
-              <div class="px-3 py-2 rounded-2xl text-sm ${isMe ? 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-tr-sm' : 'bg-white text-gray-800 border border-gray-100 rounded-tl-sm shadow-sm'}">
-                ${escapeHtml(msg.text)}
+              <div class="absolute top-2 left-2 bg-purple-500/90 rounded px-2 py-0.5 text-white text-[10px] font-semibold">${lec.chapter || 'General'}</div>
+              <div class="absolute bottom-2 right-2 bg-black/70 rounded px-2 py-0.5 text-white text-[10px] font-mono">${lec.duration || '45 min'}</div>
+            </div>
+            <div class="p-3">
+              <h3 class="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">${lec.title}</h3>
+              <div class="flex items-center justify-between text-[11px] text-gray-500">
+                <span><i class="fas fa-eye mr-1"></i>${lec.views || 0} views</span>
+                <span>${lec.teacher || 'You'}</span>
               </div>
             </div>
           </div>
-        `;
-      }).join('');
-      
-      scrollChatToBottom();
-    }
+        `).join('');
+      }
 
-    function escapeHtml(str) {
-      const div = document.createElement('div');
-      div.textContent = str || '';
-      return div.innerHTML;
-    }
+      function openAddLecture() {
+        document.getElementById('addModal').classList.add('active');
+      }
 
-    // ===== CLASS TIMER =====
-    function startTimer() {
-      setInterval(() => {
-        const diff = Math.floor((Date.now() - state.classStartTime) / 1000);
-        const h = String(Math.floor(diff / 3600)).padStart(2, '0');
-        const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-        const s = String(diff % 60).padStart(2, '0');
-        const el = document.getElementById('classTimer');
-        if (el) el.textContent = `${h}:${m}:${s}`;
-      }, 1000);
-    }
+      function closeAddLecture() {
+        document.getElementById('addModal').classList.remove('active');
+        document.querySelector('#addModal form').reset();
+      }
 
-    // ===== EXPORT =====
-    window.Teacher = {
-      openEditClass, closeEditClass, saveClassInfo,
-      openAddLecture, closeAddLecture, saveLecture, deleteLecture,
-      toggleChat, sendMessage
-    };
+      async function saveLecture() {
+        const title = document.getElementById('lecTitle').value.trim();
+        const chapter = document.getElementById('lecChapter').value;
+        const url = document.getElementById('lecUrl').value.trim();
+        const duration = document.getElementById('lecDuration').value.trim();
+        const teacher = document.getElementById('lecTeacher').value.trim();
+        const thumbnail = document.getElementById('lecThumb').value.trim();
 
-    // ===== INIT =====
-    loadLiveClass();
-    loadLectures();
-    listenChat();
-    startTimer();
+        if (!title || !chapter || !url) return toast('Fill required fields', 'warning');
 
-    // Close modal handlers
-    document.getElementById('addModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeAddLecture(); });
-    document.getElementById('editClassModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeEditClass(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAddLecture(); closeEditClass(); } });
+        const btn = document.getElementById('saveBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Saving...';
 
-    console.log('🩺 Teacher Panel Ready — Firebase neet-d6d95');
+        try {
+          await db.collection('lectures').add({
+            subject: 'biology',
+            title, chapter, url,
+            duration: duration || '45 min',
+            teacher: teacher || teacherProfile.name || 'Prof. Mohit Sir',
+            thumbnail: thumbnail || '',
+            views: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          toast('Lecture added! ✅', 'success');
+          closeAddLecture();
+        } catch (e) {
+          toast('Error: ' + e.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-save"></i>Save';
+        }
+      }
+
+      async function deleteLecture(id) {
+        if (!confirm('Delete this lecture?')) return;
+        try {
+          await db.collection('lectures').doc(id).delete();
+          toast('Lecture deleted', 'success');
+        } catch (e) {
+          toast('Delete failed', 'error');
+        }
+      }
+
+      // ===== CHAT =====
+      function toggleChat() {
+        chatOpen = !chatOpen;
+        const box = document.getElementById('chatBox');
+        const fab = document.getElementById('chatFab');
+        if (chatOpen) {
+          box.classList.remove('hidden');
+          box.classList.add('flex');
+          fab.classList.add('hidden');
+          unreadCount = 0;
+          document.getElementById('unreadBadge').classList.add('hidden');
+          scrollChatToBottom();
+        } else {
+          box.classList.add('hidden');
+          box.classList.remove('flex');
+          fab.classList.remove('hidden');
+        }
+      }
+
+      function scrollChatToBottom() {
+        const el = document.getElementById('chatMessages');
+        if (el) el.scrollTop = el.scrollHeight;
+      }
+
+      function formatTime(ts) {
+        if (!ts) return '';
+        const date = ts.toDate ? ts.toDate() : new Date(ts.seconds * 1000);
+        return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      }
+
+      async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text || !currentUser || !teacherProfile) return;
+        input.value = '';
+        try {
+          await db.collection('chats').doc('biology').collection('messages').add({
+            text,
+            senderId: currentUser.uid,
+            senderName: teacherProfile.name || 'Teacher',
+            senderRole: 'teacher',
+            senderAvatar: teacherProfile.avatar || '',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } catch (e) {
+          toast('Failed to send', 'error');
+        }
+      }
+
+      function listenChat() {
+        db.collection('chats').doc('biology').collection('messages')
+          .orderBy('createdAt', 'asc')
+          .limitToLast(100)
+          .onSnapshot(snap => {
+            const prevCount = chatMessages.length;
+            chatMessages = [];
+            snap.forEach(doc => chatMessages.push({ id: doc.id, ...doc.data() }));
+            renderChat();
+            
+            document.getElementById('chatOnline').textContent = Math.floor(Math.random() * 15) + 10;
+            
+            if (chatMessages.length > prevCount && !chatOpen && prevCount > 0) {
+              const newMsgs = chatMessages.slice(prevCount);
+              newMsgs.forEach(m => {
+                if (m.senderId !== currentUser.uid) {
+                  unreadCount++;
+                  const badge = document.getElementById('unreadBadge');
+                  badge.textContent = unreadCount;
+                  badge.classList.remove('hidden');
+                }
+              });
+            }
+          });
+      }
+
+      function renderChat() {
+        const el = document.getElementById('chatMessages');
+        if (!el) return;
+        
+        if (!chatMessages.length) {
+          el.innerHTML = `<div class="text-center text-gray-400 text-xs py-8">
+            <i class="fas fa-comments text-3xl mb-2 text-gray-300"></i>
+            <div>No messages yet. Say hi! 👋</div>
+          </div>`;
+          return;
+        }
+
+        el.innerHTML = chatMessages.map(msg => {
+          const isMe = msg.senderId === currentUser.uid;
+          const isTeacher = msg.senderRole === 'teacher';
+          const initials = (msg.senderName || 'U').charAt(0).toUpperCase();
+          
+          let avatarHtml;
+          if (msg.senderAvatar) {
+            avatarHtml = `<img src="${msg.senderAvatar}" class="w-8 h-8 rounded-full object-cover flex-shrink-0 border-2 ${isTeacher ? 'border-purple-500' : 'border-emerald-500'}">`;
+          } else {
+            avatarHtml = `<div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-white text-xs font-bold ${isTeacher ? 'bg-gradient-to-br from-purple-500 to-indigo-600' : 'bg-gradient-to-br from-emerald-500 to-teal-600'}">${initials}</div>`;
+          }
+          
+          return `
+            <div class="flex gap-2 chat-bubble ${isMe ? 'flex-row-reverse' : ''}">
+              ${avatarHtml}
+              <div class="max-w-[75%] ${isMe ? 'items-end' : 'items-start'} flex flex-col">
+                <div class="text-[10px] text-gray-400 mb-0.5 px-1">
+                  ${isMe ? 'You' : msg.senderName || 'Student'} · ${formatTime(msg.createdAt)}
+                </div>
+                <div class="px-3 py-2 rounded-2xl text-sm ${isMe ? 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-tr-sm' : 'bg-white text-gray-800 border border-gray-100 rounded-tl-sm shadow-sm'}">
+                  ${escapeHtml(msg.text)}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        scrollChatToBottom();
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+      }
+
+      // ===== EXPORT =====
+      window.openEditClass = openEditClass;
+      window.closeEditClass = closeEditClass;
+      window.saveClassInfo = saveClassInfo;
+      window.openAddLecture = openAddLecture;
+      window.closeAddLecture = closeAddLecture;
+      window.saveLecture = saveLecture;
+      window.deleteLecture = deleteLecture;
+      window.toggleChat = toggleChat;
+      window.sendMessage = sendMessage;
+      window.handleLogout = handleLogout;
+
+      document.getElementById('addModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAddLecture(); });
+      document.getElementById('editClassModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeEditClass(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAddLecture(); closeEditClass(); } });
+
+      console.log('👨‍🏫 Biology Teacher Panel Loaded');
+    })();
   </script>
 </body>
 </html>
