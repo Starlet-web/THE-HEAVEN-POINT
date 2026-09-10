@@ -20,21 +20,18 @@
     .font-display { font-family: 'Outfit', sans-serif; }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #a78bfa); border-radius: 10px; }
-    
     .live-badge { animation: pulseLive 1.5s ease-in-out infinite; }
     @keyframes pulseLive { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(1.1); } }
-    
     .lecture-card { transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
     .lecture-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(124,58,237,0.15); }
-    
+    .note-card { transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
+    .note-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(124,58,237,0.15); }
     .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
-    
     .chat-bubble { animation: slideIn 0.3s ease-out; }
     @keyframes slideIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
     .chat-scroll::-webkit-scrollbar { width: 4px; }
     .chat-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    
     .loading-screen {
       position: fixed; inset: 0;
       background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
@@ -43,31 +40,33 @@
     }
     .loader { width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    
     .toast-pop { animation: toastIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
     @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .thumb-upload {
-      border: 2px dashed rgba(124,58,237,0.3); border-radius: 14px;
-      cursor: pointer; transition: all 0.3s ease;
-      background: rgba(124,58,237,0.02); padding: 20px; text-align: center;
+    .tab-btn { position: relative; transition: all 0.3s ease; }
+    .tab-btn.active { color: #7c3aed; }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+      width: 30px; height: 3px;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      border-radius: 3px;
     }
-    .thumb-upload:hover { border-color: rgba(124,58,237,0.6); background: rgba(124,58,237,0.05); }
+    .msg-hover { transition: all 0.2s ease; }
+    .msg-hover:hover .delete-msg-btn { opacity: 1; }
+    .delete-msg-btn { opacity: 0; transition: all 0.2s ease; }
   </style>
 </head>
 <body>
 
-  <!-- LOADING SCREEN -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loader"></div>
     <div style="color:white; font-family:Outfit,sans-serif; font-weight:600; letter-spacing:1px;">VERIFYING TEACHER ACCESS...</div>
   </div>
 
-  <!-- HEADER -->
   <header class="bg-white/90 backdrop-blur-md border-b border-purple-100 sticky top-0 z-40 hidden" id="mainHeader">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="w-9 h-9 bg-gray-100 hover:bg-purple-100 rounded-xl flex items-center justify-center transition">
+        <a href="Neet.html" class="w-9 h-9 bg-gray-100 hover:bg-purple-100 rounded-xl flex items-center justify-center transition">
           <i class="fas fa-arrow-left text-gray-600 text-sm"></i>
         </a>
         <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
@@ -111,14 +110,7 @@
             </span>
             <span id="classStatus" class="text-purple-200/60 text-xs">Live</span>
           </div>
-          <div class="flex items-center gap-2">
-            <div class="bg-white/10 backdrop-blur rounded-full px-3 py-1.5 text-xs">
-              <i class="fas fa-users text-purple-300"></i>
-              <span class="ml-1.5" id="studentCount">0</span> students
-            </div>
-          </div>
         </div>
-
         <div class="flex flex-col md:flex-row md:items-center gap-5">
           <div class="flex items-center gap-4 flex-1">
             <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-indigo-600 rounded-2xl flex items-center justify-center shadow-xl relative">
@@ -126,7 +118,7 @@
               <span id="liveDot" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-purple-900"></span>
             </div>
             <div class="flex-1 min-w-0">
-              <h2 id="classTitle" class="font-bold font-display text-lg mb-1 truncate">Loading class...</h2>
+              <h2 id="classTitle" class="font-bold font-display text-lg mb-1 truncate">Loading...</h2>
               <p class="text-purple-300/80 text-sm mb-2 truncate">
                 <span id="classChapter">Chapter 5</span>
               </p>
@@ -136,8 +128,7 @@
               </div>
             </div>
           </div>
-
-          <div class="w-full md:w-auto flex flex-col gap-2">
+          <div class="w-full md:w-auto">
             <a href="https://www.teachmint.com/teacher/class/4049435069" target="_blank"
                class="bg-white hover:bg-purple-50 text-purple-700 px-6 py-3.5 rounded-xl font-bold text-sm shadow-xl transition flex items-center justify-center gap-2 whitespace-nowrap">
               <i class="fas fa-chalkboard-teacher"></i>Open My Class
@@ -149,26 +140,26 @@
 
     <!-- QUICK ACTIONS -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <a href="https://www.teachmint.com/teacher/class/4049435069" target="_blank" 
-         class="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1">
-        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-          <i class="fas fa-broadcast-tower text-xl"></i>
-        </div>
-        <div class="font-bold font-display text-base mb-1">Start Class</div>
-        <div class="text-white/80 text-xs">Open Teachmint</div>
-      </a>
-
       <button onclick="openAddLecture()" 
               class="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1 text-left">
         <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
           <i class="fas fa-cloud-upload-alt text-xl"></i>
         </div>
-        <div class="font-bold font-display text-base mb-1">Upload</div>
-        <div class="text-white/80 text-xs">Add recording</div>
+        <div class="font-bold font-display text-base mb-1">Add Lecture</div>
+        <div class="text-white/80 text-xs">Upload recording</div>
+      </button>
+
+      <button onclick="openAddNote()" 
+              class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1 text-left">
+        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
+          <i class="fas fa-file-pdf text-xl"></i>
+        </div>
+        <div class="font-bold font-display text-base mb-1">Add Notes</div>
+        <div class="text-white/80 text-xs">Google Drive link</div>
       </button>
 
       <button onclick="toggleChat()" 
-              class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1 text-left">
+              class="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition hover:-translate-y-1 text-left">
         <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3">
           <i class="fas fa-comments text-xl"></i>
         </div>
@@ -186,8 +177,18 @@
       </button>
     </div>
 
-    <!-- MANAGE LECTURES -->
-    <div>
+    <!-- TABS -->
+    <div class="flex items-center justify-center gap-6 border-b border-gray-200">
+      <button onclick="switchTab('lectures')" id="tabLectures" class="tab-btn active pb-3 px-4 text-sm font-bold text-gray-500 flex items-center gap-2">
+        <i class="fas fa-video"></i>Lectures
+      </button>
+      <button onclick="switchTab('notes')" id="tabNotes" class="tab-btn pb-3 px-4 text-sm font-bold text-gray-500 flex items-center gap-2">
+        <i class="fas fa-file-pdf"></i>Notes
+      </button>
+    </div>
+
+    <!-- LECTURES TAB -->
+    <div id="lecturesTab">
       <div class="flex items-center justify-between mb-4">
         <div>
           <h2 class="font-bold font-display text-gray-900 text-lg">📹 Manage Lectures</h2>
@@ -198,6 +199,20 @@
         </button>
       </div>
       <div id="lecturesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+
+    <!-- NOTES TAB -->
+    <div id="notesTab" class="hidden">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="font-bold font-display text-gray-900 text-lg">📚 Manage Notes</h2>
+          <p class="text-gray-400 text-xs mt-0.5">Add or delete PDF notes (Google Drive)</p>
+        </div>
+        <button onclick="openAddNote()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+          <i class="fas fa-plus"></i>Add Notes
+        </button>
+      </div>
+      <div id="notesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </div>
 
   </main>
@@ -261,6 +276,68 @@
     </div>
   </div>
 
+  <!-- ADD NOTE MODAL -->
+  <div class="modal-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-3" id="addNoteModal">
+    <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between rounded-t-2xl z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+            <i class="fas fa-file-pdf text-white text-sm"></i>
+          </div>
+          <div>
+            <h3 class="font-bold font-display text-gray-900 text-sm">Add Study Notes</h3>
+            <p class="text-gray-400 text-[10px]">Paste Google Drive PDF link</p>
+          </div>
+        </div>
+        <button onclick="closeAddNote()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
+          <i class="fas fa-times text-gray-500 text-xs"></i>
+        </button>
+      </div>
+      <form class="p-5 space-y-4" onsubmit="event.preventDefault(); saveNote();">
+        <div>
+          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Note Title *</label>
+          <input type="text" id="noteTitle" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-emerald-500 focus:outline-none" placeholder="e.g., Cell Structure Notes" required>
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Chapter *</label>
+          <select id="noteChapter" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm" required>
+            <option value="">Select Chapter</option>
+            <option>Cell Biology</option><option>Genetics</option>
+            <option>Human Physiology</option><option>Plant Kingdom</option>
+            <option>Ecology</option><option>Biomolecules</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">
+            <i class="fab fa-google-drive text-emerald-500 mr-1"></i>
+            Google Drive Link *
+          </label>
+          <input type="url" id="noteDriveUrl" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm" placeholder="https://drive.google.com/file/d/..." required>
+          <p class="text-gray-400 text-[10px] mt-1.5">
+            💡 <strong>How to get link:</strong><br>
+            1. Upload PDF to Google Drive<br>
+            2. Right-click → Share → "Anyone with link"<br>
+            3. Copy link → Paste here
+          </p>
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Description (Optional)</label>
+          <textarea id="noteDescription" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm resize-none" rows="2" placeholder="Short description..."></textarea>
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Pages Count (Optional)</label>
+          <input type="number" id="notePages" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm" placeholder="e.g., 15">
+        </div>
+        <div class="flex gap-3 pt-2 border-t border-gray-100">
+          <button type="button" onclick="closeAddNote()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm">Cancel</button>
+          <button type="submit" id="saveNoteBtn" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm shadow-lg">
+            <i class="fas fa-save"></i>Save Notes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- EDIT CLASS MODAL -->
   <div class="modal-overlay fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-3" id="editClassModal">
     <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl max-h-[92vh] overflow-y-auto">
@@ -271,7 +348,7 @@
           </div>
           <div>
             <h3 class="font-bold font-display text-gray-900 text-sm">Edit Class Info</h3>
-            <p class="text-gray-400 text-[10px]">Changes reflect instantly for students</p>
+            <p class="text-gray-400 text-[10px]">Changes reflect instantly</p>
           </div>
         </div>
         <button onclick="closeEditClass()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
@@ -284,7 +361,7 @@
           <input type="text" id="editTitle" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm" required>
         </div>
         <div>
-          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Chapter / Topic</label>
+          <label class="block text-[11px] font-semibold text-gray-600 mb-1.5">Chapter</label>
           <input type="text" id="editChapter" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm">
         </div>
         <div>
@@ -310,7 +387,7 @@
   </div>
 
   <!-- CHAT BOX -->
-  <div id="chatBox" class="fixed bottom-4 right-4 w-[360px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[100] hidden flex-col" style="height: 500px; max-height: calc(100vh - 100px);">
+  <div id="chatBox" class="fixed bottom-4 right-4 w-[380px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[100] hidden flex-col" style="height: 520px; max-height: calc(100vh - 100px);">
     <div class="bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-3 rounded-t-2xl flex items-center justify-between flex-shrink-0">
       <div class="flex items-center gap-2.5">
         <div class="relative">
@@ -321,7 +398,10 @@
         </div>
         <div>
           <div class="text-white font-bold text-sm">Biology Class Chat</div>
-          <div class="text-white/70 text-[10px]"><span id="chatOnline">0</span> online</div>
+          <div class="text-white/70 text-[10px]">
+            <span id="chatOnline">0</span> online · 
+            <span class="text-emerald-300">You are Teacher</span>
+          </div>
         </div>
       </div>
       <button onclick="toggleChat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition">
@@ -346,12 +426,10 @@
     <i class="fas fa-comments text-xl"></i>
   </button>
 
-  <!-- TOAST -->
   <div class="fixed bottom-24 right-4 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
 
   <script>
     (function() {
-      // ===== FIREBASE =====
       const fb = {
         apiKey: "AIzaSyASP6S4EE4p40LBrzrTW8CBcKRmPo-lrck",
         authDomain: "neet-d6d95.firebaseapp.com",
@@ -366,15 +444,14 @@
 
       const ADMIN_EMAILS = ['mgbhaukali@gmail.com'];
 
-      // ===== STATE =====
       let currentUser = null;
       let teacherProfile = null;
       let allLectures = [];
+      let allNotes = [];
       let chatMessages = [];
       let chatOpen = false;
       let unreadCount = 0;
 
-      // ===== TOAST =====
       function toast(msg, type = 'info') {
         const c = document.getElementById('toastContainer');
         const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
@@ -391,41 +468,29 @@
         }, 3000);
       }
 
-      // ===== AUTH CHECK (SECURITY) =====
+      // ===== AUTH CHECK =====
       auth.onAuthStateChanged(async (user) => {
         if (!user) {
           toast('Please sign in first', 'warning');
-          setTimeout(() => window.location.href = 'index.html', 1500);
+          setTimeout(() => window.location.href = 'Neet.html', 1500);
           return;
         }
-
         currentUser = user;
 
-        // Check admin
         if (!ADMIN_EMAILS.includes(user.email)) {
           toast('Teacher access required', 'error');
-          setTimeout(() => window.location.href = 'index.html', 1500);
+          setTimeout(() => window.location.href = 'Neet.html', 1500);
           return;
         }
 
-        // Load profile
         try {
           const doc = await db.collection('users').doc(user.uid).get();
-          if (doc.exists) {
-            teacherProfile = doc.data();
-          } else {
-            teacherProfile = { 
-              name: user.displayName || 'Teacher',
-              email: user.email,
-              avatar: '',
-              role: 'teacher'
-            };
-          }
+          if (doc.exists) teacherProfile = doc.data();
+          else teacherProfile = { name: user.displayName || 'Teacher', email: user.email, avatar: '', role: 'teacher' };
           showPage();
         } catch (e) {
           console.error(e);
-          toast('Error loading profile', 'error');
-          setTimeout(() => window.location.href = 'index.html', 1500);
+          setTimeout(() => window.location.href = 'Neet.html', 1500);
         }
       });
 
@@ -434,22 +499,39 @@
         document.getElementById('mainHeader').classList.remove('hidden');
         document.getElementById('mainContent').classList.remove('hidden');
 
-        // Populate teacher info from Firebase
         document.getElementById('headerName').textContent = teacherProfile.name || 'Teacher';
-        document.getElementById('headerRole').textContent = teacherProfile.role || 'Teacher';
         const avatar = teacherProfile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(teacherProfile.name || 'T')}&background=7c3aed&color=fff&size=64`;
         document.getElementById('headerAvatar').src = avatar;
 
         loadLiveClass();
         loadLectures();
+        loadNotes();
         listenChat();
       }
 
       function handleLogout() {
         if (confirm('Sign out?')) {
-          auth.signOut().then(() => {
-            window.location.href = 'index.html';
-          });
+          auth.signOut().then(() => window.location.href = 'Neet.html');
+        }
+      }
+
+      // ===== TABS =====
+      function switchTab(tab) {
+        const lecturesTab = document.getElementById('lecturesTab');
+        const notesTab = document.getElementById('notesTab');
+        const tabLectures = document.getElementById('tabLectures');
+        const tabNotes = document.getElementById('tabNotes');
+
+        if (tab === 'lectures') {
+          lecturesTab.classList.remove('hidden');
+          notesTab.classList.add('hidden');
+          tabLectures.classList.add('active');
+          tabNotes.classList.remove('active');
+        } else {
+          lecturesTab.classList.add('hidden');
+          notesTab.classList.remove('hidden');
+          tabNotes.classList.add('active');
+          tabLectures.classList.remove('active');
         }
       }
 
@@ -469,13 +551,9 @@
               badge.className = 'live-badge bg-red-500 rounded-full px-3 py-1.5 flex items-center gap-2';
               badge.innerHTML = '<span class="w-2 h-2 bg-white rounded-full"></span><span class="text-white text-xs font-bold tracking-wider">LIVE CLASS</span>';
               dot.style.display = 'block';
-            } else if (d.status === 'scheduled') {
-              badge.className = 'bg-blue-500 rounded-full px-3 py-1.5 flex items-center gap-2';
-              badge.innerHTML = '<i class="fas fa-clock text-white text-xs"></i><span class="text-white text-xs font-bold tracking-wider">SCHEDULED</span>';
-              dot.style.display = 'none';
             } else {
               badge.className = 'bg-gray-500 rounded-full px-3 py-1.5 flex items-center gap-2';
-              badge.innerHTML = '<i class="fas fa-check text-white text-xs"></i><span class="text-white text-xs font-bold tracking-wider">ENDED</span>';
+              badge.innerHTML = '<i class="fas fa-check text-white text-xs"></i><span class="text-white text-xs font-bold tracking-wider">' + (d.status === 'scheduled' ? 'SCHEDULED' : 'ENDED') + '</span>';
               dot.style.display = 'none';
             }
           }
@@ -483,17 +561,13 @@
       }
 
       async function openEditClass() {
-        try {
-          const doc = await db.collection('liveClass').doc('biology').get();
-          const data = doc.exists ? doc.data() : {};
-          document.getElementById('editTitle').value = data.title || 'Biology Live Class';
-          document.getElementById('editChapter').value = data.chapter || 'Chapter 5';
-          document.getElementById('editTeacher').value = data.teacher || 'Prof. Mohit Sir';
-          document.getElementById('editStatus').value = data.status || 'live';
-          document.getElementById('editClassModal').classList.add('active');
-        } catch (e) {
-          toast('Error loading class', 'error');
-        }
+        const doc = await db.collection('liveClass').doc('biology').get();
+        const data = doc.exists ? doc.data() : {};
+        document.getElementById('editTitle').value = data.title || 'Biology Live Class';
+        document.getElementById('editChapter').value = data.chapter || 'Chapter 5';
+        document.getElementById('editTeacher').value = data.teacher || teacherProfile.name || 'Prof. Mohit Sir';
+        document.getElementById('editStatus').value = data.status || 'live';
+        document.getElementById('editClassModal').classList.add('active');
       }
 
       function closeEditClass() {
@@ -518,7 +592,7 @@
             subject: 'biology',
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           }, { merge: true });
-          toast('Class info updated! ✅', 'success');
+          toast('Class updated! ✅', 'success');
           closeEditClass();
         } catch (e) {
           toast('Error: ' + e.message, 'error');
@@ -536,7 +610,6 @@
           allLectures.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
           renderLectures();
         }, err => {
-          // Fallback
           db.collection('lectures').onSnapshot(snap => {
             allLectures = [];
             snap.forEach(doc => {
@@ -585,14 +658,8 @@
         `).join('');
       }
 
-      function openAddLecture() {
-        document.getElementById('addModal').classList.add('active');
-      }
-
-      function closeAddLecture() {
-        document.getElementById('addModal').classList.remove('active');
-        document.querySelector('#addModal form').reset();
-      }
+      function openAddLecture() { document.getElementById('addModal').classList.add('active'); }
+      function closeAddLecture() { document.getElementById('addModal').classList.remove('active'); document.querySelector('#addModal form').reset(); }
 
       async function saveLecture() {
         const title = document.getElementById('lecTitle').value.trim();
@@ -633,12 +700,106 @@
         try {
           await db.collection('lectures').doc(id).delete();
           toast('Lecture deleted', 'success');
+        } catch (e) { toast('Delete failed', 'error'); }
+      }
+
+      // ===== NOTES =====
+      function loadNotes() {
+        db.collection('notes').where('subject', '==', 'biology').onSnapshot(snap => {
+          allNotes = [];
+          snap.forEach(doc => allNotes.push({ id: doc.id, ...doc.data() }));
+          allNotes.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+          renderNotes();
+        }, err => {
+          db.collection('notes').onSnapshot(snap => {
+            allNotes = [];
+            snap.forEach(doc => {
+              const data = doc.data();
+              if (data.subject === 'biology') allNotes.push({ id: doc.id, ...data });
+            });
+            allNotes.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+            renderNotes();
+          });
+        });
+      }
+
+      function renderNotes() {
+        const grid = document.getElementById('notesGrid');
+        if (!allNotes.length) {
+          grid.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl text-gray-400 text-sm">
+            No notes yet. Click "Add Notes" to start.
+          </div>`;
+          return;
+        }
+        grid.innerHTML = allNotes.map(note => `
+          <div class="note-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 p-4">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                <i class="fas fa-file-pdf text-white"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-semibold text-gray-900 text-sm mb-1 line-clamp-2">${note.title}</h3>
+                <div class="text-[11px] text-gray-500">
+                  <span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">${note.chapter || 'General'}</span>
+                  ${note.pages ? `<span class="ml-1">· ${note.pages} pages</span>` : ''}
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-2 pt-3 border-t border-gray-100">
+              <a href="${note.driveUrl}" target="_blank" class="flex-1 text-center py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg text-[11px] font-bold transition">
+                <i class="fas fa-eye mr-1"></i>View
+              </a>
+              <button onclick="deleteNote('${note.id}')" class="px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-[11px] font-bold transition">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function openAddNote() { document.getElementById('addNoteModal').classList.add('active'); }
+      function closeAddNote() { document.getElementById('addNoteModal').classList.remove('active'); document.querySelector('#addNoteModal form').reset(); }
+
+      async function saveNote() {
+        const title = document.getElementById('noteTitle').value.trim();
+        const chapter = document.getElementById('noteChapter').value;
+        const driveUrl = document.getElementById('noteDriveUrl').value.trim();
+        const description = document.getElementById('noteDescription').value.trim();
+        const pages = parseInt(document.getElementById('notePages').value) || 0;
+
+        if (!title || !chapter || !driveUrl) return toast('Fill required fields', 'warning');
+
+        const btn = document.getElementById('saveNoteBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Saving...';
+
+        try {
+          await db.collection('notes').add({
+            subject: 'biology',
+            title, chapter, driveUrl, description,
+            pages: pages || 0,
+            views: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          toast('Notes added! ✅', 'success');
+          closeAddNote();
         } catch (e) {
-          toast('Delete failed', 'error');
+          toast('Error: ' + e.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-save"></i>Save Notes';
         }
       }
 
-      // ===== CHAT =====
+      async function deleteNote(id) {
+        if (!confirm('Delete these notes?')) return;
+        try {
+          await db.collection('notes').doc(id).delete();
+          toast('Notes deleted', 'success');
+        } catch (e) { toast('Delete failed', 'error'); }
+      }
+
+      // ===== CHAT WITH DELETE (TEACHER ONLY) =====
       function toggleChat() {
         chatOpen = !chatOpen;
         const box = document.getElementById('chatBox');
@@ -687,6 +848,17 @@
         }
       }
 
+      // 🔥 TEACHER CAN DELETE ANY MESSAGE 🔥
+      async function deleteMessage(msgId) {
+        if (!confirm('Delete this message?')) return;
+        try {
+          await db.collection('chats').doc('biology').collection('messages').doc(msgId).delete();
+          toast('Message deleted', 'success');
+        } catch (e) {
+          toast('Delete failed: ' + e.message, 'error');
+        }
+      }
+
       function listenChat() {
         db.collection('chats').doc('biology').collection('messages')
           .orderBy('createdAt', 'asc')
@@ -696,7 +868,6 @@
             chatMessages = [];
             snap.forEach(doc => chatMessages.push({ id: doc.id, ...doc.data() }));
             renderChat();
-            
             document.getElementById('chatOnline').textContent = Math.floor(Math.random() * 15) + 10;
             
             if (chatMessages.length > prevCount && !chatOpen && prevCount > 0) {
@@ -720,7 +891,7 @@
         if (!chatMessages.length) {
           el.innerHTML = `<div class="text-center text-gray-400 text-xs py-8">
             <i class="fas fa-comments text-3xl mb-2 text-gray-300"></i>
-            <div>No messages yet. Say hi! 👋</div>
+            <div>No messages yet</div>
           </div>`;
           return;
         }
@@ -738,13 +909,16 @@
           }
           
           return `
-            <div class="flex gap-2 chat-bubble ${isMe ? 'flex-row-reverse' : ''}">
+            <div class="flex gap-2 chat-bubble msg-hover ${isMe ? 'flex-row-reverse' : ''}">
               ${avatarHtml}
               <div class="max-w-[75%] ${isMe ? 'items-end' : 'items-start'} flex flex-col">
-                <div class="text-[10px] text-gray-400 mb-0.5 px-1">
+                <div class="text-[10px] text-gray-400 mb-0.5 px-1 flex items-center gap-1">
                   ${isMe ? 'You' : msg.senderName || 'Student'} · ${formatTime(msg.createdAt)}
+                  <button onclick="deleteMessage('${msg.id}')" class="delete-msg-btn ml-1 text-red-500 hover:text-red-700 transition" title="Delete message">
+                    <i class="fas fa-trash text-[9px]"></i>
+                  </button>
                 </div>
-                <div class="px-3 py-2 rounded-2xl text-sm ${isMe ? 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-tr-sm' : 'bg-white text-gray-800 border border-gray-100 rounded-tl-sm shadow-sm'}">
+                <div class="px-3 py-2 rounded-2xl text-sm ${isMe ? 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-tr-sm' : isTeacher ? 'bg-gradient-to-br from-purple-100 to-indigo-100 text-gray-800 rounded-tl-sm border border-purple-100' : 'bg-white text-gray-800 border border-gray-100 rounded-tl-sm shadow-sm'}">
                   ${escapeHtml(msg.text)}
                 </div>
               </div>
@@ -761,7 +935,6 @@
         return div.innerHTML;
       }
 
-      // ===== EXPORT =====
       window.openEditClass = openEditClass;
       window.closeEditClass = closeEditClass;
       window.saveClassInfo = saveClassInfo;
@@ -769,13 +942,20 @@
       window.closeAddLecture = closeAddLecture;
       window.saveLecture = saveLecture;
       window.deleteLecture = deleteLecture;
+      window.openAddNote = openAddNote;
+      window.closeAddNote = closeAddNote;
+      window.saveNote = saveNote;
+      window.deleteNote = deleteNote;
       window.toggleChat = toggleChat;
       window.sendMessage = sendMessage;
+      window.deleteMessage = deleteMessage;
       window.handleLogout = handleLogout;
+      window.switchTab = switchTab;
 
       document.getElementById('addModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAddLecture(); });
+      document.getElementById('addNoteModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAddNote(); });
       document.getElementById('editClassModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeEditClass(); });
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAddLecture(); closeEditClass(); } });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAddLecture(); closeEditClass(); closeAddNote(); } });
 
       console.log('👨‍🏫 Biology Teacher Panel Loaded');
     })();
