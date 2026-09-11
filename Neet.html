@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full scroll-smooth" data-theme="light">
+<html lang="en" class="h-full scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-  <meta name="description" content="THP-STARLET NEET – Medical Coaching">
+  <meta name="description" content="THP-STARLET NEET – India's Premium Medical Coaching">
   <meta name="theme-color" content="#064e3b">
-  <title>THP-STARLET NEET – Medical Coaching</title>
+  <title>THP-STARLET NEET · Premium Medical Coaching</title>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -22,7 +25,8 @@
               50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7',
               400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857',
               800: '#065f46', 900: '#064e3b', 950: '#022c22',
-            }
+            },
+            navy: { 900: '#0a1929', 800: '#0c1f35', 700: '#0f2942' }
           },
           fontFamily: {
             sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -32,24 +36,25 @@
             'heartbeat': 'hb 1.2s ease-in-out infinite',
             'ecg': 'ecgLine 3s linear infinite',
             'float': 'float 8s ease-in-out infinite',
-            'slide-up': 'slideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards',
+            'slide-up': 'slideUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards',
             'shimmer': 'shimmer 2s linear infinite',
-            'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards',
+            'bounce-in': 'bounceIn 0.6s cubic-bezier(0.68,-0.55,0.265,1.55) forwards',
+            'ping-slow': 'pingSlow 2s cubic-bezier(0,0,0.2,1) infinite',
           },
           keyframes: {
-            hb: { '0%,100%': { transform: 'scale(1)' }, '15%': { transform: 'scale(1.18)' }, '30%': { transform: 'scale(1)' }, '45%': { transform: 'scale(1.18)' }, '60%': { transform: 'scale(1)' } },
+            hb: { '0%,100%': { transform: 'scale(1)' }, '15%': { transform: 'scale(1.15)' }, '30%': { transform: 'scale(1)' }, '45%': { transform: 'scale(1.15)' }, '60%': { transform: 'scale(1)' } },
             ecgLine: { '0%': { strokeDashoffset: '800' }, '100%': { strokeDashoffset: '0' } },
             float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
-            slideUp: { '0%': { transform: 'translateY(24px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
-            fadeInUp: { '0%': { opacity: '0', transform: 'translateY(30px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+            slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
             shimmer: { '0%': { backgroundPosition: '-1000px 0' }, '100%': { backgroundPosition: '1000px 0' } },
+            bounceIn: { '0%': { transform: 'scale(0.3)', opacity: '0' }, '50%': { transform: 'scale(1.05)' }, '70%': { transform: 'scale(0.9)' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+            pingSlow: { '75%,100%': { transform: 'scale(2)', opacity: '0' } }
           }
         }
       }
     }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -59,456 +64,960 @@
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: #f8fafb; color: #1a1f2e; min-height: 100vh;
-      line-height: 1.45; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em;
-      background-image: 
-        radial-gradient(ellipse at 10% 20%, rgba(5,150,105,0.03) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 70%, rgba(5,150,105,0.04) 0%, transparent 50%);
+      line-height: 1.5; -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
     }
-    ::-webkit-scrollbar { width: 4px; }
+    .dark body { background: #0a1929; color: #f0fdfa; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #059669, #10b981); border-radius: 10px; }
+    .dark ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #10b981, #34d399); }
 
-    .stethoscope-wrap {
-      position: fixed; pointer-events: none; z-index: 120;
-      transition: all 5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      filter: drop-shadow(0 4px 12px rgba(5, 150, 105, 0.25));
-    }
-    .stethoscope-wrap svg { width: 100px; height: auto; }
-    
-    .header-slim {
-      backdrop-filter: blur(24px) saturate(180%);
+    .glass {
       background: rgba(255,255,255,0.85);
-      border-bottom: 0.5px solid rgba(5,150,105,0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.3);
     }
-    .card-slim { 
-      background: #fff; 
-      border: 0.5px solid rgba(0,0,0,0.04); 
-      transition: all 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); 
-    }
-    .card-slim:hover { 
-      transform: translateY(-4px); 
-      box-shadow: 0 12px 40px rgba(5,150,105,0.08); 
-      border-color: rgba(5,150,105,0.15); 
-    }
-    
-    .modal-slim { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-    .modal-slim.active { opacity: 1; pointer-events: all; }
-    
-    .hb-pulse { animation: hb 1.2s ease-in-out infinite; }
-    .toast-pop { animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
-    
-    .badge-verified { 
-      background: rgba(16,185,129,0.08); 
-      color: #059669; 
-      border: 0.5px solid rgba(16,185,129,0.2);
-    }
-    .pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
-      50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.7); }
-    }
-    
-    .profile-upload {
-      border: 2px dashed rgba(16,185,129,0.3); border-radius: 50%;
-      width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.3s ease; background: rgba(16,185,129,0.03);
-      overflow: hidden; position: relative; margin: 0 auto;
-    }
-    .profile-upload:hover { border-color: rgba(16,185,129,0.6); background: rgba(16,185,129,0.06); }
-    .profile-upload img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .form-input {
-      width: 100%; padding: 11px 14px; border-radius: 12px;
-      border: 1.5px solid rgba(0,0,0,0.08); font-size: 13px;
-      font-family: inherit; transition: all 0.25s ease; background: #fff;
-    }
-    .form-input:focus { 
-      outline: none; border-color: #10b981; 
-      box-shadow: 0 0 0 4px rgba(16,185,129,0.1); 
-    }
-    
-    .auth-tab {
-      flex: 1; padding: 10px; border-radius: 12px; font-size: 13px;
-      font-weight: 700; cursor: pointer; transition: all 0.25s ease;
-      border: none; background: transparent; color: #64748b;
-    }
-    .auth-tab.active { 
-      background: #059669; color: white; 
-      box-shadow: 0 4px 12px rgba(5,150,105,0.3); 
-    }
-    
-    .subject-card-loading {
-      background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
-      background-size: 200% 100%; animation: shimmer 1.5s infinite;
-    }
-    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    .dark .glass { background: rgba(12,31,53,0.85); border: 1px solid rgba(16,185,129,0.15); }
 
-    /* Personalized dashboard */
-    .personal-dashboard {
-      background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%);
+    .card {
+      background: #fff;
+      border: 0.5px solid rgba(0,0,0,0.06);
+      transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .dark .card { background: #0c1f35; border-color: rgba(16,185,129,0.15); }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(5,150,105,0.1); }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%);
       position: relative;
       overflow: hidden;
     }
-    .personal-dashboard::before {
+    .hero-gradient::before {
       content: '';
-      position: absolute;
-      top: -50%; right: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-      animation: rotate 20s linear infinite;
+      position: absolute; inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(52,211,153,0.2) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(110,231,183,0.15) 0%, transparent 40%);
     }
-    @keyframes rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
-    
-    .greeting-text {
-      background: linear-gradient(90deg, #fff 0%, #d1fae5 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .hero-gradient::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
 
-    .stat-card {
+    .modal { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .modal.active { opacity: 1; pointer-events: all; }
+
+    .toast-pop { animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+    .progress-ring { transform: rotate(-90deg); }
+
+    .subject-lock {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px;
+      z-index: 10; opacity: 0; transition: opacity 0.3s ease;
+      border-radius: inherit;
+    }
+    .subject-wrapper { position: relative; }
+    .subject-wrapper.locked .subject-lock { opacity: 1; }
+
+    .metric-card {
+      background: linear-gradient(135deg, #fff 0%, #f8fafb 100%);
+      border: 1px solid rgba(0,0,0,0.05);
+      transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .dark .metric-card { background: linear-gradient(135deg, #0c1f35 0%, #0a1929 100%); border-color: rgba(16,185,129,0.2); }
+    .metric-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(5,150,105,0.12); }
+
+    .shimmer-bg {
+      background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    .dark .shimmer-bg { background: linear-gradient(90deg, #0c1f35 25%, #0f2942 50%, #0c1f35 75%); background-size: 200% 100%; }
+
+    .stat-tile {
       background: rgba(255,255,255,0.1);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255,255,255,0.15);
     }
-    
-    /* Lock overlay */
-    .subject-locked-overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 8px;
-      z-index: 10; border-radius: 1rem;
-      opacity: 0; transition: opacity 0.3s ease;
+
+    .tab-btn {
+      position: relative;
+      transition: all 0.3s ease;
+      padding-bottom: 12px;
     }
-    .subject-card-wrapper { position: relative; }
-    .subject-card-wrapper.locked .subject-locked-overlay { opacity: 1; }
+    .tab-btn.active { color: #059669; font-weight: 700; }
+    .dark .tab-btn.active { color: #34d399; }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 40px; height: 3px;
+      background: linear-gradient(90deg, #059669, #10b981);
+      border-radius: 3px;
+    }
+
+    .step-dot { transition: all 0.4s ease; }
+
+    .achievement-badge {
+      transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .achievement-badge:hover { transform: scale(1.1) rotate(5deg); }
+
+    .progress-bar-fill {
+      transition: width 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .leaderboard-row {
+      transition: all 0.25s ease;
+    }
+    .leaderboard-row:hover { background: rgba(16,185,129,0.06); transform: translateX(4px); }
+
+    @keyframes barGrow {
+      from { height: 0; }
+    }
+    .chart-bar { animation: barGrow 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards; }
+
+    /* Mobile Drawer */
+    .mobile-drawer { transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1); }
+    .mobile-drawer.open { transform: translateX(0); }
+
+    .subject-card-img { aspect-ratio: 16/9; object-fit: cover; }
   </style>
 </head>
 <body class="flex flex-col">
 
-  <!-- STETHOSCOPE -->
-  <div class="stethoscope-wrap" id="stethoscope">
-    <svg viewBox="0 0 180 240" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="metalTube" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#64748b"/><stop offset="50%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#475569"/>
-        </linearGradient>
-        <radialGradient id="chestGrad" cx="40%" cy="35%">
-          <stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#334155"/>
-        </radialGradient>
-        <radialGradient id="bellInner" cx="45%" cy="40%">
-          <stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#64748b"/>
-        </radialGradient>
-        <filter id="glowFilter"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-      </defs>
-      <path d="M90 15 C90 15, 90 5, 100 0 C110 -5, 125 0, 128 12" fill="none" stroke="url(#metalTube)" stroke-width="5.5" stroke-linecap="round"/>
-      <path d="M90 15 C60 15, 20 50, 20 90 C20 130, 50 165, 90 165 C130 165, 160 130, 160 90" fill="none" stroke="url(#metalTube)" stroke-width="5.5" stroke-linecap="round"/>
-      <ellipse cx="80" cy="30" rx="6" ry="8" fill="url(#metalTube)" transform="rotate(-15 80 30)"/>
-      <ellipse cx="100" cy="30" rx="6" ry="8" fill="url(#metalTube)" transform="rotate(15 100 30)"/>
-      <ellipse cx="77" cy="28" rx="4" ry="5.5" fill="#f87171" transform="rotate(-15 77 28)" opacity="0.9"/>
-      <ellipse cx="103" cy="28" rx="4" ry="5.5" fill="#f87171" transform="rotate(15 103 28)" opacity="0.9"/>
-      <circle cx="90" cy="17" r="6" fill="url(#metalTube)"/>
-      <circle cx="90" cy="17" r="3.5" fill="#475569"/>
-      <rect x="156" y="80" width="8" height="20" rx="2" fill="url(#metalTube)"/>
-      <g transform="translate(160, 90)">
-        <ellipse cx="0" cy="0" rx="18" ry="16" fill="url(#chestGrad)"/>
-        <ellipse cx="0" cy="0" rx="18" ry="16" fill="none" stroke="#64748b" stroke-width="1.5"/>
-        <ellipse cx="0" cy="-1" rx="12" ry="10" fill="url(#bellInner)"/>
-        <circle cx="0" cy="0" r="2.5" fill="#ef4444" filter="url(#glowFilter)" class="pulse-glow"/>
-        <ellipse cx="0" cy="0" rx="20" ry="18" fill="none" stroke="rgba(16,185,129,0.5)" stroke-width="2" class="ring-pulse"/>
-      </g>
-    </svg>
-  </div>
-
-  <!-- HEADER -->
-  <header class="header-slim fixed top-0 inset-x-0 z-50 px-4 py-2.5 flex items-center justify-between">
-    <div class="flex items-center gap-2.5">
-      <div class="relative hb-pulse">
-        <div class="w-9 h-9 bg-gradient-to-br from-med-600 to-med-700 rounded-xl flex items-center justify-center text-white text-sm shadow-md">⚕</div>
-        <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white pulse-glow"></span>
-      </div>
-      <div class="leading-tight">
-        <div class="text-sm font-bold font-display tracking-tight">
-          <span class="bg-gradient-to-r from-med-600 to-med-500 bg-clip-text text-transparent">THP-STARLET</span>
-          <span class="text-[10px] font-semibold bg-med-600 text-white px-1.5 py-0.5 rounded-md ml-1 align-middle">NEET</span>
+  <!-- ═══════════════════════════════════════════
+       HEADER (Fixed)
+  ═══════════════════════════════════════════ -->
+  <header class="glass fixed top-0 inset-x-0 z-50 px-3 sm:px-4 py-2.5 border-b border-emerald-100/30">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      
+      <!-- Logo -->
+      <a href="Neet.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="relative">
+          <div class="w-10 h-10 bg-gradient-to-br from-med-600 to-med-700 rounded-xl flex items-center justify-center shadow-lg shadow-med-500/30">
+            <span class="text-white text-lg">⚕</span>
+          </div>
+          <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
         </div>
-        <div class="text-[9px] text-med-700/50 tracking-widest uppercase hidden sm:block">Medical Coaching</div>
+        <div class="hidden sm:block">
+          <div class="text-sm font-bold font-display">
+            <span class="gradient-text">THP-STARLET</span>
+            <span class="text-[10px] font-semibold bg-med-600 text-white px-1.5 py-0.5 rounded-md ml-1">NEET</span>
+          </div>
+          <div class="text-[9px] text-med-700/60 dark:text-emerald-300/60 tracking-widest uppercase">Medical Coaching</div>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-1">
+        <a href="#" class="px-3 py-2 rounded-lg text-xs font-semibold bg-med-50 dark:bg-emerald-900/30 text-med-700 dark:text-emerald-300">
+          <i class="fas fa-home mr-1.5"></i>Home
+        </a>
+        <a href="#subjects" class="px-3 py-2 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-med-700 hover:bg-med-50/50 transition">
+          <i class="fas fa-book-medical mr-1.5"></i>Subjects
+        </a>
+        <a href="#tests" class="px-3 py-2 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-med-700 hover:bg-med-50/50 transition">
+          <i class="fas fa-clipboard-list mr-1.5"></i>Tests
+        </a>
+        <a href="#leaderboard" class="px-3 py-2 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-med-700 hover:bg-med-50/50 transition">
+          <i class="fas fa-trophy mr-1.5"></i>Leaderboard
+        </a>
+      </nav>
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-1.5">
+        <!-- Search -->
+        <button onclick="App.openSearch()" class="hidden md:flex w-9 h-9 bg-gray-100 dark:bg-navy-800 hover:bg-gray-200 dark:hover:bg-navy-700 rounded-xl items-center justify-center transition">
+          <i class="fas fa-search text-gray-600 dark:text-gray-300 text-sm"></i>
+        </button>
+        
+        <!-- Dark mode -->
+        <button onclick="App.toggleDark()" id="darkToggle" class="w-9 h-9 bg-gray-100 dark:bg-navy-800 hover:bg-gray-200 dark:hover:bg-navy-700 rounded-xl flex items-center justify-center transition">
+          <i class="fas fa-moon text-gray-600 dark:text-yellow-300 text-sm"></i>
+        </button>
+        
+        <!-- Notifications -->
+        <button onclick="App.openNotifications()" class="relative w-9 h-9 bg-gray-100 dark:bg-navy-800 hover:bg-gray-200 dark:hover:bg-navy-700 rounded-xl flex items-center justify-center transition">
+          <i class="fas fa-bell text-gray-600 dark:text-gray-300 text-sm"></i>
+          <span id="notifDot" class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-navy-900 hidden">
+            <span class="absolute inset-0 rounded-full bg-red-500 animate-ping-slow"></span>
+          </span>
+        </button>
+
+        <!-- Admin -->
+        <button id="adminBtn" onclick="App.openAdmin()" class="hidden bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-2 rounded-lg text-xs font-semibold transition">
+          <i class="fas fa-cog text-[10px] mr-1"></i>Admin
+        </button>
+
+        <!-- Sign In / Enroll -->
+        <button onclick="App.openAuth('signin')" id="signinBtn" class="hidden sm:flex border border-med-200 text-med-700 dark:text-emerald-300 hover:bg-med-50 dark:hover:bg-emerald-900/30 px-4 py-2 rounded-lg text-xs font-semibold transition items-center gap-1.5">
+          <i class="fas fa-sign-in-alt text-[10px]"></i>Sign In
+        </button>
+        <button onclick="App.openAuth('signup')" id="enrollBtn" class="bg-gradient-to-r from-med-600 to-med-500 hover:from-med-700 hover:to-med-600 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-lg shadow-med-500/20 transition flex items-center gap-1.5">
+          <i class="fas fa-user-md text-[10px]"></i><span class="hidden sm:inline">Enroll</span>
+        </button>
+
+        <!-- User Menu -->
+        <button id="userMenu" onclick="App.openProfile()" class="hidden items-center gap-2 bg-med-50 dark:bg-emerald-900/30 hover:bg-med-100 dark:hover:bg-emerald-900/50 pl-1 pr-2.5 py-1 rounded-full transition">
+          <img id="headerAvatar" class="w-7 h-7 rounded-full object-cover border-2 border-med-500" alt="User">
+          <div class="hidden sm:block text-left">
+            <div id="userName" class="text-xs font-bold text-med-700 dark:text-emerald-300 leading-tight">User</div>
+            <div class="text-[9px] text-med-600/60 dark:text-emerald-400/60 leading-tight">Premium ✨</div>
+          </div>
+          <i class="fas fa-chevron-down text-[9px] text-med-600 dark:text-emerald-400"></i>
+        </button>
+
+        <!-- Mobile Menu -->
+        <button id="menuToggle" class="lg:hidden w-9 h-9 bg-gray-100 dark:bg-navy-800 rounded-xl flex items-center justify-center transition">
+          <i class="fas fa-bars text-gray-600 dark:text-gray-300"></i>
+        </button>
       </div>
     </div>
-
-    <div class="hidden lg:flex items-center gap-1">
-      <a href="#" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-med-50 text-med-700">Home</a>
-      <a href="#subjects" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-med-700 hover:bg-med-50/50 transition">Subjects</a>
-      <span class="w-px h-5 bg-gray-200 mx-1"></span>
-      
-      <button id="adminBtn" onclick="App.openAdmin()" class="hidden bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
-        <i class="fas fa-cog text-[10px]"></i>Admin
-      </button>
-      
-      <button onclick="App.openAuth('signin')" id="signinBtn" class="border border-med-200 text-med-700 hover:bg-med-50 px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-        <i class="fas fa-sign-in-alt text-[10px]"></i>Sign In
-      </button>
-      
-      <button onclick="App.openAuth('signup')" id="enrollBtn" class="bg-med-600 hover:bg-med-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-md transition flex items-center gap-1.5">
-        <i class="fas fa-user-md text-[10px]"></i>Enroll
-      </button>
-      
-      <!-- User Menu (when logged in) -->
-      <div id="userMenu" class="hidden items-center gap-2">
-        <button onclick="App.openProfile()" class="flex items-center gap-2 bg-med-50 hover:bg-med-100 px-2.5 py-1.5 rounded-full transition">
-          <img id="headerAvatar" class="w-7 h-7 rounded-full object-cover border-2 border-med-500" alt="Profile">
-          <span id="userName" class="text-xs font-semibold text-med-700">User</span>
-          <i class="fas fa-chevron-down text-[9px] text-med-600"></i>
-        </button>
-        <button onclick="App.logout()" class="text-[10px] bg-red-50 text-red-600 px-2.5 py-1.5 rounded-lg hover:bg-red-100 transition" title="Logout">
-          <i class="fas fa-sign-out-alt"></i>
-        </button>
-      </div>
-    </div>
-
-    <button id="menuToggle" class="lg:hidden text-gray-500 hover:text-med-700 p-1">
-      <i class="fas fa-bars text-lg"></i>
-    </button>
   </header>
 
-  <!-- MOBILE DRAWER -->
-  <div id="mobileDrawer" class="fixed inset-0 z-40 bg-white/96 backdrop-blur-xl lg:hidden flex flex-col p-6 pt-20 transition-transform duration-300" style="transform: translateX(100%);" class="mobile-drawer">
-    <button id="closeDrawer" class="absolute top-5 right-5 text-gray-400 hover:text-med-700 p-1"><i class="fas fa-times text-xl"></i></button>
-    
-    <!-- User info in drawer -->
-    <div id="mobileUserInfo" class="hidden mb-5 p-4 bg-gradient-to-r from-med-600 to-med-700 rounded-2xl text-white">
-      <div class="flex items-center gap-3">
-        <img id="mobileAvatar" class="w-12 h-12 rounded-full object-cover border-2 border-white/30" alt="Profile">
-        <div class="flex-1 min-w-0">
-          <div class="font-bold text-sm truncate" id="mobileUserName">User</div>
-          <div class="text-white/70 text-[10px] truncate" id="mobileUserEmail">email</div>
+  <!-- ═══════════════════════════════════════════
+       MOBILE DRAWER
+  ═══════════════════════════════════════════ -->
+  <div id="mobileDrawer" class="mobile-drawer fixed inset-0 z-40 lg:hidden">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="App.closeMobileDrawer()"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white dark:bg-navy-900 shadow-2xl overflow-y-auto">
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-5">
+          <div class="text-lg font-bold gradient-text font-display">THP-STARLET</div>
+          <button onclick="App.closeMobileDrawer()" class="w-9 h-9 bg-gray-100 dark:bg-navy-800 rounded-xl flex items-center justify-center">
+            <i class="fas fa-times text-gray-600 dark:text-gray-300"></i>
+          </button>
+        </div>
+
+        <!-- User Card (when logged in) -->
+        <div id="mobileUserCard" class="hidden mb-5 p-4 bg-gradient-to-br from-med-600 to-med-700 rounded-2xl text-white shadow-lg">
+          <div class="flex items-center gap-3 mb-3">
+            <img id="mobileAvatar" class="w-12 h-12 rounded-full object-cover border-2 border-white/30" alt="User">
+            <div class="flex-1 min-w-0">
+              <div class="font-bold text-sm truncate" id="mobileName">User</div>
+              <div class="text-white/70 text-[10px] truncate" id="mobileEmail">email@test.com</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mb-3 text-center">
+            <div class="bg-white/15 rounded-lg py-2">
+              <div class="text-[10px] opacity-70">Class</div>
+              <div class="text-xs font-bold" id="mobileClass">12th</div>
+            </div>
+            <div class="bg-white/15 rounded-lg py-2">
+              <div class="text-[10px] opacity-70">Target</div>
+              <div class="text-xs font-bold" id="mobileTarget">NEET 26</div>
+            </div>
+          </div>
+          <button onclick="App.openProfile()" class="w-full bg-white/20 hover:bg-white/30 text-white py-2 rounded-lg text-xs font-semibold transition">
+            <i class="fas fa-user-edit mr-1"></i>Edit Profile
+          </button>
+        </div>
+
+        <!-- Nav Links -->
+        <nav class="space-y-1 mb-5">
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold bg-med-50 dark:bg-emerald-900/30 text-med-700 dark:text-emerald-300">
+            <i class="fas fa-home w-5"></i>Home
+          </a>
+          <a href="#subjects" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-800">
+            <i class="fas fa-book-medical w-5"></i>Subjects
+          </a>
+          <a href="#tests" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-800">
+            <i class="fas fa-clipboard-list w-5"></i>Test Series
+          </a>
+          <a href="#leaderboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-navy-800">
+            <i class="fas fa-trophy w-5"></i>Leaderboard
+          </a>
+          <button onclick="App.openAdmin()" id="mobileAdminBtn" class="hidden w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20">
+            <i class="fas fa-cog w-5"></i>Admin Panel
+          </button>
+        </nav>
+
+        <!-- Mobile Auth -->
+        <div id="mobileAuthSection" class="space-y-2 pt-4 border-t border-gray-100 dark:border-navy-800">
+          <button onclick="App.openAuth('signup')" class="w-full bg-gradient-to-r from-med-600 to-med-500 text-white py-3.5 rounded-xl font-semibold text-sm shadow-lg">
+            <i class="fas fa-user-md mr-2"></i>Enroll Now
+          </button>
+          <button onclick="App.openAuth('signin')" class="w-full border-2 border-med-200 dark:border-emerald-700 text-med-700 dark:text-emerald-300 py-3 rounded-xl font-semibold text-sm">
+            <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+          </button>
+        </div>
+        
+        <div id="mobileLogoutWrap" class="hidden pt-4 border-t border-gray-100 dark:border-navy-800">
+          <button onclick="App.logout()" class="w-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 py-3 rounded-xl font-semibold text-sm">
+            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+          </button>
         </div>
       </div>
-      <button onclick="App.openProfile()" class="w-full mt-3 bg-white/20 hover:bg-white/30 text-white py-2 rounded-lg text-xs font-semibold transition">
-        <i class="fas fa-user-edit mr-1"></i>Edit Profile
-      </button>
     </div>
-
-    <nav class="flex flex-col gap-2">
-      <a href="#" class="px-4 py-3 rounded-xl text-sm font-semibold bg-med-50 text-med-700">🏠 Home</a>
-      <a href="#subjects" class="px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">📚 Subjects</a>
-      <button onclick="App.openAdmin()" id="mobileAdminBtn" class="hidden px-4 py-3 rounded-xl text-sm font-medium text-amber-700 bg-amber-50 text-left">⚙️ Admin Panel</button>
-      <div class="mt-4 pt-4 border-t border-gray-100 space-y-2" id="mobileAuthButtons">
-        <button onclick="App.openAuth('signup')" class="w-full bg-med-600 text-white py-3.5 rounded-xl font-semibold text-sm shadow-lg">
-          <i class="fas fa-user-md mr-2"></i>Enroll for NEET
-        </button>
-        <button onclick="App.openAuth('signin')" class="w-full border-2 border-med-200 text-med-700 py-3 rounded-xl font-semibold text-sm">
-          <i class="fas fa-sign-in-alt mr-2"></i>Sign In
-        </button>
-      </div>
-    </nav>
   </div>
 
-  <main class="flex-1 mt-14 px-3 sm:px-4 md:px-6 pb-20 max-w-5xl mx-auto w-full space-y-6">
+  <main class="flex-1 mt-14 sm:mt-16 px-3 sm:px-4 md:px-6 pb-24 max-w-7xl mx-auto w-full">
 
-    <!-- 🔥 PERSONALIZED DASHBOARD (only when logged in) -->
-    <section id="personalDashboard" class="hidden rounded-3xl overflow-hidden shadow-2xl">
-      <div class="personal-dashboard p-6 sm:p-8 text-white">
-        <div class="relative z-10">
-          <!-- Greeting -->
-          <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
-            <div class="flex items-center gap-4">
-              <img id="dashAvatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-3 border-white/30 shadow-xl" alt="Profile">
-              <div>
-                <div class="text-white/70 text-xs sm:text-sm mb-1" id="dashTimeGreeting">Good Morning</div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold font-display greeting-text" id="dashGreeting">Hello, Student! 👋</h1>
-                <p class="text-white/60 text-xs sm:text-sm mt-1" id="dashSubtext">Ready to continue your NEET journey?</p>
+    <!-- ═══════════════════════════════════════════
+         GUEST HERO (Not logged in)
+    ═══════════════════════════════════════════ -->
+    <section id="guestHero" class="mt-4 sm:mt-6">
+      <div class="hero-gradient rounded-3xl overflow-hidden shadow-2xl">
+        <div class="relative px-6 py-10 sm:px-10 sm:py-14 md:px-14 md:py-20 max-w-6xl mx-auto">
+          <div class="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+            <div class="text-center md:text-left">
+              <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-2 mb-5 text-xs text-white/90 font-medium border border-white/20">
+                <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></span>
+                NEET 2026 Admissions Open
+                <span class="bg-amber-400 text-emerald-900 px-2 py-0.5 rounded-full text-[10px] font-bold">🔥 New</span>
+              </div>
+              <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold font-display text-white leading-tight mb-4">
+                Crack <span class="bg-gradient-to-r from-emerald-300 to-teal-200 bg-clip-text text-transparent">NEET UG</span><br>
+                with India's Best
+              </h1>
+              <p class="text-white/75 text-sm sm:text-base mb-6 max-w-md mx-auto md:mx-0">
+                Expert faculty · AI-powered analytics · Live + Recorded classes · 
+                <span class="font-semibold text-emerald-300">Trusted by 15,000+ students</span>
+              </p>
+              
+              <!-- Feature pills -->
+              <div class="flex flex-wrap gap-2 justify-center md:justify-start mb-6">
+                <span class="bg-white/10 backdrop-blur text-white/90 text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/15">
+                  <i class="fas fa-check-circle text-emerald-300 mr-1"></i>Live Classes
+                </span>
+                <span class="bg-white/10 backdrop-blur text-white/90 text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/15">
+                  <i class="fas fa-check-circle text-emerald-300 mr-1"></i>Recorded Lectures
+                </span>
+                <span class="bg-white/10 backdrop-blur text-white/90 text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/15">
+                  <i class="fas fa-check-circle text-emerald-300 mr-1"></i>Test Series
+                </span>
+                <span class="bg-white/10 backdrop-blur text-white/90 text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/15">
+                  <i class="fas fa-check-circle text-emerald-300 mr-1"></i>Study Notes
+                </span>
+              </div>
+
+              <div class="flex flex-wrap gap-3 justify-center md:justify-start">
+                <button onclick="App.openAuth('signup')" class="bg-white text-med-700 hover:bg-emerald-50 px-6 py-3.5 rounded-xl font-bold text-sm shadow-xl transform hover:scale-105 transition flex items-center gap-2">
+                  <i class="fas fa-rocket"></i>Start Prep @ ₹500
+                </button>
+                <button onclick="App.openAuth('signin')" class="bg-white/10 hover:bg-white/20 backdrop-blur text-white border-2 border-white/25 px-6 py-3.5 rounded-xl font-semibold text-sm transition flex items-center gap-2">
+                  <i class="fas fa-sign-in-alt"></i>Sign In
+                </button>
               </div>
             </div>
-            <button onclick="App.openProfile()" class="bg-white/15 hover:bg-white/25 backdrop-blur text-white px-4 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-2 border border-white/20">
+
+            <!-- Stats Card -->
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-white">
+                <div class="text-3xl mb-2">🎯</div>
+                <div class="text-2xl font-extrabold font-display">500+</div>
+                <div class="text-xs opacity-70">NEET Selections</div>
+              </div>
+              <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-white">
+                <div class="text-3xl mb-2">👨‍⚕️</div>
+                <div class="text-2xl font-extrabold font-display">50+</div>
+                <div class="text-xs opacity-70">Expert Faculty</div>
+              </div>
+              <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-white">
+                <div class="text-3xl mb-2">📚</div>
+                <div class="text-2xl font-extrabold font-display">10K+</div>
+                <div class="text-xs opacity-70">Practice Qs</div>
+              </div>
+              <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-white">
+                <div class="text-3xl mb-2">⭐</div>
+                <div class="text-2xl font-extrabold font-display">4.8</div>
+                <div class="text-xs opacity-70">Student Rating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         PERSONALIZED DASHBOARD (Logged in)
+    ═══════════════════════════════════════════ -->
+    <section id="personalDashboard" class="hidden mt-4 sm:mt-6 space-y-5">
+
+      <!-- Greeting + Stats -->
+      <div class="hero-gradient rounded-3xl overflow-hidden shadow-2xl">
+        <div class="relative px-5 sm:px-8 py-6 sm:py-8">
+          <!-- Top: Greeting -->
+          <div class="relative z-10 flex items-start justify-between flex-wrap gap-4 mb-6">
+            <div class="flex items-center gap-4">
+              <div class="relative">
+                <img id="dashAvatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-3 border-white/30 shadow-xl" alt="User">
+                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-400 rounded-full border-3 border-white flex items-center justify-center">
+                  <i class="fas fa-check text-white text-[10px]"></i>
+                </div>
+              </div>
+              <div>
+                <div id="dashTimeGreeting" class="text-white/70 text-xs mb-0.5">Good Morning</div>
+                <h1 id="dashGreeting" class="text-2xl sm:text-3xl font-extrabold font-display text-white leading-tight">Hello, Student!</h1>
+                <p id="dashSubtext" class="text-white/65 text-xs sm:text-sm mt-1">Ready for today's class?</p>
+              </div>
+            </div>
+            <button onclick="App.openProfile()" class="bg-white/15 hover:bg-white/25 backdrop-blur text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition flex items-center gap-2 border border-white/25">
               <i class="fas fa-user-edit"></i>Edit Profile
             </button>
           </div>
 
-          <!-- Personalized Stats -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-            <div class="stat-card rounded-xl p-3.5">
-              <div class="flex items-center gap-2 mb-1.5">
-                <i class="fas fa-book text-emerald-300 text-sm"></i>
-                <span class="text-white/70 text-[10px] uppercase tracking-wide">Class</span>
+          <!-- Stats Row -->
+          <div class="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="stat-tile rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-white/60 text-[10px] uppercase tracking-wider font-semibold">Class</span>
+                <i class="fas fa-graduation-cap text-emerald-300 text-xs"></i>
               </div>
-              <div class="font-bold text-base" id="dashClass">12th</div>
+              <div id="dashClass" class="text-white font-extrabold text-xl font-display">12th</div>
             </div>
-            <div class="stat-card rounded-xl p-3.5">
-              <div class="flex items-center gap-2 mb-1.5">
-                <i class="fas fa-target text-emerald-300 text-sm"></i>
-                <span class="text-white/70 text-[10px] uppercase tracking-wide">Target</span>
+            <div class="stat-tile rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-white/60 text-[10px] uppercase tracking-wider font-semibold">Target</span>
+                <i class="fas fa-bullseye text-amber-300 text-xs"></i>
               </div>
-              <div class="font-bold text-base" id="dashTarget">NEET 2026</div>
+              <div id="dashTarget" class="text-white font-extrabold text-xl font-display">NEET 26</div>
             </div>
-            <div class="stat-card rounded-xl p-3.5">
-              <div class="flex items-center gap-2 mb-1.5">
-                <i class="fas fa-crown text-amber-300 text-sm"></i>
-                <span class="text-white/70 text-[10px] uppercase tracking-wide">Status</span>
+            <div class="stat-tile rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-white/60 text-[10px] uppercase tracking-wider font-semibold">Streak</span>
+                <i class="fas fa-fire text-red-300 text-xs"></i>
               </div>
-              <div class="font-bold text-base text-amber-300" id="dashStatus">Premium ✨</div>
+              <div id="dashStreak" class="text-white font-extrabold text-xl font-display">Day 1</div>
             </div>
-            <div class="stat-card rounded-xl p-3.5">
-              <div class="flex items-center gap-2 mb-1.5">
-                <i class="fas fa-fire text-red-300 text-sm"></i>
-                <span class="text-white/70 text-[10px] uppercase tracking-wide">Streak</span>
+            <div class="stat-tile rounded-2xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-white/60 text-[10px] uppercase tracking-wider font-semibold">Rank</span>
+                <i class="fas fa-trophy text-emerald-300 text-xs"></i>
               </div>
-              <div class="font-bold text-base" id="dashStreak">Day 1 🔥</div>
+              <div id="dashRank" class="text-white font-extrabold text-xl font-display">#---</div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <!-- Progress Bar -->
-          <div class="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/15">
+      <!-- Quick Access Tiles -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button onclick="scrollToSubjects()" class="card rounded-2xl p-5 text-center hover:shadow-lg transition-all">
+          <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <i class="fas fa-book-medical text-white"></i>
+          </div>
+          <div class="text-sm font-bold text-gray-900 dark:text-white">Subjects</div>
+          <div class="text-[10px] text-gray-500 dark:text-gray-400">Live + Recorded</div>
+        </button>
+        <button onclick="App.openDailyGoal()" class="card rounded-2xl p-5 text-center hover:shadow-lg transition-all">
+          <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <i class="fas fa-bullseye text-white"></i>
+          </div>
+          <div class="text-sm font-bold text-gray-900 dark:text-white">Daily Goal</div>
+          <div class="text-[10px] text-gray-500 dark:text-gray-400">Track progress</div>
+        </button>
+        <button onclick="scrollToTests()" class="card rounded-2xl p-5 text-center hover:shadow-lg transition-all">
+          <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <i class="fas fa-clipboard-check text-white"></i>
+          </div>
+          <div class="text-sm font-bold text-gray-900 dark:text-white">Test Series</div>
+          <div class="text-[10px] text-gray-500 dark:text-gray-400">Mock tests</div>
+        </button>
+        <button onclick="App.openLeaderboard()" class="card rounded-2xl p-5 text-center hover:shadow-lg transition-all">
+          <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <i class="fas fa-trophy text-white"></i>
+          </div>
+          <div class="text-sm font-bold text-gray-900 dark:text-white">Leaderboard</div>
+          <div class="text-[10px] text-gray-500 dark:text-gray-400">See rank</div>
+        </button>
+      </div>
+
+      <!-- Progress + Analytics Row -->
+      <div class="grid lg:grid-cols-3 gap-4">
+        
+        <!-- Overall Progress -->
+        <div class="card rounded-2xl p-5 lg:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="text-sm font-bold text-gray-900 dark:text-white">Overall Progress</div>
+              <div class="text-[10px] text-gray-500 dark:text-gray-400">Keep pushing!</div>
+            </div>
+            <span id="dashProgressPct" class="text-2xl font-extrabold gradient-text font-display">0%</span>
+          </div>
+          
+          <!-- Progress Ring + Bars -->
+          <div class="flex items-center gap-5 flex-wrap">
+            <div class="relative w-24 h-24 shrink-0">
+              <svg class="w-24 h-24 progress-ring">
+                <circle cx="48" cy="48" r="40" fill="none" stroke="#e5e7eb" stroke-width="8" class="dark:stroke-navy-700"/>
+                <circle id="progressRingCircle" cx="48" cy="48" r="40" fill="none" stroke="url(#progGrad)" stroke-width="8" stroke-linecap="round"
+                        stroke-dasharray="251.3" stroke-dashoffset="251.3" style="transition: stroke-dashoffset 1s ease;"/>
+                <defs>
+                  <linearGradient id="progGrad">
+                    <stop offset="0%" stop-color="#059669"/>
+                    <stop offset="100%" stop-color="#10b981"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center">
+                  <div id="progressRingNum" class="text-xl font-extrabold gradient-text">0</div>
+                  <div class="text-[8px] text-gray-500 uppercase tracking-wider">progress</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subject-wise bars -->
+            <div class="flex-1 min-w-[200px] space-y-3" id="subjectProgressBars">
+              <div class="text-xs text-gray-500 dark:text-gray-400 text-center py-4">Loading subjects...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Goal -->
+        <div class="card rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="text-sm font-bold text-gray-900 dark:text-white">Today's Goal</div>
+              <div class="text-[10px] text-gray-500 dark:text-gray-400" id="todayDate">—</div>
+            </div>
+            <div class="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+              <i class="fas fa-bullseye text-emerald-600 dark:text-emerald-400 text-xs"></i>
+            </div>
+          </div>
+          
+          <div id="todayGoalsList" class="space-y-3">
+            <!-- Filled dynamically -->
+          </div>
+          
+          <div class="mt-4 pt-4 border-t border-gray-100 dark:border-navy-800">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-white/90 text-xs font-semibold"><i class="fas fa-chart-line mr-1"></i>Your Learning Progress</span>
-              <span class="text-white/70 text-xs font-bold" id="dashProgressPct">0%</span>
+              <span class="text-[10px] text-gray-500 dark:text-gray-400">Daily completion</span>
+              <span id="goalPct" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">0%</span>
             </div>
-            <div class="h-2 bg-white/20 rounded-full overflow-hidden">
-              <div id="dashProgressBar" class="h-full bg-gradient-to-r from-emerald-400 to-teal-300 rounded-full transition-all duration-1000" style="width: 0%"></div>
+            <div class="h-2 bg-gray-100 dark:bg-navy-800 rounded-full overflow-hidden">
+              <div id="goalBar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full progress-bar-fill" style="width: 0%"></div>
             </div>
-            <div class="text-white/60 text-[10px] mt-2" id="dashProgressText">Start your first lesson to track progress</div>
           </div>
+        </div>
+      </div>
 
-          <!-- Quick actions -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
-            <button onclick="scrollToSubjects()" class="bg-white/10 hover:bg-white/20 backdrop-blur rounded-xl p-3.5 text-center transition border border-white/15">
-              <div class="text-2xl mb-1">📚</div>
-              <div class="text-xs font-semibold">My Subjects</div>
-            </button>
-            <button onclick="App.openProfile()" class="bg-white/10 hover:bg-white/20 backdrop-blur rounded-xl p-3.5 text-center transition border border-white/15">
-              <div class="text-2xl mb-1">👤</div>
-              <div class="text-xs font-semibold">My Profile</div>
-            </button>
-            <button onclick="window.open('https://chat.whatsapp.com/HbSNkHQ3xAIF7SVk9VX4AJ','_blank')" class="bg-white/10 hover:bg-white/20 backdrop-blur rounded-xl p-3.5 text-center transition border border-white/15">
-              <div class="text-2xl mb-1">💬</div>
-              <div class="text-xs font-semibold">Group Chat</div>
-            </button>
-            <button onclick="App.logout()" class="bg-white/10 hover:bg-white/20 backdrop-blur rounded-xl p-3.5 text-center transition border border-white/15">
-              <div class="text-2xl mb-1">🚪</div>
-              <div class="text-xs font-semibold">Logout</div>
-            </button>
+      <!-- Weekly Activity Chart + Streak -->
+      <div class="grid lg:grid-cols-3 gap-4">
+        <div class="card rounded-2xl p-5 lg:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="text-sm font-bold text-gray-900 dark:text-white">Weekly Activity</div>
+              <div class="text-[10px] text-gray-500 dark:text-gray-400">Your last 7 days</div>
+            </div>
+            <span class="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full">
+              <i class="fas fa-arrow-up mr-1"></i>+24%
+            </span>
+          </div>
+          <div class="flex items-end justify-between gap-2 h-32">
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-t-lg chart-bar" style="height: 45%"></div>
+              <span class="text-[9px] text-gray-500 dark:text-gray-400">Mon</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-t-lg chart-bar" style="height: 65%"></div>
+              <span class="text-[9px] text-gray-500 dark:text-gray-400">Tue</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-t-lg chart-bar" style="height: 40%"></div>
+              <span class="text-[9px] text-gray-500 dark:text-gray-400">Wed</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-t-lg chart-bar" style="height: 85%"></div>
+              <span class="text-[9px] text-gray-500 dark:text-gray-400">Thu</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-t-lg chart-bar" style="height: 55%"></div>
+              <span class="text-[9px] text-gray-500 dark:text-gray-400">Fri</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-t-lg chart-bar" style="height: 92%"></div>
+              <span class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400">Sat</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-t-lg chart-bar" style="height: 30%"></div>
+              <span class="text-[9px] text-gray-500 dark:text-gray-400">Sun</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="card rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="text-sm font-bold text-gray-900 dark:text-white">Achievements</div>
+              <div class="text-[10px] text-gray-500 dark:text-gray-400">Collect all!</div>
+            </div>
+            <i class="fas fa-medal text-amber-500"></i>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="achievement-badge text-center p-2 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30" title="Welcome">
+              <div class="text-2xl">🎉</div>
+              <div class="text-[9px] font-bold text-amber-700 dark:text-amber-300 mt-1">Welcome</div>
+            </div>
+            <div class="achievement-badge text-center p-2 rounded-xl bg-gray-100 dark:bg-navy-800 opacity-40" title="Locked">
+              <div class="text-2xl grayscale">📚</div>
+              <div class="text-[9px] font-bold text-gray-500 mt-1">Reader</div>
+            </div>
+            <div class="achievement-badge text-center p-2 rounded-xl bg-gray-100 dark:bg-navy-800 opacity-40" title="Locked">
+              <div class="text-2xl grayscale">🎯</div>
+              <div class="text-[9px] font-bold text-gray-500 mt-1">Sharp</div>
+            </div>
+            <div class="achievement-badge text-center p-2 rounded-xl bg-gray-100 dark:bg-navy-800 opacity-40" title="Locked">
+              <div class="text-2xl grayscale">🔥</div>
+              <div class="text-[9px] font-bold text-gray-500 mt-1">Streak</div>
+            </div>
+            <div class="achievement-badge text-center p-2 rounded-xl bg-gray-100 dark:bg-navy-800 opacity-40" title="Locked">
+              <div class="text-2xl grayscale">🏆</div>
+              <div class="text-[9px] font-bold text-gray-500 mt-1">Top 10</div>
+            </div>
+            <div class="achievement-badge text-center p-2 rounded-xl bg-gray-100 dark:bg-navy-800 opacity-40" title="Locked">
+              <div class="text-2xl grayscale">💎</div>
+              <div class="text-[9px] font-bold text-gray-500 mt-1">Master</div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- HERO (only when NOT logged in) -->
-    <section id="guestHero" class="relative rounded-2xl overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-med-900 via-med-800 to-med-950"></div>
-      <div class="absolute inset-0 opacity-8">
-        <svg class="w-full h-full" viewBox="0 0 1200 300" preserveAspectRatio="none">
-          <path d="M0 150 L80 150 L100 150 L110 110 L120 210 L130 150 L150 150 L160 150 L170 90 L180 240 L190 150 L210 150 L1200 150" fill="none" stroke="#34d399" stroke-width="1.5" class="ecg"/>
-        </svg>
-      </div>
-      <div class="relative px-5 py-10 sm:px-8 sm:py-14 md:px-12 md:py-16 flex flex-col md:flex-row items-center gap-6 md:gap-10">
-        <div class="flex-1 text-center md:text-left">
-          <div class="inline-flex items-center gap-1.5 bg-white/8 backdrop-blur rounded-full px-3 py-1 mb-4 text-[11px] text-white/80 font-medium border border-white/10">
-            <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></span>NEET 2026 Admissions Open
-          </div>
-          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-white leading-tight mb-3">
-            Crack <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-200">NEET UG</span> with Precision
-          </h1>
-          <p class="text-white/65 text-sm mb-5 max-w-md mx-auto md:mx-0">Physics · Chemistry · Biology | AI Analytics | <span class="font-semibold text-emerald-300">By THP-STARLET</span></p>
-          <div class="flex flex-wrap gap-3 justify-center md:justify-start">
-            <button onclick="App.openAuth('signup')" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-xl hover:scale-[1.03] transition flex items-center gap-2">
-              <i class="fas fa-stethoscope"></i>Start Prep
-            </button>
-            <button onclick="App.openAuth('signin')" class="bg-white/8 text-white border border-white/15 px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-white/12 transition flex items-center gap-2">
-              <i class="fas fa-sign-in-alt"></i>Sign In
-            </button>
-          </div>
-        </div>
-        <div class="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 flex-shrink-0 animate-float">
-          <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg" class="w-full h-full opacity-90">
-            <path d="M50 30 Q130 140 50 250" fill="none" stroke="#34d399" stroke-width="4" opacity="0.7"/>
-            <path d="M200 30 Q120 140 200 250" fill="none" stroke="#6ee7b7" stroke-width="4" opacity="0.7"/>
-            <line x1="50" y1="160" x2="200" y2="160" stroke="#10b981" stroke-width="3" opacity="0.6"/>
-            <circle cx="50" cy="160" r="7" fill="#34d399" class="animate-pulse"/>
-            <circle cx="200" cy="160" r="7" fill="#6ee7b7" class="animate-pulse"/>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <!-- SUBJECTS -->
-    <section id="subjects" class="scroll-mt-20">
+    <!-- ═══════════════════════════════════════════
+         SUBJECTS
+    ═══════════════════════════════════════════ -->
+    <section id="subjects" class="mt-6 scroll-mt-20">
       <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
         <div>
           <div class="flex items-center gap-2 mb-1">
-            <span class="hb-pulse text-sm">❤️</span>
-            <span class="badge-verified text-[10px] font-semibold px-2 py-0.5 rounded-full">Stethoscope Verified</span>
+            <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+            <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Live · Updated daily</span>
           </div>
-          <h2 class="text-xl font-bold font-display text-gray-900">Core Subjects</h2>
-          <p class="text-xs text-gray-400 mt-0.5" id="subjectSubtitle">Login to unlock all subjects</p>
+          <h2 class="text-xl sm:text-2xl font-bold font-display text-gray-900 dark:text-white">Core Subjects</h2>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" id="subjectSubtitle">Login to unlock all subjects</p>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-xs text-gray-400" id="subjectCount">Loading...</span>
-          <button onclick="App.openAdminSubjectModal()" id="addSubjectBtn" class="hidden bg-amber-100 hover:bg-amber-200 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
+          <button onclick="App.openAdminSubjectModal()" id="addSubjectBtn" class="hidden bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-3 py-1.5 rounded-lg text-xs font-bold transition">
             <i class="fas fa-plus"></i>Add
           </button>
         </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="subjectsContainer">
-        <div class="subject-card-loading h-64 rounded-2xl"></div>
-        <div class="subject-card-loading h-64 rounded-2xl"></div>
-        <div class="subject-card-loading h-64 rounded-2xl"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="subjectsContainer">
+        <div class="shimmer-bg h-64 rounded-2xl"></div>
+        <div class="shimmer-bg h-64 rounded-2xl"></div>
+        <div class="shimmer-bg h-64 rounded-2xl"></div>
       </div>
     </section>
 
-    <!-- WHY THP (only when not logged in) -->
-    <section id="guestWhy" class="reveal">
-      <div class="card-slim rounded-2xl p-5 sm:p-6">
-        <div class="sm:flex items-start gap-8">
-          <div class="flex-1">
-            <span class="badge-verified text-[10px] font-semibold px-2.5 py-1 rounded-full inline-block mb-3">⭐ Trusted Platform</span>
-            <h2 class="text-xl font-bold font-display text-gray-900 mb-3">Why THP-STARLET for NEET?</h2>
-            <p class="text-sm text-gray-500 mb-4">Expert faculty with cutting-edge AI technology for unmatched preparation.</p>
-            <ul class="space-y-3 text-sm">
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">Expert Medical Faculty & NEET Toppers</span></li>
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">AI-Powered Personalized Study Plans</span></li>
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">24/7 Instant Doubt Resolution</span></li>
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 bg-med-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] text-med-600 font-bold">✓</span><span class="text-gray-700">Premium Coaching at ₹500 one-time</span></li>
-            </ul>
+    <!-- ═══════════════════════════════════════════
+         TEST SERIES
+    ═══════════════════════════════════════════ -->
+    <section id="tests" class="mt-6 scroll-mt-20">
+      <div class="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-700 dark:from-navy-900 dark:to-navy-700 rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+          <svg class="w-full h-full" viewBox="0 0 1200 300" preserveAspectRatio="none">
+            <path d="M0 150 L80 150 L100 150 L110 110 L120 210 L130 150 L150 150 L160 150 L170 90 L180 240 L190 150 L210 150 L1200 150" 
+                  fill="none" stroke="#34d399" stroke-width="2" class="ecg"/>
+          </svg>
+        </div>
+        <div class="relative z-10">
+          <div class="text-center mb-6">
+            <span class="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur text-white text-[11px] font-semibold px-3 py-1.5 rounded-full mb-3 border border-white/15">
+              <i class="fas fa-fire text-amber-400"></i>UPDATED WEEKLY
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold font-display text-white mb-2">All India Test Series</h2>
+            <p class="text-white/60 text-sm max-w-lg mx-auto">Simulate the real NEET exam environment with our comprehensive mock tests</p>
           </div>
-          <div class="hidden sm:block flex-shrink-0">
-            <div class="bg-gradient-to-br from-med-50 to-emerald-50 rounded-2xl p-6 text-center">
-              <div class="w-20 h-20 bg-med-100 rounded-full flex items-center justify-center mx-auto mb-3 animate-float relative">
-                <span class="text-3xl">⚕️</span>
-                <div class="absolute -top-1 -right-1 w-7 h-7 bg-red-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold pulse-glow">+</div>
-              </div>
-              <div class="text-3xl font-extrabold text-med-600">500+</div>
-              <div class="text-xs text-gray-500 font-medium">NEET Selections 2024</div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white/8 backdrop-blur rounded-2xl p-5 border border-white/10 hover:bg-white/12 transition">
+              <div class="text-3xl mb-3">📝</div>
+              <div class="text-white font-bold text-base mb-1">Full Syllabus</div>
+              <div class="text-emerald-400 font-extrabold text-2xl">20+</div>
+              <div class="text-white/60 text-xs mt-1">Complete pattern tests</div>
+            </div>
+            <div class="bg-white/8 backdrop-blur rounded-2xl p-5 border border-white/10 hover:bg-white/12 transition">
+              <div class="text-3xl mb-3">🎯</div>
+              <div class="text-white font-bold text-base mb-1">Chapter-wise</div>
+              <div class="text-amber-400 font-extrabold text-2xl">100+</div>
+              <div class="text-white/60 text-xs mt-1">Topic focused practice</div>
+            </div>
+            <div class="bg-white/8 backdrop-blur rounded-2xl p-5 border border-white/10 hover:bg-white/12 transition">
+              <div class="text-3xl mb-3">📊</div>
+              <div class="text-white font-bold text-base mb-1">AI Analytics</div>
+              <div class="text-blue-400 font-extrabold text-2xl">Live</div>
+              <div class="text-white/60 text-xs mt-1">Real-time insights</div>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <button onclick="App.openAuth('signup')" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-8 py-3.5 rounded-xl font-bold text-sm shadow-xl transition transform hover:scale-105 inline-flex items-center gap-2">
+              <i class="fas fa-rocket"></i>Start Free Test
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         LEADERBOARD
+    ═══════════════════════════════════════════ -->
+    <section id="leaderboard" class="mt-6 scroll-mt-20">
+      <div class="card rounded-3xl p-5 sm:p-6">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <i class="fas fa-trophy text-amber-500"></i>
+              <span class="text-[10px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Weekly Top Performers</span>
+            </div>
+            <h2 class="text-xl font-bold font-display text-gray-900 dark:text-white">Leaderboard</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Top 5 students this week</p>
+          </div>
+          <button onclick="App.openLeaderboard()" class="text-xs font-semibold text-med-600 dark:text-emerald-400 hover:text-med-700">
+            View All <i class="fas fa-arrow-right ml-1 text-[9px]"></i>
+          </button>
+        </div>
+
+        <div class="space-y-2" id="leaderboardList">
+          <!-- Filled dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         STUDY PLANNER
+    ═══════════════════════════════════════════ -->
+    <section class="mt-6">
+      <div class="card rounded-3xl p-5 sm:p-6">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <i class="fas fa-calendar-check text-blue-500"></i>
+              <span class="text-[10px] font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider">This Week</span>
+            </div>
+            <h2 class="text-xl font-bold font-display text-gray-900 dark:text-white">Study Planner</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Your personalized weekly plan</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-7 gap-2 mb-5" id="weekPlanner">
+          <!-- Filled dynamically -->
+        </div>
+
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30 rounded-xl p-4">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shrink-0">
+              <i class="fas fa-lightbulb text-white text-xs"></i>
+            </div>
+            <div>
+              <div class="font-bold text-blue-700 dark:text-blue-300 text-xs mb-1">Study Tip of the Day</div>
+              <p class="text-blue-600/80 dark:text-blue-300/70 text-[11px] leading-relaxed">
+                Consistency beats intensity. Aim for 4 focused hours daily rather than 8 distracted hours. 
+                Revise yesterday's topics for 20 minutes before starting new ones.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- ═══════════════════════════════════════════
+         REFERRAL PROGRAM
+    ═══════════════════════════════════════════ -->
+    <section class="mt-6">
+      <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-5 sm:p-6 text-white relative overflow-hidden shadow-2xl">
+        <div class="absolute inset-0 opacity-10">
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-white rounded-full"></div>
+          <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-white rounded-full"></div>
+        </div>
+        <div class="relative z-10 flex items-center justify-between flex-wrap gap-4">
+          <div class="flex-1 min-w-[250px]">
+            <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-full mb-2 border border-white/20">
+              <i class="fas fa-gift text-xs"></i>REFER & EARN
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold font-display mb-2">Refer a friend, both get ₹100 off!</h3>
+            <p class="text-white/80 text-xs sm:text-sm mb-4">Share your referral code with friends. When they enroll, you both save money!</p>
+            <div class="flex flex-wrap gap-2">
+              <div class="bg-white/20 backdrop-blur rounded-xl px-4 py-2.5 flex items-center gap-2 border border-white/20">
+                <span class="text-[10px] opacity-70">Your code:</span>
+                <span class="font-mono font-bold text-sm" id="userReferralCode">RAHUL2026</span>
+              </div>
+              <button onclick="App.copyReferral()" class="bg-white text-purple-700 hover:bg-purple-50 px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center gap-2">
+                <i class="fas fa-copy"></i>Copy
+              </button>
+              <button onclick="App.shareReferral()" class="bg-white/20 hover:bg-white/30 backdrop-blur text-white px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center gap-2 border border-white/20">
+                <i class="fab fa-whatsapp"></i>Share
+              </button>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="text-6xl mb-2">🎁</div>
+            <div class="text-xs opacity-80">Refer 5 → 1 month FREE</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         WHY THP (Only for guests)
+    ═══════════════════════════════════════════ -->
+    <section id="guestWhy" class="mt-6">
+      <div class="card rounded-3xl p-5 sm:p-6">
+        <div class="grid md:grid-cols-2 gap-6 items-center">
+          <div>
+            <span class="inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full mb-3">
+              <i class="fas fa-star"></i>TRUSTED PLATFORM
+            </span>
+            <h2 class="text-xl sm:text-2xl font-bold font-display text-gray-900 dark:text-white mb-3">Why THP-STARLET for NEET?</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">Expert faculty with cutting-edge AI technology for unmatched preparation.</p>
+            <ul class="space-y-3 text-sm">
+              <li class="flex items-start gap-3">
+                <div class="w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                  <i class="fas fa-check text-emerald-600 dark:text-emerald-400 text-[10px]"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-800 dark:text-gray-200">Expert Medical Faculty</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Learn from doctors and NEET toppers</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                  <i class="fas fa-check text-emerald-600 dark:text-emerald-400 text-[10px]"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-800 dark:text-gray-200">AI-Powered Learning</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Personalized study plans</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                  <i class="fas fa-check text-emerald-600 dark:text-emerald-400 text-[10px]"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-800 dark:text-gray-200">24/7 Doubt Resolution</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Get instant answers</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                  <i class="fas fa-check text-emerald-600 dark:text-emerald-400 text-[10px]"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-800 dark:text-gray-200">Affordable Excellence</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Premium coaching at ₹500 one-time</div>
+                </div>
+              </li>
+            </ul>
+            <button onclick="App.openAuth('signup')" class="mt-5 bg-gradient-to-r from-med-600 to-med-500 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg transition flex items-center gap-2">
+              <i class="fas fa-rocket"></i>Enroll Now
+            </button>
+          </div>
+          <div class="text-center">
+            <div class="relative inline-block">
+              <div class="w-40 h-40 sm:w-48 sm:h-48 bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 rounded-full flex items-center justify-center mx-auto animate-float">
+                <div class="w-32 h-32 sm:w-40 sm:h-40 bg-gradient-to-br from-med-500 to-med-600 rounded-full flex items-center justify-center shadow-2xl">
+                  <span class="text-6xl sm:text-7xl">⚕️</span>
+                </div>
+              </div>
+              <div class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-xl animate-pulse">
+                <div class="text-center">
+                  <div class="text-lg font-extrabold">500+</div>
+                  <div class="text-[8px]">SEATS</div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 text-3xl font-extrabold gradient-text">500+</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">NEET Selections in 2024</div>
+            <div class="flex justify-center gap-2 mt-3 flex-wrap">
+              <span class="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] px-2.5 py-1 rounded-full font-bold">AIIMS</span>
+              <span class="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] px-2.5 py-1 rounded-full font-bold">JIPMER</span>
+              <span class="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] px-2.5 py-1 rounded-full font-bold">MAMC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════════ -->
+    <footer class="mt-8 pt-6 border-t border-gray-100 dark:border-navy-800">
+      <div class="grid sm:grid-cols-3 gap-6 mb-5">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-gradient-to-br from-med-600 to-med-700 rounded-lg flex items-center justify-center text-white text-sm">⚕</div>
+            <div>
+              <div class="text-sm font-bold gradient-text font-display">THP-STARLET</div>
+              <div class="text-[9px] text-gray-500 tracking-wider uppercase">NEET Coaching</div>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">India's most trusted medical entrance coaching platform.</p>
+          <div class="flex gap-2 mt-3">
+            <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-navy-800 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-med-100 dark:hover:bg-emerald-900/30 transition"><i class="fab fa-youtube text-xs"></i></a>
+            <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-navy-800 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-med-100 transition"><i class="fab fa-instagram text-xs"></i></a>
+            <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-navy-800 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-med-100 transition"><i class="fab fa-telegram text-xs"></i></a>
+            <a href="https://chat.whatsapp.com/HbSNkHQ3xAIF7SVk9VX4AJ" class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 transition"><i class="fab fa-whatsapp text-xs"></i></a>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Quick Links</div>
+          <div class="space-y-2">
+            <a href="#subjects" class="block text-xs text-gray-500 dark:text-gray-400 hover:text-med-600 transition">Subjects</a>
+            <a href="#tests" class="block text-xs text-gray-500 dark:text-gray-400 hover:text-med-600 transition">Test Series</a>
+            <a href="#leaderboard" class="block text-xs text-gray-500 dark:text-gray-400 hover:text-med-600 transition">Leaderboard</a>
+            <a href="tel:+919648837922" class="block text-xs text-gray-500 dark:text-gray-400 hover:text-med-600 transition">Contact: +91 96488 37922</a>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3">Support</div>
+          <div class="space-y-2">
+            <a href="mailto:neet@thpstarlet.com" class="block text-xs text-gray-500 dark:text-gray-400 hover:text-med-600 transition">neet@thpstarlet.com</a>
+            <a href="#" class="block text-xs text-gray-500 dark:text-gray-400 hover:text-med-600 transition">Help Center</a>
+            <a href="#" class="block text-xs text-gray-500 dark:text-gray-400 hover:text-med-600 transition">Terms of Service</a>
+            <a href="#" class="block text-xs text-gray-500 dark:text-gray-400 hover:text-med-600 transition">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="pt-4 border-t border-gray-100 dark:border-navy-800 text-center">
+        <p class="text-[10px] text-gray-400">© 2026 THP-STARLET NEET · Made with 💚 in India</p>
+      </div>
+    </footer>
   </main>
 
-  <!-- FLOATING BUTTONS -->
-  <div class="fixed right-3 sm:right-4 bottom-6 z-40 flex flex-col gap-2.5">
-    <a href="tel:+919648837922" class="w-11 h-11 bg-gradient-to-br from-med-500 to-med-600 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all">
-      <i class="fas fa-phone-alt text-sm"></i>
+  <!-- FLOATING ACTION BUTTONS -->
+  <div class="fixed right-4 bottom-6 z-30 flex flex-col gap-2.5">
+    <a href="tel:+919648837922" class="w-12 h-12 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl shadow-xl flex items-center justify-center text-white hover:scale-110 transition-all hover:shadow-2xl">
+      <i class="fas fa-phone-alt"></i>
     </a>
-    <button onclick="window.open('https://wa.me/919648837922','_blank')" class="w-11 h-11 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all">
-      <i class="fab fa-whatsapp text-sm"></i>
+    <button onclick="window.open('https://wa.me/919648837922?text=Hi%20THP-Starlet%20NEET%20Team','_blank')" class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl shadow-xl flex items-center justify-center text-white hover:scale-110 transition-all hover:shadow-2xl">
+      <i class="fab fa-whatsapp"></i>
     </button>
   </div>
 
-  <!-- ==================== AUTH MODAL ==================== -->
-  <div class="modal-slim fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-4" id="authModal">
-    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl relative max-h-[94vh] overflow-y-auto">
-      <button class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition z-20" onclick="App.closeAuth()">
-        <i class="fas fa-times text-gray-500 text-sm"></i>
+  <!-- ═══════════════════════════════════════════
+       AUTH MODAL
+  ═══════════════════════════════════════════ -->
+  <div class="modal fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-4" id="authModal">
+    <div class="bg-white dark:bg-navy-900 rounded-3xl w-full max-w-lg shadow-2xl relative max-h-[94vh] overflow-y-auto">
+      <button onclick="App.closeAuth()" class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-gray-100 dark:bg-navy-800 hover:bg-gray-200 flex items-center justify-center transition z-20">
+        <i class="fas fa-times text-gray-500 dark:text-gray-300 text-sm"></i>
       </button>
 
       <div class="pt-6 px-6 pb-3">
-        <div class="flex gap-2 bg-gray-100 rounded-2xl p-1.5 mb-1">
-          <button id="tabSignin" class="auth-tab" onclick="App.switchAuthTab('signin')">
+        <div class="flex gap-2 bg-gray-100 dark:bg-navy-800 rounded-2xl p-1.5 mb-1">
+          <button id="tabSignin" onclick="App.switchAuthTab('signin')" class="flex-1 py-2.5 rounded-xl text-xs font-bold transition text-gray-500 dark:text-gray-400">
             <i class="fas fa-sign-in-alt mr-1.5"></i>Sign In
           </button>
-          <button id="tabSignup" class="auth-tab active" onclick="App.switchAuthTab('signup')">
+          <button id="tabSignup" onclick="App.switchAuthTab('signup')" class="flex-1 py-2.5 rounded-xl text-xs font-bold transition bg-med-600 text-white shadow-lg">
             <i class="fas fa-user-plus mr-1.5"></i>Register
           </button>
         </div>
@@ -520,24 +1029,24 @@
           <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
             <i class="fas fa-sign-in-alt text-white text-xl"></i>
           </div>
-          <h3 class="text-xl font-bold font-display text-gray-900">Welcome Back</h3>
-          <p class="text-xs text-gray-500 mt-1">Sign in to continue learning</p>
+          <h3 class="text-xl font-bold font-display text-gray-900 dark:text-white">Welcome Back</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Sign in to continue learning</p>
         </div>
         <div class="space-y-3">
           <div>
-            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Email *</label>
-            <input type="email" id="signinEmail" class="form-input" placeholder="you@example.com">
+            <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Email *</label>
+            <input type="email" id="signinEmail" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none focus:ring-4 focus:ring-med-500/10 transition" placeholder="you@example.com">
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Password *</label>
-            <input type="password" id="signinPassword" class="form-input" placeholder="Your password">
+            <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Password *</label>
+            <input type="password" id="signinPassword" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none focus:ring-4 focus:ring-med-500/10 transition" placeholder="Your password">
           </div>
         </div>
         <button onclick="App.signIn()" id="signinSubmitBtn" class="w-full mt-5 bg-gradient-to-r from-med-500 to-med-600 text-white py-3.5 rounded-xl font-bold text-sm shadow-lg transition flex items-center justify-center gap-2">
           <i class="fas fa-sign-in-alt"></i>Sign In
         </button>
         <div class="text-center mt-4">
-          <button onclick="App.switchAuthTab('signup')" class="text-xs text-med-600 font-semibold">
+          <button onclick="App.switchAuthTab('signup')" class="text-xs text-med-600 dark:text-emerald-400 font-semibold">
             Don't have an account? Register →
           </button>
         </div>
@@ -557,17 +1066,17 @@
             <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
               <i class="fas fa-user-md text-white text-xl"></i>
             </div>
-            <h3 class="text-xl font-bold font-display text-gray-900">Create Your Profile</h3>
-            <p class="text-xs text-gray-500 mt-1">Step 1 of 3 · Personal details</p>
+            <h3 class="text-xl font-bold font-display text-gray-900 dark:text-white">Create Your Profile</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Step 1 of 3 · Personal details</p>
           </div>
 
           <div class="mb-5">
-            <label class="block text-[11px] font-bold text-gray-600 mb-2 text-center uppercase tracking-wider">Profile Photo</label>
-            <div class="profile-upload" onclick="document.getElementById('profileInput').click()">
-              <img id="profilePreview" class="hidden" alt="Profile">
+            <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-2 text-center uppercase tracking-wider">Profile Photo</label>
+            <div class="w-24 h-24 border-2 border-dashed border-emerald-300 dark:border-emerald-700 rounded-full flex items-center justify-center cursor-pointer hover:border-emerald-500 transition mx-auto overflow-hidden bg-emerald-50/50 dark:bg-emerald-900/20" onclick="document.getElementById('profileInput').click()">
+              <img id="profilePreview" class="w-full h-full object-cover hidden" alt="Profile">
               <div id="profilePlaceholder" class="text-center">
                 <i class="fas fa-camera text-med-500 text-2xl mb-1"></i>
-                <div class="text-[10px] text-gray-500 font-medium">Upload Photo</div>
+                <div class="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Upload</div>
               </div>
               <input type="file" id="profileInput" accept="image/*" class="hidden" onchange="App.handleProfileImage(event)">
             </div>
@@ -575,21 +1084,21 @@
 
           <div class="space-y-3">
             <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Full Name *</label>
-              <input type="text" id="regName" class="form-input" placeholder="e.g., Rahul Sharma">
+              <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Full Name *</label>
+              <input type="text" id="regName" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none focus:ring-4 focus:ring-med-500/10" placeholder="e.g., Rahul Sharma">
             </div>
             <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Email *</label>
-              <input type="email" id="regEmail" class="form-input" placeholder="you@example.com">
+              <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Email *</label>
+              <input type="email" id="regEmail" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none focus:ring-4 focus:ring-med-500/10" placeholder="you@example.com">
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Mobile *</label>
-                <input type="tel" id="regPhone" class="form-input" placeholder="9876543210" maxlength="10">
+                <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Mobile *</label>
+                <input type="tel" id="regPhone" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none focus:ring-4 focus:ring-med-500/10" placeholder="9876543210" maxlength="10">
               </div>
               <div>
-                <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Class</label>
-                <select id="regClass" class="form-input text-gray-700">
+                <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Class</label>
+                <select id="regClass" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none">
                   <option value="11th">11th</option>
                   <option value="12th" selected>12th</option>
                   <option value="Dropper">Dropper</option>
@@ -597,8 +1106,8 @@
               </div>
             </div>
             <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Target Year</label>
-              <select id="regTarget" class="form-input text-gray-700">
+              <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Target Year</label>
+              <select id="regTarget" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none">
                 <option value="NEET 2026">NEET 2026</option>
                 <option value="NEET 2027">NEET 2027</option>
               </select>
@@ -611,39 +1120,39 @@
         </div>
 
         <!-- STEP 2 -->
-        <div class="reg-step" id="step2">
+        <div class="reg-step hidden" id="step2">
           <div class="text-center mb-5">
             <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
               <i class="fas fa-lock text-white text-xl"></i>
             </div>
-            <h3 class="text-xl font-bold font-display text-gray-900">Secure Your Account</h3>
-            <p class="text-xs text-gray-500 mt-1">Step 2 of 3</p>
+            <h3 class="text-xl font-bold font-display text-gray-900 dark:text-white">Secure Your Account</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Step 2 of 3</p>
           </div>
 
           <div class="space-y-3">
             <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Password *</label>
-              <input type="password" id="regPassword" class="form-input" placeholder="Min 6 characters" oninput="App.checkStrength(this.value)">
+              <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Password *</label>
+              <input type="password" id="regPassword" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none" placeholder="Min 6 characters" oninput="App.checkStrength(this.value)">
               <div class="flex gap-1 mt-2">
-                <div class="h-1 flex-1 bg-gray-200 rounded-full" id="strengthBar1"></div>
-                <div class="h-1 flex-1 bg-gray-200 rounded-full" id="strengthBar2"></div>
-                <div class="h-1 flex-1 bg-gray-200 rounded-full" id="strengthBar3"></div>
+                <div class="h-1 flex-1 bg-gray-200 dark:bg-navy-700 rounded-full" id="strengthBar1"></div>
+                <div class="h-1 flex-1 bg-gray-200 dark:bg-navy-700 rounded-full" id="strengthBar2"></div>
+                <div class="h-1 flex-1 bg-gray-200 dark:bg-navy-700 rounded-full" id="strengthBar3"></div>
               </div>
             </div>
             <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Confirm Password *</label>
-              <input type="password" id="regPassword2" class="form-input" placeholder="Re-enter password" oninput="App.checkMatch()">
+              <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Confirm Password *</label>
+              <input type="password" id="regPassword2" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none" placeholder="Re-enter" oninput="App.checkMatch()">
               <div id="matchMsg" class="text-[11px] mt-1.5 font-semibold"></div>
             </div>
-            <div class="pt-3 border-t border-gray-100">
-              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Referral Code (optional)</label>
-              <input type="text" id="referralCode" class="form-input" placeholder="Enter if you have one" oninput="App.checkReferral()">
+            <div class="pt-3 border-t border-gray-100 dark:border-navy-800">
+              <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Referral Code (optional)</label>
+              <input type="text" id="referralCode" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none" placeholder="Enter if you have one" oninput="App.checkReferral()">
               <div id="referralMsg" class="text-[11px] mt-1.5 font-semibold"></div>
             </div>
           </div>
 
           <div class="flex gap-3 mt-5">
-            <button onclick="App.goToStep(1)" class="flex-1 py-3.5 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm transition">
+            <button onclick="App.goToStep(1)" class="flex-1 py-3.5 rounded-xl bg-gray-100 dark:bg-navy-800 text-gray-700 dark:text-gray-300 font-bold text-sm transition">
               <i class="fas fa-arrow-left mr-1"></i>Back
             </button>
             <button onclick="App.goToStep(3)" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-med-500 to-med-600 text-white font-bold text-sm shadow-lg transition">
@@ -653,43 +1162,49 @@
         </div>
 
         <!-- STEP 3 -->
-        <div class="reg-step" id="step3">
+        <div class="reg-step hidden" id="step3">
           <div class="text-center mb-5">
             <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
               <i class="fas fa-rupee-sign text-white text-xl"></i>
             </div>
-            <h3 class="text-xl font-bold font-display text-gray-900">Complete Payment</h3>
-            <p class="text-xs text-gray-500 mt-1">Step 3 of 3 · Enrollment fee</p>
+            <h3 class="text-xl font-bold font-display text-gray-900 dark:text-white">Complete Payment</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Step 3 of 3 · Enrollment fee</p>
           </div>
 
-          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 border border-emerald-100 mb-4">
-            <div class="flex items-center justify-between pb-3 border-b border-emerald-100 mb-3">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-800/30 mb-4">
+            <div class="flex items-center justify-between pb-3 border-b border-emerald-100 dark:border-emerald-800/30 mb-3">
               <div class="flex items-center gap-2">
-                <div class="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                <div class="w-10 h-10 bg-white dark:bg-navy-800 rounded-xl flex items-center justify-center shadow-sm">
                   <i class="fas fa-stethoscope text-med-600"></i>
                 </div>
                 <div>
-                  <div class="font-bold text-gray-900 text-sm">NEET Premium</div>
-                  <div class="text-[10px] text-gray-500">Full access</div>
+                  <div class="font-bold text-gray-900 dark:text-white text-sm">NEET Premium</div>
+                  <div class="text-[10px] text-gray-500 dark:text-gray-400">Lifetime access</div>
                 </div>
               </div>
               <div class="text-right">
-                <div id="finalAmount" class="text-2xl font-extrabold font-display text-emerald-600">₹500</div>
+                <div id="finalAmount" class="text-2xl font-extrabold font-display text-emerald-600 dark:text-emerald-400">₹500</div>
                 <div id="originalAmount" class="text-[10px] text-gray-400 line-through hidden">₹500</div>
               </div>
             </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex items-center gap-2 text-gray-700 dark:text-gray-300"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>All subjects unlocked</div>
+              <div class="flex items-center gap-2 text-gray-700 dark:text-gray-300"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Live + Recorded classes</div>
+              <div class="flex items-center gap-2 text-gray-700 dark:text-gray-300"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Test series + analytics</div>
+              <div class="flex items-center gap-2 text-gray-700 dark:text-gray-300"><i class="fas fa-check-circle text-emerald-500 text-xs"></i>Study notes & PDFs</div>
+            </div>
           </div>
 
-          <div class="bg-gray-50 rounded-xl p-3 mb-4 flex items-center gap-3">
-            <div id="summaryAvatar" class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0 bg-cover bg-center">?</div>
+          <div class="bg-gray-50 dark:bg-navy-800 rounded-xl p-3 mb-4 flex items-center gap-3">
+            <div id="summaryAvatar" class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0 bg-cover bg-center">?</div>
             <div class="flex-1 min-w-0">
-              <div class="font-bold text-gray-900 text-xs truncate" id="summaryName">—</div>
-              <div class="text-[10px] text-gray-500 truncate" id="summaryEmail">—</div>
+              <div class="font-bold text-gray-900 dark:text-white text-xs truncate" id="summaryName">—</div>
+              <div class="text-[10px] text-gray-500 dark:text-gray-400 truncate" id="summaryEmail">—</div>
             </div>
           </div>
 
           <div class="flex gap-3">
-            <button onclick="App.goToStep(2)" class="flex-1 py-3.5 rounded-xl bg-gray-100 text-gray-700 font-bold text-sm transition">
+            <button onclick="App.goToStep(2)" class="flex-1 py-3.5 rounded-xl bg-gray-100 dark:bg-navy-800 text-gray-700 dark:text-gray-300 font-bold text-sm transition">
               <i class="fas fa-arrow-left mr-1"></i>Back
             </button>
             <button id="payNowBtn" onclick="App.startPayment()" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm shadow-lg transition flex items-center justify-center gap-2">
@@ -701,11 +1216,11 @@
     </div>
   </div>
 
-  <!-- ==================== PROFILE MODAL ==================== -->
-  <div class="modal-slim fixed inset-0 bg-black/60 backdrop-blur-md z-[210] flex items-center justify-center p-3 sm:p-4" id="profileModal">
-    <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl relative max-h-[92vh] overflow-y-auto">
-      <button class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition z-20" onclick="App.closeProfile()">
-        <i class="fas fa-times text-gray-500 text-sm"></i>
+  <!-- PROFILE MODAL -->
+  <div class="modal fixed inset-0 bg-black/60 backdrop-blur-md z-[210] flex items-center justify-center p-3 sm:p-4" id="profileModal">
+    <div class="bg-white dark:bg-navy-900 rounded-3xl w-full max-w-md shadow-2xl relative max-h-[92vh] overflow-y-auto">
+      <button onclick="App.closeProfile()" class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-gray-100 dark:bg-navy-800 hover:bg-gray-200 flex items-center justify-center transition z-20">
+        <i class="fas fa-times text-gray-500 dark:text-gray-300 text-sm"></i>
       </button>
       
       <div class="p-6">
@@ -713,55 +1228,55 @@
           <div class="w-14 h-14 bg-gradient-to-br from-med-500 to-med-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
             <i class="fas fa-user-circle text-white text-xl"></i>
           </div>
-          <h3 class="text-xl font-bold font-display text-gray-900">My Profile</h3>
-          <p class="text-xs text-gray-500 mt-1">Edit your details</p>
+          <h3 class="text-xl font-bold font-display text-gray-900 dark:text-white">My Profile</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Manage your account</p>
         </div>
 
         <div class="flex justify-center mb-5">
-          <div class="profile-upload" onclick="document.getElementById('editProfileInput').click()">
-            <img id="editProfilePreview" alt="Profile">
+          <div class="w-24 h-24 border-2 border-dashed border-emerald-300 rounded-full flex items-center justify-center cursor-pointer hover:border-emerald-500 transition overflow-hidden bg-emerald-50/50 dark:bg-emerald-900/20" onclick="document.getElementById('editProfileInput').click()">
+            <img id="editProfilePreview" class="w-full h-full object-cover" alt="Profile">
             <input type="file" id="editProfileInput" accept="image/*" class="hidden" onchange="App.handleEditImage(event)">
           </div>
         </div>
 
         <div class="space-y-3">
           <div>
-            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Full Name</label>
-            <input type="text" id="editName" class="form-input">
+            <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Full Name</label>
+            <input type="text" id="editName" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none">
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Email (read-only)</label>
-            <input type="email" id="editEmail" class="form-input bg-gray-50" readonly>
+            <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Email (read-only)</label>
+            <input type="email" id="editEmail" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 bg-gray-50 dark:bg-navy-800/50 text-gray-500 dark:text-gray-400 text-sm" readonly>
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Mobile</label>
-            <input type="tel" id="editPhone" class="form-input" maxlength="10">
+            <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Mobile</label>
+            <input type="tel" id="editPhone" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none" maxlength="10">
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Class</label>
-              <select id="editClass" class="form-input text-gray-700">
+              <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Class</label>
+              <select id="editClass" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none">
                 <option value="11th">11th</option>
                 <option value="12th">12th</option>
                 <option value="Dropper">Dropper</option>
               </select>
             </div>
             <div>
-              <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Target</label>
-              <select id="editTarget" class="form-input text-gray-700">
+              <label class="block text-[11px] font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Target</label>
+              <select id="editTarget" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-navy-700 dark:bg-navy-800 dark:text-white text-sm focus:border-med-500 focus:outline-none">
                 <option value="NEET 2026">NEET 2026</option>
                 <option value="NEET 2027">NEET 2027</option>
               </select>
             </div>
           </div>
 
-          <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 flex items-center gap-3">
-            <div class="w-9 h-9 bg-emerald-500 rounded-lg flex items-center justify-center">
-              <i class="fas fa-check-circle text-white text-sm"></i>
+          <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-100 dark:border-emerald-800/30 rounded-xl p-4 flex items-center gap-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+              <i class="fas fa-crown text-white"></i>
             </div>
             <div class="flex-1">
-              <div class="font-bold text-emerald-700 text-xs">Premium Member</div>
-              <div class="text-[10px] text-emerald-600/70" id="profileValidTill">Valid till NEET 2026</div>
+              <div class="font-bold text-emerald-700 dark:text-emerald-400 text-sm">Premium Member ✨</div>
+              <div class="text-[10px] text-emerald-600/80 dark:text-emerald-400/70" id="profileValidTill">Valid till NEET 2026</div>
             </div>
           </div>
 
@@ -773,33 +1288,32 @@
     </div>
   </div>
 
-  <!-- ADMIN PANEL -->
-  <div class="modal-slim fixed inset-0 bg-black/70 backdrop-blur-md z-[250] flex items-center justify-center p-2 sm:p-4" id="adminModal">
+  <!-- ADMIN MODAL -->
+  <div class="modal fixed inset-0 bg-black/70 backdrop-blur-md z-[250] flex items-center justify-center p-2 sm:p-4" id="adminModal">
     <div class="rounded-2xl w-full max-w-3xl shadow-2xl relative max-h-[94vh] overflow-y-auto" style="background: linear-gradient(180deg, #0a1929 0%, #0c1f35 100%); border: 1px solid rgba(16,185,129,0.2);">
-      <div class="sticky top-0 z-10 px-5 py-4 rounded-t-2xl border-b border-med-500/20 flex items-center justify-between" style="background: linear-gradient(90deg, #064e3b, #022c22);">
+      <div class="sticky top-0 z-10 px-5 py-4 rounded-t-2xl border-b border-emerald-500/20 flex items-center justify-between" style="background: linear-gradient(90deg, #064e3b, #022c22);">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-gradient-to-br from-med-500 to-med-600 rounded-xl flex items-center justify-center shadow-lg">
+          <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
             <i class="fas fa-cog text-white"></i>
           </div>
           <div>
             <h2 class="text-white font-bold font-display text-base">Admin Panel</h2>
-            <p class="text-emerald-300/60 text-[10px] tracking-wider uppercase">Manage Subjects</p>
+            <p class="text-emerald-300/60 text-[10px] tracking-wider uppercase">Manage Subjects & Content</p>
           </div>
         </div>
-        <button class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center" onclick="App.closeAdmin()">
+        <button onclick="App.closeAdmin()" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center">
           <i class="fas fa-times text-emerald-300 text-sm"></i>
         </button>
       </div>
 
       <div class="p-5 space-y-5">
-        <div class="rounded-2xl p-5 border border-med-500/10" style="background: rgba(255,255,255,0.03);">
+        <div class="rounded-2xl p-5 border border-emerald-500/10" style="background: rgba(255,255,255,0.03);">
           <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
             <i class="fas fa-plus-circle text-emerald-400"></i>
             <span id="adminFormTitle">Add / Update Subject</span>
           </h3>
 
           <form id="subjectForm" class="space-y-4" onsubmit="return false;">
-            <input type="hidden" id="subjId" value="">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-emerald-300 text-[11px] font-medium mb-1.5">Subject Name *</label>
@@ -852,10 +1366,10 @@
               <input type="url" id="subjThumbUrl" class="w-full px-4 py-3 rounded-xl text-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(16,185,129,0.15); color: #f0fdfa;" placeholder="https://...">
             </div>
             <div class="flex gap-3 pt-2">
-              <button type="button" onclick="App.saveSubject()" class="flex-1 bg-gradient-to-r from-med-500 to-med-600 text-white py-3 rounded-xl font-semibold text-xs shadow-lg transition">
+              <button type="button" onclick="App.saveSubject()" class="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 rounded-xl font-semibold text-xs shadow-lg">
                 <i class="fas fa-save"></i> <span id="saveBtnText">Save Subject</span>
               </button>
-              <button type="button" onclick="App.resetSubjectForm()" class="px-4 py-3 rounded-xl font-semibold text-xs transition" style="background: rgba(255,255,255,0.05); color: #6ee7b7;">
+              <button type="button" onclick="App.resetSubjectForm()" class="px-4 py-3 rounded-xl font-semibold text-xs" style="background: rgba(255,255,255,0.05); color: #6ee7b7;">
                 <i class="fas fa-undo"></i>
               </button>
             </div>
@@ -873,11 +1387,71 @@
     </div>
   </div>
 
-  <div class="fixed bottom-6 right-4 sm:right-6 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
+  <!-- NOTIFICATIONS MODAL -->
+  <div class="modal fixed inset-0 bg-black/60 backdrop-blur-md z-[220] flex items-center justify-center p-3 sm:p-4" id="notifModal">
+    <div class="bg-white dark:bg-navy-900 rounded-3xl w-full max-w-md shadow-2xl max-h-[80vh] overflow-hidden flex flex-col">
+      <div class="bg-gradient-to-r from-med-600 to-med-500 px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i class="fas fa-bell text-white"></i>
+          <div>
+            <div class="text-white font-bold text-sm">Notifications</div>
+            <div class="text-white/70 text-[10px]">Stay updated</div>
+          </div>
+        </div>
+        <button onclick="App.closeNotifications()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center">
+          <i class="fas fa-times text-white text-xs"></i>
+        </button>
+      </div>
+      <div class="p-4 space-y-2 overflow-y-auto">
+        <div class="flex gap-3 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/30">
+          <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center shrink-0">
+            <i class="fas fa-gift text-white text-xs"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-gray-900 dark:text-white">Welcome to THP-STARLET!</div>
+            <div class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Start your NEET preparation journey today</div>
+            <div class="text-[9px] text-gray-400 mt-1">Just now</div>
+          </div>
+        </div>
+        <div class="flex gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-navy-800 transition">
+          <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shrink-0">
+            <i class="fas fa-video text-white text-xs"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-gray-900 dark:text-white">New Lecture Added</div>
+            <div class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Cell Structure - Part 2 is now available</div>
+            <div class="text-[9px] text-gray-400 mt-1">2 hours ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD MODAL -->
+  <div class="modal fixed inset-0 bg-black/60 backdrop-blur-md z-[220] flex items-center justify-center p-3 sm:p-4" id="leaderModal">
+    <div class="bg-white dark:bg-navy-900 rounded-3xl w-full max-w-md shadow-2xl max-h-[80vh] overflow-hidden flex flex-col">
+      <div class="bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i class="fas fa-trophy text-white"></i>
+          <div>
+            <div class="text-white font-bold text-sm">Full Leaderboard</div>
+            <div class="text-white/70 text-[10px]">Top performers this week</div>
+          </div>
+        </div>
+        <button onclick="App.closeLeaderboard()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center">
+          <i class="fas fa-times text-white text-xs"></i>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto" id="fullLeaderboard"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="fixed bottom-24 right-4 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
 
   <script>
     (function() {
-      // ========== CONFIG ==========
+      // ═══════════ CONFIG ═══════════
       const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS';
       const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
       const ENROLLMENT_AMOUNT = 50000;
@@ -885,7 +1459,7 @@
       const REFERRAL_CODE = 'mg786';
       const ADMIN_EMAILS = ['mgbhaukali@gmail.com'];
 
-      // ========== FIREBASE ==========
+      // ═══════════ FIREBASE ═══════════
       const fb = {
         apiKey: "AIzaSyASP6S4EE4p40LBrzrTW8CBcKRmPo-lrck",
         authDomain: "neet-d6d95.firebaseapp.com",
@@ -898,12 +1472,11 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
 
-      // 🔥 SESSION PERSIST - Ek baar login, bar bar nahi
       auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         .then(() => console.log('✅ Session persistence enabled'))
-        .catch(e => console.error('Persistence error:', e));
+        .catch(e => console.error(e));
 
-      // ========== STATE ==========
+      // ═══════════ STATE ═══════════
       let currentUser = null;
       let userProfile = null;
       let isAdmin = false;
@@ -911,19 +1484,15 @@
       let editingSubjectId = null;
       let referralApplied = false;
       let adminAutoOpened = false;
-      let tempProfile = {
-        name: '', email: '', phone: '',
-        userClass: '12th', target: 'NEET 2026',
-        avatarFile: null, avatarUrl: ''
-      };
+      let tempProfile = { name: '', email: '', phone: '', userClass: '12th', target: 'NEET 2026', avatarFile: null };
 
-      // ========== TOAST ==========
+      // ═══════════ TOAST ═══════════
       function toast(msg, type = 'info') {
         const c = document.getElementById('toastContainer');
         const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
         const colors = { success: 'border-emerald-500', error: 'border-red-500', warning: 'border-amber-500', info: 'border-blue-500' };
         const d = document.createElement('div');
-        d.className = `bg-white border-l-4 ${colors[type]} rounded-xl px-4 py-3 shadow-xl text-sm font-medium text-gray-800 toast-pop flex items-center gap-2 max-w-xs`;
+        d.className = `bg-white dark:bg-navy-800 border-l-4 ${colors[type]} rounded-xl px-4 py-3 shadow-xl text-sm font-medium text-gray-800 dark:text-white toast-pop flex items-center gap-2 max-w-xs`;
         d.innerHTML = `<span>${icons[type]}</span><span class="flex-1">${msg}</span>`;
         c.appendChild(d);
         setTimeout(() => {
@@ -934,7 +1503,30 @@
         }, 3200);
       }
 
-      // ========== IMAGE RESIZE ==========
+      // ═══════════ DARK MODE ═══════════
+      function toggleDark() {
+        const html = document.documentElement;
+        const isDark = html.classList.toggle('dark');
+        localStorage.setItem('neet-dark', isDark ? 'true' : 'false');
+        const btn = document.getElementById('darkToggle');
+        btn.innerHTML = isDark ? '<i class="fas fa-sun text-yellow-300 text-sm"></i>' : '<i class="fas fa-moon text-gray-600 text-sm"></i>';
+      }
+      // Init dark mode
+      if (localStorage.getItem('neet-dark') === 'true') {
+        document.documentElement.classList.add('dark');
+        document.getElementById('darkToggle').innerHTML = '<i class="fas fa-sun text-yellow-300 text-sm"></i>';
+      }
+
+      // ═══════════ GREETING ═══════════
+      function getGreeting() {
+        const h = new Date().getHours();
+        if (h < 12) return 'Good Morning';
+        if (h < 17) return 'Good Afternoon';
+        if (h < 21) return 'Good Evening';
+        return 'Good Night';
+      }
+
+      // ═══════════ IMAGE RESIZE ═══════════
       function resizeImage(file, maxSize = 400, quality = 0.85) {
         return new Promise((resolve) => {
           const reader = new FileReader();
@@ -950,9 +1542,7 @@
               const ctx = canvas.getContext('2d');
               ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, maxSize, maxSize);
               canvas.toBlob((blob) => {
-                const resizedFile = new File([blob], file.name.replace(/\.[^/.]+$/, '.jpg'), {
-                  type: 'image/jpeg', lastModified: Date.now()
-                });
+                const resizedFile = new File([blob], 'avatar.jpg', { type: 'image/jpeg', lastModified: Date.now() });
                 resolve(resizedFile);
               }, 'image/jpeg', quality);
             };
@@ -970,19 +1560,10 @@
           const r = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: fd });
           const j = await r.json();
           return j.success ? j.data.url : '';
-        } catch (e) { console.error(e); return ''; }
+        } catch (e) { return ''; }
       }
 
-      // ========== TIME-BASED GREETING ==========
-      function getGreeting() {
-        const h = new Date().getHours();
-        if (h < 12) return 'Good Morning';
-        if (h < 17) return 'Good Afternoon';
-        if (h < 21) return 'Good Evening';
-        return 'Good Night';
-      }
-
-      // ========== AUTH STATE (🔥 MAIN LOGIC) ==========
+      // ═══════════ AUTH LISTENER ═══════════
       auth.onAuthStateChanged(async (user) => {
         currentUser = user;
         const enrollBtn = document.getElementById('enrollBtn');
@@ -994,69 +1575,61 @@
         const personalDashboard = document.getElementById('personalDashboard');
         const guestHero = document.getElementById('guestHero');
         const guestWhy = document.getElementById('guestWhy');
-        const mobileAuthButtons = document.getElementById('mobileAuthButtons');
-        const mobileUserInfo = document.getElementById('mobileUserInfo');
+        const mobileAuthSection = document.getElementById('mobileAuthSection');
+        const mobileLogoutWrap = document.getElementById('mobileLogoutWrap');
+        const mobileUserCard = document.getElementById('mobileUserCard');
 
         if (user) {
-          // ✅ USER LOGGED IN
           if (enrollBtn) enrollBtn.style.display = 'none';
           if (signinBtn) signinBtn.style.display = 'none';
           if (userMenu) { userMenu.classList.remove('hidden'); userMenu.classList.add('flex'); }
-          if (mobileAuthButtons) mobileAuthButtons.classList.add('hidden');
-          if (mobileUserInfo) mobileUserInfo.classList.remove('hidden');
+          if (mobileAuthSection) mobileAuthSection.classList.add('hidden');
+          if (mobileLogoutWrap) mobileLogoutWrap.classList.remove('hidden');
+          if (mobileUserCard) mobileUserCard.classList.remove('hidden');
 
           try {
             const doc = await db.collection('users').doc(user.uid).get();
             if (doc.exists) userProfile = doc.data();
             else userProfile = { 
-              name: user.displayName || 'Student', 
-              email: user.email, 
-              avatar: '', 
-              userClass: '12th', 
-              target: 'NEET 2026',
-              paymentStatus: 'paid'
+              name: user.displayName || 'Student', email: user.email, 
+              avatar: '', userClass: '12th', target: 'NEET 2026', 
+              paymentStatus: 'paid', enrollmentDate: new Date().toISOString()
             };
-          } catch (e) { 
-            console.error(e);
-            userProfile = { name: user.displayName || 'Student', email: user.email };
+          } catch (e) {
+            userProfile = { name: user.displayName || 'Student', email: user.email, paymentStatus: 'paid', enrollmentDate: new Date().toISOString() };
           }
 
-          // 🔥 SHOW PERSONALIZED DASHBOARD
-          showPersonalDashboard(userProfile);
-          
-          // Hide guest sections
+          // Show dashboard
           if (guestHero) guestHero.classList.add('hidden');
           if (guestWhy) guestWhy.classList.add('hidden');
           if (personalDashboard) personalDashboard.classList.remove('hidden');
 
-          // Admin check
+          renderPersonalDashboard(userProfile);
+
+          // Admin
           isAdmin = ADMIN_EMAILS.includes(user.email);
           if (isAdmin) {
             adminBtn?.classList.remove('hidden');
             mobileAdminBtn?.classList.remove('hidden');
             addSubjectBtn?.classList.remove('hidden');
-            // Auto open admin panel (only once)
             setTimeout(() => {
               if (!adminAutoOpened) {
                 adminAutoOpened = true;
                 openAdmin();
               }
-            }, 800);
+            }, 1000);
           }
 
-          // Close auth modal if open
           closeAuth();
-          
-          // Update subject subtitle
           document.getElementById('subjectSubtitle').textContent = `Tap to open · All ${currentSubjects.length} unlocked`;
 
         } else {
-          // ❌ USER NOT LOGGED IN
           if (enrollBtn) enrollBtn.style.display = 'inline-flex';
           if (signinBtn) signinBtn.style.display = 'inline-flex';
           if (userMenu) { userMenu.classList.add('hidden'); userMenu.classList.remove('flex'); }
-          if (mobileAuthButtons) mobileAuthButtons.classList.remove('hidden');
-          if (mobileUserInfo) mobileUserInfo.classList.add('hidden');
+          if (mobileAuthSection) mobileAuthSection.classList.remove('hidden');
+          if (mobileLogoutWrap) mobileLogoutWrap.classList.add('hidden');
+          if (mobileUserCard) mobileUserCard.classList.add('hidden');
           
           isAdmin = false;
           adminAutoOpened = false;
@@ -1065,21 +1638,18 @@
           addSubjectBtn?.classList.add('hidden');
           userProfile = null;
 
-          // Show guest sections
           if (personalDashboard) personalDashboard.classList.add('hidden');
           if (guestHero) guestHero.classList.remove('hidden');
           if (guestWhy) guestWhy.classList.remove('hidden');
-          
-          // Update subject subtitle
           document.getElementById('subjectSubtitle').textContent = 'Login to unlock all subjects';
           
-          // Lock all subject cards
-          document.querySelectorAll('.subject-card-wrapper').forEach(el => el.classList.add('locked'));
+          // Lock subjects
+          document.querySelectorAll('.subject-wrapper').forEach(el => el.classList.add('locked'));
         }
       });
 
-      // ========== SHOW PERSONAL DASHBOARD ==========
-      function showPersonalDashboard(profile) {
+      // ═══════════ RENDER PERSONAL DASHBOARD ═══════════
+      function renderPersonalDashboard(profile) {
         const name = profile.name || 'Student';
         const firstName = name.split(' ')[0];
         const avatar = profile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=059669&color=fff&size=128`;
@@ -1087,100 +1657,131 @@
         // Greeting
         document.getElementById('dashTimeGreeting').textContent = getGreeting();
         document.getElementById('dashGreeting').textContent = `Hello, ${firstName}! 👋`;
-        document.getElementById('dashSubtext').textContent = `Ready to ace ${profile.target || 'NEET'}? Let's start!`;
+        document.getElementById('dashSubtext').textContent = `Ready to ace ${profile.target || 'NEET 2026'}? Let's go!`;
         
-        // Avatar
+        // Avatars
         document.getElementById('dashAvatar').src = avatar;
         document.getElementById('headerAvatar').src = avatar;
         document.getElementById('userName').textContent = firstName;
-        
-        // Mobile
         document.getElementById('mobileAvatar').src = avatar;
-        document.getElementById('mobileUserName').textContent = name;
-        document.getElementById('mobileUserEmail').textContent = profile.email || '';
+        document.getElementById('mobileName').textContent = name;
+        document.getElementById('mobileEmail').textContent = profile.email || '';
         
         // Stats
         document.getElementById('dashClass').textContent = profile.userClass || '12th';
-        document.getElementById('dashTarget').textContent = profile.target || 'NEET 2026';
-        document.getElementById('dashStatus').textContent = profile.paymentStatus === 'paid' ? 'Premium ✨' : 'Free';
+        document.getElementById('mobileClass').textContent = profile.userClass || '12th';
+        document.getElementById('dashTarget').textContent = (profile.target || 'NEET 2026').replace('NEET ', 'NEET ') + ' ' + (profile.target?.includes('2026') ? '' : '');
+        document.getElementById('mobileTarget').textContent = profile.target || 'NEET 2026';
         
-        // Streak (simple logic based on enroll date)
+        // Streak
         const enrollDate = profile.enrollmentDate ? new Date(profile.enrollmentDate) : new Date();
         const daysSince = Math.max(1, Math.ceil((new Date() - enrollDate) / (1000 * 60 * 60 * 24)));
-        document.getElementById('dashStreak').textContent = `Day ${daysSince} 🔥`;
+        document.getElementById('dashStreak').textContent = `Day ${daysSince}`;
         
-        // Progress (mock - can be real later)
-        const progress = profile.progress || Math.min(95, 15 + daysSince * 2);
+        // Rank
+        document.getElementById('dashRank').textContent = '#124';
+        
+        // Progress
+        const progress = Math.min(95, Math.max(15, 15 + daysSince * 3));
         document.getElementById('dashProgressPct').textContent = `${progress}%`;
-        document.getElementById('dashProgressBar').style.width = `${progress}%`;
-        document.getElementById('dashProgressText').textContent = progress < 30 ? 'Just getting started — keep going!' : progress < 70 ? 'Great progress! Keep consistent.' : 'Almost there! Final push needed.';
+        document.getElementById('progressRingNum').textContent = progress;
+        
+        // Progress ring
+        const ring = document.getElementById('progressRingCircle');
+        const circumference = 2 * Math.PI * 40; // 251.3
+        const offset = circumference - (progress / 100) * circumference;
+        setTimeout(() => { ring.style.strokeDashoffset = offset; }, 100);
+        
+        // Referral code
+        const refCode = firstName.toUpperCase() + '2026';
+        document.getElementById('userReferralCode').textContent = refCode;
+        
+        // Subject progress bars
+        renderSubjectProgressBars();
+        
+        // Today's date
+        const today = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
+        document.getElementById('todayDate').textContent = today;
+        
+        // Goals
+        renderTodayGoals();
+        
+        // Week planner
+        renderWeekPlanner();
       }
 
-      // ========== SCROLL TO SUBJECTS ==========
-      function scrollToSubjects() {
-        document.getElementById('subjects').scrollIntoView({ behavior: 'smooth' });
-      }
-
-      // ========== OPEN SUBJECT (with LOGIN CHECK) ==========
-      async function openSubject(slug) {
-        console.log('🔵 Opening subject:', slug);
-        
-        const user = auth.currentUser;
-        
-        // 🔒 CHECK 1: LOGIN REQUIRED
-        if (!user) {
-          toast('Please sign in to access subjects', 'warning');
-          openAuth('signin');
+      function renderSubjectProgressBars() {
+        const container = document.getElementById('subjectProgressBars');
+        if (!currentSubjects.length) {
+          container.innerHTML = '<div class="text-xs text-gray-500 text-center py-3">Loading...</div>';
           return;
         }
-        
-        try {
-          const doc = await db.collection('users').doc(user.uid).get();
-          if (!doc.exists) {
-            toast('Profile not found. Please register.', 'error');
-            openAuth('signup');
-            return;
-          }
-          
-          const profile = doc.data();
-          const isAdminUser = ADMIN_EMAILS.includes(user.email);
-          
-          // 🔥 ADMIN → TEACHER PAGE
-          if (isAdminUser) {
-            const adminMap = {
-              'physics': 'physics-teacher.html',
-              'chemistry': 'chemistry-teacher.html',
-              'biology': 'biology-teacher.html'
-            };
-            const targetPage = adminMap[slug] || 'biology-teacher.html';
-            window.location.href = targetPage;
-            return;
-          }
-          
-          // 🔒 CHECK 2: PAYMENT REQUIRED
-          if (profile.paymentStatus !== 'paid') {
-            toast('Please complete payment to access', 'warning');
-            openAuth('signup');
-            return;
-          }
-          
-          // ✅ STUDENT → STUDENT PAGE
-          const subjectDoc = await db.collection('subjects').where('slug', '==', slug).limit(1).get();
-          let targetPage = `${slug}-student.html`;
-          if (!subjectDoc.empty) {
-            const subjData = subjectDoc.docs[0].data();
-            targetPage = subjData.page || targetPage;
-          }
-          
-          window.location.href = targetPage;
-          
-        } catch (e) {
-          console.error(e);
-          toast('Error: ' + e.message, 'error');
-        }
+        const colors = {
+          blue: 'from-blue-500 to-cyan-500',
+          emerald: 'from-emerald-500 to-teal-500',
+          purple: 'from-purple-500 to-pink-500',
+          amber: 'from-amber-500 to-orange-500',
+        };
+        container.innerHTML = currentSubjects.slice(0, 3).map(s => {
+          const color = colors[s.color] || colors.emerald;
+          return `
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">${s.icon || '📚'} ${s.name}</span>
+                <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400">${s.progress}%</span>
+              </div>
+              <div class="h-1.5 bg-gray-100 dark:bg-navy-800 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r ${color} rounded-full progress-bar-fill" style="width: ${s.progress}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
       }
 
-      // ========== LOAD SUBJECTS ==========
+      function renderTodayGoals() {
+        const container = document.getElementById('todayGoalsList');
+        const goals = [
+          { icon: '📹', text: 'Watch 1 lecture', done: true },
+          { icon: '📝', text: 'Solve 20 questions', done: false },
+          { icon: '📖', text: 'Read 1 chapter', done: false },
+          { icon: '⏱️', text: 'Study 2 hours', done: false }
+        ];
+        const completed = goals.filter(g => g.done).length;
+        const pct = Math.round((completed / goals.length) * 100);
+        
+        container.innerHTML = goals.map(g => `
+          <div class="flex items-center gap-3 p-2.5 rounded-lg ${g.done ? 'bg-emerald-50 dark:bg-emerald-900/20' : 'bg-gray-50 dark:bg-navy-800'} transition cursor-pointer" onclick="App.toggleGoal(this)">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center ${g.done ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-navy-700'}">
+              <i class="fas fa-check text-white text-[10px] ${g.done ? '' : 'opacity-0'}"></i>
+            </div>
+            <div class="text-lg">${g.icon}</div>
+            <div class="flex-1 text-xs font-medium text-gray-800 dark:text-gray-200">${g.text}</div>
+          </div>
+        `).join('');
+        
+        document.getElementById('goalPct').textContent = `${pct}%`;
+        document.getElementById('goalBar').style.width = `${pct}%`;
+      }
+
+      function renderWeekPlanner() {
+        const container = document.getElementById('weekPlanner');
+        const today = new Date().getDay();
+        const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        const subjectPlan = ['📐', '🧪', '🧬', '📐', '🧪', '🧬', '📚'];
+        
+        container.innerHTML = days.map((d, i) => {
+          const isToday = i === today;
+          return `
+            <div class="text-center p-2 rounded-xl ${isToday ? 'bg-gradient-to-b from-emerald-500 to-emerald-600 text-white shadow-lg' : 'bg-gray-50 dark:bg-navy-800'}">
+              <div class="text-[10px] font-bold ${isToday ? 'opacity-90' : 'text-gray-500 dark:text-gray-400'}">${d}</div>
+              <div class="text-2xl my-1">${subjectPlan[i]}</div>
+              <div class="text-[8px] font-semibold ${isToday ? 'opacity-80' : 'text-gray-400'}">${isToday ? 'Today' : 'Study'}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // ═══════════ LOAD SUBJECTS ═══════════
       async function loadSubjects() {
         const container = document.getElementById('subjectsContainer');
         try {
@@ -1195,6 +1796,10 @@
           document.getElementById('adminSubjCount').textContent = `${currentSubjects.length}`;
           renderSubjects();
           renderAdminList();
+          renderSubjectProgressBars();
+          if (auth.currentUser) {
+            document.getElementById('subjectSubtitle').textContent = `Tap to open · All ${currentSubjects.length} unlocked`;
+          }
         } catch (e) {
           console.error(e);
           try {
@@ -1210,12 +1815,15 @@
 
       async function seedDefaults() {
         const defaults = [
-          { name: 'Physics', slug: 'physics', icon: '⚡', chapters: '28 Chapters', questions: '2,500+', progress: 75, difficulty: 'Medium', color: 'blue', order: 1, page: 'physics-student.html', thumbnail: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=800&h=450&fit=crop', createdAt: firebase.firestore.FieldValue.serverTimestamp() },
-          { name: 'Chemistry', slug: 'chemistry', icon: '🧪', chapters: '24 Chapters', questions: '2,100+', progress: 62, difficulty: 'Easy', color: 'emerald', order: 2, page: 'chemistry-student.html', thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop', createdAt: firebase.firestore.FieldValue.serverTimestamp() },
-          { name: 'Biology', slug: 'biology', icon: '🧬', chapters: '32 Chapters', questions: '3,200+', progress: 48, difficulty: 'Hard', color: 'purple', order: 3, page: 'biology-student.html', thumbnail: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&h=450&fit=crop', createdAt: firebase.firestore.FieldValue.serverTimestamp() }
+          { name: 'Physics', slug: 'physics', icon: '⚡', chapters: '28 Chapters', questions: '2,500+', progress: 75, difficulty: 'Medium', color: 'blue', order: 1, page: 'physics-student.html', thumbnail: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=800&h=450&fit=crop' },
+          { name: 'Chemistry', slug: 'chemistry', icon: '🧪', chapters: '24 Chapters', questions: '2,100+', progress: 62, difficulty: 'Easy', color: 'emerald', order: 2, page: 'chemistry-student.html', thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=450&fit=crop' },
+          { name: 'Biology', slug: 'biology', icon: '🧬', chapters: '32 Chapters', questions: '3,200+', progress: 48, difficulty: 'Hard', color: 'purple', order: 3, page: 'biology-student.html', thumbnail: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&h=450&fit=crop' }
         ];
         const batch = db.batch();
-        defaults.forEach(s => batch.set(db.collection('subjects').doc(s.slug), s));
+        defaults.forEach(s => {
+          s.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+          batch.set(db.collection('subjects').doc(s.slug), s);
+        });
         await batch.commit();
       }
 
@@ -1236,44 +1844,59 @@
         
         container.innerHTML = currentSubjects.map(subj => {
           const colors = colorMap[subj.color] || colorMap.blue;
-          const badgeClass = subj.difficulty === 'Easy' ? 'bg-emerald-50 text-emerald-700' 
-                            : subj.difficulty === 'Hard' ? 'bg-red-50 text-red-700' 
-                            : 'bg-amber-50 text-amber-700';
+          const badgeClass = subj.difficulty === 'Easy' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300' 
+                            : subj.difficulty === 'Hard' ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300' 
+                            : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300';
           const lockClass = isLoggedIn ? '' : 'locked';
           
           return `
-            <div class="subject-card-wrapper ${lockClass}" onclick="App.openSubject('${subj.slug}')">
-              <div class="subject-locked-overlay">
-                <div class="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center">
+            <div class="subject-wrapper ${lockClass}" onclick="App.openSubject('${subj.slug}')">
+              <div class="subject-lock">
+                <div class="w-14 h-14 bg-white/90 dark:bg-navy-800/90 rounded-full flex items-center justify-center shadow-xl">
                   <i class="fas fa-lock text-med-600 text-xl"></i>
                 </div>
-                <div class="text-white text-xs font-bold bg-black/50 px-3 py-1 rounded-full">Login to unlock</div>
+                <div class="text-white text-xs font-bold bg-black/60 px-3 py-1.5 rounded-full backdrop-blur">
+                  <i class="fas fa-lock mr-1"></i>Login to unlock
+                </div>
               </div>
-              <div class="card-slim rounded-2xl overflow-hidden group cursor-pointer">
-                <div class="relative h-32 sm:h-36 overflow-hidden">
-                  <img src="${subj.thumbnail || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop'}" 
-                       alt="${subj.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                  <div class="absolute inset-0 bg-gradient-to-t from-med-900/70 to-transparent"></div>
-                  <div class="absolute bottom-3 left-3 text-white">
-                    <span class="text-lg">${subj.icon || '📚'}</span>
-                    <span class="font-bold font-display ml-1.5 text-sm">${subj.name}</span>
+              <div class="card rounded-2xl overflow-hidden group cursor-pointer">
+                <div class="relative h-40 overflow-hidden">
+                  <img src="${subj.thumbnail}" alt="${subj.name}" 
+                       class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                  <div class="absolute inset-0 bg-gradient-to-t from-med-900/80 via-med-900/20 to-transparent"></div>
+                  
+                  <div class="absolute top-3 left-3 flex items-center gap-2">
+                    <span class="text-2xl">${subj.icon || '📚'}</span>
                   </div>
-                  <div class="absolute top-2.5 right-2.5 badge-verified rounded-lg px-2 py-1 flex items-center gap-1 shadow-sm">
-                    <svg class="w-3.5 h-3.5 text-med-600 hb-pulse" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                    <span class="text-[9px] font-bold text-med-700">Verified</span>
+                  
+                  <div class="absolute top-3 right-3 badge-verified rounded-lg px-2 py-1 flex items-center gap-1 shadow-sm">
+                    <i class="fas fa-heart text-emerald-600 text-[10px] hb-pulse"></i>
+                    <span class="text-[9px] font-bold text-emerald-700 dark:text-emerald-400">Verified</span>
+                  </div>
+                  
+                  <div class="absolute bottom-3 left-3 right-3">
+                    <h3 class="font-bold font-display text-white text-base mb-1">${subj.name}</h3>
+                    <div class="flex items-center gap-2 text-white/80 text-[10px]">
+                      <span><i class="fas fa-book text-[9px] mr-1"></i>${subj.chapters}</span>
+                      <span class="w-1 h-1 bg-white/50 rounded-full"></span>
+                      <span><i class="fas fa-question-circle text-[9px] mr-1"></i>${subj.questions}</span>
+                    </div>
                   </div>
                 </div>
-                <div class="p-3.5">
-                  <div class="flex justify-between text-[11px] text-gray-500 mb-2">
-                    <span>${subj.chapters}</span>
-                    <span class="${badgeClass} px-2 py-0.5 rounded-full font-semibold">${subj.difficulty}</span>
+                
+                <div class="p-4 bg-white dark:bg-navy-900">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Progress</span>
+                    <span class="${badgeClass} px-2 py-0.5 rounded-full text-[9px] font-bold">${subj.difficulty}</span>
                   </div>
-                  <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden mb-2">
-                    <div class="h-full bg-gradient-to-r ${colors} rounded-full" style="width:${subj.progress}%"></div>
+                  <div class="h-2 bg-gray-100 dark:bg-navy-800 rounded-full overflow-hidden mb-2">
+                    <div class="h-full bg-gradient-to-r ${colors} rounded-full progress-bar-fill" style="width:${subj.progress}%"></div>
                   </div>
-                  <div class="flex justify-between text-[10px] text-gray-400">
-                    <span>${subj.questions} Qs</span>
-                    <span>${subj.progress}%</span>
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-gray-600 dark:text-gray-400">${subj.progress}% complete</span>
+                    <span class="text-[10px] font-bold text-med-600 dark:text-emerald-400">
+                      Open <i class="fas fa-arrow-right text-[8px] ml-0.5"></i>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1290,17 +1913,17 @@
           return;
         }
         list.innerHTML = currentSubjects.map(s => `
-          <div class="flex items-center gap-3 rounded-xl p-3 border border-med-500/10 transition" style="background: rgba(255,255,255,0.03);">
-            <img src="${s.thumbnail}" class="w-14 h-10 object-cover rounded-lg flex-shrink-0" onerror="this.src='https://via.placeholder.com/60x40/059669/ffffff?text=IMG'">
+          <div class="flex items-center gap-3 rounded-xl p-3 border border-emerald-500/10" style="background: rgba(255,255,255,0.03);">
+            <img src="${s.thumbnail}" class="w-14 h-10 object-cover rounded-lg shrink-0">
             <div class="flex-1 min-w-0">
               <div class="text-emerald-100 text-xs font-semibold truncate">${s.icon || '📚'} ${s.name}</div>
               <div class="text-emerald-300/50 text-[10px] truncate">${s.chapters} · ${s.page || 'N/A'}</div>
             </div>
             <div class="flex gap-1.5">
-              <button onclick="App.editSubject('${s.id}')" class="w-7 h-7 rounded-lg flex items-center justify-center text-emerald-300 transition" style="background: rgba(16,185,129,0.15);">
+              <button onclick="App.editSubject('${s.id}')" class="w-7 h-7 rounded-lg flex items-center justify-center text-emerald-300" style="background: rgba(16,185,129,0.15);">
                 <i class="fas fa-edit text-[10px]"></i>
               </button>
-              <button onclick="App.deleteSubject('${s.id}', '${s.name}')" class="w-7 h-7 rounded-lg flex items-center justify-center text-red-300 transition" style="background: rgba(239,68,68,0.15);">
+              <button onclick="App.deleteSubject('${s.id}', '${s.name}')" class="w-7 h-7 rounded-lg flex items-center justify-center text-red-300" style="background: rgba(239,68,68,0.15);">
                 <i class="fas fa-trash text-[10px]"></i>
               </button>
             </div>
@@ -1308,12 +1931,46 @@
         `).join('');
       }
 
-      // ========== ADMIN ==========
+      // ═══════════ OPEN SUBJECT ═══════════
+      async function openSubject(slug) {
+        const user = auth.currentUser;
+        if (!user) {
+          toast('Please sign in to access subjects', 'warning');
+          return openAuth('signin');
+        }
+        try {
+          const doc = await db.collection('users').doc(user.uid).get();
+          if (!doc.exists) { toast('Profile not found', 'error'); return openAuth('signup'); }
+          const profile = doc.data();
+          const isAdminUser = ADMIN_EMAILS.includes(user.email);
+          
+          if (isAdminUser) {
+            const adminMap = { 'physics': 'physics-teacher.html', 'chemistry': 'chemistry-teacher.html', 'biology': 'biology-teacher.html' };
+            window.location.href = adminMap[slug] || 'biology-teacher.html';
+            return;
+          }
+          
+          if (profile.paymentStatus !== 'paid') {
+            toast('Please complete payment', 'warning');
+            return openAuth('signup');
+          }
+          
+          const subjectDoc = await db.collection('subjects').where('slug', '==', slug).limit(1).get();
+          let targetPage = `${slug}-student.html`;
+          if (!subjectDoc.empty) {
+            targetPage = subjectDoc.docs[0].data().page || targetPage;
+          }
+          window.location.href = targetPage;
+        } catch (e) {
+          toast('Error: ' + e.message, 'error');
+        }
+      }
+
+      // ═══════════ ADMIN ═══════════
       function openAdmin() {
-        if (!isAdmin) return toast('Admin access required', 'error');
+        if (!isAdmin) return toast('Admin only', 'error');
         document.getElementById('adminModal').classList.add('active');
         document.body.style.overflow = 'hidden';
-        loadSubjects();
       }
       function closeAdmin() {
         document.getElementById('adminModal').classList.remove('active');
@@ -1325,19 +1982,14 @@
       }
 
       function resetSubjectForm() {
-        document.getElementById('subjName').value = '';
+        ['subjName', 'subjChapters', 'subjQuestions', 'subjThumbUrl'].forEach(id => document.getElementById(id).value = '');
         document.getElementById('subjIcon').value = '📚';
-        document.getElementById('subjChapters').value = '';
-        document.getElementById('subjQuestions').value = '';
         document.getElementById('subjProgress').value = '50';
         document.getElementById('subjDifficulty').value = 'Medium';
         document.getElementById('subjColor').value = 'emerald';
         document.getElementById('subjOrder').value = currentSubjects.length + 1;
         document.getElementById('subjPage').value = 'biology-student.html';
-        document.getElementById('subjThumbUrl').value = '';
-        document.getElementById('subjId').value = '';
         document.getElementById('saveBtnText').textContent = 'Save Subject';
-        document.getElementById('adminFormTitle').textContent = 'Add / Update Subject';
         editingSubjectId = null;
       }
 
@@ -1352,13 +2004,12 @@
         const color = document.getElementById('subjColor').value;
         const order = parseInt(document.getElementById('subjOrder').value) || 1;
         const page = document.getElementById('subjPage').value.trim() || 'biology-student.html';
-        const thumbUrl = document.getElementById('subjThumbUrl').value.trim();
+        const thumbnail = document.getElementById('subjThumbUrl').value.trim();
 
         if (!name || !chapters || !questions) return toast('Fill required fields', 'warning');
-        if (!thumbUrl && !editingSubjectId) return toast('Thumbnail URL required', 'warning');
+        if (!thumbnail && !editingSubjectId) return toast('Thumbnail URL required', 'warning');
 
         const btn = document.querySelector('#subjectForm button[onclick*="saveSubject"]');
-        const origText = document.getElementById('saveBtnText').textContent;
         btn.disabled = true;
         document.getElementById('saveBtnText').textContent = 'Saving...';
 
@@ -1369,7 +2020,7 @@
             chapters: chapters.includes('Chapter') ? chapters : `${chapters} Chapters`,
             questions: questions.includes('+') ? questions : `${questions}+`,
             progress, difficulty, color, order, page,
-            thumbnail: thumbUrl || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&h=450&fit=crop',
+            thumbnail: thumbnail || 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&h=450&fit=crop',
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           };
           if (editingSubjectId) {
@@ -1382,11 +2033,10 @@
           }
           resetSubjectForm();
           await loadSubjects();
-        } catch (e) {
-          toast('Error: ' + e.message, 'error');
-        } finally {
+        } catch (e) { toast('Error: ' + e.message, 'error'); }
+        finally {
           btn.disabled = false;
-          document.getElementById('saveBtnText').textContent = origText;
+          document.getElementById('saveBtnText').textContent = 'Save Subject';
         }
       }
 
@@ -1404,9 +2054,7 @@
         document.getElementById('subjOrder').value = s.order || 1;
         document.getElementById('subjPage').value = s.page || 'biology-student.html';
         document.getElementById('subjThumbUrl').value = s.thumbnail || '';
-        document.getElementById('subjId').value = id;
         document.getElementById('saveBtnText').textContent = 'Update';
-        document.getElementById('adminFormTitle').textContent = `Edit: ${s.name}`;
       }
 
       async function deleteSubject(id, name) {
@@ -1414,27 +2062,25 @@
         if (!confirm(`Delete "${name}"?`)) return;
         try {
           await db.collection('subjects').doc(id).delete();
-          toast('Subject deleted', 'success');
+          toast('Deleted', 'success');
           await loadSubjects();
         } catch (e) { toast('Delete failed', 'error'); }
       }
 
-      // ========== AUTH MODAL ==========
+      // ═══════════ AUTH ═══════════
       function switchAuthTab(tab) {
-        const signinView = document.getElementById('signinView');
-        const signupView = document.getElementById('signupView');
-        const tabSignin = document.getElementById('tabSignin');
-        const tabSignup = document.getElementById('tabSignup');
+        const sv = document.getElementById('signinView');
+        const uv = document.getElementById('signupView');
+        const ts = document.getElementById('tabSignin');
+        const tu = document.getElementById('tabSignup');
         if (tab === 'signin') {
-          signinView.classList.remove('hidden');
-          signupView.classList.add('hidden');
-          tabSignin.classList.add('active');
-          tabSignup.classList.remove('active');
+          sv.classList.remove('hidden'); uv.classList.add('hidden');
+          ts.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold transition bg-med-600 text-white shadow-lg';
+          tu.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold transition text-gray-500 dark:text-gray-400';
         } else {
-          signinView.classList.add('hidden');
-          signupView.classList.remove('hidden');
-          tabSignup.classList.add('active');
-          tabSignin.classList.remove('active');
+          sv.classList.add('hidden'); uv.classList.remove('hidden');
+          tu.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold transition bg-med-600 text-white shadow-lg';
+          ts.className = 'flex-1 py-2.5 rounded-xl text-xs font-bold transition text-gray-500 dark:text-gray-400';
           goToStep(1);
         }
       }
@@ -1443,11 +2089,9 @@
         const email = document.getElementById('signinEmail').value.trim();
         const password = document.getElementById('signinPassword').value;
         if (!email || !password) return toast('Enter email and password', 'warning');
-
         const btn = document.getElementById('signinSubmitBtn');
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Signing in...';
-
         try {
           await auth.signInWithEmailAndPassword(email, password);
           document.getElementById('signinEmail').value = '';
@@ -1456,9 +2100,7 @@
         } catch (e) {
           let msg = 'Sign in failed';
           if (e.code === 'auth/user-not-found') msg = 'No account found. Register first.';
-          else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
-          else if (e.code === 'auth/invalid-credential') msg = 'Invalid credentials.';
-          else msg = e.message;
+          else if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') msg = 'Invalid credentials.';
           toast(msg, 'error');
         } finally {
           btn.disabled = false;
@@ -1473,7 +2115,7 @@
           const phone = document.getElementById('regPhone').value.trim();
           if (!name) return toast('Enter your name', 'warning');
           if (!email.includes('@')) return toast('Invalid email', 'warning');
-          if (phone.length !== 10) return toast('Enter 10-digit mobile', 'warning');
+          if (phone.length !== 10) return toast('10-digit mobile required', 'warning');
           tempProfile.name = name;
           tempProfile.email = email;
           tempProfile.phone = phone;
@@ -1511,11 +2153,10 @@
             sumAv.textContent = tempProfile.name.charAt(0).toUpperCase();
           }
         }
-        document.querySelectorAll('.reg-step').forEach(s => s.classList.remove('active'));
-        document.getElementById(`step${step}`).classList.add('active');
-        const dots = document.querySelectorAll('#stepIndicator > div');
-        dots.forEach((d, i) => {
-          d.className = 'w-2.5 h-2.5 rounded-full ' + (i < step ? 'bg-med-500' : 'bg-gray-200');
+        document.querySelectorAll('.reg-step').forEach(s => s.classList.add('hidden'));
+        document.getElementById(`step${step}`).classList.remove('hidden');
+        document.querySelectorAll('#stepIndicator > div').forEach((d, i) => {
+          d.className = 'w-2.5 h-2.5 rounded-full ' + (i < step ? 'bg-med-500' : 'bg-gray-200 dark:bg-navy-700');
         });
       }
 
@@ -1526,7 +2167,7 @@
         if (/[A-Z]/.test(pw) && /[0-9]/.test(pw)) s++;
         for (let i = 1; i <= 3; i++) {
           const bar = document.getElementById(`strengthBar${i}`);
-          bar.className = 'h-1 flex-1 rounded-full ' + (i <= s ? (s === 1 ? 'bg-red-500' : s === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-gray-200');
+          bar.className = 'h-1 flex-1 rounded-full ' + (i <= s ? (s === 1 ? 'bg-red-500' : s === 2 ? 'bg-amber-500' : 'bg-emerald-500') : 'bg-gray-200 dark:bg-navy-700');
         }
       }
 
@@ -1557,7 +2198,7 @@
         if (!file) return;
         if (file.size > 5 * 1024 * 1024) return toast('Max 5MB', 'error');
         try {
-          const resized = await resizeImage(file, 400, 0.85);
+          const resized = await resizeImage(file);
           tempProfile.avatarFile = resized;
           const reader = new FileReader();
           reader.onload = ev => {
@@ -1566,31 +2207,29 @@
             document.getElementById('profilePlaceholder').classList.add('hidden');
           };
           reader.readAsDataURL(resized);
-        } catch (err) { console.error(err); }
+        } catch (err) {}
       }
 
       async function handleEditImage(e) {
         const file = e.target.files?.[0];
         if (!file) return;
         try {
-          const resized = await resizeImage(file, 400, 0.85);
+          const resized = await resizeImage(file);
           const reader = new FileReader();
           reader.onload = ev => {
             document.getElementById('editProfilePreview').src = ev.target.result;
             document.getElementById('editProfilePreview').dataset.newImage = ev.target.result;
           };
           reader.readAsDataURL(resized);
-        } catch (err) { console.error(err); }
+        } catch (err) {}
       }
 
       async function startPayment() {
         const pw = document.getElementById('regPassword').value;
         if (pw.length < 6) return toast('Password too short', 'warning');
-
         const btn = document.getElementById('payNowBtn');
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Processing...';
-
         const amount = referralApplied ? DISCOUNTED_AMOUNT : ENROLLMENT_AMOUNT;
         const amountINR = amount / 100;
 
@@ -1600,28 +2239,13 @@
             amount, currency: 'INR',
             name: 'THP-STARLET NEET',
             description: referralApplied ? 'NEET (Referral)' : 'NEET Premium',
-            prefill: {
-              name: tempProfile.name,
-              email: tempProfile.email,
-              contact: tempProfile.phone
-            },
+            prefill: { name: tempProfile.name, email: tempProfile.email, contact: tempProfile.phone },
             theme: { color: '#059669' },
-            handler: async function(response) {
-              await completeRegistration(response, amountINR);
-            },
-            modal: {
-              ondismiss: () => {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay ₹${amountINR}`;
-              }
-            }
+            handler: async function(response) { await completeRegistration(response, amountINR); },
+            modal: { ondismiss: () => { btn.disabled = false; btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay ₹${amountINR}`; } }
           };
           const rzp = new Razorpay(options);
-          rzp.on('payment.failed', (r) => {
-            btn.disabled = false;
-            btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay ₹${amountINR}`;
-            toast('Payment failed', 'error');
-          });
+          rzp.on('payment.failed', () => { btn.disabled = false; btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay ₹${amountINR}`; toast('Payment failed', 'error'); });
           rzp.open();
         } catch (e) {
           btn.disabled = false;
@@ -1633,16 +2257,13 @@
       async function completeRegistration(paymentResponse, amountPaid) {
         const btn = document.getElementById('payNowBtn');
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Creating...';
-
         try {
           const pw = document.getElementById('regPassword').value;
           const email = tempProfile.email.trim().toLowerCase();
-          
           let avatarUrl = '';
           if (tempProfile.avatarFile) {
             try { avatarUrl = await uploadToImgBB(tempProfile.avatarFile); } catch (e) {}
           }
-
           let cred;
           try {
             cred = await auth.createUserWithEmailAndPassword(email, pw);
@@ -1651,10 +2272,8 @@
               cred = await auth.signInWithEmailAndPassword(email, pw);
             } else throw authErr;
           }
-
           const uid = cred.user.uid;
           try { await cred.user.updateProfile({ displayName: tempProfile.name }); } catch (e) {}
-
           await db.collection('users').doc(uid).set({
             uid, name: tempProfile.name, email,
             phone: tempProfile.phone,
@@ -1670,18 +2289,14 @@
             validTill: 'NEET 2026',
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
           }, { merge: true });
-
           toast('🎉 Welcome to THP-STARLET!', 'success');
-          
         } catch (e) {
-          console.error(e);
           toast('Error: ' + e.message, 'error');
           btn.disabled = false;
           btn.innerHTML = `<i class="fas fa-credit-card"></i>Pay`;
         }
       }
 
-      // ========== PROFILE ==========
       function openProfile() {
         if (!currentUser || !userProfile) return openAuth('signin');
         document.getElementById('editName').value = userProfile.name || '';
@@ -1710,44 +2325,31 @@
         const editImg = document.getElementById('editProfilePreview');
         const newImageData = editImg.dataset.newImage;
         if (!name) return toast('Name required', 'warning');
-
         const btn = document.getElementById('saveProfileBtn');
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Saving...';
-
         try {
           let avatarUrl = userProfile.avatar;
           if (newImageData) {
             const blob = await (await fetch(newImageData)).blob();
             const file = new File([blob], 'avatar.jpg', { type: 'image/jpeg' });
-            const resized = await resizeImage(file, 400, 0.85);
-            avatarUrl = await uploadToImgBB(resized);
+            avatarUrl = await uploadToImgBB(file);
           }
-
           await db.collection('users').doc(currentUser.uid).update({
             name, phone, userClass, target,
             ...(avatarUrl && { avatar: avatarUrl })
           });
-
-          if (name !== userProfile.name) {
-            await currentUser.updateProfile({ displayName: name });
-          }
-
-          // Update local state
+          if (name !== userProfile.name) await currentUser.updateProfile({ displayName: name });
           userProfile.name = name;
           userProfile.phone = phone;
           userProfile.userClass = userClass;
           userProfile.target = target;
           if (avatarUrl) userProfile.avatar = avatarUrl;
-
-          // Refresh dashboard
-          showPersonalDashboard(userProfile);
-
+          renderPersonalDashboard(userProfile);
           toast('Profile updated! ✅', 'success');
           closeProfile();
-        } catch (e) {
-          toast('Error: ' + e.message, 'error');
-        } finally {
+        } catch (e) { toast('Error: ' + e.message, 'error'); }
+        finally {
           btn.disabled = false;
           btn.innerHTML = '<i class="fas fa-save mr-1"></i>Save Changes';
         }
@@ -1765,58 +2367,115 @@
       function logout() {
         if (!confirm('Sign out?')) return;
         auth.signOut().then(() => {
-          toast('Signed out successfully', 'info');
+          toast('Signed out', 'info');
           setTimeout(() => location.reload(), 500);
         });
       }
 
-      // ========== ANIMATIONS ==========
-      function animateStethoscope() {
-        const s = document.getElementById('stethoscope');
-        const sections = document.querySelectorAll('section');
-        let i = 0;
-        setInterval(() => {
-          if (!sections.length) return;
-          i = (i + 1) % sections.length;
-          const r = sections[i].getBoundingClientRect();
-          if (r.top > -200 && r.top < window.innerHeight + 200) {
-            s.style.top = Math.max(80, r.top + r.height * 0.15) + 'px';
-            s.style.left = Math.min(window.innerWidth - 120, r.left + r.width * 0.55) + 'px';
-          }
-        }, 5000);
+      // Notifications
+      function openNotifications() {
+        document.getElementById('notifModal').classList.add('active');
+        document.getElementById('notifDot').classList.add('hidden');
+      }
+      function closeNotifications() {
+        document.getElementById('notifModal').classList.remove('active');
       }
 
-      // ========== MOBILE ==========
-      const mobileDrawer = document.getElementById('mobileDrawer');
-      document.getElementById('menuToggle').onclick = () => mobileDrawer.style.transform = 'translateX(0)';
-      document.getElementById('closeDrawer').onclick = () => mobileDrawer.style.transform = 'translateX(100%)';
-      document.querySelectorAll('#mobileDrawer a, #mobileDrawer button').forEach(el => 
-        el.addEventListener('click', () => mobileDrawer.style.transform = 'translateX(100%)')
-      );
+      // Leaderboard
+      function openLeaderboard() {
+        const modal = document.getElementById('leaderModal');
+        modal.classList.add('active');
+        const top = [
+          { rank: 1, name: 'Aarav Sharma', score: '95.2%', medal: '🥇' },
+          { rank: 2, name: 'Diya Patel', score: '93.8%', medal: '🥈' },
+          { rank: 3, name: 'Arjun Verma', score: '92.1%', medal: '🥉' },
+          { rank: 4, name: 'Ananya Singh', score: '91.5%', medal: '4' },
+          { rank: 5, name: 'Kabir Khan', score: '90.7%', medal: '5' },
+          { rank: 6, name: 'Riya Gupta', score: '89.9%', medal: '6' },
+          { rank: 7, name: 'Vihaan Joshi', score: '88.4%', medal: '7' },
+          { rank: 8, name: 'Ishita Nair', score: '87.6%', medal: '8' },
+        ];
+        document.getElementById('fullLeaderboard').innerHTML = top.map(r => `
+          <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-navy-800 transition">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${r.rank <= 3 ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-white' : 'bg-gray-100 dark:bg-navy-700 text-gray-600 dark:text-gray-300'}">${r.medal}</div>
+            <div class="flex-1">
+              <div class="text-sm font-bold text-gray-900 dark:text-white">${r.name}</div>
+              <div class="text-[10px] text-gray-500 dark:text-gray-400">Weekly Avg</div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm font-extrabold gradient-text">${r.score}</div>
+              <div class="text-[9px] text-gray-500">Rank ${r.rank}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+      function closeLeaderboard() {
+        document.getElementById('leaderModal').classList.remove('active');
+      }
 
-      // Modal close
-      document.getElementById('authModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAuth(); });
-      document.getElementById('profileModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeProfile(); });
-      document.getElementById('adminModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdmin(); });
-      document.addEventListener('keydown', e => { 
-        if (e.key === 'Escape') { closeAuth(); closeProfile(); closeAdmin(); }
-      });
+      function copyReferral() {
+        const code = document.getElementById('userReferralCode').textContent;
+        navigator.clipboard.writeText(code).then(() => toast('Referral code copied! 📋', 'success'));
+      }
+      function shareReferral() {
+        const code = document.getElementById('userReferralCode').textContent;
+        const msg = `Join THP-STARLET NEET! Use my referral code "${code}" and get ₹100 off. ${window.location.origin}/Neet.html`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+      }
 
-      // ========== EXPORT ==========
+      function scrollToSubjects() { document.getElementById('subjects').scrollIntoView({ behavior: 'smooth' }); }
+      function scrollToTests() { document.getElementById('tests').scrollIntoView({ behavior: 'smooth' }); }
+
+      function toggleGoal(el) {
+        const icon = el.querySelector('.w-6');
+        const check = el.querySelector('.fa-check');
+        if (icon.classList.contains('bg-emerald-500')) {
+          icon.classList.remove('bg-emerald-500');
+          icon.classList.add('bg-gray-300', 'dark:bg-navy-700');
+          check.classList.add('opacity-0');
+          el.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/20');
+          el.classList.add('bg-gray-50', 'dark:bg-navy-800');
+        } else {
+          icon.classList.add('bg-emerald-500');
+          icon.classList.remove('bg-gray-300', 'dark:bg-navy-700');
+          check.classList.remove('opacity-0');
+          el.classList.add('bg-emerald-50', 'dark:bg-emerald-900/20');
+          el.classList.remove('bg-gray-50', 'dark:bg-navy-800');
+        }
+      }
+
+      function openMobileDrawer() { document.getElementById('mobileDrawer').classList.add('open'); }
+      function closeMobileDrawer() { document.getElementById('mobileDrawer').classList.remove('open'); }
+
+      // ═══════════ EXPORT ═══════════
       window.App = {
         openAuth, closeAuth, openProfile, closeProfile, openAdmin, closeAdmin,
         openAdminSubjectModal, logout, goToStep, checkStrength, checkMatch,
         handleProfileImage, handleEditImage, startPayment, saveProfile,
         openSubject, saveSubject, editSubject, deleteSubject, checkReferral,
-        switchAuthTab, signIn
+        switchAuthTab, signIn, toggleDark, openNotifications, closeNotifications,
+        openLeaderboard, closeLeaderboard, copyReferral, shareReferral,
+        openMobileDrawer, closeMobileDrawer, toggleGoal
       };
       window.scrollToSubjects = scrollToSubjects;
+      window.scrollToTests = scrollToTests;
 
-      // ========== INIT ==========
+      // ═══════════ EVENT LISTENERS ═══════════
+      document.getElementById('menuToggle').onclick = openMobileDrawer;
+      document.getElementById('authModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAuth(); });
+      document.getElementById('profileModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeProfile(); });
+      document.getElementById('adminModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdmin(); });
+      document.getElementById('notifModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeNotifications(); });
+      document.getElementById('leaderModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLeaderboard(); });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { closeAuth(); closeProfile(); closeAdmin(); closeNotifications(); closeLeaderboard(); closeMobileDrawer(); }
+      });
+
+      // ═══════════ INIT ═══════════
       loadSubjects();
-      animateStethoscope();
+      setTimeout(() => document.getElementById('notifDot').classList.remove('hidden'), 3000);
 
-      console.log('🩺 THP-STARLET NEET — Personalized Dashboard Ready');
+      console.log('🩺 THP-STARLET NEET v2.0 — Premium Dashboard Loaded');
     })();
   </script>
 </body>
