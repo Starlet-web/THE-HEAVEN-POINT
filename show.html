@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="description" content="THP Sunday Mini Show – Book Your Seat | Movie Screening by THP-STARLET">
+  <meta name="theme-color" content="#0f172a">
+  <title>THP Sunday Mini Show – Book Your Seat</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <!-- Razorpay -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+            bms: { red: '#dc2626', dark: '#0f172a', card: '#1e293b', light: '#334155' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Outfit', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            'shimmer': 'shimmer 3s linear infinite',
+            'slide-up': 'slideUp 0.5s cubic-bezier(0.16,1,0.3,1)',
+            'bounce-in': 'bounceIn 0.5s cubic-bezier(0.68,-0.55,0.265,1.55)',
+            'spin-slow': 'spin 8s linear infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            pulseGlow: { '0%,100%': { boxShadow: '0 0 8px rgba(220,38,38,0.4)' }, '50%': { boxShadow: '0 0 25px rgba(220,38,38,0.8)' } },
+            shimmer: { '0%': { backgroundPosition: '-1000px 0' }, '100%': { backgroundPosition: '1000px 0' } },
+            slideUp: { '0%': { opacity: '0', transform: 'translateY(30px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+            bounceIn: { '0%': { transform: 'scale(0.3)', opacity: '0' }, '50%': { transform: 'scale(1.05)' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #dc2626, #ef4444); border-radius: 10px; }
+
+    /* BMS STYLE HEADER */
+    .bms-header {
+      background: linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(15,23,42,0.92) 100%);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(220,38,38,0.2);
+    }
+    
+    /* MOVIE POSTER */
+    .movie-poster-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 60px rgba(220,38,38,0.15);
+    }
+    .movie-poster-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(15,23,42,0.95) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .movie-poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s;
+    }
+    .movie-poster-wrap:hover .movie-poster { transform: scale(1.05); }
+
+    /* SEAT MAP - CINEMA STYLE */
+    .seat-map {
+      perspective: 800px;
+      padding: 30px 20px;
+    }
+    .screen {
+      width: 80%;
+      max-width: 500px;
+      height: 12px;
+      background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+      margin: 0 auto 40px;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      box-shadow: 0 10px 40px rgba(220,38,38,0.5), 0 0 80px rgba(220,38,38,0.3);
+      position: relative;
+      transform: rotateX(-15deg);
+    }
+    .screen::before {
+      content: 'SCREEN';
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: rgba(220,38,38,0.8);
+      font-weight: 700;
+    }
+    .screen::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      height: 60px;
+      background: radial-gradient(ellipse at top, rgba(220,38,38,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .row-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      transform: rotateX(-10deg);
+    }
+    .row-label {
+      width: 30px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 700;
+      text-align: center;
+    }
+    .seats-container {
+      display: flex;
+      gap: 8px;
+    }
+
+    .seat {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px 8px 4px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+      position: relative;
+      user-select: none;
+      border: 2px solid transparent;
+    }
+    .seat::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border-radius: 12px 12px 8px 8px;
+      background: transparent;
+      transition: all 0.25s;
+      z-index: -1;
+    }
+    .seat.available { background: linear-gradient(180deg, #334155 0%, #1e293b 100%); color: #94a3b8; border-color: #475569; }
+    .seat.available:hover { background: linear-gradient(180deg, #10b981 0%, #059669 100%); color: white; border-color: #10b981; transform: translateY(-3px) scale(1.08); }
+    
+    .seat.selected { background: linear-gradient(180deg, #10b981 0%, #059669 100%); color: white; border-color: #34d399; transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 20px rgba(16,185,129,0.4); }
+    
+    .seat.booked { background: linear-gradient(180deg, #450a0a 0%, #7f1d1d 100%); color: #7f1d1d; cursor: not-allowed; border-color: #7f1d1d; opacity: 0.6; }
+    .seat.booked::after { content: '\f00d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 10px; color: #450a0a; }
+
+    .seat.premium { border-color: #f59e0b; }
+    .seat.premium.available { background: linear-gradient(180deg, #451a03 0%, #78350f 100%); color: #fbbf24; }
+    .seat.premium.available:hover { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); color: white; }
+
+    .seat-type-indicator {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 14px;
+      height: 14px;
+      background: #f59e0b;
+      border-radius: 50%;
+      border: 2px solid #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .seat-type-indicator i { font-size: 7px; color: white; }
+
+    /* SLOT CARDS */
+    .slot-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid #334155;
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .slot-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.15), transparent);
+      transition: left 0.6s;
+    }
+    .slot-card:hover::before { left: 100%; }
+    .slot-card:hover { border-color: #dc2626; transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .slot-card.active { border-color: #dc2626; background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%); box-shadow: 0 0 30px rgba(220,38,38,0.3); }
+    .slot-card.soldout { opacity: 0.4; cursor: not-allowed; }
+    .slot-card.soldout:hover { transform: none; border-color: #334155; }
+
+    /* MODAL */
+    .modal-slim {
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .modal-slim.active { opacity: 1; pointer-events: all; visibility: visible; }
+
+    /* TOAST */
+    .toast-pop { animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+    /* ADMIN */
+    .admin-panel { background: linear-gradient(180deg, #0a1929 0%, #0c1f35 100%); }
+    .admin-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(220,38,38,0.2);
+      color: #f1f5f9;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      width: 100%;
+      font-family: inherit;
+      transition: all 0.25s;
+    }
+    .admin-input:focus { outline: none; border-color: #dc2626; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(220,38,38,0.15); }
+    .admin-input::placeholder { color: rgba(241,245,249,0.3); }
+
+    /* BADGES */
+    .badge-premium { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; }
+    .badge-live { background: linear-gradient(135deg, #dc2626, #ef4444); color: white; }
+
+    /* TICKET */
+    .ticket {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(220,38,38,0.3);
+    }
+    .ticket::before, .ticket::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #0f172a;
+      border-radius: 50%;
+      top: 50%;
+    }
+    .ticket::before { left: -15px; transform: translateY(-50%); }
+    .ticket::after { right: -15px; transform: translateY(-50%); }
+
+    /* SCROLL ANIM */
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* SHIMMER LOADING */
+    .shimmer-loading {
+      background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+  </style>
+</head>
+<body class="flex flex-col">
+
+  <!-- ========== HEADER (BMS STYLE) ========== -->
+  <header class="bms-header fixed top-0 inset-x-0 z-50 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-gradient-to-br from-red-600 to-red-700 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/30">
+          <i class="fas fa-film text-white text-lg"></i>
+        </div>
+        <div class="leading-tight">
+          <div class="text-base sm:text-lg font-bold font-display tracking-tight text-white">
+            THP <span class="text-red-500">Sunday</span> Mini Show
+          </div>
+          <div class="text-[9px] text-gray-400 tracking-widest uppercase">Movie Screening Experience</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="Neet.html" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition text-sm text-gray-300">
+          <i class="fas fa-graduation-cap text-emerald-400"></i>
+          <span class="hidden lg:inline">NEET Platform</span>
+        </a>
+        <button onclick="App.openAdmin()" id="adminBtn" class="hidden items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 transition text-sm text-amber-400 border border-amber-500/30">
+          <i class="fas fa-cog text-xs"></i>
+          <span class="hidden sm:inline">Admin</span>
+        </button>
+        <button onclick="App.toggleTheme()" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-300 transition">
+          <i class="fas fa-sun text-sm" id="themeIcon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MAIN ========== -->
+  <main class="flex-1 mt-20 px-3 sm:px-4 md:px-6 pb-24 max-w-7xl mx-auto w-full space-y-6">
+
+    <!-- ========== HERO MOVIE BANNER ========== -->
+    <section class="reveal">
+      <div class="relative rounded-3xl overflow-hidden shadow-2xl" style="min-height: 400px;">
+        <!-- Background Image -->
+        <img id="heroBackdrop" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600&h=900&fit=crop" 
+             class="absolute inset-0 w-full h-full object-cover" alt="Movie Backdrop" style="filter: blur(8px); transform: scale(1.1);">
+        <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.75) 50%, rgba(220,38,38,0.3) 100%);"></div>
+        
+        <!-- Content -->
+        <div class="relative z-10 p-6 sm:p-10 flex flex-col md:flex-row gap-8 items-start md:items-end" style="min-height: 400px;">
+          <!-- Movie Poster -->
+          <div class="movie-poster-wrap flex-shrink-0 w-40 sm:w-56 md:w-64" style="aspect-ratio: 2/3;">
+            <img id="heroPoster" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&h=750&fit=crop" 
+                 class="movie-poster" alt="Movie Poster">
+            <div class="absolute top-3 right-3 z-10">
+              <span class="bg-red-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1 animate-pulse">
+                <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                LIMITED SEATS
+              </span>
+            </div>
+          </div>
+
+          <!-- Movie Info -->
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="badge-live text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                <i class="fas fa-star text-[8px]"></i> PREMIUM SHOW
+              </span>
+              <span class="bg-white/10 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/20">
+                <i class="fas fa-users mr-1"></i> Only 15 Seats
+              </span>
+            </div>
+
+            <h1 id="heroTitle" class="text-3xl sm:text-4xl md:text-5xl font-extrabold font-display text-white leading-tight mb-3">
+              Movie Title Loading...
+            </h1>
+
+            <div id="heroMeta" class="flex items-center gap-3 text-white/70 text-sm mb-4 flex-wrap">
+              <span><i class="fas fa-calendar mr-1 text-red-400"></i> Every Sunday</span>
+              <span>•</span>
+              <span><i class="fas fa-clock mr-1 text-red-400"></i> 2 Slots</span>
+              <span>•</span>
+              <span><i class="fas fa-language mr-1 text-red-400"></i> Hindi</span>
+              <span>•</span>
+              <span><i class="fas fa-tag mr-1 text-red-400"></i> U/A</span>
+            </div>
+
+            <p id="heroDescription" class="text-white/80 text-sm sm:text-base max-w-2xl mb-5 leading-relaxed">
+              Loading description...
+            </p>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <div class="flex items-center gap-4 bg-white/10 backdrop-blur rounded-xl px-4 py-3 border border-white/20">
+                <div>
+                  <div class="text-[10px] text-white/60 uppercase tracking-wider">Starting at</div>
+                  <div class="text-2xl font-extrabold text-white">₹50</div>
+                </div>
+                <div class="w-px h-8 bg-white/20"></div>
+                <div>
+                  <div class="text-[10px] text-white/60 uppercase tracking-wider">Premium</div>
+                  <div class="text-2xl font-extrabold text-amber-400">₹70</div>
+                </div>
+              </div>
+              <button onclick="scrollToSlots()" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-xl shadow-red-500/30 hover:scale-[1.03] transition flex items-center gap-2">
+                <i class="fas fa-ticket-alt"></i> Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SLOTS ========== -->
+    <section id="slots" class="scroll-mt-24 reveal">
+      <div class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-1 h-6 bg-gradient-to-b from-red-500 to-red-700 rounded-full"></div>
+          <h2 class="text-xl sm:text-2xl font-bold font-display text-white">Choose Your Show Time</h2>
+        </div>
+        <p class="text-gray-400 text-xs sm:text-sm">Select a slot to view seats and book</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="slotsContainer">
+        <div class="shimmer-loading h-32 rounded-2xl"></div>
+        <div class="shimmer-loading h-32 rounded-2xl"></div>
+      </div>
+    </section>
+
+    <!-- ========== SEAT SELECTION ========== -->
+    <section id="seatSection" class="scroll-mt-24 reveal hidden">
+      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-700">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-red-700 to-red-900 p-5 flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <div class="text-white/80 text-[10px] uppercase tracking-widest mb-1">You're booking for</div>
+            <div class="text-white font-bold font-display text-lg" id="selectedSlotTitle">Slot Loading...</div>
+          </div>
+          <div class="bg-black/30 backdrop-blur rounded-xl px-4 py-2 border border-white/10">
+            <div class="text-white/60 text-[10px] uppercase">Available</div>
+            <div class="text-white font-bold text-lg"><span id="availableSeats">15</span> / 15</div>
+          </div>
+        </div>
+
+        <!-- Seat Map -->
+        <div class="seat-map">
+          <!-- SCREEN -->
+          <div class="screen"></div>
+
+          <!-- ROWS -->
+          <div id="seatRowsContainer">
+            <!-- Rows will be generated here -->
+          </div>
+
+          <!-- LEGEND -->
+          <div class="mt-10 flex items-center justify-center gap-6 flex-wrap">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-md bg-gradient-to-b from-slate-700 to-slate-800 border border-slate-600"></div>
+              <span class="text-xs text-gray-400">Available</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-md bg-gradient-to-b from-emerald-500 to-emerald-600 border border-emerald-400"></div>
+              <span class="text-xs text-emerald-400">Selected</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-md bg-gradient-to-b from-red-900 to-red-950 border border-red-800 opacity-60"></div>
+              <span class="text-xs text-red-400">Booked</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-md bg-gradient-to-b from-amber-800 to-amber-900 border-2 border-amber-500"></div>
+              <span class="text-xs text-amber-400">Premium (₹70)</span>
+            </div>
+          </div>
+
+          <!-- PRICE INFO -->
+          <div class="mt-6 grid grid-cols-2 gap-3 max-w-md mx-auto">
+            <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-3 text-center">
+              <div class="text-[10px] text-gray-400 uppercase mb-1">Regular Seat</div>
+              <div class="text-lg font-bold text-white">₹50</div>
+            </div>
+            <div class="bg-amber-900/30 border border-amber-500/30 rounded-xl p-3 text-center">
+              <div class="text-[10px] text-amber-400 uppercase mb-1">Premium Seat</div>
+              <div class="text-lg font-bold text-amber-400">₹70</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOOKING BAR -->
+        <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-5 border-t border-slate-700 sticky bottom-0">
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div class="flex-1">
+              <div class="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Selected Seats</div>
+              <div id="selectedSeatsDisplay" class="text-white font-mono text-sm font-bold">— None selected —</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[10px] text-gray-400 uppercase tracking-wider">Total</div>
+              <div class="text-3xl font-extrabold font-display text-white" id="totalAmount">₹0</div>
+            </div>
+            <button onclick="App.proceedToBook()" id="bookBtn" disabled
+                    class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-3.5 rounded-xl font-bold text-sm shadow-xl shadow-red-500/30 hover:scale-[1.03] transition flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none">
+              <i class="fas fa-ticket-alt"></i> Proceed to Book
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS ========== -->
+    <section class="reveal">
+      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-700">
+        <h2 class="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
+          <i class="fas fa-info-circle text-red-500"></i> How It Works
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="text-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+              <i class="fas fa-calendar-check text-white text-xl"></i>
+            </div>
+            <div class="text-sm font-bold text-white mb-1">Pick Slot</div>
+            <div class="text-xs text-gray-400">Choose your preferred show time</div>
+          </div>
+          <div class="text-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+              <i class="fas fa-chair text-white text-xl"></i>
+            </div>
+            <div class="text-sm font-bold text-white mb-1">Select Seats</div>
+            <div class="text-xs text-gray-400">Pick your favorite seats from map</div>
+          </div>
+          <div class="text-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+              <i class="fas fa-credit-card text-white text-xl"></i>
+            </div>
+            <div class="text-sm font-bold text-white mb-1">Pay Securely</div>
+            <div class="text-xs text-gray-400">Multiple payment options available</div>
+          </div>
+          <div class="text-center">
+            <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+              <i class="fas fa-ticket-alt text-white text-xl"></i>
+            </div>
+            <div class="text-sm font-bold text-white mb-1">Get Ticket</div>
+            <div class="text-xs text-gray-400">Instant digital ticket on WhatsApp</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FAQ ========== -->
+    <section class="reveal">
+      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-700">
+        <h2 class="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
+          <i class="fas fa-question-circle text-red-500"></i> Frequently Asked Questions
+        </h2>
+        <div class="space-y-3">
+          <details class="group bg-slate-800/60 rounded-xl border border-slate-700">
+            <summary class="cursor-pointer p-4 font-semibold text-white text-sm flex items-center justify-between">
+              <span>How many seats are available?</span>
+              <i class="fas fa-chevron-down text-red-500 transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="px-4 pb-4 text-sm text-gray-400">Total 15 seats across 5 rows. Each row has 3 seats. First 3 rows are Regular (₹50), last 2 rows are Premium (₹70).</div>
+          </details>
+          <details class="group bg-slate-800/60 rounded-xl border border-slate-700">
+            <summary class="cursor-pointer p-4 font-semibold text-white text-sm flex items-center justify-between">
+              <span>When does the booking close?</span>
+              <i class="fas fa-chevron-down text-red-500 transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="px-4 pb-4 text-sm text-gray-400">Booking closes 1 hour before the show time or when all seats are booked, whichever is earlier.</div>
+          </details>
+          <details class="group bg-slate-800/60 rounded-xl border border-slate-700">
+            <summary class="cursor-pointer p-4 font-semibold text-white text-sm flex items-center justify-between">
+              <span>How will I get my ticket?</span>
+              <i class="fas fa-chevron-down text-red-500 transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="px-4 pb-4 text-sm text-gray-400">After payment, a digital ticket with QR code will be sent via WhatsApp and email. Show it at the entry.</div>
+          </details>
+          <details class="group bg-slate-800/60 rounded-xl border border-slate-700">
+            <summary class="cursor-pointer p-4 font-semibold text-white text-sm flex items-center justify-between">
+              <span>Can I cancel my booking?</span>
+              <i class="fas fa-chevron-down text-red-500 transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="px-4 pb-4 text-sm text-gray-400">Cancellations are allowed up to 2 hours before the show. Contact us on WhatsApp for support.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FLOATING HELP BUTTON ========== -->
+  <button onclick="window.open('https://wa.me/919648837922?text=Hi%20THP%20Sunday%20Show','_blank')" 
+          class="fixed right-4 bottom-6 z-40 w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-all animate-pulse-glow"
+          title="Help">
+    <i class="fab fa-whatsapp text-2xl"></i>
+  </button>
+
+  <!-- ========== BOOKING MODAL ========== -->
+  <div class="modal-slim fixed inset-0 bg-black/80 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-4" id="bookingModal">
+    <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl w-full max-w-lg shadow-2xl border border-slate-700 relative max-h-[94vh] overflow-y-auto">
+      <button class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition z-20 text-white" onclick="App.closeBooking()">
+        <i class="fas fa-times text-sm"></i>
+      </button>
+
+      <div class="p-6">
+        <!-- Header -->
+        <div class="text-center mb-5">
+          <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <i class="fas fa-user-circle text-white text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold font-display text-white">Your Details</h3>
+          <p class="text-xs text-gray-400 mt-1">Fill information to complete booking</p>
+        </div>
+
+        <!-- Booking Summary -->
+        <div class="bg-black/30 border border-red-500/20 rounded-2xl p-4 mb-5">
+          <div class="text-[10px] text-red-400 uppercase tracking-widest mb-2">Booking Summary</div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-gray-400 text-xs">Slot:</span>
+            <span class="text-white text-xs font-bold" id="modalSlot">—</span>
+          </div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-gray-400 text-xs">Seats:</span>
+            <span class="text-white text-xs font-mono font-bold" id="modalSeats">—</span>
+          </div>
+          <div class="border-t border-red-500/20 pt-2 flex items-center justify-between">
+            <span class="text-white text-sm font-bold">Total:</span>
+            <span class="text-2xl font-extrabold text-red-400" id="modalTotal">₹0</span>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[11px] font-bold text-gray-300 mb-1.5 uppercase tracking-wider">Full Name *</label>
+            <input type="text" id="bookName" class="admin-input" placeholder="e.g., Rahul Sharma">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-gray-300 mb-1.5 uppercase tracking-wider">Mobile Number *</label>
+            <input type="tel" id="bookPhone" class="admin-input" placeholder="9876543210" maxlength="10">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-gray-300 mb-1.5 uppercase tracking-wider">Email (Optional)</label>
+            <input type="email" id="bookEmail" class="admin-input" placeholder="you@example.com">
+          </div>
+        </div>
+
+        <!-- Pay Button -->
+        <button onclick="App.initiatePayment()" id="payBtn"
+                class="w-full mt-5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 rounded-xl font-bold text-sm shadow-xl shadow-red-500/30 transition flex items-center justify-center gap-2">
+          <i class="fas fa-credit-card"></i> Pay & Confirm Booking
+        </button>
+
+        <div class="text-center mt-3 text-[10px] text-gray-500">
+          <i class="fas fa-lock mr-1"></i> Secured by Razorpay
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TICKET MODAL ========== -->
+  <div class="modal-slim fixed inset-0 bg-black/90 backdrop-blur-md z-[210] flex items-center justify-center p-3 sm:p-4" id="ticketModal">
+    <div class="w-full max-w-md">
+      <div class="ticket p-6">
+        <!-- Ticket Header -->
+        <div class="text-center mb-4">
+          <div class="inline-block bg-gradient-to-r from-red-600 to-red-700 text-white text-[10px] font-bold px-3 py-1 rounded-full mb-3">
+            ✓ BOOKING CONFIRMED
+          </div>
+          <h3 class="text-2xl font-extrabold font-display text-white">THP Sunday Mini Show</h3>
+          <p class="text-xs text-gray-400 mt-1" id="ticketMovieName">Movie Name</p>
+        </div>
+
+        <div class="border-t border-dashed border-slate-600 my-4"></div>
+
+        <!-- Details -->
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-400">Booking ID</span>
+            <span class="text-white font-mono font-bold" id="ticketId">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Name</span>
+            <span class="text-white font-bold" id="ticketName">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Slot</span>
+            <span class="text-white font-bold" id="ticketSlot">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Seats</span>
+            <span class="text-white font-mono font-bold" id="ticketSeats">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Date</span>
+            <span class="text-white font-bold" id="ticketDate">—</span>
+          </div>
+        </div>
+
+        <div class="border-t border-dashed border-slate-600 my-4"></div>
+
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-gray-400 text-sm">Total Paid</span>
+          <span class="text-3xl font-extrabold text-green-400" id="ticketTotal">₹0</span>
+        </div>
+
+        <!-- QR Placeholder -->
+        <div class="bg-white rounded-xl p-3 mb-4 text-center">
+          <div class="bg-slate-900 rounded-lg p-4 inline-block">
+            <i class="fas fa-qrcode text-white text-6xl"></i>
+          </div>
+          <div class="text-slate-900 text-[10px] font-mono mt-2" id="ticketQR">THP-XXXX-XXXX</div>
+        </div>
+
+        <div class="text-center text-[10px] text-gray-400 leading-relaxed">
+          Show this ticket at entry. Screenshot for offline use.<br>
+          © THP-STARLET · Sunday Mini Show
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-4">
+        <button onclick="window.print()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2">
+          <i class="fas fa-download"></i>Download
+        </button>
+        <button onclick="App.closeTicket()" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2">
+          <i class="fas fa-check"></i>Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ADMIN PANEL ========== -->
+  <div class="modal-slim fixed inset-0 bg-black/80 backdrop-blur-md z-[250] flex items-center justify-center p-2 sm:p-4" id="adminModal">
+    <div class="admin-panel rounded-3xl w-full max-w-5xl shadow-2xl relative max-h-[94vh] overflow-y-auto border border-slate-700">
+      <!-- Header -->
+      <div class="sticky top-0 z-10 px-5 py-4 flex items-center justify-between" style="background: linear-gradient(90deg, #450a0a, #7f1d1d); border-bottom: 1px solid rgba(220,38,38,0.3);">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center shadow-lg">
+            <i class="fas fa-cog text-white"></i>
+          </div>
+          <div>
+            <h2 class="text-white font-bold font-display text-base">Admin Control Panel</h2>
+            <p class="text-red-300/60 text-[10px] tracking-widest uppercase">THP Sunday Mini Show</p>
+          </div>
+        </div>
+        <button onclick="App.closeAdmin()" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white">
+          <i class="fas fa-times text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-1 px-5 pt-4 border-b border-slate-700">
+        <button onclick="App.adminTab('movie')" id="tabMovie" class="px-4 py-2.5 text-xs font-bold text-white border-b-2 border-red-500 transition">
+          <i class="fas fa-film mr-1.5"></i>Movie Info
+        </button>
+        <button onclick="App.adminTab('slots')" id="tabSlots" class="px-4 py-2.5 text-xs font-bold text-gray-400 border-b-2 border-transparent transition hover:text-white">
+          <i class="fas fa-clock mr-1.5"></i>Slots
+        </button>
+        <button onclick="App.adminTab('bookings')" id="tabBookings" class="px-4 py-2.5 text-xs font-bold text-gray-400 border-b-2 border-transparent transition hover:text-white">
+          <i class="fas fa-list mr-1.5"></i>Bookings
+        </button>
+      </div>
+
+      <div class="p-5">
+        <!-- MOVIE TAB -->
+        <div id="movieTab">
+          <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+            <i class="fas fa-edit text-red-400"></i>Movie Details
+          </h3>
+          <form id="movieForm" onsubmit="return false;" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Movie Title *</label>
+                <input type="text" id="mTitle" class="admin-input" placeholder="e.g., 3 Idiots" required>
+              </div>
+              <div>
+                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Language</label>
+                <input type="text" id="mLanguage" class="admin-input" value="Hindi">
+              </div>
+              <div>
+                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Genre</label>
+                <input type="text" id="mGenre" class="admin-input" placeholder="Comedy/Drama">
+              </div>
+              <div>
+                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Duration</label>
+                <input type="text" id="mDuration" class="admin-input" placeholder="2h 45m">
+              </div>
+              <div>
+                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Rating</label>
+                <input type="text" id="mRating" class="admin-input" placeholder="U/A" value="U/A">
+              </div>
+              <div>
+                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Release Year</label>
+                <input type="text" id="mYear" class="admin-input" placeholder="2024">
+              </div>
+            </div>
+            <div>
+              <label class="block text-red-300 text-[11px] font-medium mb-1.5">Description *</label>
+              <textarea id="mDescription" class="admin-input" rows="3" placeholder="Short synopsis of the movie..." required></textarea>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Poster URL (2:3) *</label>
+                <input type="url" id="mPoster" class="admin-input" placeholder="https://..." required>
+                <p class="text-red-300/50 text-[10px] mt-1">Recommended: 500x750px</p>
+              </div>
+              <div>
+                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Backdrop URL (16:9)</label>
+                <input type="url" id="mBackdrop" class="admin-input" placeholder="https://...">
+                <p class="text-red-300/50 text-[10px] mt-1">Recommended: 1600x900px</p>
+              </div>
+            </div>
+            <button type="button" onclick="App.saveMovie()" class="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2">
+              <i class="fas fa-save"></i>Save Movie Info
+            </button>
+          </form>
+        </div>
+
+        <!-- SLOTS TAB -->
+        <div id="slotsTab" class="hidden">
+          <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+            <i class="fas fa-clock text-red-400"></i>Manage Slots
+          </h3>
+          <div class="space-y-4">
+            <div class="bg-slate-800/60 rounded-xl p-4 border border-slate-700">
+              <div class="flex items-center justify-between mb-3">
+                <div class="text-white font-bold text-sm">Slot 1 · Morning Show</div>
+                <span class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-1 rounded">11 AM - 2 PM</span>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="App.markSlotSoldOut(1)" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-xs font-bold transition">
+                  <i class="fas fa-ban mr-1"></i>Mark Sold Out
+                </button>
+                <button onclick="App.markSlotOpen(1)" class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg text-xs font-bold transition">
+                  <i class="fas fa-check mr-1"></i>Reopen
+                </button>
+              </div>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4 border border-slate-700">
+              <div class="flex items-center justify-between mb-3">
+                <div class="text-white font-bold text-sm">Slot 2 · Evening Show</div>
+                <span class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-1 rounded">5 PM - 7 PM</span>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="App.markSlotSoldOut(2)" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-xs font-bold transition">
+                  <i class="fas fa-ban mr-1"></i>Mark Sold Out
+                </button>
+                <button onclick="App.markSlotOpen(2)" class="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg text-xs font-bold transition">
+                  <i class="fas fa-check mr-1"></i>Reopen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOOKINGS TAB -->
+        <div id="bookingsTab" class="hidden">
+          <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+            <i class="fas fa-list text-red-400"></i>All Bookings
+            <span class="ml-auto text-red-300/60 text-[10px]" id="bookingsCount">0</span>
+          </h3>
+          <div id="bookingsList" class="space-y-2">
+            <div class="text-center py-8 text-red-300/40 text-xs">Loading bookings...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TOAST CONTAINER ========== -->
+  <div class="fixed bottom-6 right-4 sm:right-6 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
+
+  <script>
+    (function() {
+      // ========== CONFIG ==========
+      const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS';
+      const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
+      const ADMIN_EMAILS = ['mgbhaukali@gmail.com'];
+      
+      // SEATS CONFIG
+      const TOTAL_ROWS = 5;
+      const SEATS_PER_ROW = 3;
+      const PREMIUM_ROWS = [4, 5]; // Last 2 rows are premium
+      const PRICE_REGULAR = 50;
+      const PRICE_PREMIUM = 70;
+      
+      // SLOTS CONFIG
+      const SLOTS = [
+        { id: 1, name: 'Morning Show', time: '11 AM - 2 PM', icon: 'sun' },
+        { id: 2, name: 'Evening Show', time: '5 PM - 7 PM', icon: 'moon' }
+      ];
+
+      // ========== FIREBASE ==========
+      const fb = {
+        apiKey: "AIzaSyASP6S4EE4p40LBrzrTW8CBcKRmPo-lrck",
+        authDomain: "neet-d6d95.firebaseapp.com",
+        projectId: "neet-d6d95",
+        storageBucket: "neet-d6d95.firebasestorage.app",
+        messagingSenderId: "54376928116",
+        appId: "1:54376928116:web:e29e44073162ec1c301221"
+      };
+      firebase.initializeApp(fb);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+
+      // ========== STATE ==========
+      let currentUser = null;
+      let isAdmin = false;
+      let adminAutoOpened = false;
+      let movieData = null;
+      let slotsData = {};
+      let selectedSlotId = null;
+      let selectedSeats = []; // [{row, seat, seatId, price}]
+      let bookedSeats = {}; // {slotId: {row-seat: bookingData}}
+      let adminTabActive = 'movie';
+
+      // ========== TOAST ==========
+      function toast(msg, type = 'info') {
+        const c = document.getElementById('toastContainer');
+        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        const colors = { success: '#10b981', error: '#ef4444', warning: '#f59e0b', info: '#3b82f6' };
+        const d = document.createElement('div');
+        d.className = 'toast-pop';
+        d.style.cssText = `background:#1e293b;border-left:4px solid ${colors[type]};border-radius:12px;padding:14px 18px;box-shadow:0 10px 25px rgba(0,0,0,0.3);font-size:13px;font-weight:500;color:#f1f5f9;display:flex;align-items:center;gap:8px;max-width:340px;`;
+        d.innerHTML = `<span>${icons[type]}</span><span style="flex:1;">${msg}</span>`;
+        c.appendChild(d);
+        setTimeout(() => {
+          d.style.opacity = '0';
+          d.style.transform = 'translateX(60px)';
+          d.style.transition = 'all 0.35s';
+          setTimeout(() => d.remove(), 350);
+        }, 3200);
+      }
+
+      // ========== THEME ==========
+      function toggleTheme() {
+        const icon = document.getElementById('themeIcon');
+        // Currently only dark mode available
+        toast('Dark mode is default for movie experience 🎬', 'info');
+      }
+
+      // ========== ADMIN AUTH ==========
+      auth.onAuthStateChanged(async (user) => {
+        currentUser = user;
+        const adminBtn = document.getElementById('adminBtn');
+        
+        if (user) {
+          isAdmin = ADMIN_EMAILS.includes(user.email);
+          if (isAdmin) {
+            adminBtn.classList.remove('hidden');
+            adminBtn.classList.add('flex');
+            // Auto open admin panel on first login
+            setTimeout(() => {
+              if (!adminAutoOpened) {
+                adminAutoOpened = true;
+                openAdmin();
+              }
+            }, 800);
+          } else {
+            adminBtn.classList.add('hidden');
+            adminBtn.classList.remove('flex');
+          }
+        } else {
+          isAdmin = false;
+          adminAutoOpened = false;
+          adminBtn.classList.add('hidden');
+          adminBtn.classList.remove('flex');
+        }
+      });
+
+      // ========== LOAD MOVIE DATA ==========
+      async function loadMovieData() {
+        try {
+          const doc = await db.collection('movieConfig').doc('current').get();
+          if (doc.exists) {
+            movieData = doc.data();
+          } else {
+            // Create default
+            movieData = {
+              title: '3 Idiots',
+              description: 'Two friends search for their long-lost companion, while their college days come flooding back. A heartwarming tale of friendship, dreams, and the pursuit of excellence.',
+              language: 'Hindi',
+              genre: 'Comedy · Drama',
+              duration: '2h 45m',
+              rating: 'U/A',
+              year: '2009',
+              poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&h=750&fit=crop',
+              backdrop: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600&h=900&fit=crop'
+            };
+            await db.collection('movieConfig').doc('current').set(movieData);
+          }
+          renderMovie();
+        } catch (e) {
+          console.error('Load movie error:', e);
+          movieData = { title: 'Movie Loading...', description: '' };
+        }
+      }
+
+      function renderMovie() {
+        if (!movieData) return;
+        document.getElementById('heroTitle').textContent = movieData.title || 'Movie Title';
+        document.getElementById('heroDescription').textContent = movieData.description || '';
+        document.getElementById('heroPoster').src = movieData.poster || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&h=750&fit=crop';
+        document.getElementById('heroBackdrop').src = movieData.backdrop || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600&h=900&fit=crop';
+        document.getElementById('heroMeta').innerHTML = `
+          <span><i class="fas fa-calendar mr-1 text-red-400"></i> Every Sunday</span>
+          <span>•</span>
+          <span><i class="fas fa-clock mr-1 text-red-400"></i> 2 Slots</span>
+          <span>•</span>
+          <span><i class="fas fa-language mr-1 text-red-400"></i> ${movieData.language || 'Hindi'}</span>
+          <span>•</span>
+          <span><i class="fas fa-tag mr-1 text-red-400"></i> ${movieData.rating || 'U/A'}</span>
+          ${movieData.duration ? `<span>•</span><span><i class="fas fa-hourglass-half mr-1 text-red-400"></i> ${movieData.duration}</span>` : ''}
+        `;
+        
+        // Also update admin form
+        document.getElementById('mTitle').value = movieData.title || '';
+        document.getElementById('mDescription').value = movieData.description || '';
+        document.getElementById('mLanguage').value = movieData.language || 'Hindi';
+        document.getElementById('mGenre').value = movieData.genre || '';
+        document.getElementById('mDuration').value = movieData.duration || '';
+        document.getElementById('mRating').value = movieData.rating || 'U/A';
+        document.getElementById('mYear').value = movieData.year || '';
+        document.getElementById('mPoster').value = movieData.poster || '';
+        document.getElementById('mBackdrop').value = movieData.backdrop || '';
+      }
+
+      // ========== LOAD SLOTS ==========
+      async function loadSlots() {
+        try {
+          const doc = await db.collection('movieConfig').doc('slots').get();
+          if (doc.exists) {
+            slotsData = doc.data();
+          } else {
+            slotsData = {
+              1: { soldOut: false },
+              2: { soldOut: false }
+            };
+            await db.collection('movieConfig').doc('slots').set(slotsData);
+          }
+          renderSlots();
+        } catch (e) {
+          console.error('Load slots error:', e);
+          slotsData = { 1: { soldOut: false }, 2: { soldOut: false } };
+          renderSlots();
+        }
+      }
+
+      function renderSlots() {
+        const container = document.getElementById('slotsContainer');
+        container.innerHTML = SLOTS.map(slot => {
+          const isSoldOut = slotsData[slot.id]?.soldOut || false;
+          const icon = slot.icon === 'sun' ? 'fa-sun' : 'fa-moon';
+          return `
+            <div class="slot-card ${isSoldOut ? 'soldout' : ''}" onclick="${isSoldOut ? '' : `App.selectSlot(${slot.id})`}" data-slot="${slot.id}">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center ${isSoldOut ? 'bg-slate-700' : 'bg-gradient-to-br from-red-600 to-red-700'}">
+                  <i class="fas ${icon} text-white text-lg"></i>
+                </div>
+                ${isSoldOut ? '<span class="badge-live text-[10px] font-bold px-3 py-1 rounded-full">SOLD OUT</span>' : '<span class="bg-green-500/20 text-green-400 text-[10px] font-bold px-3 py-1 rounded-full border border-green-500/30">AVAILABLE</span>'}
+              </div>
+              <div class="text-white font-bold font-display text-base mb-1">${slot.name}</div>
+              <div class="text-gray-400 text-sm flex items-center gap-2">
+                <i class="fas fa-clock text-xs"></i>${slot.time}
+              </div>
+              <div class="text-red-400 text-xs mt-2">
+                <i class="fas fa-chair mr-1"></i>15 Seats · 5 Rows × 3
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // ========== LOAD BOOKINGS ==========
+      async function loadBookings() {
+        try {
+          const snap = await db.collection('bookings').orderBy('createdAt', 'desc').get();
+          bookedSeats = {};
+          snap.forEach(doc => {
+            const b = doc.data();
+            if (!bookedSeats[b.slotId]) bookedSeats[b.slotId] = {};
+            b.seats.forEach(s => {
+              bookedSeats[b.slotId][`${s.row}-${s.seat}`] = b;
+            });
+          });
+          renderSeatMap();
+          
+          // Update admin bookings list
+          updateBookingsList(snap);
+        } catch (e) {
+          console.error('Load bookings error:', e);
+        }
+      }
+
+      function updateBookingsList(snap) {
+        const list = document.getElementById('bookingsList');
+        const count = document.getElementById('bookingsCount');
+        
+        if (!snap || snap.empty) {
+          list.innerHTML = `<div class="text-center py-8 text-red-300/40 text-xs">
+            <i class="fas fa-inbox text-3xl mb-2 block"></i>
+            No bookings yet
+          </div>`;
+          count.textContent = '0';
+          return;
+        }
+        
+        const bookings = [];
+        snap.forEach(doc => bookings.push({ id: doc.id, ...doc.data() }));
+        
+        count.textContent = bookings.length;
+        list.innerHTML = bookings.map(b => `
+          <div class="bg-slate-800/60 rounded-xl p-4 border border-slate-700">
+            <div class="flex items-start justify-between mb-3 flex-wrap gap-2">
+              <div>
+                <div class="text-white font-bold text-sm">${b.name}</div>
+                <div class="text-gray-400 text-xs">${b.phone}${b.email ? ' · ' + b.email : ''}</div>
+              </div>
+              <div class="text-right">
+                <div class="text-green-400 font-bold text-sm">₹${b.total}</div>
+                <div class="text-red-300/60 text-[10px] font-mono">${b.bookingId || 'N/A'}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
+              <span class="bg-red-500/20 text-red-400 px-2 py-1 rounded font-semibold">Slot ${b.slotId}</span>
+              <span class="font-mono bg-slate-900 px-2 py-1 rounded">${b.seats.map(s => `${s.row}${s.seat}`).join(', ')}</span>
+              <span class="ml-auto text-[10px]">${b.createdAt?.toDate ? b.createdAt.toDate().toLocaleDateString('en-IN') : 'N/A'}</span>
+            </div>
+            <button onclick="App.deleteBooking('${b.id}')" class="mt-3 w-full bg-red-600/20 hover:bg-red-600/40 text-red-400 py-2 rounded-lg text-xs font-bold transition">
+              <i class="fas fa-trash mr-1"></i>Delete Booking
+            </button>
+          </div>
+        `).join('');
+      }
+
+      // ========== SELECT SLOT ==========
+      function selectSlot(slotId) {
+        selectedSlotId = slotId;
+        selectedSeats = [];
+        
+        // Update slot card active state
+        document.querySelectorAll('.slot-card').forEach(el => {
+          el.classList.remove('active');
+          if (parseInt(el.dataset.slot) === slotId) el.classList.add('active');
+        });
+        
+        const slot = SLOTS.find(s => s.id === slotId);
+        document.getElementById('selectedSlotTitle').textContent = `${slot.name} · ${slot.time}`;
+        
+        // Show seat section
+        document.getElementById('seatSection').classList.remove('hidden');
+        document.getElementById('seatSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        renderSeatMap();
+        updateBookingBar();
+      }
+
+      // ========== RENDER SEAT MAP ==========
+      function renderSeatMap() {
+        const container = document.getElementById('seatRowsContainer');
+        if (!container || !selectedSlotId) return;
+        
+        const slotBookings = bookedSeats[selectedSlotId] || {};
+        let availableCount = 0;
+        
+        let html = '';
+        for (let row = 1; row <= TOTAL_ROWS; row++) {
+          const isPremium = PREMIUM_ROWS.includes(row);
+          html += `<div class="row-wrapper">`;
+          html += `<div class="row-label">${String.fromCharCode(64 + row)}</div>`;
+          html += `<div class="seats-container">`;
+          
+          for (let seat = 1; seat <= SEATS_PER_ROW; seat++) {
+            const seatId = `${row}-${seat}`;
+            const isBooked = !!slotBookings[seatId];
+            const isSelected = selectedSeats.some(s => s.row === row && s.seat === seat);
+            if (!isBooked) availableCount++;
+            
+            let classes = 'seat';
+            if (isBooked) classes += ' booked';
+            else if (isSelected) classes += ' selected';
+            else classes += ' available';
+            if (isPremium) classes += ' premium';
+            
+            const price = isPremium ? PRICE_PREMIUM : PRICE_REGULAR;
+            const seatLabel = `${String.fromCharCode(64 + row)}${seat}`;
+            
+            html += `<div class="${classes}" data-row="${row}" data-seat="${seat}" data-price="${price}" onclick="${isBooked ? '' : `App.toggleSeat(${row}, ${seat}, ${price})`}" title="${seatLabel} · ₹${price}">
+              ${seatLabel}
+              ${isPremium && !isBooked ? '<div class="seat-type-indicator"><i class="fas fa-crown"></i></div>' : ''}
+            </div>`;
+          }
+          
+          html += `</div></div>`;
+        }
+        
+        container.innerHTML = html;
+        document.getElementById('availableSeats').textContent = availableCount;
+      }
+
+      // ========== TOGGLE SEAT ==========
+      function toggleSeat(row, seat, price) {
+        const idx = selectedSeats.findIndex(s => s.row === row && s.seat === seat);
+        if (idx >= 0) {
+          selectedSeats.splice(idx, 1);
+        } else {
+          if (selectedSeats.length >= 6) {
+            return toast('Max 6 seats per booking', 'warning');
+          }
+          selectedSeats.push({ row, seat, price, seatId: `${String.fromCharCode(64 + row)}${seat}` });
+        }
+        renderSeatMap();
+        updateBookingBar();
+      }
+
+      // ========== UPDATE BOOKING BAR ==========
+      function updateBookingBar() {
+        const display = document.getElementById('selectedSeatsDisplay');
+        const total = document.getElementById('totalAmount');
+        const btn = document.getElementById('bookBtn');
+        
+        if (selectedSeats.length === 0) {
+          display.textContent = '— None selected —';
+          total.textContent = '₹0';
+          btn.disabled = true;
+        } else {
+          display.textContent = selectedSeats.map(s => s.seatId).join(', ');
+          const totalPrice = selectedSeats.reduce((sum, s) => sum + s.price, 0);
+          total.textContent = `₹${totalPrice}`;
+          btn.disabled = false;
+        }
+      }
+
+      // ========== PROCEED TO BOOK ==========
+      function proceedToBook() {
+        if (!selectedSlotId || selectedSeats.length === 0) {
+          return toast('Please select a slot and seats', 'warning');
+        }
+        
+        const slot = SLOTS.find(s => s.id === selectedSlotId);
+        const total = selectedSeats.reduce((sum, s) => sum + s.price, 0);
+        
+        document.getElementById('modalSlot').textContent = `${slot.name} · ${slot.time}`;
+        document.getElementById('modalSeats').textContent = selectedSeats.map(s => s.seatId).join(', ');
+        document.getElementById('modalTotal').textContent = `₹${total}`;
+        
+        document.getElementById('bookingModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeBooking() {
+        document.getElementById('bookingModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // ========== INITIATE PAYMENT ==========
+      async function initiatePayment() {
+        const name = document.getElementById('bookName').value.trim();
+        const phone = document.getElementById('bookPhone').value.trim();
+        const email = document.getElementById('bookEmail').value.trim();
+        
+        if (!name) return toast('Enter your name', 'warning');
+        if (phone.length !== 10) return toast('Enter valid 10-digit mobile', 'warning');
+        
+        const total = selectedSeats.reduce((sum, s) => sum + s.price, 0);
+        const amountPaise = total * 100;
+        
+        const btn = document.getElementById('payBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Processing...';
+        
+        const bookingId = 'THP' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase();
+        
+        try {
+          const options = {
+            key: RAZORPAY_KEY_ID,
+            amount: amountPaise,
+            currency: 'INR',
+            name: 'THP Sunday Mini Show',
+            description: `${selectedSeats.length} seat(s) · ${SLOTS.find(s => s.id === selectedSlotId).name}`,
+            prefill: { name, email, contact: phone },
+            notes: {
+              bookingId,
+              slotId: selectedSlotId,
+              seats: selectedSeats.map(s => s.seatId).join(',')
+            },
+            theme: { color: '#dc2626' },
+            handler: async function(response) {
+              await completeBooking(response, { name, phone, email, bookingId, total });
+            },
+            modal: {
+              ondismiss: () => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-credit-card"></i> Pay & Confirm Booking';
+              }
+            }
+          };
+          
+          const rzp = new Razorpay(options);
+          rzp.on('payment.failed', (resp) => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-credit-card"></i> Pay & Confirm Booking';
+            toast('Payment failed: ' + (resp.error?.description || ''), 'error');
+          });
+          rzp.open();
+        } catch (e) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-credit-card"></i> Pay & Confirm Booking';
+          toast('Error: ' + e.message, 'error');
+        }
+      }
+
+      // ========== COMPLETE BOOKING ==========
+      async function completeBooking(paymentResponse, customerData) {
+        const btn = document.getElementById('payBtn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Confirming...';
+        
+        try {
+          const bookingData = {
+            bookingId: customerData.bookingId,
+            name: customerData.name,
+            phone: customerData.phone,
+            email: customerData.email,
+            slotId: selectedSlotId,
+            slotName: SLOTS.find(s => s.id === selectedSlotId).name,
+            slotTime: SLOTS.find(s => s.id === selectedSlotId).time,
+            seats: selectedSeats.map(s => ({ row: s.row, seat: s.seat, seatId: s.seatId, price: s.price })),
+            total: customerData.total,
+            paymentId: paymentResponse.razorpay_payment_id,
+            status: 'confirmed',
+            movieTitle: movieData?.title || 'Movie',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          
+          await db.collection('bookings').add(bookingData);
+          
+          // Show ticket
+          showTicket(bookingData);
+          closeBooking();
+          await loadBookings();
+          
+          toast('🎉 Booking confirmed!', 'success');
+        } catch (e) {
+          console.error('Booking error:', e);
+          toast('Error: ' + e.message, 'error');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-credit-card"></i> Pay & Confirm Booking';
+        }
+      }
+
+      // ========== SHOW TICKET ==========
+      function showTicket(booking) {
+        document.getElementById('ticketMovieName').textContent = booking.movieTitle;
+        document.getElementById('ticketId').textContent = booking.bookingId;
+        document.getElementById('ticketName').textContent = booking.name;
+        document.getElementById('ticketSlot').textContent = `${booking.slotName} · ${booking.slotTime}`;
+        document.getElementById('ticketSeats').textContent = booking.seats.map(s => s.seatId).join(', ');
+        document.getElementById('ticketDate').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
+        document.getElementById('ticketTotal').textContent = `₹${booking.total}`;
+        document.getElementById('ticketQR').textContent = booking.bookingId;
+        
+        document.getElementById('ticketModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeTicket() {
+        document.getElementById('ticketModal').classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Reset selection
+        selectedSeats = [];
+        updateBookingBar();
+        if (selectedSlotId) renderSeatMap();
+      }
+
+      // ========== SCROLL TO SLOTS ==========
+      function scrollToSlots() {
+        document.getElementById('slots').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // ========== ADMIN FUNCTIONS ==========
+      function openAdmin() {
+        if (!isAdmin) return toast('Admin access required', 'error');
+        document.getElementById('adminModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        loadBookings();
+      }
+
+      function closeAdmin() {
+        document.getElementById('adminModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function adminTab(tab) {
+        adminTabActive = tab;
+        document.querySelectorAll('[id^="tab"]').forEach(el => {
+          el.classList.remove('text-white', 'border-red-500');
+          el.classList.add('text-gray-400', 'border-transparent');
+        });
+        document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('text-gray-400', 'border-transparent');
+        document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('text-white', 'border-red-500');
+        
+        document.getElementById('movieTab').classList.add('hidden');
+        document.getElementById('slotsTab').classList.add('hidden');
+        document.getElementById('bookingsTab').classList.add('hidden');
+        document.getElementById(tab + 'Tab').classList.remove('hidden');
+        
+        if (tab === 'bookings') loadBookings();
+      }
+
+      async function saveMovie() {
+        const data = {
+          title: document.getElementById('mTitle').value.trim(),
+          description: document.getElementById('mDescription').value.trim(),
+          language: document.getElementById('mLanguage').value.trim(),
+          genre: document.getElementById('mGenre').value.trim(),
+          duration: document.getElementById('mDuration').value.trim(),
+          rating: document.getElementById('mRating').value.trim(),
+          year: document.getElementById('mYear').value.trim(),
+          poster: document.getElementById('mPoster').value.trim(),
+          backdrop: document.getElementById('mBackdrop').value.trim()
+        };
+        
+        if (!data.title || !data.description) return toast('Fill required fields', 'warning');
+        
+        try {
+          await db.collection('movieConfig').doc('current').set(data, { merge: true });
+          movieData = { ...movieData, ...data };
+          renderMovie();
+          toast('Movie info saved! ✅', 'success');
+        } catch (e) {
+          toast('Error: ' + e.message, 'error');
+        }
+      }
+
+      async function markSlotSoldOut(slotId) {
+        try {
+          const update = {};
+          update[slotId] = { soldOut: true };
+          await db.collection('movieConfig').doc('slots').set(update, { merge: true });
+          slotsData[slotId] = { soldOut: true };
+          renderSlots();
+          toast(`Slot ${slotId} marked sold out`, 'success');
+        } catch (e) {
+          toast('Error: ' + e.message, 'error');
+        }
+      }
+
+      async function markSlotOpen(slotId) {
+        try {
+          const update = {};
+          update[slotId] = { soldOut: false };
+          await db.collection('movieConfig').doc('slots').set(update, { merge: true });
+          slotsData[slotId] = { soldOut: false };
+          renderSlots();
+          toast(`Slot ${slotId} reopened`, 'success');
+        } catch (e) {
+          toast('Error: ' + e.message, 'error');
+        }
+      }
+
+      async function deleteBooking(id) {
+        if (!confirm('Delete this booking? Seat will be freed up.')) return;
+        try {
+          await db.collection('bookings').doc(id).delete();
+          toast('Booking deleted', 'success');
+          await loadBookings();
+        } catch (e) {
+          toast('Error: ' + e.message, 'error');
+        }
+      }
+
+      // ========== REVEAL ANIMATION ==========
+      function handleReveal() {
+        document.querySelectorAll('.reveal').forEach(el => {
+          const r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight * 0.9) el.classList.add('visible');
+        });
+      }
+      window.addEventListener('scroll', handleReveal);
+
+      // ========== MODAL CLOSE ==========
+      document.getElementById('bookingModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeBooking(); });
+      document.getElementById('ticketModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeTicket(); });
+      document.getElementById('adminModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdmin(); });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { closeBooking(); closeTicket(); closeAdmin(); }
+      });
+
+      // ========== EXPORT ==========
+      window.App = {
+        openAdmin, closeAdmin, adminTab,
+        selectSlot, toggleSeat, proceedToBook, closeBooking,
+        initiatePayment, closeTicket, saveMovie,
+        markSlotSoldOut, markSlotOpen, deleteBooking,
+        toggleTheme
+      };
+      window.scrollToSlots = scrollToSlots;
+
+      // ========== INIT ==========
+      loadMovieData();
+      loadSlots();
+      loadBookings();
+      setTimeout(handleReveal, 200);
+
+      console.log('🎬 THP Sunday Mini Show Ready');
+    })();
+  </script>
+</body>
+</html>
