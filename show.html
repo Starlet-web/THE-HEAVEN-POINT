@@ -1,981 +1,1338 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-  <meta name="description" content="THP Sunday Mini Show – Multi-Movie Booking Platform | Cinematic Experience">
-  <meta name="theme-color" content="#0f172a">
-  <title>THP Sunday Mini Show – Premium Movie Booking</title>
+  <meta name="description" content="THP Dandiya & Garba Night – Premium 3D Student Pass | The Heaven Point Coaching Classes">
+  <meta name="theme-color" content="#0a0118">
+  <title>THP Dandiya Pass · Premium 3D</title>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            gold: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            display: ['Outfit', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
-          },
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
-            'shimmer': 'shimmer 3s linear infinite',
-            'slide-up': 'slideUp 0.5s cubic-bezier(0.16,1,0.3,1)',
-            'bounce-in': 'bounceIn 0.5s cubic-bezier(0.68,-0.55,0.265,1.55)',
-            'scale-in': 'scaleIn 0.4s cubic-bezier(0.16,1,0.3,1)',
-            'slide-right': 'slideRight 0.6s cubic-bezier(0.16,1,0.3,1)',
-          },
-          keyframes: {
-            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
-            pulseGlow: { '0%,100%': { boxShadow: '0 0 8px rgba(220,38,38,0.4)' }, '50%': { boxShadow: '0 0 25px rgba(220,38,38,0.8)' } },
-            shimmer: { '0%': { backgroundPosition: '-1000px 0' }, '100%': { backgroundPosition: '1000px 0' } },
-            slideUp: { '0%': { opacity: '0', transform: 'translateY(30px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-            bounceIn: { '0%': { transform: 'scale(0.3)', opacity: '0' }, '50%': { transform: 'scale(1.05)' }, '100%': { transform: 'scale(1)', opacity: '1' } },
-            scaleIn: { '0%': { transform: 'scale(0.9)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
-            slideRight: { '0%': { transform: 'translateX(-30px)', opacity: '0' }, '100%': { transform: 'translateX(0)', opacity: '1' } },
-          }
-        }
-      }
-    }
-  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Yatra+One&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Cinzel:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 15px; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    html {
+      scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 100%;
+      font-size: 15px;
+    }
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: #0a0a0f;
-      color: #e2e8f0;
+      background: #0a0118;
+      color: #f5e6ff;
       min-height: 100vh;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
-    
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #0a0a0f; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #dc2626, #ef4444); border-radius: 10px; }
-
-    /* PREMIUM BMS HEADER */
-    .bms-header {
-      background: linear-gradient(180deg, rgba(10,10,15,0.98) 0%, rgba(10,10,15,0.92) 100%);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(220,38,38,0.15);
-    }
-    
-    /* HERO CAROUSEL */
-    .hero-carousel {
+      overflow-x: hidden;
+      overflow-y: auto;
       position: relative;
-      overflow: hidden;
-      border-radius: 24px;
-      height: 500px;
+      letter-spacing: -0.01em;
     }
-    .hero-slide {
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0118; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #d4af37 0%, #8b1a94 50%, #d4af37 100%);
+      border-radius: 10px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════ */
+    /* LUXURY BACKGROUND */
+    /* ═══════════════════════════════════════════════════════════ */
+    .bg-luxury {
+      background: 
+        radial-gradient(ellipse 100% 60% at 20% 0%, rgba(139,26,148,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse 100% 60% at 80% 100%, rgba(212,175,55,0.2) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 50% 50%, rgba(90,10,90,0.4) 0%, transparent 70%),
+        linear-gradient(135deg, #0a0118 0%, #1a0428 25%, #2d0a3d 50%, #1a0428 75%, #0a0118 100%);
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .glow-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+    .orb-1 { width: 400px; height: 400px; background: radial-gradient(circle, #8b1a94, transparent); top: -100px; left: -100px; }
+    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, #d4af37, transparent); bottom: -150px; right: -150px; animation-delay: -7s; }
+    .orb-3 { width: 350px; height: 350px; background: radial-gradient(circle, #e91e63, transparent); top: 40%; left: 60%; animation-delay: -14s; }
+    @keyframes orbFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(30px,-40px) scale(1.1); }
+      66% { transform: translate(-20px,30px) scale(0.95); }
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: starTwinkle 3s ease-in-out infinite;
+    }
+    @keyframes starTwinkle {
+      0%,100% { opacity: 0.15; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.3); }
+    }
+
+    #petalsContainer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .petal {
+      position: absolute;
+      pointer-events: none;
+      will-change: transform;
+      filter: drop-shadow(0 0 6px rgba(212,175,55,0.4));
+    }
+    @keyframes petalFall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(100vh) rotate(1080deg); opacity: 0; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════ */
+    /* HERO */
+    /* ═══════════════════════════════════════════════════════════ */
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: clamp(1.6rem, 6.5vw, 3.2rem);
+      background: linear-gradient(135deg, #fff8dc 0%, #d4af37 25%, #f4d03f 50%, #d4af37 75%, #8b6914 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: goldShimmer 6s ease infinite;
+      line-height: 1.05;
+      letter-spacing: 3px;
+      text-align: center;
+      filter: drop-shadow(0 0 40px rgba(212,175,55,0.4));
+      margin-bottom: 10px;
+    }
+    @keyframes goldShimmer {
+      0%,100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .divider-line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    }
+    .divider-icon {
+      color: #d4af37;
+      font-size: 10px;
+      letter-spacing: 3px;
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .hero-sub {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.6rem, 1.8vw, 0.85rem);
+      color: #e0b0ff;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      text-align: center;
+      text-shadow: 0 0 25px rgba(224,176,255,0.6);
+      margin-bottom: 24px;
+    }
+
+    .logo-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 20px;
+    }
+    .logo-ring {
       position: absolute;
       inset: 0;
-      opacity: 0;
-      transition: opacity 1s ease;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #d4af37, #8b1a94, #e91e63, #d4af37, #f4d03f, #d4af37);
+      animation: rotateSlow 8s linear infinite;
+      box-shadow: 0 0 50px rgba(212,175,55,0.5), 0 0 100px rgba(139,26,148,0.3);
     }
-    .hero-slide.active { opacity: 1; }
-    .hero-slide img {
-      width: 100%; height: 100%;
+    @keyframes rotateSlow { to { transform: rotate(360deg); } }
+    .logo-inner-ring {
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: #0a0118;
+    }
+    .logo-img {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
       object-fit: cover;
-      transform: scale(1.05);
-      transition: transform 8s ease;
+      z-index: 2;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
     }
-    .hero-slide.active img { transform: scale(1); }
 
-    /* MOVIE CARD - BMS STYLE */
-    .movie-card {
+    /* ═══════════════════════════════════════════════════════════ */
+    /* INFO CARDS */
+    /* ═══════════════════════════════════════════════════════════ */
+    .info-card {
+      background: linear-gradient(135deg, rgba(26,4,40,0.75) 0%, rgba(45,10,61,0.65) 100%);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 16px;
+      padding: 16px 12px;
+      backdrop-filter: blur(20px);
       position: relative;
-      border-radius: 14px;
       overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40px; height: 40px;
+      background: radial-gradient(circle at top left, rgba(212,175,55,0.3), transparent 70%);
+      pointer-events: none;
+    }
+    .info-card:hover {
+      border-color: rgba(212,175,55,0.6);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 40px rgba(212,175,55,0.2);
+    }
+
+    .info-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      box-shadow: 0 0 25px currentColor;
+    }
+
+    /* ═══════════════════════════════════════════════════════════ */
+    /* FORM */
+    /* ═══════════════════════════════════════════════════════════ */
+    .form-panel {
+      background: linear-gradient(135deg, rgba(26,4,40,0.85) 0%, rgba(45,10,61,0.75) 100%);
+      border: 1.5px solid rgba(212,175,55,0.3);
+      border-radius: 26px;
+      padding: 26px;
+      backdrop-filter: blur(24px);
+      box-shadow: 
+        0 24px 60px rgba(0,0,0,0.5),
+        inset 0 1px 1px rgba(255,255,255,0.1),
+        0 0 80px rgba(139,26,148,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .form-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        repeating-linear-gradient(45deg, transparent 0, transparent 4px, rgba(212,175,55,0.02) 4px, rgba(212,175,55,0.02) 5px);
+      pointer-events: none;
+      border-radius: 26px;
+    }
+
+    .form-label {
+      display: block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #d4af37;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      text-shadow: 0 0 12px rgba(212,175,55,0.4);
+    }
+
+    .form-input {
+      background: rgba(10,1,24,0.7);
+      border: 1.5px solid rgba(212,175,55,0.2);
+      color: #fff8e7;
+      padding: 13px 16px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      width: 100%;
+      font-family: 'Inter', inherit;
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      position: relative;
+      z-index: 2;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #d4af37;
+      background: rgba(212,175,55,0.08);
+      box-shadow: 0 0 0 4px rgba(212,175,55,0.12), 0 0 30px rgba(212,175,55,0.3);
+    }
+    .form-input::placeholder { color: rgba(255,248,231,0.25); }
+
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4af37' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    select.form-input option { background: #1a0428; color: #fff8e7; }
+
+    .photo-upload {
+      width: 140px;
+      height: 170px;
+      border-radius: 16px;
+      border: 2px dashed rgba(212,175,55,0.4);
+      background: rgba(212,175,55,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-      background: #1e1e28;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    }
-    .movie-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 50px rgba(220,38,38,0.25), 0 0 40px rgba(220,38,38,0.1);
-    }
-    .movie-card:hover .movie-poster-img { transform: scale(1.08); }
-    .movie-card:hover .movie-card-overlay { opacity: 1; }
-    .movie-poster-img {
-      width: 100%;
-      aspect-ratio: 2/3;
-      object-fit: cover;
-      transition: transform 0.6s;
-    }
-    .movie-card-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
-      opacity: 0.7;
-      transition: opacity 0.3s;
-    }
-    .movie-rating-badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(10px);
-      color: #fbbf24;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 5px 10px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      z-index: 2;
-    }
-    .movie-format-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(220,38,38,0.95);
-      backdrop-filter: blur(10px);
-      color: white;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 6px;
-      z-index: 2;
-      letter-spacing: 0.5px;
-    }
-    .movie-info {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 12px;
-      z-index: 2;
-      color: white;
-    }
-    .movie-title {
-      font-family: 'Outfit', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      line-height: 1.2;
-      margin-bottom: 4px;
+      margin: 0 auto;
       overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      position: relative;
     }
-    .movie-meta {
-      font-size: 10px;
-      color: rgba(255,255,255,0.7);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
+    .photo-upload:hover {
+      border-color: #d4af37;
+      background: rgba(212,175,55,0.08);
+      box-shadow: 0 0 40px rgba(212,175,55,0.3);
+      transform: scale(1.03);
     }
+    .photo-upload img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-upload input { display: none; }
 
-    /* SLOT CARDS */
-    .slot-card {
-      background: linear-gradient(135deg, #1a1a24 0%, #0f0f15 100%);
-      border: 2px solid #2a2a35;
-      border-radius: 18px;
-      padding: 22px;
+    /* ═══════════════════════════════════════════════════════════ */
+    /* BUTTONS */
+    /* ═══════════════════════════════════════════════════════════ */
+    .btn-royal {
+      background: linear-gradient(135deg, #8b1a94 0%, #5a0a5a 50%, #2d0a3d 100%);
+      color: #fff8dc;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      border: none;
       cursor: pointer;
-      transition: all 0.35s;
+      box-shadow: 
+        0 10px 40px rgba(139,26,148,0.4),
+        inset 0 1px 1px rgba(255,255,255,0.15),
+        0 0 0 1.5px rgba(212,175,55,0.4);
+      transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
       position: relative;
       overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    .slot-card::before {
+    .btn-royal::before {
       content: '';
       position: absolute;
       top: 0; left: -100%;
       width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.15), transparent);
-      transition: left 0.7s;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      transition: left 0.8s;
     }
-    .slot-card:hover::before { left: 100%; }
-    .slot-card:hover {
-      border-color: #dc2626;
-      transform: translateY(-5px);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    .btn-royal:hover:not(:disabled)::before { left: 100%; }
+    .btn-royal:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 20px 50px rgba(139,26,148,0.6),
+        inset 0 1px 1px rgba(255,255,255,0.2),
+        0 0 0 2px rgba(212,175,55,0.7),
+        0 0 60px rgba(212,175,55,0.4);
     }
-    .slot-card.active {
-      border-color: #dc2626;
-      background: linear-gradient(135deg, #2a0a0a 0%, #1a0505 100%);
-      box-shadow: 0 0 40px rgba(220,38,38,0.35);
+    .btn-royal:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+      color: #0a0118;
+      box-shadow: 
+        0 10px 40px rgba(212,175,55,0.5),
+        inset 0 1px 1px rgba(255,255,255,0.6),
+        0 0 0 1.5px rgba(139,26,148,0.4);
     }
-    .slot-card.active::after {
+
+    /* ═══════════════════════════════════════════════════════════ */
+    /* THE 3D CARD */
+    /* ═══════════════════════════════════════════════════════════ */
+    .card-stage {
+      perspective: 2200px;
+      perspective-origin: 50% 50%;
+      padding: 30px 20px;
+      margin: 10px auto;
+      max-width: 580px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 380px;
+      touch-action: pan-y;
+      position: relative;
+    }
+
+    .card-3d {
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 1.586 / 1;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.08s linear;
+      cursor: grab;
+      will-change: transform;
+    }
+    .card-3d:active { cursor: grabbing; }
+    .card-3d.dragging { transition: none; }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      isolation: isolate;
+    }
+
+    /* ═══════════════════════════════════════════════════════════ */
+    /* FRONT FACE */
+    /* ═══════════════════════════════════════════════════════════ */
+    .card-front {
+      background: linear-gradient(125deg, #0d0221 0%, #1a0428 20%, #2d0a3d 40%, #4a0e5c 55%, #2d0a3d 70%, #1a0428 85%, #0d0221 100%);
+      border: 1px solid rgba(212,175,55,0.35);
+      padding: 18px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .card-front::before {
       content: '';
+      position: absolute;
+      top: -40%; left: -20%;
+      width: 90%; height: 90%;
+      background: radial-gradient(circle, rgba(212,175,55,0.22) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .card-front::after {
+      content: '';
+      position: absolute;
+      bottom: -40%; right: -20%;
+      width: 90%; height: 90%;
+      background: radial-gradient(circle, rgba(139,26,148,0.35) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card-pattern {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image: 
+        repeating-linear-gradient(45deg, rgba(212,175,55,0.08) 0, rgba(212,175,55,0.08) 1px, transparent 1px, transparent 6px),
+        repeating-linear-gradient(-45deg, rgba(212,175,55,0.06) 0, rgba(212,175,55,0.06) 1px, transparent 1px, transparent 8px);
+    }
+
+    .card-sheen {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: linear-gradient(115deg, transparent 35%, rgba(255,248,220,0.14) 48%, rgba(255,255,255,0.22) 50%, rgba(255,248,220,0.14) 52%, transparent 65%);
+      background-size: 250% 250%;
+      animation: sheenMove 6s ease-in-out infinite;
+      mix-blend-mode: overlay;
+    }
+    @keyframes sheenMove {
+      0% { background-position: 0% 0%; }
+      100% { background-position: -200% -200%; }
+    }
+
+    .card-top {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .brand-block { display: flex; align-items: center; gap: 10px; }
+    .brand-logo-frame {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
+    .brand-logo-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #d4af37, #8b1a94, #d4af37);
+      animation: rotateSlow 6s linear infinite;
+    }
+    .brand-logo-inner {
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      background: #0d0221;
+    }
+    .brand-logo-img {
+      position: absolute;
+      inset: 3px;
+      width: calc(100% - 6px);
+      height: calc(100% - 6px);
+      border-radius: 50%;
+      object-fit: cover;
+      z-index: 2;
+    }
+
+    .brand-text { line-height: 1; }
+    .brand-name {
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: 13px;
+      color: #f4d03f;
+      letter-spacing: 1.8px;
+      text-shadow: 0 0 20px rgba(244,208,63,0.5), 0 1px 1px rgba(0,0,0,0.5);
+      margin-bottom: 3px;
+    }
+    .brand-tag {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 6.5px;
+      font-weight: 700;
+      color: #b794f6;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .contactless-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+    .contactless-symbol {
+      font-size: 14px;
+      color: rgba(212,175,55,0.6);
+      transform: rotate(-90deg);
+      filter: drop-shadow(0 0 6px rgba(212,175,55,0.5));
+    }
+    .card-tier {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: #d4af37;
+      letter-spacing: 2px;
+      text-shadow: 0 0 8px rgba(212,175,55,0.5);
+    }
+
+    .chip-section {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .emv-chip {
+      width: 36px;
+      height: 28px;
+      background: linear-gradient(135deg, #e8c547 0%, #f4d03f 25%, #d4af37 50%, #b8941f 75%, #d4af37 100%);
+      border-radius: 5px;
+      position: relative;
+      box-shadow: 
+        0 0 20px rgba(212,175,55,0.7),
+        inset 0 -2px 3px rgba(0,0,0,0.3),
+        inset 0 1px 2px rgba(255,255,255,0.7);
+      border: 0.5px solid #8b6914;
+    }
+    .emv-chip::before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      background-image: 
+        linear-gradient(90deg, transparent 30%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.35) 31%, transparent 31%, transparent 65%, rgba(0,0,0,0.35) 65%, rgba(0,0,0,0.35) 66%, transparent 66%),
+        linear-gradient(0deg, transparent 45%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.35) 46%, transparent 46%);
+      border-radius: 3px;
+    }
+    .emv-chip::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px; height: 18px;
+      border: 0.5px solid rgba(0,0,0,0.4);
+      border-radius: 3px;
+      background: linear-gradient(135deg, #f4d03f, #b8941f);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.5);
+    }
+
+    .chip-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 6.5px;
+      font-weight: 700;
+      color: rgba(212,175,55,0.75);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(212,175,55,0.4);
+    }
+
+    .card-mid {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      gap: 14px;
+      flex: 1;
+      margin-bottom: 12px;
+    }
+
+    .photo-frame-3d {
+      position: relative;
+      width: 84px;
+      height: 104px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a0428, #2d0a3d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 0 1px #d4af37,
+        0 0 0 3px rgba(13,2,33,1),
+        0 0 0 4px rgba(212,175,55,0.6),
+        0 0 0 6px rgba(13,2,33,0.8),
+        0 10px 25px rgba(0,0,0,0.5),
+        0 0 30px rgba(212,175,55,0.35);
+    }
+    .photo-frame-3d img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-placeholder {
+      font-size: 40px;
+      color: rgba(212,175,55,0.4);
+    }
+    .photo-frame-3d::before,
+    .photo-frame-3d::after {
+      content: '';
+      position: absolute;
+      width: 10px; height: 10px;
+      border: 1px solid rgba(212,175,55,0.8);
+      z-index: 3;
+      pointer-events: none;
+    }
+    .photo-frame-3d::before { top: 3px; left: 3px; border-right: none; border-bottom: none; }
+    .photo-frame-3d::after { bottom: 3px; right: 3px; border-left: none; border-top: none; }
+
+    .info-block {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .field-group { margin-bottom: 8px; }
+    .field-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 6.5px;
+      font-weight: 700;
+      color: rgba(212,175,55,0.85);
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+      text-shadow: 0 0 6px rgba(212,175,55,0.4);
+    }
+    .field-value {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+      text-shadow: 0 0 12px rgba(212,175,55,0.3), 0 1px 1px rgba(0,0,0,0.6);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .field-name { font-size: 15px; color: #fff8dc; letter-spacing: 0.8px; }
+    .field-class { font-size: 11px; color: #e0b0ff; }
+
+    .meta-row-3d {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(212,175,55,0.15);
+      margin-top: 4px;
+    }
+    .meta-cell { min-width: 0; }
+    .meta-value { font-size: 9px; letter-spacing: 0.5px; }
+    .meta-value.gold { color: #f4d03f; }
+    .meta-value.white { color: #ffffff; }
+
+    .hologram-3d {
       position: absolute;
       top: 14px;
       right: 14px;
-      width: 24px;
-      height: 24px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: #dc2626;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: conic-gradient(from 0deg, #d4af37 0%, #e879f9 20%, #8b1a94 40%, #d4af37 60%, #f4d03f 80%, #d4af37 100%);
+      z-index: 6;
+      padding: 2px;
+      box-shadow:
+        0 0 25px rgba(212,175,55,0.65),
+        0 0 50px rgba(139,26,148,0.4),
+        inset 0 0 10px rgba(255,255,255,0.3);
+      animation: holospin 12s linear infinite;
     }
-    .slot-card.soldout { opacity: 0.4; cursor: not-allowed; }
-    .slot-card.soldout:hover { transform: none; border-color: #2a2a35; }
-
-    /* SEAT MAP */
-    .seat-map { padding: 30px 20px; perspective: 800px; }
-    .screen {
-      width: 80%;
-      max-width: 520px;
-      height: 14px;
-      background: linear-gradient(180deg, #dc2626 0%, #7f1d1d 100%);
-      margin: 0 auto 45px;
-      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-      box-shadow: 0 15px 50px rgba(220,38,38,0.5), 0 0 100px rgba(220,38,38,0.3);
-      position: relative;
-      transform: rotateX(-15deg);
-    }
-    .screen::before {
-      content: 'SCREEN';
-      position: absolute;
-      top: -24px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 11px;
-      letter-spacing: 6px;
-      color: rgba(220,38,38,0.9);
-      font-weight: 700;
-    }
-    .screen::after {
+    @keyframes holospin { to { transform: rotate(360deg); } }
+    .hologram-3d::before {
       content: '';
       position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 95%;
-      height: 80px;
-      background: radial-gradient(ellipse at top, rgba(220,38,38,0.2) 0%, transparent 70%);
-      pointer-events: none;
+      inset: 2px;
+      border-radius: 50%;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5) 0%, transparent 30%),
+        radial-gradient(circle, #0d0221 0%, #1a0428 100%);
     }
-
-    .row-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      transform: rotateX(-10deg);
-    }
-    .row-label {
-      width: 32px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: #64748b;
-      font-weight: 700;
-      text-align: center;
-    }
-    .seats-container { display: flex; gap: 10px; }
-
-    .seat {
-      width: 46px;
-      height: 46px;
-      border-radius: 10px 10px 5px 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
-      position: relative;
-      user-select: none;
-      border: 2px solid transparent;
-    }
-    .seat.available { background: linear-gradient(180deg, #334155 0%, #1e293b 100%); color: #94a3b8; border-color: #475569; }
-    .seat.available:hover { 
-      background: linear-gradient(180deg, #10b981 0%, #059669 100%); 
-      color: white; border-color: #10b981; 
-      transform: translateY(-4px) scale(1.1);
-      box-shadow: 0 8px 20px rgba(16,185,129,0.4);
-    }
-    .seat.selected { 
-      background: linear-gradient(180deg, #10b981 0%, #059669 100%); 
-      color: white; border-color: #34d399; 
-      transform: translateY(-4px) scale(1.1); 
-      box-shadow: 0 8px 25px rgba(16,185,129,0.5);
-    }
-    .seat.booked { 
-      background: linear-gradient(180deg, #450a0a 0%, #7f1d1d 100%); 
-      color: #7f1d1d; cursor: not-allowed; border-color: #7f1d1d; opacity: 0.6; 
-    }
-    .seat.booked::after {
-      content: '\f00d';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      font-size: 11px;
-      color: #450a0a;
+    .hologram-inner-text {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: 10px;
+      color: #d4af37;
+      letter-spacing: 0.5px;
+      z-index: 3;
+      text-shadow: 0 0 10px rgba(212,175,55,0.8);
+      animation: holoTextCounter 12s linear infinite;
     }
-    .seat.premium { border-color: #f59e0b; }
-    .seat.premium.available { background: linear-gradient(180deg, #451a03 0%, #78350f 100%); color: #fbbf24; }
-    .seat.premium.available:hover { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); color: white; }
-    .seat.premium.selected { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); color: white; border-color: #fbbf24; }
-    .seat-type-indicator {
+    @keyframes holoTextCounter { to { transform: rotate(-360deg); } }
+
+    .card-footer-3d {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid rgba(212,175,55,0.2);
+    }
+    .footer-venue {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 7.5px;
+      color: rgba(224,176,255,0.7);
+      letter-spacing: 1.5px;
+      font-weight: 600;
+    }
+    .footer-venue strong { color: #d4af37; font-weight: 800; }
+    .footer-date-badge {
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+      color: #0a0118;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8.5px;
+      font-weight: 900;
+      padding: 5px 11px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      box-shadow: 
+        0 0 20px rgba(212,175,55,0.6),
+        inset 0 1px 1px rgba(255,255,255,0.7),
+        inset 0 -1px 1px rgba(0,0,0,0.15);
+      white-space: nowrap;
+    }
+
+    .ornament {
       position: absolute;
-      top: -8px;
-      right: -8px;
-      width: 16px;
-      height: 16px;
-      background: #f59e0b;
-      border-radius: 50%;
-      border: 2px solid #0a0a0f;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0.15;
+      filter: drop-shadow(0 0 8px rgba(212,175,55,0.5));
+    }
+    .orn-1 { top: 55%; left: 8px; font-size: 22px; transform: rotate(-12deg); }
+    .orn-2 { bottom: 60px; right: 18px; font-size: 16px; transform: rotate(15deg); }
+
+    /* BACK FACE */
+    .card-back {
+      background: linear-gradient(135deg, #0d0221 0%, #1a0428 50%, #0d0221 100%);
+      border: 1px solid rgba(212,175,55,0.35);
+      transform: rotateY(180deg);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mag-stripe-3d {
+      width: 100%;
+      height: 52px;
+      margin-top: 22px;
+      background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 15%, #000 50%, #1a1a1a 85%, #0a0a0a 100%);
+      border-top: 0.5px solid #2a2a2a;
+      border-bottom: 0.5px solid #2a2a2a;
+      position: relative;
+    }
+    .mag-stripe-3d::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(90deg, transparent 0, transparent 8px, rgba(255,255,255,0.03) 8px, rgba(255,255,255,0.03) 9px);
+      opacity: 0.6;
+    }
+
+    .sig-strip {
+      margin: 14px 20px 0;
+      height: 34px;
+      background: repeating-linear-gradient(45deg, #f5f0e0 0, #f5f0e0 6px, #ffffff 6px, #ffffff 12px);
+      border: 1px solid #b8b8b8;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      font-family: 'Cinzel', serif;
+      font-style: italic;
+      font-weight: 700;
+      color: #2a1a30;
+      font-size: 13px;
+      letter-spacing: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .last4-digits {
+      margin: 14px 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      font-family: 'Orbitron', sans-serif;
+    }
+    .last4-label { font-size: 8px; color: rgba(212,175,55,0.7); letter-spacing: 1.5px; font-weight: 700; }
+    .last4-value {
+      font-size: 14px; font-weight: 800; color: #d4af37;
+      letter-spacing: 3px; text-shadow: 0 0 10px rgba(212,175,55,0.5);
+    }
+
+    .back-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      text-align: center;
+    }
+    .back-brand-mini {
+      font-family: 'Cinzel', serif;
+      font-weight: 800;
+      font-size: 12px;
+      color: #d4af37;
+      letter-spacing: 3px;
+      margin-bottom: 3px;
+      text-shadow: 0 0 15px rgba(212,175,55,0.5);
+    }
+    .back-sub {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: rgba(224,176,255,0.7);
+      letter-spacing: 2.5px;
+      margin-bottom: 10px;
+    }
+    .back-icon-row {
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 14px;
+      margin-bottom: 8px;
+      color: rgba(212,175,55,0.6);
+      font-size: 14px;
     }
-    .seat-type-indicator i { font-size: 8px; color: white; }
-
-    /* MODAL */
-    .modal-slim { opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
-    .modal-slim.active { opacity: 1; pointer-events: all; visibility: visible; }
-
-    /* TOAST */
-    .toast-pop { animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
-
-    /* ADMIN */
-    .admin-panel { background: linear-gradient(180deg, #0a0a0f 0%, #0f0f15 100%); }
-    .admin-input {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(220,38,38,0.2);
-      color: #f1f5f9;
-      padding: 11px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      width: 100%;
-      font-family: inherit;
-      transition: all 0.25s;
+    .back-terms {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 6px;
+      color: rgba(224,176,255,0.45);
+      letter-spacing: 0.8px;
+      line-height: 1.8;
+      text-transform: uppercase;
+      max-width: 90%;
     }
-    .admin-input:focus { outline: none; border-color: #dc2626; background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(220,38,38,0.15); }
-    .admin-input::placeholder { color: rgba(241,245,249,0.3); }
+    .back-terms strong { color: #d4af37; }
 
-    /* BADGES */
-    .badge-live { background: linear-gradient(135deg, #dc2626, #ef4444); color: white; }
-    .badge-premium { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; }
-
-    /* TICKET */
-    .ticket {
-      background: linear-gradient(135deg, #1a1a24 0%, #0f0f15 100%);
-      border-radius: 24px;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(220,38,38,0.3);
-    }
-    .ticket::before, .ticket::after {
-      content: '';
+    .card-shadow-3d {
       position: absolute;
-      width: 36px;
-      height: 36px;
-      background: #0a0a0f;
-      border-radius: 50%;
-      top: 50%;
-    }
-    .ticket::before { left: -18px; transform: translateY(-50%); }
-    .ticket::after { right: -18px; transform: translateY(-50%); }
-
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* SKELETON */
-    .skeleton {
-      background: linear-gradient(90deg, #1a1a24 25%, #2a2a35 50%, #1a1a24 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
+      bottom: -20px;
+      left: 5%;
+      right: 5%;
+      height: 40px;
+      background: radial-gradient(ellipse, rgba(212,175,55,0.35) 0%, transparent 70%);
+      filter: blur(18px);
+      z-index: -1;
+      pointer-events: none;
     }
 
-    /* SECTION SCROLL */
-    .horizontal-scroll {
-      overflow-x: auto;
-      overflow-y: hidden;
-      scrollbar-width: thin;
-      -webkit-overflow-scrolling: touch;
-    }
-    .horizontal-scroll::-webkit-scrollbar { height: 4px; }
-    .horizontal-scroll::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 10px; }
-    .horizontal-scroll::-webkit-scrollbar-track { background: transparent; }
-
-    /* TRENDING BADGE */
-    .trending-badge {
-      background: linear-gradient(90deg, #dc2626, #f59e0b);
-      color: white;
+    /* ═══════════════════════════════════════════════════════════ */
+    /* DRAG HINT */
+    /* ═══════════════════════════════════════════════════════════ */
+    .drag-hint {
+      text-align: center;
+      margin-top: 24px;
+      font-family: 'Orbitron', sans-serif;
       font-size: 9px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 4px;
-      letter-spacing: 0.5px;
-      animation: pulse-glow 2s infinite;
+      color: rgba(224,176,255,0.5);
+      letter-spacing: 4px;
+      font-weight: 700;
+      animation: pulseHint 2.5s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-transform: uppercase;
+    }
+    .drag-hint i {
+      font-size: 12px;
+      color: #d4af37;
+      animation: dragPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulseHint { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+    @keyframes dragPulse {
+      0%,100% { transform: translateX(0); }
+      50% { transform: translateX(8px); }
+    }
+
+    /* ═══════════════════════════════════════════════════════════ */
+    /* MODAL */
+    /* ═══════════════════════════════════════════════════════════ */
+    .modal-luxury {
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(10,1,24,0.96);
+      backdrop-filter: blur(24px);
+    }
+    .modal-luxury.active {
+      opacity: 1;
+      pointer-events: all;
+      visibility: visible;
+    }
+
+    .loading-spinner {
+      width: 56px;
+      height: 56px;
+      border: 2px solid rgba(212,175,55,0.15);
+      border-top-color: #d4af37;
+      border-right-color: #8b1a94;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,1,24,0.98);
+      backdrop-filter: blur(20px);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .loading-overlay.active { display: flex; }
+
+    .toast-luxury { animation: toastSlide 0.5s cubic-bezier(0.16,1,0.3,1); }
+    @keyframes toastSlide {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ═══════════════════════════════════════════════════════════ */
+    /* HIDDEN RENDER CONTAINER FOR CLEAN DOWNLOAD */
+    /* ═══════════════════════════════════════════════════════════ */
+    #renderContainer {
+      position: fixed;
+      left: -99999px;
+      top: 0;
+      width: 960px;
+      height: 606px;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .card-front { padding: 14px 16px 12px; }
+      .brand-logo-frame { width: 30px; height: 30px; }
+      .brand-name { font-size: 11px; }
+      .brand-tag { font-size: 5.5px; }
+      .emv-chip { width: 30px; height: 24px; }
+      .card-mid { gap: 10px; margin-bottom: 8px; }
+      .photo-frame-3d { width: 68px; height: 84px; }
+      .field-name { font-size: 13px; }
+      .field-class { font-size: 10px; }
+      .hologram-3d { width: 34px; height: 34px; top: 10px; right: 10px; }
+      .hologram-inner-text { font-size: 8px; }
+      .card-stage { padding: 20px 12px; min-height: 320px; }
+      .meta-value { font-size: 8px; }
+      .footer-venue { font-size: 6.5px; }
+      .footer-date-badge { font-size: 7.5px; padding: 4px 9px; }
+      .orn-1 { font-size: 16px; }
+      .orn-2 { font-size: 12px; }
     }
   </style>
 </head>
-<body class="flex flex-col">
+<body class="bg-luxury">
 
-  <!-- ========== HEADER ========== -->
-  <header class="bms-header fixed top-0 inset-x-0 z-50 px-4 py-3">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-11 h-11 bg-gradient-to-br from-red-600 to-red-700 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/30">
-          <i class="fas fa-film text-white text-lg"></i>
-        </div>
-        <div class="leading-tight">
-          <div class="text-base sm:text-lg font-bold font-display tracking-tight text-white">
-            THP <span class="text-red-500">Sunday</span> Mini Show
-          </div>
-          <div class="text-[9px] text-gray-400 tracking-widest uppercase">Premium Movie Experience</div>
-        </div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+  <div id="starfield"></div>
+  <div id="petalsContainer"></div>
+
+  <div class="relative z-10 min-h-screen flex flex-col items-center px-4 py-8">
+
+    <section class="text-center w-full max-w-4xl pt-2">
+      <div class="logo-wrap">
+        <div class="logo-ring"></div>
+        <div class="logo-inner-ring"></div>
+        <img src="https://yt3.googleusercontent.com/nHjc3A8TUF5l3dRNsp3kOOTR4ohZ_bevwjYy9srIocNI6yc048jxN_W1GDWDfHCqIILfe5eNqQ=s900-c-k-c0x00ffffff-no-rj" alt="The Heaven Point" class="logo-img">
       </div>
 
-      <div class="flex items-center gap-2">
-        <button onclick="App.openSearch()" class="hidden sm:flex w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 items-center justify-center text-gray-300 transition">
-          <i class="fas fa-search text-sm"></i>
-        </button>
-        <a href="Neet.html" class="hidden lg:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition text-sm text-gray-300">
-          <i class="fas fa-graduation-cap text-emerald-400"></i>
-          <span>NEET Platform</span>
-        </a>
-        <button onclick="App.openAdmin()" id="adminBtn" class="hidden items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 transition text-sm text-amber-400 border border-amber-500/30">
-          <i class="fas fa-cog text-xs"></i>
-          <span class="hidden sm:inline">Admin</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- ========== MAIN ========== -->
-  <main class="flex-1 mt-20 pb-24 w-full">
-
-    <!-- ========== HERO CAROUSEL ========== -->
-    <section class="px-3 sm:px-4 md:px-6 max-w-7xl mx-auto mb-8 reveal">
-      <div class="hero-carousel" id="heroCarousel">
-        <!-- Slides dynamically added -->
-        <div class="absolute inset-0 flex items-center justify-center text-white z-10">
-          <div class="text-center">
-            <div class="w-16 h-16 border-4 border-red-500/30 border-t-red-500 rounded-full animate-spin mx-auto mb-4"></div>
-            <div class="text-sm text-gray-400">Loading featured movies...</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== NOW SHOWING SECTION ========== -->
-    <section class="px-3 sm:px-4 md:px-6 max-w-7xl mx-auto mb-8 reveal">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-3">
-          <div class="w-1 h-7 bg-gradient-to-b from-red-500 to-red-700 rounded-full"></div>
-          <div>
-            <h2 class="text-xl sm:text-2xl font-bold font-display text-white">Now Showing</h2>
-            <p class="text-xs text-gray-500 mt-0.5">Book your seats for this Sunday</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-1">
-          <button onclick="App.scrollMovies('left')" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 transition">
-            <i class="fas fa-chevron-left text-xs"></i>
-          </button>
-          <button onclick="App.scrollMovies('right')" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 transition">
-            <i class="fas fa-chevron-right text-xs"></i>
-          </button>
-        </div>
-      </div>
+      <h1 class="hero-title">Dandiya &amp; Garba</h1>
       
-      <div class="horizontal-scroll pb-2" id="nowShowingContainer">
-        <div class="flex gap-4" style="min-width: max-content;">
-          <!-- Skeleton cards -->
-          <div class="skeleton rounded-xl" style="width: 180px; aspect-ratio: 2/3;"></div>
-          <div class="skeleton rounded-xl" style="width: 180px; aspect-ratio: 2/3;"></div>
-          <div class="skeleton rounded-xl" style="width: 180px; aspect-ratio: 2/3;"></div>
-          <div class="skeleton rounded-xl" style="width: 180px; aspect-ratio: 2/3;"></div>
-        </div>
+      <div class="hero-divider">
+        <div class="divider-line"></div>
+        <div class="divider-icon">◆ NAVRATRI 2026 ◆</div>
+        <div class="divider-line"></div>
+      </div>
+
+      <p class="hero-sub">Premium Student Pass</p>
+
+      <div class="inline-flex items-center gap-2.5 bg-gradient-to-r from-fuchsia-600/20 to-purple-600/20 backdrop-blur-md px-4 py-2 rounded-full border border-yellow-400/30 mb-5">
+        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span>
+        <span class="text-white/90 text-[10px] font-bold tracking-[0.25em] uppercase">Exclusive For Students</span>
+        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse"></span>
       </div>
     </section>
 
-    <!-- ========== TRENDING / COMING SOON ========== -->
-    <section class="px-3 sm:px-4 md:px-6 max-w-7xl mx-auto mb-8 reveal">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-3">
-          <div class="w-1 h-7 bg-gradient-to-b from-amber-500 to-orange-600 rounded-full"></div>
-          <div>
-            <h2 class="text-xl sm:text-2xl font-bold font-display text-white">
-              <span class="trending-badge mr-2">HOT</span> Trending Now
-            </h2>
-            <p class="text-xs text-gray-500 mt-0.5">Most booked this month</p>
-          </div>
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-4xl mt-6 mb-8">
+      <div class="info-card text-center">
+        <div class="info-icon" style="color: #d946ef; background: linear-gradient(135deg, #d946ef, #a21caf);">
+          <i class="fas fa-calendar-day text-white text-sm"></i>
         </div>
+        <div class="text-[9px] text-yellow-400 font-bold tracking-[0.25em] uppercase mb-1">Date</div>
+        <div class="text-white font-bold text-sm">16 Oct 2026</div>
       </div>
-      
-      <div class="horizontal-scroll pb-2" id="trendingContainer">
-        <div class="flex gap-4" style="min-width: max-content;">
-          <div class="skeleton rounded-xl" style="width: 180px; aspect-ratio: 2/3;"></div>
-          <div class="skeleton rounded-xl" style="width: 180px; aspect-ratio: 2/3;"></div>
-          <div class="skeleton rounded-xl" style="width: 180px; aspect-ratio: 2/3;"></div>
+      <div class="info-card text-center">
+        <div class="info-icon" style="color: #d4af37; background: linear-gradient(135deg, #f4d03f, #d4af37);">
+          <i class="fas fa-clock text-purple-900 text-sm"></i>
         </div>
+        <div class="text-[9px] text-yellow-400 font-bold tracking-[0.25em] uppercase mb-1">Time</div>
+        <div class="text-white font-bold text-sm">6:00 – 8:30 PM</div>
+      </div>
+      <div class="info-card text-center">
+        <div class="info-icon" style="color: #a21caf; background: linear-gradient(135deg, #c026d3, #701a75);">
+          <i class="fas fa-map-marker-alt text-white text-sm"></i>
+        </div>
+        <div class="text-[9px] text-yellow-400 font-bold tracking-[0.25em] uppercase mb-1">Venue</div>
+        <div class="text-white font-bold text-xs leading-tight">The Heaven Point<br>Coaching Classes</div>
+      </div>
+      <div class="info-card text-center">
+        <div class="info-icon" style="color: #f4d03f; background: linear-gradient(135deg, #ff8c42, #d4af37);">
+          <i class="fas fa-ticket-alt text-purple-900 text-sm"></i>
+        </div>
+        <div class="text-[9px] text-yellow-400 font-bold tracking-[0.25em] uppercase mb-1">Entry</div>
+        <div class="text-white font-bold text-sm">Free Pass</div>
       </div>
     </section>
 
-    <!-- ========== SELECTED MOVIE DETAILS ========== -->
-    <section id="movieDetailSection" class="px-3 sm:px-4 md:px-6 max-w-7xl mx-auto mb-8 reveal hidden">
-      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-700">
-        <div class="relative" id="detailBackdropWrap">
-          <img id="detailBackdrop" src="" class="w-full h-64 sm:h-80 object-cover" alt="Backdrop" style="filter: blur(4px);">
-          <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.75) 50%, rgba(220,38,38,0.2) 100%);"></div>
-          
-          <button onclick="App.closeMovieDetail()" class="absolute top-4 right-4 w-10 h-10 bg-black/40 backdrop-blur rounded-full flex items-center justify-center text-white hover:bg-black/60 transition z-10">
-            <i class="fas fa-times"></i>
-          </button>
+    <section class="w-full max-w-3xl pb-10">
 
-          <div class="absolute inset-0 p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-end">
-            <div class="movie-poster-wrap flex-shrink-0 w-32 sm:w-44" style="aspect-ratio: 2/3; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
-              <img id="detailPoster" src="" class="movie-poster" alt="Poster">
-            </div>
-            <div class="flex-1">
-              <h1 id="detailTitle" class="text-3xl sm:text-4xl md:text-5xl font-extrabold font-display text-white leading-tight mb-3"></h1>
-              <div id="detailMeta" class="flex items-center gap-3 text-white/70 text-sm mb-4 flex-wrap"></div>
-              <p id="detailDescription" class="text-white/80 text-sm max-w-2xl mb-4 leading-relaxed"></p>
-              <div class="flex flex-wrap gap-2">
-                <span id="detailGenre" class="bg-white/10 backdrop-blur text-white text-[11px] font-bold px-3 py-1.5 rounded-full border border-white/20"></span>
-                <span id="detailDuration" class="bg-white/10 backdrop-blur text-white text-[11px] font-bold px-3 py-1.5 rounded-full border border-white/20"></span>
-                <span id="detailRating" class="bg-red-500/30 backdrop-blur text-white text-[11px] font-bold px-3 py-1.5 rounded-full border border-red-500/40"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SLOTS FOR THIS MOVIE -->
-        <div class="p-6 sm:p-8">
-          <h2 class="text-xl font-bold font-display text-white mb-4 flex items-center gap-2">
-            <i class="fas fa-clock text-red-500"></i> Available Slots
+      <div id="formSection">
+        <div class="text-center mb-6">
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-white mb-2">
+            Get Your <span style="background: linear-gradient(135deg, #f4d03f, #d946ef); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">3D Pass</span>
           </h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="detailSlotsContainer">
-            <!-- Slots dynamically added -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== SEAT SELECTION ========== -->
-    <section id="seatSection" class="px-3 sm:px-4 md:px-6 max-w-7xl mx-auto mb-8 reveal hidden">
-      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-700">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-red-700 to-red-900 p-5 flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <div class="text-white/80 text-[10px] uppercase tracking-widest mb-1">You're booking for</div>
-            <div class="text-white font-bold font-display text-lg" id="selectedSlotTitle">Slot Loading...</div>
-            <div class="text-white/70 text-xs mt-0.5" id="selectedMovieTitle"></div>
-          </div>
-          <div class="bg-black/30 backdrop-blur rounded-xl px-4 py-2 border border-white/10">
-            <div class="text-white/60 text-[10px] uppercase">Available</div>
-            <div class="text-white font-bold text-lg"><span id="availableSeats">15</span> / 15</div>
-          </div>
+          <p class="text-purple-200/60 text-sm">Fill details and get your premium ATM-style Dandiya pass</p>
         </div>
 
-        <!-- Seat Map -->
-        <div class="seat-map">
-          <div class="screen"></div>
-          <div id="seatRowsContainer"></div>
-
-          <!-- Legend -->
-          <div class="mt-10 flex items-center justify-center gap-6 flex-wrap">
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-md bg-gradient-to-b from-slate-700 to-slate-800 border border-slate-600"></div>
-              <span class="text-xs text-gray-400">Available</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-md bg-gradient-to-b from-emerald-500 to-emerald-600 border border-emerald-400"></div>
-              <span class="text-xs text-emerald-400">Selected</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-md bg-gradient-to-b from-red-900 to-red-950 border border-red-800 opacity-60"></div>
-              <span class="text-xs text-red-400">Booked</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-md bg-gradient-to-b from-amber-800 to-amber-900 border-2 border-amber-500"></div>
-              <span class="text-xs text-amber-400">Premium (₹70)</span>
-            </div>
-          </div>
-
-          <!-- Price Info -->
-          <div class="mt-6 grid grid-cols-2 gap-3 max-w-md mx-auto">
-            <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-3 text-center">
-              <div class="text-[10px] text-gray-400 uppercase mb-1">Regular</div>
-              <div class="text-lg font-bold text-white">₹50</div>
-            </div>
-            <div class="bg-amber-900/30 border border-amber-500/30 rounded-xl p-3 text-center">
-              <div class="text-[10px] text-amber-400 uppercase mb-1">Premium</div>
-              <div class="text-lg font-bold text-amber-400">₹70</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Booking Bar -->
-        <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-5 border-t border-slate-700 sticky bottom-0">
-          <div class="flex items-center justify-between flex-wrap gap-4">
-            <div class="flex-1 min-w-0">
-              <div class="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Selected Seats</div>
-              <div id="selectedSeatsDisplay" class="text-white font-mono text-sm font-bold truncate">— None selected —</div>
-            </div>
-            <div class="text-right">
-              <div class="text-[10px] text-gray-400 uppercase tracking-wider">Total</div>
-              <div class="text-3xl font-extrabold font-display text-white" id="totalAmount">₹0</div>
-            </div>
-            <button onclick="App.proceedToBook()" id="bookBtn" disabled
-                    class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-3.5 rounded-xl font-bold text-sm shadow-xl shadow-red-500/30 hover:scale-[1.03] transition flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none">
-              <i class="fas fa-ticket-alt"></i> Proceed to Book
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== HOW IT WORKS ========== -->
-    <section class="px-3 sm:px-4 md:px-6 max-w-7xl mx-auto mb-8 reveal">
-      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-700">
-        <h2 class="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
-          <i class="fas fa-info-circle text-red-500"></i> How It Works
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="text-center">
-            <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg"><i class="fas fa-film text-white text-xl"></i></div>
-            <div class="text-sm font-bold text-white mb-1">Pick Movie</div>
-            <div class="text-xs text-gray-400">Browse & choose your favorite</div>
-          </div>
-          <div class="text-center">
-            <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg"><i class="fas fa-clock text-white text-xl"></i></div>
-            <div class="text-sm font-bold text-white mb-1">Pick Slot</div>
-            <div class="text-xs text-gray-400">Morning or Evening show</div>
-          </div>
-          <div class="text-center">
-            <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg"><i class="fas fa-chair text-white text-xl"></i></div>
-            <div class="text-sm font-bold text-white mb-1">Select Seats</div>
-            <div class="text-xs text-gray-400">Pick your favorite seats</div>
-          </div>
-          <div class="text-center">
-            <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg"><i class="fas fa-ticket-alt text-white text-xl"></i></div>
-            <div class="text-sm font-bold text-white mb-1">Get Ticket</div>
-            <div class="text-xs text-gray-400">Instant digital ticket</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== FAQ ========== -->
-    <section class="px-3 sm:px-4 md:px-6 max-w-7xl mx-auto mb-8 reveal">
-      <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-700">
-        <h2 class="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
-          <i class="fas fa-question-circle text-red-500"></i> Frequently Asked Questions
-        </h2>
-        <div class="space-y-3">
-          <details class="group bg-slate-800/60 rounded-xl border border-slate-700">
-            <summary class="cursor-pointer p-4 font-semibold text-white text-sm flex items-center justify-between">
-              <span>How many seats are available?</span>
-              <i class="fas fa-chevron-down text-red-500 transition-transform group-open:rotate-180"></i>
-            </summary>
-            <div class="px-4 pb-4 text-sm text-gray-400">Total 15 seats across 5 rows per show. Each row has 3 seats. First 3 rows are Regular (₹50), last 2 rows are Premium (₹70).</div>
-          </details>
-          <details class="group bg-slate-800/60 rounded-xl border border-slate-700">
-            <summary class="cursor-pointer p-4 font-semibold text-white text-sm flex items-center justify-between">
-              <span>When does the booking close?</span>
-              <i class="fas fa-chevron-down text-red-500 transition-transform group-open:rotate-180"></i>
-            </summary>
-            <div class="px-4 pb-4 text-sm text-gray-400">Booking closes 1 hour before the show time or when all seats are booked, whichever is earlier.</div>
-          </details>
-          <details class="group bg-slate-800/60 rounded-xl border border-slate-700">
-            <summary class="cursor-pointer p-4 font-semibold text-white text-sm flex items-center justify-between">
-              <span>How will I get my ticket?</span>
-              <i class="fas fa-chevron-down text-red-500 transition-transform group-open:rotate-180"></i>
-            </summary>
-            <div class="px-4 pb-4 text-sm text-gray-400">After payment, a digital ticket with QR code will be sent via WhatsApp and email. Show it at the entry.</div>
-          </details>
-          <details class="group bg-slate-800/60 rounded-xl border border-slate-700">
-            <summary class="cursor-pointer p-4 font-semibold text-white text-sm flex items-center justify-between">
-              <span>Can I cancel my booking?</span>
-              <i class="fas fa-chevron-down text-red-500 transition-transform group-open:rotate-180"></i>
-            </summary>
-            <div class="px-4 pb-4 text-sm text-gray-400">Cancellations are allowed up to 2 hours before the show. Contact us on WhatsApp for support.</div>
-          </details>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ========== FLOATING WHATSAPP ========== -->
-  <button onclick="window.open('https://wa.me/919648837922?text=Hi%20THP%20Sunday%20Show','_blank')" 
-          class="fixed right-4 bottom-6 z-40 w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-all"
-          title="Help">
-    <i class="fab fa-whatsapp text-2xl"></i>
-  </button>
-
-  <!-- ========== SEARCH MODAL ========== -->
-  <div class="modal-slim fixed inset-0 bg-black/80 backdrop-blur-md z-[200] flex items-start justify-center p-4 pt-20" id="searchModal">
-    <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl w-full max-w-2xl shadow-2xl border border-slate-700 relative">
-      <button class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white" onclick="App.closeSearch()">
-        <i class="fas fa-times text-sm"></i>
-      </button>
-      <div class="p-6">
-        <h3 class="text-lg font-bold font-display text-white mb-4">Search Movies</h3>
-        <div class="relative mb-4">
-          <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-          <input type="text" id="searchInput" class="admin-input pl-11" placeholder="Search by movie name..." oninput="App.performSearch(this.value)">
-        </div>
-        <div id="searchResults" class="space-y-2 max-h-96 overflow-y-auto">
-          <div class="text-center py-8 text-gray-500 text-sm">Start typing to search...</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========== BOOKING MODAL ========== -->
-  <div class="modal-slim fixed inset-0 bg-black/80 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-4" id="bookingModal">
-    <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl w-full max-w-lg shadow-2xl border border-slate-700 relative max-h-[94vh] overflow-y-auto">
-      <button class="absolute top-3 right-3 w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition z-20 text-white" onclick="App.closeBooking()">
-        <i class="fas fa-times text-sm"></i>
-      </button>
-
-      <div class="p-6">
-        <div class="text-center mb-5">
-          <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-            <i class="fas fa-user-circle text-white text-xl"></i>
-          </div>
-          <h3 class="text-xl font-bold font-display text-white">Your Details</h3>
-          <p class="text-xs text-gray-400 mt-1">Complete to confirm booking</p>
-        </div>
-
-        <div class="bg-black/30 border border-red-500/20 rounded-2xl p-4 mb-5">
-          <div class="text-[10px] text-red-400 uppercase tracking-widest mb-2">Booking Summary</div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-400 text-xs">Movie:</span>
-            <span class="text-white text-xs font-bold" id="modalMovie">—</span>
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-400 text-xs">Slot:</span>
-            <span class="text-white text-xs font-bold" id="modalSlot">—</span>
-          </div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-400 text-xs">Seats:</span>
-            <span class="text-white text-xs font-mono font-bold" id="modalSeats">—</span>
-          </div>
-          <div class="border-t border-red-500/20 pt-2 flex items-center justify-between">
-            <span class="text-white text-sm font-bold">Total:</span>
-            <span class="text-2xl font-extrabold text-red-400" id="modalTotal">₹0</span>
-          </div>
-        </div>
-
-        <div class="space-y-3">
-          <div><label class="block text-[11px] font-bold text-gray-300 mb-1.5 uppercase tracking-wider">Full Name *</label><input type="text" id="bookName" class="admin-input" placeholder="e.g., Rahul Sharma"></div>
-          <div><label class="block text-[11px] font-bold text-gray-300 mb-1.5 uppercase tracking-wider">Mobile *</label><input type="tel" id="bookPhone" class="admin-input" placeholder="9876543210" maxlength="10"></div>
-          <div><label class="block text-[11px] font-bold text-gray-300 mb-1.5 uppercase tracking-wider">Email (Optional)</label><input type="email" id="bookEmail" class="admin-input" placeholder="you@example.com"></div>
-        </div>
-
-        <button onclick="App.initiatePayment()" id="payBtn"
-                class="w-full mt-5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 rounded-xl font-bold text-sm shadow-xl transition flex items-center justify-center gap-2">
-          <i class="fas fa-credit-card"></i> Pay & Confirm Booking
-        </button>
-
-        <div class="text-center mt-3 text-[10px] text-gray-500"><i class="fas fa-lock mr-1"></i> Secured by Razorpay</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========== TICKET MODAL ========== -->
-  <div class="modal-slim fixed inset-0 bg-black/90 backdrop-blur-md z-[210] flex items-center justify-center p-3 sm:p-4" id="ticketModal">
-    <div class="w-full max-w-md">
-      <div class="ticket p-6">
-        <div class="text-center mb-4">
-          <div class="inline-block bg-gradient-to-r from-red-600 to-red-700 text-white text-[10px] font-bold px-3 py-1 rounded-full mb-3">
-            ✓ BOOKING CONFIRMED
-          </div>
-          <h3 class="text-2xl font-extrabold font-display text-white">THP Sunday Mini Show</h3>
-          <p class="text-xs text-gray-400 mt-1" id="ticketMovieName">Movie Name</p>
-        </div>
-        <div class="border-t border-dashed border-slate-600 my-4"></div>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between"><span class="text-gray-400">Booking ID</span><span class="text-white font-mono font-bold" id="ticketId">—</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">Name</span><span class="text-white font-bold" id="ticketName">—</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">Slot</span><span class="text-white font-bold" id="ticketSlot">—</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">Seats</span><span class="text-white font-mono font-bold" id="ticketSeats">—</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">Date</span><span class="text-white font-bold" id="ticketDate">—</span></div>
-        </div>
-        <div class="border-t border-dashed border-slate-600 my-4"></div>
-        <div class="flex justify-between items-center mb-4">
-          <span class="text-gray-400 text-sm">Total Paid</span>
-          <span class="text-3xl font-extrabold text-green-400" id="ticketTotal">₹0</span>
-        </div>
-        <div class="bg-white rounded-xl p-3 mb-4 text-center">
-          <div class="bg-slate-900 rounded-lg p-4 inline-block"><i class="fas fa-qrcode text-white text-6xl"></i></div>
-          <div class="text-slate-900 text-[10px] font-mono mt-2" id="ticketQR">THP-XXXX-XXXX</div>
-        </div>
-        <div class="text-center text-[10px] text-gray-400 leading-relaxed">
-          Show this at entry · © THP-STARLET
-        </div>
-      </div>
-      <div class="flex gap-3 mt-4">
-        <button onclick="window.print()" class="flex-1 bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2"><i class="fas fa-download"></i>Download</button>
-        <button onclick="App.closeTicket()" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2"><i class="fas fa-check"></i>Done</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========== ADMIN PANEL ========== -->
-  <div class="modal-slim fixed inset-0 bg-black/80 backdrop-blur-md z-[250] flex items-center justify-center p-2 sm:p-4" id="adminModal">
-    <div class="admin-panel rounded-3xl w-full max-w-6xl shadow-2xl relative max-h-[94vh] overflow-y-auto border border-slate-700">
-      <div class="sticky top-0 z-10 px-5 py-4 flex items-center justify-between" style="background: linear-gradient(90deg, #450a0a, #7f1d1d); border-bottom: 1px solid rgba(220,38,38,0.3);">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center shadow-lg"><i class="fas fa-cog text-white"></i></div>
-          <div>
-            <h2 class="text-white font-bold font-display text-base">Admin Control Panel</h2>
-            <p class="text-red-300/60 text-[10px] tracking-widest uppercase">THP Sunday Mini Show</p>
-          </div>
-        </div>
-        <button onclick="App.closeAdmin()" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white"><i class="fas fa-times text-sm"></i></button>
-      </div>
-
-      <div class="flex gap-1 px-5 pt-4 border-b border-slate-700 overflow-x-auto">
-        <button onclick="App.adminTab('movies')" id="tabMovies" class="px-4 py-2.5 text-xs font-bold text-white border-b-2 border-red-500 transition whitespace-nowrap">
-          <i class="fas fa-film mr-1.5"></i>Movies
-        </button>
-        <button onclick="App.adminTab('addMovie')" id="tabAddMovie" class="px-4 py-2.5 text-xs font-bold text-gray-400 border-b-2 border-transparent transition hover:text-white whitespace-nowrap">
-          <i class="fas fa-plus mr-1.5"></i>Add Movie
-        </button>
-        <button onclick="App.adminTab('bookings')" id="tabBookings" class="px-4 py-2.5 text-xs font-bold text-gray-400 border-b-2 border-transparent transition hover:text-white whitespace-nowrap">
-          <i class="fas fa-list mr-1.5"></i>Bookings
-        </button>
-      </div>
-
-      <div class="p-5">
-        <!-- MOVIES LIST TAB -->
-        <div id="moviesTab">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-white font-semibold text-sm flex items-center gap-2">
-              <i class="fas fa-list text-red-400"></i>All Movies
-              <span class="ml-2 text-red-300/60 text-[10px]" id="moviesCount">0</span>
-            </h3>
-            <button onclick="App.adminTab('addMovie')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
-              <i class="fas fa-plus"></i>Add New Movie
-            </button>
-          </div>
-          <div id="moviesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <div class="text-center py-12 text-red-300/40 text-xs col-span-full">Loading movies...</div>
-          </div>
-        </div>
-
-        <!-- ADD/EDIT MOVIE TAB -->
-        <div id="addMovieTab" class="hidden">
-          <h3 class="text-white font-semibold text-sm mb-4 flex items-center gap-2">
-            <i class="fas fa-edit text-red-400"></i><span id="movieFormTitle">Add New Movie</span>
-          </h3>
-          <form id="movieForm" onsubmit="return false;" class="space-y-4">
-            <input type="hidden" id="mId" value="">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Movie Title *</label><input type="text" id="mTitle" class="admin-input" placeholder="e.g., 3 Idiots" required></div>
-              <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Language *</label><input type="text" id="mLanguage" class="admin-input" value="Hindi" required></div>
-              <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Genre</label><input type="text" id="mGenre" class="admin-input" placeholder="Comedy/Drama"></div>
-              <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Duration</label><input type="text" id="mDuration" class="admin-input" placeholder="2h 45m"></div>
-              <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Rating</label><input type="text" id="mRating" class="admin-input" placeholder="U/A" value="U/A"></div>
-              <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Release Year</label><input type="text" id="mYear" class="admin-input" placeholder="2024"></div>
-            </div>
-            <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Description *</label><textarea id="mDescription" class="admin-input" rows="3" placeholder="Short synopsis..." required></textarea></div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Poster URL (2:3) *</label>
-                <input type="url" id="mPoster" class="admin-input" placeholder="https://..." required>
-                <p class="text-red-300/50 text-[10px] mt-1">Recommended: 500x750px</p>
+        <div class="form-panel">
+          <div class="mb-6">
+            <label class="form-label text-center block"><i class="fas fa-camera mr-1.5"></i> Your Photo</label>
+            <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+              <img id="photoPreview" style="display:none;" alt="Preview">
+              <div id="photoPlaceholder" class="text-center">
+                <i class="fas fa-user-circle" style="font-size:44px; color: rgba(212,175,55,0.5); display:block; margin-bottom:6px;"></i>
+                <div class="text-yellow-400 text-[10px] font-bold tracking-[0.25em] uppercase">Tap to Upload</div>
+                <div class="text-purple-200/40 text-[9px] mt-1">JPG / PNG · 5MB Max</div>
               </div>
-              <div>
-                <label class="block text-red-300 text-[11px] font-medium mb-1.5">Backdrop URL (16:9)</label>
-                <input type="url" id="mBackdrop" class="admin-input" placeholder="https://...">
-                <p class="text-red-300/50 text-[10px] mt-1">Recommended: 1600x900px</p>
-              </div>
+              <input type="file" id="photoInput" accept="image/*" onchange="Pass.handlePhoto(event)">
             </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Category</label>
-                <select id="mCategory" class="admin-input">
-                  <option value="now-showing">Now Showing</option>
-                  <option value="trending">Trending</option>
-                  <option value="coming-soon">Coming Soon</option>
-                </select>
-              </div>
-              <div><label class="block text-red-300 text-[11px] font-medium mb-1.5">Featured (Hero)?</label>
-                <select id="mFeatured" class="admin-input">
-                  <option value="false">No</option>
-                  <option value="true">Yes</option>
-                </select>
-              </div>
-            </div>
-            <div class="flex gap-3 pt-2">
-              <button type="button" onclick="App.saveMovie()" id="saveMovieBtn" class="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-3 rounded-xl font-bold text-sm shadow-lg flex items-center justify-center gap-2">
-                <i class="fas fa-save"></i><span id="saveMovieBtnText">Save Movie</span>
-              </button>
-              <button type="button" onclick="App.resetMovieForm()" class="px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-red-300 font-semibold text-xs transition">
-                <i class="fas fa-undo"></i>
-              </button>
-            </div>
-          </form>
-        </div>
+          </div>
 
-        <!-- BOOKINGS TAB -->
-        <div id="bookingsTab" class="hidden">
-          <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
-            <h3 class="text-white font-semibold text-sm flex items-center gap-2">
-              <i class="fas fa-list text-red-400"></i>All Bookings
-              <span class="text-red-300/60 text-[10px]" id="bookingsCount">0</span>
-            </h3>
-            <select id="bookingsFilter" class="admin-input w-auto text-xs" onchange="App.filterBookings(this.value)">
-              <option value="all">All Slots</option>
-              <option value="1">Morning Show</option>
-              <option value="2">Evening Show</option>
+          <div class="mb-4">
+            <label class="form-label"><i class="fas fa-user mr-1.5"></i> Full Name</label>
+            <input type="text" id="studentName" class="form-input" placeholder="Priya Sharma" maxlength="30">
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label"><i class="fas fa-graduation-cap mr-1.5"></i> Class</label>
+            <select id="studentClass" class="form-input">
+              <option value="">Select your class</option>
+              <option value="Class 8">Class 8</option>
+              <option value="Class 9">Class 9</option>
+              <option value="Class 10">Class 10</option>
+              <option value="Class 11">Class 11</option>
+              <option value="Class 12">Class 12</option>
             </select>
           </div>
-          <div id="bookingsList" class="space-y-2">
-            <div class="text-center py-8 text-red-300/40 text-xs">Loading bookings...</div>
+
+          <div class="mb-6">
+            <label class="form-label">
+              <i class="fas fa-phone mr-1.5"></i> Mobile 
+              <span style="text-transform:none; font-weight:500; color:rgba(255,248,231,0.35); letter-spacing:0;">(Optional)</span>
+            </label>
+            <input type="tel" id="studentPhone" class="form-input" placeholder="9876543210" maxlength="10">
+          </div>
+
+          <button onclick="Pass.generate()" id="generateBtn" class="btn-royal w-full">
+            <i class="fas fa-ticket-alt mr-2"></i>Generate My Pass
+          </button>
+
+          <div class="text-center mt-4 text-purple-200/40 text-[10px] tracking-wider">
+            <i class="fas fa-lock mr-1"></i>Secured &amp; encrypted
+          </div>
+        </div>
+
+        <div class="text-center mt-8">
+          <div class="inline-block bg-gradient-to-r from-purple-700/30 to-fuchsia-700/30 backdrop-blur-md px-5 py-3 rounded-full border border-yellow-400/25">
+            <div class="text-[8px] text-yellow-400 tracking-[0.4em] uppercase font-bold mb-0.5">Powered By</div>
+            <div class="text-white font-bold text-sm" style="font-family: 'Cinzel', serif; letter-spacing: 1.5px;">The Heaven Point Coaching Classes</div>
           </div>
         </div>
       </div>
+
+      <div id="passSection" style="display:none;">
+        <div class="text-center mb-4">
+          <div class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500/90 to-teal-600/90 px-4 py-1.5 rounded-full mb-4 shadow-lg shadow-emerald-500/30 backdrop-blur-sm">
+            <i class="fas fa-check-circle text-white text-xs"></i>
+            <span class="text-white text-[10px] font-bold tracking-[0.2em] uppercase">Pass Ready</span>
+          </div>
+          <h2 class="font-display font-extrabold text-2xl text-white mb-2">
+            Your <span style="background: linear-gradient(135deg, #f4d03f, #d946ef); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">3D Pass</span>
+          </h2>
+          <p class="text-purple-200/60 text-xs tracking-widest uppercase">Drag to explore · 360° Interactive</p>
+        </div>
+
+        <div class="card-stage" id="cardStage">
+          <div class="card-3d" id="card3D">
+            <div class="card-face card-front">
+              <div class="card-pattern"></div>
+              <div class="card-sheen"></div>
+              <div class="ornament orn-1">🪔</div>
+              <div class="ornament orn-2">🌺</div>
+
+              <div class="hologram-3d">
+                <div class="hologram-inner-text">THP</div>
+              </div>
+
+              <div class="card-top">
+                <div class="brand-block">
+                  <div class="brand-logo-frame">
+                    <div class="brand-logo-ring"></div>
+                    <div class="brand-logo-inner"></div>
+                    <img src="https://yt3.googleusercontent.com/nHjc3A8TUF5l3dRNsp3kOOTR4ohZ_bevwjYy9srIocNI6yc048jxN_W1GDWDfHCqIILfe5eNqQ=s900-c-k-c0x00ffffff-no-rj" class="brand-logo-img" alt="Logo">
+                  </div>
+                  <div class="brand-text">
+                    <div class="brand-name">HEAVEN POINT</div>
+                    <div class="brand-tag">Coaching · Est. 2020</div>
+                  </div>
+                </div>
+                <div class="contactless-icon">
+                  <div class="contactless-symbol"><i class="fas fa-wifi"></i></div>
+                  <div class="card-tier">◆ PREMIUM</div>
+                </div>
+              </div>
+
+              <div class="chip-section">
+                <div class="emv-chip"></div>
+                <div class="chip-label">Navratri Edition · 2026</div>
+              </div>
+
+              <div class="card-mid">
+                <div class="photo-frame-3d">
+                  <img id="passPhoto" style="display:none;" alt="Student">
+                  <i class="fas fa-user-circle photo-placeholder" id="passPhotoPlaceholder"></i>
+                </div>
+
+                <div class="info-block">
+                  <div class="field-group">
+                    <div class="field-label">Card Holder</div>
+                    <div class="field-value field-name" id="passName">—</div>
+                  </div>
+                  <div class="field-group">
+                    <div class="field-label">Class</div>
+                    <div class="field-value field-class" id="passClass">—</div>
+                  </div>
+                  <div class="meta-row-3d">
+                    <div class="meta-cell">
+                      <div class="field-label">Pass ID</div>
+                      <div class="field-value meta-value gold" id="passId">—</div>
+                    </div>
+                    <div class="meta-cell">
+                      <div class="field-label">Valid</div>
+                      <div class="field-value meta-value white">16/10/26</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer-3d">
+                <div class="footer-venue"><strong>◆</strong> VENUE: THE HEAVEN POINT</div>
+                <div class="footer-date-badge">6:00–8:30 PM</div>
+              </div>
+            </div>
+
+            <div class="card-face card-back">
+              <div class="mag-stripe-3d"></div>
+              <div class="sig-strip">
+                <span class="signature-text" id="signatureText">— Signature —</span>
+              </div>
+              <div class="last4-digits">
+                <span class="last4-label">PASS ····</span>
+                <span class="last4-value" id="last4Digits">0000</span>
+              </div>
+              <div class="back-center">
+                <div class="back-brand-mini">THE HEAVEN POINT</div>
+                <div class="back-sub">DANDIYA &amp; GARBA NIGHT 2026</div>
+                <div class="back-icon-row">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-om"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="back-terms">
+                  <strong>This pass is property of THP</strong><br>
+                  Valid only for enrolled students · Non-transferable<br>
+                  Present at entry · Screenshot acceptable<br>
+                  Report lost pass to front desk
+                </div>
+              </div>
+            </div>
+
+            <div class="card-shadow-3d"></div>
+          </div>
+        </div>
+
+        <div class="drag-hint">
+          <i class="fas fa-hand-pointer"></i>
+          <span>Drag to Rotate · 360°</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 mt-8 max-w-md mx-auto">
+          <button onclick="Pass.download()" id="downloadBtn" class="btn-royal btn-gold flex-1">
+            <i class="fas fa-download mr-2"></i>Download
+          </button>
+          <button onclick="Pass.reset()" class="btn-royal flex-1" style="background: linear-gradient(135deg, #2d0a3d, #0a0118);">
+            <i class="fas fa-redo mr-2"></i>New Pass
+          </button>
+        </div>
+
+        <div class="text-center mt-5 text-purple-200/50 text-[10px] tracking-wider">
+          <i class="fas fa-info-circle mr-1"></i>
+          Download or screenshot — show at entry gate
+        </div>
+      </div>
+    </section>
+
+    <footer class="mt-8 mb-6 text-center w-full">
+      <div class="text-purple-200/30 text-[10px] tracking-[0.3em] uppercase">
+        © 2026 The Heaven Point Coaching Classes
+      </div>
+      <div class="text-purple-200/20 text-[9px] mt-1 tracking-widest">
+        Crafted with <span style="color:#d4af37;">♛</span> for our students
+      </div>
+    </footer>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="modal-luxury" id="successModal">
+    <div style="max-width: 420px; width: 100%; text-align: center; animation: toastSlide 0.6s cubic-bezier(0.16,1,0.3,1);">
+      <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #f4d03f, #d4af37); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; box-shadow: 0 0 80px rgba(212,175,55,0.7);">
+        <i class="fas fa-crown" style="font-size: 42px; color: #0a0118;"></i>
+      </div>
+      <h2 style="font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.6rem; color: white; margin-bottom: 10px; letter-spacing: 3px;">PASS CREATED</h2>
+      <p style="color: rgba(224,176,255,0.7); font-size: 0.85rem; margin-bottom: 26px;">Your 3D Dandiya Pass is ready. Drag to explore and download!</p>
+      <button onclick="Pass.closeSuccess()" class="btn-royal" style="width: 100%;">
+        <i class="fas fa-arrow-down mr-2"></i>View My Pass
+      </button>
     </div>
   </div>
+
+  <!-- LOADING -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div style="color: #d4af37; font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; font-size: 11px;">
+      <span id="loadingText">Processing...</span>
+    </div>
+  </div>
+
+  <!-- HIDDEN RENDER CONTAINER - for clean downloads -->
+  <div id="renderContainer"></div>
 
   <div class="fixed bottom-6 right-4 sm:right-6 flex flex-col gap-2 z-[400]" id="toastContainer"></div>
 
   <script>
     (function() {
-      // ========== CONFIG ==========
-      const RAZORPAY_KEY_ID = 'rzp_live_T7tknhaLrGXKDS';
-      const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
-      const ADMIN_EMAILS = ['mgbhaukali@gmail.com'];
-      
-      const TOTAL_ROWS = 5;
-      const SEATS_PER_ROW = 3;
-      const PREMIUM_ROWS = [4, 5];
-      const PRICE_REGULAR = 50;
-      const PRICE_PREMIUM = 70;
-      
-      const SLOTS = [
-        { id: 1, name: 'Morning Show', time: '11 AM - 2 PM', icon: 'sun' },
-        { id: 2, name: 'Evening Show', time: '5 PM - 7 PM', icon: 'moon' }
-      ];
-
-      // ========== FIREBASE ==========
+      // ═══════════════════════════════════════════════════════════
+      // CONFIG
+      // ═══════════════════════════════════════════════════════════
       const fb = {
         apiKey: "AIzaSyASP6S4EE4p40LBrzrTW8CBcKRmPo-lrck",
         authDomain: "neet-d6d95.firebaseapp.com",
@@ -986,986 +1343,504 @@
       };
       firebase.initializeApp(fb);
       const db = firebase.firestore();
-      const auth = firebase.auth();
+      const IMGBB_API_KEY = "53fb01955a45c5462724b8f7d238500a";
 
-      // ========== STATE ==========
-      let currentUser = null;
-      let isAdmin = false;
-      let adminAutoOpened = false;
-      let allMovies = [];
-      let featuredMovies = [];
-      let nowShowingMovies = [];
-      let trendingMovies = [];
-      let selectedMovie = null;
-      let selectedSlotId = null;
-      let selectedSeats = [];
-      let bookedSeats = {};
-      let allBookings = [];
-      let currentHeroIndex = 0;
-      let heroInterval = null;
+      let photoFile = null;
+      let photoDataUrl = null;
+      let currentPassId = '';
+      let currentStudentData = null;
 
-      // ========== TOAST ==========
+      // ═══════════════════════════════════════════════════════════
+      // 3D DRAG
+      // ═══════════════════════════════════════════════════════════
+      let rotateX = 0, rotateY = 0;
+      let isDragging = false;
+      let startX = 0, startY = 0, startRotX = 0, startRotY = 0;
+      let autoSpin = true, autoAngle = 0;
+
+      function initCard3D() {
+        const card = document.getElementById('card3D');
+        const stage = document.getElementById('cardStage');
+        if (!card || !stage) return;
+
+        setInterval(() => {
+          if (!autoSpin || isDragging) return;
+          autoAngle = (autoAngle + 0.4) % 360;
+          rotateY = Math.sin(autoAngle * Math.PI / 180) * 7;
+          rotateX = Math.cos(autoAngle * Math.PI / 180) * 2;
+          applyRotation();
+        }, 30);
+
+        const onStart = (x, y) => {
+          isDragging = true; autoSpin = false;
+          startX = x; startY = y;
+          startRotX = rotateX; startRotY = rotateY;
+          card.classList.add('dragging');
+        };
+        const onMove = (x, y) => {
+          if (!isDragging) return;
+          const dx = x - startX, dy = y - startY;
+          rotateY = startRotY + dx * 0.55;
+          rotateX = Math.max(-70, Math.min(70, startRotX - dy * 0.55));
+          applyRotation();
+        };
+        const onEnd = () => {
+          isDragging = false;
+          card.classList.remove('dragging');
+          setTimeout(() => { autoSpin = true; autoAngle = 0; }, 2200);
+        };
+
+        stage.addEventListener('mousedown', e => onStart(e.clientX, e.clientY));
+        window.addEventListener('mousemove', e => { if (isDragging) onMove(e.clientX, e.clientY); });
+        window.addEventListener('mouseup', onEnd);
+
+        stage.addEventListener('touchstart', e => {
+          const t = e.touches[0]; onStart(t.clientX, t.clientY);
+        }, { passive: true });
+        window.addEventListener('touchmove', e => {
+          if (!isDragging) return;
+          const t = e.touches[0]; onMove(t.clientX, t.clientY);
+        }, { passive: true });
+        window.addEventListener('touchend', onEnd);
+      }
+
+      function applyRotation() {
+        const card = document.getElementById('card3D');
+        if (card) card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // TOAST
+      // ═══════════════════════════════════════════════════════════
       function toast(msg, type = 'info') {
         const c = document.getElementById('toastContainer');
-        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        const icons = { success: '✓', error: '✕', warning: '!', info: 'i' };
         const colors = { success: '#10b981', error: '#ef4444', warning: '#f59e0b', info: '#3b82f6' };
         const d = document.createElement('div');
-        d.className = 'toast-pop';
-        d.style.cssText = `background:#1a1a24;border-left:4px solid ${colors[type]};border-radius:12px;padding:14px 18px;box-shadow:0 10px 25px rgba(0,0,0,0.4);font-size:13px;font-weight:500;color:#f1f5f9;display:flex;align-items:center;gap:8px;max-width:340px;`;
-        d.innerHTML = `<span>${icons[type]}</span><span style="flex:1;">${msg}</span>`;
+        d.className = 'toast-luxury';
+        d.style.cssText = `background: linear-gradient(135deg, #1a0428, #0a0118); border-left: 3px solid ${colors[type]}; border-radius: 10px; padding: 13px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 25px rgba(212,175,55,0.15); font-size: 12.5px; font-weight: 500; color: #f5e6ff; display: flex; align-items: center; gap: 10px; max-width: 340px; border: 1px solid rgba(212,175,55,0.25);`;
+        d.innerHTML = `<span style="display: inline-flex; width: 20px; height: 20px; border-radius: 50%; background: ${colors[type]}; color: white; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; flex-shrink: 0;">${icons[type]}</span><span style="flex: 1;">${msg}</span>`;
         c.appendChild(d);
         setTimeout(() => {
-          d.style.opacity = '0';
-          d.style.transform = 'translateX(60px)';
-          d.style.transition = 'all 0.35s';
-          setTimeout(() => d.remove(), 350);
-        }, 3200);
+          d.style.opacity = '0'; d.style.transform = 'translateX(80px)'; d.style.transition = 'all 0.4s';
+          setTimeout(() => d.remove(), 400);
+        }, 3400);
       }
 
-      // ========== AUTH STATE ==========
-      auth.onAuthStateChanged(async (user) => {
-        currentUser = user;
-        const adminBtn = document.getElementById('adminBtn');
-        
-        if (user) {
-          isAdmin = ADMIN_EMAILS.includes(user.email);
-          if (isAdmin) {
-            adminBtn.classList.remove('hidden');
-            adminBtn.classList.add('flex');
-            setTimeout(() => {
-              if (!adminAutoOpened) { adminAutoOpened = true; openAdmin(); }
-            }, 800);
-          } else {
-            adminBtn.classList.add('hidden');
-            adminBtn.classList.remove('flex');
-          }
-        } else {
-          isAdmin = false;
-          adminAutoOpened = false;
-          adminBtn.classList.add('hidden');
-          adminBtn.classList.remove('flex');
-        }
-      });
+      function showLoading(text) {
+        document.getElementById('loadingText').textContent = text || 'Processing...';
+        document.getElementById('loadingOverlay').classList.add('active');
+      }
+      function hideLoading() {
+        document.getElementById('loadingOverlay').classList.remove('active');
+      }
 
-      // ========== LOAD MOVIES ==========
-      async function loadMovies() {
-        try {
-          const snap = await db.collection('movies').orderBy('createdAt', 'desc').get();
-          allMovies = [];
-          snap.forEach(doc => allMovies.push({ id: doc.id, ...doc.data() }));
-          
-          if (allMovies.length === 0) {
-            await seedDefaultMovies();
-            return loadMovies();
-          }
-          
-          // Separate categories
-          nowShowingMovies = allMovies.filter(m => m.category === 'now-showing' || !m.category);
-          trendingMovies = allMovies.filter(m => m.category === 'trending');
-          featuredMovies = allMovies.filter(m => m.featured === true);
-          
-          if (featuredMovies.length === 0) featuredMovies = nowShowingMovies.slice(0, 5);
-          
-          renderHeroCarousel();
-          renderNowShowing();
-          renderTrending();
-          renderAdminMoviesList();
-          document.getElementById('moviesCount').textContent = allMovies.length;
-        } catch (e) {
-          console.error('Load movies error:', e);
-          // Fallback: seed
-          await seedDefaultMovies();
+      // ═══════════════════════════════════════════════════════════
+      // BACKGROUND EFFECTS
+      // ═══════════════════════════════════════════════════════════
+      function createStarfield() {
+        const c = document.getElementById('starfield');
+        for (let i = 0; i < 80; i++) {
+          const s = document.createElement('div');
+          s.className = 'star';
+          const size = Math.random() * 2 + 0.5;
+          s.style.width = size + 'px';
+          s.style.height = size + 'px';
+          s.style.left = Math.random() * 100 + '%';
+          s.style.top = Math.random() * 100 + '%';
+          s.style.animationDelay = (Math.random() * 3) + 's';
+          s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+          c.appendChild(s);
         }
       }
 
-      async function seedDefaultMovies() {
-        const defaults = [
-          {
-            title: '3 Idiots',
-            description: 'Two friends search for their long-lost companion, while their college days come flooding back. A heartwarming tale of friendship, dreams, and the pursuit of excellence.',
-            language: 'Hindi', genre: 'Comedy · Drama', duration: '2h 45m', rating: 'U/A', year: '2009',
-            poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&h=750&fit=crop',
-            backdrop: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600&h=900&fit=crop',
-            category: 'now-showing', featured: true,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          },
-          {
-            title: 'Dangal',
-            description: 'A former wrestler trains his daughters to become world-class wrestlers, defying societal norms and expectations.',
-            language: 'Hindi', genre: 'Biography · Drama', duration: '2h 41m', rating: 'U/A', year: '2016',
-            poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&h=750&fit=crop',
-            backdrop: 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=1600&h=900&fit=crop',
-            category: 'trending', featured: true,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          },
-          {
-            title: 'Taare Zameen Par',
-            description: 'An eight-year-old dyslexic boy finds hope and encouragement under the guidance of an unconventional art teacher.',
-            language: 'Hindi', genre: 'Drama · Family', duration: '2h 45m', rating: 'U', year: '2007',
-            poster: 'https://images.unsplash.com/photo-1574267432644-f610e0d5c7f5?w=500&h=750&fit=crop',
-            backdrop: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=1600&h=900&fit=crop',
-            category: 'now-showing', featured: true,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          },
-          {
-            title: 'Lagaan',
-            description: 'Villagers in colonial India challenge British officers to a game of cricket to avoid paying taxes for three years.',
-            language: 'Hindi', genre: 'Drama · Musical', duration: '3h 44m', rating: 'U', year: '2001',
-            poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500&h=750&fit=crop',
-            backdrop: 'https://images.unsplash.com/photo-1533488765986-dfa2a9939acd?w=1600&h=900&fit=crop',
-            category: 'trending', featured: false,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          },
-          {
-            title: 'Queen',
-            description: 'A young woman embarks on her honeymoon alone and discovers herself through a journey of self-realization.',
-            language: 'Hindi', genre: 'Comedy · Drama', duration: '2h 26m', rating: 'U/A', year: '2014',
-            poster: 'https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=500&h=750&fit=crop',
-            backdrop: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1600&h=900&fit=crop',
-            category: 'now-showing', featured: false,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          },
-          {
-            title: 'Swades',
-            description: 'An Indian NASA scientist returns to his homeland and witnesses the struggles of village life, inspiring him to make a difference.',
-            language: 'Hindi', genre: 'Drama', duration: '3h 09m', rating: 'U', year: '2004',
-            poster: 'https://images.unsplash.com/photo-1543536448-d209d2d13a1c?w=500&h=750&fit=crop',
-            backdrop: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600&h=900&fit=crop',
-            category: 'trending', featured: false,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          }
-        ];
-        
-        const batch = db.batch();
-        defaults.forEach(m => {
-          const ref = db.collection('movies').doc();
-          batch.set(ref, m);
-        });
-        await batch.commit();
+      function createPetals() {
+        const c = document.getElementById('petalsContainer');
+        const petals = ['🌸', '🌺', '🌼', '🏵️', '✨', '💫', '🪔', '🌟'];
+        setInterval(() => {
+          const p = document.createElement('div');
+          p.className = 'petal';
+          p.textContent = petals[Math.floor(Math.random() * petals.length)];
+          p.style.left = Math.random() * 100 + '%';
+          p.style.top = '-100px';
+          p.style.fontSize = (Math.random() * 16 + 12) + 'px';
+          p.style.animation = `petalFall ${Math.random() * 8 + 14}s linear`;
+          c.appendChild(p);
+          setTimeout(() => p.remove(), 22000);
+        }, 900);
       }
 
-      // ========== RENDER HERO CAROUSEL ==========
-      function renderHeroCarousel() {
-        const carousel = document.getElementById('heroCarousel');
-        if (featuredMovies.length === 0) return;
-        
-        carousel.innerHTML = featuredMovies.map((movie, i) => `
-          <div class="hero-slide ${i === 0 ? 'active' : ''}" data-index="${i}">
-            <img src="${movie.backdrop || movie.poster}" alt="${movie.title}">
-            <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.75) 40%, rgba(220,38,38,0.25) 100%);"></div>
-          </div>
-        `).join('');
-
-        // Add content overlay
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'absolute inset-0 z-20 flex items-end p-6 sm:p-10';
-        contentDiv.id = 'heroContent';
-        carousel.appendChild(contentDiv);
-        
-        renderHeroContent(0);
-
-        // Add navigation dots
-        const navDiv = document.createElement('div');
-        navDiv.className = 'absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30 flex gap-2';
-        navDiv.id = 'heroNav';
-        carousel.appendChild(navDiv);
-        renderHeroNav(0);
-
-        // Start auto rotate
-        startHeroRotation();
-      }
-
-      function renderHeroContent(index) {
-        const movie = featuredMovies[index];
-        if (!movie) return;
-        const content = document.getElementById('heroContent');
-        content.innerHTML = `
-          <div class="flex flex-col sm:flex-row gap-6 items-end w-full">
-            <div class="movie-poster-wrap flex-shrink-0 w-32 sm:w-48 hidden sm:block" style="aspect-ratio: 2/3; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
-              <img src="${movie.poster}" class="movie-poster" alt="${movie.title}">
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="badge-live text-[10px] font-bold px-3 py-1 rounded-full">
-                  <i class="fas fa-fire mr-1"></i>FEATURED
-                </span>
-                <span class="bg-white/10 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/20">
-                  ${movie.year || 'NEW'}
-                </span>
-              </div>
-              <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold font-display text-white leading-tight mb-2">
-                ${movie.title}
-              </h1>
-              <div class="flex items-center gap-3 text-white/70 text-xs sm:text-sm mb-3 flex-wrap">
-                <span>${movie.language || 'Hindi'}</span>
-                <span>•</span>
-                <span>${movie.genre || 'Drama'}</span>
-                <span>•</span>
-                <span>${movie.duration || '2h'}</span>
-                <span>•</span>
-                <span><i class="fas fa-star text-amber-400 text-[10px]"></i> 4.8</span>
-              </div>
-              <p class="text-white/80 text-xs sm:text-sm max-w-xl mb-4 line-clamp-2 hidden sm:block">
-                ${movie.description || ''}
-              </p>
-              <div class="flex flex-wrap gap-3 items-center">
-                <div class="flex items-center gap-3 bg-white/10 backdrop-blur rounded-xl px-4 py-2.5 border border-white/20">
-                  <div>
-                    <div class="text-[9px] text-white/60 uppercase">Starting</div>
-                    <div class="text-xl font-extrabold text-white">₹50</div>
-                  </div>
-                  <div class="w-px h-6 bg-white/20"></div>
-                  <div>
-                    <div class="text-[9px] text-white/60 uppercase">Premium</div>
-                    <div class="text-xl font-extrabold text-amber-400">₹70</div>
-                  </div>
-                </div>
-                <button onclick="App.openMovieDetail('${movie.id}')" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-5 py-3 rounded-xl font-bold text-sm shadow-xl shadow-red-500/30 transition flex items-center gap-2">
-                  <i class="fas fa-ticket-alt"></i>Book Now
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      function renderHeroNav(activeIndex) {
-        const nav = document.getElementById('heroNav');
-        if (!nav) return;
-        nav.innerHTML = featuredMovies.map((_, i) => `
-          <button onclick="App.goToHeroSlide(${i})" class="transition-all" style="width: ${i === activeIndex ? '32px' : '8px'}; height: 8px; background: ${i === activeIndex ? '#dc2626' : 'rgba(255,255,255,0.3)'}; border-radius: 8px; border: none; cursor: pointer;"></button>
-        `).join('');
-      }
-
-      function goToHeroSlide(index) {
-        currentHeroIndex = index;
-        document.querySelectorAll('.hero-slide').forEach((s, i) => {
-          s.classList.toggle('active', i === index);
-        });
-        renderHeroContent(index);
-        renderHeroNav(index);
-        // Reset interval
-        clearInterval(heroInterval);
-        startHeroRotation();
-      }
-
-      function startHeroRotation() {
-        heroInterval = setInterval(() => {
-          if (featuredMovies.length <= 1) return;
-          const next = (currentHeroIndex + 1) % featuredMovies.length;
-          goToHeroSlide(next);
-        }, 6000);
-      }
-
-      // ========== RENDER NOW SHOWING ==========
-      function renderNowShowing() {
-        const container = document.getElementById('nowShowingContainer');
-        const list = nowShowingMovies.length ? nowShowingMovies : allMovies.slice(0, 6);
-        if (!list.length) {
-          container.innerHTML = `<div class="text-gray-500 text-sm py-8">No movies yet</div>`;
-          return;
-        }
-        container.innerHTML = `<div class="flex gap-4" style="min-width: max-content;">
-          ${list.map(m => movieCardHTML(m)).join('')}
-        </div>`;
-      }
-
-      function renderTrending() {
-        const container = document.getElementById('trendingContainer');
-        const list = trendingMovies.length ? trendingMovies : allMovies.slice(0, 4);
-        if (!list.length) {
-          container.innerHTML = `<div class="text-gray-500 text-sm py-8">No trending movies</div>`;
-          return;
-        }
-        container.innerHTML = `<div class="flex gap-4" style="min-width: max-content;">
-          ${list.map(m => movieCardHTML(m)).join('')}
-        </div>`;
-      }
-
-      function movieCardHTML(m) {
-        return `
-          <div class="movie-card" style="width: 180px; flex-shrink: 0;" onclick="App.openMovieDetail('${m.id}')">
-            <div class="relative" style="aspect-ratio: 2/3;">
-              <img src="${m.poster}" class="movie-poster-img" alt="${m.title}" onerror="this.src='https://via.placeholder.com/300x450/1a1a24/ffffff?text=${encodeURIComponent(m.title)}'">
-              <div class="movie-card-overlay"></div>
-              <div class="movie-rating-badge">
-                <i class="fas fa-star text-[9px]"></i> ${(Math.random() * 1 + 4).toFixed(1)}
-              </div>
-              <div class="movie-format-badge">2D · U/A</div>
-              <div class="movie-info">
-                <div class="movie-title">${m.title}</div>
-                <div class="movie-meta">
-                  <span>${m.language || 'Hindi'}</span>
-                  <span>·</span>
-                  <span>${m.duration || '2h'}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      // ========== OPEN MOVIE DETAIL ==========
-      async function openMovieDetail(movieId) {
-        const movie = allMovies.find(m => m.id === movieId);
-        if (!movie) return;
-        selectedMovie = movie;
-        
-        document.getElementById('detailBackdrop').src = movie.backdrop || movie.poster;
-        document.getElementById('detailPoster').src = movie.poster;
-        document.getElementById('detailTitle').textContent = movie.title;
-        document.getElementById('detailDescription').textContent = movie.description || '';
-        document.getElementById('detailGenre').textContent = movie.genre || 'Drama';
-        document.getElementById('detailDuration').textContent = movie.duration || '2h';
-        document.getElementById('detailRating').textContent = movie.rating || 'U/A';
-        document.getElementById('detailMeta').innerHTML = `
-          <span><i class="fas fa-calendar mr-1 text-red-400"></i> Every Sunday</span>
-          <span>•</span>
-          <span><i class="fas fa-language mr-1 text-red-400"></i> ${movie.language || 'Hindi'}</span>
-          ${movie.year ? `<span>•</span><span><i class="fas fa-clock mr-1 text-red-400"></i> ${movie.year}</span>` : ''}
-        `;
-        
-        // Render slots
-        renderDetailSlots();
-        
-        // Show section
-        document.getElementById('movieDetailSection').classList.remove('hidden');
-        document.getElementById('movieDetailSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
-        // Hide seat section if visible
-        document.getElementById('seatSection').classList.add('hidden');
-        
-        // Load bookings for this movie
-        await loadBookings(movieId);
-      }
-
-      function closeMovieDetail() {
-        document.getElementById('movieDetailSection').classList.add('hidden');
-        document.getElementById('seatSection').classList.add('hidden');
-        selectedMovie = null;
-        selectedSlotId = null;
-        selectedSeats = [];
-      }
-
-      function renderDetailSlots() {
-        const container = document.getElementById('detailSlotsContainer');
-        if (!container) return;
-        container.innerHTML = SLOTS.map(slot => {
-          const icon = slot.icon === 'sun' ? 'fa-sun' : 'fa-moon';
-          return `
-            <div class="slot-card" onclick="App.selectSlot(${slot.id})" data-slot="${slot.id}">
-              <div class="flex items-center justify-between mb-3">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-red-600 to-red-700">
-                  <i class="fas ${icon} text-white text-lg"></i>
-                </div>
-                <span class="bg-green-500/20 text-green-400 text-[10px] font-bold px-3 py-1 rounded-full border border-green-500/30">AVAILABLE</span>
-              </div>
-              <div class="text-white font-bold font-display text-base mb-1">${slot.name}</div>
-              <div class="text-gray-400 text-sm flex items-center gap-2">
-                <i class="fas fa-clock text-xs"></i>${slot.time}
-              </div>
-              <div class="text-red-400 text-xs mt-2">
-                <i class="fas fa-chair mr-1"></i>15 Seats · 5 Rows × 3
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      // ========== LOAD BOOKINGS ==========
-      async function loadBookings(movieId) {
-        try {
-          let query = db.collection('bookings');
-          if (movieId) query = query.where('movieId', '==', movieId);
-          const snap = await query.get();
-          
-          bookedSeats = {};
-          allBookings = [];
-          snap.forEach(doc => {
-            const b = { id: doc.id, ...doc.data() };
-            allBookings.push(b);
-            if (!bookedSeats[b.slotId]) bookedSeats[b.slotId] = {};
-            (b.seats || []).forEach(s => {
-              bookedSeats[b.slotId][`${s.row}-${s.seat}`] = b;
-            });
-          });
-          
-          renderSeatMap();
-          updateBookingsList();
-        } catch (e) {
-          console.error('Load bookings error:', e);
-        }
-      }
-
-      function updateBookingsList() {
-        const list = document.getElementById('bookingsList');
-        const count = document.getElementById('bookingsCount');
-        if (!list) return;
-        
-        if (!allBookings.length) {
-          list.innerHTML = `<div class="text-center py-8 text-red-300/40 text-xs"><i class="fas fa-inbox text-3xl mb-2 block"></i>No bookings yet</div>`;
-          if (count) count.textContent = '0';
-          return;
-        }
-        
-        if (count) count.textContent = allBookings.length;
-        list.innerHTML = allBookings.map(b => `
-          <div class="bg-slate-800/60 rounded-xl p-4 border border-slate-700">
-            <div class="flex items-start justify-between mb-3 flex-wrap gap-2">
-              <div>
-                <div class="text-white font-bold text-sm">${b.name}</div>
-                <div class="text-gray-400 text-xs">${b.phone}${b.email ? ' · ' + b.email : ''}</div>
-              </div>
-              <div class="text-right">
-                <div class="text-green-400 font-bold text-sm">₹${b.total}</div>
-                <div class="text-red-300/60 text-[10px] font-mono">${b.bookingId || 'N/A'}</div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
-              <span class="bg-red-500/20 text-red-400 px-2 py-1 rounded font-semibold">Slot ${b.slotId}</span>
-              <span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded font-semibold text-[10px]">${b.movieTitle || 'Movie'}</span>
-              <span class="font-mono bg-slate-900 px-2 py-1 rounded">${(b.seats || []).map(s => s.seatId).join(', ')}</span>
-            </div>
-            <button onclick="App.deleteBooking('${b.id}')" class="mt-3 w-full bg-red-600/20 hover:bg-red-600/40 text-red-400 py-2 rounded-lg text-xs font-bold transition">
-              <i class="fas fa-trash mr-1"></i>Delete
-            </button>
-          </div>
-        `).join('');
-      }
-
-      // ========== SELECT SLOT ==========
-      function selectSlot(slotId) {
-        if (!selectedMovie) {
-          toast('Please select a movie first', 'warning');
-          return;
-        }
-        selectedSlotId = slotId;
-        selectedSeats = [];
-        
-        document.querySelectorAll('.slot-card').forEach(el => {
-          el.classList.remove('active');
-          if (parseInt(el.dataset.slot) === slotId) el.classList.add('active');
-        });
-        
-        const slot = SLOTS.find(s => s.id === slotId);
-        document.getElementById('selectedSlotTitle').textContent = `${slot.name} · ${slot.time}`;
-        document.getElementById('selectedMovieTitle').textContent = selectedMovie.title;
-        
-        document.getElementById('seatSection').classList.remove('hidden');
-        document.getElementById('seatSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
-        renderSeatMap();
-        updateBookingBar();
-      }
-
-      // ========== RENDER SEAT MAP ==========
-      function renderSeatMap() {
-        const container = document.getElementById('seatRowsContainer');
-        if (!container || !selectedSlotId) return;
-        
-        const slotBookings = bookedSeats[selectedSlotId] || {};
-        let availableCount = 0;
-        let html = '';
-        
-        for (let row = 1; row <= TOTAL_ROWS; row++) {
-          const isPremium = PREMIUM_ROWS.includes(row);
-          html += `<div class="row-wrapper">`;
-          html += `<div class="row-label">${String.fromCharCode(64 + row)}</div>`;
-          html += `<div class="seats-container">`;
-          
-          for (let seat = 1; seat <= SEATS_PER_ROW; seat++) {
-            const seatId = `${row}-${seat}`;
-            const isBooked = !!slotBookings[seatId];
-            const isSelected = selectedSeats.some(s => s.row === row && s.seat === seat);
-            if (!isBooked) availableCount++;
-            
-            let classes = 'seat';
-            if (isBooked) classes += ' booked';
-            else if (isSelected) classes += ' selected';
-            else classes += ' available';
-            if (isPremium) classes += ' premium';
-            
-            const price = isPremium ? PRICE_PREMIUM : PRICE_REGULAR;
-            const seatLabel = `${String.fromCharCode(64 + row)}${seat}`;
-            
-            html += `<div class="${classes}" data-row="${row}" data-seat="${seat}" data-price="${price}" onclick="${isBooked ? '' : `App.toggleSeat(${row}, ${seat}, ${price})`}" title="${seatLabel} · ₹${price}">
-              ${seatLabel}
-              ${isPremium && !isBooked ? '<div class="seat-type-indicator"><i class="fas fa-crown"></i></div>' : ''}
-            </div>`;
-          }
-          
-          html += `</div></div>`;
-        }
-        
-        container.innerHTML = html;
-        document.getElementById('availableSeats').textContent = availableCount;
-      }
-
-      // ========== TOGGLE SEAT ==========
-      function toggleSeat(row, seat, price) {
-        const idx = selectedSeats.findIndex(s => s.row === row && s.seat === seat);
-        if (idx >= 0) {
-          selectedSeats.splice(idx, 1);
-        } else {
-          if (selectedSeats.length >= 6) return toast('Max 6 seats per booking', 'warning');
-          selectedSeats.push({ row, seat, price, seatId: `${String.fromCharCode(64 + row)}${seat}` });
-        }
-        renderSeatMap();
-        updateBookingBar();
-      }
-
-      function updateBookingBar() {
-        const display = document.getElementById('selectedSeatsDisplay');
-        const total = document.getElementById('totalAmount');
-        const btn = document.getElementById('bookBtn');
-        
-        if (selectedSeats.length === 0) {
-          display.textContent = '— None selected —';
-          total.textContent = '₹0';
-          btn.disabled = true;
-        } else {
-          display.textContent = selectedSeats.map(s => s.seatId).join(', ');
-          const totalPrice = selectedSeats.reduce((sum, s) => sum + s.price, 0);
-          total.textContent = `₹${totalPrice}`;
-          btn.disabled = false;
-        }
-      }
-
-      // ========== PROCEED TO BOOK ==========
-      function proceedToBook() {
-        if (!selectedMovie || !selectedSlotId || selectedSeats.length === 0) {
-          return toast('Please select movie, slot and seats', 'warning');
-        }
-        
-        const slot = SLOTS.find(s => s.id === selectedSlotId);
-        const total = selectedSeats.reduce((sum, s) => sum + s.price, 0);
-        
-        document.getElementById('modalMovie').textContent = selectedMovie.title;
-        document.getElementById('modalSlot').textContent = `${slot.name} · ${slot.time}`;
-        document.getElementById('modalSeats').textContent = selectedSeats.map(s => s.seatId).join(', ');
-        document.getElementById('modalTotal').textContent = `₹${total}`;
-        
-        document.getElementById('bookingModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeBooking() {
-        document.getElementById('bookingModal').classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      // ========== INITIATE PAYMENT ==========
-      async function initiatePayment() {
-        const name = document.getElementById('bookName').value.trim();
-        const phone = document.getElementById('bookPhone').value.trim();
-        const email = document.getElementById('bookEmail').value.trim();
-        
-        if (!name) return toast('Enter your name', 'warning');
-        if (phone.length !== 10) return toast('Enter valid 10-digit mobile', 'warning');
-        
-        const total = selectedSeats.reduce((sum, s) => sum + s.price, 0);
-        const amountPaise = total * 100;
-        
-        const btn = document.getElementById('payBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Processing...';
-        
-        const bookingId = 'THP' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase();
-        
-        try {
-          const options = {
-            key: RAZORPAY_KEY_ID,
-            amount: amountPaise,
-            currency: 'INR',
-            name: 'THP Sunday Mini Show',
-            description: `${selectedSeats.length} seat(s) · ${selectedMovie.title}`,
-            prefill: { name, email, contact: phone },
-            notes: {
-              bookingId,
-              movieId: selectedMovie.id,
-              slotId: selectedSlotId,
-              seats: selectedSeats.map(s => s.seatId).join(',')
-            },
-            theme: { color: '#dc2626' },
-            handler: async function(response) {
-              await completeBooking(response, { name, phone, email, bookingId, total });
-            },
-            modal: {
-              ondismiss: () => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-credit-card"></i> Pay & Confirm Booking';
-              }
-            }
+      // ═══════════════════════════════════════════════════════════
+      // IMAGE HANDLING
+      // ═══════════════════════════════════════════════════════════
+      function resizeImage(file, maxSize = 400, quality = 0.92) {
+        return new Promise(resolve => {
+          const reader = new FileReader();
+          reader.onload = e => {
+            const img = new Image();
+            img.onload = () => {
+              const canvas = document.createElement('canvas');
+              const size = Math.min(img.width, img.height);
+              const ox = (img.width - size) / 2, oy = (img.height - size) / 2;
+              canvas.width = maxSize; canvas.height = maxSize;
+              canvas.getContext('2d').drawImage(img, ox, oy, size, size, 0, 0, maxSize, maxSize);
+              canvas.toBlob(blob => resolve(new File([blob], 'photo.jpg', { type: 'image/jpeg' })), 'image/jpeg', quality);
+            };
+            img.src = e.target.result;
           };
-          
-          const rzp = new Razorpay(options);
-          rzp.on('payment.failed', (resp) => {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-credit-card"></i> Pay & Confirm Booking';
-            toast('Payment failed: ' + (resp.error?.description || ''), 'error');
-          });
-          rzp.open();
-        } catch (e) {
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-credit-card"></i> Pay & Confirm Booking';
-          toast('Error: ' + e.message, 'error');
-        }
+          reader.readAsDataURL(file);
+        });
       }
 
-      // ========== COMPLETE BOOKING ==========
-      async function completeBooking(paymentResponse, customerData) {
-        const btn = document.getElementById('payBtn');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>Confirming...';
-        
+      async function uploadToImgBB(file) {
+        if (!file) return '';
+        const fd = new FormData();
+        fd.append('image', file);
         try {
-          const bookingData = {
-            bookingId: customerData.bookingId,
-            name: customerData.name,
-            phone: customerData.phone,
-            email: customerData.email,
-            movieId: selectedMovie.id,
-            movieTitle: selectedMovie.title,
-            moviePoster: selectedMovie.poster,
-            slotId: selectedSlotId,
-            slotName: SLOTS.find(s => s.id === selectedSlotId).name,
-            slotTime: SLOTS.find(s => s.id === selectedSlotId).time,
-            seats: selectedSeats.map(s => ({ row: s.row, seat: s.seat, seatId: s.seatId, price: s.price })),
-            total: customerData.total,
-            paymentId: paymentResponse.razorpay_payment_id,
-            status: 'confirmed',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          const r = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: fd });
+          const j = await r.json();
+          return j.success ? j.data.url : '';
+        } catch (e) { console.error('ImgBB:', e); return ''; }
+      }
+
+      async function handlePhoto(e) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) return toast('Image too large (max 5MB)', 'error');
+        if (!file.type.startsWith('image/')) return toast('Please select an image', 'error');
+        try {
+          const resized = await resizeImage(file, 400, 0.92);
+          photoFile = resized;
+          const reader = new FileReader();
+          reader.onload = ev => {
+            photoDataUrl = ev.target.result;
+            document.getElementById('photoPreview').src = ev.target.result;
+            document.getElementById('photoPreview').style.display = 'block';
+            document.getElementById('photoPlaceholder').style.display = 'none';
           };
-          
-          await db.collection('bookings').add(bookingData);
-          
-          showTicket(bookingData);
-          closeBooking();
-          await loadBookings(selectedMovie.id);
-          
-          toast('🎉 Booking confirmed!', 'success');
-        } catch (e) {
-          console.error('Booking error:', e);
-          toast('Error: ' + e.message, 'error');
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-credit-card"></i> Pay & Confirm Booking';
-        }
+          reader.readAsDataURL(resized);
+          toast('Photo added', 'success');
+        } catch (err) { toast('Failed to process photo', 'error'); }
       }
 
-      // ========== SHOW TICKET ==========
-      function showTicket(booking) {
-        document.getElementById('ticketMovieName').textContent = booking.movieTitle;
-        document.getElementById('ticketId').textContent = booking.bookingId;
-        document.getElementById('ticketName').textContent = booking.name;
-        document.getElementById('ticketSlot').textContent = `${booking.slotName} · ${booking.slotTime}`;
-        document.getElementById('ticketSeats').textContent = booking.seats.map(s => s.seatId).join(', ');
-        document.getElementById('ticketDate').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
-        document.getElementById('ticketTotal').textContent = `₹${booking.total}`;
-        document.getElementById('ticketQR').textContent = booking.bookingId;
-        
-        document.getElementById('ticketModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
+      // ═══════════════════════════════════════════════════════════
+      // GENERATE PASS
+      // ═══════════════════════════════════════════════════════════
+      async function generate() {
+        const name = document.getElementById('studentName').value.trim();
+        const studentClass = document.getElementById('studentClass').value;
+        const phone = document.getElementById('studentPhone').value.trim();
 
-      function closeTicket() {
-        document.getElementById('ticketModal').classList.remove('active');
-        document.body.style.overflow = '';
-        selectedSeats = [];
-        updateBookingBar();
-        if (selectedSlotId) renderSeatMap();
-      }
+        if (!photoFile) return toast('Please upload your photo', 'warning');
+        if (!name || name.length < 2) return toast('Please enter a valid name', 'warning');
+        if (name.length > 30) return toast('Name too long (max 30)', 'warning');
+        if (!studentClass) return toast('Please select your class', 'warning');
+        if (phone && phone.length !== 10) return toast('Enter valid 10-digit mobile', 'warning');
 
-      // ========== SEARCH ==========
-      function openSearch() {
-        document.getElementById('searchModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-        setTimeout(() => document.getElementById('searchInput').focus(), 300);
-      }
-
-      function closeSearch() {
-        document.getElementById('searchModal').classList.remove('active');
-        document.body.style.overflow = '';
-        document.getElementById('searchInput').value = '';
-        document.getElementById('searchResults').innerHTML = '<div class="text-center py-8 text-gray-500 text-sm">Start typing to search...</div>';
-      }
-
-      function performSearch(query) {
-        const results = document.getElementById('searchResults');
-        if (!query || query.length < 2) {
-          results.innerHTML = '<div class="text-center py-8 text-gray-500 text-sm">Type at least 2 characters...</div>';
-          return;
-        }
-        const q = query.toLowerCase();
-        const filtered = allMovies.filter(m => 
-          (m.title || '').toLowerCase().includes(q) ||
-          (m.genre || '').toLowerCase().includes(q) ||
-          (m.language || '').toLowerCase().includes(q)
-        );
-        
-        if (!filtered.length) {
-          results.innerHTML = '<div class="text-center py-8 text-gray-500 text-sm"><i class="fas fa-search mb-2 text-2xl block opacity-50"></i>No movies found</div>';
-          return;
-        }
-        
-        results.innerHTML = filtered.map(m => `
-          <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 cursor-pointer transition" onclick="App.closeSearch(); App.openMovieDetail('${m.id}')">
-            <img src="${m.poster}" class="w-12 h-16 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/60x80/1a1a24/ffffff?text=M'">
-            <div class="flex-1 min-w-0">
-              <div class="text-white font-bold text-sm truncate">${m.title}</div>
-              <div class="text-gray-400 text-xs">${m.language || 'Hindi'} · ${m.duration || '2h'}</div>
-            </div>
-            <i class="fas fa-chevron-right text-gray-500"></i>
-          </div>
-        `).join('');
-      }
-
-      // ========== SCROLL MOVIES ==========
-      function scrollMovies(direction) {
-        const container = document.querySelector('#nowShowingContainer');
-        if (!container) return;
-        const scrollAmount = 400;
-        container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
-      }
-
-      // ========== ADMIN ==========
-      function openAdmin() {
-        if (!isAdmin) return toast('Admin access required', 'error');
-        document.getElementById('adminModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-        renderAdminMoviesList();
-        loadBookings();
-      }
-
-      function closeAdmin() {
-        document.getElementById('adminModal').classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      function adminTab(tab) {
-        document.querySelectorAll('[id^="tab"]').forEach(el => {
-          el.classList.remove('text-white', 'border-red-500');
-          el.classList.add('text-gray-400', 'border-transparent');
-        });
-        const tabEl = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
-        if (tabEl) {
-          tabEl.classList.remove('text-gray-400', 'border-transparent');
-          tabEl.classList.add('text-white', 'border-red-500');
-        }
-        
-        ['moviesTab', 'addMovieTab', 'bookingsTab'].forEach(t => {
-          const el = document.getElementById(t);
-          if (el) el.classList.add('hidden');
-        });
-        const target = document.getElementById(tab + 'Tab');
-        if (target) target.classList.remove('hidden');
-        
-        if (tab === 'bookings') loadBookings();
-      }
-
-      function renderAdminMoviesList() {
-        const list = document.getElementById('moviesList');
-        if (!list) return;
-        
-        if (!allMovies.length) {
-          list.innerHTML = '<div class="text-center py-12 text-red-300/40 text-xs col-span-full">No movies yet. Click "Add Movie"</div>';
-          return;
-        }
-        
-        list.innerHTML = allMovies.map(m => `
-          <div class="bg-slate-800/60 rounded-xl p-3 border border-slate-700">
-            <div class="flex gap-3 mb-3">
-              <img src="${m.poster}" class="w-14 h-20 object-cover rounded-lg flex-shrink-0" onerror="this.src='https://via.placeholder.com/60x80/1a1a24/ffffff?text=M'">
-              <div class="flex-1 min-w-0">
-                <div class="text-white font-bold text-sm truncate">${m.title}</div>
-                <div class="text-gray-400 text-xs truncate">${m.language || 'Hindi'} · ${m.duration || '2h'}</div>
-                <div class="flex items-center gap-1 mt-1 flex-wrap">
-                  <span class="text-[9px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded font-semibold">${m.category || 'now-showing'}</span>
-                  ${m.featured ? '<span class="text-[9px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-semibold">⭐ FEATURED</span>' : ''}
-                </div>
-              </div>
-            </div>
-            <div class="flex gap-2">
-              <button onclick="App.editMovie('${m.id}')" class="flex-1 bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 py-2 rounded-lg text-xs font-bold transition">
-                <i class="fas fa-edit mr-1"></i>Edit
-              </button>
-              <button onclick="App.deleteMovie('${m.id}', '${m.title.replace(/'/g, "\\'")}')" class="flex-1 bg-red-600/20 hover:bg-red-600/40 text-red-400 py-2 rounded-lg text-xs font-bold transition">
-                <i class="fas fa-trash mr-1"></i>Delete
-              </button>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      async function saveMovie() {
-        const id = document.getElementById('mId').value;
-        const data = {
-          title: document.getElementById('mTitle').value.trim(),
-          description: document.getElementById('mDescription').value.trim(),
-          language: document.getElementById('mLanguage').value.trim(),
-          genre: document.getElementById('mGenre').value.trim(),
-          duration: document.getElementById('mDuration').value.trim(),
-          rating: document.getElementById('mRating').value.trim(),
-          year: document.getElementById('mYear').value.trim(),
-          poster: document.getElementById('mPoster').value.trim(),
-          backdrop: document.getElementById('mBackdrop').value.trim(),
-          category: document.getElementById('mCategory').value,
-          featured: document.getElementById('mFeatured').value === 'true',
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        
-        if (!data.title || !data.description || !data.poster) {
-          return toast('Fill required fields', 'warning');
-        }
-        
-        const btn = document.getElementById('saveMovieBtn');
-        const txt = document.getElementById('saveMovieBtnText');
-        const orig = txt.textContent;
+        const btn = document.getElementById('generateBtn');
         btn.disabled = true;
-        txt.textContent = 'Saving...';
-        
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Generating...';
+        showLoading('Uploading Photo...');
+
         try {
-          if (id) {
-            await db.collection('movies').doc(id).update(data);
-            toast('Movie updated! ✅', 'success');
-          } else {
-            data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-            await db.collection('movies').add(data);
-            toast('Movie added! 🎉', 'success');
-          }
-          resetMovieForm();
-          await loadMovies();
-          adminTab('movies');
+          let uploadedUrl = photoDataUrl;
+          try {
+            const url = await uploadToImgBB(photoFile);
+            if (url) uploadedUrl = url;
+          } catch (e) { console.warn('ImgBB failed, using base64'); }
+
+          const ts = Date.now().toString(36).toUpperCase();
+          const rand = Math.random().toString(36).substr(2, 4).toUpperCase();
+          const passId = `THP-${ts.slice(-4)}-${rand}`;
+          currentPassId = passId;
+
+          showLoading('Saving Pass...');
+
+          const studentData = {
+            passId, name, studentClass,
+            phone: phone || '',
+            photoUrl: uploadedUrl,
+            eventName: 'THP Dandiya & Garba Night 2026',
+            eventDate: '16/10/2026',
+            eventTime: '6:00 PM - 8:30 PM',
+            venue: 'The Heaven Point Coaching Classes',
+            status: 'registered',
+            registeredAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          await db.collection('dandiyaPasses').add(studentData);
+          currentStudentData = studentData;
+
+          updatePassCard(studentData);
+
+          document.getElementById('formSection').style.display = 'none';
+          document.getElementById('passSection').style.display = 'block';
+
+          rotateX = 0; rotateY = 0; autoSpin = true; autoAngle = 0;
+          applyRotation();
+
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+          setTimeout(() => document.getElementById('successModal').classList.add('active'), 500);
+
+          hideLoading();
+          toast('Pass created successfully', 'success');
         } catch (e) {
+          console.error('Generate error:', e);
+          hideLoading();
           toast('Error: ' + e.message, 'error');
         } finally {
           btn.disabled = false;
-          txt.textContent = orig;
+          btn.innerHTML = '<i class="fas fa-ticket-alt mr-2"></i>Generate My Pass';
         }
       }
 
-      function editMovie(id) {
-        const m = allMovies.find(x => x.id === id);
-        if (!m) return;
-        document.getElementById('mId').value = id;
-        document.getElementById('mTitle').value = m.title || '';
-        document.getElementById('mDescription').value = m.description || '';
-        document.getElementById('mLanguage').value = m.language || 'Hindi';
-        document.getElementById('mGenre').value = m.genre || '';
-        document.getElementById('mDuration').value = m.duration || '';
-        document.getElementById('mRating').value = m.rating || 'U/A';
-        document.getElementById('mYear').value = m.year || '';
-        document.getElementById('mPoster').value = m.poster || '';
-        document.getElementById('mBackdrop').value = m.backdrop || '';
-        document.getElementById('mCategory').value = m.category || 'now-showing';
-        document.getElementById('mFeatured').value = m.featured ? 'true' : 'false';
-        document.getElementById('movieFormTitle').textContent = 'Edit Movie';
-        document.getElementById('saveMovieBtnText').textContent = 'Update Movie';
-        adminTab('addMovie');
+      function updatePassCard(data) {
+        document.getElementById('passName').textContent = data.name;
+        document.getElementById('passClass').textContent = data.studentClass;
+        document.getElementById('passId').textContent = data.passId;
+        document.getElementById('last4Digits').textContent = data.passId.split('-').pop() || '0000';
+        document.getElementById('signatureText').textContent = data.name;
+
+        const img = document.getElementById('passPhoto');
+        const ph = document.getElementById('passPhotoPlaceholder');
+        if (data.photoUrl) {
+          img.src = data.photoUrl;
+          img.style.display = 'block';
+          ph.style.display = 'none';
+        }
       }
 
-      function resetMovieForm() {
-        ['mId','mTitle','mDescription','mGenre','mDuration','mYear','mPoster','mBackdrop'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.value = '';
-        });
-        document.getElementById('mLanguage').value = 'Hindi';
-        document.getElementById('mRating').value = 'U/A';
-        document.getElementById('mCategory').value = 'now-showing';
-        document.getElementById('mFeatured').value = 'false';
-        document.getElementById('movieFormTitle').textContent = 'Add New Movie';
-        document.getElementById('saveMovieBtnText').textContent = 'Save Movie';
+      function closeSuccess() {
+        document.getElementById('successModal').classList.remove('active');
       }
 
-      async function deleteMovie(id, title) {
-        if (!confirm(`Delete "${title}"? All data will be lost.`)) return;
+      // ═══════════════════════════════════════════════════════════
+      // DOWNLOAD - Renders card in hidden container (2D, no transforms)
+      // ═══════════════════════════════════════════════════════════
+      async function download() {
+        const btn = document.getElementById('downloadBtn');
+        const orig = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating...';
+        showLoading('Creating HD Pass...');
+
         try {
-          await db.collection('movies').doc(id).delete();
-          toast('Movie deleted', 'success');
-          await loadMovies();
+          // Build clean 2D clone in hidden container
+          const renderContainer = document.getElementById('renderContainer');
+          renderContainer.innerHTML = buildStaticCardHTML();
+
+          // Ensure images load
+          await new Promise(r => setTimeout(r, 400));
+
+          // Wait for images
+          const imgs = renderContainer.querySelectorAll('img');
+          await Promise.all(Array.from(imgs).map(img => {
+            if (img.complete) return Promise.resolve();
+            return new Promise(res => {
+              img.onload = res;
+              img.onerror = res;
+              setTimeout(res, 2000);
+            });
+          }));
+
+          await new Promise(r => setTimeout(r, 200));
+
+          const card2d = renderContainer.querySelector('.static-card-front');
+          const canvas = await html2canvas(card2d, {
+            scale: 4,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: null,
+            logging: false,
+            width: 960,
+            height: 606,
+            windowWidth: 960,
+            windowHeight: 606
+          });
+
+          canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const safe = (currentStudentData?.name || 'Student').replace(/[^a-z0-9]/gi, '_');
+            a.download = `THP_Dandiya_Pass_${safe}_${currentPassId}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            renderContainer.innerHTML = '';
+            hideLoading();
+            btn.disabled = false;
+            btn.innerHTML = orig;
+            toast('Pass downloaded', 'success');
+          }, 'image/png', 1.0);
         } catch (e) {
-          toast('Error: ' + e.message, 'error');
+          console.error('Download error:', e);
+          hideLoading();
+          btn.disabled = false;
+          btn.innerHTML = orig;
+          toast('Download failed', 'error');
         }
       }
 
-      function filterBookings(slotId) {
-        // Simple re-render of bookings with filter
-        const list = document.getElementById('bookingsList');
-        if (!list) return;
-        const filtered = slotId === 'all' ? allBookings : allBookings.filter(b => b.slotId == slotId);
-        if (!filtered.length) {
-          list.innerHTML = '<div class="text-center py-8 text-red-300/40 text-xs">No bookings for this filter</div>';
-          return;
-        }
-        list.innerHTML = filtered.map(b => `
-          <div class="bg-slate-800/60 rounded-xl p-4 border border-slate-700">
-            <div class="flex items-start justify-between mb-3 flex-wrap gap-2">
-              <div>
-                <div class="text-white font-bold text-sm">${b.name}</div>
-                <div class="text-gray-400 text-xs">${b.phone}</div>
+      // ═══════════════════════════════════════════════════════════
+      // BUILD STATIC CARD HTML (for download)
+      // Flat 2D version - no 3D transforms, clean html2canvas render
+      // ═══════════════════════════════════════════════════════════
+      function buildStaticCardHTML() {
+        const data = currentStudentData;
+        const photoHtml = data.photoUrl
+          ? `<img src="${data.photoUrl}" style="width:100%;height:100%;object-fit:cover;display:block;" crossorigin="anonymous">`
+          : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:60px;color:rgba(212,175,55,0.4);">&#xf2bd;</div>`;
+
+        return `
+          <div class="static-card-front" style="
+            width: 960px;
+            height: 606px;
+            border-radius: 36px;
+            background: linear-gradient(125deg, #0d0221 0%, #1a0428 20%, #2d0a3d 40%, #4a0e5c 55%, #2d0a3d 70%, #1a0428 85%, #0d0221 100%);
+            border: 2px solid rgba(212,175,55,0.5);
+            padding: 40px 44px 34px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+          ">
+            <!-- Gold aura top-left -->
+            <div style="position:absolute;top:-40%;left:-20%;width:90%;height:90%;background:radial-gradient(circle, rgba(212,175,55,0.25) 0%, transparent 65%);pointer-events:none;"></div>
+            <!-- Purple aura bottom-right -->
+            <div style="position:absolute;bottom:-40%;right:-20%;width:90%;height:90%;background:radial-gradient(circle, rgba(139,26,148,0.4) 0%, transparent 65%);pointer-events:none;"></div>
+            <!-- Pattern -->
+            <div style="position:absolute;inset:0;opacity:0.35;pointer-events:none;background-image:repeating-linear-gradient(45deg, rgba(212,175,55,0.08) 0, rgba(212,175,55,0.08) 2px, transparent 2px, transparent 12px), repeating-linear-gradient(-45deg, rgba(212,175,55,0.06) 0, rgba(212,175,55,0.06) 2px, transparent 2px, transparent 16px);"></div>
+            <!-- Sheen -->
+            <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg, transparent 35%, rgba(255,248,220,0.14) 48%, rgba(255,255,255,0.22) 50%, rgba(255,248,220,0.14) 52%, transparent 65%);mix-blend-mode:overlay;"></div>
+
+            <!-- Ornaments -->
+            <div style="position:absolute;top:55%;left:16px;font-size:44px;transform:rotate(-12deg);opacity:0.15;pointer-events:none;">🪔</div>
+            <div style="position:absolute;bottom:120px;right:36px;font-size:32px;transform:rotate(15deg);opacity:0.15;pointer-events:none;">🌺</div>
+
+            <!-- Hologram top-right -->
+            <div style="position:absolute;top:28px;right:28px;width:84px;height:84px;border-radius:50%;background:conic-gradient(from 0deg, #d4af37 0%, #e879f9 20%, #8b1a94 40%, #d4af37 60%, #f4d03f 80%, #d4af37 100%);padding:4px;box-shadow:0 0 50px rgba(212,175,55,0.65), 0 0 100px rgba(139,26,148,0.4);z-index:6;display:flex;align-items:center;justify-content:center;">
+              <div style="width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5) 0%, transparent 30%), radial-gradient(circle, #0d0221 0%, #1a0428 100%);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-weight:900;font-size:22px;color:#d4af37;letter-spacing:1px;text-shadow:0 0 20px rgba(212,175,55,0.8);">THP</div>
+            </div>
+
+            <!-- TOP: Brand -->
+            <div style="position:relative;z-index:10;display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;">
+              <div style="display:flex;align-items:center;gap:20px;">
+                <div style="position:relative;width:72px;height:72px;flex-shrink:0;">
+                  <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg, #d4af37, #8b1a94, #d4af37);"></div>
+                  <div style="position:absolute;inset:4px;border-radius:50%;background:#0d0221;"></div>
+                  <img src="https://yt3.googleusercontent.com/nHjc3A8TUF5l3dRNsp3kOOTR4ohZ_bevwjYy9srIocNI6yc048jxN_W1GDWDfHCqIILfe5eNqQ=s900-c-k-c0x00ffffff-no-rj" crossorigin="anonymous" style="position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);border-radius:50%;object-fit:cover;z-index:2;">
+                </div>
+                <div style="line-height:1;">
+                  <div style="font-family:'Cinzel',serif;font-weight:900;font-size:26px;color:#f4d03f;letter-spacing:3.6px;text-shadow:0 0 40px rgba(244,208,63,0.5), 0 2px 2px rgba(0,0,0,0.5);margin-bottom:6px;">HEAVEN POINT</div>
+                  <div style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:#b794f6;letter-spacing:5px;text-transform:uppercase;">COACHING · EST. 2020</div>
+                </div>
               </div>
-              <div class="text-right">
-                <div class="text-green-400 font-bold text-sm">₹${b.total}</div>
-                <div class="text-red-300/60 text-[10px] font-mono">${b.bookingId}</div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                <div style="font-size:28px;color:rgba(212,175,55,0.6);transform:rotate(-90deg);line-height:1;">📶</div>
+                <div style="font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:#d4af37;letter-spacing:4px;text-shadow:0 0 16px rgba(212,175,55,0.5);">◆ PREMIUM</div>
               </div>
             </div>
-            <div class="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
-              <span class="bg-red-500/20 text-red-400 px-2 py-1 rounded font-semibold">Slot ${b.slotId}</span>
-              <span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded font-semibold text-[10px]">${b.movieTitle || 'Movie'}</span>
-              <span class="font-mono bg-slate-900 px-2 py-1 rounded">${(b.seats || []).map(s => s.seatId).join(', ')}</span>
+
+            <!-- CHIP -->
+            <div style="position:relative;z-index:10;display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+              <div style="width:72px;height:56px;background:linear-gradient(135deg, #e8c547 0%, #f4d03f 25%, #d4af37 50%, #b8941f 75%, #d4af37 100%);border-radius:10px;position:relative;box-shadow:0 0 40px rgba(212,175,55,0.7), inset 0 -4px 6px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.7);border:1px solid #8b6914;">
+                <div style="position:absolute;inset:6px;background-image:linear-gradient(90deg, transparent 30%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.35) 31%, transparent 31%, transparent 65%, rgba(0,0,0,0.35) 65%, rgba(0,0,0,0.35) 66%, transparent 66%), linear-gradient(0deg, transparent 45%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.35) 46%, transparent 46%);border-radius:6px;"></div>
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:36px;border:1px solid rgba(0,0,0,0.4);border-radius:6px;background:linear-gradient(135deg, #f4d03f, #b8941f);box-shadow:inset 0 2px 2px rgba(255,255,255,0.5);"></div>
+              </div>
+              <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:rgba(212,175,55,0.85);letter-spacing:4px;text-transform:uppercase;text-shadow:0 0 16px rgba(212,175,55,0.4);">NAVRATRI EDITION · 2026</div>
             </div>
-            <button onclick="App.deleteBooking('${b.id}')" class="mt-3 w-full bg-red-600/20 hover:bg-red-600/40 text-red-400 py-2 rounded-lg text-xs font-bold transition">
-              <i class="fas fa-trash mr-1"></i>Delete
-            </button>
+
+            <!-- MID: Photo + Info -->
+            <div style="position:relative;z-index:10;display:flex;gap:28px;flex:1;margin-bottom:24px;">
+              <!-- PHOTO -->
+              <div style="position:relative;width:168px;height:208px;border-radius:20px;flex-shrink:0;overflow:hidden;background:linear-gradient(135deg, #1a0428, #2d0a3d);box-shadow:0 0 0 2px #d4af37, 0 0 0 6px rgba(13,2,33,1), 0 0 0 8px rgba(212,175,55,0.6), 0 0 0 12px rgba(13,2,33,0.8), 0 20px 50px rgba(0,0,0,0.5), 0 0 60px rgba(212,175,55,0.35);">
+                ${photoHtml}
+              </div>
+
+              <!-- INFO -->
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;">
+                <div style="margin-bottom:16px;">
+                  <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:rgba(212,175,55,0.85);letter-spacing:4.4px;text-transform:uppercase;margin-bottom:6px;text-shadow:0 0 12px rgba(212,175,55,0.4);">CARD HOLDER</div>
+                  <div style="font-family:'Orbitron',sans-serif;font-weight:800;font-size:34px;color:#fff8dc;letter-spacing:1.6px;text-shadow:0 0 24px rgba(212,175,55,0.3), 0 2px 2px rgba(0,0,0,0.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(data.name)}</div>
+                </div>
+                <div style="margin-bottom:16px;">
+                  <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:rgba(212,175,55,0.85);letter-spacing:4.4px;text-transform:uppercase;margin-bottom:6px;text-shadow:0 0 12px rgba(212,175,55,0.4);">CLASS</div>
+                  <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:24px;color:#e0b0ff;letter-spacing:1px;text-shadow:0 0 24px rgba(212,175,55,0.3), 0 2px 2px rgba(0,0,0,0.6);">${escapeHtml(data.studentClass)}</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-top:14px;border-top:1px solid rgba(212,175,55,0.15);">
+                  <div>
+                    <div style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:rgba(212,175,55,0.85);letter-spacing:4px;text-transform:uppercase;margin-bottom:5px;">PASS ID</div>
+                    <div style="font-family:'Orbitron',sans-serif;font-weight:800;font-size:17px;color:#f4d03f;letter-spacing:1px;text-shadow:0 0 12px rgba(244,208,63,0.4);">${escapeHtml(data.passId)}</div>
+                  </div>
+                  <div>
+                    <div style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:rgba(212,175,55,0.85);letter-spacing:4px;text-transform:uppercase;margin-bottom:5px;">VALID</div>
+                    <div style="font-family:'Orbitron',sans-serif;font-weight:800;font-size:17px;color:#ffffff;letter-spacing:1px;text-shadow:0 0 12px rgba(212,175,55,0.3);">16/10/26</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div style="position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(212,175,55,0.2);">
+              <div style="font-family:'Orbitron',sans-serif;font-size:15px;color:rgba(224,176,255,0.7);letter-spacing:3px;font-weight:600;">
+                <strong style="color:#d4af37;font-weight:800;">◆</strong> VENUE: THE HEAVEN POINT
+              </div>
+              <div style="background:linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);color:#0a0118;font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;padding:10px 22px;border-radius:40px;letter-spacing:1px;box-shadow:0 0 40px rgba(212,175,55,0.6), inset 0 2px 2px rgba(255,255,255,0.7), inset 0 -2px 2px rgba(0,0,0,0.15);white-space:nowrap;">
+                6:00–8:30 PM
+              </div>
+            </div>
           </div>
-        `).join('');
+        `;
       }
 
-      async function deleteBooking(id) {
-        if (!confirm('Delete this booking? Seat will be freed up.')) return;
-        try {
-          await db.collection('bookings').doc(id).delete();
-          toast('Booking deleted', 'success');
-          await loadBookings(selectedMovie?.id);
-        } catch (e) {
-          toast('Error: ' + e.message, 'error');
-        }
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
       }
 
-      // ========== REVEAL ==========
-      function handleReveal() {
-        document.querySelectorAll('.reveal').forEach(el => {
-          const r = el.getBoundingClientRect();
-          if (r.top < window.innerHeight * 0.9) el.classList.add('visible');
-        });
+      // ═══════════════════════════════════════════════════════════
+      // RESET
+      // ═══════════════════════════════════════════════════════════
+      function reset() {
+        if (!confirm('Create a new pass? Your current one is saved in our records.')) return;
+        document.getElementById('studentName').value = '';
+        document.getElementById('studentClass').value = '';
+        document.getElementById('studentPhone').value = '';
+        document.getElementById('photoPreview').style.display = 'none';
+        document.getElementById('photoPlaceholder').style.display = 'block';
+        document.getElementById('photoInput').value = '';
+        photoFile = null; photoDataUrl = null;
+        currentPassId = ''; currentStudentData = null;
+        document.getElementById('formSection').style.display = 'block';
+        document.getElementById('passSection').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        toast('Ready for a new pass', 'info');
       }
-      window.addEventListener('scroll', handleReveal);
 
-      // ========== MODAL CLOSE ==========
-      document.getElementById('bookingModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeBooking(); });
-      document.getElementById('ticketModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeTicket(); });
-      document.getElementById('adminModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAdmin(); });
-      document.getElementById('searchModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSearch(); });
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') { closeBooking(); closeTicket(); closeAdmin(); closeSearch(); }
+      document.getElementById('successModal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeSuccess();
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSuccess(); });
+      document.getElementById('studentName').addEventListener('keypress', e => {
+        if (e.key === 'Enter') document.getElementById('studentClass').focus();
       });
 
-      // ========== EXPORT ==========
-      window.App = {
-        openAdmin, closeAdmin, adminTab,
-        selectSlot, toggleSeat, proceedToBook, closeBooking,
-        initiatePayment, closeTicket,
-        saveMovie, editMovie, deleteMovie, resetMovieForm,
-        openMovieDetail, closeMovieDetail,
-        openSearch, closeSearch, performSearch,
-        scrollMovies, goToHeroSlide,
-        deleteBooking, filterBookings
-      };
-      window.scrollToSlots = () => document.getElementById('movieDetailSection').scrollIntoView({ behavior: 'smooth' });
+      // INIT
+      createStarfield();
+      createPetals();
+      initCard3D();
 
-      // ========== INIT ==========
-      loadMovies();
-      setTimeout(handleReveal, 200);
+      window.Pass = { handlePhoto, generate, download, reset, closeSuccess };
 
-      console.log('🎬 THP Sunday Mini Show — Multi-Movie Platform Ready');
+      console.log('%c🎉 THP Premium Dandiya Pass — Clean Download Ready', 'color: #d4af37; font-size: 14px; font-weight: bold;');
     })();
   </script>
 </body>
