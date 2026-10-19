@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>अध्याय 3: परमाणु एवं अणु</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a3093;
+            --secondary: #a044ff;
+            --accent: #ff7e5f;
+            --light: #f8f1ff;
+            --dark: #2d0a4a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f8f1ff 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Floating background elements */
+        .bg-element {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(106, 48, 147, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        /* Section styling */
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .section h2 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        
+        /* Content styling */
+        .content-block {
+            margin-bottom: 20px;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-block h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .styled-list {
+            list-style-type: none;
+            margin-left: 20px;
+        }
+        
+        .styled-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .styled-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 15px;
+            height: 15px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+        
+        /* Table styling */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .styled-table thead tr {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            text-align: left;
+        }
+        
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
+        
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+        
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f8f1ff;
+        }
+        
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .styled-table tbody tr:hover {
+            background-color: rgba(160, 68, 255, 0.1);
+        }
+        
+        /* Mnemonic boxes */
+        .mnemonic {
+            background: linear-gradient(to right, rgba(255, 126, 95, 0.1), rgba(160, 68, 255, 0.1));
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .mnemonic::before {
+            content: "\f0eb";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 15px;
+            top: -12px;
+            background: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .mnemonic h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            padding-left: 25px;
+        }
+        
+        /* Chemical formula styling */
+        .chemical-formula {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+            background: rgba(106, 48, 147, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        
+        /* Visual placeholders */
+        .visual-placeholder {
+            background: linear-gradient(135deg, rgba(106, 48, 147, 0.1), rgba(160, 68, 255, 0.1));
+            border: 2px dashed rgba(106, 48, 147, 0.3);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+        
+        .visual-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            opacity: 0.7;
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(106, 48, 147, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(106, 48, 147, 0.6);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .styled-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        /* Print styling */
+        @media print {
+            .back-to-top, .bg-element {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .section {
+                box-shadow: none;
+                border-left: 2px solid black;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="bg-element" style="width: 300px; height: 300px; background: var(--primary); top: -100px; right: -100px; animation-delay: 0s;"></div>
+    <div class="bg-element" style="width: 200px; height: 200px; background: var(--accent); bottom: -50px; left: -50px; animation-delay: 2s;"></div>
+    <div class="bg-element" style="width: 150px; height: 150px; background: var(--secondary); top: 30%; left: 10%; animation-delay: 4s;"></div>
+    
+    <div class="container">
+        <header>
+            <h1>3-परमाणु एवं अणु</h1>
+            <p>मोहित सर (MSc)</p>
+        </header>
+        
+        <!-- Laws of Chemical Combination -->
+        <section id="laws" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h2>रासायनिक संयोजन के नियम</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>द्रव्यमान संरक्षण का नियम</h3>
+                <p>इस नियम के अनुसार, किसी भौतिक या रासायनिक अभिक्रिया में उत्पादों का कुल द्रव्यमान अभिकारकों के कुल द्रव्यमान के बराबर होता है। द्रव्यमान को न तो बनाया जा सकता है और न ही नष्ट किया जा सकता है।</p>
+                
+                <div class="chemical-formula">
+                    अभिकारकों का कुल द्रव्यमान = उत्पादों का कुल द्रव्यमान
+                </div>
+                
+                <!-- Diagram: Mass conservation -->
+                <div class="visual-placeholder">
+                    <i class="fas fa-flask"></i>
+                    <p><strong>[चित्र: द्रव्यमान संरक्षण का नियम]</strong></p>
+                    <svg width="300" height="120" viewBox="0 0 300 120" style="margin: 10px auto; display: block;">
+                        <rect x="20" y="40" width="60" height="40" fill="#a044ff" opacity="0.3" rx="5" />
+                        <text x="35" y="65" font-size="12" fill="#6a3093">CaCO₃</text>
+                        <text x="100" y="65" font-size="14" fill="#333">→</text>
+                        <rect x="130" y="40" width="50" height="40" fill="#ff7e5f" opacity="0.3" rx="5" />
+                        <text x="140" y="65" font-size="12" fill="#6a3093">CaO</text>
+                        <text x="195" y="65" font-size="14" fill="#333">+</text>
+                        <rect x="220" y="40" width="50" height="40" fill="#a044ff" opacity="0.3" rx="5" />
+                        <text x="230" y="65" font-size="12" fill="#6a3093">CO₂</text>
+                        <text x="90" y="105" font-size="11" fill="#555">100g → 56g + 44g (द्रव्यमान संरक्षित)</text>
+                    </svg>
+                </div>
+                
+                <p><strong>उदाहरण:</strong> कैल्शियम कार्बोनेट का अपघटन</p>
+                <div class="chemical-formula">
+                    CaCO<sub>3</sub> &xrarr; CaO + CO<sub>2</sub>
+                </div>
+                <div class="chemical-formula">
+                    100g &xrarr; 56g + 44g
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>निश्चित अनुपात का नियम</h3>
+                <p>एक रासायनिक यौगिक में सदैव समान तत्व समान द्रव्यमान अनुपात में संयुक्त होते हैं।</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>यौगिक</th>
+                                <th>तत्व</th>
+                                <th>द्रव्यमान अनुपात</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>जल (H<sub>2</sub>O)</td>
+                                <td>हाइड्रोजन और ऑक्सीजन</td>
+                                <td>1:8</td>
+                            </tr>
+                            <tr>
+                                <td>अमोनिया (NH<sub>3</sub>)</td>
+                                <td>नाइट्रोजन और हाइड्रोजन</td>
+                                <td>14:3</td>
+                            </tr>
+                            <tr>
+                                <td>कार्बन डाइऑक्साइड (CO<sub>2</sub>)</td>
+                                <td>कार्बन और ऑक्सीजन</td>
+                                <td>3:8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Dalton's Atomic Theory -->
+        <section id="dalton" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h2>डाल्टन का परमाणु सिद्धांत</h2>
+            </div>
+            
+            <p>रासायनिक संयोजन के विभिन्न नियमों की वैधता के लिए सैद्धांतिक प्रमाण जॉन डाल्टन द्वारा दिया गया।</p>
+            
+            <h3>महत्वपूर्ण अभिधारणाएँ:</h3>
+            <ul class="styled-list">
+                <li>सभी पदार्थ परमाणुओं नामक अत्यंत सूक्ष्म कणों से मिलकर बने होते हैं।</li>
+                <li>परमाणुओं को विभाजित नहीं किया जा सकता (परमाणु अविभाज्य होते हैं)।</li>
+                <li>परमाणु निश्चित अनुपात में मिलकर यौगिक बनाते हैं।</li>
+                <li>किसी तत्व के परमाणु द्रव्यमान और रासायनिक गुणों में समान होते हैं।</li>
+                <li>भिन्न तत्वों के परमाणुओं के द्रव्यमान और रासायनिक गुण भिन्न होते हैं।</li>
+                <li>परमाणु लघु पूर्ण संख्याओं के अनुपात में मिलकर यौगिक बनाते हैं।</li>
+                <li>किसी यौगिक में परमाणुओं की सापेक्ष संख्या और प्रकार निश्चित होते हैं।</li>
+            </ul>
+            
+            <div class="mnemonic">
+                <h4>स्मरण टिप:</h4>
+                <p>"सभी परमाणु समान, भिन्न तत्व भिन्न" – डाल्टन के सिद्धांत की मुख्य बातें याद रखने में मदद करता है।</p>
+            </div>
+        </section>
+        
+        <!-- Atoms and Molecules -->
+        <section id="atoms-molecules" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <h2>परमाणु एवं अणु</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>परमाणु</h3>
+                <p>परमाणु किसी भी पदार्थ की सबसे छोटी इकाई है जिसे विभाजित नहीं किया जा सकता और यह इलेक्ट्रॉनों, प्रोटॉनों और न्यूट्रॉनों से बना होता है। परमाणु अत्यंत सूक्ष्म होते हैं, परमाणु त्रिज्या नैनोमीटर (1 nm = 10<sup>-9</sup> m) में मापी जाती है।</p>
+                
+                <!-- Diagram: Atomic structure -->
+                <div class="visual-placeholder">
+                    <i class="fas fa-atom"></i>
+                    <p><strong>[चित्र: परमाणु संरचना]</strong></p>
+                    <svg width="200" height="200" viewBox="0 0 200 200" style="margin: 10px auto; display: block;">
+                        <circle cx="100" cy="100" r="60" fill="none" stroke="#a044ff" stroke-width="2" opacity="0.4" />
+                        <circle cx="100" cy="100" r="35" fill="none" stroke="#ff7e5f" stroke-width="2" opacity="0.6" />
+                        <circle cx="100" cy="100" r="15" fill="#6a3093" opacity="0.8" />
+                        <text x="90" y="105" font-size="10" fill="white">nucleus</text>
+                        <circle cx="100" cy="40" r="4" fill="#ff7e5f" />
+                        <circle cx="160" cy="100" r="4" fill="#ff7e5f" />
+                        <circle cx="100" cy="160" r="4" fill="#ff7e5f" />
+                        <circle cx="40" cy="100" r="4" fill="#ff7e5f" />
+                        <text x="80" y="190" font-size="10" fill="#555">इलेक्ट्रॉन (e⁻)</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>अणु</h3>
+                <p>अणु दो या दो से अधिक परमाणुओं का समूह है जो रासायनिक रूप से बंधे होते हैं। यह किसी तत्व या यौगिक का सबसे छोटा कण है जो स्वतंत्र अस्तित्व में रह सकता है और पदार्थ के सभी गुणों को बनाए रखता है।</p>
+                
+                <div class="mnemonic">
+                    <h4>त्वरित तथ्य:</h4>
+                    <p>अणु एक ही प्रकार के परमाणुओं (तत्व) या विभिन्न प्रकार के परमाणुओं (यौगिक) से बन सकते हैं।</p>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>परमाणुता</h3>
+                <p>परमाणुता को किसी तत्व के एक अणु में उपस्थित परमाणुओं की संख्या के रूप में परिभाषित किया जाता है।</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>प्रकार</th>
+                                <th>विवरण</th>
+                                <th>उदाहरण</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>एकपरमाण्विक</td>
+                                <td>एकल परमाणु अणु</td>
+                                <td>उत्कृष्ट गैसें (He, Ne, Ar)</td>
+                            </tr>
+                            <tr>
+                                <td>द्विपरमाण्विक</td>
+                                <td>दो परमाणु अणु</td>
+                                <td>O<sub>2</sub>, N<sub>2</sub>, Cl<sub>2</sub></td>
+                            </tr>
+                            <tr>
+                                <td>त्रिपरमाण्विक</td>
+                                <td>तीन परमाणु अणु</td>
+                                <td>O<sub>3</sub>, CO<sub>2</sub></td>
+                            </tr>
+                            <tr>
+                                <td>बहुपरमाण्विक</td>
+                                <td>अनेक परमाणु अणु</td>
+                                <td>S<sub>8</sub>, P<sub>4</sub>, SO<sub>4</sub><sup>2-</sup></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Ions and Valency -->
+        <section id="ions-valency" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h2>आयन एवं संयोजकता</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>आयन</h3>
+                <p>आयन एक आवेशित कण है जो इलेक्ट्रॉन के लाभ या हानि से बनता है।</p>
+                
+                <ul class="styled-list">
+                    <li><strong>धनायन:</strong> इलेक्ट्रॉन खोने से बनने वाला धनावेशित कण। उदाहरण: Na<sup>+</sup>, Mg<sup>2+</sup></li>
+                    <li><strong>ऋणायन:</strong> इलेक्ट्रॉन प्राप्त करने से बनने वाला ऋणावेशित कण। उदाहरण: Cl<sup>-</sup>, O<sup>2-</sup></li>
+                </ul>
+                
+                <!-- Diagram: Ion formation -->
+                <div class="visual-placeholder">
+                    <i class="fas fa-exchange-alt"></i>
+                    <p><strong>[चित्र: धनायन और ऋणायन का निर्माण]</strong></p>
+                    <svg width="350" height="100" viewBox="0 0 350 100" style="margin: 10px auto; display: block;">
+                        <circle cx="50" cy="50" r="20" fill="#6a3093" opacity="0.6" />
+                        <text x="40" y="55" font-size="14" fill="white">Na</text>
+                        <text x="85" y="55" font-size="18" fill="#333">→</text>
+                        <circle cx="130" cy="50" r="18" fill="#a044ff" opacity="0.8" />
+                        <text x="120" y="55" font-size="14" fill="white">Na⁺</text>
+                        <text x="155" y="55" font-size="12" fill="#555">+ e⁻</text>
+                        <text x="200" y="55" font-size="18" fill="#333">|</text>
+                        <circle cx="250" cy="50" r="20" fill="#ff7e5f" opacity="0.6" />
+                        <text x="240" y="55" font-size="14" fill="white">Cl</text>
+                        <text x="285" y="55" font-size="18" fill="#333">→</text>
+                        <circle cx="330" cy="50" r="18" fill="#ff7e5f" opacity="0.9" />
+                        <text x="320" y="55" font-size="14" fill="white">Cl⁻</text>
+                        <text x="120" y="90" font-size="10" fill="#555">धनायन</text>
+                        <text x="300" y="90" font-size="10" fill="#555">ऋणायन</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>बहुपरमाणुक आयन</h3>
+                <p>आवेश वहन करने वाले परमाणुओं के समूह को बहुपरमाणुक आयन कहते हैं।</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>आयन</th>
+                                <th>नाम</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>NH<sub>4</sub><sup>+</sup></td>
+                                <td>अमोनियम आयन</td>
+                            </tr>
+                            <tr>
+                                <td>SO<sub>4</sub><sup>2-</sup></td>
+                                <td>सल्फेट आयन</td>
+                            </tr>
+                            <tr>
+                                <td>NO<sub>3</sub><sup>-</sup></td>
+                                <td>नाइट्रेट आयन</td>
+                            </tr>
+                            <tr>
+                                <td>CO<sub>3</sub><sup>2-</sup></td>
+                                <td>कार्बोनेट आयन</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>संयोजकता</h3>
+                <p>संयोजकता को किसी तत्व की रासायनिक बंध बनाने के लिए दूसरे परमाणु के साथ संयोजन क्षमता के रूप में परिभाषित किया जाता है। यह उन इलेक्ट्रॉनों की संख्या के बराबर होती है जो एक परमाणु निकटतम उत्कृष्ट गैस विन्यास प्राप्त करने के लिए प्राप्त, खो या साझा कर सकता है।</p>
+                
+                <div class="mnemonic">
+                    <h4>संयोजकता स्मरण टिप:</h4>
+                    <p>"Happy Henry Likes Beer But Can't Obtain Food" – संयोजकता 1 वाले सामान्य तत्वों (H, He, Li, Be, B, C, O, F) को याद रखने में मदद करता है।</p>
+                </div>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>तत्व</th>
+                                <th>संयोजकता</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>सोडियम (Na)</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>मैग्नीशियम (Mg)</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>एल्युमिनियम (Al)</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>ऑक्सीजन (O)</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Writing Chemical Formulas -->
+        <section id="formulas" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-pen-fancy"></i>
+                </div>
+                <h2>रासायनिक सूत्र लिखना</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>सूत्र लिखने के नियम</h3>
+                
+                <div class="styled-list">
+                    <li><strong>नियम 1:</strong> तत्वों के प्रतीक उनकी संयोजकता के साथ लिखें और सूत्र प्राप्त करने के लिए क्रॉस करें।
+                        <div class="chemical-formula">
+                            Al<sup>3+</sup> O<sup>2-</sup> → Al<sub>2</sub>O<sub>3</sub>
+                        </div>
+                    </li>
+                    <li><strong>नियम 2:</strong> जब संयोजकता 1 हो, तो उसे नहीं लिखा जाता।
+                        <div class="chemical-formula">
+                            Na<sup>+</sup> OH<sup>-</sup> → NaOH
+                        </div>
+                    </li>
+                    <li><strong>नियम 3:</strong> जब संयोजकताएँ संख्यात्मक रूप से समान हों, तो उन्हें नहीं लिखा जाता।
+                        <div class="chemical-formula">
+                            Ca<sup>2+</sup> O<sup>2-</sup> → CaO
+                        </div>
+                    </li>
+                    <li><strong>नियम 4:</strong> कई बहुपरमाणुक आयनों के लिए, कोष्ठक का प्रयोग करें।
+                        <div class="chemical-formula">
+                            Al<sup>3+</sup> SO<sub>4</sub><sup>2-</sup> → Al<sub>2</sub>(SO<sub>4</sub>)<sub>3</sub>
+                        </div>
+                    </li>
+                    <li><strong>नियम 5:</strong> सूत्र को सदैव न्यूनतम पदों में सरल करें (सहसंयोजक यौगिकों को छोड़कर)।
+                        <div class="chemical-formula">
+                            Sn<sup>4+</sup> O<sup>2-</sup> → SnO<sub>2</sub> (Sn<sub>2</sub>O<sub>4</sub> नहीं)
+                        </div>
+                    </li>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>उदाहरण</h3>
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>यौगिक</th>
+                                <th>सूत्र</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>कैल्शियम सल्फेट</td>
+                                <td>CaSO<sub>4</sub></td>
+                            </tr>
+                            <tr>
+                                <td>आयरन सल्फेट</td>
+                                <td>FeSO<sub>4</sub></td>
+                            </tr>
+                            <tr>
+                                <td>अमोनियम नाइट्रेट</td>
+                                <td>NH<sub>4</sub>NO<sub>3</sub></td>
+                            </tr>
+                            <tr>
+                                <td>सिल्वर आयोडाइड</td>
+                                <td>AgI</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Mole Concept -->
+        <section id="mole-concept" class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h2>मोल संकल्पना</h2>
+            </div>
+            
+            <div class="content-block">
+                <h3>परिभाषा</h3>
+                <p>मोल पदार्थ की वह मात्रा है जिसमें उतने ही प्रारंभिक कण होते हैं जितने कार्बन-12 (C<sup>12</sup>) के ठीक 12 ग्राम में परमाणु होते हैं।</p>
+                
+                <div class="mnemonic">
+                    <h4>एवोगैड्रो संख्या:</h4>
+                    <p>N<sub>A</sub> = 6.022 × 10<sup>23</sup> कण/मोल ("6.022 एवोगैड्रो की पार्टी!")</p>
+                </div>
+                
+                <ul class="styled-list">
+                    <li>1 मोल = 6.022 × 10<sup>23</sup> कण (परमाणु, अणु, आयन)</li>
+                    <li>STP (मानक तापमान और दाब) पर:
+                        <ul>
+                            <li>1 मोल गैस = 22.4 लीटर</li>
+                            <li>1 मोल गैस = 22400 mL</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="content-block">
+                <h3>मोलर द्रव्यमान</h3>
+                <p>किसी भी पदार्थ के 1 मोल के द्रव्यमान को उसका मोलर द्रव्यमान (g/mol में) कहते हैं।</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>पदार्थ</th>
+                                <th>मोलर द्रव्यमान (g/mol)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>नाइट्रोजन (N<sub>2</sub>)</td>
+                                <td>28</td>
+                            </tr>
+                            <tr>
+                                <td>जल (H<sub>2</sub>O)</td>
+                                <td>18</td>
+                            </tr>
+                            <tr>
+                                <td>कार्बन डाइऑक्साइड (CO<sub>2</sub>)</td>
+                                <td>44</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-block">
+                <h3>रूपांतरण</h3>
+                <p>मोलों की संख्या (n) = द्रव्यमान (W) / मोलर द्रव्यमान (M)</p>
+                
+                <div class="styled-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>प्रश्न</th>
+                                <th>हल</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>35g एल्युमिनियम को मोल में बदलें</td>
+                                <td>n = 35g / 27g/mol = 1.3 मोल</td>
+                            </tr>
+                            <tr>
+                                <td>56g कैल्शियम को मोल में बदलें</td>
+                                <td>n = 56g / 40g/mol = 1.4 मोल</td>
+                            </tr>
+                            <tr>
+                                <td>SiO<sub>2</sub> के 0.8 मोल का द्रव्यमान ज्ञात करें</td>
+                                <td>W = n × M = 0.8 × 60 = 48g</td>
+                            </tr>
+                            <tr>
+                                <td>STP पर CO<sub>2</sub> के 55.5L में मोल ज्ञात करें</td>
+                                <td>n = आयतन / 22.4 = 55.5 / 22.4 ≈ 2.48 मोल</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Back to top button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <script>
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Animate sections on scroll
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.5s ease-out forwards';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
