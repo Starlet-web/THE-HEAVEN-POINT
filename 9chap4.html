@@ -1,619 +1,923 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atomic Structure Notes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <style>
-        :root {
-            --primary: #6a3093;
-            --secondary: #a044ff;
-            --accent: #ff7e5f;
-            --light-bg: #f9f7fe;
-            --dark-bg: #2d2b3a;
-            --text-dark: #333;
-            --text-light: #fff;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atomic Structure — Real Illustrated Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#2d5a8c;--secondary:#6a3093;--accent:#c0392b;--ink:#1a3a5c;--paper:#fdfbf3;--line:#d4e0f0}
 
-        .dark-mode {
-            --light-bg: #2d2b3a;
-            --dark-bg: #1a1825;
-            --text-dark: #f0f0f0;
-            --text-light: #fff;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
+html{scroll-behavior:smooth}
+body{
+  font-family:'Kalam',cursive;
+  background:#5a4a3a;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(139,90,43,.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(90,50,20,.2) 0%, transparent 50%),
+    linear-gradient(135deg, #3d2f22 0%, #5a4a3a 50%, #3d2f22 100%);
+  min-height:100vh;display:flex;justify-content:center;align-items:flex-start;
+  padding:18px;overflow-x:hidden;font-size:13px;line-height:1.45;
+}
+body::before{
+  content:"";position:fixed;top:0;left:0;width:100%;height:100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:.7;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+.container{
+  max-width:1200px;width:100%;margin:0 auto;
+  padding:22px 26px 26px;position:relative;z-index:10;
+  background:var(--paper);
+  background-image:
+    linear-gradient(90deg, transparent 0, transparent 44px, rgba(200,60,60,.18) 44px, rgba(200,60,60,.18) 46px, transparent 46px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 27px, var(--line) 27px, var(--line) 28px);
+  background-size: 100% 100%, 100% 28px;
+  border-radius:6px;
+  box-shadow:0 2px 4px rgba(0,0,0,.15),0 20px 50px rgba(0,0,0,.4),inset 0 0 80px rgba(180,150,110,.15),inset 0 0 3px rgba(120,80,40,.3);
+  border:1px solid #e8dcc0;
+  transform:rotate(-.3deg);
+}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-            line-height: 1.6;
-            transition: var(--transition);
-        }
+/* HEADER */
+header{
+  text-align:center;padding:20px 20px 22px;margin-bottom:16px;
+  position:relative;border-bottom:3px double #2d5a8c;border-radius:2px;
+}
+header::before{
+  content:"THP";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Caveat',cursive;font-size:8rem;font-weight:900;color:rgba(45,90,140,.05);
+  pointer-events:none;letter-spacing:8px;
+}
+header h1{
+  font-family:'Caveat',cursive;font-size:2.6rem;font-weight:700;color:var(--ink);
+  letter-spacing:.5px;line-height:1.1;
+  text-shadow:1px 1px 0 rgba(45,90,140,.15),2px 2px 0 rgba(45,90,140,.08);
+  position:relative;display:inline-block;
+}
+header h1::after{
+  content:"";position:absolute;left:5%;right:5%;bottom:-6px;height:3px;
+  background:linear-gradient(90deg, transparent, var(--accent), transparent);
+  border-radius:50%;transform:rotate(-.5deg);
+}
+header p{
+  font-family:'Caveat',cursive;font-size:1.15rem;color:var(--secondary);
+  margin-top:10px;display:inline-block;padding:2px 18px;
+  border:1.5px dashed rgba(106,48,147,.4);border-radius:20px;
+  transform:rotate(.5deg);position:relative;z-index:2;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+/* THEME TOGGLE */
+.theme-toggle{
+  position:absolute;top:20px;right:20px;
+  background:rgba(45,90,140,.1);border:2px solid var(--primary);
+  border-radius:50% 40% 50% 45%/45% 50% 40% 50%;
+  width:40px;height:40px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink);font-size:1.1rem;z-index:10;
+  transition:all .3s;transform:rotate(-3deg);
+}
+.theme-toggle:hover{transform:rotate(0deg) scale(1.05);background:rgba(45,90,140,.2)}
 
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--text-light);
-            padding: 2rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+/* CONTENT SECTIONS */
+.content-section{
+  margin:24px 0;opacity:0;transform:translateY(20px);
+  animation:fadeInUp .8s forwards;
+}
+@keyframes fadeInUp{to{opacity:1;transform:translateY(0)}}
 
-        header::before {
-            content: 'THP';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 20vw;
-            font-weight: 900;
-            opacity: 0.05;
-            z-index: 0;
-            pointer-events: none;
-        }
+.section-header{
+  display:flex;align-items:center;margin-bottom:12px;padding-bottom:6px;
+  border-bottom:2px dashed rgba(45,90,140,.4);gap:12px;
+}
+.section-icon{
+  background:linear-gradient(135deg,rgba(45,90,140,.15),rgba(106,48,147,.15));
+  border:2px solid var(--primary);
+  width:40px;height:40px;
+  border-radius:50% 40% 50% 45%/45% 50% 40% 50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--primary);font-size:1.2rem;flex-shrink:0;
+  transform:rotate(-3deg);
+  box-shadow:2px 2px 0 rgba(45,90,140,.2);
+}
+.section-icon i{transform:rotate(3deg);font-size:1.1rem}
+.section-title{
+  font-family:'Caveat',cursive;font-size:1.8rem;font-weight:700;
+  color:var(--ink);letter-spacing:.3px;line-height:1.15;
+  text-decoration:underline;text-decoration-color:rgba(192,57,43,.35);
+  text-decoration-thickness:2px;text-underline-offset:3px;
+}
 
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
+.content-card{
+  background:rgba(255,253,247,.85);
+  border-radius:4px 14px 6px 16px / 14px 4px 16px 6px;
+  padding:14px 18px 16px;margin-bottom:14px;position:relative;
+  border:2px solid var(--primary);
+  box-shadow:3px 3px 0 rgba(45,90,140,.15),-1px -1px 0 rgba(45,90,140,.05),inset 0 0 20px rgba(200,180,140,.1);
+  transition:transform .3s,box-shadow .3s;
+}
+.content-card:nth-child(2n){border-color:#6a3093;transform:rotate(.15deg)}
+.content-card:nth-child(3n){border-color:#8a5a2b;transform:rotate(-.2deg)}
+.content-card:hover{transform:rotate(0deg) translateY(-3px);box-shadow:4px 6px 0 rgba(45,90,140,.2)}
 
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
+.subheading{
+  font-family:'Caveat',cursive;font-size:1.35rem;font-weight:700;
+  color:var(--primary);margin:12px 0 6px;display:inline-block;
+  padding-bottom:2px;border-bottom:1.5px dotted var(--accent);
+}
 
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            z-index: 10;
-            transition: var(--transition);
-        }
+p{font-family:'Kalam',cursive;font-size:.85rem;color:#2a3a4a;margin-bottom:8px;line-height:1.55}
 
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+ul.styled-list{list-style:none;padding-left:0;margin:6px 0}
+ul.styled-list li{
+  position:relative;padding:4px 0 4px 22px;font-size:.82rem;color:#1e2a3a;
+  font-family:'Kalam',cursive;line-height:1.5;
+}
+ul.styled-list li::before{
+  content:"✎";position:absolute;left:0;top:4px;color:var(--accent);
+  font-size:.78rem;font-weight:700;
+}
+ul.styled-list ul.styled-list li::before{content:"·";font-size:1.3rem;top:-2px;color:var(--secondary)}
 
-        .content-section {
-            margin: 3rem 0;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards;
-        }
+/* TABLES */
+table{
+  width:100%;border-collapse:collapse;margin:10px 0;
+  font-family:'Kalam',cursive;font-size:.78rem;
+  background:rgba(255,255,255,.5);
+  border:1.5px solid var(--primary);
+  box-shadow:2px 2px 0 rgba(45,90,140,.12);transform:rotate(-.15deg);
+}
+thead tr{background:rgba(45,90,140,.08);border-bottom:2px solid var(--primary)}
+th,td{padding:6px 10px;text-align:left;border-right:1px dashed rgba(45,90,140,.3)}
+th:last-child,td:last-child{border-right:none}
+th{font-weight:700;color:var(--primary);font-family:'Caveat',cursive;font-size:.95rem;letter-spacing:.3px}
+tbody tr{border-bottom:1px dashed rgba(45,90,140,.2)}
+tbody tr:nth-child(even){background:rgba(245,235,220,.5)}
+tbody tr:hover{background:rgba(255,240,200,.6)}
+tbody tr:last-child{border-bottom:none}
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+/* FORMULA BOX */
+.formula-box{
+  background:rgba(255,248,196,.7);
+  background-image:linear-gradient(135deg,#fff8c4,#ffef9e);
+  border-left:4px solid #d4b106;
+  padding:10px 14px;margin:12px 0;
+  border-radius:2px 8px 8px 2px;
+  font-family:'Caveat',cursive;text-align:center;
+  box-shadow:2px 3px 6px rgba(180,150,60,.25),inset 0 1px 0 rgba(255,255,255,.6);
+  transform:rotate(-.8deg);position:relative;
+}
+.formula-box p{font-size:1.05rem;color:var(--ink);margin:2px 0;font-family:'Caveat',cursive}
+.formula-box p:first-child{font-size:1.4rem;font-weight:700;color:var(--accent)}
 
-        .section-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid;
-            border-image: linear-gradient(to right, var(--primary), var(--secondary)) 1;
-        }
+/* KEY POINT */
+.key-point{
+  background:rgba(255,248,196,.7);
+  background-image:linear-gradient(135deg,#fff8c4,#ffef9e);
+  border-left:4px solid #d4b106;
+  padding:10px 14px 10px 42px;margin:12px 0;
+  border-radius:2px 8px 8px 2px;position:relative;
+  font-family:'Kalam',cursive;font-size:.82rem;
+  box-shadow:2px 3px 6px rgba(180,150,60,.25),inset 0 1px 0 rgba(255,255,255,.6);
+  transform:rotate(.4deg);color:#2a3a4a;line-height:1.5;
+}
+.key-point::before{
+  content:"💡";position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:1.2rem;
+}
+.key-point strong{color:#b8860b;font-weight:700}
 
-        .section-icon {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: white;
-            font-size: 1.2rem;
-        }
+/* DIAGRAM BOX */
+.diagram-box{
+  background:rgba(255,255,255,.65);
+  border-radius:6px 10px 8px 12px/10px 6px 12px 8px;
+  padding:8px 6px 5px;margin:10px 0;
+  border:1.8px dashed rgba(45,90,140,.5);
+  box-shadow:2px 2px 0 rgba(45,90,140,.12),inset 0 0 15px rgba(200,180,140,.08);
+  text-align:center;transition:transform .3s;position:relative;
+}
+.diagram-box:hover{transform:rotate(0deg) scale(1.01)}
+.diagram-box svg{width:100%;height:auto;max-height:200px;display:block;margin:0 auto}
+.diagram-caption{
+  font-family:'Caveat',cursive;font-size:.8rem;font-weight:600;color:var(--secondary);
+  margin-top:3px;display:inline-block;padding:1px 12px;
+  border-bottom:1.5px dotted var(--accent);
+}
 
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+/* BACK TO TOP */
+.back-to-top{
+  position:fixed;bottom:20px;right:20px;width:46px;height:46px;
+  background:#fff8c4;background-image:linear-gradient(135deg,#fff8c4,#ffef9e);
+  color:var(--ink);border-radius:50% 40% 50% 45%/45% 50% 40% 50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;cursor:pointer;border:2px solid var(--primary);
+  box-shadow:2px 3px 0 rgba(45,90,140,.3),0 5px 15px rgba(0,0,0,.2);
+  opacity:0;visibility:hidden;transition:all .3s;z-index:200;transform:rotate(-3deg);
+  font-weight:700;
+}
+.back-to-top.show{opacity:1;visibility:visible}
+.back-to-top:hover{transform:rotate(0deg) translateY(-3px);box-shadow:2px 5px 0 rgba(45,90,140,.35),0 8px 20px rgba(0,0,0,.25)}
 
-        .content-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--primary);
-            transition: var(--transition);
-        }
+/* FOOTER */
+footer{
+  text-align:center;padding:16px;margin-top:20px;
+  border-top:2px dashed rgba(45,90,140,.4);
+  font-family:'Caveat',cursive;font-size:1.05rem;color:var(--primary);font-weight:600;
+}
 
-        .dark-mode .content-card {
-            background: var(--dark-bg);
-        }
+/* DARK MODE */
+body.dark-mode{background:#1a1520}
+body.dark-mode .container{
+  background:#2a2530;
+  background-image:
+    linear-gradient(90deg, transparent 0, transparent 44px, rgba(200,60,60,.25) 44px, rgba(200,60,60,.25) 46px, transparent 46px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 27px, #3a3540 27px, #3a3540 28px);
+  background-size: 100% 100%, 100% 28px;
+  border:1px solid #4a4550;
+}
+body.dark-mode header{border-bottom-color:#a07acc}
+body.dark-mode header h1{color:#e8d8f8;text-shadow:1px 1px 0 rgba(160,120,200,.3)}
+body.dark-mode p,
+body.dark-mode ul.styled-list li{color:#d8d0e0}
+body.dark-mode .content-card{background:rgba(50,45,60,.9);border-color:#7a5a9c}
+body.dark-mode .content-card:nth-child(2n){border-color:#a07acc}
+body.dark-mode .content-card:nth-child(3n){border-color:#c09a5a}
+body.dark-mode .section-title,
+body.dark-mode .subheading{color:#c8b0e8}
+body.dark-mode table{background:rgba(50,45,60,.7);border-color:#7a5a9c}
+body.dark-mode thead tr{background:rgba(160,120,200,.15);border-color:#a07acc}
+body.dark-mode th{color:#c8b0e8}
+body.dark-mode tbody tr:nth-child(even){background:rgba(80,70,95,.4)}
+body.dark-mode tbody tr:hover{background:rgba(160,120,200,.15)}
+body.dark-mode td{border-right-color:rgba(160,120,200,.3)}
+body.dark-mode .formula-box,
+body.dark-mode .key-point{
+  background:#3a3045;background-image:linear-gradient(135deg,#3a3045,#2d2535);
+  color:#e0d8e8;border-left-color:#d4b106;
+}
+body.dark-mode .formula-box p{color:#e0d8e8}
+body.dark-mode .formula-box p:first-child{color:#ff9a7a}
+body.dark-mode .key-point strong{color:#ffd966}
+body.dark-mode .diagram-box{background:rgba(50,45,60,.8);border-color:#7a5a9c}
+body.dark-mode .diagram-caption{color:#c8b0e8}
+body.dark-mode .section-icon{background:linear-gradient(135deg,rgba(160,120,200,.2),rgba(106,48,147,.2));color:#c8b0e8;border-color:#a07acc}
+body.dark-mode footer{color:#c8b0e8;border-top-color:rgba(160,120,200,.4)}
 
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
+/* SCROLLBAR */
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:rgba(90,74,58,.5)}
+::-webkit-scrollbar-thumb{background:#8a6a45;border-radius:10px;border:2px solid #5a4a3a}
 
-        .subheading {
-            font-size: 1.4rem;
-            margin: 1.5rem 0 1rem;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        ul.styled-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        ul.styled-list li {
-            padding: 0.5rem 0 0.5rem 2rem;
-            position: relative;
-        }
-
-        ul.styled-list li::before {
-            content: '•';
-            color: var(--accent);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-            font-size: 1.5rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        table th {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem;
-            text-align: left;
-            font-weight: 500;
-        }
-
-        table td {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .dark-mode table td {
-            border-bottom: 1px solid #444;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .dark-mode table tr:nth-child(even) {
-            background-color: #363445;
-        }
-
-        table tr:hover {
-            background-color: #f0f0f0;
-        }
-
-        .dark-mode table tr:hover {
-            background-color: #3d3b4a;
-        }
-
-        .formula-box {
-            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
-            border-left: 4px solid var(--accent);
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 5px;
-            font-family: 'Times New Roman', serif;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .dark-mode .formula-box {
-            background: linear-gradient(135deg, #3d3b4a, #2d2b3a);
-        }
-
-        .key-point {
-            background: linear-gradient(135deg, #fff9e6, #fff0cc);
-            border-left: 4px solid #ffcc00;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 5px;
-            position: relative;
-            padding-left: 3rem;
-        }
-
-        .dark-mode .key-point {
-            background: linear-gradient(135deg, #3d3b4a, #2d2b3a);
-        }
-
-        .key-point::before {
-            content: '💡';
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5rem;
-        }
-
-        .image-container {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            margin: 1.5rem 0;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border-image: linear-gradient(135deg, var(--primary), var(--secondary)) 1;
-        }
-
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        .image-caption {
-            margin-top: 0.5rem;
-            font-style: italic;
-            color: #666;
-        }
-
-        .dark-mode .image-caption {
-            color: #aaa;
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-        }
-
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        footer {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .content-card {
-                padding: 1rem;
-            }
-            
-            table {
-                display: block;
-                overflow-x: auto;
-            }
-        }
-    </style>
+/* RESPONSIVE */
+@media(max-width:768px){
+  body{padding:10px}
+  .container{padding:16px 14px 20px;transform:rotate(0deg)}
+  header h1{font-size:1.9rem}
+  .section-title{font-size:1.4rem}
+  .content-card{padding:12px 14px}
+  table{font-size:.7rem;display:block;overflow-x:auto}
+  .subheading{font-size:1.15rem}
+}
+</style>
 </head>
 <body>
+  <div class="container">
     <header>
-        <button class="theme-toggle" id="themeToggle">🌙</button>
-        <div class="container">
-            <h1>The Structure of the Atom</h1>
-            <p>Interactive Notes on Atomic Structure and Properties</p>
-        </div>
+      <button class="theme-toggle" id="themeToggle">🌙</button>
+      <h1>The Structure of the Atom</h1>
+      <p>Interactive Notes on Atomic Structure and Properties</p>
     </header>
 
-    <div class="container">
-        <section class="content-section" id="introduction">
-            <div class="section-header">
-                <div class="section-icon">⚛️</div>
-                <h2 class="section-title">Introduction</h2>
-            </div>
-            <div class="content-card">
-                <p>The <strong>atom</strong> is the basic unit of matter, and it is made up of three subatomic particles: electrons, protons, and neutrons.</p>
-            </div>
-        </section>
+    <!-- INTRODUCTION -->
+    <section class="content-section" id="introduction">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-atom"></i></div>
+        <h2 class="section-title">Introduction</h2>
+      </div>
+      <div class="content-card">
+        <p>The <strong>atom</strong> is the basic unit of matter, and it is made up of three subatomic particles: electrons, protons, and neutrons.</p>
 
-        <section class="content-section" id="discovery">
-            <div class="section-header">
-                <div class="section-icon">🔍</div>
-                <h2 class="section-title">Discovery of Subatomic Particles</h2>
-            </div>
-            <div class="content-card">
-                <ul class="styled-list">
-                    <li><strong>Electrons</strong> were discovered by J.J. Thomson in 1897. They are negatively charged particles.</li>
-                    <li><strong>Protons</strong> were discovered after E. Goldstein found new, positively charged radiations called canal rays in 1886. Protons have a positive charge.</li>
-                    <li><strong>Neutrons</strong> were discovered in 1932 by James Chadwick. They have no charge.</li>
-                </ul>
-                
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Particle</th>
-                            <th>Symbol</th>
-                            <th>Charge</th>
-                            <th>Mass</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Electron</strong></td>
-                            <td>\( e^{-} \)</td>
-                            <td>Negative</td>
-                            <td>Approximately 1/2000 the mass of a hydrogen atom</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Proton</strong></td>
-                            <td>\( p^{+} \)</td>
-                            <td>Positive</td>
-                            <td>Equal to the mass of a hydrogen atom (1 unit)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Neutron</strong></td>
-                            <td>\( n \)</td>
-                            <td>No charge</td>
-                            <td>Equal to the mass of a hydrogen atom (1 unit)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+        <!-- Atomic structure diagram -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 500 180" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <ellipse cx="250" cy="90" rx="180" ry="55" fill="none" stroke="#2d5a8c" stroke-width="1.8" opacity=".65" stroke-dasharray="8,4"/>
+            <ellipse cx="250" cy="90" rx="130" ry="42" fill="none" stroke="#6a3093" stroke-width="1.8" opacity=".65" stroke-dasharray="8,4" transform="rotate(60 250 90)"/>
+            <ellipse cx="250" cy="90" rx="130" ry="42" fill="none" stroke="#8a5a2b" stroke-width="1.8" opacity=".65" stroke-dasharray="8,4" transform="rotate(-60 250 90)"/>
 
-        <section class="content-section" id="atomic-models">
-            <div class="section-header">
-                <div class="section-icon">🧩</div>
-                <h2 class="section-title">Atomic Models</h2>
-            </div>
-            
-            <div class="content-card">
-                <h3 class="subheading">Thomson's Atomic Model</h3>
-                <ul class="styled-list">
-                    <li>J.J. Thomson proposed that an atom is a positively charged sphere with negatively charged electrons embedded within it.</li>
-                    <li>This model is often compared to a Christmas pudding or a watermelon, where the positive charge is the pudding/edible part, and the electrons are like dry fruits or seeds.</li>
-                    <li>According to Thomson, the positive and negative charges in an atom are equal, making the atom as a whole electrically neutral.</li>
-                </ul>
-                
-                <div class="key-point">
-                    <strong>Limitation:</strong> This model couldn't explain how the positive charge held the electrons in place or why an atom is stable. It also didn't mention the nucleus.
-                </div>
-            </div>
-            
-            <div class="content-card">
-                <h3 class="subheading">Rutherford's Gold Foil Experiment</h3>
-                <ul class="styled-list">
-                    <li>In 1911, Rutherford conducted the <strong>alpha (α) scattering experiment</strong> by bombarding a thin sheet of gold foil (about 1000 atoms thick) with high-speed alpha-particles.</li>
-                    <li>Alpha-particles are positively charged helium nuclei (\( He^{2+} \)).</li>
-                </ul>
-                
-                <h4 class="subheading">Observations:</h4>
-                <ul class="styled-list">
-                    <li>Most alpha-particles passed straight through the foil without deflection.</li>
-                    <li>Some alpha-particles were deflected by small angles.</li>
-                    <li>A very small number of alpha-particles bounced back.</li>
-                </ul>
-                
-                <h4 class="subheading">Conclusions:</h4>
-                <ul class="styled-list">
-                    <li>Most of the atom is <strong>empty space</strong>.</li>
-                    <li>The atom has a small, positively charged <strong>nucleus</strong>.</li>
-                    <li>The <strong>nucleus</strong> is where most of the atom's mass is located.</li>
-                    <li>The nucleus is very small compared to the overall size of the atom.</li>
-                </ul>
-            </div>
-            
-            <div class="content-card">
-                <h3 class="subheading">Rutherford's Atomic Model</h3>
-                <ul class="styled-list">
-                    <li>An atom has a positively charged nucleus at its center.</li>
-                    <li>Electrons revolve around the nucleus in different orbits.</li>
-                </ul>
-                
-                <div class="key-point">
-                    <strong>Defect:</strong> This model couldn't explain the stability of an atom. A charged particle in a circular orbit would accelerate, radiate energy, and eventually fall into the nucleus, causing the atom to collapse.
-                </div>
-            </div>
-            
-            <div class="content-card">
-                <h3 class="subheading">Bohr's Atomic Model</h3>
-                <ul class="styled-list">
-                    <li>An atom has a positively charged nucleus at its center, containing most of the atom's mass.</li>
-                    <li>Electrons revolve around the nucleus in specific, stable orbits called discrete orbits or shells.</li>
-                    <li>These shells are represented by the letters K, L, M, N or the numbers 1, 2, 3, 4, and so on.</li>
-                    <li>Electrons do not radiate energy while in these discrete orbits, which explains why atoms are stable.</li>
-                </ul>
-            </div>
-        </section>
+            <!-- nucleus -->
+            <circle cx="250" cy="90" r="26" fill="#fff8c4" stroke="#c0392b" stroke-width="2.3"/>
+            <circle cx="242" cy="84" r="5" fill="#c0392b" stroke="#8a1a00"/>
+            <circle cx="258" cy="88" r="5" fill="#2d5a8c" stroke="#1a3a5c"/>
+            <circle cx="248" cy="98" r="5" fill="#c0392b" stroke="#8a1a00"/>
+            <circle cx="258" cy="98" r="5" fill="#2d5a8c" stroke="#1a3a5c"/>
+            <circle cx="242" cy="93" r="5" fill="#c0392b" stroke="#8a1a00"/>
 
-        <section class="content-section" id="electron-configuration">
-            <div class="section-header">
-                <div class="section-icon">⚡</div>
-                <h2 class="section-title">Electron Configuration and Valency</h2>
-            </div>
-            <div class="content-card">
-                <ul class="styled-list">
-                    <li><strong>Valence Electrons:</strong> The electrons in an atom's outermost shell are called valence electrons.</li>
-                    <li><strong>Octet Rule:</strong> An atom is stable if its outermost shell contains 8 electrons. Noble gases already have 8 electrons in their outer shell, so they are not reactive.</li>
-                    <li><strong>Duplet Rule:</strong> The first shell (K shell) can hold a maximum of 2 electrons. A complete K shell also makes an atom stable, like in the case of Helium.</li>
-                    <li><strong>Valency:</strong> The combining capacity of an element. It is the number of electrons an atom gives, accepts, or shares to form a bond.
-                        <ul class="styled-list">
-                            <li>For elements with 1, 2, or 3 valence electrons, the valency is equal to the number of valence electrons. These elements tend to lose electrons and become <strong>cations</strong> (positively charged ions).</li>
-                            <li>For elements with 5, 6, or 7 valence electrons, the valency is calculated as <strong>8 - (number of valence electrons)</strong>. These elements tend to gain electrons and become <strong>anions</strong> (negatively charged ions).</li>
-                            <li>Elements with 4 valence electrons tend to share them and have <strong>metalloid</strong> properties.</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </section>
+            <!-- electrons -->
+            <circle cx="430" cy="90" r="9" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="2">
+              <animate attributeName="cx" values="430;430;250;70;430" dur="10s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="90;90;35;90;90" dur="10s" repeatCount="indefinite"/>
+            </circle>
+            <text x="430" y="94" text-anchor="middle" font-family="Caveat,cursive" font-size="11" fill="#2d5a8c" font-weight="700">−</text>
 
-        <section class="content-section" id="atomic-numbers">
-            <div class="section-header">
-                <div class="section-icon">🔢</div>
-                <h2 class="section-title">Atomic Number and Mass Number</h2>
-            </div>
-            <div class="content-card">
-                <ul class="styled-list">
-                    <li><strong>Atomic Number (Z):</strong> This is the number of protons in an atom's nucleus. All atoms of the same element have the same atomic number. In a neutral atom, the atomic number is also equal to the number of electrons.</li>
-                    <li><strong>Mass Number (A):</strong> This is the sum of the number of protons and neutrons (also called nucleons) in an atom's nucleus. The mass of an atom is primarily determined by its protons and neutrons.</li>
-                </ul>
-                
-                <div class="formula-box">
-                    <p>\( A = Z + N \)</p>
-                    <p>Where A is the mass number, Z is the atomic number, and N is the number of neutrons.</p>
-                </div>
-            </div>
-        </section>
+            <circle cx="170" cy="48" r="8" fill="#f0e8ff" stroke="#6a3093" stroke-width="2">
+              <animate attributeName="cx" values="170;310;170;50;170" dur="8s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="48;132;150;48;48" dur="8s" repeatCount="indefinite"/>
+            </circle>
+            <text x="170" y="52" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#6a3093" font-weight="700">−</text>
 
-        <section class="content-section" id="isotopes-isobars">
-            <div class="section-header">
-                <div class="section-icon">🔄</div>
-                <h2 class="section-title">Isotopes and Isobars</h2>
-            </div>
-            <div class="content-card">
-                <ul class="styled-list">
-                    <li><strong>Isotopes:</strong> Atoms of the <strong>same element</strong> that have the same atomic number but different mass numbers. This means they have the same number of protons but a different number of neutrons. For example, Protium, Deuterium, and Tritium are isotopes of Hydrogen.</li>
-                    <li><strong>Isobars:</strong> Atoms of <strong>different elements</strong> that have different atomic numbers but the same mass number. This means they have a different number of protons but the same total number of nucleons. For example, Argon-40, Potassium-40, and Calcium-40 are isobars.</li>
-                    <li><strong>Radio-isotopes</strong> are isotopes that are radioactive and have various applications, such as Carbon-14 for measuring the age of fossils and Cobalt-60 for curing cancer and preserving food.</li>
-                </ul>
-            </div>
-        </section>
+            <circle cx="330" cy="132" r="8" fill="#fff0e0" stroke="#8a5a2b" stroke-width="2">
+              <animate attributeName="cx" values="330;190;330;470;330" dur="9s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="132;48;20;132;132" dur="9s" repeatCount="indefinite"/>
+            </circle>
+            <text x="330" y="136" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#8a5a2b" font-weight="700">−</text>
 
-        <section class="content-section" id="ions">
-            <div class="section-header">
-                <div class="section-icon">⚡</div>
-                <h2 class="section-title">Formation of Ions</h2>
-            </div>
-            <div class="content-card">
-                <ul class="styled-list">
-                    <li><strong>Ions</strong> are formed when atoms lose or gain electrons to achieve a full outer shell (octet rule).</li>
-                    <li><strong>Cations</strong> are formed when an atom loses one or more electrons, resulting in a positive charge. A metal that has lost electrons has the same name as the element, for example, Na\(^+\) is a sodium ion and Ca\(^{2+}\) is a calcium ion.</li>
-                    <li><strong>Anions</strong> are formed when an atom gains one or more electrons, resulting in a negative charge. A nonmetal that has gained electrons changes its name to end in "-ide" (e.g., chloride ion, fluoride ion).</li>
-                    <li>A cation or an anion will often have the same number of electrons as its nearest noble gas, a state known as being <strong>isoelectronic</strong>.</li>
-                </ul>
-            </div>
-        </section>
-    </div>
+            <!-- legend -->
+            <circle cx="80" cy="168" r="5" fill="#c0392b"/>
+            <text x="94" y="172" font-family="Kalam,cursive" font-size="11" fill="#1a3a5c">proton</text>
+            <circle cx="180" cy="168" r="5" fill="#2d5a8c"/>
+            <text x="194" y="172" font-family="Kalam,cursive" font-size="11" fill="#1a3a5c">neutron</text>
+            <circle cx="290" cy="168" r="5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+            <text x="304" y="172" font-family="Kalam,cursive" font-size="11" fill="#1a3a5c">electron</text>
+          </svg>
+          <div class="diagram-caption">Atom — protons, neutrons & electrons</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISCOVERY -->
+    <section class="content-section" id="discovery">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-search"></i></div>
+        <h2 class="section-title">Discovery of Subatomic Particles</h2>
+      </div>
+      <div class="content-card">
+        <ul class="styled-list">
+          <li><strong>Electrons</strong> were discovered by J.J. Thomson in 1897. They are negatively charged particles.</li>
+          <li><strong>Protons</strong> were discovered after E. Goldstein found new, positively charged radiations called canal rays in 1886. Protons have a positive charge.</li>
+          <li><strong>Neutrons</strong> were discovered in 1932 by James Chadwick. They have no charge.</li>
+        </ul>
+
+        <table>
+          <thead>
+            <tr><th>Particle</th><th>Symbol</th><th>Charge</th><th>Mass</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Electron</strong></td><td>\( e^{-} \)</td><td>Negative</td><td>≈ 1/2000 mass of H atom</td></tr>
+            <tr><td><strong>Proton</strong></td><td>\( p^{+} \)</td><td>Positive</td><td>≈ mass of H atom (1 unit)</td></tr>
+            <tr><td><strong>Neutron</strong></td><td>\( n \)</td><td>No charge</td><td>≈ mass of H atom (1 unit)</td></tr>
+          </tbody>
+        </table>
+
+        <!-- Discovery illustration -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <!-- Thomson CRT for electron discovery -->
+            <rect x="30" y="40" width="120" height="60" rx="6" fill="rgba(208,240,255,.5)" stroke="#2d5a8c" stroke-width="2"/>
+            <text x="90" y="30" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#2d5a8c" font-weight="700">Cathode Ray Tube</text>
+            <text x="60" y="70" font-family="Caveat,cursive" font-size="14" fill="#1a3a5c" font-weight="700">−</text>
+            <text x="120" y="70" font-family="Caveat,cursive" font-size="14" fill="#c0392b" font-weight="700">+</text>
+            <!-- electron beam -->
+            <path d="M70 70 Q90 68 110 70" stroke="#a044ff" stroke-width="1.8" stroke-dasharray="3,2"/>
+            <circle cx="85" cy="70" r="3" fill="#a044ff"/>
+            <circle cx="95" cy="70" r="3" fill="#a044ff"/>
+            <circle cx="105" cy="70" r="3" fill="#a044ff"/>
+            <text x="90" y="118" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#c0392b" font-weight="700">J.J. Thomson 1897</text>
+            <text x="90" y="132" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">electrons (e⁻)</text>
+
+            <!-- Goldstein canal rays -->
+            <rect x="220" y="40" width="120" height="60" rx="6" fill="rgba(255,240,208,.5)" stroke="#8a5a2b" stroke-width="2"/>
+            <text x="280" y="30" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#8a5a2b" font-weight="700">Canal Rays</text>
+            <path d="M320 70 Q300 68 270 70" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="3,2"/>
+            <circle cx="305" cy="70" r="3" fill="#c0392b"/>
+            <circle cx="290" cy="70" r="3" fill="#c0392b"/>
+            <circle cx="275" cy="70" r="3" fill="#c0392b"/>
+            <text x="280" y="118" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#c0392b" font-weight="700">E. Goldstein 1886</text>
+            <text x="280" y="132" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#8a5a2b">protons (p⁺)</text>
+
+            <!-- Chadwick neutron -->
+            <rect x="410" y="40" width="150" height="60" rx="6" fill="rgba(232,244,255,.5)" stroke="#6a3093" stroke-width="2"/>
+            <text x="485" y="30" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#6a3093" font-weight="700">Neutron Discovery</text>
+            <circle cx="450" cy="70" r="6" fill="#2d5a8c"/>
+            <circle cx="475" cy="70" r="6" fill="#c0392b"/>
+            <circle cx="500" cy="70" r="6" fill="#2d5a8c"/>
+            <text x="475" y="70" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">n</text>
+            <text x="485" y="118" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#c0392b" font-weight="700">James Chadwick 1932</text>
+            <text x="485" y="132" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#6a3093">neutrons (n⁰)</text>
+          </svg>
+          <div class="diagram-caption">Discoveries of subatomic particles</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ATOMIC MODELS -->
+    <section class="content-section" id="atomic-models">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-cubes"></i></div>
+        <h2 class="section-title">Atomic Models</h2>
+      </div>
+
+      <!-- THOMSON -->
+      <div class="content-card">
+        <h3 class="subheading">Thomson's Atomic Model</h3>
+        <ul class="styled-list">
+          <li>J.J. Thomson proposed that an atom is a positively charged sphere with negatively charged electrons embedded within it.</li>
+          <li>This model is often compared to a Christmas pudding or a watermelon, where the positive charge is the pudding/edible part, and the electrons are like dry fruits or seeds.</li>
+          <li>According to Thomson, the positive and negative charges in an atom are equal, making the atom as a whole electrically neutral.</li>
+        </ul>
+
+        <!-- Thomson model: watermelon/pudding -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <!-- Watermelon -->
+            <g transform="translate(0,0)">
+              <ellipse cx="150" cy="90" rx="90" ry="55" fill="#e8f5d0" stroke="#2d5a8c" stroke-width="2.2"/>
+              <path d="M60 90 Q150 50 240 90" stroke="#8a5a2b" stroke-width="1.5" fill="none" opacity=".5"/>
+              <text x="150" y="30" text-anchor="middle" font-family="Caveat,cursive" font-size="14" fill="#2d5a8c" font-weight="700">watermelon</text>
+              <!-- seeds as electrons -->
+              <circle cx="110" cy="80" r="6" fill="#1a3a5c"/>
+              <circle cx="150" cy="70" r="6" fill="#1a3a5c"/>
+              <circle cx="180" cy="85" r="6" fill="#1a3a5c"/>
+              <circle cx="130" cy="105" r="6" fill="#1a3a5c"/>
+              <circle cx="170" cy="110" r="6" fill="#1a3a5c"/>
+              <circle cx="100" cy="100" r="6" fill="#1a3a5c"/>
+              <circle cx="200" cy="100" r="6" fill="#1a3a5c"/>
+              <text x="150" y="160" text-anchor="middle" font-family="Kalam,cursive" font-size="11" fill="#2d5a8c">− − − electrons (seeds)</text>
+            </g>
+
+            <!-- Arrow -->
+            <text x="290" y="95" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#a044ff" font-weight="700">≈</text>
+
+            <!-- Thomson model sphere -->
+            <g transform="translate(0,0)">
+              <circle cx="440" cy="90" r="60" fill="rgba(255,200,180,.5)" stroke="#c0392b" stroke-width="2.2"/>
+              <text x="440" y="30" text-anchor="middle" font-family="Caveat,cursive" font-size="14" fill="#c0392b" font-weight="700">Thomson model</text>
+              <!-- positive sphere shading -->
+              <text x="440" y="95" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="rgba(192,57,43,.4)" font-weight="700">+</text>
+              <!-- electrons -->
+              <circle cx="410" cy="75" r="6" fill="#2d5a8c" stroke="#1a3a5c"/>
+              <text x="410" y="79" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">−</text>
+              <circle cx="440" cy="65" r="6" fill="#2d5a8c" stroke="#1a3a5c"/>
+              <text x="440" y="69" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">−</text>
+              <circle cx="470" cy="85" r="6" fill="#2d5a8c" stroke="#1a3a5c"/>
+              <text x="470" y="89" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">−</text>
+              <circle cx="430" cy="110" r="6" fill="#2d5a8c" stroke="#1a3a5c"/>
+              <text x="430" y="114" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">−</text>
+              <circle cx="460" cy="115" r="6" fill="#2d5a8c" stroke="#1a3a5c"/>
+              <text x="460" y="119" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">−</text>
+              <circle cx="410" cy="105" r="6" fill="#2d5a8c" stroke="#1a3a5c"/>
+              <text x="410" y="109" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">−</text>
+            </g>
+          </svg>
+          <div class="diagram-caption">Thomson's plum pudding / watermelon model</div>
+        </div>
+
+        <div class="key-point">
+          <strong>Limitation:</strong> This model couldn't explain how the positive charge held the electrons in place or why an atom is stable. It also didn't mention the nucleus.
+        </div>
+      </div>
+
+      <!-- RUTHERFORD GOLD FOIL -->
+      <div class="content-card">
+        <h3 class="subheading">Rutherford's Gold Foil Experiment</h3>
+        <ul class="styled-list">
+          <li>In 1911, Rutherford conducted the <strong>alpha (α) scattering experiment</strong> by bombarding a thin sheet of gold foil (about 1000 atoms thick) with high-speed alpha-particles.</li>
+          <li>Alpha-particles are positively charged helium nuclei (\( He^{2+} \)).</li>
+        </ul>
+
+        <!-- Gold foil experiment illustration -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <defs>
+              <marker id="arrowAu" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+            </defs>
+
+            <!-- Alpha source -->
+            <rect x="20" y="90" width="40" height="40" rx="4" fill="#c0392b" opacity=".85"/>
+            <text x="40" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#fff" font-weight="700">α</text>
+            <text x="40" y="155" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">source</text>
+            <text x="40" y="168" text-anchor="middle" font-family="Kalam,cursive" font-size="9" fill="#2d5a8c">(radium)</text>
+
+            <!-- Gold foil (thin vertical line) -->
+            <rect x="290" y="40" width="8" height="140" fill="#ffd700" stroke="#8a5a2b" stroke-width="1.5"/>
+            <text x="294" y="30" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#8a5a2b" font-weight="700">gold foil</text>
+            <text x="294" y="200" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#8a5a2b">(thin sheet)</text>
+
+            <!-- Most alpha particles pass straight -->
+            <path d="M60 110 L285 110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowAu)"/>
+            <path d="M300 110 L560 110" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowAu)"/>
+            <text x="430" y="100" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#c0392b" font-weight="700">most pass straight</text>
+
+            <!-- Some deflected slightly -->
+            <path d="M60 100 L285 100 L450 55" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowAu)" stroke-dasharray="0"/>
+            <text x="460" y="48" text-anchor="middle" font-family="Caveat,cursive" font-size="11" fill="#c0392b" font-weight="600">some deflected</text>
+
+            <!-- Few bounce back -->
+            <path d="M60 120 L285 120 L200 40" stroke="#c0392b" stroke-width="1.8" marker-end="url(#arrowAu)"/>
+            <text x="180" y="32" text-anchor="middle" font-family="Caveat,cursive" font-size="11" fill="#c0392b" font-weight="600">few bounce back</text>
+
+            <!-- Detector screen around -->
+            <path d="M120 25 Q400 25 530 90 Q400 165 120 165" stroke="#2d5a8c" stroke-width="2" fill="none" stroke-dasharray="6,4" opacity=".6"/>
+            <text x="540" y="90" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">detector</text>
+
+            <!-- nucleus symbol on foil -->
+            <circle cx="294" cy="110" r="6" fill="#c0392b"/>
+            <text x="294" y="113" text-anchor="middle" font-family="Caveat,cursive" font-size="8" fill="#fff" font-weight="700">+</text>
+          </svg>
+          <div class="diagram-caption">Rutherford's α-scattering experiment (1911)</div>
+        </div>
+
+        <h4 class="subheading">Observations:</h4>
+        <ul class="styled-list">
+          <li>Most alpha-particles passed straight through the foil without deflection.</li>
+          <li>Some alpha-particles were deflected by small angles.</li>
+          <li>A very small number of alpha-particles bounced back.</li>
+        </ul>
+
+        <h4 class="subheading">Conclusions:</h4>
+        <ul class="styled-list">
+          <li>Most of the atom is <strong>empty space</strong>.</li>
+          <li>The atom has a small, positively charged <strong>nucleus</strong>.</li>
+          <li>The <strong>nucleus</strong> is where most of the atom's mass is located.</li>
+          <li>The nucleus is very small compared to the overall size of the atom.</li>
+        </ul>
+      </div>
+
+      <!-- RUTHERFORD MODEL -->
+      <div class="content-card">
+        <h3 class="subheading">Rutherford's Atomic Model</h3>
+        <ul class="styled-list">
+          <li>An atom has a positively charged nucleus at its center.</li>
+          <li>Electrons revolve around the nucleus in different orbits.</li>
+        </ul>
+
+        <!-- Rutherford model illustration -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <ellipse cx="200" cy="100" rx="150" ry="50" fill="none" stroke="#2d5a8c" stroke-width="1.8" stroke-dasharray="8,4"/>
+            <ellipse cx="200" cy="100" rx="100" ry="35" fill="none" stroke="#6a3093" stroke-width="1.8" stroke-dasharray="8,4" transform="rotate(60 200 100)"/>
+
+            <circle cx="200" cy="100" r="22" fill="#fff8c4" stroke="#c0392b" stroke-width="2.3"/>
+            <text x="200" y="105" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#c0392b" font-weight="700">+</text>
+            <text x="200" y="145" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#2d5a8c" font-weight="700">nucleus</text>
+
+            <circle cx="350" cy="100" r="8" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="2">
+              <animate attributeName="cx" values="350;350;200;50;350" dur="8s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="100;100;50;100;100" dur="8s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="150" cy="65" r="7" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="2">
+              <animate attributeName="cx" values="150;250;150;50;150" dur="7s" repeatCount="indefinite"/>
+              <animate attributeName="cy" values="65;135;150;65;65" dur="7s" repeatCount="indefinite"/>
+            </circle>
+            <text x="200" y="185" text-anchor="middle" font-family="Kalam,cursive" font-size="11" fill="#2d5a8c">electrons orbiting nucleus</text>
+          </svg>
+          <div class="diagram-caption">Rutherford's nuclear model</div>
+        </div>
+
+        <div class="key-point">
+          <strong>Defect:</strong> This model couldn't explain the stability of an atom. A charged particle in a circular orbit would accelerate, radiate energy, and eventually fall into the nucleus, causing the atom to collapse.
+        </div>
+      </div>
+
+      <!-- BOHR MODEL -->
+      <div class="content-card">
+        <h3 class="subheading">Bohr's Atomic Model</h3>
+        <ul class="styled-list">
+          <li>An atom has a positively charged nucleus at its center, containing most of the atom's mass.</li>
+          <li>Electrons revolve around the nucleus in specific, stable orbits called discrete orbits or shells.</li>
+          <li>These shells are represented by the letters K, L, M, N or the numbers 1, 2, 3, 4, and so on.</li>
+          <li>Electrons do not radiate energy while in these discrete orbits, which explains why atoms are stable.</li>
+        </ul>
+
+        <!-- Bohr model with shells -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <!-- nucleus -->
+            <circle cx="250" cy="110" r="20" fill="#fff8c4" stroke="#c0392b" stroke-width="2.3"/>
+            <text x="250" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#c0392b" font-weight="700">+</text>
+
+            <!-- K shell -->
+            <circle cx="250" cy="110" r="45" fill="none" stroke="#2d5a8c" stroke-width="2"/>
+            <circle cx="295" cy="110" r="6" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.8"/>
+            <circle cx="205" cy="110" r="6" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.8"/>
+            <text x="315" y="80" font-family="Caveat,cursive" font-size="12" fill="#2d5a8c" font-weight="700">K (2e⁻)</text>
+
+            <!-- L shell -->
+            <circle cx="250" cy="110" r="80" fill="none" stroke="#6a3093" stroke-width="2"/>
+            <circle cx="330" cy="110" r="6" fill="#e8f4ff" stroke="#6a3093" stroke-width="1.8"/>
+            <circle cx="170" cy="110" r="6" fill="#e8f4ff" stroke="#6a3093" stroke-width="1.8"/>
+            <circle cx="250" cy="30" r="6" fill="#e8f4ff" stroke="#6a3093" stroke-width="1.8"/>
+            <circle cx="250" cy="190" r="6" fill="#e8f4ff" stroke="#6a3093" stroke-width="1.8"/>
+            <text x="335" y="60" font-family="Caveat,cursive" font-size="12" fill="#6a3093" font-weight="700">L (8e⁻)</text>
+
+            <!-- M shell -->
+            <circle cx="250" cy="110" r="115" fill="none" stroke="#8a5a2b" stroke-width="2"/>
+            <circle cx="365" cy="110" r="6" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.8"/>
+            <circle cx="135" cy="110" r="6" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.8"/>
+            <circle cx="250" cy="-5" r="6" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.8"/>
+            <text x="370" y="40" font-family="Caveat,cursive" font-size="12" fill="#8a5a2b" font-weight="700">M (18e⁻)</text>
+
+            <text x="250" y="215" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#2d5a8c" font-weight="700">discrete shells: K, L, M, N…</text>
+          </svg>
+          <div class="diagram-caption">Bohr's model — discrete electron shells</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ELECTRON CONFIGURATION -->
+    <section class="content-section" id="electron-configuration">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-bolt"></i></div>
+        <h2 class="section-title">Electron Configuration and Valency</h2>
+      </div>
+      <div class="content-card">
+        <ul class="styled-list">
+          <li><strong>Valence Electrons:</strong> The electrons in an atom's outermost shell are called valence electrons.</li>
+          <li><strong>Octet Rule:</strong> An atom is stable if its outermost shell contains 8 electrons. Noble gases already have 8 electrons in their outer shell, so they are not reactive.</li>
+          <li><strong>Duplet Rule:</strong> The first shell (K shell) can hold a maximum of 2 electrons. A complete K shell also makes an atom stable, like in the case of Helium.</li>
+          <li><strong>Valency:</strong> The combining capacity of an element. It is the number of electrons an atom gives, accepts, or shares to form a bond.
+            <ul class="styled-list">
+              <li>For elements with 1, 2, or 3 valence electrons, the valency is equal to the number of valence electrons. These elements tend to lose electrons and become <strong>cations</strong> (positively charged ions).</li>
+              <li>For elements with 5, 6, or 7 valence electrons, the valency is calculated as <strong>8 - (number of valence electrons)</strong>. These elements tend to gain electrons and become <strong>anions</strong> (negatively charged ions).</li>
+              <li>Elements with 4 valence electrons tend to share them and have <strong>metalloid</strong> properties.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- Valency illustration -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <!-- Lose electrons (Na → Na+) -->
+            <circle cx="80" cy="80" r="35" fill="none" stroke="#2d5a8c" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="80" y="86" text-anchor="middle" font-family="Caveat,cursive" font-size="15" fill="#1a3a5c" font-weight="700">Na</text>
+            <text x="80" y="140" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#c0392b" font-weight="700">loses 1e⁻</text>
+            <text x="80" y="155" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">valency 1 → cation</text>
+
+            <text x="150" y="85" text-anchor="middle" font-family="Caveat,cursive" font-size="20" fill="#a044ff" font-weight="700">→</text>
+
+            <circle cx="220" cy="80" r="35" fill="none" stroke="#c0392b" stroke-width="2"/>
+            <text x="220" y="86" text-anchor="middle" font-family="Caveat,cursive" font-size="15" fill="#c0392b" font-weight="700">Na⁺</text>
+            <text x="220" y="140" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#c0392b" font-weight="700">2, 8</text>
+
+            <!-- divider -->
+            <line x1="300" y1="30" x2="300" y2="160" stroke="#2d5a8c" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+
+            <!-- Gain electrons (Cl → Cl-) -->
+            <circle cx="370" cy="80" r="35" fill="none" stroke="#2d5a8c" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="370" y="86" text-anchor="middle" font-family="Caveat,cursive" font-size="15" fill="#1a3a5c" font-weight="700">Cl</text>
+            <text x="370" y="140" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#2d5a8c" font-weight="700">gains 1e⁻</text>
+            <text x="370" y="155" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">valency 1 → anion</text>
+
+            <text x="440" y="85" text-anchor="middle" font-family="Caveat,cursive" font-size="20" fill="#a044ff" font-weight="700">→</text>
+
+            <circle cx="510" cy="80" r="35" fill="none" stroke="#8a5a2b" stroke-width="2"/>
+            <text x="510" y="86" text-anchor="middle" font-family="Caveat,cursive" font-size="15" fill="#8a5a2b" font-weight="700">Cl⁻</text>
+            <text x="510" y="140" text-anchor="middle" font-family="Caveat,cursive" font-size="12" fill="#8a5a2b" font-weight="700">2, 8, 8</text>
+          </svg>
+          <div class="diagram-caption">Valency: losing electrons → cation; gaining → anion</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ATOMIC NUMBER & MASS -->
+    <section class="content-section" id="atomic-numbers">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-hashtag"></i></div>
+        <h2 class="section-title">Atomic Number and Mass Number</h2>
+      </div>
+      <div class="content-card">
+        <ul class="styled-list">
+          <li><strong>Atomic Number (Z):</strong> This is the number of protons in an atom's nucleus. All atoms of the same element have the same atomic number. In a neutral atom, the atomic number is also equal to the number of electrons.</li>
+          <li><strong>Mass Number (A):</strong> This is the sum of the number of protons and neutrons (also called nucleons) in an atom's nucleus. The mass of an atom is primarily determined by its protons and neutrons.</li>
+        </ul>
+
+        <div class="formula-box">
+          <p>\( A = Z + N \)</p>
+          <p>Where A is the mass number, Z is the atomic number, and N is the number of neutrons.</p>
+        </div>
+
+        <!-- Illustration -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <!-- Atom with notation -->
+            <g transform="translate(80,20)">
+              <circle cx="80" cy="70" r="45" fill="#fdfbf3" stroke="#2d5a8c" stroke-width="2"/>
+              <circle cx="80" cy="70" r="22" fill="#fff8c4" stroke="#c0392b" stroke-width="2"/>
+              <text x="80" y="76" text-anchor="middle" font-family="Caveat,cursive" font-size="14" fill="#c0392b" font-weight="700">+</text>
+              <!-- electrons -->
+              <circle cx="80" cy="25" r="5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+              <circle cx="125" cy="70" r="5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+              <circle cx="80" cy="115" r="5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+              <circle cx="35" cy="70" r="5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+
+              <!-- label -->
+              <text x="80" y="170" text-anchor="middle" font-family="Caveat,cursive" font-size="14" fill="#2d5a8c" font-weight="700">atom</text>
+            </g>
+
+            <!-- Z, A, N notation -->
+            <g transform="translate(280,60)">
+              <!-- big X with superscript A and subscript Z -->
+              <text x="0" y="40" font-family="Caveat,cursive" font-size="55" fill="#1a3a5c" font-weight="700">X</text>
+              <text x="-30" y="18" font-family="Caveat,cursive" font-size="22" fill="#c0392b" font-weight="700">A</text>
+              <text x="-30" y="62" font-family="Caveat,cursive" font-size="22" fill="#2d5a8c" font-weight="700">Z</text>
+
+              <!-- arrows to labels -->
+              <path d="M10 15 L60 5" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <text x="65" y="10" font-family="Caveat,cursive" font-size="12" fill="#c0392b" font-weight="700">= mass no. (p⁺ + n⁰)</text>
+
+              <path d="M10 55 L60 70" stroke="#2d5a8c" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <text x="65" y="75" font-family="Caveat,cursive" font-size="12" fill="#2d5a8c" font-weight="700">= atomic no. (p⁺)</text>
+            </g>
+          </svg>
+          <div class="diagram-caption">Symbol notation: Mass number (A) & Atomic number (Z)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ISOTOPES & ISOBARS -->
+    <section class="content-section" id="isotopes-isobars">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-sync-alt"></i></div>
+        <h2 class="section-title">Isotopes and Isobars</h2>
+      </div>
+      <div class="content-card">
+        <ul class="styled-list">
+          <li><strong>Isotopes:</strong> Atoms of the <strong>same element</strong> that have the same atomic number but different mass numbers. This means they have the same number of protons but a different number of neutrons. For example, Protium, Deuterium, and Tritium are isotopes of Hydrogen.</li>
+          <li><strong>Isobars:</strong> Atoms of <strong>different elements</strong> that have different atomic numbers but the same mass number. This means they have a different number of protons but the same total number of nucleons. For example, Argon-40, Potassium-40, and Calcium-40 are isobars.</li>
+          <li><strong>Radio-isotopes</strong> are isotopes that are radioactive and have various applications, such as Carbon-14 for measuring the age of fossils and Cobalt-60 for curing cancer and preserving food.</li>
+        </ul>
+
+        <!-- Isotopes of Hydrogen -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <text x="300" y="20" text-anchor="middle" font-family="Caveat,cursive" font-size="16" fill="#2d5a8c" font-weight="700">Isotopes of Hydrogen</text>
+
+            <!-- Protium -->
+            <g transform="translate(80,40)">
+              <circle cx="0" cy="60" r="30" fill="#fdfbf3" stroke="#2d5a8c" stroke-width="2"/>
+              <circle cx="0" cy="60" r="12" fill="#c0392b"/>
+              <text x="0" y="65" text-anchor="middle" font-family="Caveat,cursive" font-size="11" fill="#fff" font-weight="700">p</text>
+              <circle cx="-30" cy="60" r="5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+              <text x="0" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="14" fill="#1a3a5c" font-weight="700">Protium ¹H</text>
+              <text x="0" y="135" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">1p, 0n, 1e⁻</text>
+            </g>
+
+            <!-- Deuterium -->
+            <g transform="translate(300,40)">
+              <circle cx="0" cy="60" r="30" fill="#fdfbf3" stroke="#2d5a8c" stroke-width="2"/>
+              <circle cx="0" cy="55" r="11" fill="#c0392b"/>
+              <circle cx="0" cy="72" r="8" fill="#2d5a8c"/>
+              <text x="0" y="58" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">p</text>
+              <text x="0" y="76" text-anchor="middle" font-family="Caveat,cursive" font-size="9" fill="#fff" font-weight="700">n</text>
+              <circle cx="-30" cy="60" r="5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+              <text x="0" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="14" fill="#1a3a5c" font-weight="700">Deuterium ²H</text>
+              <text x="0" y="135" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">1p, 1n, 1e⁻</text>
+            </g>
+
+            <!-- Tritium -->
+            <g transform="translate(520,40)">
+              <circle cx="0" cy="60" r="30" fill="#fdfbf3" stroke="#2d5a8c" stroke-width="2"/>
+              <circle cx="0" cy="50" r="9" fill="#c0392b"/>
+              <circle cx="0" cy="67" r="8" fill="#2d5a8c"/>
+              <circle cx="0" cy="80" r="7" fill="#2d5a8c"/>
+              <text x="0" y="53" text-anchor="middle" font-family="Caveat,cursive" font-size="9" fill="#fff" font-weight="700">p</text>
+              <text x="0" y="70" text-anchor="middle" font-family="Caveat,cursive" font-size="8" fill="#fff" font-weight="700">n</text>
+              <text x="0" y="83" text-anchor="middle" font-family="Caveat,cursive" font-size="8" fill="#fff" font-weight="700">n</text>
+              <circle cx="-30" cy="60" r="5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+              <text x="0" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="14" fill="#1a3a5c" font-weight="700">Tritium ³H</text>
+              <text x="0" y="135" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">1p, 2n, 1e⁻</text>
+            </g>
+          </svg>
+          <div class="diagram-caption">Isotopes of hydrogen — same Z, different A</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IONS FORMATION -->
+    <section class="content-section" id="ions">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-bolt"></i></div>
+        <h2 class="section-title">Formation of Ions</h2>
+      </div>
+      <div class="content-card">
+        <ul class="styled-list">
+          <li><strong>Ions</strong> are formed when atoms lose or gain electrons to achieve a full outer shell (octet rule).</li>
+          <li><strong>Cations</strong> are formed when an atom loses one or more electrons, resulting in a positive charge. A metal that has lost electrons has the same name as the element, for example, Na\(^+\) is a sodium ion and Ca\(^{2+}\) is a calcium ion.</li>
+          <li><strong>Anions</strong> are formed when an atom gains one or more electrons, resulting in a negative charge. A nonmetal that has gained electrons changes its name to end in "-ide" (e.g., chloride ion, fluoride ion).</li>
+          <li>A cation or an anion will often have the same number of electrons as its nearest noble gas, a state known as being <strong>isoelectronic</strong>.</li>
+        </ul>
+
+        <!-- Ion formation illustration -->
+        <div class="diagram-box">
+          <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(1px 1px 0 rgba(45,90,140,.15))">
+            <text x="300" y="20" text-anchor="middle" font-family="Caveat,cursive" font-size="16" fill="#2d5a8c" font-weight="700">Formation of Ions — octet rule</text>
+
+            <!-- Na atom (2,8,1) -->
+            <g transform="translate(60,50)">
+              <circle cx="0" cy="55" r="32" fill="#fdfbf3" stroke="#2d5a8c" stroke-width="2"/>
+              <circle cx="0" cy="55" r="22" fill="none" stroke="#2d5a8c" stroke-width="1" stroke-dasharray="3,2"/>
+              <circle cx="0" cy="55" r="13" fill="#c0392b"/>
+              <text x="0" y="60" text-anchor="middle" font-family="Caveat,cursive" font-size="11" fill="#fff" font-weight="700">+11</text>
+              <!-- 1 valence e- -->
+              <circle cx="32" cy="55" r="4.5" fill="#e8f4ff" stroke="#2d5a8c" stroke-width="1.5"/>
+              <text x="0" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#1a3a5c" font-weight="700">Na (2,8,1)</text>
+            </g>
+
+            <text x="120" y="105" text-anchor="middle" font-family="Caveat,cursive" font-size="18" fill="#a044ff" font-weight="700">−e⁻ →</text>
+
+            <!-- Na+ ion (2,8) -->
+            <g transform="translate(180,50)">
+              <circle cx="0" cy="55" r="32" fill="#fdfbf3" stroke="#c0392b" stroke-width="2"/>
+              <circle cx="0" cy="55" r="22" fill="none" stroke="#c0392b" stroke-width="1" stroke-dasharray="3,2"/>
+              <circle cx="0" cy="55" r="13" fill="#c0392b"/>
+              <text x="0" y="60" text-anchor="middle" font-family="Caveat,cursive" font-size="11" fill="#fff" font-weight="700">+11</text>
+              <text x="0" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#c0392b" font-weight="700">Na⁺ (2,8)</text>
+              <text x="0" y="132" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">isoelectronic with Ne</text>
+            </g>
+
+            <!-- divider -->
+            <line x1="290" y1="40" x2="290" y2="150" stroke="#2d5a8c" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+
+            <!-- Cl atom (2,8,7) -->
+            <g transform="translate(380,50)">
+              <circle cx="0" cy="55" r="32" fill="#fdfbf3" stroke="#8a5a2b" stroke-width="2"/>
+              <circle cx="0" cy="55" r="22" fill="none" stroke="#8a5a2b" stroke-width="1" stroke-dasharray="3,2"/>
+              <circle cx="0" cy="55" r="13" fill="#8a5a2b"/>
+              <text x="0" y="60" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">+17</text>
+              <!-- 7 valence electrons -->
+              <circle cx="32" cy="50" r="3.5" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.2"/>
+              <circle cx="35" cy="60" r="3.5" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.2"/>
+              <circle cx="32" cy="70" r="3.5" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.2"/>
+              <circle cx="20" cy="85" r="3.5" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.2"/>
+              <circle cx="0" cy="88" r="3.5" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.2"/>
+              <circle cx="-20" cy="85" r="3.5" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.2"/>
+              <circle cx="-30" cy="70" r="3.5" fill="#e8f4ff" stroke="#8a5a2b" stroke-width="1.2"/>
+              <text x="0" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#1a3a5c" font-weight="700">Cl (2,8,7)</text>
+            </g>
+
+            <text x="440" y="105" text-anchor="middle" font-family="Caveat,cursive" font-size="18" fill="#a044ff" font-weight="700">+e⁻ →</text>
+
+            <!-- Cl- ion (2,8,8) -->
+            <g transform="translate(520,50)">
+              <circle cx="0" cy="55" r="32" fill="#fdfbf3" stroke="#8a5a2b" stroke-width="2"/>
+              <circle cx="0" cy="55" r="22" fill="none" stroke="#8a5a2b" stroke-width="1" stroke-dasharray="3,2"/>
+              <circle cx="0" cy="55" r="13" fill="#8a5a2b"/>
+              <text x="0" y="60" text-anchor="middle" font-family="Caveat,cursive" font-size="10" fill="#fff" font-weight="700">+17</text>
+              <text x="0" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="13" fill="#8a5a2b" font-weight="700">Cl⁻ (2,8,8)</text>
+              <text x="0" y="132" text-anchor="middle" font-family="Kalam,cursive" font-size="10" fill="#2d5a8c">isoelectronic with Ar</text>
+            </g>
+          </svg>
+          <div class="diagram-caption">Ion formation — octet rule & isoelectronic</div>
+        </div>
+      </div>
+    </section>
 
     <footer>
-        <div class="container">
-            <p>Atomic Structure Notes | THP Educational Resources</p>
-        </div>
+      <p>Atomic Structure Notes | THP Educational Resources</p>
     </footer>
+  </div>
 
-    <div class="back-to-top" id="backToTop">↑</div>
+  <div class="back-to-top" id="backToTop">↑</div>
 
-    <script>
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        });
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    });
 
-        // Back to top button functionality
-        const backToTop = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTop.classList.add('show');
-            } else {
-                backToTop.classList.remove('show');
-            }
-        });
+    // Back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
+    // Section animations
+    const sections = document.querySelectorAll('.content-section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationDelay = '0.2s';
+          entry.target.style.animation = 'fadeInUp 0.8s forwards';
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    sections.forEach(section => observer.observe(section));
 
-        // Animate sections on scroll
-        const sections = document.querySelectorAll('.content-section');
-        
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationDelay = '0.2s';
-                    entry.target.style.animation = 'fadeInUp 0.8s forwards';
-                }
-            });
-        }, observerOptions);
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        // Initialize MathJax
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']]
-            }
-        };
-    </script>
+    // MathJax config
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+  </script>
 </body>
 </html>
