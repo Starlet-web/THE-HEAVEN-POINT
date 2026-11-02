@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Viewport modified to force desktop width on mobile devices so it scales to fit -->
+<meta name="viewport" content="width=1350">
+<title>Organisms & Populations — Advanced Illustrated Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  --primary: #1e3a5f; --secondary: #4a1975; --accent: #b02a1b;
+  --ink: #0d1e30; --paper: #f8f9fa; --line: #cdd5e0;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --glow: drop-shadow(0 0 8px rgba(176, 42, 27, 0.4));
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Kalam', cursive;
+  background: #1a1a1d;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(74, 25, 117, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(30, 58, 95, 0.2) 0%, transparent 50%),
+    linear-gradient(135deg, #121212 0%, #1a1a1d 100%);
+  min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
+  padding: 40px; overflow-x: hidden; font-size: 15px; line-height: 1.6;
+}
+
+body::before {
+  content: ""; position: fixed; top:0; left:0; width:100%; height:100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1;
+}
+
+.container {
+  width: 1280px; /* Fixed width to ensure desktop view on all devices */
+  margin: 0 auto;
+  padding: 40px 50px 50px; position: relative; z-index: 10;
+  background: var(--paper);
+  backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+  background-image:
+    linear-gradient(90deg, transparent 0, transparent 60px, rgba(176,42,27,.15) 60px, rgba(176,42,27,.15) 62px, transparent 62px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 31px, var(--line) 31px, var(--line) 32px);
+  background-size: 100% 100%, 100% 32px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 100px rgba(255,255,255,0.5);
+  border: 1px solid var(--glass-border);
+}
+
+/* HEADER */
+header {
+  text-align: center; padding: 20px 20px 30px; margin-bottom: 30px;
+  position: relative; border-bottom: 4px double var(--primary);
+}
+header h1 {
+  font-family: 'Caveat', cursive; font-size: 3.5rem; font-weight: 700; color: var(--ink);
+  letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+header p {
+  font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--secondary);
+  margin-top: 15px; display: inline-block; padding: 4px 24px;
+  border: 2px dashed rgba(74,25,117,0.5); border-radius: 30px;
+  background: rgba(74,25,117,0.05); box-shadow: var(--shadow-sm);
+}
+
+/* SECTIONS */
+.content-section {
+  margin: 40px 0; opacity: 0; transform: translateY(30px);
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+.section-header {
+  display: flex; align-items: center; margin-bottom: 20px; padding-bottom: 10px;
+  border-bottom: 2px dashed rgba(30,58,95,0.4); gap: 15px;
+}
+.section-icon {
+  background: linear-gradient(135deg, #1e3a5f, #4a1975);
+  width: 50px; height: 50px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 1.4rem; box-shadow: 0 4px 10px rgba(30,58,95,0.3);
+  transform: rotate(-3deg); transition: 0.3s;
+}
+.section-icon:hover { transform: rotate(5deg) scale(1.1); }
+.section-title {
+  font-family: 'Caveat', cursive; font-size: 2.2rem; font-weight: 700; color: var(--ink);
+  text-decoration: underline; text-decoration-color: rgba(176,42,27,0.4);
+  text-decoration-thickness: 3px; text-underline-offset: 4px;
+}
+
+/* CARDS */
+.content-card {
+  background: var(--glass-bg); border-radius: 12px;
+  padding: 24px 32px; margin-bottom: 24px; position: relative;
+  border: 1px solid rgba(0,0,0,0.08); box-shadow: var(--shadow-sm);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.content-card:hover {
+  transform: translateY(-5px); box-shadow: var(--shadow-lg);
+  border-color: rgba(30,58,95,0.2);
+}
+
+.subheading {
+  font-family: 'Caveat', cursive; font-size: 1.6rem; font-weight: 700;
+  color: var(--primary); margin: 20px 0 10px; display: inline-block;
+  border-bottom: 2px dotted var(--accent);
+}
+
+p { font-size: 1.05rem; color: #2a3a4a; margin-bottom: 12px; margin-left: 10px; }
+strong { color: #000; font-weight: 700; background: rgba(255,235,59,0.3); padding: 0 4px; border-radius: 3px; }
+
+ul.styled-list { list-style: none; padding-left: 15px; margin: 10px 0; }
+ul.styled-list li {
+  position: relative; padding: 6px 0 6px 28px; font-size: 1.05rem; color: #1e2a3a;
+}
+ul.styled-list li::before {
+  content: "\f0a4"; font-family: "Font Awesome 6 Free"; font-weight: 900;
+  position: absolute; left: 0; top: 8px; color: var(--accent); font-size: 0.9rem;
+}
+
+/* TABLES */
+table {
+  width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
+  font-family: 'Kalam', cursive; font-size: 1rem;
+  background: rgba(255,255,255,0.7); border-radius: 8px; overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--line);
+}
+thead tr { background: linear-gradient(135deg, rgba(30,58,95,0.1), rgba(74,25,117,0.1)); }
+th, td { padding: 12px 16px; text-align: left; border-right: 1px dashed rgba(30,58,95,0.2); border-bottom: 1px dashed rgba(30,58,95,0.2); }
+th:last-child, td:last-child { border-right: none; }
+tr:last-child td { border-bottom: none; }
+th { font-weight: 700; color: var(--primary); font-family: 'Caveat', cursive; font-size: 1.3rem; }
+tbody tr:hover { background: rgba(255,240,200,0.4); }
+
+/* BOXES */
+.formula-box {
+  background: linear-gradient(135deg, rgba(255,248,196,0.9), rgba(255,239,158,0.9));
+  border-left: 5px solid #d4b106; padding: 16px 24px; margin: 20px 0;
+  border-radius: 4px 12px 12px 4px; text-align: center;
+  box-shadow: 0 8px 20px rgba(180,150,60,0.2); position: relative;
+}
+.formula-box p { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--ink); margin: 6px 0; }
+.formula-box p:first-child { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+
+/* DIAGRAMS (ULTRA REAL & COMPLEX) */
+.diagram-box {
+  background: linear-gradient(180deg, #ffffff 0%, #f4f7f6 100%);
+  border-radius: 16px; padding: 20px; margin: 24px 0;
+  border: 1px solid rgba(30,58,95,0.2);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.02), 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center; transition: 0.4s; overflow: hidden;
+}
+.diagram-box:hover { transform: scale(1.015); box-shadow: inset 0 0 30px rgba(0,0,0,0.02), 0 15px 40px rgba(0,0,0,0.12); }
+.diagram-box svg { width: 100%; height: auto; display: block; margin: 0 auto; overflow: visible; }
+.diagram-caption {
+  font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 600; color: var(--secondary);
+  margin-top: 15px; display: inline-block; padding: 4px 16px;
+  background: rgba(74,25,117,0.05); border-radius: 20px;
+}
+
+/* BACK TO TOP */
+.back-to-top {
+  position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px;
+  background: linear-gradient(135deg, #1e3a5f, #4a1975);
+  color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 200;
+}
+.back-to-top.show { opacity: 1; visibility: visible; }
+.back-to-top:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+
+footer {
+  text-align: center; padding: 24px; margin-top: 40px;
+  border-top: 2px dashed rgba(30,58,95,0.3);
+  font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--primary); font-weight: 600;
+}
+
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: #1a1a1d; }
+::-webkit-scrollbar-thumb { background: #4a1975; border-radius: 6px; border: 3px solid #1a1a1d; }
+::-webkit-scrollbar-thumb:hover { background: #b02a1b; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Organisms & Populations</h1>
+    <p>THP Coaching Classes</p>
+  </header>
+
+  <!-- SVG DEFS FOR ALL DIAGRAMS -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <!-- Shadows -->
+      <filter id="shadow" x="-20%" y="-20%" width="150%" height="150%">
+        <feDropShadow dx="2" dy="5" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
+      </filter>
+      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="softGlow">
+        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+      </filter>
+      
+      <!-- Gradients -->
+      <linearGradient id="gradPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#2d5a8c"/><stop offset="100%" stop-color="#1e3a5f"/>
+      </linearGradient>
+      <linearGradient id="gradSecondary" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#8e44ad"/><stop offset="100%" stop-color="#4a1975"/>
+      </linearGradient>
+      <linearGradient id="gradAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#e74c3c"/><stop offset="100%" stop-color="#b02a1b"/>
+      </linearGradient>
+      <linearGradient id="gradGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#2ecc71"/><stop offset="100%" stop-color="#27ae60"/>
+      </linearGradient>
+      <linearGradient id="gradOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#f39c12"/><stop offset="100%" stop-color="#d35400"/>
+      </linearGradient>
+      
+      <!-- Textures & Patterns -->
+      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+      </pattern>
+
+      <!-- Markers -->
+      <marker id="arrowDark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#1e3a5f"/>
+      </marker>
+      <marker id="arrowAccent" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#b02a1b"/>
+      </marker>
+      <marker id="arrowSecondary" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#4a1975"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <!-- SECTION 1: ECOLOGY LEVELS -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-leaf"></i></div>
+      <h2 class="section-title">Ecology Levels</h2>
+    </div>
+    <div class="content-card">
+      <p><strong>1. ECOLOGY :</strong> Study of Interactions among Organisms and between the organism and its physical (abiotic) environment.</p>
+      <p><strong>2. ECOLOGY</strong> is concerned with 4 levels of biological organization :</p>
+      
+      <div class="diagram-box">
+        <svg viewBox="0 0 1000 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1000" height="150" fill="url(#grid)" rx="10"/>
+          <!-- Nodes -->
+          <g filter="url(#shadow)">
+            <rect x="50" y="45" width="160" height="60" rx="30" fill="url(#gradPrimary)"/>
+            <rect x="290" y="45" width="160" height="60" rx="30" fill="url(#gradSecondary)"/>
+            <rect x="530" y="45" width="160" height="60" rx="30" fill="url(#gradAccent)"/>
+            <rect x="770" y="45" width="180" height="60" rx="30" fill="url(#gradOrange)"/>
+          </g>
+          <!-- Paths -->
+          <path d="M210 75 L280 75" stroke="#1e3a5f" stroke-width="4" marker-end="url(#arrowDark)"/>
+          <path d="M450 75 L520 75" stroke="#4a1975" stroke-width="4" marker-end="url(#arrowSecondary)"/>
+          <path d="M690 75 L760 75" stroke="#b02a1b" stroke-width="4" marker-end="url(#arrowAccent)"/>
+          <!-- Texts -->
+          <text x="130" y="81" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#fff" font-weight="700">ORGANISM</text>
+          <text x="370" y="81" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#fff" font-weight="700">POPULATION</text>
+          <text x="610" y="81" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#fff" font-weight="700">COMMUNITY</text>
+          <text x="860" y="81" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#fff" font-weight="700">BIOME</text>
+          
+        </svg>
+        <div class="diagram-caption">4 Levels of Biological Organization</div>
+      </div>
+      
+      <p><strong>3. POPULATION :</strong> Group of organisms of same species living in a well defined geographical area competing for similar resources and potentially interbreeding. (eg. Population of crows in Chandigarh)</p>
+      <p><strong>COMMUNITY :</strong> All the populations of different species in a given area.</p>
+      <ul class="styled-list">
+        <li><strong>Ecosystem :</strong> It is a community along with the abiotic factors. (→ biotic + abiotic factors of an area)</li>
+        <li><strong>Biome :</strong> A large distinct region with its characteristic vegetation, soil, climate, rainfall and temperature of desert, tundra, temperate forest etc.</li>
+        <li><strong>BIOSPHERE :</strong> Part of Earth where life exists. It is the sum of all ecosystems and biomes.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 2: MAJOR BIOMES -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-globe-americas"></i></div>
+      <h2 class="section-title">Major Biomes</h2>
+    </div>
+    <div class="content-card">
+      <p><strong>4. MAJOR BIOMES</strong></p>
+   
+
+<div class="diagram-box">
+  <img src="https://i0.wp.com/compass.rauias.com/wp-content/uploads/2023/05/image-345.png?resize=865%2C600&ssl=1" alt="Major Biomes">
+  <div class="diagram-caption">Distribution of Major Biomes concerning Temperature & Precipitation</div>
+  </div>
+<style>
+.diagram-box {width:100%;text-align:center;}
+.diagram-box img {width:100%;max-width:865px;height:auto;}
+.diagram-caption {font-size:clamp(12px,2vw,16px);font-weight:600;margin-top:8px;}
+</style>
+      
+      <p><strong>5 major biomes of India :</strong></p>
+      <ul class="styled-list">
+        <li>a) Tropical rain forest</li>
+        <li>b) Deciduous forest</li>
+        <li>c) Desert</li>
+        <li>d) Sea coast</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 3: ABIOTIC FACTORS -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-sun"></i></div>
+      <h2 class="section-title">Major Abiotic Factors</h2>
+    </div>
+    <div class="content-card">
+      <p><strong>6. Major Abiotic Factors</strong></p>
+      <ul class="styled-list">
+        <li>a) Temperature (most imp)</li>
+        <li>b) Water (2nd most imp)</li>
+        <li>c) Light</li>
+        <li>d) Soil</li>
+      </ul>
+
+      <h3 class="subheading">1. Temperature</h3>
+      <ul class="styled-list">
+        <li>Temperature decreases progressively from equator to poles and from plains to high altitude.</li>
+        <li>In thermal springs and deep sea hydrothermal vents, temp. exceeds 100°C.</li>
+        <li>Temp. affects the enzymatic activity of the body.</li>
+        <li><strong>EURYTHERMAL:</strong> Organisms that can tolerate a wide range of temperature.</li>
+        <li><strong>STENOTHERMAL:</strong> Organisms that can tolerate only a narrow range of temperature.</li>
+      </ul>
+
+      <h3 class="subheading">8. Water</h3>
+      <ul class="styled-list">
+        <li>Life originated in water.</li>
+        <li>Aquatic organisms also face water-related issues like chemical composition, pH, and salinity of water.</li>
+        <li>Salinity in inland waters &lt; 5 ppt (parts per thousand).</li>
+        <li>Salinity in sea is 30-35 ppt.</li>
+        <li>Hypersaline lagoons &gt; 100 ppt.</li>
+      </ul>
+
+      <h3 class="subheading">9. Light</h3>
+      <ul class="styled-list">
+        <li>Plants - Photosynthesis requires light; Photoperiodism for flowering.</li>
+        <li>Animals - diurnal and seasonal rhythms; light is a cue for their mating, foraging, migrating.</li>
+        <li>Sun's energy/light do not reach deep oceans (&gt; 500m).</li>
+        <li>Red algae are found in deepest waters out of red, green, and brown algae.</li>
+      </ul>
+
+      <h3 class="subheading">10. Soil</h3>
+      <ul class="styled-list">
+        <li>Nature of soil depends upon climate, the weathering process, whether the soil is transported or sedimentary, and how soil development occurred.</li>
+        <li>Various characters of soil: Soil composition, grain size, aggregation.</li>
+        <li>These characters determine the water holding capacity of the soil.</li>
+        <li><strong>Types of soil:</strong> 1. Sandy  2. Clay  3. Loam.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 4: RESPONSES -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-chart-line"></i></div>
+      <h2 class="section-title">Responses to Abiotic Factors</h2>
+    </div>
+    <div class="content-card">
+      <div class="diagram-box">
+        <svg viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
+          <rect width="900" height="450" fill="url(#grid)" rx="10"/>
+          
+          <!-- Axes -->
+          <line x1="80" y1="380" x2="800" y2="380" stroke="#1e3a5f" stroke-width="4" marker-end="url(#arrowDark)"/>
+          <line x1="80" y1="380" x2="80" y2="50" stroke="#1e3a5f" stroke-width="4" marker-end="url(#arrowDark)"/>
+          
+          <text x="440" y="425" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#1e3a5f" font-weight="700">External Level</text>
+          <text x="40" y="215" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#1e3a5f" font-weight="700" transform="rotate(-90 40 215)">Internal Level</text>
+
+          <!-- Lines -->
+          <g filter="url(#glow)">
+            <!-- Conformers -->
+            <path d="M 80 380 L 400 60" stroke="#0984e3" stroke-width="5" fill="none"/>
+            <text x="260" y="150" transform="rotate(-45 260 150)" font-family="Caveat,cursive" font-size="22" fill="#0984e3" font-weight="700">Conformers</text>
+            
+            <!-- Regulators -->
+            <path d="M 80 200 L 700 200" stroke="#d63031" stroke-width="5" fill="none"/>
+            <text x="450" y="185" font-family="Caveat,cursive" font-size="22" fill="#d63031" font-weight="700">Regulators</text>
+            
+            <!-- Partial Regulators -->
+            <path d="M 80 380 L 220 240 C 300 240, 400 240, 700 240" stroke="#8e44ad" stroke-width="5" stroke-dasharray="10,8" fill="none"/>
+            <text x="500" y="270" font-family="Caveat,cursive" font-size="22" fill="#8e44ad" font-weight="700">Partial Regulators</text>
+          </g>
+        </svg>
+        <div class="diagram-caption">Responses: Conformers, Regulators, and Partial Regulators</div>
+      </div>
+
+      <h3 class="subheading">12. Regulators</h3>
+      <ul class="styled-list">
+        <li>Maintain the internal environment of body irrespective of what is going on in external environment (maintain homeostasis).</li>
+        <li>All birds and mammals.</li>
+        <li>Very few lower vertebrates & invertebrates - Reason for the "success" of mammals.</li>
+        <li>Physiological regulation: sweating, shivering.</li>
+        <li>Behavioural regulation: migration.</li>
+        <li>Regulation is energetically very expensive.</li>
+      </ul>
+
+      <h3 class="subheading">13. Conformers</h3>
+      <ul class="styled-list">
+        <li>99% of all animals; nearly all plants.</li>
+        <li>Thermoregulation is particularly very difficult for small animals (shrews and hummingbirds) as they have a larger surface area relative to their volumes.</li>
+        <li><strong>Bergmann's rule:</strong> Size of populations and species becomes smaller in warmer areas and larger in colder areas. (i.e. small animals are rarely found in cold areas because they lose heat fast).</li>
+      </ul>
+
+      <p><strong>14. If stressful conditions are localised or occur for short durations, then organisms:</strong></p>
+      
+      <div class="diagram-box">
+        <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="900" height="220" fill="url(#grid)" rx="10"/>
+          
+          <rect x="350" y="30" width="200" height="50" rx="10" fill="url(#gradPrimary)" filter="url(#shadow)"/>
+          <text x="450" y="62" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#fff" font-weight="700">Stressful Conditions</text>
+          
+          <path d="M 400 80 Q 250 120 250 140" fill="none" stroke="#1e3a5f" stroke-width="4" marker-end="url(#arrowDark)"/>
+          <path d="M 500 80 Q 650 120 650 140" fill="none" stroke="#1e3a5f" stroke-width="4" marker-end="url(#arrowDark)"/>
+          
+          <rect x="170" y="140" width="160" height="50" rx="25" fill="url(#gradAccent)" filter="url(#shadow)"/>
+          <text x="250" y="172" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#fff" font-weight="700">MIGRATE</text>
+          <text x="250" y="210" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#2d5a8c">(e.g., Siberian Cranes)</text>
+          
+          <rect x="570" y="140" width="160" height="50" rx="25" fill="url(#gradSecondary)" filter="url(#shadow)"/>
+          <text x="650" y="172" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#fff" font-weight="700">SUSPEND</text>
+        </svg>
+      </div>
+      <p>Migratory birds from Siberia come to Keoladeo National Park (Bharatpur, Rajasthan).</p>
+
+      <h3 class="subheading">15. Suspend Mechanisms</h3>
+      <div class="diagram-box">
+        <svg viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1000" height="350" fill="url(#grid)" rx="10"/>
+          
+          <rect x="400" y="20" width="200" height="60" rx="15" fill="url(#gradSecondary)" filter="url(#shadow)"/>
+          <text x="500" y="58" text-anchor="middle" font-family="Caveat,cursive" font-size="28" fill="#fff" font-weight="700">SUSPEND</text>
+
+          <path d="M 400 50 Q 200 50 200 120" fill="none" stroke="#4a1975" stroke-width="4" marker-end="url(#arrowSecondary)"/>
+          <path d="M 500 80 L 500 120" fill="none" stroke="#4a1975" stroke-width="4" marker-end="url(#arrowSecondary)"/>
+          <path d="M 600 50 Q 800 50 800 120" fill="none" stroke="#4a1975" stroke-width="4" marker-end="url(#arrowSecondary)"/>
+
+          <!-- Group 1: Microbes -->
+          <rect x="80" y="120" width="240" height="120" rx="10" fill="rgba(255,255,255,0.9)" stroke="#27ae60" stroke-width="2" filter="url(#shadow)"/>
+          <text x="200" y="150" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#27ae60" font-weight="700">Bacteria, Fungi,</text>
+          <text x="200" y="175" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#27ae60" font-weight="700">Lower Plants</text>
+          <text x="200" y="215" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#000" font-weight="700">→ Thick-walled Spores</text>
+
+          <!-- Group 2: Animals -->
+          <rect x="380" y="120" width="240" height="200" rx="10" fill="rgba(255,255,255,0.9)" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="500" y="150" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#c0392b" font-weight="700">Animals</text>
+          
+          <text x="500" y="190" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#000" font-weight="700">Hibernation</text>
+          <text x="500" y="210" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#555">(Winter Sleep - Bears)</text>
+          
+          <text x="500" y="250" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#000" font-weight="700">Aestivation</text>
+          <text x="500" y="270" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#555">(Summer Sleep - Snails/Fish)</text>
+          
+          <text x="500" y="310" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#000" font-weight="700">Diapause</text>
+          <text x="500" y="330" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#555">(Suspended Dev. - Zooplankton)</text>
+
+          <!-- Group 3: Higher Plants -->
+          <rect x="680" y="120" width="240" height="120" rx="10" fill="rgba(255,255,255,0.9)" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+          <text x="800" y="150" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#8e44ad" font-weight="700">Higher Plants</text>
+          <text x="800" y="190" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#000" font-weight="700">→ Seeds</text>
+          <text x="800" y="215" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">(Dormancy)</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: ADAPTATIONS -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-paw"></i></div>
+      <h2 class="section-title">Adaptations</h2>
+    </div>
+    <div class="content-card">
+      <p><strong>16. ADAPTATIONS :</strong> Any attribute of the organism (morphological, physiological, behavioural) that enables the organism to survive and reproduce in its habitat.</p>
+      
+      <h3 class="subheading">17. Physiological Adaptations</h3>
+      <ul class="styled-list">
+        <li>Kangaroo rat in North American desert: internal fat oxidation to release water, concentrated urine.</li>
+        <li>Desert plants → CAM cycle to preserve water; stomata remain closed during daytime.</li>
+        <li>Adaptation for high altitude (Altitude sickness): body compensates for low oxygen availability by increasing RBC production, decreasing binding affinity of Hb, and increasing breathing rate.</li>
+      </ul>
+
+      <h3 class="subheading">18. Behavioural Adaptation</h3>
+      <ul class="styled-list">
+        <li>Desert lizards bask in the sun and absorb heat when body temp drops, but move into shade when ambient temp starts increasing.</li>
+        <li>Some species burrow into soil to hide and escape from above-ground heat.</li>
+      </ul>
+
+      <h3 class="subheading">19. Morphological Adaptation</h3>
+      <ul class="styled-list">
+        <li>Desert plants: Thick cuticle on leaf surfaces, deep sunken stomata, leaves reduced to spines, stems flattened into phylloclades (Opuntia) to take over photosynthesis.</li>
+        <li>Aquatic mammals (Seals): Thick blubber (fat layer) below skin acting as an insulator to reduce body heat loss.</li>
+        <li><strong>Allen's Rule:</strong> Mammals of colder climates generally have shorter ears and limbs to minimize heat loss.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 6: POPULATION ATTRIBUTES -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-users"></i></div>
+      <h2 class="section-title">Population Attributes</h2>
+    </div>
+    <div class="content-card">
+      <p><strong>20. POPULATIONS</strong> generally consist of potentially interbreeding organisms (sexual reproduction), but a group of individuals resulting from asexual reproduction is also considered a population (e.g., Bacteria in a culture plate).</p>
+      
+      <h3 class="subheading">21. Population Attributes</h3>
+      <p><strong>I. Birth rate (b) -</strong> per capita births per unit time.</p>
+      <div class="formula-box">
+        <p>If 20 babies are born to a population of 100 people in a year:</p>
+        <p>b = $ \frac{\text{Births (B)}}{\text{Initial Population (N)}} = \frac{20}{100} = 0.2 $</p>
+      </div>
+      
+      <p><strong>II. Death rate (d) -</strong> per capita deaths per unit time.</p>
+      <div class="formula-box">
+        <p>d = $ \frac{\text{Mortality (D)}}{\text{Initial Population (N)}} $</p>
+      </div>
+
+      <p><strong>III. Sex Ratio :</strong> Ratio/Percentage of males and females in a population.</p>
+      <p><strong>IV. Age Pyramid :</strong> When age distribution is plotted for a population. Males are traditionally shown to the left and females to the right.</p>
+      
+      <div class="diagram-box">
+        <svg viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1000" height="350" fill="url(#grid)" rx="10"/>
+          
+          <g transform="translate(100, 50)" filter="url(#shadow)">
+            <!-- Expanding -->
+            <text x="150" y="-10" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#b02a1b" font-weight="700">EXPANDING</text>
+            <rect x="50" y="200" width="200" height="35" rx="5" fill="#fab1a0"/>
+            <rect x="70" y="160" width="160" height="35" rx="5" fill="#ff7675"/>
+            <rect x="100" y="120" width="100" height="35" rx="5" fill="#d63031"/>
+            <rect x="130" y="80" width="40" height="35" rx="5" fill="#c0392b"/>
+            <text x="150" y="270" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#333" font-weight="700">Pyramid Shaped</text>
+            <text x="150" y="295" text-anchor="middle" font-family="Kalam,cursive" font-size="15" fill="#555">(e.g., India)</text>
+          </g>
+
+          <g transform="translate(400, 50)" filter="url(#shadow)">
+            <!-- Stable -->
+            <text x="150" y="-10" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#0984e3" font-weight="700">STABLE</text>
+            <rect x="70" y="200" width="160" height="35" rx="5" fill="#74b9ff"/>
+            <rect x="70" y="160" width="160" height="35" rx="5" fill="#0984e3"/>
+            <rect x="80" y="120" width="140" height="35" rx="5" fill="#0097e6"/>
+            <rect x="110" y="80" width="80" height="35" rx="5" fill="#00a8ff"/>
+            <text x="150" y="270" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#333" font-weight="700">Bell Shaped</text>
+          </g>
+
+          <g transform="translate(700, 50)" filter="url(#shadow)">
+            <!-- Declining -->
+            <text x="150" y="-10" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#8e44ad" font-weight="700">DECLINING</text>
+            <rect x="100" y="200" width="100" height="35" rx="5" fill="#e056fd"/>
+            <rect x="80" y="160" width="140" height="35" rx="5" fill="#be2edd"/>
+            <rect x="70" y="120" width="160" height="35" rx="5" fill="#9b59b6"/>
+            <rect x="90" y="80" width="120" height="35" rx="5" fill="#8e44ad"/>
+            <text x="150" y="270" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#333" font-weight="700">Urn Shaped</text>
+            <text x="150" y="295" text-anchor="middle" font-family="Kalam,cursive" font-size="15" fill="#555">(e.g., Japan)</text>
+          </g>
+          
+          <!-- Key -->
+          <text x="10" y="100" text-anchor="start" font-family="Kalam,cursive" font-size="14" fill="#555">Post-reproductive</text>
+          <text x="10" y="190" text-anchor="start" font-family="Kalam,cursive" font-size="14" fill="#555">Reproductive</text>
+          <text x="10" y="270" text-anchor="start" font-family="Kalam,cursive" font-size="14" fill="#555">Pre-reproductive</text>
+        </svg>
+        <div class="diagram-caption">Age Pyramids representing Population Status</div>
+      </div>
+
+      <p><strong>V. Population Density (N) :</strong> Population size is technically called Population density. It can be measured in terms of numbers, biomass, or percent cover.</p>
+      <div class="diagram-box">
+  <img src="https://ncert-neetprep.s3.ap-south-1.amazonaws.com/XII/Biology/lebo113/OEBPS/Images/poplation.png" alt="Population">
+</div>
+<style>
+.diagram-box {width:100%;text-align:center;}
+.diagram-box img {width:100%;max-width:865px;height:auto;}
+</style>
+    </div>
+  </section>
+
+ 
+<!-- SECTION 7: POPULATION GROWTH -->
+<section class="content-section">
+  <div class="section-header">
+    <div class="section-icon"><i class="fas fa-chart-area"></i></div>
+    <h2 class="section-title">Population Growth Models</h2>
+  </div>
+
+  <div class="content-card">
+
+    <div class="formula-box">
+      <strong>Population Growth Equation</strong>
+      <p>$N_{t+1}=N_t+[(B+I)-(D+E)]$</p>
+    </div>
+
+    <p>Under normal conditions, births and deaths are the most important factors. However, when a new habitat is being colonized, immigration may play a more important role than birth rates.</p>
+
+    <!-- 25. EXPONENTIAL GROWTH -->
+    <h3 class="subheading">25. Exponential Growth (J-Shaped)</h3>
+
+    <ul class="styled-list">
+      <li>Assumes unlimited resource supply, no predation and no competition.</li>
+      <li>$\frac{dN}{dt}=(b-d)\times N$</li>
+      <li>Let $(b-d)=r$ (intrinsic rate of natural increase).</li>
+      <li>Therefore, $\frac{dN}{dt}=rN$.</li>
+      <li>Integral form: $N_t=N_0e^{rt}$.</li>
+      <li>Produces a J-shaped growth curve.</li>
+      <li>Population increases rapidly under unlimited resources.</li>
+      <li>Exponential growth is density-independent in this idealised model.</li>
+      <li>Examples: Bacterial growth under ideal conditions.</li>
+    </ul>
+
+    <div class="diagram-box">
+      <img src="https://www.zoologyverse.com/wp-content/uploads/2026/10/Exponential-Population-Growth-Curve.png"
+           alt="Exponential Population Growth Curve">
+      <div class="diagram-caption">Exponential Population Growth (J-Curve)</div>
+    </div>
+
+    <hr>
+
+    <!-- 26. LOGISTIC GROWTH -->
+    <h3 class="subheading">26. Logistic Growth (S-Shaped / Sigmoid)</h3>
+
+    <ul class="styled-list">
+      <li>More realistic model of population growth.</li>
+      <li>Occurs when environmental resources are limited.</li>
+      <li><strong>Carrying Capacity (K):</strong> Maximum number of individuals of a species that a habitat can support.</li>
+      <li>It is a density-dependent population growth model.</li>
+ <li>Population grows slowly (Lag Phase), rapidly (Acceleration Phase), then slows (Deceleration Phase) and finally stabilizes at carrying capacity (K).</li>
+      <li>Produces an S-shaped (Sigmoid) growth curve.</li>
+      <li>Intraspecific competition increases with population density.</li>
+      <li>Food, space and other resources act as limiting factors.</li>
+      <li>Environmental resistance prevents unlimited population growth.</li>
+      <li>At carrying capacity, population growth rate becomes zero.</li>
+      <li>In a stable population at K, birth rate approximately equals death rate (assuming no net migration).</li>
+      <li>Carrying capacity may change with environmental conditions.</li>
+      <li>Also called VERHULST-PEARL LOGISTIC GROWTH.</li>
+    </ul>
+
+    <div class="diagram-box">
+      <img src="https://www.zoologyverse.com/wp-content/uploads/2026/10/Logistic-Population-Growth-and-Carrying-Capacity.png"
+           alt="Logistic Population Growth and Carrying Capacity">
+      <div class="diagram-caption">Logistic Population Growth (S-Curve)</div>
+    </div>
+
+    <div class="formula-box">
+      <strong>Logistic Growth Equation</strong>
+      <p>$\frac{dN}{dt}=rN\left(\frac{K-N}{K}\right)$</p>
+      <p>At N = K, $\frac{dN}{dt}=0$</p>
+      <p>Maximum growth rate occurs at N = K/2.</p>
+      <p>Maximum growth rate = rK/4</p>
+      <small>
+        N = Population size | r = Intrinsic rate of natural increase |
+        K = Carrying capacity
+      </small>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.diagram-box {
+  width:100%; text-align:center; margin:15px auto;
+  box-sizing:border-box; overflow:hidden;
+}
+.diagram-box img {
+  display:block; width:100%; max-width:865px;
+  height:auto; margin:auto; object-fit:contain;
+}
+.diagram-caption {
+  font-size:13px; font-weight:600; margin-top:7px;
+}
+.formula-box {
+  width:100%; box-sizing:border-box; text-align:center;
+  padding:12px; margin:15px 0; border-radius:10px;
+  background:#f4f7fb; overflow-wrap:anywhere;
+}
+.formula-box p { margin:8px 0; }
+.formula-box small { font-size:12px; }
+</style>
+
+  <!-- SECTION 8: LIFE HISTORY -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-dna"></i></div>
+      <h2 class="section-title">Life History Variations</h2>
+    </div>
+    <div class="content-card">
+      <ul class="styled-list">
+        <li>Populations evolve to maximize their reproductive fitness (high 'r' value), also called Darwinian Fitness.</li>
+        <li>Different organisms adopt different strategies depending on their habitat constraints.</li>
+      </ul>
+      
+      <table>
+        <thead>
+          <tr><th>r-selected species</th><th>K-selected species</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Produce a large number of small offspring</td><td>Produce a small number of large offspring</td></tr>
+          <tr><td>High mortality rate of offspring</td><td>Low mortality, high parental care</td></tr>
+          <tr><td>e.g., Oysters, Pelagic fishes</td><td>e.g., Birds, Mammals</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="subheading">Breeding Strategies</h3>
+      <ul class="styled-list">
+        <li><strong>Breed only once in lifetime:</strong> Pacific salmon fish, Bamboo.</li>
+        <li><strong>Breed many times during lifetime:</strong> Most birds and mammals.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 9: POPULATION INTERACTIONS -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-project-diagram"></i></div>
+      <h2 class="section-title">Population Interactions</h2>
+    </div>
+    <div class="content-card">
+      <p>There is absolutely no habitat on Earth where only a single species exists. Even a plant species needs soil microbes to break down organic matter and return inorganic nutrients. Thus, populations interact continuously.</p>
+
+      <table>
+        <thead>
+          <tr><th>Species A</th><th>Species B</th><th>Name of Interaction</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>+</td><td>+</td><td><strong>Mutualism</strong> (Both benefit)</td></tr>
+          <tr><td>-</td><td>-</td><td><strong>Competition</strong> (Both harmed)</td></tr>
+          <tr><td>+ (predator)</td><td>- (prey)</td><td><strong>Predation</strong></td></tr>
+          <tr><td>+ (parasite)</td><td>- (host)</td><td><strong>Parasitism</strong></td></tr>
+          <tr><td>+</td><td>0</td><td><strong>Commensalism</strong> (One benefits, other unaffected)</td></tr>
+          <tr><td>-</td><td>0</td><td><strong>Amensalism</strong> (One harmed, other unaffected)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 10: PREDATION -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-drumstick-bite"></i></div>
+      <h2 class="section-title">Predation</h2>
+    </div>
+    <div class="content-card">
+      <ul class="styled-list">
+        <li>Lion is a predator to deer. Sparrow is a predator to seeds. Herbivores are technically predators to plants.</li>
+        <li>Predators act as conduits for energy transfer across trophic levels.</li>
+        <li>Predators keep prey populations under control. Exotic species often become invasive due to the lack of a natural predator. (e.g., 1920s Australia: Prickly pear cactus spread rapidly until a cactus-feeding moth was introduced).</li>
+        <li>Biological control methods adopted in agriculture are based on the ability of predators to regulate prey population.</li>
+        <li>Predators help maintain species diversity by reducing the intensity of interspecific competition among prey species (e.g., Removal of Pisaster starfish caused extinction of 10 invertebrate species in a year).</li>
+        <li>Predators are "prudent" in nature (they don't overexploit prey to the point of prey extinction, as that would cause the predator's own extinction).</li>
+      </ul>
+
+      <h3 class="subheading">Defence Mechanisms</h3>
+      <div class="diagram-box">
+        <svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1000" height="400" fill="url(#grid)" rx="10"/>
+          
+          <rect x="350" y="20" width="300" height="60" rx="30" fill="url(#gradPrimary)" filter="url(#shadow)"/>
+          <text x="500" y="58" text-anchor="middle" font-family="Caveat,cursive" font-size="28" fill="#fff" font-weight="700">DEFENCE MECHANISMS</text>
+          
+          <path d="M 400 80 Q 250 120 250 140" fill="none" stroke="#1e3a5f" stroke-width="4" marker-end="url(#arrowDark)"/>
+          <path d="M 600 80 Q 750 120 750 140" fill="none" stroke="#1e3a5f" stroke-width="4" marker-end="url(#arrowDark)"/>
+
+          <!-- Animals -->
+          <rect x="150" y="140" width="200" height="50" rx="10" fill="url(#gradAccent)" filter="url(#shadow)"/>
+          <text x="250" y="172" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#fff" font-weight="700">ANIMALS</text>
+          
+          <path d="M 180 190 L 100 240" stroke="#c0392b" stroke-width="3" marker-end="url(#arrowAccent)"/>
+          <path d="M 250 190 L 250 240" stroke="#c0392b" stroke-width="3" marker-end="url(#arrowAccent)"/>
+          <path d="M 320 190 L 400 240" stroke="#c0392b" stroke-width="3" marker-end="url(#arrowAccent)"/>
+
+          <rect x="20" y="240" width="160" height="80" rx="10" fill="#fff" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="100" y="275" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#c0392b" font-weight="700">Camouflage</text>
+          <text x="100" y="300" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#333">Blending with Env.</text>
+
+          <rect x="190" y="240" width="120" height="80" rx="10" fill="#fff" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="250" y="275" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#c0392b" font-weight="700">Toxicity</text>
+          <text x="250" y="300" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#333">Monarch Butterfly</text>
+
+          <rect x="320" y="240" width="160" height="100" rx="10" fill="#fff" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+          <text x="400" y="270" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#c0392b" font-weight="700">Mimicry</text>
+          <text x="400" y="295" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#333">- Batesian (fake)</text>
+          <text x="400" y="315" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#333">- Mullerian (mutual)</text>
+
+          <!-- Plants -->
+          <rect x="650" y="140" width="200" height="50" rx="10" fill="url(#gradSecondary)" filter="url(#shadow)"/>
+          <text x="750" y="172" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#fff" font-weight="700">PLANTS</text>
+
+          <path d="M 700 190 L 600 240" stroke="#8e44ad" stroke-width="3" marker-end="url(#arrowSecondary)"/>
+          <path d="M 800 190 L 900 240" stroke="#8e44ad" stroke-width="3" marker-end="url(#arrowSecondary)"/>
+
+          <rect x="520" y="240" width="160" height="80" rx="10" fill="#fff" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+          <text x="600" y="275" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#8e44ad" font-weight="700">Morphological</text>
+          <text x="600" y="300" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#333">Thorns (Acacia, Cactus)</text>
+
+          <rect x="750" y="240" width="230" height="120" rx="10" fill="#fff" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+          <text x="865" y="270" text-anchor="middle" font-family="Caveat,cursive" font-size="22" fill="#8e44ad" font-weight="700">Chemical Defences</text>
+          <text x="865" y="295" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#333">Cardiac glycosides (Calotropis)</text>
+          <text x="865" y="315" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#333">Nicotine, Caffeine, Quinine,</text>
+          <text x="865" y="335" text-anchor="middle" font-family="Kalam,cursive" font-size="14" fill="#333">Strychnine, Opium</text>
+        </svg>
+      </div>
+      <p>The problem of predation is particularly severe for plants since they cannot run away.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 11: COMPETITION -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-fist-raised"></i></div>
+      <h2 class="section-title">Competition</h2>
+    </div>
+    <div class="content-card">
+      <p><strong>34. Competition:</strong> Process in which the fitness of one species ('r' value) gets significantly lower in the presence of another species.</p>
+      <ul class="styled-list">
+        <li><strong>Interspecific:</strong> Between 2 different species. (Darwin thought this is the most potent force in organic evolution).</li>
+        <li><strong>Intraspecific:</strong> Among members of the same species. (Usually more severe).</li>
+        <li><strong>Myth:</strong> Competition occurs only among closely related species. <strong>Truth:</strong> In shallow South American lakes, visiting flamingos and resident fishes compete for the same food (zooplankton).</li>
+        <li><strong>Myth:</strong> Competition occurs only when resources are limited. <strong>Truth:</strong> In "Interference Competition", the feeding efficiency of one species is reduced due to the interfering and inhibitory presence of another species, even when resources are abundant.</li>
+      </ul>
+
+      <h3 class="subheading">Important Concepts</h3>
+      <div class="diagram-box">
+        <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1000" height="300" fill="url(#grid)" rx="10"/>
+          
+          <rect x="50" y="50" width="280" height="200" rx="15" fill="rgba(255,255,255,0.9)" stroke="#c0392b" stroke-width="3" filter="url(#shadow)"/>
+          <text x="190" y="90" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#c0392b" font-weight="700">Gause's Competitive</text>
+          <text x="190" y="120" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#c0392b" font-weight="700">Exclusion Principle</text>
+          <line x1="80" y1="140" x2="300" y2="140" stroke="#c0392b" stroke-dasharray="4,4"/>
+          <text x="190" y="170" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">Two closely related species</text>
+          <text x="190" y="195" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">competing for same resources</text>
+          <text x="190" y="220" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">cannot coexist indefinitely.</text>
+
+          <rect x="360" y="50" width="280" height="200" rx="15" fill="rgba(255,255,255,0.9)" stroke="#0984e3" stroke-width="3" filter="url(#shadow)"/>
+          <text x="500" y="90" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#0984e3" font-weight="700">Competitive Release</text>
+          <text x="500" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="18" fill="#0984e3">(Connell)</text>
+          <line x1="390" y1="140" x2="610" y2="140" stroke="#0984e3" stroke-dasharray="4,4"/>
+          <text x="500" y="170" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">A restricted species expands</text>
+          <text x="500" y="195" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">its range massively when the</text>
+          <text x="500" y="220" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">superior competitor is removed.</text>
+
+          <rect x="670" y="50" width="280" height="200" rx="15" fill="rgba(255,255,255,0.9)" stroke="#27ae60" stroke-width="3" filter="url(#shadow)"/>
+          <text x="810" y="90" text-anchor="middle" font-family="Caveat,cursive" font-size="24" fill="#27ae60" font-weight="700">Resource Partitioning</text>
+          <text x="810" y="115" text-anchor="middle" font-family="Caveat,cursive" font-size="18" fill="#27ae60">(MacArthur)</text>
+          <line x1="700" y1="140" x2="920" y2="140" stroke="#27ae60" stroke-dasharray="4,4"/>
+          <text x="810" y="170" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">Coexistence is achieved</text>
+          <text x="810" y="195" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">by choosing different times</text>
+          <text x="810" y="220" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#333">or patterns for foraging.</text>
+        </svg>
+      </div>
+
+      <p><strong>Gause's Exclusion Example:</strong> Abingdon tortoises in Galapagos Islands became extinct within a decade after goats were introduced on the island, due to greater browsing efficiency of goats.</p>
+      
+      <p><strong>Resource Partitioning Example:</strong> MacArthur showed that 5 closely related species of Warblers living on the same tree successfully avoided competition and coexisted by altering their foraging times and patterns.</p>
+
+      <p><strong>Competitive Release Example (Connell's elegant field experiment):</strong> On the rocky sea coasts of Scotland, the larger and competitively superior barnacle <em>Balanus</em> dominates the intertidal area and excludes the smaller barnacle <em>Chthamalus</em> from that zone. When <em>Balanus</em> is removed, <em>Chthamalus</em> expands rapidly.</p>
+
+      <p>Herbivores and plants appear to be more adversely affected by competition than carnivores.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 12: PARASITISM -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-bug"></i></div>
+      <h2 class="section-title">Parasitism</h2>
+    </div>
+    <div class="content-card">
+      <ul class="styled-list">
+        <li>Parasitism has evolved in many taxonomic groups from plants to higher vertebrates.</li>
+        <li>Many parasites have evolved to be host-specific, such that both host and parasite tend to co-evolve.</li>
+        <li><strong>Adaptations of Parasites:</strong> Loss of unnecessary sense organs, presence of adhesive organs/suckers, loss of digestive system, and high reproductive capacity.</li>
+        <li>Majority of parasites harm the host: they reduce the survival, growth, and reproductive rate of the host and make it physically weak.</li>
+        <li>(Female mosquito is not considered a parasite since it only takes a blood meal for reproduction, not for survival/habitat).</li>
+      </ul>
+
+      <div class="diagram-box">
+        <svg viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1000" height="350" fill="url(#grid)" rx="10"/>
+          
+          <!-- Endoparasites -->
+          <rect x="50" y="50" width="280" height="250" rx="15" fill="#fff" stroke="#d63031" stroke-width="4" filter="url(#shadow)"/>
+          <rect x="50" y="50" width="280" height="60" rx="15" fill="#d63031" />
+          <text x="190" y="88" text-anchor="middle" font-family="Caveat,cursive" font-size="28" fill="#fff" font-weight="700">Endoparasites</text>
+          <text x="190" y="140" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#333">Live inside the host body.</text>
+          <text x="190" y="170" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Liver fluke</text>
+          <text x="190" y="195" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Plasmodium (Malaria)</text>
+          <text x="190" y="220" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Tapeworm, Ascaris</text>
+          <text x="190" y="245" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Filarial worm</text>
+
+          <!-- Ectoparasites -->
+          <rect x="360" y="50" width="280" height="250" rx="15" fill="#fff" stroke="#0984e3" stroke-width="4" filter="url(#shadow)"/>
+          <rect x="360" y="50" width="280" height="60" rx="15" fill="#0984e3" />
+          <text x="500" y="88" text-anchor="middle" font-family="Caveat,cursive" font-size="28" fill="#fff" font-weight="700">Ectoparasites</text>
+          <text x="500" y="140" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#333">Feed on external surface.</text>
+          <text x="500" y="170" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Lice on humans</text>
+          <text x="500" y="195" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Ticks on dogs</text>
+          <text x="500" y="220" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Copepods on marine fish</text>
+          <text x="500" y="245" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Cuscuta on hedge plants</text>
+
+          <!-- Brood Parasitism -->
+          <rect x="670" y="50" width="280" height="250" rx="15" fill="#fff" stroke="#8e44ad" stroke-width="4" filter="url(#shadow)"/>
+          <rect x="670" y="50" width="280" height="60" rx="15" fill="#8e44ad" />
+          <text x="810" y="88" text-anchor="middle" font-family="Caveat,cursive" font-size="28" fill="#fff" font-weight="700">Brood Parasitism</text>
+          <text x="810" y="140" text-anchor="middle" font-family="Kalam,cursive" font-size="18" fill="#333">Laying eggs in host's nest.</text>
+          <text x="810" y="175" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">→ Cuckoo (Koel) lays eggs</text>
+          <text x="810" y="200" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">in the nest of a Crow.</text>
+          <text x="810" y="225" text-anchor="middle" font-family="Kalam,cursive" font-size="16" fill="#555">Evolution matching egg sizes.</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 13: COMMENSALISM & MUTUALISM -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-handshake"></i></div>
+      <h2 class="section-title">Commensalism & Mutualism</h2>
+    </div>
+    <div class="content-card">
+      <h3 class="subheading">Commensalism (+ , 0)</h3>
+      <ul class="styled-list">
+        <li><strong>Orchid & Mango:</strong> Orchid grows as an epiphyte on mango branch. Orchid gets space (+), Mango is unaffected (0).</li>
+        <li><strong>Barnacles & Whale:</strong> Barnacles grow on the back of whales to move rapidly and get food (+), Whale unaffected (0).</li>
+        <li><strong>Cattle Egret & Grazing Cattle:</strong> Egrets forage close to where cattle are grazing because the cattle stir up insects (+), Cattle unaffected (0).</li>
+        <li><strong>Clown fish & Sea Anemone:</strong> Clown fish hides in stinging tentacles of anemone for protection (+), Anemone unaffected (0).</li>
+      </ul>
+
+      <h3 class="subheading">Mutualism (+ , +)</h3>
+      <p>Both interacting species benefit. Shows tight <strong>Co-evolution</strong>.</p>
+      <ul class="styled-list">
+        <li><strong>Lichens:</strong> Intimate relationship between fungus (absorbs nutrients/water) and photosynthetic algae/cyanobacteria.</li>
+        <li><strong>Mycorrhizae:</strong> Fungi in roots of higher plants. Fungi absorb phosphorus from soil; plant provides carbohydrates.</li>
+        <li><strong>Fig and Fig Wasp:</strong> Highly specific. Wasp acts as pollinator and uses fig fruit as an oviposition (egg-laying) site, while larvae feed on seeds.</li>
+        <li><strong>Yucca and Moth:</strong> Neither species can complete its life cycle without the other.</li>
+      </ul>
+
+      <div class="formula-box" style="border-left-color: #8e44ad; background: linear-gradient(135deg, rgba(232,213,255,0.9), rgba(208,180,240,0.9))">
+        <p style="color: #4a1975"><strong>Sexual Deceit (Pseudocopulation)</strong></p>
+        <p style="font-family: 'Kalam', cursive; font-size: 1.1rem; text-align: left; margin-top: 10px; color: #111;">
+          The Mediterranean orchid <em>Ophrys</em> employs sexual deceit. One petal of its flower bears an uncanny resemblance to the female of a specific bee species in size, color, and markings. The male bee gets attracted to it, 'pseudocopulates' with the flower, and gets dusted with pollen. When it repeats this with another flower, pollination is achieved.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Organisms & Populations | Advanced Illustrated Edition</p>
+  </footer>
+</div>
+
+<div class="back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></div>
+
+<script>
+// Back to top functionality
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  if (window.pageYOffset > 400) {
+    backToTop.classList.add('show');
+  } else {
+    backToTop.classList.remove('show');
+  }
+});
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Intersection Observer for scroll animations
+const sections = document.querySelectorAll('.content-section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+sections.forEach(section => observer.observe(section));
+
+// MathJax Config
+window.MathJax = {
+  tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+};
+</script>
+</body>
+</html>
